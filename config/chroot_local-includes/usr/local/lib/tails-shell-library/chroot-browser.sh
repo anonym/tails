@@ -271,6 +271,16 @@ run_browser_in_chroot () {
     local profile
     profile="$(browser_profile_dir "${browser_name}" "${chroot_user}")"
 
+    # If systemd-networkd is running it will automatically create
+    # network interfaces etc for the container we start below.
+    systemctl unmask systemd-networkd.service
+    systemctl enable systemd-networkd.service
+    systemctl start systemd-networkd.service
+
+    # But the container will share the same network namespace as the
+    # host, and so our firewall applies and we'll be blocked! :)
+    /usr/local/lib/do_not_ever_run_me
+
     systemd-nspawn --directory="${chroot}" \
                    --bind=/tmp/.X11-unix \
                    --user="${chroot_user}" \
@@ -279,4 +289,7 @@ run_browser_in_chroot () {
                    /bin/sh -c \
         ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
          exec_unconfined_firefox --class='${wm_class}' -profile '${profile}'"
+
+    # Reneable firewall :D
+    /etc/NetworkManager/dispatcher.d/00-firewall.sh foo up
 }
