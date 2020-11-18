@@ -1485,6 +1485,17 @@ def save_qrcode(str)
 end
 
 Given /^I write (|an old version of )the Tails (ISO|USB) image to disk "([^"]+)"$/ do |old, type, name|
+  if old != ''
+    match = /^tails-amd64-(\d+[.]\d+(?:[.]\d+)?)[.]img$/
+            .match(File.basename(OLD_TAILS_IMG))
+    $old_version = match.nil? ? nil : match[1]
+    if $old_version.nil?
+      debug_log('Failed to extract old version. This is expected, and OK,' \
+                'if you passed anything but a stable release to --old-iso')
+    else
+      debug_log("Old version: #{$old_version}")
+    end
+  end
   src_disk = {
     path: (if old == ''
              type == 'ISO' ? TAILS_ISO : TAILS_IMG
