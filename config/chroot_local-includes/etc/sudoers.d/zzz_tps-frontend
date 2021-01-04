@@ -1,0 +1,8 @@
+Cmnd_Alias TPS_FRONTEND = /sbin/capsh \
+    --caps=cap_setpcap\,cap_setuid\,cap_setgid+eip --keep=1 \
+    --user=tails-persistent-storage --addamb=cap_setuid\,cap_setgid \
+    -- -c python3 /usr/local/lib/tps-frontend
+
+Defaults!TPS_FRONTEND env_keep+="DESKTOP_STARTUP_ID"
+Defaults!TPS_FRONTEND env_keep+="NOTIFY_SOCKET"
+amnesia   ALL = NOPASSWD: TPS_FRONTEND

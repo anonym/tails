@@ -27,7 +27,7 @@ from tailslib.persistence import (
     has_unlocked_persistence,
     has_persistence,
     is_tails_media_writable,
-    launch_persistence_setup,
+    launch_tps_frontend,
     PERSISTENCE_DIR)
 
 from tailslib.utils import launch_x_application
@@ -226,14 +226,13 @@ def _format_iterable(iterable):
         return str(iterable)
 
 
-def has_additional_packages_list(search_new_persistence=False):
+def has_additional_packages_list():
     """Return true iff a packages list file is found in a persistence.
 
     Log warnings in syslog.
-    The search_new_persistence argument is passed to get_persistence_path.
     """
     try:
-        packages_list_path = get_packages_list_path(search_new_persistence)
+        packages_list_path = get_packages_list_path()
     except FileNotFoundError as e:
         logging.warning("Warning: {}".format(e))
         return False
@@ -284,7 +283,7 @@ def handle_installed_packages(packages):
     actually add them if requested.
     """
     logging.info("New packages manually installed: %s" % packages)
-    if has_unlocked_persistence(search_new_persistence=True):
+    if has_unlocked_persistence():
         # Translators: Don't translate {packages}, it's a placeholder and will
         # be replaced.
         if _notify(_("Add {packages} to your additional software?").format(
@@ -296,7 +295,7 @@ def handle_installed_packages(packages):
                    urgent=True):
             try:
                 setup_additional_packages()
-                add_additional_packages(packages, search_new_persistence=True)
+                add_additional_packages(packages)
             except Exception as e:
                 _notify_failure(_("The configuration of your additional "
                                   "software failed."))
@@ -366,7 +365,7 @@ def handle_removed_packages(packages):
                _("Cancel"),
                urgent=True):
         try:
-            remove_additional_packages(packages, search_new_persistence=True)
+            remove_additional_packages(packages)
         except Exception as e:
             _notify_failure(_("The configuration of your additional "
                               "software failed."))
@@ -375,7 +374,7 @@ def handle_removed_packages(packages):
 
 def setup_additional_packages():
     """Enable additional software in persistence."""
-    launch_persistence_setup("--no-gui",
+    launch_tps_frontend("--no-gui",
                              "--no-display_finished_message",
                              "--force_enable_preset", "AdditionalSoftware")
 
@@ -389,14 +388,12 @@ def create_persistence_and_setup_additional_packages(packages):
     packages should be a list of packages names.
     """
     logging.info("Creating new persistent volume")
-    launch_persistence_setup("--step", "bootstrap",
+    launch_tps_frontend("--step", "bootstrap",
                              "--no-display_finished_message",
                              "--force_enable_preset", "AdditionalSoftware")
-    add_additional_packages(packages, search_new_persistence=True)
+    add_additional_packages(packages)
     # show persistence configuration
-    launch_persistence_setup()
-    # APT lists and APT archive cache will be synchronized by
-    # tails-synchronize-data-to-new-persistent-volume
+    launch_tps_frontend()
 
 
 def show_configuration_window():
@@ -481,7 +478,7 @@ def apt_hook_post():
 
     additional_packages_names = {
         filter_package_details(pkg) for pkg in
-        get_additional_packages(search_new_persistence=True)
+        get_additional_packages()
     }
 
     apt_cache = apt.cache.Cache()

@@ -8,17 +8,18 @@ from typing import TYPE_CHECKING, Callable
 
 from tailsgreeter.ui import _
 from tailsgreeter.config import settings_dir, persistent_settings_dir, unsafe_browser_setting_filename
+from tailsgreeter.errors import PersistentStorageError
 
 gi.require_version('GLib', '2.0')
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gtk
 
 if TYPE_CHECKING:
-    from tailsgreeter.settings.persistence import PersistenceSettings
+    from tailsgreeter.settings.persistence import PersistentStorageSettings
 
 
 class PersistentStorage(object):
-    def __init__(self, persistence_setting: "PersistenceSettings",
+    def __init__(self, persistence_setting: "PersistentStorageSettings",
                  load_settings_cb, apply_settings_cb: Callable, builder):
         self.persistence_setting = persistence_setting
         self.load_settings_cb = load_settings_cb
@@ -72,23 +73,21 @@ class PersistentStorage(object):
         passphrase = self.entry_storage_passphrase.get_text()
 
         # Let's execute the unlocking in a thread
-        def do_unlock_storage(unlock_method, passphrase, unlocked_cb,
-                              failed_cb):
-            if unlock_method(passphrase):
-                GLib.idle_add(unlocked_cb)
-            else:
-                GLib.idle_add(failed_cb)
+        def do_unlock_storage():
+            try:
+                if self.persistence_setting.unlock(passphrase):
+                    GLib.idle_add(self.cb_unlocked)
+                else:
+                    GLib.idle_add(self.cb_unlock_failed_with_incorrect_passphrase)
+            except PersistentStorageError as e:
+                logging.error(e)
+                GLib.idle_add(self.unlock_failed)
+                return
 
-        unlocking_thread = threading.Thread(
-                target=do_unlock_storage,
-                args=(self.persistence_setting.unlock,
-                      passphrase,
-                      self.cb_unlocked,
-                      self.cb_unlock_failed)
-                )
+        unlocking_thread = threading.Thread(target=do_unlock_storage)
         unlocking_thread.start()
 
-    def cb_unlock_failed(self):
+    def cb_unlock_failed_with_incorrect_passphrase(self):
         logging.debug("Storage unlock failed")
         self.entry_storage_passphrase.set_sensitive(True)
         self.button_storage_unlock.set_sensitive(True)
@@ -105,8 +104,37 @@ class PersistentStorage(object):
                 'dialog-warning-symbolic')
         self.entry_storage_passphrase.grab_focus()
 
+    def unlock_failed(self):
+        self.button_storage_unlock.set_label(_("Unlock"))
+        self.image_storage_state.set_visible(True)
+        self.spinner_storage_unlock.set_visible(False)
+        self.label_infobar_persistence.set_label(
+            _("Failed to unlock the Persistent Storage. "
+              "Please start Tails and send an error report."))
+        self.infobar_persistence.set_visible(True)
+        self.button_start.set_sensitive(True)
+
+    def activation_failed(self):
+        self.button_storage_unlock.set_label(_("Unlock"))
+        self.image_storage_state.set_visible(True)
+        self.spinner_storage_unlock.set_visible(False)
+        self.label_infobar_persistence.set_label(
+            _("Failed to activate the Persistent Storage. "
+              "Please start Tails and send an error report."))
+        self.infobar_persistence.set_visible(True)
+        self.button_start.set_sensitive(True)
+
     def cb_unlocked(self):
         logging.debug("Storage unlocked")
+
+        # Activate the Persistent Storage
+        try:
+            self.persistence_setting.activate_persistent_storage()
+        except PersistentStorageError as e:
+            logging.error(e)
+            self.activation_failed()
+            return
+
         self.spinner_storage_unlock.set_visible(False)
         self.entry_storage_passphrase.set_visible(False)
         self.button_storage_unlock.set_visible(False)

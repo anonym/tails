@@ -2,27 +2,25 @@
 # for each of the corresponding configuration lines,
 # maps the source to the destination.
 def get_persistence_presets_config(skip_links = false)
-  # Perl script that prints all persistence configuration lines (one per line)
-  # in the form: <mount_point>:<comma-separated-list-of-options>
+  # Python script that prints all persistence configuration lines (one per
+  # line) in the form: <mount_point>\t<comma-separated-list-of-options>
   script = <<-SCRIPT
-  use strict;
-  use warnings FATAL => "all";
-  use Tails::Persistence::Configuration::Presets;
-  foreach my $atom (Tails::Persistence::Configuration::Presets->new()->atoms) {
-    say $atom->destination, ":", join(",", @{$atom->options});
-  }
-  SCRIPT
-  # VMCommand:s cannot handle newlines, and they're irrelevant in the
-  # above perl script any way
-  script.delete!("\n")
-  presets_configs = $vm.execute_successfully("perl -E '#{script}'")
+from tps.configuration import features
+for feature in features.get_classes():
+  for mount in feature.Mounts:
+    print(mount)
+SCRIPT
+  # VMCommand:s cannot handle newlines, so we replace them with
+  # semicolons.
+  script.sub!("\n", ";")
+  presets_configs = $vm.execute_successfully("python3 -c '#{script}'")
                        .stdout.chomp.split("\n")
   assert presets_configs.size >= 10,
          "Got #{presets_configs.size} persistence preset configuration " \
          'lines, which is too few'
   persistence_mapping = {}
   presets_configs.each do |line|
-    destination, options_str = line.split(':')
+    destination, options_str = line.split("\t")
     options = options_str.split(',')
     is_link = options.include? 'link'
     next if is_link && skip_links
@@ -359,7 +357,7 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
 
   luks_dev = nil
   # The LUKS container may already be opened, e.g. by udisks after
-  # we've run tails-persistence-setup.
+  # we've created the Persistent Storage.
   c = $vm.execute("ls -1 --hide 'control' /dev/mapper/")
   if c.success?
     c.stdout.split("\n").each do |candidate|
@@ -405,10 +403,9 @@ Given /^I enable persistence$/ do
 end
 
 def tails_persistence_enabled?
-  persistence_state_file = '/var/lib/live/config/tails.persistence'
-  $vm.execute("test -e '#{persistence_state_file}'").success? &&
-    $vm.execute(". '#{persistence_state_file}' && " \
-                'test "$TAILS_PERSISTENCE_ENABLED" = true').success?
+  libtps_file = "/usr/local/lib/tails-shell-library/libtps.sh"
+  $vm.execute(". '#{libtps_file}' && " \
+              'tps_is_unlocked').success?
 end
 
 Given /^all persistence presets(| from the old Tails version)(| but the first one) are enabled$/ do |old_tails, except_first|
@@ -583,8 +580,8 @@ Then /^all persistence configuration files have safe access rights$/ do
       file_owner = $vm.execute("stat -c %U '#{f}'").stdout.chomp
       file_group = $vm.execute("stat -c %G '#{f}'").stdout.chomp
       file_perms = $vm.execute("stat -c %a '#{f}'").stdout.chomp
-      assert_equal('tails-persistence-setup', file_owner)
-      assert_equal('tails-persistence-setup', file_group)
+      assert_equal('tails-persistent-storage', file_owner)
+      assert_equal('tails-persistent-storage', file_group)
       case f
       when %r{.*/live-additional-software.conf$}
         assert_equal('644', file_perms)

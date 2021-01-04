@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+set -u
+
+# shellcheck source=../../../tails-shell-library/libgnome-bookmarks.sh
+. /usr/local/lib/tails-shell-library/libgnome-bookmarks.sh
+
+PERSISTENT_DIR='/home/amnesia/Persistent'
+TOR_BROWSER_PERSISTENT_DIR='/home/amnesia/Persistent/Tor Browser'
+remove_gnome_bookmark "${PERSISTENT_DIR}" || true
+remove_gnome_bookmark "${TOR_BROWSER_PERSISTENT_DIR}" \
+    "Tor Browser (persistent)" || true

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# We execute the tps-frontend as the tails-persistent-storage user,
+# to allow it to connect to the tps backend via D-Bus. After connecting
+# to D-Bus, we immediately drop privileges via setuid by changing the
+# uid to amnesia.
+sudo /sbin/capsh --caps="cap_setpcap,cap_setuid,cap_setgid+eip" --keep=1 \
+  --user=tails-persistent-storage --addamb=cap_setuid,cap_setgid -- \
+  -c "python3 /usr/local/lib/tps-frontend"

@@ -1,0 +1,6 @@
+[Service]
+Type=dbus
+BusName=org.boum.tails.PersistentStorage
+ExecStart=/usr/local/lib/tps
+ExecStartPre=/usr/local/lib/persistent-storage/pre-start
+# XXX: Add sandboxing options

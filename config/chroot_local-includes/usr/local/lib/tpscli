@@ -1,0 +1,27 @@
+#!/bin/dash
+
+set -eu
+
+# shellcheck source=tails-shell-library/libtps.sh
+. /usr/local/lib/tails-shell-library/libtps.sh
+
+[ $# = 2 ] || exit 2
+
+SUBCOMMAND="$1"
+FEATURE_NAME="$2"
+
+case "$SUBCOMMAND" in
+    activate)
+	tps_activate_feature "${FEATURE_NAME}"
+	;;
+    deactivate)
+	tps_deactivate_feature "${FEATURE_NAME}"
+	;;
+    is-active)
+	tps_feature_is_active "${FEATURE_NAME}"
+	;;
+    *)
+	echo "Sub-command ${SUBCOMMAND} is not supported" >&2
+	exit 4
+	;;
+esac

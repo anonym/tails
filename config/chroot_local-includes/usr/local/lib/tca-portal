@@ -33,9 +33,10 @@ from tailslib.gnome import gnome_env_vars
 from tailslib import (
     CLEARNET_USERNAME,
     LIVE_USERNAME,
-    PERSISTENCE_CONF_FILE,
-    PERSISTENCE_SETUP_USERNAME,
+    PERSISTENT_STORAGE_USERNAME
 )
+
+TPS_TOR_CONFIG_FEATURE_NAME = "TorConfiguration"
 
 log = getLogger("tca-portal")
 
@@ -130,10 +131,12 @@ class UserCommand(BaseCommand):
         return args
 
 
-class PersistenceSetupCommand(BaseCommand):
+class PersistentStorageCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> tuple:
-        drop = ("/sbin/runuser", "-u", PERSISTENCE_SETUP_USERNAME)
-        args = (*drop, "--", *(super().full_command(request)))
+        drop = ("/sbin/runuser", "-u", PERSISTENT_STORAGE_USERNAME)
+        env = ("/usr/bin/env", *gnome_env_vars())
+
+        args = (*drop, "--", *env, *(super().full_command(request)))
         return args
 
 
@@ -226,14 +229,14 @@ class Handler(socketserver.StreamRequestHandler):
         # the Popen interface that the portal assumes, or refactoring
         # the Handler.run and Command.run code a fair bit:
         # https://gitlab.tails.boum.org/tails/tails/-/merge_requests/544#note_174919
-        "is-tor-configuration-persistent?": PersistenceSetupCommand(
-            ("/usr/local/lib/tails-tor-config-persistence", "is-enabled"),
+        "is-tor-configuration-persistent?": UserCommand(
+            ("/usr/local/lib/tpscli", "is-active", TPS_TOR_CONFIG_FEATURE_NAME),
             False),
-        "enable-tor-configuration-persistence": PersistenceSetupCommand(
-            ("/usr/local/lib/tails-tor-config-persistence", "enable"),
+        "enable-tor-configuration-persistence": PersistentStorageCommand(
+            ("/usr/local/lib/tpscli", "activate", TPS_TOR_CONFIG_FEATURE_NAME),
             False),
-        "disable-tor-configuration-persistence": PersistenceSetupCommand(
-            ("/usr/local/lib/tails-tor-config-persistence", "disable"),
+        "disable-tor-configuration-persistence": PersistentStorageCommand(
+            ("/usr/local/lib/tpscli", "deactivate", TPS_TOR_CONFIG_FEATURE_NAME),
             False),
         "get-network-time": GetNetworkTimeCommand(),
         "set-system-time": SetTimeCommand(),

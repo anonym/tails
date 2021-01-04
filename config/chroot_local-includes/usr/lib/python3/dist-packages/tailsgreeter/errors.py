@@ -22,11 +22,11 @@ class TailsGreeterError(Exception):
     pass
 
 
-class LivePersistError(TailsGreeterError):
+class PersistentStorageError(TailsGreeterError):
     pass
 
 
-class WrongPassphraseError(LivePersistError):
+class WrongPassphraseError(TailsGreeterError):
     pass
 
 
