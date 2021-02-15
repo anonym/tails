@@ -190,6 +190,21 @@ Its content will be available until you shut down Tails.
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="title" translatable="yes">Language and Region</property>
+                                <property name="icon-name">config-language</property>
+                                <child>
+                                  <object class="GtkSwitch" id="language_and_region_switch">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="halign">end</property>
+                                    <property name="valign">center</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="HdyActionRow">
+                                <property name="visible">True</property>
                                 <property name="title">Administration Password</property>
                                 <property name="icon-name">gcr-password</property>
                                 <child>
