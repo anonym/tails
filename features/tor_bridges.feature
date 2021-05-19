@@ -45,3 +45,8 @@ Feature: Using Tails with Tor bridges and pluggable transports
     When I configure a direct connection in the Tor Connection Assistant
     Then Tor is ready
     And available upgrades have been checked
+
+  Scenario: Normal bridges are not allowed in "Hide" mode
+    When I try to configure some normal bridges in the Tor Connection Assistant in hide mode
+    Then the Tor Connection Assistant complains that normal bridges are not allowed
+    And I cannot click the "Connect to Tor" button

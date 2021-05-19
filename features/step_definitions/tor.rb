@@ -353,6 +353,9 @@ end
 class TCAConnectionFailure < StandardError
 end
 
+class TCAForbiddenBridgeType < StandardError
+end
+
 def tca_configure(mode, &block)
   step 'the Tor Connection Assistant is running'
   case mode
@@ -446,9 +449,13 @@ def chutney_bridge_lines(bridge_type, chutney_tag: nil)
   end
 end
 
-When /^I configure some (\w+) bridges in the Tor Connection Assistant$/ do |bridge_type|
+When /^I configure some (\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |bridge_type, mode|
   @tor_is_using_pluggable_transports = bridge_type != 'normal'
-  config_mode = bridge_type == 'normal' ? :easy : :hide
+  if mode.nil?
+    config_mode = bridge_type == 'normal' ? :easy : :hide
+  else
+    config_mode = mode.to_sym
+  end
   # Internally a "normal" bridge is called just "bridge" which we have
   # to respect below.
   bridge_type = 'bridge' if bridge_type == 'normal'
@@ -478,6 +485,15 @@ When /^I configure some (\w+) bridges in the Tor Connection Assistant$/ do |brid
     bridge_lines.each do |bridge_line|
       @screen.type(bridge_line, ['Return'])
     end
+
+    begin
+      step 'the Tor Connection Assistant complains that normal bridges are not allowed'
+    rescue Dogtail::Failure
+      # There is no problem, so we can connect if we want
+    else
+      assert_equal(:hide, config_mode)
+      raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
+    end
   end
 end
 
@@ -489,6 +505,20 @@ When /^I try to configure a direct connection in the Tor Connection Assistant$/ 
     next
   rescue StandardError => e
     raise "Expected TCAConnectionFailure to be raised but got " \
+          "#{e.class.name}: #{e}"
+  else
+    raise "TCA managed to connect to Tor with normal bridges in hide mode"
+  end
+end
+
+When /^I try to configure some normal bridges in the Tor Connection Assistant in hide mode$/ do
+  begin
+    step "I configure some normal bridges in the Tor Connection Assistant in hide mode"
+  rescue TCAForbiddenBridgeType
+    # Expected!
+    next
+  rescue StandardError => e
+    raise "Expected TCAForbiddenBridgeType to be raised but got " \
           "#{e.class.name}: #{e}"
   else
     raise "TCA managed to connect to Tor but was expected to fail"
@@ -503,6 +533,21 @@ end
 
 Then /^the Tor Connection Assistant reports that it failed to connect$/ do
   tor_connection_assistant.child('Error connecting to Tor', roleName: 'label')
+end
+
+Then /^the Tor Connection Assistant complains that normal bridges are not allowed$/ do
+  tor_connection_assistant.child(
+    'You need to configure an obfs4 bridge to hide that you are using Tor',
+    roleName: 'label',
+    retry: false
+  )
+end
+
+Then /^I cannot click the "Connect to Tor" button$/ do
+  assert_equal(
+    "False",
+    tor_connection_assistant.child('Connect to _Tor').get_field('sensitive')
+  )
 end
 
 When /^all Internet traffic has only flowed through the configured bridges$/ do
