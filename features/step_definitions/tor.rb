@@ -454,10 +454,10 @@ def chutney_bridge_lines(bridge_type, chutney_tag: nil)
   end
 end
 
-When /^I configure some (\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |bridge_type, mode|
+When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |bridge_type, mode|
   @tor_is_using_pluggable_transports = bridge_type != 'normal'
   if mode.nil?
-    config_mode = bridge_type == 'normal' ? :easy : :hide
+    config_mode = ['normal', 'default'].include?(bridge_type) ? :easy : :hide
   else
     config_mode = mode.to_sym
   end
@@ -465,14 +465,7 @@ When /^I configure some (\w+) bridges in the Tor Connection Assistant(?: in (eas
   # to respect below.
   bridge_type = 'bridge' if bridge_type == 'normal'
 
-  bridge_lines = []
   @bridge_hosts = []
-  chutney_bridge_lines(bridge_type).each do |bridge_line|
-    bridge_lines << bridge_line
-    address, port = bridge_line.split[1].split(":")
-    @bridge_hosts << { address: address, port: port.to_i }
-  end
-
   tca_configure(config_mode) do
     if config_mode == :easy
       tor_connection_assistant.child('Configure a Tor bridge',
@@ -482,22 +475,37 @@ When /^I configure some (\w+) bridges in the Tor Connection Assistant(?: in (eas
     tor_connection_assistant.child('Connect to _Tor',
                                    roleName: 'push button')
                             .click
-    tor_connection_assistant.child('Type in a bridge that I already know',
-                                 roleName: 'radio button')
-                            .click
-    tor_connection_assistant.child(roleName: 'scroll pane').click
-
-    bridge_lines.each do |bridge_line|
-      @screen.type(bridge_line, ['Return'])
-    end
-
-    begin
-      step 'the Tor Connection Assistant complains that normal bridges are not allowed'
-    rescue Dogtail::Failure
-      # There is no problem, so we can connect if we want
+    if bridge_type == 'default'
+      assert_equal(:easy, config_mode)
+      tor_connection_assistant.child('Use a default bridge',
+                                     roleName: 'radio button')
+                              .click
+      $vm.file_content('/usr/share/tails/tca/default_bridges.txt').each_line do |line|
+        address, port = line.split[1].split(':')
+        @bridge_hosts << { address: address, port: port.to_i }
+      end
     else
-      assert_equal(:hide, config_mode)
-      raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
+      tor_connection_assistant.child('Type in a bridge that I already know',
+                                     roleName: 'radio button')
+                              .click
+      tor_connection_assistant.child(roleName: 'scroll pane').click
+      bridge_lines = []
+      chutney_bridge_lines(bridge_type).each do |bridge_line|
+        bridge_lines << bridge_line
+        address, port = bridge_line.split[1].split(":")
+        @bridge_hosts << { address: address, port: port.to_i }
+      end
+      bridge_lines.each do |bridge_line|
+        @screen.type(bridge_line, ['Return'])
+      end
+      begin
+        step 'the Tor Connection Assistant complains that normal bridges are not allowed'
+      rescue Dogtail::Failure
+        # There is no problem, so we can connect if we want
+      else
+        assert_equal(:hide, config_mode)
+        raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
+      end
     end
   end
 end
