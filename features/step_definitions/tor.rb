@@ -356,6 +356,26 @@ end
 class TCAForbiddenBridgeType < StandardError
 end
 
+Then /^the Tor Connection Assistant connects to Tor$/ do
+  failure_reported = false
+  try_for(120, msg: 'Timed out while waiting for TCA to connect to Tor') do
+    if tor_connection_assistant.child?('Error connecting to Tor',
+                                       roleName: 'label', retry: false)
+      failure_reported = true
+      done = true
+    else
+      done = tor_connection_assistant.child?(
+        'Connected to Tor successfully', roleName: 'label',
+        retry: false, showingOnly: true
+      )
+    end
+    done
+  end
+  if failure_reported
+    raise TCAConnectionFailure, 'TCA failed to connect to Tor'
+  end
+end
+
 def tca_configure(mode, &block)
   step 'the Tor Connection Assistant is running'
   case mode
@@ -379,22 +399,7 @@ def tca_configure(mode, &block)
   block.call if block_given?
   tor_connection_assistant.child('Connect to _Tor', roleName: 'push button')
                           .click
-  failure_reported = false
-  try_for(120, msg: 'Timed out while waiting for TCA to connect to Tor') do
-    if tor_connection_assistant.child?('Error connecting to Tor',
-                                       roleName: 'label', retry: false)
-      failure_reported = true
-      done = true
-    else
-      done = tor_connection_assistant.child?(
-        'Connected to Tor successfully', roleName: 'label', retry: false, showingOnly: true
-      )
-    end
-    done
-  end
-  if failure_reported
-    raise TCAConnectionFailure, 'TCA failed to connect to Tor'
-  end
+  step 'the Tor Connection Assistant connects to Tor'
   # XXX: we're so fast closing TCA here that it's done before it
   # issues the SAVECONF, but seemingly only for the "DisableNetwork=0"
   # part, resulting in a lot of breakage. Ideally we would fix this in
@@ -604,5 +609,15 @@ end
 When /^I set (.*)=(.*) over Tor's control port$/ do |key, val|
   current_bridges = $vm.execute_successfully(
     "tor_control_setconf '#{key}=#{val}'", libs: 'tor'
+  )
+end
+
+Then /^Tor is using the same configuration as before$/ do
+  assert(@tor_success_configs.size >= 2,
+         "We need at least two configs to compare but have only " +
+         @tor_success_configs.size.to_s)
+  assert_equal(
+    @tor_success_configs[-2],
+    @tor_success_configs[-1],
   )
 end

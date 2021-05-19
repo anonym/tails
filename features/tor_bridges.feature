@@ -50,3 +50,14 @@ Feature: Using Tails with Tor bridges and pluggable transports
     When I try to configure some normal bridges in the Tor Connection Assistant in hide mode
     Then the Tor Connection Assistant complains that normal bridges are not allowed
     And I cannot click the "Connect to Tor" button
+
+  Scenario: The same Tor configuration is applied when the network is reconnected
+    Given I configure a direct connection in the Tor Connection Assistant
+    And Tor is ready
+    When I disconnect the network through GNOME
+    And I connect the network through GNOME
+    Then the Tor Connection Assistant autostarts
+    And the Tor Connection Assistant connects to Tor
+    And Tor is ready
+    And Tor is using the same configuration as before
+    And available upgrades have been checked
