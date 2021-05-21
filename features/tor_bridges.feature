@@ -36,6 +36,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
     Then Tor is ready
     And available upgrades have been checked
     And Tor is configured to use the default bridges
+    And all Internet traffic has only flowed through the configured bridges
 
   Scenario: TCA can reconnect after a connection failure
     Given the Tor network and default bridges are blocked
@@ -52,6 +53,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
     When I configure a direct connection in the Tor Connection Assistant
     Then Tor is ready
     And available upgrades have been checked
+    And all Internet traffic has only flowed through Tor
 
   Scenario: Normal bridges are not allowed in "Hide" mode
     When I try to configure some normal bridges in the Tor Connection Assistant in hide mode
@@ -68,3 +70,4 @@ Feature: Using Tails with Tor bridges and pluggable transports
     And Tor is ready
     And Tor is using the same configuration as before
     And available upgrades have been checked
+    And all Internet traffic has only flowed through Tor

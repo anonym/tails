@@ -454,6 +454,14 @@ def chutney_bridge_lines(bridge_type, chutney_tag: nil)
   end
 end
 
+def monitor_default_tor_bridges
+  @bridge_hosts = []
+  $vm.file_content('/usr/share/tails/tca/default_bridges.txt').each_line do |line|
+    address, port = line.split[1].split(':')
+    @bridge_hosts << { address: address, port: port.to_i }
+  end
+end
+
 When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |bridge_type, mode|
   @tor_is_using_pluggable_transports = bridge_type != 'normal'
   if mode.nil?
@@ -465,7 +473,6 @@ When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?:
   # to respect below.
   bridge_type = 'bridge' if bridge_type == 'normal'
 
-  @bridge_hosts = []
   tca_configure(config_mode) do
     if config_mode == :easy
       tor_connection_assistant.child('Configure a Tor bridge',
@@ -480,23 +487,17 @@ When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?:
       tor_connection_assistant.child('Use a default bridge',
                                      roleName: 'radio button')
                               .click
-      $vm.file_content('/usr/share/tails/tca/default_bridges.txt').each_line do |line|
-        address, port = line.split[1].split(':')
-        @bridge_hosts << { address: address, port: port.to_i }
-      end
+      monitor_default_tor_bridges
     else
       tor_connection_assistant.child('Type in a bridge that I already know',
                                      roleName: 'radio button')
                               .click
       tor_connection_assistant.child(roleName: 'scroll pane').click
-      bridge_lines = []
+      @bridge_hosts = []
       chutney_bridge_lines(bridge_type).each do |bridge_line|
-        bridge_lines << bridge_line
+        @screen.type(bridge_line, ['Return'])
         address, port = bridge_line.split[1].split(":")
         @bridge_hosts << { address: address, port: port.to_i }
-      end
-      bridge_lines.each do |bridge_line|
-        @screen.type(bridge_line, ['Return'])
       end
       begin
         step 'the Tor Connection Assistant complains that normal bridges are not allowed'
@@ -612,6 +613,7 @@ Then /^Tor is configured to use the default bridges$/ do
   ).stdout.chomp
   assert_equal(default_bridges, current_bridges,
                'Current bridges does not match the default ones')
+  monitor_default_tor_bridges
 end
 
 When /^I set (.*)=(.*) over Tor's control port$/ do |key, val|
