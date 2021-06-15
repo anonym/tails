@@ -54,11 +54,13 @@
 <div class="banner" role="banner">
   <a class="tails" href="<TMPL_VAR HOMEPAGEURL>"><span>Tails</span></a>
   <div id="search-and-donate">
-    <TMPL_UNLESS DYNAMIC>
-    <TMPL_IF SEARCHFORM>
-    <TMPL_VAR SEARCHFORM>
-    </TMPL_IF>
-    </TMPL_UNLESS>
+    <form method="get" action="https://duckduckgo.com/" id="searchform" target="_blank">
+      <div>
+        <label for="searchbox">Search</label>
+        <input type="text" id="searchbox" name="q" value="" size="16" placeholder="Search" />
+        <input type="hidden" name="sites" value="https://tails.boum.org/"/>
+      </div>
+    </form>
     <div class="donate">
       <a href="https://tails.boum.org/donate/?r=topbar" class="en"><span>Donate</span></a>
       <a href="https://tails.boum.org/donate/?r=topbar" class="de"><span>Spenden</span></a>
