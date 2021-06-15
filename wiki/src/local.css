@@ -342,13 +342,17 @@ div.header { /* override style.css */
 }
 
 #searchform input {
-  background: white url(lib/loupe.png) no-repeat;
+  background: white url(lib/search.png) no-repeat;
   background-position: 97% 50%;
   padding: 3px 16px 3px 3px;
   border-radius: 0.5em;
-  border: 2px solid #bbb;
   font-size: 13px;
   text-align: center;
+  color: #333;
+}
+
+#searchform input::placeholder {
+  opacity: 100%;
 }
 
 label[for="searchbox"]{
