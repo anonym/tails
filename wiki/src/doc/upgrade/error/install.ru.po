@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2020-04-23 16:49+0000\n"
-"PO-Revision-Date: 2021-06-02 20:51+0000\n"
-"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
+"PO-Revision-Date: 2021-07-17 19:05+0000\n"
+"Last-Translator: Ed Medvedev <edward.medvedev@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -22,11 +22,11 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Error while installing the upgrade\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Ошибка при установке обновления\"]]\n"
 
 #. type: Plain text
 msgid "The upgrade could not be installed."
-msgstr ""
+msgstr "Обновление не устанавливается."
 
 #. type: Plain text
 #, no-wrap
@@ -37,7 +37,7 @@ msgstr "<div class=\"caution\">\n"
 #, no-wrap
 msgid "<p>Your Tails USB stick needs to be repaired and might be unable to restart.</p>\n"
 msgstr ""
-"<p>Ваша флешка Tails сломалась и, возможно, с неё нельзя перезагрузить "
+"<p>Ваша флешка Tails сломалась. Возможно, с неё нельзя перезагрузить "
 "систему.</p>\n"
 
 #. type: Plain text
@@ -47,26 +47,28 @@ msgstr "</div>\n"
 
 #. type: Plain text
 msgid "This is probably caused by a software error in Tails Upgrader."
-msgstr ""
+msgstr "Возможно, это связано с программной ошибкой в Tails Upgrader."
 
 #. type: Title -
 #, no-wrap
 msgid "Reporting the problem to our help desk"
-msgstr ""
+msgstr "Как сообщить о проблеме в техподдержку"
 
 #. type: Plain text
 msgid ""
 "If you are comfortable with the command line, please [[report the problem to "
 "our help desk|support/talk]]."
 msgstr ""
+"Если вы умеете обращаться с командной строкой, пожалуйста, [[сообщите о "
+"проблеме нашей службе техподдержки|support/talk]]."
 
 #. type: Plain text
 msgid "Include in your report:"
-msgstr ""
+msgstr "Включите в своё сообщение:"
 
 #. type: Bullet: '   - '
 msgid "the debugging information that appears in the error message"
-msgstr ""
+msgstr "отладочную информацию из сообщения об ошибке;"
 
 #. type: Plain text
 #, no-wrap
@@ -81,17 +83,29 @@ msgid ""
 "        free -m\n"
 "    </pre>\n"
 msgstr ""
+"   - результаты выполнения следующих пяти команд, выполненных в\n"
+"    [[<span class=\\\"application\\\">терминале</span>|first_steps/"
+"introduction_to_gnome_and_the_tails_desktop#terminal]]:\n"
+"    <pre>\n"
+"        ls -l /lib/live/mount/medium/live\n"
+"        cat /lib/live/mount/medium/live/Tails.module\n"
+"        mount\n"
+"        df -h\n"
+"        free -m\n"
+"    </pre>\n"
 
 #. type: Title -
 #, no-wrap
 msgid "Repairing your Tails USB stick"
-msgstr ""
+msgstr "Восстановление флешки Tails"
 
 #. type: Plain text
 msgid ""
 "To repair your Tails USB stick, please try doing a [[manual upgrade|"
 "upgrade#manual]]."
 msgstr ""
+"Для восстановления флешки Tails нужно выполнить [[обновление "
+"вручную|upgrade#manual]]."
 
 #. type: Plain text
 #, no-wrap
@@ -101,10 +115,12 @@ msgstr "<div class=\"note\">\n"
 #. type: Plain text
 #, no-wrap
 msgid "<p>The Persistent Storage on the USB stick will be preserved.</p>\n"
-msgstr ""
+msgstr "<p>Постоянное хранилище на флешке сохранится.</p>\n"
 
 #. type: Plain text
 msgid ""
 "If the manual upgrade fails as well, please [[report another error|"
 "first_steps/bug_reporting]]."
 msgstr ""
+"Если и вручную обновиться не выходит, пожалуйста, [[напишите нам об этой "
+"ошибке|first_steps/bug_reporting]]."

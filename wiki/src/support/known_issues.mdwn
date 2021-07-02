@@ -640,30 +640,6 @@ a
 
 	echo "no-grab" >> ~/.gnupg/gpg-agent.conf
 
-<h2 id="utc">Problems when the system clock goes backwards</h2>
-
-When connecting to Tor, Tails sets the system time to the current time
-in the [[!wikipedia Coordinated_Universal_Time]] (UTC) timezone.
-Many operating systems, such as Linux and macOS, write time expressed
-in UTC to the hardware clock of the computer. But, Windows instead
-writes time expressed in the local timezone to the hardware clock of
-the computer. So, if you are east of the United Kingdom (which is in the UTC timezone) on
-a computer that also runs Windows, Tails will make the system clock go
-backwards during startup. Unfortunately, this might trigger software
-errors in Tails.
-
-For example, when the system clock goes backwards:
-
-<ul>
-<li>The <span class="guimenu">Applications</span> menu might stop
-working.</li>
-<li>[[Connecting to Tor using `obfs4` bridges|doc/anonymous_internet/tor]]
-might be impossible.</li>
-</ul>
-
-To solve this problem permanently on a Windows computer,
-[set the hardware clock of the computer to UTC](https://wiki.archlinux.org/index.php/System_time#UTC_in_Windows).
-
 <h2 id="lenovo-thinkpad-11e">Lenovo ThinkPad 11e</h2>
 
 <!--

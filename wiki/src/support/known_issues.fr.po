@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-05-28 17:57-0500\n"
-"PO-Revision-Date: 2021-04-13 18:06+0000\n"
-"Last-Translator: Chre <tor@renaudineau.org>\n"
+"POT-Creation-Date: 2021-07-27 16:01+0000\n"
+"PO-Revision-Date: 2021-07-16 10:05+0000\n"
+"Last-Translator: nihei <nihei@disroot.org>\n"
 "Language-Team: Tails translators <tails@boum.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -869,16 +869,14 @@ msgid "<h1 id=\"wi-fi\">Wi-Fi issues</h1>\n"
 msgstr "<h1 id=\"wi-fi\">Problèmes Wi-Fi</h1>\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "<h1 id=\"wi-fi\">Wi-Fi issues</h1>\n"
+#, no-wrap
 msgid "<h2 id=\"no-wifi\">Wi-Fi not working</h2>\n"
-msgstr "<h1 id=\"wi-fi\">Problèmes Wi-Fi</h1>\n"
+msgstr "<h2 id=\"no-wifi\">Le Wi-Fi ne fonctionne pas</h2>\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "[[!inline pages=\"doc/anonymous_internet/networkmanager/no-wifi.inline\" raw=\"yes\" sort=\"age\"]]\n"
+#, no-wrap
 msgid "[[!inline pages=\"doc/anonymous_internet/no-wifi.inline\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr "[[!inline pages=\"doc/anonymous_internet/networkmanager/no-wifi.inline.fr\" raw=\"yes\" sort=\"age\"]]\n"
+msgstr "[[!inline pages=\"doc/anonymous_internet/no-wifi.inline.fr\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Bullet: '* '
 msgid ""
@@ -932,18 +930,13 @@ msgstr ""
 "connecter aux réseaux Wi-Fi."
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "If you experience this problem, you can try to [[disable MAC address "
-#| "spoofing|doc/first_steps/welcome_screen/mac_spoofing]] that sometimes "
-#| "fixes it."
 msgid ""
 "If you experience this problem, you can try to [[disable MAC address "
 "anonymization|doc/first_steps/welcome_screen/mac_spoofing]] that sometimes "
 "fixes it."
 msgstr ""
 "Si vous rencontrez ce problème, vous pouvez essayer de [[désactiver "
-"l'usurpation d'adresse MAC|doc/first_steps/welcome_screen/mac_spoofing]], "
+"l'anonymisation d'adresse MAC|doc/first_steps/welcome_screen/mac_spoofing]], "
 "cela résout parfois ce problème."
 
 #. type: Plain text
@@ -1153,16 +1146,12 @@ msgid "<!--\n"
 msgstr "<!--\n"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "Note: If we enable again this section in the future, we should link to it "
-#| "from /doc/about/fingerprint.mdwn."
 msgid ""
 "Note: If we enable again this section in the future, we should link to it "
 "from /doc/anonymous_internet/Tor_Browser#fingerprint."
 msgstr ""
-"Note: If we enable again this section in the future, we should link to it "
-"from /doc/about/fingerprint.mdwn."
+"Note : si nous réactivons cette section  à l'avenir, nous devrions renvoyer "
+"vers celle-ci depuis /doc/anonymous_internet/Tor_Browser#fingerprint."
 
 #. type: Plain text
 #, no-wrap
@@ -1184,16 +1173,12 @@ msgstr ""
 "class=\"application\">Navigateur Tor</span> dans et en-dehors de Tails :\n"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "For more detail, see our [[documentation on the Tails fingerprint|doc/"
-#| "about/fingerprint]]."
 msgid ""
 "For more detail, see our documentation about the [[fingerprint of *Tor "
 "Browser* in Tails|doc/anonymous_internet/Tor_Browser#fingerprint]]."
 msgstr ""
-"Pour plus de détails, consultez notre [[documentation sur l'empreinte de "
-"Tails|doc/about/fingerprint]]."
+"Pour plus de détails, consultez notre documentation sur [[l'empreinte du "
+"*Navigateur Tor* dans Tails|doc/anonymous_internet/Tor_Browser#fingerprint]]."
 
 #. type: Plain text
 #, no-wrap
@@ -1629,76 +1614,6 @@ msgstr "\techo \"no-grab\" >> ~/.gnupg/gpg-agent.conf\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<h2 id=\"utc\">Problems when the system clock goes backwards</h2>\n"
-msgstr "<h2 id=\"utc\">Problèmes lorsque l'horloge système remonte le temps</h2>\n"
-
-#. type: Plain text
-msgid ""
-"When connecting to Tor, Tails sets the system time to the current time in "
-"the [[!wikipedia Coordinated_Universal_Time]] (UTC) timezone.  Many "
-"operating systems, such as Linux and macOS, write time expressed in UTC to "
-"the hardware clock of the computer. But, Windows instead writes time "
-"expressed in the local timezone to the hardware clock of the computer. So, "
-"if you are east of the United Kingdom (which is in the UTC timezone) on a "
-"computer that also runs Windows, Tails will make the system clock go "
-"backwards during startup. Unfortunately, this might trigger software errors "
-"in Tails."
-msgstr ""
-"Lors de la connexion à Tor, Tails règle l'horloge du système sur l'heure "
-"actuelle du fuseau horaire UTC ([[!wikipedia_fr "
-"Temps_universel_coordonné]]). Certains systèmes d'exploitation, comme Linux "
-"et macOS, écrivent le temps en UTC dans l'horloge matérielle de "
-"l'ordinateur. Mais Windows écrit à la place l'heure suivant le fuseau "
-"horaire local dans l'horloge matérielle de l'ordinateur. Donc, si vous êtes "
-"à l'est du Royaume-Uni (qui est dans le fuseau horaire UTC) sur un "
-"ordinateur qui fait également tourner Windows, Tails va ramener l'horloge "
-"système en arrière durant le démarrage. Malheureusement, cela pourrait "
-"provoquer des problèmes logiciels dans Tails."
-
-#. type: Plain text
-msgid "For example, when the system clock goes backwards:"
-msgstr "Par exemple, lorsque l'horloge système remonte le temps :"
-
-#. type: Plain text
-#, fuzzy, no-wrap
-#| msgid ""
-#| "<ul>\n"
-#| "<li>The <span class=\"guimenu\">Applications</span> menu might stop\n"
-#| "working.</li>\n"
-#| "<li>[[Connecting to Tor using `obfs4` bridges|doc/first_steps/welcome_screen/bridge_mode]]\n"
-#| "might be impossible and <span class=\"application\">Tor Launcher</span>\n"
-#| "might get stuck on <span class=\"guilabel\">Loading Network\n"
-#| "Consensus</span>.</li>\n"
-#| "</ul>\n"
-msgid ""
-"<ul>\n"
-"<li>The <span class=\"guimenu\">Applications</span> menu might stop\n"
-"working.</li>\n"
-"<li>[[Connecting to Tor using `obfs4` bridges|doc/anonymous_internet/tor]]\n"
-"might be impossible.</li>\n"
-"</ul>\n"
-msgstr ""
-"<ul>\n"
-"<li>Le menu <span class=\"guimenu\">Applications</span> pourrait arrêter\n"
-"de fonctionner.</li>\n"
-"<li>[[La connection à Tor en utilisant des bridges `obfs4`|doc/first_steps/welcome_screen/bridge_mode]]\n"
-"pourrait être impossible et <span class=\"application\">Tor Launcher</span>\n"
-"pourrait rester bloquer à l'étape <span class=\"guilabel\">Loading Network\n"
-"Consensus</span>.</li>\n"
-"</ul>\n"
-
-#. type: Plain text
-msgid ""
-"To solve this problem permanently on a Windows computer, [set the hardware "
-"clock of the computer to UTC](https://wiki.archlinux.org/index.php/"
-"System_time#UTC_in_Windows)."
-msgstr ""
-"Pour corriger ce problème de façon permanente sur un ordinateur avec "
-"Windows, [réglez l'horloge matérielle de l'ordinateur sur UTC](https://wiki."
-"archlinux.fr/Horloge#UTC_.2F_Locale)."
-
-#. type: Plain text
-#, no-wrap
 msgid "<h2 id=\"lenovo-thinkpad-11e\">Lenovo ThinkPad 11e</h2>\n"
 msgstr "<h2 id=\"lenovo-thinkpad-11e\">Lenovo ThinkPad 11e</h2>\n"
 
@@ -1878,6 +1793,61 @@ msgid ""
 msgstr ""
 "Pour pouvoir permettre à Tails d'utiliser toute la mémoire disponible, "
 "démarrer Tails avec l'entrée de micrologiciel *F2 EFI setup*."
+
+#~ msgid ""
+#~ "To solve this problem permanently on a Windows computer, [set the "
+#~ "hardware clock of the computer to UTC](https://wiki.archlinux.org/index."
+#~ "php/System_time#UTC_in_Windows)."
+#~ msgstr ""
+#~ "Pour corriger ce problème de façon permanente sur un ordinateur avec "
+#~ "Windows, [réglez l'horloge matérielle de l'ordinateur sur UTC](https://"
+#~ "wiki.archlinux.fr/Horloge#UTC_.2F_Locale)."
+
+#~ msgid "<h2 id=\"utc\">Problems when the system clock goes backwards</h2>\n"
+#~ msgstr ""
+#~ "<h2 id=\"utc\">Problèmes lorsque l'horloge système remonte le temps</h2>\n"
+
+#~ msgid ""
+#~ "When connecting to Tor, Tails sets the system time to the current time in "
+#~ "the [[!wikipedia Coordinated_Universal_Time]] (UTC) timezone.  Many "
+#~ "operating systems, such as Linux and macOS, write time expressed in UTC "
+#~ "to the hardware clock of the computer. But, Windows instead writes time "
+#~ "expressed in the local timezone to the hardware clock of the computer. "
+#~ "So, if you are east of the United Kingdom (which is in the UTC timezone) "
+#~ "on a computer that also runs Windows, Tails will make the system clock go "
+#~ "backwards during startup. Unfortunately, this might trigger software "
+#~ "errors in Tails."
+#~ msgstr ""
+#~ "Lors de la connexion à Tor, Tails règle l'horloge du système sur l'heure "
+#~ "actuelle du fuseau horaire UTC ([[!wikipedia_fr "
+#~ "Temps_universel_coordonné]]). Certains systèmes d'exploitation, comme "
+#~ "Linux et macOS, écrivent le temps en UTC dans l'horloge matérielle de "
+#~ "l'ordinateur. Mais Windows écrit à la place l'heure suivant le fuseau "
+#~ "horaire local dans l'horloge matérielle de l'ordinateur. Donc, si vous "
+#~ "êtes à l'est du Royaume-Uni (qui est dans le fuseau horaire UTC) sur un "
+#~ "ordinateur qui fait également tourner Windows, Tails va ramener l'horloge "
+#~ "système en arrière durant le démarrage. Malheureusement, cela pourrait "
+#~ "provoquer des problèmes logiciels dans Tails."
+
+#~ msgid "For example, when the system clock goes backwards:"
+#~ msgstr "Par exemple, lorsque l'horloge système remonte le temps :"
+
+#~ msgid ""
+#~ "<ul>\n"
+#~ "<li>The <span class=\"guimenu\">Applications</span> menu might stop\n"
+#~ "working.</li>\n"
+#~ "<li>[[Connecting to Tor using `obfs4` bridges|doc/anonymous_internet/"
+#~ "tor]]\n"
+#~ "might be impossible.</li>\n"
+#~ "</ul>\n"
+#~ msgstr ""
+#~ "<ul>\n"
+#~ "<li>Le menu <span class=\"guimenu\">Applications</span> pourrait arrêter\n"
+#~ "de fonctionner.</li>\n"
+#~ "<li>[[La connexion à Tor en utilisant des ponts `obfs4`|doc/"
+#~ "anonymous_internet/tor]]\n"
+#~ "pourrait être impossible.</li>\n"
+#~ "</ul>\n"
 
 #, fuzzy
 #~| msgid "Does not start Tails 1.2.3."
@@ -2707,8 +2677,8 @@ msgstr ""
 #~ "\"guilabel\">Partition 1</span>."
 
 #~ msgid ""
-#~ "Click on the <span class=\"bold\">[[!img lib/media-playback-start.png "
-#~ "alt=\"Mount selected partition\" class=\"symbolic\" link=\"no\"]]</span> "
+#~ "Click on the <span class=\"bold\">[[!img lib/media-playback-start.png alt="
+#~ "\"Mount selected partition\" class=\"symbolic\" link=\"no\"]]</span> "
 #~ "button to mount the Tails partition."
 #~ msgstr ""
 #~ "Cliquez sur le bouton <span class=\"bold\">[[!img lib/media-playback-"
