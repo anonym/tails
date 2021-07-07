@@ -591,11 +591,19 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
     end
   end
   relays.each do |address, port|
-    $vm.execute_successfully("iptables -#{unblock ? 'D' : 'I'} OUTPUT " \
-                             '-p tcp ' \
-                             "--destination #{address} " \
-                             "--destination-port #{port} " \
-                             '-j REJECT --reject-with icmp-port-unreachable')
+    command = "iptables -#{unblock ? 'D' : 'I'} OUTPUT " \
+              '-p tcp ' \
+              "--destination #{address} " \
+              "--destination-port #{port} " \
+              '-j REJECT --reject-with icmp-port-unreachable'
+    $vm.execute_successfully(command)
+    if !unblock
+      $vm.file_append('/etc/NetworkManager/dispatcher.d/00-firewall.sh',
+                      command + "\n")
+    end
+  end
+  if unblock
+    $vm.execute_successfully('cp /lib/live/mount/rootfs/filesystem.squashfs/etc/NetworkManager/dispatcher.d/00-firewall.sh /etc/NetworkManager/dispatcher.d/00-firewall.sh')
   end
 end
 
