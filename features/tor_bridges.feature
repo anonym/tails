@@ -66,3 +66,11 @@ Feature: Using Tails with Tor bridges and pluggable transports
     And Tor is using the same configuration as before
     And available upgrades have been checked
     And all Internet traffic has only flowed through Tor
+
+  Scenario: Reconnecting from an unblocked network to a blocked network displays an error
+    Given I configure a direct connection in the Tor Connection Assistant
+    And Tor is ready
+    And I disconnect the network through GNOME
+    And the Tor network and default bridges are blocked
+    When I connect the network through GNOME
+    Then the Tor Connection Assistant reports that it failed to connect
