@@ -546,7 +546,9 @@ When /^I close the Tor Connection Assistant$/ do
 end
 
 Then /^the Tor Connection Assistant reports that it failed to connect$/ do
-  tor_connection_assistant.child('Error connecting to Tor', roleName: 'label')
+  try_for(120) do
+    tor_connection_assistant.child('Error connecting to Tor', roleName: 'label')
+  end
 end
 
 Then /^the Tor Connection Assistant complains that normal bridges are not allowed$/ do
