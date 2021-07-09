@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Import no_abort().
+. /usr/local/lib/tails-shell-library/common.sh
+
 TOR_RC_DEFAULTS=/usr/share/tor/tor-service-defaults-torrc
 TOR_RC=/etc/tor/torrc
 # shellcheck disable=SC2034
@@ -22,11 +25,29 @@ tor_control_send() {
 	local control_port cookie_path hexcookie
 	control_port="$(tor_rc_lookup ControlPort \
 	    | sed --regexp-extended 's/.*://')"
+	if ! lsof -i ":${control_port}" 2>/dev/null >&2; then
+		echo "The ControlPort (${control_port}) is not listening" >&2
+		return 1
+	fi
 	cookie_path="$(tor_control_cookie_path)"
 	if [ -e "${cookie_path}" ] && [ -n "${control_port}" ]; then
 		hexcookie=$(xxd -c 32 -g 0 "${cookie_path}" | cut -d' ' -f2)
-		/bin/echo -ne "AUTHENTICATE ${hexcookie}\r\n${1}\r\nQUIT\r\n" | \
-		    /bin/nc 127.0.0.1 "${control_port}" | tr -d "\r"
+		response=$(
+		    /bin/echo -ne "AUTHENTICATE ${hexcookie}\r\n${1}\r\nQUIT\r\n" | \
+		        /bin/nc 127.0.0.1 "${control_port}" | tr -d "\r"
+		)
+		if [ -z "${response}" ]; then
+			echo "Got an empty response" >&2
+			return 1
+		fi
+		errors="$(echo "${response}" | no_abort grep -v ^250)"
+		if [ -n "${errors}" ]; then
+			echo "${errors}" >&2
+			return 1
+                else
+			echo "${response}"
+			return 0
+		fi
 	else
 		return 1
 	fi
