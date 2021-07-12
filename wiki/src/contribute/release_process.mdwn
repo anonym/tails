@@ -161,8 +161,8 @@ Sanity check
 Visit the [Jenkins RM view](https://jenkins.tails.boum.org/view/RM/)
 and check that the jobs for the release branch have good enough results:
 
- - the last build and reproducibility testing builds have succeeded;
- - look at the last build of the relevant `test_Tails_ISO_*` job;
+ - the last build and reproducibility testing builds have succeeded for the release branch
+ - look at the last build of the relevant `test_Tails_ISO_RELEASEBRANCH` job;
    if anything looks unusual or fishy, check the few previous builds
    to see if it's a one-off robustness issue, a serious regression,
    or what not.
@@ -170,13 +170,14 @@ and check that the jobs for the release branch have good enough results:
 Freeze
 ======
 
+This section ensures freezing is done. Freezing is relevant for Release Candidates and for bugfix releases.
+You can skip this if you're releasing a final major version.
+
 Major release
 -------------
 
-Skip this if you're preparing the images for a final (non-RC) major release.
+Follow this part ONLY if you are preparing the release candidate for a major release.
 
-If we are at freeze time for a major release (i.e. preparing its
-release candidate):
 
 1. Merge the `master` Git branch into `devel`:
 
@@ -214,7 +215,7 @@ release candidate):
 Bugfix release
 --------------
 
-If we are at freeze time for a bugfix release:
+Follow this part ONLY if you are preparing a bugfix release.
 
 1. Merge the `master` Git branch into `stable`:
 
