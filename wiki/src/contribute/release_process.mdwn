@@ -226,14 +226,17 @@ Follow this part ONLY if you are preparing a bugfix release.
 
         ./bin/merge-APT-overlays stable
 
-Common steps for bugfix and major releases
-------------------------------------------
+Set base branch
+==================
 
 Reset the release branch's `config/base_branch`:
 
         echo "${RELEASE_BRANCH:?}" > config/base_branch && \
            git commit config/base_branch \
                -m "Restore ${RELEASE_BRANCH:?}'s base branch."
+
+Manual testing coordination
+=============================
 
 Bootstrap internal manual testing coordination:
 
