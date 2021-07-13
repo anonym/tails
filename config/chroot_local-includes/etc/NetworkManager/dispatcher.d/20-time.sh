@@ -7,6 +7,9 @@
 # In any case, we use HTP to ask more accurate time information to
 # a few authenticated HTTPS servers.
 
+set -e
+set -u
+
 # Get LIVE_USERNAME
 . /etc/live/config.d/username.conf
 
@@ -15,9 +18,6 @@
 
 # Import tor_control_*(), tor_is_working(), TOR_LOG, TOR_DIR
 . /usr/local/lib/tails-shell-library/tor.sh
-
-# Import tails_netconf()
-. /usr/local/lib/tails-shell-library/tails-greeter.sh
 
 ### Init variables
 
@@ -59,18 +59,19 @@ has_consensus() {
 	if [ $# -ge 1 ]; then
 		files="$@"
 	fi
+	# shellcheck disable=SC2086
 	grep -qs "^valid-until ${DATE_RE}"'$' ${files}
 }
 
 has_only_unverified_consensus() {
-	[ ! -e ${TOR_CONSENSUS} ] && has_consensus ${TOR_UNVERIFIED_CONSENSUS}
+	[ ! -e "${TOR_CONSENSUS}" ] && has_consensus "${TOR_UNVERIFIED_CONSENSUS}"
 }
 
 wait_for_tor_consensus_helper() {
 	tries=0
 	while ! has_consensus && [ $tries -lt 10 ]; do
-		inotifywait -q -t 30 -e close_write -e moved_to ${TOR_DIR} || log "timeout"
-		tries=$(expr $tries + 1)
+		inotifywait -q -t 30 -e close_write -e moved_to "${TOR_DIR}" || log "timeout"
+		tries=$((tries + 1))
 	done
 
 	# return some kind of success measurement
@@ -79,17 +80,15 @@ wait_for_tor_consensus_helper() {
 
 wait_for_tor_consensus() {
 	log "Waiting for a Tor consensus file to contain a valid time interval"
-	if ! has_consensus && ! wait_for_tor_consensus_helper; then
-		log "Unsuccessfully retried waiting for Tor consensus, aborting."
-	fi
-	if has_consensus; then
+	if has_consensus || wait_for_tor_consensus_helper; then
 		log "A Tor consensus file now contains a valid time interval."
+		return 0
 	else
 		log "Waited for too long, let's stop waiting for Tor consensus."
 		# FIXME: gettext-ize
 		/usr/local/sbin/tails-notify-user "Synchronizing the system's clock" \
 			"Could not fetch Tor consensus."
-		exit 2
+		return 2
 	fi
 }
 
@@ -100,7 +99,7 @@ wait_for_working_tor() {
 	while ! tor_is_working; do
 		if [ "$waited" -lt ${INOTIFY_TIMEOUT} ]; then
 			sleep 2
-			waited=$(($waited + 2))
+			waited=$((waited + 2))
 		else
 			log "Timed out waiting for Tor to be working"
 			return 1
@@ -134,27 +133,29 @@ maybe_set_time_from_tor_consensus() {
 	local consensus=${TOR_CONSENSUS}
 
 	if has_only_unverified_consensus \
-	   && ln -f ${TOR_UNVERIFIED_CONSENSUS} ${TOR_UNVERIFIED_CONSENSUS_HARDLINK}; then
-		consensus=${TOR_UNVERIFIED_CONSENSUS_HARDLINK}
+	   && ln -f "${TOR_UNVERIFIED_CONSENSUS}" "${TOR_UNVERIFIED_CONSENSUS_HARDLINK}"; then
+		consensus="${TOR_UNVERIFIED_CONSENSUS_HARDLINK}"
 		log "We do not have a Tor verified consensus, let's use the unverified one."
 	fi
 
 	log "Waiting for the chosen Tor consensus file to contain a valid time interval..."
-	while ! has_consensus ${consensus}; do
-		inotifywait -q -t ${INOTIFY_TIMEOUT} -e close_write -e moved_to ${TOR_DIR} || log "timeout"
+	while ! has_consensus "${consensus}"; do
+		inotifywait -q -t "${INOTIFY_TIMEOUT}" -e close_write -e moved_to "${TOR_DIR}" || log "timeout"
 	done
 	log "The chosen Tor consensus now contains a valid time interval, let's use it."
 
 
 	# Get various date points in Tor's format, and do some sanity checks
-	vstart=$(sed -n "/^valid-after \(${DATE_RE}\)"'$/s//\1/p; t q; b; :q q' ${consensus})
-	vend=$(sed -n "/^valid-until \(${DATE_RE}\)"'$/s//\1/p; t q; b; :q q' ${consensus})
+	vstart=$(sed -n "/^valid-after \(${DATE_RE}\)"'$/s//\1/p; t q; b; :q q' "${consensus}")
+	vend=$(sed -n "/^valid-until \(${DATE_RE}\)"'$/s//\1/p; t q; b; :q q' "${consensus}")
 	vmid=$(date -ud "${vstart} -0130" +'%F %T')
 	log "Tor: valid-after=${vstart} | valid-until=${vend}"
 
+	# XXX: this check will always fail in our test suite:
+	# https://gitlab.tails.boum.org/tails/tails/-/issues/18367#note_172586
 	if ! date_points_are_sane "${vstart}" "${vend}"; then
 		log "Unexpected valid-until: [${vend}] is not [${vstart} + 3h]"
-		return
+		return 0
 	fi
 
 	curdate=$(date -u +'%F %T')
@@ -162,7 +163,7 @@ maybe_set_time_from_tor_consensus() {
 
 	if time_is_in_valid_tor_range "${curdate}" "${vstart}"; then
 		log "Current time is in valid Tor range"
-		return
+		return 0
 	fi
 
 	log "Current time is not in valid Tor range, setting to middle of this range: [${vmid}]"
@@ -175,7 +176,7 @@ maybe_set_time_from_tor_consensus() {
 tor_cert_valid_after() {
 	# Only print the last = freshest match
 	sed -n 's/^.*certificate lifetime runs from \(.*\) through.*$/\1/p' \
-	    ${TOR_LOG} | tail -n 1
+	    "${TOR_LOG}" | tail -n 1
 }
 
 tor_cert_lifetime_invalid() {
@@ -185,7 +186,7 @@ tor_cert_lifetime_invalid() {
 	# The log severity will be "warn" if bootstrapping with
 	# authorities and "info" with bridges.
 	grep -q "\[\(warn\|info\)\] Certificate \(not yet valid\|already expired\)\." \
-	    ${TOR_LOG}
+	    "${TOR_LOG}"
 }
 
 # This check is blocking until Tor reaches either of two states:
@@ -233,7 +234,7 @@ fi
 
 wait_for_working_tor
 
-touch $TORDATE_DONE_FILE
+touch "$TORDATE_DONE_FILE"
 
 log "Restarting htpdate"
 systemctl restart htpdate.service
