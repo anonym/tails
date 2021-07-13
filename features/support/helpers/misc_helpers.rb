@@ -66,6 +66,11 @@ def try_for(timeout, **options)
       begin
         attempts += 1
         elapsed = time_delta(start_time, Time.now)
+        # We should never have to raise unique_timeout_exception
+        # manually like this, Timeout.timeout() should handle it, but
+        # sometimes it does not, most likely due to nested usage of
+        # it, possibly due to some Ruby bug.
+        raise unique_timeout_exception if timeout < elapsed
         debug_log("try_for: attempt #{attempts} (#{elapsed}s elapsed " \
                   "of #{timeout}s)...") if options[:log]
         if yield
@@ -169,6 +174,7 @@ def retry_action(max_retries, options = {}, &block)
   assert(max_retries.is_a?(Integer), 'max_retries must be an integer')
   options[:recovery_proc] ||= nil
   options[:operation_name] ||= 'Operation'
+  options[:delay] ||= 0
 
   retries = 1
   loop do
@@ -188,6 +194,7 @@ def retry_action(max_retries, options = {}, &block)
                   "exception: #{e.class}: #{e.message}")
         options[:recovery_proc]&.call
         retries += 1
+        sleep options[:delay]
       else
         raise MaxRetriesFailure,
               "#{options[:operation_name]} failed (despite retrying " \
@@ -207,6 +214,24 @@ end
 class TorBootstrapFailure < StandardError
 end
 
+def save_tor_journal
+  File.open("#{$config['TMPDIR']}/log.tor", 'w') do |file|
+    $vm.execute(
+      'journalctl --no-pager -u tor@default.service > /tmp/tor.journal'
+    )
+    file.write("Tor Journal\n")
+    file.write("===========\n")
+    file.write($vm.file_content('/tmp/tor.journal') + "\n")
+    file.write("Tor logs (/var/log/tor/log)\n")
+    file.write("===========================\n")
+    if $vm.file_exist?('/var/log/tor/log')
+      file.write($vm.file_content('/var/log/tor/log'))
+    else
+      file.write("The Tor logs did not exist\n")
+    end
+  end
+end
+
 def wait_until_tor_is_working
   try_for(270) do
     $vm.execute(
@@ -214,14 +239,6 @@ def wait_until_tor_is_working
     ).success?
   end
 rescue Timeout::Error
-  # Save Tor logs before erroring out
-  File.open("#{$config['TMPDIR']}/log.tor", 'w') do |file|
-    $vm.execute(
-      'journalctl --no-pager -u tor@default.service > /tmp/tor.journal'
-    )
-    file.write($vm.file_content('/tmp/tor.journal'))
-    file.write($vm.file_content('/var/log/tor/log'))
-  end
   raise TorBootstrapFailure, 'Tor failed to bootstrap'
 end
 
@@ -444,4 +461,36 @@ ensure
   rescue NameError
     # We aborted before p was assigned, so no clean up needed.
   end
+end
+
+# Drop valid markup (i.e. with balanced tags) like "<b>text</b>" → "text"
+def drop_markup(str)
+  done, first_tag, rest = str.partition(%r{<([^/>]+)>})
+  return str if first_tag.empty?
+  closer = "</#{Regexp.last_match[1]}>"
+  if rest.include?(closer)
+    rest.sub!(closer, '')
+  else
+    done += first_tag
+  end
+  done + drop_markup(rest)
+end
+
+# We discard unused keyword parameters by adding `**_` to the definition
+def translate(str, translation_domain: nil, drop_accelerator: true, drop_markup: true, **_)
+  if $language.empty? || translation_domain.nil? || translation_domain.empty?
+    rv = str
+  else
+    rv = $vm.execute_successfully("gettext '#{translation_domain}' '#{str}'").stdout
+  end
+  if drop_accelerator
+    assert(str.count('_') <= 1, 'translate() are supposed to drop the ' \
+                                'accelerator, but there are multiple ' \
+                                "ones in: #{str}")
+    rv.gsub!('_', '')
+  end
+  if drop_markup
+    rv = drop_markup(rv)
+  end
+  rv
 end
