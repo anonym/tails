@@ -720,10 +720,10 @@ class TCAMainWindow(
 
     def save_conf(self, successful_connect=False):
         log.info("Saving configuration (success=%s)", successful_connect)
-        if not successful_connect:
-            data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
-        else:
+        if successful_connect:
             data = {"ui": self.state}
+        else:
+            data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
         self.app.configurator.save_conf(data, save_torrc=successful_connect)
 
     def get_screen_size(self) -> Tuple[int, int]:
