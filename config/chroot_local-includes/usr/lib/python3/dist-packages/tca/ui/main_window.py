@@ -662,7 +662,7 @@ class TCAMainWindow(
                 log.debug("content found %s", content)
                 self.state.update(content)
         else:
-            data = self.app.configurator.read_conf()
+            data = self.app.configurator.read_tca_conf()
             if data and data.get("ui"):
                 for key in ["hide", "bridge"]:
                     self.state[key].update(data["ui"].get(key, {}))

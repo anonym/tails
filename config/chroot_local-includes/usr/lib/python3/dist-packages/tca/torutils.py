@@ -381,7 +381,7 @@ class TorLauncherUtils:
         self.config_buf = config_buf
         self.tor_connection_config = None
 
-    def load_conf(self):
+    def load_tor_connection_conf(self):
         if self.tor_connection_config is None:
             self.tor_connection_config = TorConnectionConfig.load_from_tor_stem(
                 self.stem_controller
@@ -400,7 +400,7 @@ class TorLauncherUtils:
         if save_torrc:
             self.stem_controller.save_conf()
 
-    def read_conf(self):
+    def read_tca_conf(self):
         self.config_buf.seek(0, os.SEEK_END)
         size = self.config_buf.tell()
         if not size:
@@ -538,7 +538,7 @@ def main():
     conf, controller = recover_fd_from_parent()
     controller.authenticate(password=None)
     launcher = TorLauncherUtils(controller, conf)
-    launcher.load_conf()
+    launcher.load_tor_connection_conf()
     print(json.dumps(launcher.tor_connection_config.to_dict(), indent=4))
     launcher.apply_conf()
 
