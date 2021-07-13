@@ -802,7 +802,7 @@ class TCAMainWindow(
         return True
 
     def on_link_help_clicked(self, label, uri: str):
-        self.app.portal.call_async("open-documentation", ["--force-local", uri])
+        self.app.portal.call_async("open-documentation", "--force-local", uri)
 
     # Called from parent application
 
