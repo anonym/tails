@@ -387,17 +387,21 @@ class TorLauncherUtils:
                 self.stem_controller
             )
 
-    def save_conf(self, extra={}, save_torrc=True):
+    def save_conf(self, extra={}, successful_connect=True):
         if self.tor_connection_config is None:
             return
-        data = {"tor": self.tor_connection_config.to_dict()}
-        data.update(extra)
+
+        # Save configuration to our own configuration file
+        data = extra
+        if successful_connect:
+            data.update({"tor": self.tor_connection_config.to_dict()})
         self.config_buf.seek(0, os.SEEK_SET)
         self.config_buf.truncate()
         self.config_buf.write(json.dumps(data, indent=2))
         self.config_buf.flush()
 
-        if save_torrc:
+        # Save configuration to torrc
+        if successful_connect:
             self.stem_controller.save_conf()
 
     def read_tca_conf(self):

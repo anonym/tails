@@ -724,7 +724,10 @@ class TCAMainWindow(
             data = {"ui": self.state}
         else:
             data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
-        self.app.configurator.save_conf(data, save_torrc=successful_connect)
+        self.app.configurator.save_conf(
+            data,
+            successful_connect=successful_connect,
+        )
 
     def get_screen_size(self) -> Tuple[int, int]:
         disp = Gdk.Display.get_default()
