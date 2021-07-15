@@ -68,6 +68,11 @@ class Command:
         Popen(cmd)
 
 
+class RootCommand(Command):
+    def full_command(self, request: RPCRequest) -> list:
+        return super().full_command(request)
+
+
 class UserCommand(Command):
     def full_command(self, request: RPCRequest) -> list:
         drop = ["runuser", "-u", LIVE_USERNAME]
@@ -100,6 +105,7 @@ class Handler(socketserver.StreamRequestHandler):
         "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
+        "set-tor-sandbox": RootCommand(['/usr/local/lib/tor-sandbox-helper'], True),
     }
     valid_commands = set(spawn_commands.keys())
 

@@ -15,6 +15,8 @@ import stem.socket
 from typing import List, Optional, Dict, Any, Tuple, cast
 import tca.config
 
+from tca.ui.asyncutils import GJsonRpcClient
+
 log = logging.getLogger("tor-launcher")
 
 
@@ -175,13 +177,30 @@ VALID_BRIDGE_TYPES = {"bridge", "obfs4"}
 class TorConnectionConfig:
     def __init__(
         self,
+        portal: GJsonRpcClient,
         bridges: list = [],
         proxy: TorConnectionProxy = TorConnectionProxy.noproxy(),
     ):
+        self.portal: GJsonRpcClient = portal
         self.bridges: List[str] = bridges
         self.proxy: TorConnectionProxy = proxy
 
+    def bridge_line_is_simple(self, line):
+        if line.split()[0].lower() == 'bridge': return True
+        try:
+            ipaddress.ip_address(line.split(":")[0])
+        except ValueError:
+            return False
+        return True
+
+    # Tor's Sandbox conf needs special care since this value cannot be
+    # changed at runtime, only through torrc and a tor restart. Those
+    # privileged actions are performed through tca-portal.
+    def set_tor_sandbox(self, setting: int):
+        self.portal.call_async("set-tor-sandbox", [str(setting)])
+
     def disable_bridges(self):
+        self.set_tor_sandbox(1)
         self.bridges.clear()
 
     @classmethod
@@ -304,6 +323,10 @@ class TorConnectionConfig:
             raise ValueError("Can't set empty bridge list")
         self.bridges.clear()
         bridges = self.__class__.parse_bridge_lines(bridges)
+        if all([self.bridge_line_is_simple(b) for b in bridges]):
+            self.set_tor_sandbox(1)
+        else:
+            self.set_tor_sandbox(0)
         self.bridges.extend(bridges)
 
     def default_bridges(self, only_type: Optional[str] = None):
@@ -316,7 +339,7 @@ class TorConnectionConfig:
         self.enable_bridges(bridges)
 
     @classmethod
-    def load_from_tor_stem(cls, stem_controller: Controller):
+    def load_from_tor_stem(cls, portal: GJsonRpcClient, stem_controller: Controller):
         bridges: List[str] = []
         if stem_controller.get_conf("UseBridges") != "0":
             bridges = stem_controller.get_conf("Bridge", multiple=True)
@@ -336,7 +359,7 @@ class TorConnectionConfig:
         else:
             proxy = TorConnectionProxy.noproxy()
 
-        config = cls(bridges=bridges, proxy=proxy)
+        config = cls(portal, bridges=bridges, proxy=proxy)
 
         return config
 
@@ -371,12 +394,14 @@ class TorConnectionConfig:
 
 
 class TorLauncherUtils:
-    def __init__(self, stem_controller: Controller, config_buf):
+    def __init__(self, portal: GJsonRpcClient, stem_controller: Controller, config_buf):
         """
         Arguments:
+        portal -- a GJsonRpcClient connected to tca-portal
         stem_controller -- an already connected and authorized stem Controller
         config_buf -- an already open read-write buffer to the configuration file
         """
+        self.portal = portal
         self.stem_controller = stem_controller
         self.config_buf = config_buf
         self.tor_connection_config = None
@@ -384,6 +409,7 @@ class TorLauncherUtils:
     def load_conf(self):
         if self.tor_connection_config is None:
             self.tor_connection_config = TorConnectionConfig.load_from_tor_stem(
+                self.portal,
                 self.stem_controller
             )
 
@@ -535,9 +561,13 @@ def main():
 
     it's meant for testing, no "real" code should run that.
     """
-    conf, controller = recover_fd_from_parent()
+    controller = Controller.from_socket_file('/var/run/tor/control')
     controller.authenticate(password=None)
-    launcher = TorLauncherUtils(controller, conf)
+    conf, portal_sock = recover_fd_from_parent()
+    from tca.ui.asyncutils import GJsonRpcClient
+    portal = GJsonRpcClient(portal_sock)
+    portal.run()
+    launcher = TorLauncherUtils(portal, controller, conf)
     launcher.load_conf()
     print(json.dumps(launcher.tor_connection_config.to_dict(), indent=4))
     launcher.apply_conf()

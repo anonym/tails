@@ -48,12 +48,12 @@ class TCAApplication(Gtk.Application):
         self.config_buf, portal_sock = recover_fd_from_parent()
         self.controller = controller = Controller.from_port(port=9051)
         controller.authenticate(password=None)
-        self.configurator = TorLauncherUtils(controller, self.config_buf)
-        self.configurator.load_conf()
         self.portal = GJsonRpcClient(portal_sock)
         self.portal.connect("response-error", self.on_portal_error)
         self.portal.connect("response", self.on_portal_response)
         self.portal.run()
+        self.configurator = TorLauncherUtils(self.portal, controller, self.config_buf)
+        self.configurator.load_conf()
         self.netutils = TorLauncherNetworkUtils()
         self.args = args
         self.debug = args.debug
