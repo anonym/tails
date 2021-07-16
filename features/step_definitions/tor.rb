@@ -454,7 +454,7 @@ def chutney_bridge_lines(bridge_type, chutney_tag: nil)
   end
 end
 
-def monitor_default_tor_bridges
+Given /^I treat connections to anything but the default bridges as leaks$/ do
   @bridge_hosts = []
   $vm.file_content('/usr/share/tails/tca/default_bridges.txt').each_line do |line|
     address, port = line.split[1].split(':')
@@ -487,7 +487,7 @@ When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?:
       tor_connection_assistant.child('Use a default bridge',
                                      roleName: 'radio button')
                               .click
-      monitor_default_tor_bridges
+      step 'I treat connections to anything but the default bridges as leaks'
     else
       tor_connection_assistant.child('Type in a bridge that I already know',
                                      roleName: 'radio button')
@@ -623,7 +623,7 @@ Then /^Tor is configured to use the default bridges$/ do
   ).stdout.chomp
   assert_equal(default_bridges, current_bridges,
                'Current bridges does not match the default ones')
-  monitor_default_tor_bridges
+  step 'I treat connections to anything but the default bridges as leaks'
 end
 
 When /^I set (.*)=(.*) over Tor's control port$/ do |key, val|
