@@ -449,8 +449,8 @@ Given /^the Tails desktop is ready$/ do
   # release.
   if $vm.file_exist?(default_bridges_path)
     $vm.file_overwrite(default_bridges_path, '')
-    chutney_bridge_lines('obfs4', chutney_tag: 'defbr').each do |bridge_line|
-      $vm.file_append(default_bridges_path, bridge_line)
+    chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+      $vm.file_append(default_bridges_path, bridge[:line])
     end
   end
   # Optimize upgrade check: avoid 30 second sleep

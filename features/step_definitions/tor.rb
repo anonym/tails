@@ -414,7 +414,7 @@ When /^I configure a direct connection in the Tor Connection Assistant$/ do
   tca_configure(:easy)
 end
 
-def chutney_bridge_lines(bridge_type, chutney_tag: nil)
+def chutney_bridges(bridge_type, chutney_tag: nil)
   chutney_tag = bridge_type if chutney_tag.nil?
   bridge_dirs = Dir.glob(
     "#{$config['TMPDIR']}/chutney-data/nodes/*#{chutney_tag}/"
@@ -450,7 +450,14 @@ def chutney_bridge_lines(bridge_type, chutney_tag: nil)
     end
     bridge_line = bridge_type + ' ' + address + ':' + port
     [fingerprint, extra].each { |e| bridge_line += ' ' + e.to_s if e }
-    bridge_line
+    {
+      type: bridge_type,
+      address: address,
+      port: port.to_i,
+      fingerprint: fingerprint,
+      extra: extra,
+      line: bridge_line,
+    }
   end
 end
 
@@ -496,10 +503,9 @@ When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?:
                               .click
       tor_connection_assistant.child(roleName: 'scroll pane').click
       @bridge_hosts = []
-      chutney_bridge_lines(bridge_type).each do |bridge_line|
-        @screen.type(bridge_line, ['Return'])
-        address, port = bridge_line.split[1].split(":")
-        @bridge_hosts << { address: address, port: port.to_i }
+      chutney_bridges(bridge_type).each do |bridge|
+        @screen.type(bridge[:line], ['Return'])
+        @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
       end
       begin
         step 'the Tor Connection Assistant complains that normal bridges are not allowed'
@@ -590,8 +596,8 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
     end
   end
   if default_bridges
-    chutney_bridge_lines('obfs4', chutney_tag: 'defbr').each do |bridge_line|
-      relays << bridge_line.split[1].split(":")
+    chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+      relays << [bridge[:address], bridge[:port]]
     end
   end
   relays.each do |address, port|
