@@ -464,6 +464,8 @@ end
 
 When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |bridge_type, mode|
   @tor_is_using_pluggable_transports = bridge_type != 'normal'
+  # If the "mode" isn't specified we pick one that makes sense for
+  # what is requested.
   if mode.nil?
     config_mode = ['normal', 'default'].include?(bridge_type) ? :easy : :hide
   else
