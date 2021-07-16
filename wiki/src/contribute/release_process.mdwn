@@ -1392,7 +1392,8 @@ Skip this if you are preparing anything but a final, major release.
         ./bin/generate-Tor-blog-post "${VERSION:?}"
 
 - Proof-read the draft blog post
-- [login to the Tor blog](https://blog.torproject.org/user)
+- [login to the Tor blog](https://blog.torproject.org/user). The
+  credentials are in keyringer in `rm.git`.
 - click *Content* → *Add content* → *Blog Post*
 - add these tags, each in a separate text entry field (use _Add another item_):
   * tails
@@ -1500,12 +1501,8 @@ Skip this part if preparing a release candidate.
             --token "$(bin/gitlab-api-token TailsRM)"
 
 4. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to:
-
-    - close the just-released [[!tails_gitlab groups/tails/-/milestones
-      desc="milestone"]]
-    - set the *Due date* for the [[!tails_gitlab groups/tails/-/milestones
-      desc="*Hole in the Roof* milestone"]] to a date between the next
-      2 releases
+   close the just-released [[!tails_gitlab groups/tails/-/milestones
+   desc="milestone"]]
 
    Assign the MR to the on-duty sysadmin (see link to "Semi-public
    calendar" in <https://gitlab.tails.boum.org/tails/summit/-/wikis/Teams#sysadmins>).
@@ -1543,6 +1540,8 @@ technical writers have prepared a tweet. Otherwise tweet a simple link
 to the release notes:
 
     Tails x.y is out: https://tails.boum.org/news/version_x.y/
+
+The credentials are in keyringer in `rm.git`.
 
 Publish the Tor blog post
 -------------------------
