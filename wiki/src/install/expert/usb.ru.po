@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-06-22 00:39+0000\n"
-"PO-Revision-Date: 2021-07-16 14:05+0000\n"
-"Last-Translator: Ed Medvedev <edward.medvedev@gmail.com>\n"
+"PO-Revision-Date: 2021-07-17 19:25+0000\n"
+"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,8 @@ msgstr ""
 #, no-wrap
 msgid "[[!meta title=\"Install from Debian, Ubuntu, or Mint using the command line and GnuPG\"]]\n"
 msgstr ""
+"[[!meta title=\"Установка из Debian, Ubuntu или Mint с помощью командной "
+"строки и GnuPG\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -46,12 +48,12 @@ msgstr "[[!meta stylesheet=\"inc/stylesheets/expert\" rel=\"stylesheet\" title=\
 
 #. type: Plain text
 msgid "Start in Debian, Ubuntu, or Linux Mint."
-msgstr ""
+msgstr "Запустите Debian, Ubuntu или Linux Mint."
 
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"verify-key\">Verify the Tails signing key</h1>\n"
-msgstr ""
+msgstr "<h1 id=\"verify-key\">Проверьте ключ подписи Tails</h1>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -65,6 +67,9 @@ msgid ""
 "can skip this step and start [[downloading and verifying the USB\n"
 "image|usb#download]].</p>\n"
 msgstr ""
+"<p>Если вы уже сертифицировали подписывающий ключ Tails вашим собственным "
+"ключом, можете пропустить этот шаг. Переходите к [[скачиванию и проверке "
+"образа USB|usb#download]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -76,6 +81,8 @@ msgid ""
 "In this step, you will download and verify the *Tails signing key* which is "
 "the OpenPGP key that is used to cryptographically sign the Tails USB image."
 msgstr ""
+"На этом шаге вы скачаете и проверите *ключ подписи Tails*. Это ключ OpenPGP, "
+"который используют для криптографической подписи USB-образа Tails."
 
 #. type: Plain text
 #, no-wrap
@@ -88,6 +95,8 @@ msgid ""
 "<p>To follow these instructions you need to have your own OpenPGP\n"
 "key.</p>\n"
 msgstr ""
+"<p>Чтобы воспользоваться этой инструкцией, вам нужно иметь свой собственный "
+"ключ OpenPGP.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -96,6 +105,10 @@ msgid ""
 "<a href=\"https://riseup.net/en/security/message-security/openpgp/gpg-keys\">Managing\n"
 "OpenPGP Keys</a> by <em>Riseup</em>.</p>\n"
 msgstr ""
+"<p>Чтобы узнать, как создать ключ OpenPGP, см. раздел\n"
+"<a href=\"https://riseup.net/en/security/message-security/openpgp/gpg-keys\">"
+"Managing\n"
+"OpenPGP Keys</a> на сайте <em>Riseup</em>.</p>\n"
 
 #. type: Plain text
 msgid ""
@@ -108,6 +121,8 @@ msgid ""
 "Import the Tails signing key in your <span class=\"application\">GnuPG</"
 "span> keyring:"
 msgstr ""
+"Импортируйте ключ подписи Tails в свою связку ключей <span class=\""
+"application\">GnuPG</span>:"
 
 #. type: Plain text
 #, no-wrap
@@ -115,12 +130,16 @@ msgid ""
 "       wget https://tails.boum.org/tails-signing.key\n"
 "       gpg --import < tails-signing.key\n"
 msgstr ""
+"       wget https://tails.boum.org/tails-signing.key\n"
+"       gpg --import < tails-signing.key\n"
 
 #. type: Bullet: '1. '
 msgid ""
 "Install the Debian keyring. It contains the OpenPGP keys of all Debian "
 "developers:"
 msgstr ""
+"Установите связку ключей Debian. В ней содержится ключ OpenPGP от "
+"разработчиков Debian:"
 
 #. type: Plain text
 #, no-wrap
@@ -133,6 +152,9 @@ msgid ""
 "\"Chris Lamb\"]], a former Debian Project Leader, from the Debian keyring "
 "into your keyring:"
 msgstr ""
+"Импортируйте OpenPGP-ключ [[!wikipedia Chris_Lamb_(software_developer) desc="
+"\"Криса Лэмба\"]], бывшего лидера проекта Debian, из связки Debian в вашу "
+"связку:"
 
 #. type: Plain text
 #, no-wrap
@@ -141,7 +163,7 @@ msgstr "       gpg --keyring=/usr/share/keyrings/debian-keyring.gpg --export chr
 
 #. type: Bullet: '1. '
 msgid "Verify the certifications made on the Tails signing key:"
-msgstr ""
+msgstr "Проверьте сертификаты для ключа подписи Tails:"
 
 #. type: Plain text
 #, no-wrap
@@ -151,7 +173,7 @@ msgstr "       gpg --keyid-format 0xlong --check-sigs A490D0F4D311A4153E2BB7CADB
 #. type: Plain text
 #, no-wrap
 msgid "   In the output of this command, look for the following line:\n"
-msgstr ""
+msgstr "   Среди данных, которые появятся на экране, найдите такую строку:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -164,6 +186,8 @@ msgid ""
 "   Here, <code>sig!</code>, with an exclamation mark, means that Chris\n"
 "   Lamb verified and certified the Tails signing key with his key.\n"
 msgstr ""
+"   <code>sig!</code> (с восклицательным знаком) подразумевает, что\n"
+"   Крис Лэбм проверил и подтвердил ключ подписи Tails своим ключом.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -364,8 +388,7 @@ msgid ""
 "Execute the following commands to copy the USB image that you downloaded "
 "earlier to the USB stick."
 msgstr ""
-"Для копирования скачанного ранее USB-образа на флешку выполните следующие "
-"команды:"
+"Чтобы записать скачанный ранее образ на флешку, выполните следующие команды:"
 
 #. type: Plain text
 #, no-wrap
