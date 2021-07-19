@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2021-06-25 15:36+0000\n"
-"PO-Revision-Date: 2021-07-19 06:05+0000\n"
+"PO-Revision-Date: 2021-07-19 09:05+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
@@ -36,7 +36,7 @@ msgstr ""
 
 #. type: Content of: <h2>
 msgid "Tails makes it clear that you are using Tor and probably Tails"
-msgstr ""
+msgstr "Tails не скрывает, что вы пользуетесь Tor и, возможно, Tails"
 
 #. type: Content of: <p>
 msgid ""
@@ -49,6 +49,9 @@ msgid ""
 "user, but by making all Tor and Tails users look the same. It becomes "
 "impossible to know who is who among them."
 msgstr ""
+"Ни Tor, ни Tails не делают вас похожим на произвольного пользователя "
+"Интернет. Но все пользователи Tor и Tails выглядят одинаково. Со стороны не "
+"скажешь, кто есть кто. Это – дополнительная защита."
 
 #. type: Content of: <ul><li><p>
 msgid ""
@@ -57,6 +60,10 @@ msgid ""
 "hide that you connect to Tor, you can use [[Tor bridges|first_steps/"
 "welcome_screen/bridge_mode]]."
 msgstr ""
+"Как ваш Интернет-провайдер, так и администратор вашей локальной сети могут "
+"видеть, что вы подключены к сети Tor. Им недоступна информация о том, какие "
+"сайты вы посещаете. Если вы хотите скрыть сам факт подключения к Tor, "
+"используйте [[мосты Tor|first_steps/welcome_screen/bridge_mode]]."
 
 #. type: Content of: <ul><li><p>
 msgid ""
@@ -64,6 +71,9 @@ msgid ""
 "href=\"https://metrics.torproject.org/exonerator.html\">list of exit nodes "
 "of the Tor network</a> is public."
 msgstr ""
+"Посещаемые сайты знают, что вы используете Tor, ведь <a href=\""
+"https://metrics.torproject.org/exonerator.html\">список выходных узлов сети "
+"Tor</a> ни для кого не секрет."
 
 #. type: Content of: <div><p>
 msgid ""
@@ -71,16 +81,20 @@ msgid ""
 "censorship can identify and block connections to the Tor network that don't "
 "use Tor bridges."
 msgstr ""
+"Если человек не использует мосты, то родительский контроль, провайдеры и "
+"государственная цензура могут определять подключения к сети Tor и "
+"блокировать их."
 
 #. type: Content of: <div><p>
 msgid ""
 "Many websites ask you to solve a CAPTCHA or block access from the Tor "
 "network."
 msgstr ""
+"Многие сайты предлагают капчу. Другие вообще блокируют доступ из сети Tor."
 
 #. type: Content of: <h2>
 msgid "Exit nodes can intercept traffic to the destination server"
-msgstr ""
+msgstr "Выходные узлы могут следить за трафиком к серверу назначения"
 
 #. type: Content of: <p>
 msgid ""
@@ -89,6 +103,11 @@ msgid ""
 "<i>exit node</i>, establishes the actual connection to the destination "
 "server. This last step can be unencrypted."
 msgstr ""
+"Tor скрывает ваше местонахождение от сервера, который вы посещаете. Но Tor "
+"не шифрует ваши коммуникации <i>полностью</i>. Последний узел в цепочке Tor, "
+"который обычно называют <i>выходным узлом</i>, устанавливает соединение с "
+"нужным сервером. Этот последний этап коммуникаций может оказаться без "
+"шифрования."
 
 #. type: Content of: outside any tag (error?)
 msgid ""
@@ -96,10 +115,12 @@ msgid ""
 "relays with the last one establishing the actual connection to the final "
 "destination\"]]"
 msgstr ""
+"[[!img htw2-tails.png link=no alt=\"Соединение с Tor обычно идёт через три "
+"узла, последний подключается к нужному серверу\"]]"
 
 #. type: Content of: <p>
 msgid "The exit node can:"
-msgstr ""
+msgstr "На что способен выходной узел?"
 
 #. type: Content of: <ul><li><p>
 msgid ""
@@ -108,6 +129,10 @@ msgid ""
 "Tor_Browser#https-everywhere]], to encrypt the connection between the exit "
 "node and the destination server, whenever possible."
 msgstr ""
+"Отслеживание трафика. Вот почему <i>Tor Browser</i> и Tails включают "
+"программы вроде [[<i>HTTPS Everywhere</i>|doc/anonymous_internet/Tor_Browser"
+"#https-everywhere]]. Важно, чтобы соединение между выходным узлом и "
+"просматриваемым сервером было по возможности зашифровано."
 
 #. type: Content of: <ul><li><p>
 msgid ""
@@ -117,12 +142,20 @@ msgid ""
 "the [[New Identity|doc/anonymous_internet/Tor_Browser#new-identity]] feature "
 "of <i>Tor Browser</i> to change exit node."
 msgstr ""
+"Обман просматриваемого сервера. Атака, известная как <i>machine-in-the-"
+"middle</i> (MitM),  «машина-в-середине». Вот почему важно обращать особое "
+"внимание на предупреждения безопасности в <i>Tor Browser</i>. Если вы "
+"получите такое предупреждение, используйте функцию [[создания новой личности|"
+"doc/anonymous_internet/Tor_Browser#new-identity]] в <i>Tor Browser</i>. При "
+"этом выходной узел изменится."
 
 #. type: Content of: outside any tag (error?)
 msgid ""
 "[[!img ssl_warning.png link=no alt=\"Warning: Potential Security Risk Ahead"
 "\"]]"
 msgstr ""
+"[[!img ssl_warning.png link=no alt=\"Предупреждение: возможны риски "
+"безопасности\"]]"
 
 #. type: Content of: <p>
 msgid ""
@@ -131,6 +164,10 @@ msgid ""
 "\"https://support.torproject.org/https/https-1/\">Tor FAQ: Can exit nodes "
 "eavesdrop on communications?</a>."
 msgstr ""
+"Какая информация доступна тому, кто видит только часть цепочки Tor?  Ответ "
+"на этот вопрос можно получить из инфографики в <a href=\""
+"https://support.torproject.org/https/https-1/\">Могут ли посторонние "
+"устройства видеть информацию, которую я передаю веб-сайтам через Tor?</a>."
 
 #. type: Content of: <div><p>
 msgid ""
@@ -141,10 +178,17 @@ msgid ""
 "collect-government-e-mail-passwords/\">Ars Technica: Security expert used "
 "Tor to collect government e-mail passwords</a>."
 msgstr ""
+"Известны примеры, когда узлы использовались для сбора важной информации о "
+"незашифрованных соединениях. Мы регулярно находили такие вредоносные "
+"выходные узлы в сети Tor и убирали их. См. <a href=\"https://arstechnica.com/"
+"information-technology/2007/09/"
+"security-expert-used-tor-to-collect-government-e-mail-passwords/\">Ars "
+"Technica: Security expert used Tor to collect government e-mail "
+"passwords</a>."
 
 #. type: Content of: <h2>
 msgid "Adversaries watching both ends of a Tor circuit could identify users"
-msgstr ""
+msgstr "Если видеть оба конца цепочки Tor, можно идентифицировать человека"
 
 #. type: Content of: <p>
 msgid ""
@@ -154,6 +198,11 @@ msgid ""
 "because the attacker has to observe both ends of a Tor circuit at the same "
 "time."
 msgstr ""
+"Бывают злоумышленники с большими возможностями. Они способны анализировать "
+"время прохождения пакетов данных и формат трафика, входящего и покидающего "
+"сеть Tor. В этих условиях можно деанонимизировать пользователей Tor. Такие "
+"атаки называются <i>атаками корреляции трафика</i> (end-to-end correlation). "
+"При этом злоумышленник должен мониторить оба конца цепочки Tor одновременно."
 
 #. type: Content of: <p>
 msgid ""
@@ -162,6 +211,11 @@ msgid ""
 "this case, VPNs (Virtual Private Networks) are less secure than Tor, because "
 "they do not use 3 independent relays."
 msgstr ""
+"Никакая сеть для обеспечения анонимности, если речь идёт о скоростных "
+"соединениях (например, веб-сёрфинге или обмене сообщениями в мессенджерах), "
+"не может гарантировать стопроцентную защиту от атак корреляции. При этом, "
+"скажем, VPN менее безопасны, чем Tor, потому что у VPN нет трёх "
+"промежуточных узлов."
 
 #. type: Content of: <div><p>
 msgid ""
@@ -171,3 +225,8 @@ msgid ""
 "\">Murdoch and Zieliński: Sampled Traffic Analysis by Internet-Exchange-"
 "Level Adversaries</a>."
 msgstr ""
+"Атаки корреляции трафика изучены и описаны. Однако мы не знаем случая, когда "
+"такая атака на самом деле привела бы к деанонимизации пользователя Tor. См. "
+"пример в материале <a href=\"https://www.freehaven.net/anonbib/cache/murdoch-"
+"pet2007.pdf\">Murdoch and Zieliński: Sampled Traffic Analysis by Internet-"
+"Exchange-Level Adversaries</a>."
