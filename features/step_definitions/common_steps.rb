@@ -103,6 +103,15 @@ Given /^the network is unplugged$/ do
   $vm.unplug_network
 end
 
+Given /^I (dis)?connect the network through GNOME$/ do |disconnect|
+  current_state = disconnect ? 'Connected' : 'Off'
+  action = disconnect ? 'Turn Off' : 'Connect'
+  gnome_shell = Dogtail::Application.new('gnome-shell')
+  gnome_shell.child('System', roleName: 'menu').click
+  gnome_shell.child("Wired #{current_state}", roleName: 'label').click
+  gnome_shell.child(action, roleName: 'label').click
+end
+
 Given /^the network connection is ready(?: within (\d+) seconds)?$/ do |timeout|
   timeout ||= 30
   try_for(timeout.to_i) { $vm.connected_to_network? }
@@ -440,8 +449,8 @@ Given /^the Tails desktop is ready$/ do
   # release.
   if $vm.file_exist?(default_bridges_path)
     $vm.file_overwrite(default_bridges_path, '')
-    chutney_bridge_lines('obfs4', chutney_tag: 'defbr').each do |bridge_line|
-      $vm.file_append(default_bridges_path, bridge_line)
+    chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+      $vm.file_append(default_bridges_path, bridge[:line])
     end
   end
   # Optimize upgrade check: avoid 30 second sleep
@@ -491,6 +500,10 @@ Given /^Tor is ready$/ do
   #else
   #  step 'Tor is confined with Seccomp'
   end
+  @tor_success_configs ||= []
+  @tor_success_configs << $vm.execute_successfully(
+    'tor_control_send "getinfo config-text"', libs: 'tor'
+  ).stdout.match(/^250\+config-text=\n(.*)^[.]/m)[1]
   # When we test for ASP upgrade failure the following tests would fail,
   # so let's skip them in this case.
   unless $vm.file_exist?('/run/live-additional-software/doomed_to_fail')
