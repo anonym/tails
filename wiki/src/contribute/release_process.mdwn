@@ -4,6 +4,25 @@
 
 See the [[release_schedule]].
 
+Context
+===========
+
+Release types
+----------------
+
+There are exactly 3 types of releases:
+
+ - A bugfix release
+ - A major release
+ - A release candidate. A release candidate can only be made for a major release
+
+We will not cover beta release in this document.
+
+Both a bugfix release and a major release are called "final". A release candidate is not a final release.
+
+Sections that only apply to some of those types of release, we'll have it written clearly in the title.
+
+
 Prepare your checklist
 ======================
 
@@ -173,8 +192,8 @@ Freeze
 This section ensures freezing is done. Freezing is relevant for Release Candidates and for bugfix releases.
 You can skip this if you're releasing a final major version.
 
-Major release
--------------
+Only for Major release
+----------------------------
 
 Follow this part ONLY if you are preparing the release candidate for a major release.
 
@@ -212,8 +231,8 @@ Follow this part ONLY if you are preparing the release candidate for a major rel
         git checkout "$RELEASE_BRANCH" && \
         ./bin/bump-APT-snapshots-expiration-date 183
 
-Bugfix release
---------------
+Only for Bugfix release
+------------------------
 
 Follow this part ONLY if you are preparing a bugfix release.
 
@@ -283,22 +302,22 @@ If `lint_po` complains:
 * send a note to <tails-l10n@boum.org> [public] so that they get in touch with
   whoever can fix them.
 
-When preparing an actual release
+If preparing a final release
 ================================
 
 If we're about to prepare the images for a final (non-RC) release, then
 follow these instructions:
 
-Major release
--------------
+Only for Major release
+-------------------------
 
 Merge each APT overlay suite listed in the `testing` branch's
 `config/APT_overlays.d/` into the `testing` custom APT suite:
 
         ./bin/merge-APT-overlays testing
 
-Bugfix release
---------------
+Only for Bugfix release
+------------------------
 
 <div class="note">
 For bugfix releases, we generally do not put any RC out, so freeze time
@@ -1292,8 +1311,8 @@ Make sure to:
    inconvenience!".
 4. add any known issues to the "Known issues" section.
 
-If preparing a final release
-----------------------------
+If preparing a major or a bugfix release
+-------------------------------------------
 
 Skip this part if preparing a RC.
 
