@@ -566,12 +566,26 @@ Then /^the Tor Connection Assistant complains that normal bridges are not allowe
   )
 end
 
+When /^I click on "Connect to Tor" button$/ do
+  btn = tor_connection_assistant.child('Connect to _Tor')
+  assert_equal( "True", btn.get_field('sensitive'))
+  btn.click
+end
+
 Then /^I cannot click the "Connect to Tor" button$/ do
   assert_equal(
     "False",
     tor_connection_assistant.child('Connect to _Tor').get_field('sensitive')
   )
 end
+
+When /^I set the time in TCA to "([^"]*)" and the time zone to "([^"]*)"$/ do |time, timezone|
+  # XXX: that's a pointless test!
+  $vm.execute_successfully(%Q!date -s "@$(TZ=#{timezone} date -d "$(TZ=UTC date -d '#{time}' '+%F %T')" +%s)"!)
+  new_time = $vm.execute_successfully('date').stdout
+  puts "Time set to #{new_time}"
+end
+
 
 When /^all Internet traffic has only flowed through the configured bridges$/ do
   assert_not_nil(@bridge_hosts, 'No bridges has been configured via the ' \

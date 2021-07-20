@@ -74,3 +74,4 @@ Feature: Using Tails with Tor bridges and pluggable transports
     And the Tor network and default bridges are blocked
     When I connect the network through GNOME
     Then the Tor Connection Assistant reports that it failed to connect
+
