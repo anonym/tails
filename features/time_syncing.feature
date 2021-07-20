@@ -56,12 +56,17 @@ Feature: Time syncing
     Then the system clock is just past Tails' source date
 
   Scenario: Users east of UTC can't connect to obfs4 bridges until they set the time
-    Given I bump the system time with "+8 hours"
+    Given a computer
+    And the hardware clock is set to "+8 hours"
+    And I start the computer
+    And the computer boots Tails
+    And I log in to a new session
+    And all notifications have disappeared
     And the network is plugged
     And the Tor Connection Assistant autostarts
-    When I configure some obfs4 bridges in the Tor Connection Assistant
+    When I try to configure some obfs4 bridges in the Tor Connection Assistant
     Then the Tor Connection Assistant reports that it failed to connect
-    When I set the time in TCA to "+8h" and the time zone to "Asia/Shanghai"
+    When I set the time in TCA to "+8 hours" and the time zone to "Asia/Shanghai"
     Then Tails clock is less than 5 minutes incorrect
     When I click on "Connect to Tor" button
     Then Tor is ready

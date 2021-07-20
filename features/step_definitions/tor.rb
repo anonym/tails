@@ -518,9 +518,10 @@ When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?:
   end
 end
 
-When /^I try to configure a direct connection in the Tor Connection Assistant$/ do
+# XXX: this "try to" actually means "unsuccessfully"
+When /^I try to configure (a direct connection|some .* bridges) in the Tor Connection Assistant$/ do |conntype|
   begin
-    step "I configure a direct connection in the Tor Connection Assistant"
+    step "I configure #{conntype} in the Tor Connection Assistant"
   rescue TCAConnectionFailure
     # Expected!
     next
@@ -580,10 +581,26 @@ Then /^I cannot click the "Connect to Tor" button$/ do
 end
 
 When /^I set the time in TCA to "([^"]*)" and the time zone to "([^"]*)"$/ do |time, timezone|
+  # TODO: DisableNetwork; SAVECONF; stop tor@default
   # XXX: that's a pointless test!
-  $vm.execute_successfully(%Q!date -s "@$(TZ=#{timezone} date -d "$(TZ=UTC date -d '#{time}' '+%F %T')" +%s)"!)
+  $vm.execute_successfully(
+    "tor_control_setconf 'DisableNetwork=1'", libs: 'tor'
+  )
+  $vm.execute_successfully(
+    "tor_control_send 'SAVECONF'", libs: 'tor'
+  )
+  $vm.execute_successfully("systemctl stop tor@default")
+
+  host_time = cmd_helper(['date', '-d', time, '+%F %T'], env: {"TZ" => "UTC"})
+  STDERR.puts "Host time: #{host_time}"
+  $vm.execute_successfully(%Q!date -s "@$(TZ=#{timezone} date -d "#{host_time}" +%s)"!)
   new_time = $vm.execute_successfully('date').stdout
-  puts "Time set to #{new_time}"
+  STDERR.puts "Time set to #{new_time}"
+
+  $vm.execute_successfully("systemctl start tor@default")
+  $vm.execute_successfully(
+    "tor_control_setconf 'DisableNetwork=0'", libs: 'tor'
+  )
 end
 
 
