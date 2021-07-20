@@ -40,7 +40,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
 
   Scenario: TCA can reconnect after a connection failure
     Given the Tor network and default bridges are blocked
-    When I try to configure a direct connection in the Tor Connection Assistant
+    When I unsuccessfully configure a direct connection in the Tor Connection Assistant
     Then the Tor Connection Assistant reports that it failed to connect
     # TCA does not have a simple "retry" so we restart it
     And I close the Tor Connection Assistant

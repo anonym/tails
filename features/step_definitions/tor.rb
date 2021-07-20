@@ -518,8 +518,7 @@ When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?:
   end
 end
 
-# XXX: this "try to" actually means "unsuccessfully"
-When /^I try to configure (a direct connection|some .* bridges) in the Tor Connection Assistant$/ do |conntype|
+When /^I unsuccessfully configure (a direct connection|some .* bridges) in the Tor Connection Assistant$/ do |conntype|
   begin
     step "I configure #{conntype} in the Tor Connection Assistant"
   rescue TCAConnectionFailure
