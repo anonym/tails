@@ -7,6 +7,7 @@ import copy
 
 import gi
 import stem
+import pytz
 
 from tca.ui.asyncutils import GAsyncSpawn, idle_add_chain
 from tca.torutils import (
@@ -18,6 +19,7 @@ from tca.torutils import (
     VALID_BRIDGE_TYPES,
 )
 import tca.config
+import tca.ui.dialogs
 
 
 gi.require_version("Gdk", "3.0")
@@ -472,6 +474,23 @@ class StepErrorMixin:
 
     def cb_step_error_btn_proxy_clicked(self, *args):
         self.change_box("proxy")
+
+    def cb_step_error_btn_time_clicked(self, *args):
+        time_dialog = tca.ui.dialogs.get_time_dialog()
+        time_dialog.set_modal(True)
+        time_dialog.set_transient_for(self)
+        time_dialog.connect('response', self.on_time_dialog_complete)
+        time_dialog.show_all()
+
+    def on_time_dialog_complete(self, time_dialog, response):
+        print('time dialog closed', response==Gtk.ResponseType.APPLY)
+        if response == Gtk.ResponseType.APPLY:
+            aware_dt = time_dialog.get_date()
+            utc_dt = aware_dt.astimezone(pytz.utc)
+            self.app.portal.call_async("set-system-time", str(utc_dt))
+        time_dialog.destroy()
+        # TODO: allow Connect to Tor to be called
+        self._step_error_submit_allowed()
 
     def cb_step_error_btn_captive_clicked(self, *args):
         self.app.portal.call_async("open-unsafebrowser")
