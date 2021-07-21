@@ -17,7 +17,7 @@ else
     exit 0
 fi
 
-# Import tor_control_setconf(), TOR_LOG
+# Import TOR_LOG
 . /usr/local/lib/tails-shell-library/tor.sh
 
 # It's safest that Tor is not running when messing with its logs.
