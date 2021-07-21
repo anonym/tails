@@ -100,6 +100,8 @@ class Handler(socketserver.StreamRequestHandler):
         "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
+
+        "set-system-time": Command(['date', '-s'], True),
     }
     valid_commands = set(spawn_commands.keys())
 
