@@ -31,11 +31,11 @@ tor_control_send() {
 	fi
 	cookie_path="$(tor_control_cookie_path)"
 	if [ -e "${cookie_path}" ] && [ -n "${control_port}" ]; then
-		hexcookie=$(xxd -c 32 -g 0 "${cookie_path}" | cut -d' ' -f2)
-		response=$(
+		hexcookie="$(xxd -c 32 -g 0 "${cookie_path}" | cut -d' ' -f2)"
+		response="$(
 		    /bin/echo -ne "AUTHENTICATE ${hexcookie}\r\n${1}\r\nQUIT\r\n" | \
 		        /bin/nc 127.0.0.1 "${control_port}" | tr -d "\r"
-		)
+		)"
 		if [ -z "${response}" ]; then
 			echo "Got an empty response" >&2
 			return 1
