@@ -185,11 +185,14 @@ operational.
 <div class="bug">
 
 <p>When connecting to Tor, Tails sets the system time to the current time
-in the [[!wikipedia Coordinated_Universal_Time]] (UTC) timezone.
-Many operating systems, such as Linux and macOS, write time expressed
+in the [[!wikipedia Coordinated_Universal_Time]] (UTC) timezone.</p>
+
+<p>Many operating systems, such as Linux and macOS, write time expressed
 in UTC to the hardware clock of the computer. But, Windows instead
 writes time expressed in the local timezone to the hardware clock of
-the computer. So, if you are east of the United Kingdom (which is in the UTC timezone) on
+the computer.</p>
+
+<p>So, if you are east of the United Kingdom (which is in the UTC timezone) on
 a computer that also runs Windows, Tails will make the system clock go
 backwards during startup. Unfortunately, this might trigger software
 errors in Tails.</p>
