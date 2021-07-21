@@ -175,6 +175,31 @@ helps you:
 
 </div>
 
+Troubleshooting Tor bridges
+===========================
+
+If the bridges that you entered do not work, try requesting another set of
+bridges. It is possible that the bridges you entered are no longer
+operational.
+
+<div class="bug">
+
+<p>When connecting to Tor, Tails sets the system time to the current time
+in the [[!wikipedia Coordinated_Universal_Time]] (UTC) timezone.</p>
+
+<p>Many operating systems, such as Linux and macOS, write time expressed
+in UTC to the hardware clock of the computer. But, Windows instead
+writes time expressed in the local timezone to the hardware clock of
+the computer.</p>
+
+<p>So, if you are east of the United Kingdom (which is in the UTC timezone) on
+a computer that also runs Windows, Tails will make the system clock go
+backwards during startup. Unfortunately, this can prevent bridges from working.</p>
+
+<p>We are working on a fix for this issue. See [[!tails_ticket 15548]].</p>
+
+</div>
+
 Viewing the status of Tor
 =========================
 
