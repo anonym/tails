@@ -506,8 +506,8 @@ Given /^Tor is ready$/ do
   end
   @tor_success_configs ||= []
   @tor_success_configs << $vm.execute_successfully(
-    'tor_control_send "getinfo config-text"', libs: 'tor'
-  ).stdout.match(/^250\+config-text=\n(.*)^[.]/m)[1]
+    'tor_control_getinfo config-text', libs: 'tor'
+  ).stdout
   # When we test for ASP upgrade failure the following tests would fail,
   # so let's skip them in this case.
   unless $vm.file_exist?('/run/live-additional-software/doomed_to_fail')

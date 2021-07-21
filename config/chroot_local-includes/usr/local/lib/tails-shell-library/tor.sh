@@ -22,7 +22,7 @@ tor_control_cookie_path() {
 }
 
 tor_control_send() {
-	local control_port cookie_path hexcookie response errors
+	local control_port cookie_path hexcookie response
 	control_port="$(tor_rc_lookup ControlPort \
 	    | sed --regexp-extended 's/.*://')"
 	if ! lsof -i ":${control_port}" 2>/dev/null >&2; then
@@ -40,27 +40,41 @@ tor_control_send() {
 			echo "Got an empty response" >&2
 			return 1
 		fi
-		errors="$(echo "${response}" | no_abort grep -v ^250)"
-		if [ -n "${errors}" ]; then
-			echo "${errors}" >&2
-			return 1
-                else
-			echo "${response}"
-			return 0
-		fi
+		echo "${response}"
+		return 0
 	else
 		return 1
 	fi
 }
 
-# Only handles GETINFO keys with single-line answers
 tor_control_getinfo() {
 	tor_control_send "GETINFO ${1}" | \
-	    sed --regexp-extended -n "s|^250-${1}=(.*)$|\1|p"
+	    while read line; do
+		if echo "${line}" | grep -q "^250[-+]${1}="; then
+			echo "${line}" | sed -n "s/^250-${1}=\(.\+\)/\1/p"
+		elif echo "${line}" | grep -q "^250 "; then
+			:
+		elif echo "${line}" | grep -q "^5[0-9][0-9] "; then
+			# Got error code
+			echo "${line}" >&2
+			return 1
+		elif  [ "${line}" = '.' ]; then
+			return 0
+		else
+			echo "${line}"
+		fi
+	    done
 }
 
 tor_control_getconf() {
-	tor_control_send "GETCONF ${1}" | \
+	local response errors
+	response="$(tor_control_send "GETCONF ${1}")"
+	errors="$(echo "${response}" | no_abort grep -v ^250)"
+	if [ -n "${errors}" ]; then
+		echo "${errors}" >&2
+		return 1
+	fi
+	echo "${response}" | \
             sed --regexp-extended -n "s|^250[ -]${1}=(.*)$|\1|p"
 }
 
