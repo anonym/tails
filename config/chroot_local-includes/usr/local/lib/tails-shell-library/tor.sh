@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Import no_abort().
-. /usr/local/lib/tails-shell-library/common.sh
-
 TOR_RC_DEFAULTS=/usr/share/tor/tor-service-defaults-torrc
 TOR_RC=/etc/tor/torrc
 # shellcheck disable=SC2034
@@ -15,71 +12,37 @@ tor_rc_lookup() {
 	    sed --regexp-extended "s/^${1}\s+(.+)$/\1/" | tail -n1
 }
 
-tor_control_cookie_path() {
-	local path
-	path="$(tor_rc_lookup CookieAuthFile)"
-	[ -e "${path}" ] && echo "${path}"
-}
-
-tor_control_send() {
-	local control_port cookie_path hexcookie response
+tor_control_stem_wrapper() {
+	local control_port
 	control_port="$(tor_rc_lookup ControlPort \
 	    | sed --regexp-extended 's/.*://')"
-	if ! lsof -i ":${control_port}" 2>/dev/null >&2; then
-		echo "The ControlPort (${control_port}) is not listening" >&2
-		return 1
-	fi
-	cookie_path="$(tor_control_cookie_path)"
-	if [ -e "${cookie_path}" ] && [ -n "${control_port}" ]; then
-		hexcookie="$(xxd -c 32 -g 0 "${cookie_path}" | cut -d' ' -f2)"
-		response="$(
-		    /bin/echo -ne "AUTHENTICATE ${hexcookie}\r\n${1}\r\nQUIT\r\n" | \
-		        /bin/nc 127.0.0.1 "${control_port}" | tr -d "\r"
-		)"
-		if [ -z "${response}" ]; then
-			echo "Got an empty response" >&2
-			return 1
-		fi
-		echo "${response}"
-		return 0
-	else
-		return 1
-	fi
+        python3 <<EOF
+import stem
+import stem.connection
+import sys
+try:
+    controller = stem.connection.connect(
+                   control_port=('127.0.0.1', '${control_port}')
+                 )
+    controller.authenticate()
+    ${1}
+    exit(0)
+except Exception as e:
+    print(f"{type(e).__name__}: {str(e).strip()}", file=sys.stderr)
+    exit(1)
+EOF
 }
 
 tor_control_getinfo() {
-	tor_control_send "GETINFO ${1}" | \
-	    while read line; do
-		if echo "${line}" | grep -q "^250[-+]${1}="; then
-			echo "${line}" | sed -n "s/^250-${1}=\(.\+\)/\1/p"
-		elif echo "${line}" | grep -q "^250 "; then
-			:
-		elif echo "${line}" | grep -q "^5[0-9][0-9] "; then
-			# Got error code
-			echo "${line}" >&2
-			return 1
-		elif  [ "${line}" = '.' ]; then
-			return 0
-		else
-			echo "${line}"
-		fi
-	    done
+	tor_control_stem_wrapper "print(controller.get_info('${1}'))"
 }
 
 tor_control_getconf() {
-	local response errors
-	response="$(tor_control_send "GETCONF ${1}")"
-	errors="$(echo "${response}" | no_abort grep -v ^250)"
-	if [ -n "${errors}" ]; then
-		echo "${errors}" >&2
-		return 1
-	fi
-	echo "${response}" | \
-            sed --regexp-extended -n "s|^250[ -]${1}=(.*)$|\1|p"
+	tor_control_stem_wrapper "print(controller.get_conf('${1}'))"
 }
 
 tor_control_setconf() {
-	tor_control_send "SETCONF ${1}" >/dev/null
+	tor_control_stem_wrapper "controller.set_conf('${1}', '${2}')"
 }
 
 tor_bootstrap_progress() {

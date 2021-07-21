@@ -635,7 +635,7 @@ end
 
 When /^I set (.*)=(.*) over Tor's control port$/ do |key, val|
   current_bridges = $vm.execute_successfully(
-    "tor_control_setconf '#{key}=#{val}'", libs: 'tor'
+    "tor_control_setconf '#{key}' '#{val}'", libs: 'tor'
   )
 end
 
