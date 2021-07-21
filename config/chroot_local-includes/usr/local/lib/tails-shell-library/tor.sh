@@ -22,7 +22,7 @@ tor_control_cookie_path() {
 }
 
 tor_control_send() {
-	local control_port cookie_path hexcookie
+	local control_port cookie_path hexcookie response errors
 	control_port="$(tor_rc_lookup ControlPort \
 	    | sed --regexp-extended 's/.*://')"
 	if ! lsof -i ":${control_port}" 2>/dev/null >&2; then
