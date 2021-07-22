@@ -44,12 +44,14 @@ class StemFDSocket(stem.socket.ControlSocket):
 def recover_fd_from_parent() -> tuple:
     fds = [int(fd) for fd in os.getenv("INHERIT_FD", "").split(",")]
     # fds[0] must be a rw fd for settings file
-    # fds[1] must be a socket to tca-portal
+    # fds[1] must be a rw fd for state file
+    # fds[2] must be a socket to tca-portal
 
     configfile = os.fdopen(fds[0], "r+")
-    portal = socket.socket(fileno=fds[1])
+    statefile = os.fdopen(fds[1], "r+")
+    portal = socket.socket(fileno=fds[2])
 
-    return (configfile, portal)
+    return (configfile, statefile, portal)
 
 
 # PROXY_TYPES is a sequence of Tor options related to proxing.
@@ -371,14 +373,16 @@ class TorConnectionConfig:
 
 
 class TorLauncherUtils:
-    def __init__(self, stem_controller: Controller, config_buf):
+    def __init__(self, stem_controller: Controller, config_buf, state_buf):
         """
         Arguments:
         stem_controller -- an already connected and authorized stem Controller
         config_buf -- an already open read-write buffer to the configuration file
+        state_buf -- an already open read-write buffer to the state file
         """
         self.stem_controller = stem_controller
         self.config_buf = config_buf
+        self.state_buf = state_buf
         self.tor_connection_config = None
 
     def load_tor_connection_conf(self):
@@ -539,7 +543,7 @@ def main():
 
     it's meant for testing, no "real" code should run that.
     """
-    conf, controller = recover_fd_from_parent()
+    conf, state, controller = recover_fd_from_parent()
     controller.authenticate(password=None)
     launcher = TorLauncherUtils(controller, conf)
     launcher.load_tor_connection_conf()

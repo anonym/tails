@@ -33,7 +33,7 @@ Reset TCA state
 tca state is kept in `/var/lib/tca/` . That directory is owned by root, and a regular user can't
 access, nor delete it.
 
-    sudo rm -rf /var/lib/tca/
+    sudo rm -rf /var/lib/tca/ /run/tca/
 
 Really restart tor
 ---------------------
