@@ -396,22 +396,25 @@ class TorLauncherUtils:
                 self.stem_controller
             )
 
-    def save_conf(self, extra={}, successful_connect=True):
+    def save_conf(self):
         if self.tor_connection_config is None:
             return
 
         # Save configuration to our own configuration file
-        data = extra
-        if successful_connect:
-            data.update({"tor": self.tor_connection_config.to_dict()})
+        data = {"tor": self.tor_connection_config.to_dict()}
         encode_to_json_buf(data, self.config_buf)
 
         # Save configuration to torrc
-        if successful_connect:
-            self.stem_controller.save_conf()
+        self.stem_controller.save_conf()
+
+    def save_state(self, state):
+        encode_to_json_buf(state, self.state_buf)
 
     def read_tca_conf(self):
         return decode_json_from_buf(self.config_buf)
+
+    def read_tca_state(self):
+        return decode_json_from_buf(self.state_buf)
 
     def apply_conf(self):
         tor_conf = self.tor_connection_config.to_tor_conf()
@@ -575,6 +578,7 @@ def main():
         return 1
 
     launcher.save_conf()
+    launcher.save_state({"ui": {}})
 
     return 0
 

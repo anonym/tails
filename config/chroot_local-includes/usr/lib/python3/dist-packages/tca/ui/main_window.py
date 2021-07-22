@@ -656,13 +656,13 @@ class TCAMainWindow(
             "offline": {},
         }
         if self.app.args.debug_statefile is not None:
-            log.debug("loading statefile")
+            log.debug("loading debug statefile")
             with open(self.app.args.debug_statefile) as buf:
                 content = json.load(buf)
                 log.debug("content found %s", content)
                 self.state.update(content)
         else:
-            data = self.app.configurator.read_tca_conf()
+            data = self.app.configurator.read_tca_state()
             if data and data.get("ui"):
                 for key in ["hide", "bridge"]:
                     self.state[key].update(data["ui"].get(key, {}))
@@ -724,10 +724,9 @@ class TCAMainWindow(
             data = {"ui": self.state}
         else:
             data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
-        self.app.configurator.save_conf(
-            data,
-            successful_connect=successful_connect,
-        )
+        self.app.configurator.save_state(data)
+        if successful_connect:
+            self.app.configurator.save_conf()
 
     def get_screen_size(self) -> Tuple[int, int]:
         disp = Gdk.Display.get_default()
