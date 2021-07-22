@@ -24,6 +24,8 @@ try:
     controller = stem.connection.connect(
                    control_port=('127.0.0.1', '${control_port}')
                  )
+    if controller == None:
+        raise stem.SocketError("Cannot connect to Tor's control port")
     controller.authenticate()
     ${1}
     exit(0)
