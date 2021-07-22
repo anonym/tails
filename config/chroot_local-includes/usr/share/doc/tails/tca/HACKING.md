@@ -55,7 +55,7 @@ Simulate a slow network
 Command line options
 --------------------
 
-amensia can only run tca with no options. Any argument is ignored. However, tca *has* options. You can enable
+amnesia can only run tca with no options. Any argument is ignored. However, tca *has* options. You can enable
 them editing /usr/local/bin/tca, adding `sys.argv[1:]` to the list of arguments.
 
 Debug more
