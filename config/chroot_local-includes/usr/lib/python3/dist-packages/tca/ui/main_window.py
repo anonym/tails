@@ -489,7 +489,7 @@ class StepErrorMixin:
             utc_dt = aware_dt.astimezone(pytz.utc)
             self.app.portal.call_async("set-system-time", str(utc_dt))
         time_dialog.destroy()
-        # TODO: allow Connect to Tor to be called
+        self.state["error"]["fix_attempt"] = True
         self._step_error_submit_allowed()
 
     def cb_step_error_btn_captive_clicked(self, *args):
