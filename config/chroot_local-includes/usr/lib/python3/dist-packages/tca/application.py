@@ -53,7 +53,7 @@ class TCAApplication(Gtk.Application):
             self.config_buf,
             self.state_buf,
         )
-        self.configurator.load_tor_connection_conf()
+        self.configurator.load_conf_from_tor()
         self.portal = GJsonRpcClient(portal_sock)
         self.portal.connect("response-error", self.on_portal_error)
         self.portal.connect("response", self.on_portal_response)
