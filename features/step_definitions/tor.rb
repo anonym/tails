@@ -1,3 +1,5 @@
+require 'json'
+
 def iptables_chains_parse(iptables, table = 'filter')
   assert(block_given?)
   cmd = "#{iptables}-save -c -t #{table} | iptables-xml"
@@ -653,5 +655,28 @@ Then /^Tor is using the same configuration as before$/ do
   assert_equal(
     @tor_success_configs[-2],
     @tor_success_configs[-1]
+  )
+end
+
+Then /^tca.conf is empty$/ do
+  $vm.file_empty?('/var/lib/tca/tca.conf')
+end
+
+def tca_conf(conf_file = '/var/lib/tca/tca.conf')
+  JSON.parse($vm.file_content(conf_file))
+end
+
+Then /^tca.conf includes the configured bridges$/ do
+  assert_equal(
+    @bridge_hosts,
+    tca_conf['tor']['bridges'].map do |bridge|
+      bridge_parts = bridge.split
+      bridge_info = if bridge_parts[0] == 'obfs4'
+                      bridge_parts[1]
+                    else
+                      bridge_parts[0]
+                    end.split(':')
+      { address: bridge_info[0], port: bridge_info[1].to_i }
+    end
   )
 end
