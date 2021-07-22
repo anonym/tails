@@ -308,7 +308,7 @@ class TorConnectionConfig:
         bridges = self.__class__.parse_bridge_lines(bridges)
         self.bridges.extend(bridges)
 
-    def default_bridges(self, only_type: Optional[str] = None):
+    def enable_default_bridges(self, only_type: Optional[str] = None):
         """
         Set default bridges.
 
