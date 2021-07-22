@@ -14,12 +14,14 @@ Feature: Using Tails with Tor bridges and pluggable transports
   Scenario: Using normal bridges
     When I configure some normal bridges in the Tor Connection Assistant
     Then Tor is ready
+    And tca.conf includes the configured bridges
     And available upgrades have been checked
     And all Internet traffic has only flowed through the configured bridges
 
   Scenario: Using obfs4 pluggable transports
     When I configure some obfs4 bridges in the Tor Connection Assistant
     Then Tor is ready
+    And tca.conf includes the configured bridges
     And available upgrades have been checked
     And all Internet traffic has only flowed through the configured bridges
 
@@ -27,6 +29,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
     When I configure the default bridges in the Tor Connection Assistant
     Then Tor is ready
     And Tor is configured to use the default bridges
+    And tca.conf is empty
     And available upgrades have been checked
     And all Internet traffic has only flowed through the configured bridges
 
@@ -34,6 +37,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
     Given the Tor network is blocked
     When I configure a direct connection in the Tor Connection Assistant
     Then Tor is ready
+    And tca.conf is empty
     And available upgrades have been checked
     And Tor is configured to use the default bridges
     And all Internet traffic has only flowed through the configured bridges
@@ -42,11 +46,13 @@ Feature: Using Tails with Tor bridges and pluggable transports
     Given the Tor network and default bridges are blocked
     When I try to configure a direct connection in the Tor Connection Assistant
     Then the Tor Connection Assistant reports that it failed to connect
+    And tca.conf is empty
     # TCA does not have a simple "retry" so we restart it
     And I close the Tor Connection Assistant
     Given the Tor network and default bridges are unblocked
     And I start "Tor Connection" via GNOME Activities Overview
     Then Tor is ready
+    And tca.conf is empty
     And available upgrades have been checked
     # XXX: When #18470 is resolved, uncomment the following step
     #And all Internet traffic has only flowed through Tor
