@@ -404,30 +404,14 @@ class TorLauncherUtils:
         data = extra
         if successful_connect:
             data.update({"tor": self.tor_connection_config.to_dict()})
-        self.config_buf.seek(0, os.SEEK_SET)
-        self.config_buf.truncate()
-        self.config_buf.write(json.dumps(data, indent=2))
-        self.config_buf.flush()
+        encode_to_json_buf(data, self.config_buf)
 
         # Save configuration to torrc
         if successful_connect:
             self.stem_controller.save_conf()
 
     def read_tca_conf(self):
-        self.config_buf.seek(0, os.SEEK_END)
-        size = self.config_buf.tell()
-        if not size:
-            log.debug("Empty config file")
-            return
-        self.config_buf.seek(0)
-        try:
-            obj = json.load(self.config_buf)
-        except json.JSONDecodeError:
-            log.warning("Invalid config file")
-            return
-        finally:
-            self.config_buf.seek(0)
-        return obj
+        return decode_json_from_buf(self.config_buf)
 
     def apply_conf(self):
         tor_conf = self.tor_connection_config.to_tor_conf()
@@ -540,6 +524,30 @@ def backoff_wait(
         total_sleep += sleep_time
         sleep_time = increment(sleep_time)
         yield
+
+
+def decode_json_from_buf(buf):
+    buf.seek(0, os.SEEK_END)
+    size = buf.tell()
+    if not size:
+        log.debug("Empty file")
+        return
+    buf.seek(0)
+    try:
+        obj = json.load(buf)
+    except json.JSONDecodeError:
+        log.warning("Invalid file")
+        return
+    finally:
+        buf.seek(0)
+    return obj
+
+
+def encode_to_json_buf(data, buf):
+    buf.seek(0, os.SEEK_SET)
+    buf.truncate()
+    buf.write(json.dumps(data, indent=2))
+    buf.flush()
 
 
 def main():
