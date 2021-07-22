@@ -343,15 +343,20 @@ class TorConnectionConfig:
         return config
 
     @classmethod
-    def load_from_dict(cls, obj):
+    def load_from_dict(cls, obj, load_proxy=False):
         """this method is suitable to retrieve configuration from a JSON object"""
         config = cls()
         config.bridges = obj.get("bridges", [])
-        proxy = obj.get("proxy", None)
-        if proxy is not None:
-            config.proxy = TorConnectionProxy.from_obj(proxy)
-        else:
-            config.proxy = TorConnectionProxy.noproxy()
+        # For now we ignore saved proxy configuration: our configuration
+        # is global, while proxy settings only make sense per network.
+        # When we implement #18423, we should drop the conditional
+        # and the load_proxy argument.
+        if load_proxy:
+            proxy = obj.get("proxy", None)
+            if proxy is not None:
+                config.proxy = TorConnectionProxy.from_obj(proxy)
+            else:
+                config.proxy = TorConnectionProxy.noproxy()
         return config
 
     def to_dict(self) -> dict:
