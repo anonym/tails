@@ -385,9 +385,9 @@ def tca_configure(mode, &block)
   else
     raise "bad TCA configuration mode '#{mode}'"
   end
-  # XXX: We generally run this right after TCA has started, apparently
+  # We generally run this right after TCA has started, which might be
   # so early that clicking the radio button doesn't always work, so we
-  # retry. Can this be fixed in TCA instead some how?
+  # have to retry.
   radio_button = tor_connection_assistant.child(
     radio_button_label, roleName: 'radio button'
   )
