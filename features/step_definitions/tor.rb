@@ -399,13 +399,6 @@ def tca_configure(mode, &block)
   tor_connection_assistant.child('Connect to _Tor', roleName: 'push button')
                           .click
   step 'the Tor Connection Assistant connects to Tor'
-  # XXX: we're so fast closing TCA here that it's done before it
-  # issues the SAVECONF, but seemingly only for the "DisableNetwork=0"
-  # part, resulting in a lot of breakage. Ideally we would fix this in
-  # TCA itself, since a user could be this fast too, theoretically.
-  try_for(10, msg: 'DisableNetwork is still set in torrc') do
-    $vm.execute('grep "DisableNetwork 1" /etc/tor/torrc').failure?
-  end
   @screen.press('alt', 'F4')
 end
 
