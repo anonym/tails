@@ -470,13 +470,10 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
-  # First we wait for tor to be running and its control port to be open...
+  # First we wait for tor's control port to be ready...
   try_for(60) do
-    $vm.execute_successfully('systemctl -q is-active tor@default.service')
-    $vm.execute('ss -tlpn').stdout.chomp.split("\n").any? do |line|
-      _, _, _, listen_ip_port, _, user_pid, _ = line.split
-      listen_ip_port == '127.0.0.1:9052' && !user_pid['users:(("tor"'].nil?
-    end
+    $vm.execute_successfully('tor_control_getinfo version', libs: 'tor')
+    true
   end
   # ... so we can ask if the tor's networking is disabled, in which
   # case Tor Connection Assistant has not been dealt with yet. If
