@@ -483,7 +483,15 @@ Given /^Tor is ready$/ do
   # case, where it is not important for the test scenario that we go
   # through the extra hassle and use bridges, so we simply attempt a
   # direct connection.
-  if $vm.execute_successfully('tor_control_getconf DisableNetwork', libs: 'tor').stdout.chomp == '1'
+  x = nil
+  try_for(10) do
+    $vm.execute('pidof tor')
+    $vm.execute('lsof -i :9052')
+    $vm.execute('systemctl status tor@default.service')
+    x = $vm.execute_successfully('tor_control_getconf DisableNetwork', libs: 'tor')
+    true
+  end
+  if x.stdout.chomp == '1'
     # This variable is initialized to nil in each scenario, and only
     # ever set to true in some previously run step that configures tor
     # to use PTs.
