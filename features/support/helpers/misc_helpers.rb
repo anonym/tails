@@ -150,7 +150,10 @@ def force_new_tor_circuit
     # We sleep an extra second to avoid tight timings.
     sleep interval - elapsed + 1 if elapsed.positive? && elapsed < interval
   end
-  $vm.execute_successfully('tor_control_send "signal NEWNYM"', libs: 'tor')
+  $vm.execute_successfully(
+    'tor_control_stem_wrapper "controller.signal(stem.Signal.NEWNYM)"',
+    libs: 'tor'
+  )
   $__last_newnym = Time.now
 end
 
