@@ -14,6 +14,7 @@ from logging import getLogger
 import socket
 import time
 from subprocess import Popen
+from typing import List
 
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol, JSONRPCParseError
 from tinyrpc.protocols import RPCRequest, RPCResponse
@@ -52,7 +53,7 @@ class ForkingUnixServer(socketserver.ForkingMixIn, FDUnixStreamServer):
 
 
 class Command:
-    def __init__(self, cmd: list, arguments: bool):
+    def __init__(self, cmd: List[str], arguments: bool):
         self.cmd = cmd
         self.arguments = arguments
 
@@ -101,7 +102,7 @@ class Handler(socketserver.StreamRequestHandler):
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
 
-        "set-system-time": Command(['date', '-s'], True),
+        "set-system-time": Command(['/usr/local/lib/tails-set-date'], True),
     }
     valid_commands = set(spawn_commands.keys())
 
