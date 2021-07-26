@@ -24,6 +24,7 @@ import systemd.daemon
 from tailslib.logutils import configure_logging
 from tailslib.systemd import systemd_ready
 from tailslib.gnome import gnome_env_vars
+from tailslib.persistence import launch_persistence_setup
 from tailslib import LIVE_USERNAME
 
 log = getLogger("tca-portal")
@@ -77,6 +78,15 @@ class UserCommand(Command):
         return args
 
 
+class PersistenceSetup:
+    def __init__(self, *args):
+        self.args = args
+
+    def run(self, request: RPCRequest):
+        log.debug("Running tails-persistence-setup with args %s", self.args)
+        launch_persistence_setup(*self.args)
+
+
 class Handler(socketserver.StreamRequestHandler):
     """
     This class implements the JSON-RPC line-protocol + some glue code to call relevant actions.
@@ -100,6 +110,12 @@ class Handler(socketserver.StreamRequestHandler):
         "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
+        "enable-tor-configuration-persistence": PersistenceSetup(
+             "--no-gui", "--no-display_finished_message",
+             "--force_enable_preset", "TorConfiguration"),
+        "disable-tor-configuration-persistence": PersistenceSetup(
+             "--no-gui", "--no-display_finished_message",
+             "--force_disable_preset", "TorConfiguration"),
     }
     valid_commands = set(spawn_commands.keys())
 
