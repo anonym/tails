@@ -400,6 +400,12 @@ class TorLauncherUtils:
                 self.stem_controller
             )
 
+    def load_conf_from_file(self):
+        if self.tor_connection_config is None:
+            self.tor_connection_config = TorConnectionConfig.load_from_dict(
+                self.read_tca_conf().get("tor", {})
+            )
+
     def save_conf(self):
         if self.tor_connection_config is None:
             return

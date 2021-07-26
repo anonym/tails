@@ -53,7 +53,10 @@ class TCAApplication(Gtk.Application):
             self.config_buf,
             self.state_buf,
         )
-        self.configurator.load_conf_from_tor()
+        if self.has_been_started_already():
+            self.configurator.load_conf_from_tor()
+        else:
+            self.configurator.load_conf_from_file()
         self.portal = GJsonRpcClient(portal_sock)
         self.portal.connect("response-error", self.on_portal_error)
         self.portal.connect("response", self.on_portal_response)
@@ -66,6 +69,9 @@ class TCAApplication(Gtk.Application):
         self.last_nm_state = None
         self._tor_is_working: bool = TOR_HAS_BOOTSTRAPPED_PATH.exists()
         self.tor_info: Dict[str, Any] = {"DisableNetwork": None}
+
+    def has_been_started_already(self):
+        return (self.configurator.read_tca_state() is not None)
 
     def do_monitor_tor_is_working(self):
         # init tor-ready monitoring
