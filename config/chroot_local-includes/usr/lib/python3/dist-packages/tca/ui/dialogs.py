@@ -69,9 +69,6 @@ def get_time_dialog():
         builder.get_object("btn_apply").set_sensitive(is_valid())
         return
 
-    def on_apply(*args):
-        time_dialog.emit("response", Gtk.ResponseType.APPLY)
-
     now = datetime.datetime.now()
     builder.get_object("hour").set_range(0, 23)
     builder.get_object("hour").set_value(now.hour)
@@ -95,7 +92,7 @@ def get_time_dialog():
         "clicked", lambda *_: time_dialog.response(Gtk.ResponseType.CANCEL)
     )
     builder.get_object("btn_apply").connect(
-        "clicked", lambda *_: time_dialog.response(Gtk.ResponseType.CANCEL)
+        "clicked", lambda *_: time_dialog.response(Gtk.ResponseType.APPLY)
     )
 
     return time_dialog
