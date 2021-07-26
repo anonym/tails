@@ -55,18 +55,6 @@ Feature: Time syncing
     And the computer boots Tails
     Then the system clock is just past Tails' source date
 
-  Scenario: Anti-test: Users east of UTC can't connect to obfs4 bridges
-    Given a computer
-    And the hardware clock is set to "+8 hours"
-    And I start the computer
-    And the computer boots Tails
-    And I log in to a new session
-    And all notifications have disappeared
-    And the network is plugged
-    And the Tor Connection Assistant autostarts
-    When I unsuccessfully configure some obfs4 bridges in the Tor Connection Assistant
-    Then the Tor Connection Assistant reports that it failed to connect
-
   Scenario: Users east of UTC can connect to obfs4 bridges when they set the time
     Given a computer
     And the network is unplugged
@@ -75,11 +63,15 @@ Feature: Time syncing
     And the computer boots Tails
     And I log in to a new session
     And all notifications have disappeared
-    When I set the time in TCA to "+8 hours" and the time zone to "Asia/Shanghai"
-    Then Tails clock is less than 5 minutes incorrect
+    And I capture all network traffic
     And the network is plugged
     And the Tor Connection Assistant autostarts
-    When I configure some obfs4 bridges in the Tor Connection Assistant
+    # Anti-test: Users east of UTC can't connect to obfs4 bridges
+    When I unsuccessfully configure some obfs4 bridges in the Tor Connection Assistant
+    Then the Tor Connection Assistant reports that it failed to connect
+    # The "set time" button allows users to recover from this bug
+    When I set the time zone in TCA to "Asia/Shanghai"
+    Then Tails clock is less than 5 minutes incorrect
+    When I click on "Connect to Tor" button
     Then Tor is ready
     And all Internet traffic has only flowed through the configured bridges
-

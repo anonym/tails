@@ -579,27 +579,36 @@ Then /^I cannot click the "Connect to Tor" button$/ do
   )
 end
 
-When /^I set the time in TCA to "([^"]*)" and the time zone to "([^"]*)"$/ do |time, timezone|
-  # TODO: DisableNetwork; SAVECONF; stop tor@default
-  # XXX: that's a pointless test!
-  $vm.execute_successfully(
-    "tor_control_setconf 'DisableNetwork=1'", libs: 'tor'
-  )
-  $vm.execute_successfully(
-    "tor_control_send 'SAVECONF'", libs: 'tor'
-  )
-  $vm.execute_successfully("systemctl stop tor@default")
 
-  host_time = cmd_helper(['date', '-d', time, '+%F %T'], env: {"TZ" => "UTC"})
-  STDERR.puts "Host time: #{host_time}"
-  $vm.execute_successfully(%Q!date -s "@$(TZ=#{timezone} date -d "#{host_time}" +%s)"!)
-  new_time = $vm.execute_successfully('date').stdout
-  STDERR.puts "Time set to #{new_time}"
+When /^I set the time zone in TCA to "([^"]*)"$/ do |timezone|
+  # pause
+  tor_connection_assistant.child('Set Time').click
+  time_dialog = tor_connection_assistant.child('Tor Connection - Set Time', roleName: 'dialog', showingOnly: true)
+  select_tz = time_dialog.child('Time zone', roleName: 'panel').child(roleName: 'combo box')
 
-  $vm.execute_successfully("systemctl start tor@default")
-  $vm.execute_successfully(
-    "tor_control_setconf 'DisableNetwork=0'", libs: 'tor'
-  )
+  # give focus to the combo box without selecting anything
+  select_tz.click
+  select_tz.pressKey('Esc')
+
+  # XXX: this is slow
+  #   it could probably be improved in many ways, but the best thing would be to make it easier to use for
+  #   users, too. So don't improve this code, improve the UI itself!
+  # Note that just doing select_tc.child(timezone).click doesn't work: it might be outside the screen
+  # We could do a simple while loop; however, if anything goes wrong, that could become an infinite loop. This
+  # is instead guaranteed to end at some point.
+  select_tz.children(roleName: 'menu item').length.times do
+    select_tz.pressKey('Down')
+    break if select_tz.name == timezone
+  end
+
+  try_for(5) do
+    begin
+      time_dialog.child('Apply', roleName: 'push button').click
+      true
+    rescue Dogtail::Failure
+      false
+    end
+  end
 end
 
 
