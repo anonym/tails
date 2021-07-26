@@ -239,7 +239,9 @@ When /^I disable the first persistence preset$/ do
   @screen.press('alt', 'F4')
 end
 
-Given /^I create a persistent partition( for Additional Software)?$/ do |asp|
+Given /^I create a persistent partition( with the default settings| for Additional Software)?$/ do |mode|
+  default_settings = mode
+  asp = mode == ' for Additional Software'
   unless asp
     step 'I start "Configure persistent volume" via GNOME Activities Overview'
   end
@@ -248,7 +250,7 @@ Given /^I create a persistent partition( for Additional Software)?$/ do |asp|
   @screen.press('Tab')
   @screen.type(@persistence_password, ['Return'])
   @screen.wait('PersistenceWizardPresets.png', 300)
-  step 'I enable all persistence presets' unless asp
+  step 'I enable all persistence presets' unless default_settings
 end
 
 def check_disk_integrity(name, dev, scheme)
