@@ -14,7 +14,7 @@ Feature: Using persistent Tor bridges and pluggable transports
     And /var/lib/tca is not configured to persist
     When the network is plugged
     And the Tor Connection Assistant autostarts
-    And I configure some obfs4 bridges and choose to save them to Persistent Storage
+    And I configure some persistent obfs4 bridges in the Tor Connection Assistant
     And Tor is ready
     Then tca.conf includes the configured bridges
     And /var/lib/tca is configured to persist

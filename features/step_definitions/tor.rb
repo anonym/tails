@@ -474,7 +474,7 @@ Given /^I treat connections to anything but the default bridges as leaks$/ do
   end
 end
 
-When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |bridge_type, mode|
+When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |persistent, bridge_type, mode|
   @tor_is_using_pluggable_transports = bridge_type != 'normal'
   # If the "mode" isn't specified we pick one that makes sense for
   # what is requested.
@@ -521,6 +521,11 @@ When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?:
       else
         assert_equal(:hide, config_mode)
         raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
+      end
+      if persistent
+        tor_connection_assistant.child('Save bridges to Persistent Storage',
+                                       roleName: 'check box')
+                                .click
       end
     end
   end
