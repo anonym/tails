@@ -48,8 +48,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
     And I start "Tor Connection" via GNOME Activities Overview
     Then Tor is ready
     And available upgrades have been checked
-    # XXX: When #18470 is resolved, uncomment the following step
-    #And all Internet traffic has only flowed through Tor
+    And all Internet traffic has only flowed through Tor
 
   Scenario: Normal bridges are not allowed in "Hide" mode
     When I try to configure some normal bridges in the Tor Connection Assistant in hide mode
