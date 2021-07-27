@@ -561,6 +561,24 @@ else
   raise 'TCA managed to connect to Tor but was expected to fail'
 end
 
+When /^I accept Tor Connection's offer to use my persistent bridges$/ do
+  assert(
+    tor_connection_assistant.child('Configure a Tor bridge',
+                                   roleName: 'check box')
+      .checked
+  )
+  tor_connection_assistant.child('Connect to _Tor',
+                                 roleName: 'push button')
+                          .click
+  assert(
+    tor_connection_assistant.child('Type in a bridge that I already know',
+                                   roleName: 'radio button').checked
+  )
+  persistent_bridges_lines = tor_connection_assistant.child(roleName: 'text')
+                                                     .text.chomp.split("\n")
+  assert(persistent_bridges_lines.size > 0)
+end
+
 When /^I close the Tor Connection Assistant$/ do
   $vm.execute(
     'pkill -f /usr/lib/python3/dist-packages/tca/application.py'
