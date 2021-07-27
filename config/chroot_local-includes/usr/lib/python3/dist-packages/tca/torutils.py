@@ -407,7 +407,7 @@ class TorLauncherUtils:
         # Save configuration to torrc
         self.stem_controller.save_conf()
 
-    def save_state(self, state):
+    def save_tca_state(self, state):
         encode_to_json_buf(state, self.state_buf)
 
     def read_tca_conf(self):
@@ -578,7 +578,7 @@ def main():
         return 1
 
     launcher.save_conf()
-    launcher.save_state({"ui": {}})
+    launcher.save_tca_state({"ui": {}})
 
     return 0
 

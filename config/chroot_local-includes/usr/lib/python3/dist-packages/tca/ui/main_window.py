@@ -724,7 +724,7 @@ class TCAMainWindow(
             data = {"ui": self.state}
         else:
             data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
-        self.app.configurator.save_state(data)
+        self.app.configurator.save_tca_state(data)
         if successful_connect:
             self.app.configurator.save_conf()
 
