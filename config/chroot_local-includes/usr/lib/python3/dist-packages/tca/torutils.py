@@ -359,11 +359,15 @@ class TorConnectionConfig:
                 config.proxy = TorConnectionProxy.noproxy()
         return config
 
-    def to_dict(self) -> dict:
-        return {
+    def to_dict(self, include_default_bridges: bool = True) -> dict:
+        data = {
             "bridges": self.bridges,
             "proxy": self.proxy.to_dict() if self.proxy is not None else None,
         }
+        if not include_default_bridges and \
+           set(data.get("bridges", [])) == set(self.get_default_bridges()):
+            data["bridges"] = []
+        return data
 
     def to_tor_conf(self) -> Dict[str, Any]:
         """
@@ -401,7 +405,12 @@ class TorLauncherUtils:
             return
 
         # Save configuration to our own configuration file
-        data = {"tor": self.tor_connection_config.to_dict()}
+        data = {
+            "tor": self.tor_connection_config.to_dict(
+                # We only want to persist custom bridges, not the default ones
+                include_default_bridges=False
+            )
+        }
         encode_to_json_buf(data, self.config_buf)
 
         # Save configuration to torrc
