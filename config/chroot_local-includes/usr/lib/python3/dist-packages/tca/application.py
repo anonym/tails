@@ -71,7 +71,7 @@ class TCAApplication(Gtk.Application):
         self.tor_info: Dict[str, Any] = {"DisableNetwork": None}
 
     def has_been_started_already(self):
-        return (self.configurator.read_tca_state() is not None)
+        return (self.configurator.read_tca_state() != {})
 
     def do_monitor_tor_is_working(self):
         # init tor-ready monitoring

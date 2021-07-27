@@ -549,13 +549,13 @@ def decode_json_from_buf(buf):
     size = buf.tell()
     if not size:
         log.debug("Empty file")
-        return
+        return {}
     buf.seek(0)
     try:
         obj = json.load(buf)
     except json.JSONDecodeError:
         log.warning("Invalid file")
-        return
+        return {}
     finally:
         buf.seek(0)
     return obj
