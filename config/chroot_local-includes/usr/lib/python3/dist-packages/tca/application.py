@@ -57,6 +57,10 @@ class TCAApplication(Gtk.Application):
             self.configurator.load_conf_from_tor()
         else:
             self.configurator.load_conf_from_file()
+        self.log.debug(
+            "Tor connection config: %s",
+            self.configurator.tor_connection_config.to_dict()
+        )
         self.portal = GJsonRpcClient(portal_sock)
         self.portal.connect("response-error", self.on_portal_error)
         self.portal.connect("response", self.on_portal_response)
