@@ -373,7 +373,7 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
   raise TCAConnectionFailure, 'TCA failed to connect to Tor' if failure_reported
 end
 
-def tca_configure(mode, &block)
+def tca_configure(mode, connect: true, &block)
   step 'the Tor Connection Assistant is running'
   case mode
   when :easy
@@ -394,6 +394,7 @@ def tca_configure(mode, &block)
     radio_button.checked
   end
   block.call if block_given?
+  return unless connect
   tor_connection_assistant.child('Connect to _Tor', roleName: 'push button')
                           .click
   step 'the Tor Connection Assistant connects to Tor'
@@ -405,6 +406,10 @@ def tca_configure(mode, &block)
     $vm.execute('grep "DisableNetwork 1" /etc/tor/torrc').failure?
   end
   @screen.press('alt', 'F4')
+end
+
+When(/^I choose to connect to Tor automatically$/) do
+  tca_configure(:easy, connect: false)
 end
 
 When /^I configure a direct connection in the Tor Connection Assistant$/ do
