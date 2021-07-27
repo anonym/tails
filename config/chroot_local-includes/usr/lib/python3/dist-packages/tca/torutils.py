@@ -396,12 +396,14 @@ class TorLauncherUtils:
 
     def load_conf_from_tor(self):
         if self.tor_connection_config is None:
+            log.debug("Loading configuration from tor")
             self.tor_connection_config = TorConnectionConfig.load_from_tor_stem(
                 self.stem_controller
             )
 
     def load_conf_from_file(self):
         if self.tor_connection_config is None:
+            log.debug("Loading configuration from file")
             self.tor_connection_config = TorConnectionConfig.load_from_dict(
                 self.read_tca_conf().get("tor", {})
             )
