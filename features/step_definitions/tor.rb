@@ -659,7 +659,7 @@ Then /^Tor is using the same configuration as before$/ do
 end
 
 Then /^tca.conf is empty$/ do
-  $vm.file_empty?('/var/lib/tca/tca.conf')
+  assert($vm.file_empty?('/var/lib/tca/tca.conf'))
 end
 
 def tca_conf(conf_file = '/var/lib/tca/tca.conf')
