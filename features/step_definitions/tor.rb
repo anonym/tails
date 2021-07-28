@@ -581,33 +581,14 @@ end
 
 
 When /^I set the time zone in TCA to "([^"]*)"$/ do |timezone|
-  # pause
   tor_connection_assistant.child('Set Time').click
   time_dialog = tor_connection_assistant.child('Tor Connection - Set Time', roleName: 'dialog', showingOnly: true)
   select_tz = time_dialog.child('Time zone', roleName: 'panel').child(roleName: 'combo box')
-
-  # give focus to the combo box without selecting anything
-  select_tz.click
-  select_tz.pressKey('Esc')
-
-  # XXX: this is slow
-  #   it could probably be improved in many ways, but the best thing would be to make it easier to use for
-  #   users, too. So don't improve this code, improve the UI itself!
-  # Note that just doing select_tc.child(timezone).click doesn't work: it might be outside the screen
-  # We could do a simple while loop; however, if anything goes wrong, that could become an infinite loop. This
-  # is instead guaranteed to end at some point.
-  select_tz.children(roleName: 'menu item').length.times do
-    select_tz.pressKey('Down')
-    break if select_tz.name == timezone
-  end
+  select_tz.combovalue = timezone
 
   try_for(5) do
-    begin
-      time_dialog.child('Apply', roleName: 'push button').click
-      true
-    rescue Dogtail::Failure
-      false
-    end
+    time_dialog.child('Apply', roleName: 'push button').click
+    true
   end
 end
 
