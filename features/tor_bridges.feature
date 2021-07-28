@@ -29,7 +29,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
     When I configure the default bridges in the Tor Connection Assistant
     Then Tor is ready
     And Tor is configured to use the default bridges
-    And tca.conf is empty
+    And tca.conf includes no bridge
     And available upgrades have been checked
     And all Internet traffic has only flowed through the configured bridges
 
@@ -37,7 +37,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
     Given the Tor network is blocked
     When I configure a direct connection in the Tor Connection Assistant
     Then Tor is ready
-    And tca.conf is empty
+    And tca.conf includes no bridge
     And available upgrades have been checked
     And Tor is configured to use the default bridges
     And all Internet traffic has only flowed through the configured bridges
@@ -52,7 +52,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
     Given the Tor network and default bridges are unblocked
     And I start "Tor Connection" via GNOME Activities Overview
     Then Tor is ready
-    And tca.conf is empty
+    And tca.conf includes no bridge
     And available upgrades have been checked
     # XXX: When #18470 is resolved, uncomment the following step
     #And all Internet traffic has only flowed through Tor

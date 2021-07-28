@@ -666,6 +666,10 @@ def tca_conf(conf_file = '/var/lib/tca/tca.conf')
   JSON.parse($vm.file_content(conf_file))
 end
 
+Then /^tca.conf includes no bridge$/ do
+  assert_equal([], tca_conf['tor']['bridges'])
+end
+
 Then /^tca.conf includes the configured bridges$/ do
   assert_equal(
     @bridge_hosts,
