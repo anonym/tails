@@ -93,19 +93,15 @@ class StepChooseHideMixin:
             else:
                 self.builder.get_object("radio_unnoticed_yes").set_sensitive(False)
                 self.builder.get_object("radio_unnoticed_no").set_active(True)
-                if self.state["hide"]["bridge"]:
-                    self.builder.get_object("radio_unnoticed_no_bridge").set_active(
-                        True
-                    )
         elif (
             "hide" in self.state["hide"]
         ):  # the user is changing her mind before connecting to Tor
             hide = self.state["hide"]["hide"]
             self.builder.get_object("radio_unnoticed_yes").set_active(hide)
             self.builder.get_object("radio_unnoticed_no").set_active(not hide)
-            self.builder.get_object("radio_unnoticed_no_bridge").set_active(
-                self.state["hide"]["bridge"]
-            )
+        self.builder.get_object("radio_unnoticed_no_bridge").set_active(
+            self.state["hide"]["bridge"]
+        )
 
     def _step_hide_next(self):
         if self.state["hide"]["bridge"]:
@@ -663,12 +659,17 @@ class TCAMainWindow(
                 self.state.update(content)
         else:
             data = self.app.configurator.read_tca_state()
+            config = self.app.configurator.tor_connection_config.to_dict()
             if data and data.get("ui"):
                 for key in ["hide", "bridge"]:
                     self.state[key].update(data["ui"].get(key, {}))
                 self.state["progress"]["started"] = (
                     data["ui"].get("progress", {}).get("started", False)
                 )
+            elif config and config.get("bridges"):
+                self.state["hide"]["bridge"] = True
+                self.state["bridge"]["kind"] = "manual"
+                self.state["bridge"]["bridges"] = config["bridges"]
             self.state["progress"]["success"] = self.app.is_tor_working
             if self.state["progress"]["success"]:
                 self.state["step"] = "progress"
