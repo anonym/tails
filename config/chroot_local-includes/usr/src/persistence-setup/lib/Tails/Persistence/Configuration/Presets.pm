@@ -290,9 +290,10 @@ method set_state_from_lines (@lines) {
     }
 }
 
-method set_state_from_overrides (ArrayRef[Str] $overrides) {
+method set_state_from_overrides (ArrayRef[Str] $enable, ArrayRef[Str] $disable) {
     foreach my $atom ($self->atoms) {
-        $atom->enabled(1) if grep { $atom->id eq $_ } @$overrides;
+        $atom->enabled(1) if grep { $atom->id eq $_ } @$enable;
+        $atom->enabled(0) if grep { $atom->id eq $_ } @$disable;
     }
 }
 
