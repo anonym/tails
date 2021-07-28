@@ -196,11 +196,11 @@ class TorConnectionConfig:
     # Tor's Sandbox conf needs special care since this value cannot be
     # changed at runtime, only through torrc and a tor restart. Those
     # privileged actions are performed through tca-portal.
-    def set_tor_sandbox(self, setting: int):
-        self.portal.call_async("set-tor-sandbox", [str(setting)])
+    def set_tor_sandbox(self, setting: bool):
+        self.portal.call_async("set-tor-sandbox", [str(int(setting))])
 
     def disable_bridges(self):
-        self.set_tor_sandbox(1)
+        self.set_tor_sandbox(True)
         self.bridges.clear()
 
     @classmethod
@@ -323,10 +323,7 @@ class TorConnectionConfig:
             raise ValueError("Can't set empty bridge list")
         self.bridges.clear()
         bridges = self.__class__.parse_bridge_lines(bridges)
-        if all([self.bridge_line_is_simple(b) for b in bridges]):
-            self.set_tor_sandbox(1)
-        else:
-            self.set_tor_sandbox(0)
+        self.set_tor_sandbox(all([self.bridge_line_is_simple(b) for b in bridges]))
         self.bridges.extend(bridges)
 
     def default_bridges(self, only_type: Optional[str] = None):
