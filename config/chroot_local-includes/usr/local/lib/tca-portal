@@ -51,7 +51,7 @@ class ForkingUnixServer(socketserver.ForkingMixIn, FDUnixStreamServer):
     timeout = None
 
 
-class Command:
+class BaseCommand:
     def __init__(self, cmd: list, arguments: bool):
         self.cmd = cmd
         self.arguments = arguments
@@ -68,11 +68,11 @@ class Command:
         Popen(cmd)
 
 
-class RootCommand(Command):
+class RootCommand(BaseCommand):
     pass
 
 
-class UserCommand(Command):
+class UserCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> list:
         drop = ["runuser", "-u", LIVE_USERNAME]
         env = ["env", *gnome_env_vars()]
