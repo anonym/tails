@@ -19,7 +19,7 @@ fi
 
 systemctl start tor@default.service
 
-# Block until controller is available, but with a timeout to no block
+# Block until controller is available, but with a timeout to not block
 # forever, although callers of this script will likely reach a bad
 # state if the controller is dead.
 TIMEOUT=10
