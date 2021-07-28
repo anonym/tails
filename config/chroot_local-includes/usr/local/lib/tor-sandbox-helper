@@ -5,6 +5,11 @@
 # Import tor_control_getconf(), tor_control_getinfo(), tor_set_in_torrc()
 . /usr/local/lib/tails-shell-library/tor.sh
 
+if [ "${1}" != 0 ] && [ "${1}" != 1 ]; then
+    echo "error: bad argument: ${1}" >&2
+    exit 1
+fi
+
 if [ "$(tor_control_getconf Sandbox)" = "${1}" ]; then
     exit 0
 fi
