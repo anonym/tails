@@ -528,15 +528,27 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
         raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
       end
       if persistent
+        # XXX: do this in the GUI once implemented there
+        warn 'Gory hack for tracer bullet dev approach!'
+        $vm.execute_successfully(
+          'tails-persistence-setup --no-gui --no-display_finished_message --force_enable_preset TorConfiguration'
+        )
         # XXX: this is a switch, not a checkbox
-        raise NotImplementedError
-        tor_connection_assistant.child('Save bridges to Persistent Storage',
-                                       roleName: 'check box')
-                                .click
+        # tor_connection_assistant.child('Save bridges to Persistent Storage',
+        #                                roleName: 'check box')
+        #                         .click
       end
     end
   end
   # rubocop:enable Metrics/BlockLength
+end
+
+When /^I disable saving bridges to Persistent Storage$/ do
+  # XXX: do this in the GUI once implemented there
+  warn 'Gory hack for tracer bullet dev approach!'
+  $vm.execute_successfully(
+    'tails-persistence-setup --no-gui --no-display_finished_message --force_disable_preset TorConfiguration'
+  )
 end
 
 When /^I try to configure a direct connection in the Tor Connection Assistant$/ do
