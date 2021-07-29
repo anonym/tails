@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import functools
 import os
 import sys
 import logging
@@ -52,7 +53,8 @@ class TCAApplication(Gtk.Application):
         self.portal.connect("response-error", self.on_portal_error)
         self.portal.connect("response", self.on_portal_response)
         self.portal.run()
-        self.configurator = TorLauncherUtils(self.portal, controller, self.config_buf)
+        set_tor_sandbox = functools.partial(self.portal.call_async, "set-tor-sandbox")
+        self.configurator = TorLauncherUtils(controller, self.config_buf, set_tor_sandbox)
         self.configurator.load_conf()
         self.netutils = TorLauncherNetworkUtils()
         self.args = args
