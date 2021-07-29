@@ -528,6 +528,8 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
         raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
       end
       if persistent
+        # XXX: this is a switch, not a checkbox
+        raise NotImplementedError
         tor_connection_assistant.child('Save bridges to Persistent Storage',
                                        roleName: 'check box')
                                 .click
