@@ -215,23 +215,6 @@ start_notification_helper() {
 
 start_notification_helper
 
-# Delegate time setting to other daemons if Tor connections work
-if tor_is_working; then
-	log "Tor has already opened a circuit"
-else
-	# Since Tor 0.2.3.x Tor doesn't download a consensus for
-	# clocks that are more than 30 days in the past or 2 days in
-	# the future.  For such clock skews we set the time to the
-	# authority's cert's valid-after date.
-	if is_clock_way_off; then
-		log "The clock is so badly off that Tor cannot download a consensus. Setting system time to the authority's cert's valid-after date and trying to fetch a consensus again..."
-		date --set="$(tor_cert_valid_after)" > /dev/null
-		systemctl reload tor@default.service
-	fi
-	wait_for_tor_consensus
-	maybe_set_time_from_tor_consensus
-fi
-
 wait_for_working_tor
 
 touch "$TORDATE_DONE_FILE"
