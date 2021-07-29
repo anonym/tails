@@ -91,6 +91,15 @@ def persistent_presets_ui_settings
   end
 end
 
+# Returns the list of mountpoints which are configured in persistence.conf
+def configured_persistent_mountpoints
+  $vm.file_content(
+    '/live/persistence/TailsData_unlocked/persistence.conf'
+  ).split("\n").map do |line|
+    line.split[0]
+  end
+end
+
 def recover_from_upgrader_failure
   $vm.execute('pkill --full tails-upgrade-frontend-wrapper')
   $vm.execute('killall tails-upgrade-frontend zenity')
@@ -1209,4 +1218,12 @@ Then /^(no )?persistent Greeter options were restored$/ do |no|
     $language = 'German'
     @screen.wait('TailsGreeterPersistentSettingsRestored.png', 10)
   end
+end
+
+Then /^(.*) is (?:still )?configured to persist$/ do |dir|
+  assert(configured_persistent_mountpoints.include?(dir))
+end
+
+Then /^(.*) is not configured to persist$/ do |dir|
+  assert(!configured_persistent_mountpoints.include?(dir))
 end
