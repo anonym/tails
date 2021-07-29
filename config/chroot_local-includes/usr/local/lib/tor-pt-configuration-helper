@@ -2,7 +2,7 @@
 
 # Import try_for()
 . /usr/local/lib/tails-shell-library/common.sh
-# Import tor_control_getconf(), tor_control_getinfo(), tor_set_in_torrc()
+# Import tor_control_getconf(), tor_set_in_torrc()
 . /usr/local/lib/tails-shell-library/tor.sh
 
 if [ "${1}" != 0 ] && [ "${1}" != 1 ]; then
@@ -23,9 +23,3 @@ if [ "${1}" = 0 ]; then
 fi
 
 systemctl start tor@default.service
-
-# Block until controller is available, but with a timeout to not block
-# forever, although callers of this script will likely reach a bad
-# state if the controller is dead.
-TIMEOUT=10
-try_for ${TIMEOUT} '[ -n "$(tor_control_getinfo version)" ]' 0.1

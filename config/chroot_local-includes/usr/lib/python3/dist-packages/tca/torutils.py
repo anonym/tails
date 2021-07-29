@@ -177,10 +177,12 @@ VALID_BRIDGE_TYPES = {"bridge", "obfs4"}
 class TorConnectionConfig:
     def __init__(
         self,
+        stem_controller: Controller,
         set_tor_sandbox: Callable[[bool], None],
         bridges: list = [],
         proxy: TorConnectionProxy = TorConnectionProxy.noproxy(),
     ):
+        self.stem_controller: Controller = stem_controller
         self.set_tor_sandbox_fn: Callable[[bool], None] = set_tor_sandbox
         self.bridges: List[str] = bridges
         self.proxy: TorConnectionProxy = proxy
@@ -196,7 +198,19 @@ class TorConnectionConfig:
     # Tor's Sandbox conf needs special care since this value cannot be
     # changed at runtime, only through torrc and a tor restart.
     def set_tor_sandbox(self, setting: bool):
-        self.set_tor_sandbox_fn(str(int(setting)))
+        requested_val = str(int(setting))
+        if requested_val == self.stem_controller.get_conf("Sandbox"):
+            return
+        self.set_tor_sandbox_fn(requested_val)
+        # The above function call's side-effects are async, so we have
+        # to wait until they are live.
+        start_time = time.time()
+        while requested_val != self.stem_controller.get_conf("Sandbox"):
+            time_delta = time.time() - start_time
+            if time_delta > 5.0:
+                log.warning("Timed out while waiting for async set-tor-sandbox call. Optimistically continuing any way...")
+                break
+            time.sleep(0.1)
 
     def disable_bridges(self):
         self.set_tor_sandbox(True)
@@ -355,7 +369,7 @@ class TorConnectionConfig:
         else:
             proxy = TorConnectionProxy.noproxy()
 
-        config = cls(set_tor_sandbox, bridges=bridges, proxy=proxy)
+        config = cls(stem_controller, set_tor_sandbox, bridges=bridges, proxy=proxy)
 
         return config
 
