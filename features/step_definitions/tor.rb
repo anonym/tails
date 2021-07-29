@@ -590,6 +590,17 @@ When /^I set the time zone in TCA to "([^"]*)"$/ do |timezone|
     time_dialog.child('Apply', roleName: 'push button').click
     true
   end
+
+  # wait for the dialog to be closed
+  try_for(30) do
+    begin
+      tor_connection_assistant.child('Set Time')
+    rescue Dogtail::Failure
+      true
+    else
+      false
+    end
+  end
 end
 
 
