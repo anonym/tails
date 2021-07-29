@@ -69,7 +69,7 @@ log = logging.getLogger(__name__)
 
 class StepOfflineHideMixin:
     def cb_step_offline_wificonf_clicked(self, user_data=None):
-        self.app.portal.call_async("open-wifi-config")
+        self.app.portal.call_async("open-wifi-config", None)
 
 class StepChooseHideMixin:
     """
@@ -441,16 +441,16 @@ class StepConnectProgressMixin:
             )
 
     def cb_step_progress_btn_starttbb_clicked(self, *args):
-        self.app.portal.call_async("open-tbb")
+        self.app.portal.call_async("open-tbb", None)
 
     def cb_step_progress_btn_reset_clicked(self, *args):
-        self.app.portal.call_async("tor/restart")
+        self.app.portal.call_async("tor/restart", None)
 
     def cb_step_progress_btn_monitor_clicked(self, *args):
-        self.app.portal.call_async("open-networkmonitor")
+        self.app.portal.call_async("open-networkmonitor", None)
 
     def cb_step_progress_btn_onioncircuits_clicked(self, *args):
-        self.app.portal.call_async("open-onioncircuits")
+        self.app.portal.call_async("open-onioncircuits", None)
 
 
 class StepErrorMixin:
@@ -474,7 +474,7 @@ class StepErrorMixin:
         self.change_box("proxy")
 
     def cb_step_error_btn_captive_clicked(self, *args):
-        self.app.portal.call_async("open-unsafebrowser")
+        self.app.portal.call_async("open-unsafebrowser", None)
 
         # XXX: for proper handling of the btn_submit, we'd better wait for the unsafe-browser to be closed
         # XXX: this is considered a "fix attempt" even if the unsafe-browser was not enabled, which is clearly
@@ -804,7 +804,7 @@ class TCAMainWindow(
         return True
 
     def on_link_help_clicked(self, label, uri: str):
-        self.app.portal.call_async("open-documentation", "--force-local", uri)
+        self.app.portal.call_async("open-documentation", None, "--force-local", uri)
 
     # Called from parent application
 
