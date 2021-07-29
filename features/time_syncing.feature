@@ -55,7 +55,7 @@ Feature: Time syncing
     And the computer boots Tails
     Then the system clock is just past Tails' source date
 
-  Scenario: Users east of UTC can connect to obfs4 bridges when they set the time
+  Scenario: I can connect to obfs4 bridges having a clock East of UTC
     Given a computer
     And the network is unplugged
     And the hardware clock is set to "+8 hours"
