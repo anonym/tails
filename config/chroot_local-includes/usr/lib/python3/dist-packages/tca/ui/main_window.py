@@ -308,7 +308,7 @@ class StepConnectProgressMixin:
                     _("Connecting to Tor without bridges…")
                 )
             elif self.state["bridge"].get("kind", "") == "default":
-                self.app.configurator.tor_connection_config.default_bridges(
+                self.app.configurator.tor_connection_config.enable_default_bridges(
                     only_type=self.state["bridge"]["default_method"]
                 )
                 self.get_object("label_status").set_text(
@@ -332,7 +332,7 @@ class StepConnectProgressMixin:
             return True
 
         def do_tor_connect_default_bridges():
-            self.app.configurator.tor_connection_config.default_bridges(
+            self.app.configurator.tor_connection_config.enable_default_bridges(
                 only_type="obfs4"
             )
             self.get_object("label_status").set_text(
@@ -656,13 +656,13 @@ class TCAMainWindow(
             "offline": {},
         }
         if self.app.args.debug_statefile is not None:
-            log.debug("loading statefile")
+            log.debug("loading debug statefile")
             with open(self.app.args.debug_statefile) as buf:
                 content = json.load(buf)
                 log.debug("content found %s", content)
                 self.state.update(content)
         else:
-            data = self.app.configurator.read_conf()
+            data = self.app.configurator.read_tca_state()
             if data and data.get("ui"):
                 for key in ["hide", "bridge"]:
                     self.state[key].update(data["ui"].get(key, {}))
@@ -720,11 +720,13 @@ class TCAMainWindow(
 
     def save_conf(self, successful_connect=False):
         log.info("Saving configuration (success=%s)", successful_connect)
-        if not successful_connect:
-            data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
-        else:
+        if successful_connect:
             data = {"ui": self.state}
-        self.app.configurator.save_conf(data, save_torrc=successful_connect)
+        else:
+            data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
+        self.app.configurator.save_tca_state(data)
+        if successful_connect:
+            self.app.configurator.save_conf()
 
     def get_screen_size(self) -> Tuple[int, int]:
         disp = Gdk.Display.get_default()
