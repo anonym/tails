@@ -566,7 +566,7 @@ Then /^the Tor Connection Assistant complains that normal bridges are not allowe
   )
 end
 
-When /^I click on "Connect to Tor" button$/ do
+When /^I click "Connect to Tor"$/ do
   btn = tor_connection_assistant.child('Connect to _Tor')
   assert_equal( "True", btn.get_field('sensitive'))
   btn.click
