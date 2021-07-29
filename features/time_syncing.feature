@@ -72,6 +72,6 @@ Feature: Time syncing
     # The "set time" button allows users to recover from this bug
     When I set the time zone in TCA to "Asia/Shanghai"
     Then Tails clock is less than 5 minutes incorrect
-    When I click on "Connect to Tor" button
+    When I click "Connect to Tor"
     Then Tor is ready
     And all Internet traffic has only flowed through the configured bridges
