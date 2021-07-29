@@ -10,8 +10,6 @@ Feature: Time syncing
     And Tor is ready
     Then Tails clock is less than 5 minutes incorrect
 
-  #11589
-  @fragile
   Scenario: Clock with host's time while using bridges
     Given I have started Tails from DVD without network and logged in
     When the network is plugged
@@ -20,8 +18,6 @@ Feature: Time syncing
     And Tor is ready
     Then Tails clock is less than 5 minutes incorrect
 
-  #11589
-  @fragile
   Scenario: Clock is one day in the future while using bridges
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+1 day"
