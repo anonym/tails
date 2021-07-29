@@ -24,6 +24,10 @@ from tca.torutils import (
 )
 from tca.ui.asyncutils import GJsonRpcClient
 from tailslib.logutils import configure_logging
+from tailslib.persistence import (
+    has_persistence,
+    has_unlocked_persistence,
+)
 
 
 gi.require_version("GLib", "2.0")
@@ -73,6 +77,8 @@ class TCAApplication(Gtk.Application):
         self.last_nm_state = None
         self._tor_is_working: bool = TOR_HAS_BOOTSTRAPPED_PATH.exists()
         self.tor_info: Dict[str, Any] = {"DisableNetwork": None}
+        self.has_persistence = has_persistence()
+        self.has_unlocked_persistence = has_unlocked_persistence()
 
     def has_been_started_already(self):
         return (self.configurator.read_tca_state() != {})
