@@ -56,11 +56,12 @@ Feature: Using Tails with Tor bridges and pluggable transports
     # XXX: When #18470 is resolved, uncomment the following step
     #And tca.conf includes no bridge
     And available upgrades have been checked
-    # It is a bit unclear here if the desired behavior of TCA is to
-    # get stuck with default bridges after an initial failure. See
-    # #18470 for details.
-    And Tor is configured to use the default bridges
-    And all Internet traffic has only flowed through the default bridges
+    # XXX: Due to #18470, sometimes we end up connecting with the default
+    # bridges, and sometimes we end up connecting directly (without bridges).
+    # Our test suite does not support this at the moment.
+    # Once #18470 is fixed, we should always connect directly,
+    # so we can uncomment the next step:
+    # And all Internet traffic has only flowed through Tor
 
   Scenario: Normal bridges are not allowed in "Hide" mode
     When I try to configure some normal bridges in the Tor Connection Assistant in hide mode
