@@ -18,7 +18,7 @@ set_mozilla_pref() {
     echo "${prefix}(\"${name}\", ${value});" >> "${file}"
 }
 
-exec_firefox_helper() {
+exec_firefox() {
     export LD_LIBRARY_PATH="${TBB_INSTALL}"
     export FONTCONFIG_PATH="${TBB_INSTALL}/TorBrowser/Data/fontconfig"
     export FONTCONFIG_FILE="fonts.conf"
