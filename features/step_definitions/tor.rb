@@ -471,14 +471,6 @@ end
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 
-Given /^I treat connections to anything but the default bridges as leaks$/ do
-  @bridge_hosts = []
-  $vm.file_content('/usr/share/tails/tca/default_bridges.txt').each_line do |line|
-    address, port = line.split[1].split(':')
-    @bridge_hosts << { address: address, port: port.to_i }
-  end
-end
-
 When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |persistent, bridge_type, mode|
   @tor_is_using_pluggable_transports = bridge_type != 'normal'
   # If the "mode" isn't specified we pick one that makes sense for
@@ -508,7 +500,6 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
       tor_connection_assistant.child('Use a default bridge',
                                      roleName: 'radio button')
                               .click
-      step 'I treat connections to anything but the default bridges as leaks'
     else
       tor_connection_assistant.child('Type in a bridge that I already know',
                                      roleName: 'radio button')
@@ -626,11 +617,24 @@ Then /^I cannot click the "Connect to Tor" button$/ do
   )
 end
 
-When /^all Internet traffic has only flowed through the configured bridges$/ do
-  assert_not_nil(@bridge_hosts, 'No bridges has been configured via the ' \
-                 "'I configure some ... bridges in the Tor Connection Assistant' step")
+Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
+  case flow_target
+  when 'Tor'
+    allowed_hosts = allowed_hosts_under_tor_enforcement
+  when 'the default bridges'
+    allowed_hosts = chutney_bridges('obfs4', chutney_tag: 'defbr').map do |b|
+      {address: b[:address], port: b[:port]}
+    end
+  when 'the configured bridges'
+    assert_not_nil(@bridge_hosts, 'No bridges has been configured via the ' \
+                                  "'I configure some ... bridges in the " \
+                                  "Tor Connection Assistant' step")
+    allowed_hosts = @bridge_hosts
+  else
+    raise "Unsupported flow target '#{flow_target}'"
+  end
   assert_all_connections(@sniffer.pcap_file) do |c|
-    @bridge_hosts.include?({ address: c.daddr, port: c.dport })
+    allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
 end
 
@@ -687,7 +691,6 @@ Then /^Tor is configured to use the default bridges$/ do
   ).stdout.chomp
   assert_equal(default_bridges, current_bridges,
                'Current bridges does not match the default ones')
-  step 'I treat connections to anything but the default bridges as leaks'
 end
 
 When /^I set (.*)=(.*) over Tor's control port$/ do |key, val|

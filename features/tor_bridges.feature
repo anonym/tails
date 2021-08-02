@@ -31,7 +31,8 @@ Feature: Using Tor bridges and pluggable transports
     And Tor is configured to use the default bridges
     And tca.conf includes no bridge
     And available upgrades have been checked
-    And all Internet traffic has only flowed through the configured bridges
+    And Tor is configured to use the default bridges
+    And all Internet traffic has only flowed through the default bridges
 
   Scenario: Fall back to default bridges if failing to connect directly to the Tor network
     Given the Tor network is blocked
@@ -40,7 +41,7 @@ Feature: Using Tor bridges and pluggable transports
     And tca.conf includes no bridge
     And available upgrades have been checked
     And Tor is configured to use the default bridges
-    And all Internet traffic has only flowed through the configured bridges
+    And all Internet traffic has only flowed through the default bridges
 
   Scenario: TCA can reconnect after a connection failure
     Given the Tor network and default bridges are blocked
@@ -54,8 +55,11 @@ Feature: Using Tor bridges and pluggable transports
     Then Tor is ready
     And tca.conf includes no bridge
     And available upgrades have been checked
-    # XXX: When #18470 is resolved, uncomment the following step
-    #And all Internet traffic has only flowed through Tor
+    # It is a bit unclear here if the desired behavior of TCA is to
+    # get stuck with default bridges after an initial failure. See
+    # #18470 for details.
+    And Tor is configured to use the default bridges
+    And all Internet traffic has only flowed through the default bridges
 
   Scenario: Normal bridges are not allowed in "Hide" mode
     When I try to configure some normal bridges in the Tor Connection Assistant in hide mode
