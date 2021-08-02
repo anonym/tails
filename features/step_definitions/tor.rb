@@ -395,6 +395,7 @@ def tca_configure(mode, connect: true, &block)
   end
   block.call if block_given?
   return unless connect
+
   tor_connection_assistant.child('Connect to _Tor', roleName: 'push button')
                           .click
   step 'the Tor Connection Assistant connects to Tor'
@@ -581,7 +582,7 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
   )
   persistent_bridges_lines = tor_connection_assistant.child(roleName: 'text')
                                                      .text.chomp.split("\n")
-  assert(persistent_bridges_lines.size > 0)
+  assert(persistent_bridges_lines.size.positive?)
 end
 
 When /^I close the Tor Connection Assistant$/ do
@@ -623,7 +624,7 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
     allowed_hosts = allowed_hosts_under_tor_enforcement
   when 'the default bridges'
     allowed_hosts = chutney_bridges('obfs4', chutney_tag: 'defbr').map do |b|
-      {address: b[:address], port: b[:port]}
+      { address: b[:address], port: b[:port] }
     end
   when 'the configured bridges'
     assert_not_nil(@bridge_hosts, 'No bridges has been configured via the ' \
