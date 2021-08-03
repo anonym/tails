@@ -361,6 +361,90 @@ To request obfs4 bridges, you can send an empty email to
                 <property name="position">3</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkBox" id="step_bridge_persistence_switch_box">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-start">30</property>
+                <property name="margin-top">6</property>
+                <child>
+                  <object class="GtkLabel" id="step_bridge_persistence_switch_label">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes">Save bridges to _Persistent Storage</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">step_bridge_persistence_switch</property>
+                    <accessibility>
+                      <relation type="label-for" target="step_bridge_persistence_switch"/>
+                    </accessibility>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="step_bridge_persistence_switch">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="margin-start">12</property>
+                    <signal name="state-set" handler="cb_step_bridge_persistence_switch_toggled" swapped="no"/>
+                    <accessibility>
+                      <relation type="labelled-by" target="step_bridge_persistence_switch_label"/>
+                    </accessibility>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="step_bridge_persistence_switch-atkobject">
+                        <property name="AtkObject::accessible-name" translatable="yes">Save bridges to Persistent Storage</property>
+                        <property name="AtkObject::accessible-role" translatable="yes">toggle-button</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="step_bridge_persistence_help_box">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-start">30</property>
+                <property name="margin-top">6</property>
+                <child>
+                  <object class="GtkLabel" id="step_bridge_persistence_help_label">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="use-markup">True</property>
+                    <signal name="activate-link" handler="on_link_help_clicked" swapped="no"/>
+                    <accessibility>
+                      <relation type="description-for" target="step_bridge_text"/>
+                    </accessibility>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
