@@ -123,7 +123,7 @@ Given /^the hardware clock is set to "([^"]*)"$/ do |time|
   else
     dt = DateTime.parse(time)
   end
-  STDERR.puts "Set hw clock to #{dt}"
+  debug_log("Set hw clock to #{dt}")
   $vm.set_hardware_clock(dt.to_time)
 end
 
