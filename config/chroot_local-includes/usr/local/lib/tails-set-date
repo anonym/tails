@@ -17,6 +17,14 @@ newDateString="$1"
 
 logger -t "tails-set-date" "starting..."
 
+# check if the date is valid, with minimalistic privilege dropping
+if ! unshare --net --pid --ipc --uts --cgroup -- \
+    runuser -u nobody -- \
+    date -d "$newDateString" > /dev/null
+then
+    exit 2
+fi
+
 systemctl stop tor@default
 
 oldDate="$(date)"
