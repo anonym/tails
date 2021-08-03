@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.38.2 -->
 <interface domain="tails">
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkBox" id="box_main_container_image_step">
@@ -15,6 +15,11 @@
         <property name="halign">start</property>
         <property name="valign">center</property>
         <property name="stock">gtk-missing-image</property>
+        <child internal-child="accessible">
+          <object class="AtkObject" id="main_img_side-atkobject">
+            <property name="AtkObject::accessible-role" translatable="yes">image</property>
+          </object>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -48,11 +53,19 @@
     <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <child>
-      <object class="GtkLabel">
+      <object class="GtkLabel" id="step_bridge_box_heading">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="halign">start</property>
         <property name="label" translatable="yes">Configure a Tor bridge</property>
+        <accessibility>
+          <relation type="label-for" target="step_bridge_box"/>
+        </accessibility>
+        <child internal-child="accessible">
+          <object class="AtkObject" id="step_bridge_box_heading-atkobject">
+            <property name="AtkObject::accessible-role" translatable="yes">heading</property>
+          </object>
+        </child>
         <style>
           <class name="step-title"/>
         </style>
@@ -115,12 +128,15 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="step_bridge_default_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="margin_start">6</property>
                     <property name="label" translatable="yes">Use a default bridge</property>
+                    <accessibility>
+                      <relation type="label-for" target="step_bridge_combo"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -142,6 +158,9 @@
                       <item id="obfs4" translatable="yes">obfs4 (recommended)</item>
                       <item id="meek_lite" translatable="yes">meek</item>
                     </items>
+                    <accessibility>
+                      <relation type="labelled-by" target="step_bridge_default_label"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -202,7 +221,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="step_bridge_manual_box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_bottom">12</property>
@@ -219,7 +238,7 @@
                 <property name="group">step_bridge_radio_none</property>
                 <signal name="toggled" handler="cb_step_bridge_radio_changed" swapped="no"/>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="step_bridge_label_type">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
@@ -227,6 +246,9 @@
                     <property name="label" translatable="yes">Type in a bridge that I already know</property>
                   </object>
                 </child>
+                <accessibility>
+                  <relation type="label-for" target="step_bridge_text"/>
+                </accessibility>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -279,6 +301,11 @@ To request obfs4 bridges, you can send an empty email to
                     <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
                     <property name="monospace">True</property>
                     <signal name="backspace" handler="cb_step_bridge_text_changed" swapped="no"/>
+                    <accessibility>
+                      <relation type="labelled-by" target="step_bridge_radio_type"/>
+                      <relation type="described-by" target="step_bridge_label_warning"/>
+                      <relation type="described-by" target="step_bridge_persistence_help_label"/>
+                    </accessibility>
                   </object>
                 </child>
               </object>
@@ -311,6 +338,9 @@ To request obfs4 bridges, you can send an empty email to
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Error</property>
+                    <accessibility>
+                      <relation type="description-for" target="step_bridge_text"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -388,6 +418,9 @@ To request obfs4 bridges, you can send an empty email to
         <property name="position">6</property>
       </packing>
     </child>
+    <accessibility>
+      <relation type="labelled-by" target="step_bridge_box_heading"/>
+    </accessibility>
     <style>
       <class name="step-box"/>
     </style>
@@ -634,6 +667,9 @@ To request obfs4 bridges, you can send an empty email to
                     <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
                     <property name="monospace">True</property>
                     <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
+                    <accessibility>
+                      <relation type="described-by" target="step_error_label_warning"/>
+                    </accessibility>
                   </object>
                 </child>
               </object>
@@ -666,6 +702,9 @@ To request obfs4 bridges, you can send an empty email to
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Error</property>
+                    <accessibility>
+                      <relation type="description-for" target="step_error_text"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1662,13 +1701,16 @@ Tor relays are servers operated by different organizations and volunteers around
         <property name="margin_bottom">18</property>
         <property name="hexpand">True</property>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="step_proxy_label_type">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">end</property>
             <property name="margin_end">12</property>
             <property name="margin_bottom">6</property>
             <property name="label" translatable="yes">Proxy Type</property>
+            <accessibility>
+              <relation type="label-for" target="step_proxy_combo"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -1688,6 +1730,9 @@ Tor relays are servers operated by different organizations and volunteers around
               <item id="HTTPS" translatable="yes">HTTP / HTTPS</item>
             </items>
             <signal name="changed" handler="cb_step_proxy_combo_changed" swapped="no"/>
+            <accessibility>
+              <relation type="labelled-by" target="step_proxy_label_type"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -1695,13 +1740,16 @@ Tor relays are servers operated by different organizations and volunteers around
           </packing>
         </child>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="step_proxy_label_address">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">end</property>
             <property name="margin_end">12</property>
             <property name="margin_bottom">6</property>
             <property name="label" translatable="yes">Address</property>
+            <accessibility>
+              <relation type="label-for" target="step_proxy_entry_address"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -1709,13 +1757,16 @@ Tor relays are servers operated by different organizations and volunteers around
           </packing>
         </child>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="step_proxy_label_username">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">end</property>
             <property name="margin_end">12</property>
             <property name="margin_bottom">6</property>
             <property name="label" translatable="yes">Username</property>
+            <accessibility>
+              <relation type="label-for" target="step_proxy_entry_username"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -1731,6 +1782,9 @@ Tor relays are servers operated by different organizations and volunteers around
             <property name="max_length">15</property>
             <property name="placeholder_text" translatable="yes">IP address or hostname</property>
             <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_LOWERCASE | GTK_INPUT_HINT_NONE</property>
+            <accessibility>
+              <relation type="labelled-by" target="step_proxy_label_address"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -1738,13 +1792,16 @@ Tor relays are servers operated by different organizations and volunteers around
           </packing>
         </child>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="step_proxy_label_port">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">end</property>
             <property name="margin_end">12</property>
             <property name="margin_bottom">6</property>
             <property name="label" translatable="yes">Port</property>
+            <accessibility>
+              <relation type="label-for" target="step_proxy_entry_port"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -1752,13 +1809,16 @@ Tor relays are servers operated by different organizations and volunteers around
           </packing>
         </child>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="step_proxy_label_password">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">end</property>
             <property name="margin_end">12</property>
             <property name="margin_bottom">6</property>
             <property name="label" translatable="yes">Password</property>
+            <accessibility>
+              <relation type="label-for" target="step_proxy_entry_password"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -1772,6 +1832,9 @@ Tor relays are servers operated by different organizations and volunteers around
             <property name="margin_bottom">6</property>
             <property name="hexpand">True</property>
             <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
+            <accessibility>
+              <relation type="labelled-by" target="step_proxy_label_username"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -1786,6 +1849,9 @@ Tor relays are servers operated by different organizations and volunteers around
             <property name="hexpand">True</property>
             <property name="input_purpose">digits</property>
             <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
+            <accessibility>
+              <relation type="labelled-by" target="step_proxy_label_port"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -1802,6 +1868,9 @@ Tor relays are servers operated by different organizations and volunteers around
             <property name="invisible_char">●</property>
             <property name="input_purpose">password</property>
             <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
+            <accessibility>
+              <relation type="labelled-by" target="step_proxy_label_password"/>
+            </accessibility>
           </object>
           <packing>
             <property name="left_attach">1</property>
