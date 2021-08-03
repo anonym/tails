@@ -174,6 +174,7 @@ class StepChooseBridgeMixin:
         self.get_object("box_warning").hide()
         self._step_bridge_init_from_tor_config()
         self._step_bridge_set_actives()
+        self._step_bridge_update_persistence_ui()
 
     def _step_bridge_init_from_tor_config(self):
         bridges = self.app.configurator.tor_connection_config.bridges
@@ -186,6 +187,49 @@ class StepChooseBridgeMixin:
         else:
             self.get_object("radio_type").set_active(True)
             self.get_object("text").get_property("buffer").set_text("\n".join(bridges))
+
+    def _step_bridge_set_persistence_sensitivity(self, sensitive: bool):
+        for obj in [
+                "step_bridge_persistence_switch_box",
+                "step_bridge_persistence_help_box",
+        ]:
+            self.builder.get_object(obj).set_sensitive(sensitive)
+
+    def _step_bridge_update_persistence_ui(self):
+        # Enable this UI iff. we're using custom bridges
+        self._step_bridge_set_persistence_sensitivity(
+            self.builder.get_object("step_bridge_radio_type").get_active()
+        )
+
+        # Unlocked persistence
+        if self.app.has_persistence and self.app.has_unlocked_persistence:
+            self.builder.get_object("step_bridge_persistence_help_box").hide()
+            self.builder.get_object(
+                "step_bridge_persistence_switch"
+            ).set_active(self.app.persistent_bridges_enabled())
+            self.builder.get_object("step_bridge_persistence_switch_box").show()
+
+        else:
+            self.builder.get_object("step_bridge_persistence_switch_box").hide()
+            # Locked persistence
+            if self.app.has_persistence:
+                help_label = _(
+                    "To save your bridges, "
+                    '<a href="doc/first_steps/persistence">'
+                    "unlock you Persistent Storage</a>."
+                )
+            # No persistence
+            else:
+                help_label = _(
+                    "To save your bridges, "
+                    '<a href="doc/first_steps/persistence">'
+                    "create a Persistent Storage</a> "
+                    "on your Tails USB stick."
+                )
+            self.builder.get_object(
+                "step_bridge_persistence_help_label"
+            ).set_label(help_label)
+            self.builder.get_object("step_bridge_persistence_help_box").show()
 
     def _step_bridge_is_text_valid(self, text: Optional[str] = None) -> bool:
         def set_warning(msg):
@@ -227,9 +271,19 @@ class StepChooseBridgeMixin:
 
     def cb_step_bridge_radio_changed(self, *args):
         self._step_bridge_set_actives()
+        manual = self.builder.get_object("step_bridge_radio_type").get_active()
+        self._step_bridge_set_persistence_sensitivity(manual)
 
     def cb_step_bridge_text_changed(self, *args):
         self._step_bridge_set_actives()
+
+    def cb_step_bridge_persistence_switch_toggled(self, switch, state, *args):
+        log.debug("Persistence switch toggled, setting state to %s", state)
+        # XXX: lock relevant UI bits, initialize change of persistence config
+        # according to state, then unlock relevant UI bits
+        ...
+        switch.set_state(state)
+        return True  # disable the default handler
 
     def cb_step_bridge_btn_submit_clicked(self, *args):
         default = self.builder.get_object("step_bridge_radio_default").get_active()
