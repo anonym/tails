@@ -133,7 +133,9 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="margin_start">6</property>
-                    <property name="label" translatable="yes">Use a default bridge</property>
+                    <property name="label" translatable="yes">Use a _default bridge</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">step_bridge_radio_default</property>
                     <accessibility>
                       <relation type="label-for" target="step_bridge_combo"/>
                     </accessibility>
@@ -210,7 +212,9 @@
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="margin_start">6</property>
-                <property name="label" translatable="yes">Request a new bridge</property>
+                <property name="label" translatable="yes">_Request a new bridge</property>
+                <property name="use-underline">True</property>
+                <property name="mnemonic-widget">step_bridge_radio_new</property>
               </object>
             </child>
           </object>
@@ -243,7 +247,9 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="margin_start">6</property>
-                    <property name="label" translatable="yes">Type in a bridge that I already know</property>
+                    <property name="label" translatable="yes">_Type in a bridge that I already know</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">step_bridge_radio_type</property>
                   </object>
                 </child>
                 <accessibility>
@@ -390,7 +396,7 @@ To request obfs4 bridges, you can send an empty email to
         </child>
         <child>
           <object class="GtkButton" id="step_bridge_btn_submit">
-            <property name="label" translatable="yes">Connect to _Tor</property>
+            <property name="label" translatable="yes">_Connect to Tor</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
@@ -738,7 +744,7 @@ To request obfs4 bridges, you can send an empty email to
     </child>
     <child>
       <object class="GtkButton" id="step_error_btn_submit">
-        <property name="label" translatable="yes">Connect to _Tor</property>
+        <property name="label" translatable="yes">_Connect to Tor</property>
         <property name="name">step_error_btn_submit</property>
         <property name="visible">True</property>
         <property name="sensitive">False</property>
@@ -829,9 +835,11 @@ Tor relays are servers operated by different organizations and volunteers around
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="margin_start">6</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Connect to Tor automatically (easier)&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Connect to Tor _automatically (easier)&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
+                    <property name="use-underline">True</property>
                     <property name="wrap">True</property>
+                    <property name="mnemonic-widget">radio_unnoticed_no</property>
                   </object>
                 </child>
               </object>
@@ -1020,9 +1028,11 @@ Choose this option if you already know that you need bridges. Otherwise, Tails w
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="margin_start">6</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Hide to my local network that I'm connecting to Tor (safer)&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;_Hide to my local network that I'm connecting to Tor (safer)&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
+                    <property name="use-underline">True</property>
                     <property name="wrap">True</property>
+                    <property name="mnemonic-widget">radio_unnoticed_yes</property>
                   </object>
                 </child>
               </object>
@@ -1146,7 +1156,7 @@ You will have to do extra configuration if you don't know any Tor bridges yet, i
     </child>
     <child>
       <object class="GtkButton" id="step_hide_btn_submit">
-        <property name="label" translatable="yes">Connect to _Tor</property>
+        <property name="label" translatable="yes">_Connect to Tor</property>
         <property name="visible">True</property>
         <property name="sensitive">False</property>
         <property name="can_focus">True</property>
