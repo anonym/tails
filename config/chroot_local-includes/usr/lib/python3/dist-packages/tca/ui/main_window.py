@@ -71,6 +71,7 @@ class StepOfflineHideMixin:
     def cb_step_offline_wificonf_clicked(self, user_data=None):
         self.app.portal.call_async("open-wifi-config")
 
+
 class StepChooseHideMixin:
     """
     Handles the "consent question" step.
