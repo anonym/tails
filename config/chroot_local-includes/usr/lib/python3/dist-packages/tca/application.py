@@ -75,6 +75,10 @@ class TCAApplication(Gtk.Application):
         self.tor_info: Dict[str, Any] = {"DisableNetwork": None}
         self.has_persistence = args.has_persistence
         self.has_unlocked_persistence = args.has_unlocked_persistence
+        self.log.debug(
+            "Persistence = %s, unlocked = %s",
+            self.has_persistence, self.has_unlocked_persistence
+        )
 
     def has_been_started_already(self):
         return (self.configurator.read_tca_state() != {})
