@@ -101,7 +101,7 @@ class StepChooseHideMixin:
             self.builder.get_object("radio_unnoticed_yes").set_active(hide)
             self.builder.get_object("radio_unnoticed_no").set_active(not hide)
         self.builder.get_object("radio_unnoticed_no_bridge").set_active(
-            self.state["hide"]["bridge"]
+            self.state["hide"].get("bridge", False)
         )
 
     def _step_hide_next(self):
