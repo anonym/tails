@@ -26,8 +26,11 @@ import systemd.daemon
 from tailslib.logutils import configure_logging
 from tailslib.systemd import systemd_ready
 from tailslib.gnome import gnome_env_vars
-from tailslib.persistence import launch_persistence_setup
-from tailslib import LIVE_USERNAME
+from tailslib import (
+    LIVE_USERNAME,
+    PERSISTENCE_CONF_FILE,
+    PERSISTENCE_SETUP_USERNAME,
+)
 
 log = getLogger("tca-portal")
 
@@ -98,13 +101,13 @@ class UserCommand(Command):
         return args
 
 
-class PersistenceSetup:
-    def __init__(self, *args):
-        self.args = args
+class PersistenceSetupCommand(Command):
+    def full_command(self, request: RPCRequest) -> list:
+        drop = ["runuser", "-u", PERSISTENCE_SETUP_USERNAME]
+        env = ["env", *gnome_env_vars()]
 
-    def run(self, request: RPCRequest):
-        log.debug("Running tails-persistence-setup with args %s", self.args)
-        launch_persistence_setup(*self.args)
+        args = [*drop, "--", *env, *(super().full_command(request))]
+        return args
 
 
 class Handler(socketserver.StreamRequestHandler):
@@ -130,12 +133,19 @@ class Handler(socketserver.StreamRequestHandler):
         "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
-        "enable-tor-configuration-persistence": PersistenceSetup(
-             "--no-gui", "--no-display_finished_message",
-             "--force_enable_preset", "TorConfiguration"),
-        "disable-tor-configuration-persistence": PersistenceSetup(
-             "--no-gui", "--no-display_finished_message",
-             "--force_disable_preset", "TorConfiguration"),
+        # It would be nicer to do this in Python without calling out
+        # to external processes, but it would require # implementing
+        # the Popen interface that the portal assumes.
+        "enable-tor-configuration-persistence": PersistenceSetupCommand(
+            ["/usr/local/lib/tails-enable-tor-config-persistence"],
+            False),
+        "disable-tor-configuration-persistence": PersistenceSetupCommand(
+            [
+                "perl", "-ni", "-E",
+                "print unless m{\A/var/lib/tca\s+source=tca[\n]?\z}",
+                PERSISTENCE_CONF_FILE
+            ],
+            False),
     }
     valid_commands = set(spawn_commands.keys())
 

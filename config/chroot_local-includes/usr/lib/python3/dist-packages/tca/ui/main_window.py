@@ -291,12 +291,12 @@ class StepChooseBridgeMixin:
         self.builder.get_object("step_bridge_persistence_spinner") \
                     .set_visible(True)
 
-        def cb_persistence_config_changed(gjsonrpcclient, success, error):
+        def cb_persistence_config_changed(gjsonrpcclient, res, error):
             log.debug(
                 "cb_persistence_config_changed called with args: %s",
                 args,
             )
-            if success and success.get("ok", False):
+            if res and res.get("returncode", 1) == 0:
                 switch.set_state(state)
             else:
                 self.builder.get_object(
