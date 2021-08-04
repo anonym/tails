@@ -279,9 +279,15 @@ class StepChooseBridgeMixin:
 
     def cb_step_bridge_persistence_switch_toggled(self, switch, state, *args):
         log.debug("Persistence switch toggled, setting state to %s", state)
-        # XXX: lock relevant UI bits, initialize change of persistence config
-        # according to state, then unlock relevant UI bits
+        # XXX: lock relevant UI bits
         ...
+        # XXX: use a callback to get the results, follow-up on them,
+        # and unlock the relevant UI bits
+        if state:
+            self.app.portal.call_async("enable-tor-configuration-persistence")
+        else:
+            self.app.portal.call_async("disable-tor-configuration-persistence")
+        # XXX: move to the callback
         switch.set_state(state)
         return True  # disable the default handler
 
