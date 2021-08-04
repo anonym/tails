@@ -396,7 +396,7 @@ def tca_configure(mode, connect: true, &block)
   block.call if block_given?
   return unless connect
 
-  tor_connection_assistant.child('Connect to _Tor', roleName: 'push button')
+  tor_connection_assistant.child('_Connect to Tor', roleName: 'push button')
                           .click
   step 'the Tor Connection Assistant connects to Tor'
   # XXX: we're so fast closing TCA here that it's done before it
@@ -493,7 +493,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
                                      roleName: 'check box')
                               .click
     end
-    tor_connection_assistant.child('Connect to _Tor',
+    tor_connection_assistant.child('_Connect to Tor',
                                    roleName: 'push button')
                             .click
     if bridge_type == 'default'
@@ -565,7 +565,7 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
                                    roleName: 'check box')
       .checked
   )
-  tor_connection_assistant.child('Connect to _Tor',
+  tor_connection_assistant.child('_Connect to Tor',
                                  roleName: 'push button')
                           .click
   assert(
@@ -598,7 +598,7 @@ Then /^the Tor Connection Assistant complains that normal bridges are not allowe
 end
 
 When /^I click "Connect to Tor"$/ do
-  btn = tor_connection_assistant.child('Connect to _Tor')
+  btn = tor_connection_assistant.child('_Connect to Tor')
   assert_equal('True', btn.get_field('sensitive'))
   btn.click
 end
@@ -606,7 +606,7 @@ end
 Then /^I cannot click the "Connect to Tor" button$/ do
   assert_equal(
     'False',
-    tor_connection_assistant.child('Connect to _Tor').get_field('sensitive')
+    tor_connection_assistant.child('_Connect to Tor').get_field('sensitive')
   )
 end
 
