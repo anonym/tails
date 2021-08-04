@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 
-import os
 import sys
 import logging
 import gettext
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 
 from stem.control import Controller
 import prctl
