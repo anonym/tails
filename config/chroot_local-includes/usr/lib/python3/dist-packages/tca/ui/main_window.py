@@ -280,14 +280,21 @@ class StepChooseBridgeMixin:
         log.debug("Persistence switch toggled, setting state to %s", state)
         # XXX: lock relevant UI bits
         ...
-        # XXX: use a callback to get the results, follow-up on them,
-        # and unlock the relevant UI bits
+
+        def cb_persistence_config_changed():
+            # XXX: get the results of the portal call, follow-up on
+            # them, and unlock the relevant UI bits
+            ...
+            switch.set_state(state)
+
         if state:
-            self.app.portal.call_async("enable-tor-configuration-persistence", None)
+            portal_method = "enable-tor-configuration-persistence"
         else:
-            self.app.portal.call_async("disable-tor-configuration-persistence", None)
-        # XXX: move to the callback
-        switch.set_state(state)
+            portal_method = "disable-tor-configuration-persistence"
+        self.app.portal.call_async(
+            portal_method,
+            cb_persistence_config_changed,
+        )
         return True  # disable the default handler
 
     def cb_step_bridge_btn_submit_clicked(self, *args):
