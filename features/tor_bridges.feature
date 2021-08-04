@@ -53,8 +53,7 @@ Feature: Using Tails with Tor bridges and pluggable transports
     Given the Tor network and default bridges are unblocked
     And I start "Tor Connection" via GNOME Activities Overview
     Then Tor is ready
-    # XXX: When #18470 is resolved, uncomment the following step
-    #And tca.conf includes no bridge
+    And tca.conf includes no bridge
     And available upgrades have been checked
     # XXX: Due to #18470, sometimes we end up connecting with the default
     # bridges, and sometimes we end up connecting directly (without bridges).

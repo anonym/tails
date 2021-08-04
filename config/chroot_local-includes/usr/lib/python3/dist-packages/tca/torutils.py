@@ -396,8 +396,16 @@ class TorLauncherUtils:
 
     def load_conf_from_tor(self):
         if self.tor_connection_config is None:
+            log.debug("Loading configuration from tor")
             self.tor_connection_config = TorConnectionConfig.load_from_tor_stem(
                 self.stem_controller
+            )
+
+    def load_conf_from_file(self):
+        if self.tor_connection_config is None:
+            log.debug("Loading configuration from file")
+            self.tor_connection_config = TorConnectionConfig.load_from_dict(
+                self.read_tca_conf().get("tor", {})
             )
 
     def save_conf(self):
@@ -543,13 +551,13 @@ def decode_json_from_buf(buf):
     size = buf.tell()
     if not size:
         log.debug("Empty file")
-        return
+        return {}
     buf.seek(0)
     try:
         obj = json.load(buf)
     except json.JSONDecodeError:
         log.warning("Invalid file")
-        return
+        return {}
     finally:
         buf.seek(0)
     return obj
