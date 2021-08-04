@@ -287,20 +287,17 @@ class StepChooseBridgeMixin:
         self.builder.get_object("step_bridge_persistence_spinner") \
                     .set_visible(True)
 
-        def cb_persistence_config_changed(*args, **keywords):
+        def cb_persistence_config_changed(gjsonrpcclient, success, error):
             log.debug(
-                "cb_persistence_config_changed called: args: %s, keywords: %s",
+                "cb_persistence_config_changed called with args: %s",
                 args,
-                keywords,
             )
-            # XXX: instead get the results of the portal call
-            success = True
-
-            if success:
+            if success and success.get("ok", False):
                 switch.set_state(state)
             else:
+                switch.set_sensitive(False)
                 # XXX: display error
-                switch.set_state(not state)
+                ...
 
             for widget in disabled_widgets:
                 self.builder.get_object(widget).set_sensitive(True)
