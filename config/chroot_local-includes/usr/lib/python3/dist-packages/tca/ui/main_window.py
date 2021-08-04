@@ -278,14 +278,36 @@ class StepChooseBridgeMixin:
 
     def cb_step_bridge_persistence_switch_toggled(self, switch, state, *args):
         log.debug("Persistence switch toggled, setting state to %s", state)
-        # XXX: lock relevant UI bits
-        ...
+        btn_submit = self.builder.get_object("step_bridge_btn_submit")
+        btn_submit_initially_sensitive = btn_submit.get_sensitive()
+        btn_submit.set_sensitive(False)
+        disabled_widgets = ["step_bridge_text", "step_bridge_btn_back"]
+        for widget in disabled_widgets:
+            self.builder.get_object(widget).set_sensitive(False)
+        self.builder.get_object("step_bridge_persistence_spinner") \
+                    .set_visible(True)
 
-        def cb_persistence_config_changed():
-            # XXX: get the results of the portal call, follow-up on
-            # them, and unlock the relevant UI bits
-            ...
-            switch.set_state(state)
+        def cb_persistence_config_changed(*args, **keywords):
+            log.debug(
+                "cb_persistence_config_changed called: args: %s, keywords: %s",
+                args,
+                keywords,
+            )
+            # XXX: instead get the results of the portal call
+            success = True
+
+            if success:
+                switch.set_state(state)
+            else:
+                # XXX: display error
+                switch.set_state(not state)
+
+            for widget in disabled_widgets:
+                self.builder.get_object(widget).set_sensitive(True)
+            if btn_submit_initially_sensitive:
+                btn_submit.set_sensitive(True)
+            self.builder.get_object("step_bridge_persistence_spinner") \
+                        .set_visible(False)
 
         if state:
             portal_method = "enable-tor-configuration-persistence"

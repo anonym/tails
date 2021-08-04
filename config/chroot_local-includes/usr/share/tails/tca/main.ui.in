@@ -420,6 +420,18 @@ To request obfs4 bridges, you can send an empty email to
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkSpinner" id="step_bridge_persistence_spinner">
+                    <property name="can-focus">False</property>
+		    <property name="active">True</property>
+                    <property name="margin-start">12</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -478,7 +490,7 @@ To request obfs4 bridges, you can send an empty email to
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="step_bridge_btn_back">
             <property name="label">gtk-go-back</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
