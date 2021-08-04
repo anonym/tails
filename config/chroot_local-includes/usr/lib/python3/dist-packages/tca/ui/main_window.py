@@ -12,7 +12,6 @@ from tca.ui.asyncutils import GAsyncSpawn, idle_add_chain
 from tca.torutils import (
     TorConnectionProxy,
     TorConnectionConfig,
-    InvalidBridgeException,
     InvalidBridgeTypeException,
     MalformedBridgeException,
     VALID_BRIDGE_TYPES,
