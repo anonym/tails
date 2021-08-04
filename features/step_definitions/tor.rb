@@ -563,7 +563,7 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
   assert(
     tor_connection_assistant.child('Configure a Tor bridge',
                                    roleName: 'check box')
-      .checked
+                            .checked
   )
   tor_connection_assistant.child('_Connect to Tor',
                                  roleName: 'push button')
