@@ -63,7 +63,7 @@ class TCAApplication(Gtk.Application):
         )
         self.portal = GJsonRpcClient(portal_sock)
         self.portal.connect("response-error", self.on_portal_error)
-        self.portal.connect("response", self.on_portal_response)
+        self.portal.connect("response-success", self.on_portal_response)
         self.portal.run()
         self.netutils = TorLauncherNetworkUtils()
         self.args = args
@@ -134,11 +134,11 @@ class TCAApplication(Gtk.Application):
     def is_network_link_ok(self) -> bool:
         return self.last_nm_state is not None and self.last_nm_state >= 60
 
-    def on_portal_response(self, portal, unique_id, result):
-        self.log.debug("response<%d> from portal : %s", unique_id, result)
+    def on_portal_response(self, portal, result: dict):
+        self.log.debug("response from portal : %s", result)
 
-    def on_portal_error(self, portal, unique_id, error):
-        self.log.error("response-error<%d> from portal : %s", unique_id, error)
+    def on_portal_error(self, portal, error: str):
+        self.log.error("response-error from portal : %s", error)
 
     def cb_dbus_nm_state(self, val):
         self.log.debug("NetworkManager state is now: %d", int(val))
