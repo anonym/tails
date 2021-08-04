@@ -284,9 +284,9 @@ class StepChooseBridgeMixin:
         # XXX: use a callback to get the results, follow-up on them,
         # and unlock the relevant UI bits
         if state:
-            self.app.portal.call_async("enable-tor-configuration-persistence")
+            self.app.portal.call_async("enable-tor-configuration-persistence", None)
         else:
-            self.app.portal.call_async("disable-tor-configuration-persistence")
+            self.app.portal.call_async("disable-tor-configuration-persistence", None)
         # XXX: move to the callback
         switch.set_state(state)
         return True  # disable the default handler
