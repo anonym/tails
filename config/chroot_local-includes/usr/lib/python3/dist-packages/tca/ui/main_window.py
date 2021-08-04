@@ -173,6 +173,7 @@ class StepChooseBridgeMixin:
         self.get_object("box_warning").hide()
         self._step_bridge_init_from_tor_config()
         self._step_bridge_set_actives()
+        self.persistence_config_failed = False
         self._step_bridge_update_persistence_ui()
 
     def _step_bridge_init_from_tor_config(self):
@@ -188,9 +189,12 @@ class StepChooseBridgeMixin:
             self.get_object("text").get_property("buffer").set_text("\n".join(bridges))
 
     def _step_bridge_set_persistence_sensitivity(self, sensitive: bool):
+        if self.persistence_config_failed:
+            sensitive = False
         for obj in [
                 "step_bridge_persistence_switch_box",
                 "step_bridge_persistence_help_box",
+                "step_bridge_persistence_error_box",
         ]:
             self.builder.get_object(obj).set_sensitive(sensitive)
 
@@ -295,9 +299,16 @@ class StepChooseBridgeMixin:
             if success and success.get("ok", False):
                 switch.set_state(state)
             else:
-                switch.set_sensitive(False)
-                # XXX: display error
-                ...
+                self.builder.get_object(
+                    "step_bridge_persistence_switch_box"
+                ).set_sensitive(False)
+                self.builder.get_object(
+                    "step_bridge_persistence_error_label"
+                ).set_label(_("Failed to configure your Persistent Storage"))
+                self.builder.get_object(
+                    "step_bridge_persistence_error_box"
+                ).show()
+                self.persistence_config_failed = True
 
             for widget in disabled_widgets:
                 self.builder.get_object(widget).set_sensitive(True)

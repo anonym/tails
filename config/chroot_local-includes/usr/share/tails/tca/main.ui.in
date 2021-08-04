@@ -339,6 +339,7 @@ To request obfs4 bridges, you can send an empty email to
               <object class="GtkBox" id="step_bridge_box_warning">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin-start">30</property>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
@@ -356,6 +357,7 @@ To request obfs4 bridges, you can send an empty email to
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
+                    <property name="margin-start">12</property>
                     <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Error</property>
                     <accessibility>
@@ -406,6 +408,7 @@ To request obfs4 bridges, you can send an empty email to
                     <signal name="state-set" handler="cb_step_bridge_persistence_switch_toggled" swapped="no"/>
                     <accessibility>
                       <relation type="labelled-by" target="step_bridge_persistence_switch_label"/>
+                      <relation type="labelled-by" target="step_bridge_persistence_error_label"/>
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="step_bridge_persistence_switch-atkobject">
@@ -423,8 +426,8 @@ To request obfs4 bridges, you can send an empty email to
                 <child>
                   <object class="GtkSpinner" id="step_bridge_persistence_spinner">
                     <property name="can-focus">False</property>
-		    <property name="active">True</property>
                     <property name="margin-start">12</property>
+                    <property name="active">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -469,6 +472,50 @@ To request obfs4 bridges, you can send an empty email to
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="step_bridge_persistence_error_box">
+                <property name="can-focus">False</property>
+                <property name="margin-start">30</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-start">6</property>
+                    <property name="icon-name">gtk-dialog-warning</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="step_bridge_persistence_error_label">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin-start">12</property>
+                    <property name="hexpand">True</property>
+                    <property name="label" translatable="yes">Error</property>
+                    <property name="wrap">True</property>
+                    <accessibility>
+                      <relation type="label-for" target="step_bridge_persistence_switch"/>
+                      <relation type="description-for" target="step_bridge_text"/>
+                    </accessibility>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
               </packing>
             </child>
           </object>
