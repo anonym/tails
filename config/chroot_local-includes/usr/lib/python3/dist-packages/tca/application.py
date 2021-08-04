@@ -82,10 +82,6 @@ class TCAApplication(Gtk.Application):
     def has_been_started_already(self):
         return (self.configurator.read_tca_state() != {})
 
-    def persistent_bridges_enabled(self):
-        # XXX: ask tca-portal whether persistence.conf includes /var/lib/tca
-        return False
-
     def do_monitor_tor_is_working(self):
         # init tor-ready monitoring
         f = Gio.File.new_for_path(str(TOR_HAS_BOOTSTRAPPED_PATH))

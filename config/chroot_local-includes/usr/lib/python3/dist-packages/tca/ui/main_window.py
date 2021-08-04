@@ -207,10 +207,19 @@ class StepChooseBridgeMixin:
         # Unlocked persistence
         if self.app.has_persistence and self.app.has_unlocked_persistence:
             self.builder.get_object("step_bridge_persistence_help_box").hide()
-            self.builder.get_object(
-                "step_bridge_persistence_switch"
-            ).set_active(self.app.persistent_bridges_enabled())
-            self.builder.get_object("step_bridge_persistence_switch_box").show()
+
+            def cb_set_up_persistence_switch(gjsonrpcclient, res, error):
+                log.debug("Persistence enabled: %s", res)
+                active = res and res.get("returncode", 1) == 0
+                self.builder.get_object(
+                    "step_bridge_persistence_switch"
+                ).set_active(active)
+                self.builder.get_object("step_bridge_persistence_switch_box").show()
+
+            self.app.portal.call_async(
+                "is-tor-configuration-persistent?",
+                cb_set_up_persistence_switch,
+            )
 
         else:
             self.builder.get_object("step_bridge_persistence_switch_box").hide()

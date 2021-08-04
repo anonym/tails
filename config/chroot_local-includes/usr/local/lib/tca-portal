@@ -136,6 +136,13 @@ class Handler(socketserver.StreamRequestHandler):
         # It would be nicer to do this in Python without calling out
         # to external processes, but it would require # implementing
         # the Popen interface that the portal assumes.
+        "is-tor-configuration-persistent?": PersistenceSetupCommand(
+            [
+                'grep', '-E', '--line-regexp', '-qs',
+                '/var/lib/tca\s+source=tca',
+                PERSISTENCE_CONF_FILE
+            ],
+            False),
         "enable-tor-configuration-persistence": PersistenceSetupCommand(
             ["/usr/local/lib/tails-enable-tor-config-persistence"],
             False),
