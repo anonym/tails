@@ -482,7 +482,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
   # rubocop:disable Metrics/BlockLength
   tca_configure(config_mode) do
     if config_mode == :easy
-      tor_connection_assistant.child('Configure a Tor bridge',
+      tor_connection_assistant.child('Configure a Tor _bridge',
                                      roleName: 'check box')
                               .click
     end
@@ -491,11 +491,11 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
                             .click
     if bridge_type == 'default'
       assert_equal(:easy, config_mode)
-      tor_connection_assistant.child('Use a default bridge',
+      tor_connection_assistant.child('Use a _default bridge',
                                      roleName: 'radio button')
                               .click
     else
-      tor_connection_assistant.child('Type in a bridge that I already know',
+      tor_connection_assistant.child('_Type in a bridge that I already know',
                                      roleName: 'radio button')
                               .click
       tor_connection_assistant.child(roleName: 'scroll pane').click
