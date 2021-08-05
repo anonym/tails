@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkBox" id="box_main_container_image_step">
     <property name="name">box_main_container_image_step</property>
+    <property name="height-request">590</property>
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="baseline-position">bottom</property>
@@ -33,6 +34,7 @@
         <property name="can_focus">True</property>
         <property name="hscrollbar-policy">never</property>
         <property name="shadow-type">in</property>
+        <property name="propagate-natural-height">True</property>
         <child>
           <object class="GtkViewport">
             <property name="visible">True</property>
@@ -52,7 +54,7 @@
       </object>
       <packing>
         <property name="expand">False</property>
-        <property name="fill">True</property>
+        <property name="fill">False</property>
         <property name="position">1</property>
       </packing>
     </child>
@@ -928,8 +930,6 @@ To request obfs4 bridges, you can send an empty email to
   <object class="GtkBox" id="step_hide_box">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="valign">baseline</property>
-    <property name="vexpand">False</property>
     <property name="orientation">vertical</property>
     <property name="spacing">12</property>
     <property name="baseline-position">top</property>
@@ -938,7 +938,6 @@ To request obfs4 bridges, you can send an empty email to
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">start</property>
-        <property name="valign">start</property>
         <property name="label" translatable="yes">Everything you do on the Internet from Tails goes through the Tor network.</property>
       </object>
       <packing>
@@ -953,7 +952,6 @@ To request obfs4 bridges, you can send an empty email to
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">start</property>
-        <property name="valign">start</property>
         <property name="label" translatable="yes">Tor encrypts and anonymizes your connection by passing it through 3 relays.
 Tor relays are servers operated by different organizations and volunteers around the world.</property>
       </object>
@@ -968,7 +966,6 @@ Tor relays are servers operated by different organizations and volunteers around
       <object class="GtkBox" id="step_hide_radio_buttons">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="vexpand">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox" id="unnoticed_no_heading">
@@ -1078,11 +1075,8 @@ Someone monitoring your Internet connection could identify these attempts as com
           <object class="GtkBox" id="step_hide_box_bridge">
             <property name="can_focus">False</property>
             <property name="halign">start</property>
-            <property name="valign">start</property>
             <property name="margin_start">30</property>
             <property name="margin_top">6</property>
-            <property name="hexpand">False</property>
-            <property name="vexpand">False</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox" id="step_hide_bridge_heading">
@@ -1275,8 +1269,6 @@ You will have to do extra configuration if you don't know any Tor bridges yet, i
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="halign">start</property>
-            <property name="valign">start</property>
-            <property name="margin_top">12</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
           </object>
@@ -1299,7 +1291,6 @@ You will have to do extra configuration if you don't know any Tor bridges yet, i
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="halign">start</property>
-        <property name="margin_top">18</property>
         <property name="label" translatable="yes">&lt;a href="doc/anonymous_internet/tor"&gt;Learn more about how Tails connects to Tor&lt;/a&gt;</property>
         <property name="use_markup">True</property>
         <signal name="activate-link" handler="on_link_help_clicked" swapped="no"/>
@@ -1319,7 +1310,6 @@ You will have to do extra configuration if you don't know any Tor bridges yet, i
         <property name="receives_default">True</property>
         <property name="halign">end</property>
         <property name="valign">end</property>
-        <property name="vexpand">True</property>
         <property name="use_underline">True</property>
         <signal name="clicked" handler="cb_step_hide_btn_connect_clicked" swapped="no"/>
         <style>
