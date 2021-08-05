@@ -40,7 +40,7 @@ log = getLogger("tca-portal")
 # - each Handler spawns a dedicated process to read incoming data
 # - if incoming data is valid, it will spawn a process to manage the actual command process. That's
 #   Handler.run. This method will spawn a Popen. This is the process that the user is actually interested in.
-#   Handler.run will wait for Popen to complete, get results, push data to a queue where Handler.handle
+#   Handler.run will wait for Popen to complete, get results, push data to a queue where Handler.handle will pick it up and send the response
 #
 # tca-portal
 #  + Handler1
@@ -48,9 +48,9 @@ log = getLogger("tca-portal")
 #  + Handler2
 #  |-- reader
 #  |-- + run
-#  |   `-- Popen (the actual command that the user want to run)
+#  |   `-- Popen (the actual command that the user wants to run)
 #  `-- + run
-#      `-- Popen (the actual command that the user want to run)
+#      `-- Popen (the actual command that the user wants to run)
 
 
 class FDUnixStreamServer(socketserver.UnixStreamServer):
@@ -191,7 +191,7 @@ class Handler(socketserver.StreamRequestHandler):
 
     def run(self, cmd, req):
         """
-        Spawn the inteded cmd, then wait for it and put the appropriate response in the outgoing_q
+        Spawn the intended cmd, then wait for it and put the appropriate response in the outgoing_q
 
         this method is intended to be run in a dedicated Process
         """
