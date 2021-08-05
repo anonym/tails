@@ -44,9 +44,9 @@ log = getLogger("tca-portal")
 #  + Handler2
 #  |-- reader
 #  |-- + run
-#  |   `-- Popen (the actual command that the user want to run)
+#  |   `-- Popen (the actual command that the user wants to run)
 #  `-- + run
-#      `-- Popen (the actual command that the user want to run)
+#      `-- Popen (the actual command that the user wants to run)
 
 
 class FDUnixStreamServer(socketserver.UnixStreamServer):
@@ -158,7 +158,7 @@ class Handler(socketserver.StreamRequestHandler):
 
     def run(self, cmd, req):
         """
-        Spawn the inteded cmd, then wait for it and put the appropriate response in the outgoing_q
+        Spawn the intended cmd, then wait for it and put the appropriate response in the outgoing_q
 
         this method is intended to be run in a dedicated Process
         """
