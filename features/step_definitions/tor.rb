@@ -495,10 +495,12 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
                                      roleName: 'radio button')
                               .click
     else
-      tor_connection_assistant.child('_Type in a bridge that I already know',
-                                     roleName: 'radio button')
-                              .click
-      tor_connection_assistant.child(roleName: 'scroll pane').click
+      btn = tor_connection_assistant.child(
+        '_Type in a bridge that I already know',
+        roleName: 'radio button'
+      )
+      btn.click
+      btn.labelee.click
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
         @screen.type(bridge[:line], ['Return'])
