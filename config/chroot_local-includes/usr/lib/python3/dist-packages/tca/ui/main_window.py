@@ -481,7 +481,7 @@ class StepErrorMixin:
         time_dialog.show_all()
 
     def on_time_dialog_complete(self, time_dialog, response):
-        print("time dialog closed", response == Gtk.ResponseType.APPLY)
+        log.debug("time dialog closed: %s", response == Gtk.ResponseType.APPLY)
 
         def on_set_system_time(portal, result, error):
             if error:
