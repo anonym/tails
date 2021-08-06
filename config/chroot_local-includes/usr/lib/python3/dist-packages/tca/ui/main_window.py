@@ -473,7 +473,8 @@ class StepErrorMixin:
         self.change_box("proxy")
 
     def cb_step_error_btn_time_clicked(self, *args):
-        time_dialog = tca.ui.dialogs.get_time_dialog()
+        tz = self.state["time"].get("tz", None)
+        time_dialog = tca.ui.dialogs.get_time_dialog(initial_tz=tz)
         time_dialog.set_modal(True)
         time_dialog.set_transient_for(self)
         time_dialog.connect("response", self.on_time_dialog_complete)
@@ -502,6 +503,8 @@ class StepErrorMixin:
             time_dialog.destroy()
 
         if response == Gtk.ResponseType.APPLY:
+            self.state["time"]["tz"] = time_dialog.get_tz_name()
+            self.save_conf()
             aware_dt = time_dialog.get_date()
             utc_dt = aware_dt.astimezone(pytz.utc)
             self.app.portal.call_async(
@@ -691,6 +694,7 @@ class TCAMainWindow(
             "progress": {},
             "step": "hide",
             "offline": {},
+            "time": {},
         }
         if self.app.args.debug_statefile is not None:
             log.debug("loading debug statefile")
@@ -702,7 +706,7 @@ class TCAMainWindow(
             data = self.app.configurator.read_tca_state()
             config = self.app.configurator.tor_connection_config.to_dict()
             if data and data.get("ui"):
-                for key in ["hide", "bridge"]:
+                for key in ["hide", "bridge", "time"]:
                     self.state[key].update(data["ui"].get(key, {}))
                 self.state["progress"]["started"] = (
                     data["ui"].get("progress", {}).get("started", False)
@@ -765,7 +769,8 @@ class TCAMainWindow(
         if successful_connect:
             data = {"ui": self.state}
         else:
-            data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
+            save_only = ["hide", "bridge", "time"]
+            data = {"ui": {field: self.state[field] for field in save_only}}
         self.app.configurator.save_tca_state(data)
         if successful_connect:
             self.app.configurator.save_conf()

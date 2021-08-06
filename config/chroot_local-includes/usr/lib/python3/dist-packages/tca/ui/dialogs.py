@@ -1,4 +1,6 @@
 import datetime
+from typing import Optional
+from logging import getLogger
 
 import pytz
 import gi
@@ -11,6 +13,7 @@ gi.require_version("GLib", "2.0")
 
 from gi.repository import Gdk, GdkPixbuf, Gtk, GLib  # noqa: E402
 
+log = getLogger('dialogs')
 
 def get_tz_model():
     store = Gtk.ListStore(str)
@@ -19,7 +22,7 @@ def get_tz_model():
     return store
 
 
-def get_time_dialog():
+def get_time_dialog(initial_tz: Optional[str] = None):
     """Create a TimeDialog."""
     builder = Gtk.Builder()
     builder.set_translation_domain("tails")
@@ -29,10 +32,21 @@ def get_time_dialog():
     tz_model = get_tz_model()
     select_tz = builder.get_object("select_tz")
     select_tz.set_model(tz_model)
+    if initial_tz:
+        for row in tz_model:
+            if row[0] == initial_tz:
+                select_tz.set_active_iter(row.iter)
+                break
+        else:
+            log.warning("Cannot find user-selected timezone %s", initial_tz)
+
     renderer_text = Gtk.CellRendererText()
     select_tz.pack_start(renderer_text, True)
     select_tz.add_attribute(renderer_text, "text", 0)
     select_tz.set_entry_text_column(0)
+
+    def get_tz_name(_=None):
+        return tz_model.get_value(select_tz.get_active_iter(), 0)
 
     def get_date(_=None):
         spec = {
@@ -41,12 +55,12 @@ def get_time_dialog():
         }
         spec["month"] = int(builder.get_object("select_month").get_active_id())
         naive_dt = datetime.datetime(**spec)
-        tzname = tz_model.get_value(select_tz.get_active_iter(), 0)
-        tz = pytz.timezone(tzname)
+        tz = pytz.timezone(get_tz_name())
         aware_dt = tz.localize(naive_dt)
         return aware_dt
 
     time_dialog.get_date = get_date
+    time_dialog.get_tz_name = get_tz_name
 
     def check_input_valid(*args):
         """
