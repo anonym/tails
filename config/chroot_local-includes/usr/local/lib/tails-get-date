@@ -7,8 +7,6 @@ import locale
 import os
 import sys
 
-import pytz
-
 
 def main():
     if os.getuid() != 0:
@@ -27,14 +25,13 @@ def main():
         tzname = None
     else:
         tzname = tca_state.get('ui', {}).get('time', {}).get('tz', None)
-    now = datetime.datetime.now()
+
     if tzname:
-        aware_dt = pytz.utc.localize(now)
-        user_tz = pytz.timezone(tzname)
-        now = aware_dt.astimezone(user_tz)
-        print(now.strftime('%x %X'))
-        sys.exit(0)
+        env = {'TZ': tzname}
+        env.update(os.environ)
+        os.execve('/bin/date', ['date'], env=env)
     else:
+        now = datetime.datetime.now()
         print(now.strftime('%c'), 'GMT')
 
     
