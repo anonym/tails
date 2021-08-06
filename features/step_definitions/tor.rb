@@ -516,16 +516,18 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
   end
 end
 
-When /^I try to configure a direct connection in the Tor Connection Assistant$/ do
-  step 'I configure a direct connection in the Tor Connection Assistant'
-rescue TCAConnectionFailure
-  # Expected!
-  next
-rescue StandardError => e
-  raise 'Expected TCAConnectionFailure to be raised but got ' \
-        "#{e.class.name}: #{e}"
-else
-  raise 'TCA managed to connect to Tor with normal bridges in hide mode'
+When /^I unsuccessfully configure (a direct connection|some .* bridges) in the Tor Connection Assistant$/ do |conntype|
+  begin
+    step "I configure #{conntype} in the Tor Connection Assistant"
+  rescue TCAConnectionFailure
+    # Expected!
+    next
+  rescue StandardError => e
+    raise 'Expected TCAConnectionFailure to be raised but got ' \
+          "#{e.class.name}: #{e}"
+  else
+    raise 'TCA managed to connect to Tor with normal bridges in hide mode'
+  end
 end
 
 When /^I try to configure some normal bridges in the Tor Connection Assistant in hide mode$/ do
