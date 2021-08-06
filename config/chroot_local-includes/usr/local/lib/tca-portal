@@ -72,15 +72,35 @@ class ForkingUnixServer(socketserver.ForkingMixIn, FDUnixStreamServer):
     timeout = None
 
 
+class InvalidArgsError(InvalidRequestError):
+    pass
+
+
 class Command:
     def __init__(self, cmd: List[str], arguments: bool):
         self.cmd = cmd
         self.arguments = arguments
 
+    def validate_request(self, request: RPCRequest) -> None:
+        '''
+        raise if it's not valid
+        '''
+        self.full_command(request)
+
+    def validate_args(self, args: list) -> list:
+        '''
+        Validate or update the command arguments.
+
+        Raise an InvalidRequestError if the arguments are not valid
+
+        This method is meant to be overridden, so that you can easily add validation to your Command
+        '''
+        if not self.arguments and args:
+            raise InvalidArgsError("Arguments are not accepted for this command")
+        return args
+
     def full_command(self, request: RPCRequest) -> list:
-        cmd = self.cmd
-        if self.arguments:
-            cmd = cmd + request.args
+        cmd = self.cmd + self.validate_args(request.args)
         return cmd
 
     def run(self, request: RPCRequest):
@@ -101,6 +121,9 @@ class UserCommand(Command):
 class PersistenceSetup:
     def __init__(self, *args):
         self.args = args
+
+    def validate_request(self, request: RPCRequest):
+        return
 
     def run(self, request: RPCRequest):
         log.debug("Running tails-persistence-setup with args %s", self.args)
@@ -159,6 +182,10 @@ class Handler(socketserver.StreamRequestHandler):
 
         try:
             return self.handle_request(req)
+        except InvalidArgsError:
+            return req.error_respond(error="Invalid arguments")
+        except InvalidRequestError:
+            return req.error_respond(error="Invalid request")
         except Exception:
             log.exception("Error processing request %s", req)
             return req.error_respond(error="Server error")
@@ -171,6 +198,7 @@ class Handler(socketserver.StreamRequestHandler):
             return req.error_respond(error="Method not implemented")
 
         cmd = self.spawn_commands[req.method]
+        cmd.validate_request(req)
         p = multiprocessing.Process(target=self.run, args=(cmd, req))
         p.start()
         return None
