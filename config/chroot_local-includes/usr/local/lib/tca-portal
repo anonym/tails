@@ -5,6 +5,7 @@ This service listens on a unix domain socket and provides a simple interface to 
 It is meant to be run as root.
 """
 
+import re
 import os
 import sys
 import stat
@@ -118,6 +119,24 @@ class UserCommand(Command):
         return args
 
 
+class SetTimeCommand(Command):
+    def __init__(self):
+        super().__init__(['/usr/local/lib/tails-set-date'], True)
+        # we know our argument is an ISO8601 date whose separator is a T, and with no microseconds
+        self.re = re.compile(r'[0-9+:T-]*')
+
+    def validate_args(self, args: list) -> list:
+        if len(args) != 1:
+            raise InvalidArgsError("Invalid number of arguments")
+        # args[0] should be sth like 2021-08-06 17:38:00+00:00
+        datestring = args[0]
+        if len(datestring) > 26:
+            raise InvalidArgsError("Datestring too long")
+        if not self.re.match(datestring):
+            raise InvalidArgsError("Datestring has invalid characters")
+        return args
+
+
 class PersistenceSetup:
     def __init__(self, *args):
         self.args = args
@@ -154,7 +173,7 @@ class Handler(socketserver.StreamRequestHandler):
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
 
-        "set-system-time": Command(['/usr/local/lib/tails-set-date'], True),
+        "set-system-time": SetTimeCommand(),
         "enable-tor-configuration-persistence": PersistenceSetup(
              "--no-gui", "--no-display_finished_message",
              "--force_enable_preset", "TorConfiguration"),
@@ -183,6 +202,7 @@ class Handler(socketserver.StreamRequestHandler):
         try:
             return self.handle_request(req)
         except InvalidArgsError:
+            log.error("Invalid arguments: %s", str(req.args))
             return req.error_respond(error="Invalid arguments")
         except InvalidRequestError:
             return req.error_respond(error="Invalid request")
