@@ -1,0 +1,45 @@
+#!/usr/bin/python3
+
+import json
+import datetime
+import logging
+import locale
+import os
+import sys
+
+import pytz
+
+
+def main():
+    if os.getuid() != 0:
+        print("Only root can run this!", file=sys.stderr)
+        sys.exit(1)
+
+    if 'LC_TIME' in os.environ:
+        try:
+            locale.setlocale(locale.LC_TIME, os.environ['LC_TIME'])
+        except locale.Error:
+            logging.warning('Invalid timezone specificied: %s', os.environ['LC_TIME'])
+
+    try:
+        tca_state = json.load(open('/run/tca/tca.state'))
+    except:
+        tzname = None
+    else:
+        tzname = tca_state.get('ui', {}).get('time', {}).get('tz', None)
+    now = datetime.datetime.now()
+    if tzname:
+        aware_dt = pytz.utc.localize(now)
+        user_tz = pytz.timezone(tzname)
+        now = aware_dt.astimezone(user_tz)
+        print(now.strftime('%x %X'))
+        sys.exit(0)
+    else:
+        print(now.strftime('%c'), 'GMT')
+
+    
+
+
+
+if __name__ == '__main__':
+    main()

@@ -16,7 +16,12 @@ function overrider(lbl) {
     var now = new Date()
 
     // var desired = Math.random().toString()
-    var desired = now.toLocaleString('en-US', {timeZone: 'Asia/Shanghai'})
+    let [res, out] = GLib.spawn_sync(null, ['sudo', '-n', '/usr/local/lib/tails-get-date'], null, GLib.SpawnFlags.SEARCH_PATH, null);
+    if(out==null) {
+        var desired = now.toLocaleString('en-US') + ' UTC'
+    } else {
+        desired = out.toString()
+    }
 
     var t = lbl.get_text();
     if (t != desired) {
