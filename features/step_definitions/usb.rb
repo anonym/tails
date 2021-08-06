@@ -91,6 +91,15 @@ def persistent_presets_ui_settings
   end
 end
 
+# Returns the list of mountpoints which are configured in persistence.conf
+def configured_persistent_mountpoints
+  $vm.file_content(
+    '/live/persistence/TailsData_unlocked/persistence.conf'
+  ).split("\n").map do |line|
+    line.split[0]
+  end
+end
+
 def recover_from_upgrader_failure
   $vm.execute('pkill --full tails-upgrade-frontend-wrapper')
   $vm.execute('killall tails-upgrade-frontend zenity')
@@ -239,7 +248,9 @@ When /^I disable the first persistence preset$/ do
   @screen.press('alt', 'F4')
 end
 
-Given /^I create a persistent partition( for Additional Software)?$/ do |asp|
+Given /^I create a persistent partition( with the default settings| for Additional Software)?$/ do |mode|
+  default_settings = mode
+  asp = mode == ' for Additional Software'
   unless asp
     step 'I start "Configure persistent volume" via GNOME Activities Overview'
   end
@@ -248,7 +259,7 @@ Given /^I create a persistent partition( for Additional Software)?$/ do |asp|
   @screen.press('Tab')
   @screen.type(@persistence_password, ['Return'])
   @screen.wait('PersistenceWizardPresets.png', 300)
-  step 'I enable all persistence presets' unless asp
+  step 'I enable all persistence presets' unless default_settings
 end
 
 def check_disk_integrity(name, dev, scheme)
@@ -593,6 +604,9 @@ Then /^all persistent directories(| from the old Tails version) have safe access
       elsif File.basename(src) == 'greeter-settings'
         expected_perms = '700'
         expected_owner = 'Debian-gdm'
+      elsif File.basename(src) == 'tca'
+        expected_perms = '700'
+        expected_owner = 'root'
       else
         expected_perms = '755'
         expected_owner = 'root'
@@ -1205,4 +1219,12 @@ Then /^(no )?persistent Greeter options were restored$/ do |no|
     $language = 'German'
     @screen.wait('TailsGreeterPersistentSettingsRestored.png', 10)
   end
+end
+
+Then /^(.*) is (?:still )?configured to persist$/ do |dir|
+  assert(configured_persistent_mountpoints.include?(dir))
+end
+
+Then /^(.*) is not configured to persist$/ do |dir|
+  assert(!configured_persistent_mountpoints.include?(dir))
 end

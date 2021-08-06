@@ -79,6 +79,21 @@ method _build__presets () {
             ]
         },
         {
+            id          => 'TorConfiguration',
+            name        => __(q{Tor Bridges}),
+            description => __(
+                q{Save the last bridges that you used to connect to Tor}
+            ),
+            icon_name   => 'onioncircuits',
+            enabled     => 0,
+            atoms_args  => [
+                {
+                    destination => '/var/lib/tca',
+                    options     => [ 'source=tca' ],
+                },
+            ]
+        },
+        {
             id          => 'BrowserBookmarks',
             name        => __(q{Browser Bookmarks}),
             description => __(
@@ -275,9 +290,10 @@ method set_state_from_lines (@lines) {
     }
 }
 
-method set_state_from_overrides (ArrayRef[Str] $overrides) {
+method set_state_from_overrides (ArrayRef[Str] $enable, ArrayRef[Str] $disable) {
     foreach my $atom ($self->atoms) {
-        $atom->enabled(1) if grep { $atom->id eq $_ } @$overrides;
+        $atom->enabled(1) if grep { $atom->id eq $_ } @$enable;
+        $atom->enabled(0) if grep { $atom->id eq $_ } @$disable;
     }
 }
 

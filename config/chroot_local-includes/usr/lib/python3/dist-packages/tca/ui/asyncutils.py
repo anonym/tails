@@ -1,5 +1,5 @@
 import os
-from typing import List, Callable
+from typing import Dict, List, Callable, Optional
 import socket
 
 import gi
@@ -26,14 +26,19 @@ class GJsonRpcClient(GObject.GObject):
             (),
         ),
         "response": (
-            GObject.SIGNAL_RUN_LAST,
+            GObject.SIGNAL_RUN_LAST | GObject.SIGNAL_DETAILED,
             GObject.TYPE_NONE,
-            (GObject.TYPE_INT, GObject.TYPE_STRING),
+            [GObject.TYPE_PYOBJECT, GObject.TYPE_STRING],
         ),
         "response-error": (
-            GObject.SIGNAL_RUN_LAST,
+            GObject.SIGNAL_RUN_LAST | GObject.SIGNAL_DETAILED,
             GObject.TYPE_NONE,
-            (GObject.TYPE_INT, GObject.TYPE_STRING),
+            [GObject.TYPE_STRING],
+        ),
+        "response-success": (
+            GObject.SIGNAL_RUN_LAST | GObject.SIGNAL_DETAILED,
+            GObject.TYPE_NONE,
+            [GObject.TYPE_PYOBJECT],
         ),
     }
 
@@ -49,11 +54,14 @@ class GJsonRpcClient(GObject.GObject):
         GLib.io_add_watch(self.sock.fileno(), GLib.IO_IN, self._on_data)
         GLib.io_add_watch(self.sock.fileno(), GLib.IO_HUP | GLib.IO_ERR, self._on_close)
 
-    def call_async(self, method: str, *args, **kwargs):
+    def call_async(self, method: str, callback: Optional[Callable], *args, **kwargs):
         req = self.protocol.create_request(method, args, kwargs)
         print('call async', req.unique_id)
+        if callback is not None:
+            self.connect('response::%d' % req.unique_id, callback)
         output = req.serialize() + "\n"
         self.sock.send(output.encode("utf8"))
+        return req
 
     def _on_close(self, *args):
         self.emit('connection-closed')
@@ -69,9 +77,11 @@ class GJsonRpcClient(GObject.GObject):
             except BadReplyError:
                 return
             if hasattr(response, "error"):
-                self.emit("response-error", response.unique_id, response.error)
+                self.emit("response-error::%d" % response.unique_id, response.error)
+                self.emit("response::%d" % response.unique_id, None, response.error)
             else:
-                self.emit("response", response.unique_id, response.result)
+                self.emit("response-success::%d" % response.unique_id, response.result)
+                self.emit("response::%d" % response.unique_id, response.result, None)
         return True
 
 

@@ -450,14 +450,9 @@ Given /^the Tails desktop is ready$/ do
   # Since we use a simulated Tor network (via Chutney) we have to
   # switch to its default bridges.
   default_bridges_path = '/usr/share/tails/tca/default_bridges.txt'
-  # XXX: We can drop the if-statement and keep just its body once
-  # tails!375 (17215-tor-launcher-replacement) is merged in a stable
-  # release.
-  if $vm.file_exist?(default_bridges_path)
-    $vm.file_overwrite(default_bridges_path, '')
-    chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
-      $vm.file_append(default_bridges_path, bridge[:line])
-    end
+  $vm.file_overwrite(default_bridges_path, '')
+  chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+    $vm.file_append(default_bridges_path, bridge[:line])
   end
   # Optimize upgrade check: avoid 30 second sleep
   $vm.execute_successfully('sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service')
@@ -678,13 +673,6 @@ Then /^I (do not )?see "([^"]*)" after at most (\d+) seconds$/ do |negation, ima
     @screen.wait_vanish(image, time.to_i)
   else
     @screen.wait(image, time.to_i)
-  end
-end
-
-Then /^all Internet traffic has only flowed through Tor$/ do
-  allowed_hosts = allowed_hosts_under_tor_enforcement
-  assert_all_connections(@sniffer.pcap_file) do |c|
-    allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
 end
 

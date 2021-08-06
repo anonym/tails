@@ -24,6 +24,10 @@ from tca.torutils import (
 )
 from tca.ui.asyncutils import GJsonRpcClient
 from tailslib.logutils import configure_logging
+from tailslib.persistence import (
+    has_persistence,
+    has_unlocked_persistence,
+)
 
 
 gi.require_version("GLib", "2.0")
@@ -45,14 +49,25 @@ class TCAApplication(Gtk.Application):
             flags=Gio.ApplicationFlags.FLAGS_NONE,
         )
         self.log = logging.getLogger(self.__class__.__name__)
-        self.config_buf, portal_sock = recover_fd_from_parent()
+        self.config_buf, self.state_buf, portal_sock = recover_fd_from_parent()
         self.controller = controller = Controller.from_port(port=9051)
         controller.authenticate(password=None)
-        self.configurator = TorLauncherUtils(controller, self.config_buf)
-        self.configurator.load_conf()
+        self.configurator = TorLauncherUtils(
+            controller,
+            self.config_buf,
+            self.state_buf,
+        )
+        if self.has_been_started_already():
+            self.configurator.load_conf_from_tor()
+        else:
+            self.configurator.load_conf_from_file()
+        self.log.debug(
+            "Tor connection config: %s",
+            self.configurator.tor_connection_config.to_dict()
+        )
         self.portal = GJsonRpcClient(portal_sock)
         self.portal.connect("response-error", self.on_portal_error)
-        self.portal.connect("response", self.on_portal_response)
+        self.portal.connect("response-success", self.on_portal_response)
         self.portal.run()
         self.netutils = TorLauncherNetworkUtils()
         self.args = args
@@ -62,6 +77,11 @@ class TCAApplication(Gtk.Application):
         self.last_nm_state = None
         self._tor_is_working: bool = TOR_HAS_BOOTSTRAPPED_PATH.exists()
         self.tor_info: Dict[str, Any] = {"DisableNetwork": None}
+        self.has_persistence = has_persistence()
+        self.has_unlocked_persistence = has_unlocked_persistence()
+
+    def has_been_started_already(self):
+        return (self.configurator.read_tca_state() != {})
 
     def do_monitor_tor_is_working(self):
         # init tor-ready monitoring
@@ -110,11 +130,11 @@ class TCAApplication(Gtk.Application):
     def is_network_link_ok(self) -> bool:
         return self.last_nm_state is not None and self.last_nm_state >= 60
 
-    def on_portal_response(self, portal, unique_id, result):
-        self.log.debug("response<%d> from portal : %s", unique_id, result)
+    def on_portal_response(self, portal, result: dict):
+        self.log.debug("response from portal : %s", result)
 
-    def on_portal_error(self, portal, unique_id, error):
-        self.log.error("response-error<%d> from portal : %s", unique_id, error)
+    def on_portal_error(self, portal, error: str):
+        self.log.error("response-error from portal : %s", error)
 
     def cb_dbus_nm_state(self, val):
         self.log.debug("NetworkManager state is now: %d", int(val))

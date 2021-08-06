@@ -71,7 +71,7 @@ log = logging.getLogger(__name__)
 
 class StepOfflineHideMixin:
     def cb_step_offline_wificonf_clicked(self, user_data=None):
-        self.app.portal.call_async("open-wifi-config")
+        self.app.portal.call_async("open-wifi-config", None)
 
 class StepChooseHideMixin:
     """
@@ -95,19 +95,15 @@ class StepChooseHideMixin:
             else:
                 self.builder.get_object("radio_unnoticed_yes").set_sensitive(False)
                 self.builder.get_object("radio_unnoticed_no").set_active(True)
-                if self.state["hide"]["bridge"]:
-                    self.builder.get_object("radio_unnoticed_no_bridge").set_active(
-                        True
-                    )
         elif (
             "hide" in self.state["hide"]
         ):  # the user is changing her mind before connecting to Tor
             hide = self.state["hide"]["hide"]
             self.builder.get_object("radio_unnoticed_yes").set_active(hide)
             self.builder.get_object("radio_unnoticed_no").set_active(not hide)
-            self.builder.get_object("radio_unnoticed_no_bridge").set_active(
-                self.state["hide"]["bridge"]
-            )
+        self.builder.get_object("radio_unnoticed_no_bridge").set_active(
+            self.state["hide"]["bridge"]
+        )
 
     def _step_hide_next(self):
         if self.state["hide"]["bridge"]:
@@ -177,10 +173,10 @@ class StepChooseBridgeMixin:
             "combo"
         ).hide()  # we are forcing that to obfs4 until we support meek
         self.get_object("box_warning").hide()
-        self._step_bridge_init_from_tor_state()
+        self._step_bridge_init_from_tor_config()
         self._step_bridge_set_actives()
 
-    def _step_bridge_init_from_tor_state(self):
+    def _step_bridge_init_from_tor_config(self):
         bridges = self.app.configurator.tor_connection_config.bridges
         if not bridges:
             return
@@ -310,7 +306,7 @@ class StepConnectProgressMixin:
                     _("Connecting to Tor without bridges…")
                 )
             elif self.state["bridge"].get("kind", "") == "default":
-                self.app.configurator.tor_connection_config.default_bridges(
+                self.app.configurator.tor_connection_config.enable_default_bridges(
                     only_type=self.state["bridge"]["default_method"]
                 )
                 self.get_object("label_status").set_text(
@@ -334,7 +330,7 @@ class StepConnectProgressMixin:
             return True
 
         def do_tor_connect_default_bridges():
-            self.app.configurator.tor_connection_config.default_bridges(
+            self.app.configurator.tor_connection_config.enable_default_bridges(
                 only_type="obfs4"
             )
             self.get_object("label_status").set_text(
@@ -443,16 +439,16 @@ class StepConnectProgressMixin:
             )
 
     def cb_step_progress_btn_starttbb_clicked(self, *args):
-        self.app.portal.call_async("open-tbb")
+        self.app.portal.call_async("open-tbb", None)
 
     def cb_step_progress_btn_reset_clicked(self, *args):
-        self.app.portal.call_async("tor/restart")
+        self.app.portal.call_async("tor/restart", None)
 
     def cb_step_progress_btn_monitor_clicked(self, *args):
-        self.app.portal.call_async("open-networkmonitor")
+        self.app.portal.call_async("open-networkmonitor", None)
 
     def cb_step_progress_btn_onioncircuits_clicked(self, *args):
-        self.app.portal.call_async("open-onioncircuits")
+        self.app.portal.call_async("open-onioncircuits", None)
 
 
 class StepErrorMixin:
@@ -493,7 +489,7 @@ class StepErrorMixin:
         self._step_error_submit_allowed()
 
     def cb_step_error_btn_captive_clicked(self, *args):
-        self.app.portal.call_async("open-unsafebrowser")
+        self.app.portal.call_async("open-unsafebrowser", None)
 
         # XXX: for proper handling of the btn_submit, we'd better wait for the unsafe-browser to be closed
         # XXX: this is considered a "fix attempt" even if the unsafe-browser was not enabled, which is clearly
@@ -675,19 +671,24 @@ class TCAMainWindow(
             "offline": {},
         }
         if self.app.args.debug_statefile is not None:
-            log.debug("loading statefile")
+            log.debug("loading debug statefile")
             with open(self.app.args.debug_statefile) as buf:
                 content = json.load(buf)
                 log.debug("content found %s", content)
                 self.state.update(content)
         else:
-            data = self.app.configurator.read_conf()
+            data = self.app.configurator.read_tca_state()
+            config = self.app.configurator.tor_connection_config.to_dict()
             if data and data.get("ui"):
                 for key in ["hide", "bridge"]:
                     self.state[key].update(data["ui"].get(key, {}))
                 self.state["progress"]["started"] = (
                     data["ui"].get("progress", {}).get("started", False)
                 )
+            elif config and config.get("bridges"):
+                self.state["hide"]["bridge"] = True
+                self.state["bridge"]["kind"] = "manual"
+                self.state["bridge"]["bridges"] = config["bridges"]
             self.state["progress"]["success"] = self.app.is_tor_working
             if self.state["progress"]["success"]:
                 self.state["step"] = "progress"
@@ -739,11 +740,13 @@ class TCAMainWindow(
 
     def save_conf(self, successful_connect=False):
         log.info("Saving configuration (success=%s)", successful_connect)
-        if not successful_connect:
-            data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
-        else:
+        if successful_connect:
             data = {"ui": self.state}
-        self.app.configurator.save_conf(data, save_torrc=successful_connect)
+        else:
+            data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
+        self.app.configurator.save_tca_state(data)
+        if successful_connect:
+            self.app.configurator.save_conf()
 
     def get_screen_size(self) -> Tuple[int, int]:
         disp = Gdk.Display.get_default()
@@ -821,7 +824,7 @@ class TCAMainWindow(
         return True
 
     def on_link_help_clicked(self, label, uri: str):
-        self.app.portal.call_async("open-documentation", "--force-local", uri)
+        self.app.portal.call_async("open-documentation", None, "--force-local", uri)
 
     # Called from parent application
 

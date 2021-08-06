@@ -7,7 +7,7 @@ ConditionUser=1000
 
 [Service]
 Type=notify
-ExecStart=/usr/local/bin/a11y-proxy-netns --component=a11y --log-level DEBUG %i
+ExecStart=/usr/local/bin/netns-bus-proxy --component=a11y --log-level DEBUG %i
 ExecStop=/bin/kill -INT $MAINPID
 
 

@@ -638,6 +638,10 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
                         label_string=_('Install')):
                     self.confirmed = True
                 else:
+                    if self.force_reinstall_button_available:
+                        self.force_reinstall = False
+                        self.opts.partition = False
+
                     return
             else:
                 # The user has confirmed that they wish to partition their device,

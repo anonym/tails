@@ -45,7 +45,7 @@ done
 
 /usr/local/lib/systemctl-user amnesia start tca.service
 
-# Wait until the user has done the Tor Launcher configuration.
+# Wait until the user is done with configuring Tor.
 until [ "$(tor_control_getconf DisableNetwork)" = 0 ]; do
     sleep 1
 done
