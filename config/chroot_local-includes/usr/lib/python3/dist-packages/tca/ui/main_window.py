@@ -73,6 +73,7 @@ class StepOfflineHideMixin:
     def cb_step_offline_wificonf_clicked(self, user_data=None):
         self.app.portal.call_async("open-wifi-config", None)
 
+
 class StepChooseHideMixin:
     """
     Handles the "consent question" step.
@@ -475,18 +476,39 @@ class StepErrorMixin:
         time_dialog = tca.ui.dialogs.get_time_dialog()
         time_dialog.set_modal(True)
         time_dialog.set_transient_for(self)
-        time_dialog.connect('response', self.on_time_dialog_complete)
+        time_dialog.connect("response", self.on_time_dialog_complete)
         time_dialog.show_all()
 
     def on_time_dialog_complete(self, time_dialog, response):
-        print('time dialog closed', response==Gtk.ResponseType.APPLY)
+        print("time dialog closed", response == Gtk.ResponseType.APPLY)
+
+        def on_set_system_time(portal, result, error):
+            if error:
+                log.error("Error setting system time! %s", error)
+                dialog = Gtk.MessageDialog(
+                    transient_for=time_dialog,
+                    flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                    message_type=Gtk.MessageType.ERROR,
+                    buttons=Gtk.ButtonsType.OK,
+                    text="Error setting system time",
+                )
+                dialog.format_secondary_text("%s\n\nThis should not happen. Please report a bug." % error)
+                dialog.run()
+                dialog.destroy()
+                time_dialog.destroy()
+                return
+            self.state["error"]["fix_attempt"] = True
+            self._step_error_submit_allowed()
+            time_dialog.destroy()
+
         if response == Gtk.ResponseType.APPLY:
             aware_dt = time_dialog.get_date()
             utc_dt = aware_dt.astimezone(pytz.utc)
-            self.app.portal.call_async("set-system-time", str(utc_dt))
-        time_dialog.destroy()
-        self.state["error"]["fix_attempt"] = True
-        self._step_error_submit_allowed()
+            self.app.portal.call_async(
+                "set-system-time", on_set_system_time, str(utc_dt)
+            )
+        else:
+            time_dialog.destroy()
 
     def cb_step_error_btn_captive_clicked(self, *args):
         self.app.portal.call_async("open-unsafebrowser", None)
