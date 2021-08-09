@@ -533,17 +533,9 @@ class HtpdateError < TimeSyncingError
 end
 
 Given /^the time has synced$/ do
-  ['/run/tordate/done', '/run/htpdate/success'].each do |file|
-    begin
-      try_for(300) { $vm.execute("test -e #{file}").success? }
-    rescue Timeout::Error
-      if file == '/run/htpdate/success'
-        raise HtpdateError, 'Time syncing failed'
-      else
-        raise TordateError, 'Time syncing failed'
-      end
-    end
-  end
+  try_for(300) { $vm.execute('test -e /run/htpdate/success').success? }
+rescue Timeout::Error
+  raise HtpdateError, 'Time syncing failed'
 end
 
 Given /^available upgrades have been checked$/ do
