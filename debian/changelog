@@ -1,8 +1,111 @@
-tails (4.21) UNRELEASED; urgency=medium
+tails (4.21) unstable; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade to Linux 5.10.46-3 (tails/tails!549)
 
- -- anonym <anonym@riseup.net>  Tue, 13 Jul 2021 16:33:25 +0200
+    Closes issues:
+      - Upgrade to Linux 5.10.46-2+ (CVE-2021-33909) (tails/tails#18489)
+
+    Commits:
+      - Update /etc/group's expected lines ordering
+      - Ensure UIDs/GIDs don't change
+      - Remove obsolete dkms logs cleanup
+      - Don't (attempt to) build VirtualBox guest modules anymore
+      - Upgrade snapshot of the Debian archive to 2021080201
+
+  * Upgrade Thunderbird to 78.12.0-1~deb10u1
+  
+  * Don't (attempt to) build VirtualBox guest modules anymore (tails/tails!537)
+
+    Commits:
+      - Update /etc/group's expected lines ordering
+      - Ensure UIDs/GIDs don't change
+      - Remove obsolete dkms logs cleanup
+      - Don't (attempt to) build VirtualBox guest modules anymore
+
+  * Installer: allow choose Upgrade option when reinstall is cancelled
+    (tails/tails!553)
+
+    Closes issues:
+      - Choosing "Upgrade" option in Tails Installer can delete persistent volume
+        (tails/tails#18494)
+
+    Commits:
+      - Installer: allow choose Upgrade option when reinstall is cancelled
+
+  * Upgrade to Tor Browser 10.5.4 (based on Firefox 78.13esr) (tails/tails!555)
+
+    Closes issues:
+      - Upgrade to Tor Browser 10.5.4 (based on Firefox 78.13esr) (tails/tails#18479)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 10.5.4-build1
+
+  * Clean up code and pre-TCA leftovers (tails/tails!541)
+
+    Closes issues:
+      - Clean up pre-TCA leftovers (tails/tails#18365)
+      - Rename a11y-proxy-netns: it's now used for ibus as well (tails/tails#18366)
+
+    Commits:
+      - Give function the name we use
+      - Rename a11y-proxy-netns → netns-bus-proxy.
+      - Rename TCA's torlaunch network namespace from torlaunch to tca.
+      - Update comment.
+      - Test suite: drop obsolete workaround.
+      - Drop already done TODO comment.
+      - Fix outdated references to Tor Launcher.
+      - Drop unneeded workaround.
+      - Test suite: drop code used to support --old-iso for 4.20 release.
+      - Remove unused exec_unconfined_firefox().
+
+  * Refactor and consolidate how we explicitly check for Tor leaks in the automated
+    test suite (tails/tails!540)
+
+    Closes issues:
+      - "all Internet traffic has only flowed through Tor" sometimes fails: does not
+        allow for varying behavior (fallback to default bridges, or not)
+        (tails/tails#18493)
+
+    Commits:
+      - Test suite: refactor and consolidate how we explicitly check for Tor leaks.
+      - Revert "Test suite: temporarily disable failing step in scenario."
+
+  * Post-RM: doc improvements (tails/tails!528)
+
+    Commits:
+      - clarify release types
+      - after releasing: give more guidance
+      - one less bashism
+      - rm doc: give manual testers the signatures
+      - some parts are not related to freeze
+      - refresh-translations explains that it failed
+      - rm doc: clarify what to do with the package diff
+      - rm doc: clarify freezing
+
+  * Fix usage of mutable default arguments in Python (tails/tails!527)
+
+    Commits:
+      - Fix usage of mutable default arguments in Python
+
+  * More automated testing of TCA for Sponsor08/10 (tails/tails!435)
+
+    Commits:
+      - Refactor.
+      - Clarify.
+      - Clarify.
+      - Test suite: wait longer for the TCA to report errors.
+      - Test suite: test that TCA reports an error when reconnecting to a network where
+        Tor is blocked.
+      - Test suite: drop unnecessary step.
+      - Test suite: make blocking Tor survive reconnections.
+      - Test suite: monitor Tor leaks.
+      - Fix erroneous camel casing in translation.
+      - Test suite: test explicitly selecting default bridges in TCA.
+      - Test suite: test that the same Tor config is applied if TCA reconnects.
+      - Test suite: test that TCA disallows normal bridges in hide mode.
+
+ -- Tails developers <tails@boum.org>  Mon, 09 Aug 2021 06:32:34 +0000
 
 tails (4.20) unstable; urgency=medium
 
