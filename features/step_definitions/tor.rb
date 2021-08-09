@@ -596,8 +596,11 @@ end
 
 When /^I set the time zone in TCA to "([^"]*)"$/ do |timezone|
   tor_connection_assistant.child('Set Time').click
-  time_dialog = tor_connection_assistant.child('Tor Connection - Set Time', roleName: 'dialog', showingOnly: true)
-  select_tz = time_dialog.child('Time zone', roleName: 'panel').child(roleName: 'combo box')
+  time_dialog = tor_connection_assistant.child('Tor Connection - Set Time',
+                                               roleName: 'dialog',
+                                               showingOnly: true)
+  select_tz = time_dialog.child('Time zone', roleName: 'panel')
+                         .child(roleName: 'combo box')
   select_tz.combovalue = timezone
 
   try_for(5) do
@@ -607,13 +610,11 @@ When /^I set the time zone in TCA to "([^"]*)"$/ do |timezone|
 
   # wait for the dialog to be closed
   try_for(30) do
-    begin
-      tor_connection_assistant.child('Set Time')
-    rescue Dogtail::Failure
-      true
-    else
-      false
-    end
+    tor_connection_assistant.child('Tor Connection - Set Time')
+  rescue Dogtail::Failure
+    true
+  else
+    false
   end
 end
 
