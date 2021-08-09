@@ -23,10 +23,6 @@ fi
 # It's safest that Tor is not running when messing with its logs.
 systemctl stop tor@default.service
 
-# We depend on grepping stuff from the Tor log (especially for
-# tordate/20-time.sh), so deleting it seems like a Good Thing(TM).
-rm -f "${TOR_LOG}"
-
 # We would like Tor to be started during init time, even before the
 # network is up, and then send it a SIGHUP here to make it start
 # bootstrapping swiftly, but it doesn't work because of a bug in
