@@ -67,14 +67,14 @@ STAGE_SCHEMA = {
     },
     "reproduced-images": {
         "matching_jenkins_images_build_id": int,
+    },
+    "built-iuks": {
         "iso_path": IsIsoFile,
         "img_path": IsImgFile,
         "iso_sha256sum": str,
         "img_sha256sum": str,
         "iso_size_in_bytes": int,
         "img_size_in_bytes": int,
-    },
-    "built-iuks": {
         "candidate_jenkins_iuks_build_id": int,
         "iuks_hashes": IsFile(),
     }
@@ -149,7 +149,7 @@ class Config():
             "milestone": re.sub('~.*', '', self.data["version"]),
             "tails_signature_key_long_id": tails_signature_key[24:],
         }
-        if self.stage == 'reproduced-images':
+        if self.stage == 'built-iuks':
             iso_path = Path(self.data["isos"]) \
                 / ("tails-amd64-%s/tails-amd64-%s.iso" % (version, version))
             img_path = Path(self.data["isos"]) \
