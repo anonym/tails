@@ -71,6 +71,8 @@ Feature: Time syncing
     # XXX: this fails if tor is too fast to recover after the restart implied by setting the time
     #      TCA will notice this and switch to the success window
     #      so the button "Connect to Tor" cannot be clicked
+    #      Implementing #18470 will solve this (see
+    #      https://gitlab.tails.boum.org/tails/tails/-/issues/18470#note_174465 )
     When I click "Connect to Tor"
     Then Tor is ready
     And all Internet traffic has only flowed through the configured bridges
