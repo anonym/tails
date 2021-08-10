@@ -128,9 +128,9 @@ class SetTimeCommand(Command):
     def validate_args(self, args: list) -> list:
         if len(args) != 1:
             raise InvalidArgsError("Invalid number of arguments")
-        # args[0] should be sth like 2021-08-06T17:38:00+00:00
+        # args[0] should be sth like 2021-08-06T17:38+00:00
         datestring = args[0]
-        if len(datestring) > 26:
+        if len(datestring) > 22:
             raise InvalidArgsError("Datestring too long")
         if not self.re.fullmatch(datestring):
             raise InvalidArgsError("Datestring has invalid characters")
