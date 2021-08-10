@@ -352,6 +352,29 @@ end
 class TCAConnectionFailure < TorBootstrapFailure
 end
 
+class TCAForbiddenBridgeType < StandardError
+end
+
+Then /^the Tor Connection Assistant connects to Tor$/ do
+  failure_reported = false
+  try_for(120, msg: 'Timed out while waiting for TCA to connect to Tor') do
+    if tor_connection_assistant.child?('Error connecting to Tor',
+                                       roleName: 'label', retry: false)
+      failure_reported = true
+      done = true
+    else
+      done = tor_connection_assistant.child?(
+        'Connected to Tor successfully', roleName: 'label',
+        retry: false, showingOnly: true
+      )
+    end
+    done
+  end
+  if failure_reported
+    raise TCAConnectionFailure, 'TCA failed to connect to Tor'
+  end
+end
+
 def tca_configure(mode, &block)
   step 'the Tor Connection Assistant is running'
   case mode
@@ -362,9 +385,9 @@ def tca_configure(mode, &block)
   else
     raise "bad TCA configuration mode '#{mode}'"
   end
-  # XXX: We generally run this right after TCA has started, apparently
+  # We generally run this right after TCA has started, which might be
   # so early that clicking the radio button doesn't always work, so we
-  # retry. Can this be fixed in TCA instead some how?
+  # have to retry.
   radio_button = tor_connection_assistant.child(
     radio_button_label, roleName: 'radio button'
   )
@@ -375,29 +398,7 @@ def tca_configure(mode, &block)
   block.call if block_given?
   tor_connection_assistant.child('Connect to _Tor', roleName: 'push button')
                           .click
-  failure_reported = false
-  try_for(120, msg: 'Timed out while waiting for TCA to connect to Tor') do
-    if tor_connection_assistant.child?('Error connecting to Tor',
-                                       roleName: 'label', retry: false)
-      failure_reported = true
-      done = true
-    else
-      done = tor_connection_assistant.child?(
-        'Connected to Tor successfully', roleName: 'label', retry: false, showingOnly: true
-      )
-    end
-    done
-  end
-  if failure_reported
-    raise TCAConnectionFailure, 'TCA failed to connect to Tor'
-  end
-  # XXX: we're so fast closing TCA here that it's done before it
-  # issues the SAVECONF, but seemingly only for the "DisableNetwork=0"
-  # part, resulting in a lot of breakage. Ideally we would fix this in
-  # TCA itself, since a user could be this fast too, theoretically.
-  try_for(10, msg: 'DisableNetwork is still set in torrc') do
-    $vm.execute('grep "DisableNetwork 1" /etc/tor/torrc').failure?
-  end
+  step 'the Tor Connection Assistant connects to Tor'
   @screen.press('alt', 'F4')
 end
 
@@ -405,7 +406,7 @@ When /^I configure a direct connection in the Tor Connection Assistant$/ do
   tca_configure(:easy)
 end
 
-def chutney_bridge_lines(bridge_type, chutney_tag: nil)
+def chutney_bridges(bridge_type, chutney_tag: nil)
   chutney_tag = bridge_type if chutney_tag.nil?
   bridge_dirs = Dir.glob(
     "#{$config['TMPDIR']}/chutney-data/nodes/*#{chutney_tag}/"
@@ -441,24 +442,29 @@ def chutney_bridge_lines(bridge_type, chutney_tag: nil)
     end
     bridge_line = bridge_type + ' ' + address + ':' + port
     [fingerprint, extra].each { |e| bridge_line += ' ' + e.to_s if e }
-    bridge_line
+    {
+      type: bridge_type,
+      address: address,
+      port: port.to_i,
+      fingerprint: fingerprint,
+      extra: extra,
+      line: bridge_line,
+    }
   end
 end
 
-When /^I configure some (\w+) bridges in the Tor Connection Assistant$/ do |bridge_type|
+When /^I configure (?:some|the) (\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |bridge_type, mode|
   @tor_is_using_pluggable_transports = bridge_type != 'normal'
-  config_mode = bridge_type == 'normal' ? :easy : :hide
+  # If the "mode" isn't specified we pick one that makes sense for
+  # what is requested.
+  if mode.nil?
+    config_mode = ['normal', 'default'].include?(bridge_type) ? :easy : :hide
+  else
+    config_mode = mode.to_sym
+  end
   # Internally a "normal" bridge is called just "bridge" which we have
   # to respect below.
   bridge_type = 'bridge' if bridge_type == 'normal'
-
-  bridge_lines = []
-  @bridge_hosts = []
-  chutney_bridge_lines(bridge_type).each do |bridge_line|
-    bridge_lines << bridge_line
-    address, port = bridge_line.split[1].split(":")
-    @bridge_hosts << { address: address, port: port.to_i }
-  end
 
   tca_configure(config_mode) do
     if config_mode == :easy
@@ -469,13 +475,29 @@ When /^I configure some (\w+) bridges in the Tor Connection Assistant$/ do |brid
     tor_connection_assistant.child('Connect to _Tor',
                                    roleName: 'push button')
                             .click
-    tor_connection_assistant.child('Type in a bridge that I already know',
-                                 roleName: 'radio button')
-                            .click
-    tor_connection_assistant.child(roleName: 'scroll pane').click
-
-    bridge_lines.each do |bridge_line|
-      @screen.type(bridge_line, ['Return'])
+    if bridge_type == 'default'
+      assert_equal(:easy, config_mode)
+      tor_connection_assistant.child('Use a default bridge',
+                                     roleName: 'radio button')
+                              .click
+    else
+      tor_connection_assistant.child('Type in a bridge that I already know',
+                                     roleName: 'radio button')
+                              .click
+      tor_connection_assistant.child(roleName: 'scroll pane').click
+      @bridge_hosts = []
+      chutney_bridges(bridge_type).each do |bridge|
+        @screen.type(bridge[:line], ['Return'])
+        @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
+      end
+      begin
+        step 'the Tor Connection Assistant complains that normal bridges are not allowed'
+      rescue Dogtail::Failure
+        # There is no problem, so we can connect if we want
+      else
+        assert_equal(:hide, config_mode)
+        raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
+      end
     end
   end
 end
@@ -490,6 +512,20 @@ When /^I try to configure a direct connection in the Tor Connection Assistant$/ 
     raise "Expected TCAConnectionFailure to be raised but got " \
           "#{e.class.name}: #{e}"
   else
+    raise "TCA managed to connect to Tor with normal bridges in hide mode"
+  end
+end
+
+When /^I try to configure some normal bridges in the Tor Connection Assistant in hide mode$/ do
+  begin
+    step "I configure some normal bridges in the Tor Connection Assistant in hide mode"
+  rescue TCAForbiddenBridgeType
+    # Expected!
+    next
+  rescue StandardError => e
+    raise "Expected TCAForbiddenBridgeType to be raised but got " \
+          "#{e.class.name}: #{e}"
+  else
     raise "TCA managed to connect to Tor but was expected to fail"
   end
 end
@@ -501,14 +537,44 @@ When /^I close the Tor Connection Assistant$/ do
 end
 
 Then /^the Tor Connection Assistant reports that it failed to connect$/ do
-  tor_connection_assistant.child('Error connecting to Tor', roleName: 'label')
+  try_for(120) do
+    tor_connection_assistant.child('Error connecting to Tor', roleName: 'label')
+  end
 end
 
-When /^all Internet traffic has only flowed through the configured bridges$/ do
-  assert_not_nil(@bridge_hosts, 'No bridges has been configured via the ' \
-                 "'I configure some ... bridges in the Tor Connection Assistant' step")
+Then /^the Tor Connection Assistant complains that normal bridges are not allowed$/ do
+  tor_connection_assistant.child(
+    'You need to configure an obfs4 bridge to hide that you are using Tor',
+    roleName: 'label',
+    retry: false
+  )
+end
+
+Then /^I cannot click the "Connect to Tor" button$/ do
+  assert_equal(
+    "False",
+    tor_connection_assistant.child('Connect to _Tor').get_field('sensitive')
+  )
+end
+
+Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
+  case flow_target
+  when 'Tor'
+    allowed_hosts = allowed_hosts_under_tor_enforcement
+  when 'the default bridges'
+    allowed_hosts = chutney_bridges('obfs4', chutney_tag: 'defbr').map do |b|
+      {address: b[:address], port: b[:port]}
+    end
+  when 'the configured bridges'
+    assert_not_nil(@bridge_hosts, 'No bridges has been configured via the ' \
+                                  "'I configure some ... bridges in the " \
+                                  "Tor Connection Assistant' step")
+    allowed_hosts = @bridge_hosts
+  else
+    raise "Unsupported flow target '#{flow_target}'"
+  end
   assert_all_connections(@sniffer.pcap_file) do |c|
-    @bridge_hosts.include?({ address: c.daddr, port: c.dport })
+    allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
 end
 
@@ -526,16 +592,24 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
     end
   end
   if default_bridges
-    chutney_bridge_lines('obfs4', chutney_tag: 'defbr').each do |bridge_line|
-      relays << bridge_line.split[1].split(":")
+    chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+      relays << [bridge[:address], bridge[:port]]
     end
   end
   relays.each do |address, port|
-    $vm.execute_successfully("iptables -#{unblock ? 'D' : 'I'} OUTPUT " \
-                             '-p tcp ' \
-                             "--destination #{address} " \
-                             "--destination-port #{port} " \
-                             '-j REJECT --reject-with icmp-port-unreachable')
+    command = "iptables -#{unblock ? 'D' : 'I'} OUTPUT " \
+              '-p tcp ' \
+              "--destination #{address} " \
+              "--destination-port #{port} " \
+              '-j REJECT --reject-with icmp-port-unreachable'
+    $vm.execute_successfully(command)
+    if !unblock
+      $vm.file_append('/etc/NetworkManager/dispatcher.d/00-firewall.sh',
+                      command + "\n")
+    end
+  end
+  if unblock
+    $vm.execute_successfully('cp /lib/live/mount/rootfs/filesystem.squashfs/etc/NetworkManager/dispatcher.d/00-firewall.sh /etc/NetworkManager/dispatcher.d/00-firewall.sh')
   end
 end
 
@@ -558,5 +632,15 @@ end
 When /^I set (.*)=(.*) over Tor's control port$/ do |key, val|
   current_bridges = $vm.execute_successfully(
     "tor_control_setconf '#{key}=#{val}'", libs: 'tor'
+  )
+end
+
+Then /^Tor is using the same configuration as before$/ do
+  assert(@tor_success_configs.size >= 2,
+         "We need at least two configs to compare but have only " +
+         @tor_success_configs.size.to_s)
+  assert_equal(
+    @tor_success_configs[-2],
+    @tor_success_configs[-1],
   )
 end
