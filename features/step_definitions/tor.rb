@@ -537,17 +537,15 @@ When /^I disable saving bridges to Persistent Storage$/ do
 end
 
 When /^I unsuccessfully configure (a direct connection|some .* bridges) in the Tor Connection Assistant$/ do |conntype|
-  begin
-    step "I configure #{conntype} in the Tor Connection Assistant"
-  rescue TCAConnectionFailure
-    # Expected!
-    next
-  rescue StandardError => e
-    raise 'Expected TCAConnectionFailure to be raised but got ' \
-          "#{e.class.name}: #{e}"
-  else
-    raise 'TCA managed to connect to Tor with normal bridges in hide mode'
-  end
+  step "I configure #{conntype} in the Tor Connection Assistant"
+rescue TCAConnectionFailure
+  # Expected!
+  next
+rescue StandardError => e
+  raise 'Expected TCAConnectionFailure to be raised but got ' \
+        "#{e.class.name}: #{e}"
+else
+  raise 'TCA managed to connect to Tor with normal bridges in hide mode'
 end
 
 When /^I try to configure some normal bridges in the Tor Connection Assistant in hide mode$/ do
@@ -613,7 +611,6 @@ Then /^I cannot click the "Connect to Tor" button$/ do
   )
 end
 
-
 When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   tor_connection_assistant.child('Set Time').click
   time_dialog = tor_connection_assistant.child('Tor Connection - Set Time',
@@ -658,7 +655,6 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
     allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
 end
-
 
 Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |default_bridges, unblock|
   relay_dirs = Dir.glob(
