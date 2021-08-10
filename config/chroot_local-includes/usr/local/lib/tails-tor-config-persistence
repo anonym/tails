@@ -1,0 +1,35 @@
+#!/bin/sh
+
+set -eu
+
+CONF_FILE=/live/persistence/TailsData_unlocked/persistence.conf
+
+[ -w "$CONF_FILE" ] || exit 1
+
+[ $# = 1 ] || exit 2
+
+SUBCOMMAND="$1"
+
+enable_persistence_setting() {
+    if ! grep -E --line-regexp -qs '/var/lib/tca\s+source=tca' "$CONF_FILE"; then
+	echo '/var/lib/tca source=tca' >> "$CONF_FILE"
+    fi
+}
+
+case "$SUBCOMMAND" in
+    enable)
+	enable_persistence_setting
+	;;
+    disable)
+	echo "Not implemented yet" >&2
+	exit 3
+	;;
+    is-enabled)
+	echo "Not implemented yet" >&2
+	exit 3
+	;;
+    *)
+	echo "Sub-command ${SUBCOMMAND} is not supported" >&2
+	exit 4
+	;;
+esac
