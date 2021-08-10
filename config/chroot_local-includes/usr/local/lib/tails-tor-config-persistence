@@ -16,17 +16,27 @@ enable_persistence_setting() {
     fi
 }
 
+persistence_setting_is_enabled() {
+    grep -E --line-regexp -qs \
+	 '/var/lib/tca\s+source=tca' \
+	 "$CONF_FILE"
+}
+
+disable_persistence_setting() {
+    perl -ni -E \
+         'print unless m{\A/var/lib/tca\s+source=tca[\n]?\z}' \
+	 "$CONF_FILE"
+}
+
 case "$SUBCOMMAND" in
     enable)
 	enable_persistence_setting
 	;;
     disable)
-	echo "Not implemented yet" >&2
-	exit 3
+	disable_persistence_setting
 	;;
     is-enabled)
-	echo "Not implemented yet" >&2
-	exit 3
+	persistence_setting_is_enabled
 	;;
     *)
 	echo "Sub-command ${SUBCOMMAND} is not supported" >&2

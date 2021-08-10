@@ -137,21 +137,13 @@ class Handler(socketserver.StreamRequestHandler):
         # to external processes, but it would require # implementing
         # the Popen interface that the portal assumes.
         "is-tor-configuration-persistent?": PersistenceSetupCommand(
-            [
-                'grep', '-E', '--line-regexp', '-qs',
-                '/var/lib/tca\s+source=tca',
-                PERSISTENCE_CONF_FILE
-            ],
+            ["/usr/local/lib/tails-tor-config-persistence", "is-enabled"],
             False),
         "enable-tor-configuration-persistence": PersistenceSetupCommand(
             ["/usr/local/lib/tails-tor-config-persistence", "enable"],
             False),
         "disable-tor-configuration-persistence": PersistenceSetupCommand(
-            [
-                "perl", "-ni", "-E",
-                "print unless m{\A/var/lib/tca\s+source=tca[\n]?\z}",
-                PERSISTENCE_CONF_FILE
-            ],
+            ["/usr/local/lib/tails-tor-config-persistence", "disable"],
             False),
     }
     valid_commands = set(spawn_commands.keys())
