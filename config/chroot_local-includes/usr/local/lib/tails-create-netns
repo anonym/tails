@@ -112,7 +112,7 @@ if [ "$1" = stop ]
 then
     delete_netns tbb
     delete_netns onioncircs
-    delete_netns torlaunch
+    delete_netns tca
     delete_netns onionshare
     exit
 fi
@@ -125,14 +125,14 @@ then
     netBase='10.200.1'
     create_netns tbb "${netBase}.1"
     create_netns onioncircs "${netBase}.5"
-    create_netns torlaunch "${netBase}.9"
+    create_netns tca "${netBase}.9"
     create_netns onionshare "${netBase}.13"
 
     # Exposing specific services to applications confined in netns
     expose tbb 9050 9050
     expose tbb 9051 9051
     expose onioncircs 9051 9051
-    expose torlaunch 9051 9051
+    expose tca 9051 9051
     expose onionshare 9050 9050
     expose onionshare 9051 9051
 fi
