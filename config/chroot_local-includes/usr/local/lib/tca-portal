@@ -134,7 +134,7 @@ class Handler(socketserver.StreamRequestHandler):
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
         # It would be nicer to do this in Python without calling out
-        # to external processes, but it would require # implementing
+        # to external processes, but it would require implementing
         # the Popen interface that the portal assumes.
         "is-tor-configuration-persistent?": PersistenceSetupCommand(
             ["/usr/local/lib/tails-tor-config-persistence", "is-enabled"],
