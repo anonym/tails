@@ -256,7 +256,7 @@ STREAM_ISOLATION_INFO = {
     socksport:         9062,
     # htpdate is resolving names through the system resolver, not through socksport
     # (in order to have better error messages). Let it connect to local DNS!
-    dns:           true,
+    dns:               true,
   },
   'tails-security-check'           => {
     grep_monitor_expr: 'users:(("tails-security-"',
