@@ -338,13 +338,11 @@ end
 # images is not suitable, so we try more general approaches.
 
 When /^the Tor Connection Assistant (?:autostarts|is running)$/ do
-  begin
-    try_for(60) do
-      tor_connection_assistant
-    end
-  rescue Timeout::Error
-    raise TorBootstrapFailure, 'TCA did not start'
+  try_for(60) do
+    tor_connection_assistant
   end
+rescue Timeout::Error
+  raise TorBootstrapFailure, 'TCA did not start'
 end
 
 def tor_connection_assistant
@@ -372,9 +370,7 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
     end
     done
   end
-  if failure_reported
-    raise TCAConnectionFailure, 'TCA failed to connect to Tor'
-  end
+  raise TCAConnectionFailure, 'TCA failed to connect to Tor' if failure_reported
 end
 
 def tca_configure(mode, &block)
@@ -398,29 +394,33 @@ def tca_configure(mode, &block)
     radio_button.checked
   end
   block.call if block_given?
+  return unless connect
+
   tor_connection_assistant.child('Connect to _Tor', roleName: 'push button')
                           .click
   step 'the Tor Connection Assistant connects to Tor'
-  # XXX: we're so fast closing TCA here that it's done before it
-  # issues the SAVECONF, but seemingly only for the "DisableNetwork=0"
-  # part, resulting in a lot of breakage. Ideally we would fix this in
-  # TCA itself, since a user could be this fast too, theoretically.
-  try_for(10, msg: 'DisableNetwork is still set in torrc') do
-    $vm.execute('grep "DisableNetwork 1" /etc/tor/torrc').failure?
-  end
   @screen.press('alt', 'F4')
+end
+
+When(/^I choose to connect to Tor automatically$/) do
+  tca_configure(:easy, connect: false)
 end
 
 When /^I configure a direct connection in the Tor Connection Assistant$/ do
   tca_configure(:easy)
 end
 
+# XXX: giving up on a few worst offenders for now
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
 def chutney_bridges(bridge_type, chutney_tag: nil)
   chutney_tag = bridge_type if chutney_tag.nil?
   bridge_dirs = Dir.glob(
     "#{$config['TMPDIR']}/chutney-data/nodes/*#{chutney_tag}/"
   )
-  assert(bridge_dirs.size > 0, "No bridges of type '#{chutney_tag}' found")
+  assert(bridge_dirs.size.positive?, "No bridges of type '#{chutney_tag}' found")
+  # XXX: giving up on a few worst offenders for now
+  # rubocop:disable Metrics/BlockLength
   bridge_dirs.map do |bridge_dir|
     address = $vmnet.bridge_ip_addr
     port = nil
@@ -512,8 +512,28 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
         assert_equal(:hide, config_mode)
         raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
       end
+      if persistent
+        # XXX: do this in the GUI once implemented there
+        warn 'Gory hack for tracer bullet dev approach!'
+        $vm.execute_successfully(
+          'tails-persistence-setup --no-gui --no-display_finished_message --force_enable_preset TorConfiguration'
+        )
+        # XXX: this is a switch, not a checkbox
+        # tor_connection_assistant.child('Save bridges to Persistent Storage',
+        #                                roleName: 'check box')
+        #                         .click
+      end
     end
   end
+  # rubocop:enable Metrics/BlockLength
+end
+
+When /^I disable saving bridges to Persistent Storage$/ do
+  # XXX: do this in the GUI once implemented there
+  warn 'Gory hack for tracer bullet dev approach!'
+  $vm.execute_successfully(
+    'tails-persistence-setup --no-gui --no-display_finished_message --force_disable_preset TorConfiguration'
+  )
 end
 
 When /^I unsuccessfully configure (a direct connection|some .* bridges) in the Tor Connection Assistant$/ do |conntype|
