@@ -70,7 +70,7 @@ Feature: Time syncing
     When I unsuccessfully configure some obfs4 bridges in the Tor Connection Assistant
     Then the Tor Connection Assistant reports that it failed to connect
     # The "set time" button allows users to recover from this bug
-    When I set the time zone in TCA to "Asia/Shanghai"
+    When I set the time zone in Tor Connection to "Asia/Shanghai"
     Then Tails clock is less than 5 minutes incorrect
     # XXX: this fails if tor is too fast to recover after the restart implied by setting the time
     #      TCA will notice this and switch to the success window
