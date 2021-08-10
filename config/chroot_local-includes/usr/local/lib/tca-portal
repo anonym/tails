@@ -132,7 +132,7 @@ class SetTimeCommand(Command):
         datestring = args[0]
         if len(datestring) > 26:
             raise InvalidArgsError("Datestring too long")
-        if not self.re.match(datestring):
+        if not self.re.fullmatch(datestring):
             raise InvalidArgsError("Datestring has invalid characters")
         return args
 
