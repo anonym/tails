@@ -56,12 +56,8 @@ Feature: Time syncing
     Then the system clock is just past Tails' source date
 
   Scenario: I can connect to obfs4 bridges having a clock East of UTC
-    Given a computer
-    And the network is unplugged
-    And the hardware clock is set to "+8 hours"
-    And I start the computer
-    And the computer boots Tails
-    And I log in to a new session
+    Given I have started Tails from DVD without network and logged in
+    When I bump the system time with "+8 hours"
     And all notifications have disappeared
     And I capture all network traffic
     And the network is plugged
