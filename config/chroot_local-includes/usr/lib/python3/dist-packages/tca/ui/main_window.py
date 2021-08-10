@@ -187,6 +187,9 @@ class StepChooseBridgeMixin:
         else:
             self.get_object("radio_type").set_active(True)
             self.get_object("text").get_property("buffer").set_text("\n".join(bridges))
+            self.get_object("label_type").set_label(
+                _("_Use a bridge that I already know")
+            )
 
     def _step_bridge_set_persistence_sensitivity(self, sensitive: bool):
         if self.persistence_config_failed:

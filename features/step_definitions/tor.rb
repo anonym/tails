@@ -567,7 +567,7 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
                                  roleName: 'push button')
                           .click
   assert(
-    tor_connection_assistant.child('Type in a bridge that I already know',
+    tor_connection_assistant.child('Use a bridge that I already know',
                                    roleName: 'radio button').checked
   )
   persistent_bridges_lines = tor_connection_assistant.child(roleName: 'text')
