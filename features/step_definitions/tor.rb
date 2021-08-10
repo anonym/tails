@@ -518,9 +518,13 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
         raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
       end
       if persistent
-        tor_connection_assistant.child('Save bridges to Persistent Storage',
-                                       roleName: 'toggle button')
-                                .click
+        toggle_button = tor_connection_assistant.child(
+          'Save bridges to Persistent Storage',
+          roleName: 'toggle button'
+        )
+        assert(!toggle_button.checked)
+        toggle_button.click
+        try_for(10) { toggle_button.checked }
       end
     end
   end
@@ -528,9 +532,13 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
 end
 
 When /^I disable saving bridges to Persistent Storage$/ do
-  tor_connection_assistant.child('Save bridges to Persistent Storage',
-                                 roleName: 'toggle button')
-                          .click
+  toggle_button = tor_connection_assistant.child(
+    'Save bridges to Persistent Storage',
+    roleName: 'toggle button'
+  )
+  assert(toggle_button.checked)
+  toggle_button.click
+  try_for(10) { !toggle_button.checked }
 end
 
 When /^I try to configure a direct connection in the Tor Connection Assistant$/ do
