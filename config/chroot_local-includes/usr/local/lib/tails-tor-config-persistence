@@ -4,25 +4,26 @@ set -eu
 
 CONF_FILE=/live/persistence/TailsData_unlocked/persistence.conf
 
-[ -w "$CONF_FILE" ] || exit 1
-
 [ $# = 1 ] || exit 2
 
 SUBCOMMAND="$1"
 
 enable_persistence_setting() {
+    [ -w "$CONF_FILE" ] || return 1
     if ! grep -E --line-regexp -qs '/var/lib/tca\s+source=tca' "$CONF_FILE"; then
 	echo '/var/lib/tca source=tca' >> "$CONF_FILE"
     fi
 }
 
 persistence_setting_is_enabled() {
+    [ -r "$CONF_FILE" ] || return 1
     grep -E --line-regexp -qs \
 	 '/var/lib/tca\s+source=tca' \
 	 "$CONF_FILE"
 }
 
 disable_persistence_setting() {
+    [ -w "$CONF_FILE" ] || return 1
     perl -ni -E \
          'print unless m{\A/var/lib/tca\s+source=tca[\n]?\z}' \
 	 "$CONF_FILE"
