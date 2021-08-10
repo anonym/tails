@@ -508,7 +508,7 @@ class StepErrorMixin:
             aware_dt = time_dialog.get_date()
             utc_dt = aware_dt.astimezone(pytz.utc)
             self.app.portal.call_async(
-                "set-system-time", on_set_system_time, str(utc_dt)
+                "set-system-time", on_set_system_time, utc_dt.isoformat('T', 'minutes')
             )
         else:
             time_dialog.destroy()
