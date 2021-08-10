@@ -500,6 +500,9 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
         roleName: 'radio button'
       )
       btn.click
+      # btn.labelee is the widget "labelled by" btn.
+      # For details, see label-for and labelled-by accessibility relations
+      # in main.ui.in, aka. "Label For" and "Labeled By" in Glade.
       btn.labelee.click
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
