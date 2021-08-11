@@ -118,11 +118,13 @@ Given /^the network connection is ready(?: within (\d+) seconds)?$/ do |timeout|
 end
 
 Given /^the hardware clock is set to "([^"]*)"$/ do |time|
-  if time.start_with?('+') || time.start_with?('-')
-    dt = DateTime.parse(cmd_helper(['date' , '-d', time], env: {"TZ" => "UTC"}))
-  else
-    dt = DateTime.parse(time)
-  end
+  dt = if time.start_with?('+') || time.start_with?('-')
+         DateTime.parse(
+           cmd_helper(['date', '-d', time], env: { 'TZ' => 'UTC' })
+         )
+       else
+         DateTime.parse(time)
+       end
   debug_log("Set hw clock to #{dt}")
   $vm.set_hardware_clock(dt.to_time)
 end
@@ -364,13 +366,14 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
-  if RTL_LANGUAGES.include?(lang)
-    # If we select a RTL language below, the login and shutdown
-    # buttons will swap place.
-    login_button_region = @screen.find('TailsGreeterShutdownButton.png')
-  else
-    login_button_region = @screen.find('TailsGreeterLoginButton.png')
-  end
+  login_button_region = if RTL_LANGUAGES.include?(lang)
+                          # If we select a RTL language below, the
+                          # login and shutdown buttons will
+                          # swap place.
+                          @screen.find('TailsGreeterShutdownButton.png')
+                        else
+                          @screen.find('TailsGreeterLoginButton.png')
+                        end
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -455,7 +458,9 @@ Given /^the Tails desktop is ready$/ do
     $vm.file_append(default_bridges_path, bridge[:line])
   end
   # Optimize upgrade check: avoid 30 second sleep
-  $vm.execute_successfully('sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service')
+  $vm.execute_successfully(
+    'sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service'
+  )
   $vm.execute_successfully('systemctl --user daemon-reload', user: LIVE_USER)
 end
 
@@ -473,7 +478,7 @@ end
 Given /^Tor is ready$/ do
   # First we wait for tor to be running so its control port is open...
   try_for(60) do
-    $vm.execute("systemctl -q is-active tor@default.service").success?
+    $vm.execute('systemctl -q is-active tor@default.service').success?
   end
   # ... so we can ask if the tor's networking is disabled, in which
   # case Tor Connection Assistant has not been dealt with yet. If
