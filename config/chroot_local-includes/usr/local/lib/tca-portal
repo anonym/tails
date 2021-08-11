@@ -5,6 +5,7 @@ This service listens on a unix domain socket and provides a simple interface to 
 It is meant to be run as root.
 """
 
+import re
 import os
 import sys
 import stat
@@ -15,7 +16,7 @@ import socket
 import time
 from subprocess import Popen
 import multiprocessing
-from typing import Optional
+from typing import List, Optional
 
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol, JSONRPCParseError
 from tinyrpc.protocols import RPCRequest, RPCResponse
@@ -72,15 +73,35 @@ class ForkingUnixServer(socketserver.ForkingMixIn, FDUnixStreamServer):
     timeout = None
 
 
+class InvalidArgsError(InvalidRequestError):
+    pass
+
+
 class Command:
-    def __init__(self, cmd: list, arguments: bool):
+    def __init__(self, cmd: List[str], arguments: bool):
         self.cmd = cmd
         self.arguments = arguments
 
+    def validate_request(self, request: RPCRequest) -> None:
+        '''
+        raise if it's not valid
+        '''
+        self.full_command(request)
+
+    def validate_args(self, args: list) -> list:
+        '''
+        Validate or update the command arguments.
+
+        Raise an InvalidRequestError if the arguments are not valid
+
+        This method is meant to be overridden, so that you can easily add validation to your Command
+        '''
+        if not self.arguments and args:
+            raise InvalidArgsError("Arguments are not accepted for this command")
+        return args
+
     def full_command(self, request: RPCRequest) -> list:
-        cmd = self.cmd
-        if self.arguments:
-            cmd = cmd + request.args
+        cmd = self.cmd + self.validate_args(request.args)
         return cmd
 
     def run(self, request: RPCRequest):
@@ -98,9 +119,30 @@ class UserCommand(Command):
         return args
 
 
+class SetTimeCommand(Command):
+    def __init__(self):
+        super().__init__(['/usr/local/lib/tails-set-date'], True)
+        # we know our argument is an ISO8601 date whose separator is a T, and with no microseconds
+        self.re = re.compile(r'[0-9+:T-]*')
+
+    def validate_args(self, args: list) -> list:
+        if len(args) != 1:
+            raise InvalidArgsError("Invalid number of arguments")
+        # args[0] should be sth like 2021-08-06T17:38+00:00
+        datestring = args[0]
+        if len(datestring) > 22:
+            raise InvalidArgsError("Datestring too long")
+        if not self.re.fullmatch(datestring):
+            raise InvalidArgsError("Datestring has invalid characters")
+        return args
+
+
 class PersistenceSetup:
     def __init__(self, *args):
         self.args = args
+
+    def validate_request(self, request: RPCRequest):
+        return
 
     def run(self, request: RPCRequest):
         log.debug("Running tails-persistence-setup with args %s", self.args)
@@ -130,6 +172,8 @@ class Handler(socketserver.StreamRequestHandler):
         "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
+
+        "set-system-time": SetTimeCommand(),
         "enable-tor-configuration-persistence": PersistenceSetup(
              "--no-gui", "--no-display_finished_message",
              "--force_enable_preset", "TorConfiguration"),
@@ -157,6 +201,11 @@ class Handler(socketserver.StreamRequestHandler):
 
         try:
             return self.handle_request(req)
+        except InvalidArgsError:
+            log.error("Invalid arguments: %s", str(req.args))
+            return req.error_respond(error="Invalid arguments")
+        except InvalidRequestError:
+            return req.error_respond(error="Invalid request")
         except Exception:
             log.exception("Error processing request %s", req)
             return req.error_respond(error="Server error")
@@ -165,9 +214,11 @@ class Handler(socketserver.StreamRequestHandler):
         if req.method not in self.valid_commands:
             return req.error_respond(error="Invalid method")
         if req.method not in self.spawn_commands:
+            log.info("Running %s", req.method)
             return req.error_respond(error="Method not implemented")
 
         cmd = self.spawn_commands[req.method]
+        cmd.validate_request(req)
         p = multiprocessing.Process(target=self.run, args=(cmd, req))
         p.start()
         return None

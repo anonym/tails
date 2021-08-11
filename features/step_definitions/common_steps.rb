@@ -118,7 +118,13 @@ Given /^the network connection is ready(?: within (\d+) seconds)?$/ do |timeout|
 end
 
 Given /^the hardware clock is set to "([^"]*)"$/ do |time|
-  $vm.set_hardware_clock(DateTime.parse(time).to_time)
+  if time.start_with?('+') || time.start_with?('-')
+    dt = DateTime.parse(cmd_helper(['date' , '-d', time], env: {"TZ" => "UTC"}))
+  else
+    dt = DateTime.parse(time)
+  end
+  debug_log("Set hw clock to #{dt}")
+  $vm.set_hardware_clock(dt.to_time)
 end
 
 Given /^I capture all network traffic$/ do
