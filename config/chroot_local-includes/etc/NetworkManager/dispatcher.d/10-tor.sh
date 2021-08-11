@@ -17,6 +17,10 @@ else
     exit 0
 fi
 
+# Import tor_control_getconf()
+# shellcheck source=../../../usr/local/lib/tails-shell-library/tor.sh
+. /usr/local/lib/tails-shell-library/tor.sh
+
 # We would like Tor to be started during init time, even before the
 # network is up, and then send it a SIGHUP here to make it start
 # bootstrapping swiftly, but it doesn't work because of a bug in
