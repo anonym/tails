@@ -526,9 +526,6 @@ end
 class TimeSyncingError < StandardError
 end
 
-class TordateError < TimeSyncingError
-end
-
 class HtpdateError < TimeSyncingError
 end
 
