@@ -26,7 +26,8 @@ set -u
 
 TORDATE_DIR=/run/tordate
 TORDATE_DONE_FILE="${TORDATE_DIR}/done"
-INOTIFY_TIMEOUT=60
+# tca waits for 30+120 seconds. Let's multiply this by 2, just in case.
+INOTIFY_TIMEOUT=300
 
 ### Exit conditions
 
