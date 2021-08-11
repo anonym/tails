@@ -18,16 +18,10 @@ set -u
 # shellcheck source=../../../usr/local/lib/tails-shell-library/gnome.sh
 . /usr/local/lib/tails-shell-library/gnome.sh
 
-# Import tor_is_working()
-# shellcheck source=../../../usr/local/lib/tails-shell-library/tor.sh
-. /usr/local/lib/tails-shell-library/tor.sh
-
 ### Init variables
 
 TORDATE_DIR=/run/tordate
 TORDATE_DONE_FILE="${TORDATE_DIR}/done"
-# tca waits for 30+120 seconds. Let's multiply this by 2, just in case.
-INOTIFY_TIMEOUT=300
 
 ### Exit conditions
 
@@ -53,22 +47,6 @@ log() {
 	logger -t time "$@"
 }
 
-wait_for_working_tor() {
-	local waited=0
-
-	log "Waiting for Tor to be working..."
-	while ! tor_is_working; do
-		if [ "$waited" -lt ${INOTIFY_TIMEOUT} ]; then
-			sleep 2
-			waited=$((waited + 2))
-		else
-			log "Timed out waiting for Tor to be working"
-			return 1
-		fi
-	done
-	log "Tor is now working."
-}
-
 start_notification_helper() {
 	export_gnome_env
 	exec /bin/su -c /usr/local/lib/tails-htp-notify-user "$LIVE_USERNAME" &
@@ -79,10 +57,8 @@ start_notification_helper() {
 
 start_notification_helper
 
-wait_for_working_tor
-
 touch "$TORDATE_DONE_FILE"
 
 log "Restarting htpdate"
-systemctl restart htpdate.service
+systemctl --no-block restart htpdate.service
 log "htpdate service restarted with return code $?"
