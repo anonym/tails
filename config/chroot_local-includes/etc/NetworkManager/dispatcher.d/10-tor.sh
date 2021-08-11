@@ -17,12 +17,6 @@ else
     exit 0
 fi
 
-# Import tor_control_setconf(), TOR_LOG
-. /usr/local/lib/tails-shell-library/tor.sh
-
-# It's safest that Tor is not running when messing with its logs.
-systemctl stop tor@default.service
-
 # We would like Tor to be started during init time, even before the
 # network is up, and then send it a SIGHUP here to make it start
 # bootstrapping swiftly, but it doesn't work because of a bug in
