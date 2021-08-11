@@ -490,6 +490,7 @@ class StepConnectProgressMixin:
                     )
                 else:
                     self.state["progress"]["error"] = "tor"
+                    self.app.configurator.stop_connecting()
                     log.info("Failed with bridges")
                     self.change_box("error")
                 return False
