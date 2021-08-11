@@ -11,18 +11,21 @@ set -e
 set -u
 
 # Get LIVE_USERNAME
+# shellcheck source=../../live/config.d/username.conf
 . /etc/live/config.d/username.conf
 
 # Import export_gnome_env().
+# shellcheck source=../../../usr/local/lib/tails-shell-library/gnome.sh
 . /usr/local/lib/tails-shell-library/gnome.sh
 
-# Import tor_control_*(), tor_is_working(), TOR_LOG, TOR_DIR
+# Import tor_is_working()
+# shellcheck source=../../../usr/local/lib/tails-shell-library/tor.sh
 . /usr/local/lib/tails-shell-library/tor.sh
 
 ### Init variables
 
 TORDATE_DIR=/run/tordate
-TORDATE_DONE_FILE=${TORDATE_DIR}/done
+TORDATE_DONE_FILE="${TORDATE_DIR}/done"
 INOTIFY_TIMEOUT=60
 
 ### Exit conditions
