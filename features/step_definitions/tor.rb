@@ -541,8 +541,8 @@ When /^I disable saving bridges to Persistent Storage$/ do
   try_for(10) { !toggle_button.checked }
 end
 
-When /^I try to configure a direct connection in the Tor Connection Assistant$/ do
-  step 'I configure a direct connection in the Tor Connection Assistant'
+When /^I unsuccessfully configure (a direct connection|some .* bridges) in the Tor Connection Assistant$/ do |conntype|
+  step "I configure #{conntype} in the Tor Connection Assistant"
 rescue TCAConnectionFailure
   # Expected!
   next
@@ -614,6 +614,30 @@ Then /^I cannot click the "Connect to Tor" button$/ do
     'False',
     tor_connection_assistant.child('_Connect to Tor').get_field('sensitive')
   )
+end
+
+When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
+  tor_connection_assistant.child('Set Time').click
+  time_dialog = tor_connection_assistant.child('Tor Connection - Set Time',
+                                               roleName:    'dialog',
+                                               showingOnly: true)
+  select_tz = time_dialog.child('Time zone', roleName: 'panel')
+                         .child(roleName: 'combo box')
+  select_tz.combovalue = timezone
+
+  try_for(5) do
+    time_dialog.child('Apply', roleName: 'push button').click
+    true
+  end
+
+  # wait for the dialog to be closed
+  try_for(30) do
+    tor_connection_assistant.child('Tor Connection - Set Time')
+  rescue Dogtail::Failure
+    true
+  else
+    false
+  end
 end
 
 Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|

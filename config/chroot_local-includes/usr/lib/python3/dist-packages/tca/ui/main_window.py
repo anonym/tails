@@ -7,6 +7,7 @@ import copy
 
 import gi
 import stem
+import pytz
 
 from tca.ui.asyncutils import GAsyncSpawn, idle_add_chain
 from tca.torutils import (
@@ -17,6 +18,7 @@ from tca.torutils import (
     VALID_BRIDGE_TYPES,
 )
 import tca.config
+import tca.ui.dialogs
 
 
 gi.require_version("Gdk", "3.0")
@@ -578,6 +580,47 @@ class StepErrorMixin:
     def cb_step_error_btn_proxy_clicked(self, *args):
         self.change_box("proxy")
 
+    def cb_step_error_btn_time_clicked(self, *args):
+        tz = self.state["time"].get("tz", None)
+        time_dialog = tca.ui.dialogs.get_time_dialog(initial_tz=tz)
+        time_dialog.set_modal(True)
+        time_dialog.set_transient_for(self)
+        time_dialog.connect("response", self.on_time_dialog_complete)
+        time_dialog.show_all()
+
+    def on_time_dialog_complete(self, time_dialog, response):
+        log.debug("time dialog closed: %s", response == Gtk.ResponseType.APPLY)
+
+        def on_set_system_time(portal, result, error):
+            if error:
+                log.error("Error setting system time! %s", error)
+                dialog = Gtk.MessageDialog(
+                    transient_for=time_dialog,
+                    flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                    message_type=Gtk.MessageType.ERROR,
+                    buttons=Gtk.ButtonsType.OK,
+                    text="Error setting system time",
+                )
+                dialog.format_secondary_text("%s\n\nThis should not happen. Please report a bug." % error)
+                dialog.run()
+                dialog.destroy()
+                time_dialog.destroy()
+                return
+            self.state["error"]["fix_attempt"] = True
+            self._step_error_submit_allowed()
+            time_dialog.destroy()
+
+        if response == Gtk.ResponseType.APPLY:
+            self.state["time"]["tz"] = time_dialog.get_tz_name()
+            self.save_conf()
+            aware_dt = time_dialog.get_date()
+            utc_dt = aware_dt.astimezone(pytz.utc)
+            self.app.portal.call_async(
+                "set-system-time", on_set_system_time, utc_dt.isoformat('T', 'minutes')
+            )
+        else:
+            time_dialog.destroy()
+
     def cb_step_error_btn_captive_clicked(self, *args):
         self.app.portal.call_async("open-unsafebrowser", None)
 
@@ -759,6 +802,7 @@ class TCAMainWindow(
             "progress": {},
             "step": "hide",
             "offline": {},
+            "time": {},
         }
         if self.app.args.debug_statefile is not None:
             log.debug("loading debug statefile")
@@ -770,7 +814,7 @@ class TCAMainWindow(
             data = self.app.configurator.read_tca_state()
             config = self.app.configurator.tor_connection_config.to_dict()
             if data and data.get("ui"):
-                for key in ["hide", "bridge"]:
+                for key in ["hide", "bridge", "time"]:
                     self.state[key].update(data["ui"].get(key, {}))
                 self.state["progress"]["started"] = (
                     data["ui"].get("progress", {}).get("started", False)
@@ -833,7 +877,8 @@ class TCAMainWindow(
         if successful_connect:
             data = {"ui": self.state}
         else:
-            data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
+            save_only = ["hide", "bridge", "time"]
+            data = {"ui": {field: self.state[field] for field in save_only}}
         self.app.configurator.save_tca_state(data)
         if successful_connect:
             self.app.configurator.save_conf()
