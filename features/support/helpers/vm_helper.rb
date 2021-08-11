@@ -85,12 +85,12 @@ class VM
     rexml.elements['domain'].add_element('uuid')
     rexml.elements['domain/uuid'].text = LIBVIRT_DOMAIN_UUID
 
-    if ENV.fetch("TAILS_TEST_FORCECPUMODEL", "0") == "1" then
+    if $config['LIBVIRT_CPUMODEL']
       rexml.elements['domain/cpu'].add_attribute('mode', 'custom')
       rexml.elements['domain/cpu'].add_attribute('match', 'exact')
       rexml.elements['domain/cpu'].add_attribute('check', 'partial')
       rexml.elements['domain/cpu'].add_element('model')
-      rexml.elements['domain/cpu/model'].text = 'core2duo'
+      rexml.elements['domain/cpu/model'].text = $config['LIBVIRT_CPUMODEL']
       rexml.elements['domain/cpu/model'].add_attribute('fallback', 'allow')
     end
 
