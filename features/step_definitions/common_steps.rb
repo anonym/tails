@@ -536,9 +536,7 @@ rescue Timeout::Error
 end
 
 Given /^available upgrades have been checked$/ do
-  try_for(300) do
-    $vm.file_exist?('/run/tails-upgrader/checked_upgrades')
-  end
+  try_for(300) { $vm.file_exist?('/run/tails-upgrader/checked_upgrades') }
 end
 
 def tor_browser_is_alpha
