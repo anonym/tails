@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2020-07-21 15:44+0000\n"
-"PO-Revision-Date: 2020-12-25 17:43+0000\n"
-"Last-Translator: emmapeel <emma.peel@riseup.net>\n"
+"POT-Creation-Date: 2021-07-01 12:11+0200\n"
+"PO-Revision-Date: 2021-07-20 23:05+0000\n"
+"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,8 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!meta title=\"Connecting to a network\"]]\n"
-msgstr ""
+msgid "[[!meta title=\"Connecting to a local network\"]]\n"
+msgstr "[[!meta title=\"Подключение к локальной сети\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -31,42 +31,66 @@ msgstr "[[!toc levels=2]]\n"
 
 #. type: Title =
 #, no-wrap
-msgid "Connecting to a network"
-msgstr ""
+msgid "Connecting to a local network"
+msgstr "Подключение к локальной сети"
 
 #. type: Plain text
 msgid ""
-"You can connect to a network using a wired, Wi-Fi, or mobile data connection:"
+"You can connect to a local network using a wired, Wi-Fi, or mobile data "
+"connection:"
 msgstr ""
+"Вы можете подключиться к сети по проводу, по wi-fi или по мобильной связи."
 
 #. type: Bullet: '1. '
 msgid "Open the system menu in the top-right corner."
-msgstr ""
+msgstr "Откройте системное меню в правом верхнем углу."
 
 #. type: Plain text
 #, no-wrap
 msgid "   [[!img doc/first_steps/introduction_to_gnome_and_the_tails_desktop/system.png link=\"no\"]]\n"
-msgstr ""
-"   [[!img doc/first_steps/introduction_to_gnome_and_the_tails_desktop/"
-"system.png link=\"no\"]]\n"
+msgstr "   [[!img doc/first_steps/introduction_to_gnome_and_the_tails_desktop/system.png link=\"no\"]]\n"
 
 #. type: Bullet: '   - '
 msgid ""
 "If a wired connection is detected, Tails automatically connects to the "
 "network."
-msgstr ""
+msgstr "Если есть проводное соединение, Tails автоматически подключится к сети."
 
 #. type: Bullet: '   - '
 msgid ""
 "To connect to a Wi-Fi network, choose <span class=\"guilabel\">Wi-Fi Not "
 "Connected</span> and then <span class=\"guilabel\">Select Network</span>."
 msgstr ""
+"Чтобы подключиться по wi-fi, выберите пункт меню <span class=\"guilabel\">Wi-"
+"Fi сеть не подключена</span> и <span class=\"guilabel\">Выбрать сеть</span>."
+
+#. type: Plain text
+#, no-wrap
+msgid "   <div class=\"bug\">\n"
+msgstr "   <div class=\"bug\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   <p>If there is no option to connect to a Wi-Fi network, your Wi-Fi interface\n"
+"   is not working in Tails. See our documentation on [[troubleshooting Wi-Fi\n"
+"   not working|no-wifi]].</p>\n"
+msgstr ""
+"   <p>Если для wi-fi вообще нет опции, значит, ваш интерфейс wi-fi не "
+"работает в Tails. См. нашу документацию [[по ошибкам wi-fi|no-wifi]].</p>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "   </div>\n"
+msgstr "   </div>\n"
 
 #. type: Bullet: '   - '
 msgid ""
 "To connect to a mobile data network, choose <span class=\"guilabel\">Mobile "
 "Broadband</span>."
 msgstr ""
+"Для подключения к мобильной сети данных выберите в меню <span class=\""
+"guilabel\">Mobile Broadband</span>."
 
 #. type: Plain text
 #, no-wrap
@@ -74,6 +98,8 @@ msgid ""
 "   <div class=\"note\">\n"
 "   <p>It is currently impossible to connect to a network using:</p>\n"
 msgstr ""
+"   <div class=\"note\">\n"
+"   <p>В настоящее время невозможно подключиться к сети через:</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -83,26 +109,23 @@ msgid ""
 "   <li>VPNs, see [[the corresponding FAQ|support/faq#vpn]].</li>\n"
 "   </ul>\n"
 msgstr ""
+"   <ul>\n"
+"   <li>модемы dial-up;</li>\n"
+"   <li>VPN (см. [[соответствующий раздел FAQ|support/faq#vpn]].</li>\n"
+"   </ul>\n"
+
+#. type: Bullet: '1. '
+msgid ""
+"After you connect to a local network, the *Tor Connection* assistant appears "
+"to help you [[connect to the Tor network|tor]]."
+msgstr ""
+"После соединения с локальной сетью появится *помощник*, который обеспечит [["
+"подключение к сети Tor|tor]]."
 
 #. type: Plain text
 #, no-wrap
-msgid "   </div>\n"
-msgstr "   </div>\n"
-
-#. type: Bullet: '1. '
-msgid "After establishing a connection to a network:"
-msgstr ""
-
-#. type: Bullet: '   - '
-msgid "If you can already access the Internet, Tor is automatically started."
-msgstr ""
-
-#. type: Bullet: '   - '
-msgid ""
-"If you need to log in to a captive portal before being granted access to the "
-"Internet, see our documentation on [[logging in to captive portals|doc/"
-"anonymous_internet/unsafe_browser]]."
-msgstr ""
+msgid "   [[!img tor/tor-connection.png link=\"no\"]]\n"
+msgstr "   [[!img tor/tor-connection.png link=\"no\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -111,97 +134,60 @@ msgid ""
 "<span class=\"application\">[[GNOME Help|first_steps/introduction_to_gnome_and_the_tails_desktop#help]]</span>\n"
 "and choose <span class=\"guilabel\">Networking, web & email</span>.\n"
 msgstr ""
-
-#. type: Plain text
-msgid ""
-"If you are concerned about being identified as a Tails user on your network, "
-"read our documentation about [[network fingerprinting|doc/about/"
-"fingerprint]]."
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<a id=\"no-wi-fi\"></a>\n"
-msgstr "<a id=\"no-wi-fi\"></a>\n"
+"Подробнее можно почитать здесь: \n"
+"<span class=\"application\">[[Знакомство с GNOME|first_steps/"
+"introduction_to_gnome_and_the_tails_desktop#help]]</span> \n"
+"(выберите <span class=\"guilabel\">Networking, web & email</span>).\n"
 
 #. type: Title =
 #, no-wrap
-msgid "Troubleshooting Wi-Fi not working"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "[[!inline pages=\"doc/anonymous_internet/networkmanager/no-wifi.inline\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr ""
-"[[!inline pages=\"doc/anonymous_internet/networkmanager/no-wifi.inline.ru\" "
-"raw=\"yes\" sort=\"age\"]]\n"
-
-#. type: Bullet: '* '
-msgid ""
-"Check in our list of [[known Wi-Fi issues|support/known_issues#wi-fi-"
-"workarounds]] if there is a workaround to get your Wi-Fi interface to work "
-"in Tails."
-msgstr ""
-
-#. type: Title =
-#, no-wrap
-msgid "Using Tor bridges or a local proxy"
-msgstr ""
+msgid "Saving your network settings"
+msgstr "Как сохранить настройки сети"
 
 #. type: Plain text
 msgid ""
-"To connect to Tor using bridges or configure a proxy to access the Internet, "
-"you need to [[activate additional Tor configuration when starting Tails|"
-"first_steps/welcome_screen#additional]]."
+"To remember the password for Wi-Fi networks and custom network "
+"configurations across different Tails sessions, turn on the [[Network "
+"Connections|first_steps/persistence/configure#network_connections]] feature "
+"of the Persistent Storage."
 msgstr ""
+"Как запомнить пароли к разным сетям wi-fi и настройки для последующих сессий "
+"Tails? В Постоянном хранилище включите опцию [[Network Connections|"
+"first_steps/persistence/configure#network_connections]]."
 
 #. type: Title =
 #, no-wrap
-msgid "Modifying and saving your network settings"
-msgstr ""
+msgid "Modifying your network settings"
+msgstr "Как изменить настройки сети"
 
 #. type: Plain text
 msgid ""
 "To modify your network settings, for example, to configure whether or not to "
 "automatically connect to a Wi-Fi network, do the following:"
 msgstr ""
+"Чтобы изменить сетевые настройки, например, включить или отключить "
+"автоматический вход в сеть wi-fi, выполните три шага."
 
 #. type: Bullet: '1. '
 msgid ""
 "Click on the [[!img lib/preferences-system.png alt=\"System\" class="
 "\"symbolic\" link=\"no\"]] button to open the system settings."
 msgstr ""
+"Нажмите кнопку [[!img lib/preferences-system.png alt=\"System\" class=\""
+"symbolic\" link=\"no\"]] для перехода к системным параметрам."
 
 #. type: Bullet: '1. '
 msgid "Choose <span class=\"guilabel\">Network</span>."
-msgstr ""
+msgstr "Выберите <span class=\"guilabel\">Сеть</span>."
 
-#. type: Plain text
-msgid ""
-"If you want to reuse your custom configuration or the passwords of encrypted "
-"wireless connections across separate working sessions, you can turn on the "
-"[[Network connections|first_steps/persistence/"
-"configure#network_connections]] feature of the Persistent Storage."
-msgstr ""
+#~ msgid "<a id=\"no-wi-fi\"></a>\n"
+#~ msgstr "<a id=\"no-wi-fi\"></a>\n"
 
-msgid ""
-"If you want to reuse your custom\n"
-"configuration or the passwords of encrypted wireless connections across "
-"separate\n"
-"working sessions, you can activate the [[<span class=\"guilabel\">Network "
-"connections</span> persistence\n"
-"feature|first_steps/persistence/configure#network_connections]].\n"
-msgstr ""
+#~ msgid "[[!inline pages=\"doc/anonymous_internet/networkmanager/no-wifi.inline\" raw=\"yes\" sort=\"age\"]]\n"
+#~ msgstr "[[!inline pages=\"doc/anonymous_internet/networkmanager/no-wifi.inline.ru\" raw=\"yes\" sort=\"age\"]]\n"
 
 #~ msgid "To connect to a Wi-Fi network:"
 #~ msgstr "Um eine Verbindung mit einem Wi-Fi-Netzwerk herzustellen:"
 
 #~ msgid "To connect to a mobile broadband network:"
 #~ msgstr "Um sich mit einem mobilen Breitbandnetzwerk zu verbinden:"
-
-#~ msgid "<div class=\"note\">\n"
-#~ msgstr "<div class=\"note\">\n"
-
-#, fuzzy
-#~ msgid "Connecting to a network\n"
-#~ msgstr "Um eine Verbindung mit einem Wi-Fi-Netzwerk herzustellen:"

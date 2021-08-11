@@ -4,6 +4,25 @@
 
 See the [[release_schedule]].
 
+Context
+===========
+
+Release types
+----------------
+
+There are exactly 3 types of releases:
+
+ - A bugfix release
+ - A major release
+ - A release candidate. A release candidate can only be made for a major release
+
+We will not cover beta release in this document.
+
+Both a bugfix release and a major release are called "final". A release candidate is not a final release.
+
+Sections that only apply to some of those types of release, we'll have it written clearly in the title.
+
+
 Prepare your checklist
 ======================
 
@@ -29,10 +48,10 @@ To release Tails you'll need some packages installed:
   - Note: if the Debian version you are running does not include all required
     Go packages, such as [[!debpts podman]], you should be able to install
     them from a more recent Debian release with APT pinning.
-* [[!debpts squashfs-tools]] 1:4.4-1+0.tails1
-  from our custom `iukbuilder-stretch` APT suite.
 * `perl5lib` [[dependencies|contribute/release_process/perl5lib#build-deps]]
 * `iuk` [[dependencies|contribute/release_process/tails-iuk#build-deps]]
+* [[!debpts squashfs-tools]] 1:4.4-1+0.tails1
+  from our custom `iukbuilder-stretch` APT suite.
 * `po4a` 0.55:
    - Different versions extract Markdown headings in a different way, which
      makes tons of strings fuzzy.
@@ -161,8 +180,8 @@ Sanity check
 Visit the [Jenkins RM view](https://jenkins.tails.boum.org/view/RM/)
 and check that the jobs for the release branch have good enough results:
 
- - the last build and reproducibility testing builds have succeeded;
- - look at the last build of the relevant `test_Tails_ISO_*` job;
+ - the last build and reproducibility testing builds have succeeded for the release branch
+ - look at the last build of the relevant `test_Tails_ISO_RELEASEBRANCH` job;
    if anything looks unusual or fishy, check the few previous builds
    to see if it's a one-off robustness issue, a serious regression,
    or what not.
@@ -170,13 +189,14 @@ and check that the jobs for the release branch have good enough results:
 Freeze
 ======
 
-Major release
--------------
+This section ensures freezing is done. Freezing is relevant for Release Candidates and for bugfix releases.
+You can skip this if you're releasing a final major version.
 
-Skip this if you're preparing the images for a final (non-RC) major release.
+Only for Major release
+----------------------------
 
-If we are at freeze time for a major release (i.e. preparing its
-release candidate):
+Follow this part ONLY if you are preparing the release candidate for a major release.
+
 
 1. Merge the `master` Git branch into `devel`:
 
@@ -211,10 +231,10 @@ release candidate):
         git checkout "$RELEASE_BRANCH" && \
         ./bin/bump-APT-snapshots-expiration-date 183
 
-Bugfix release
---------------
+Only for Bugfix release
+------------------------
 
-If we are at freeze time for a bugfix release:
+Follow this part ONLY if you are preparing a bugfix release.
 
 1. Merge the `master` Git branch into `stable`:
 
@@ -225,14 +245,17 @@ If we are at freeze time for a bugfix release:
 
         ./bin/merge-APT-overlays stable
 
-Common steps for bugfix and major releases
-------------------------------------------
+Set base branch
+==================
 
 Reset the release branch's `config/base_branch`:
 
         echo "${RELEASE_BRANCH:?}" > config/base_branch && \
            git commit config/base_branch \
                -m "Restore ${RELEASE_BRANCH:?}'s base branch."
+
+Manual testing coordination
+=============================
 
 Bootstrap internal manual testing coordination:
 
@@ -243,6 +266,7 @@ Bootstrap internal manual testing coordination:
 4. Generate boilerplate for the call for manual testing:
 
         ./bin/generate-call-for-manual-testers \
+           --dist "${DIST:?}" \
            --pad "${PAD:?}" \
            --version "${VERSION:?}"
 
@@ -278,22 +302,22 @@ If `lint_po` complains:
 * send a note to <tails-l10n@boum.org> [public] so that they get in touch with
   whoever can fix them.
 
-When preparing an actual release
+If preparing a final release
 ================================
 
 If we're about to prepare the images for a final (non-RC) release, then
 follow these instructions:
 
-Major release
--------------
+Only for Major release
+-------------------------
 
 Merge each APT overlay suite listed in the `testing` branch's
 `config/APT_overlays.d/` into the `testing` custom APT suite:
 
         ./bin/merge-APT-overlays testing
 
-Bugfix release
---------------
+Only for Bugfix release
+------------------------
 
 <div class="note">
 For bugfix releases, we generally do not put any RC out, so freeze time
@@ -379,6 +403,8 @@ version's `.packages` file and the one from the to-be-released images:
   - new upstream releases of applications mentioned in [[doc/about/features]]
   - new upstream releases of other important components such as the
     Linux kernel
+
+  And mention those changes in `debian/changelog`
 
 Finally, sanity check the version, commit, and push:
 
@@ -553,7 +579,8 @@ Feel free to skip this section when preparing an emergency release.
 1. Login with the default settings in the Welcome Screen (e.g. do not configure
    an _Administration Password_).
 1. Unless you've set up a wired connection, connect to Wi-Fi.
-1. Wait for the "Tor is ready" notification.
+1. Automatically connect to Tor with _Tor Connection_.
+1. Wait for _Tor Connection_ to report success.
 1. Start *Tor Browser*.
 1. A few minutes later, once the `boot-profile` process has been
    killed, retrieve the new sort file from `/var/log/boot-profile`.
@@ -759,6 +786,8 @@ may start:
    - attach the Torrents
 
    - attach the `.packages` file
+
+   - attach the `.iso.sig` and `.img.sig` files
 
 <a id="prepare-iuk"></a>
 
@@ -1283,8 +1312,8 @@ Make sure to:
    inconvenience!".
 4. add any known issues to the "Known issues" section.
 
-If preparing a final release
-----------------------------
+If preparing a major or a bugfix release
+-------------------------------------------
 
 Skip this part if preparing a RC.
 
@@ -1391,7 +1420,8 @@ Skip this if you are preparing anything but a final, major release.
         ./bin/generate-Tor-blog-post "${VERSION:?}"
 
 - Proof-read the draft blog post
-- [login to the Tor blog](https://blog.torproject.org/user)
+- [login to the Tor blog](https://blog.torproject.org/user). The
+  credentials are in keyringer in `rm.git`.
 - click *Content* → *Add content* → *Blog Post*
 - add these tags, each in a separate text entry field (use _Add another item_):
   * tails
@@ -1499,12 +1529,8 @@ Skip this part if preparing a release candidate.
             --token "$(bin/gitlab-api-token TailsRM)"
 
 4. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to:
-
-    - close the just-released [[!tails_gitlab groups/tails/-/milestones
-      desc="milestone"]]
-    - set the *Due date* for the [[!tails_gitlab groups/tails/-/milestones
-      desc="*Hole in the Roof* milestone"]] to a date between the next
-      2 releases
+   close the just-released [[!tails_gitlab groups/tails/-/milestones
+   desc="milestone"]]
 
    Assign the MR to the on-duty sysadmin (see link to "Semi-public
    calendar" in <https://gitlab.tails.boum.org/tails/summit/-/wikis/Teams#sysadmins>).
@@ -1542,6 +1568,8 @@ technical writers have prepared a tweet. Otherwise tweet a simple link
 to the release notes:
 
     Tails x.y is out: https://tails.boum.org/news/version_x.y/
+
+The credentials are in keyringer in `rm.git`.
 
 Publish the Tor blog post
 -------------------------
@@ -1665,7 +1693,7 @@ If you just released a final release
 1. Put the `stable` Git branch and the corresponding APT suite
    in the desired shape:
 
-        if [[ "${MAJOR_RELEASE:?}" -eq 1 ]]; then
+        if [ "${MAJOR_RELEASE:?}" -eq 1 ]; then
            ./bin/reset-custom-APT-suite stable testing && \
            git checkout stable && \
            if [ $(find config/APT_overlays.d -maxdepth 1 -type f | wc -l) -gt 1 ]; then
@@ -1729,7 +1757,7 @@ If you just released a final release
 
         git push origin stable testing devel
 
-1. In [[contribute/calendar]], remove the entries about the version that you've
+1. In [[contribute/calendar]] (`master` branch), remove the entries about the version that you've
    just released.
 
 1. Check the Mozilla release calendars:
@@ -1747,11 +1775,14 @@ If you just released a final release
    - Cc <tails-manual-testers@boum.org>,
      asking them to privately tell the RM for that release
      _how much_ manual testing they can do on release day.
+   - Subject: "Release schedule for Tails NEXT_VERSION_NUMBER"
 
 1. If you are the release manager for the next release too, look at the
    tasks that must be done at the beginning of your shift in the
    [[release manager role page|contribute/working_together/roles/release_manager#shift]].
    Otherwise, kindly remind the next release manager about this :)
+   - Send an email to the next RM with subject "RM for Tails NEXT_VERSION_NUMBER"
+   - body: "This is a reminder that you will be RM for Tails NEXT_VERSION_NUMBER. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift".
 
 1. Put aside the configuration file used for this release:
 

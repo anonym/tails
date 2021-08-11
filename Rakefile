@@ -46,13 +46,14 @@ EXPORTED_VARIABLES = [
   'GIT_COMMIT',
   'GIT_REF',
   'BASE_BRANCH_GIT_COMMIT',
+  'FEATURE_BRANCH_GIT_COMMIT',
 ].freeze
 ENV['EXPORTED_VARIABLES'] = EXPORTED_VARIABLES.join(' ')
 
 EXTERNAL_HTTP_PROXY = ENV['http_proxy']
 
 # In-VM proxy URL
-INTERNAL_HTTP_PROXY = "http://#{VIRTUAL_MACHINE_HOSTNAME}:3142".freeze
+INTERNAL_HTTP_PROXY = "http://127.0.0.1:3142".freeze
 
 ENV['ARTIFACTS'] ||= '.'
 
@@ -365,17 +366,20 @@ task :validate_http_proxy do
 
     if proxy_host.nil?
       ENV['TAILS_PROXY'] = nil
-      warn 'Ignoring invalid HTTP proxy.'
+      abort "Invalid HTTP proxy: #{ENV['TAILS_PROXY']}"
       return
     end
 
-    if ['localhost', '[::1]'].include?(proxy_host) \
-       || proxy_host.start_with?('127.0.0.')
-      abort 'Using an HTTP proxy listening on the loopback is doomed ' \
-            'to fail. Aborting.'
+    if ENV['TAILS_PROXY_TYPE'] == 'vmproxy'
+      warn 'Using the internal VM proxy'
+    else
+      if ['localhost', '[::1]'].include?(proxy_host) \
+         || proxy_host.start_with?('127.0.0.')
+        abort 'Using an HTTP proxy listening on the host\'s loopback ' \
+              'is doomed to fail. Aborting.'
+      end
+      warn "Using HTTP proxy: #{ENV['TAILS_PROXY']}"
     end
-
-    warn "Using HTTP proxy: #{ENV['TAILS_PROXY']}"
   else
     warn 'No HTTP proxy set.'
   end
@@ -435,6 +439,8 @@ task merge_base_branch: ['parse_build_options', 'setup_environment'] do
   # If we actually merged anything we'll re-run rake in the new Git
   # state in order to avoid subtle build errors due to mixed state.
   next if commit_before_merge == git_helper('git_current_commit')
+  ENV['GIT_COMMIT'] = git_helper('git_current_commit')
+  ENV['FEATURE_BRANCH_GIT_COMMIT'] = commit_before_merge
   ENV['TAILS_BUILD_OPTIONS'] = (ENV['TAILS_BUILD_OPTIONS'] || '') + \
                                ' nomergebasebranch'
   Kernel.exec('rake', *ARGV)
@@ -740,8 +746,8 @@ namespace :basebox do
       time needed for downloading around 250 MiB of Debian packages.
 
     END_OF_MESSAGE
-    box_dir = VAGRANT_PATH + '/definitions/tails-builder'
-    run_command("#{box_dir}/generate-tails-builder-box.sh")
+    run_command("#{VAGRANT_PATH}/definitions/tails-builder/generate-tails-builder-box.sh")
+    box_dir = Dir.pwd
     # Let's use an absolute path since run_vagrant changes the working
     # directory but File.delete doesn't
     box_path = "#{box_dir}/#{box_name}.box"

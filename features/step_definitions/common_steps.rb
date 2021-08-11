@@ -103,6 +103,15 @@ Given /^the network is unplugged$/ do
   $vm.unplug_network
 end
 
+Given /^I (dis)?connect the network through GNOME$/ do |disconnect|
+  current_state = disconnect ? 'Connected' : 'Off'
+  action = disconnect ? 'Turn Off' : 'Connect'
+  gnome_shell = Dogtail::Application.new('gnome-shell')
+  gnome_shell.child('System', roleName: 'menu').click
+  gnome_shell.child("Wired #{current_state}", roleName: 'label').click
+  gnome_shell.child(action, roleName: 'label').click
+end
+
 Given /^the network connection is ready(?: within (\d+) seconds)?$/ do |timeout|
   timeout ||= 30
   try_for(timeout.to_i) { $vm.connected_to_network? }
@@ -377,10 +386,10 @@ Given /^I open Tails Greeter additional settings dialog$/ do
   open_greeter_additional_settings
 end
 
-Given /^I enable the specific Tor configuration option$/ do
+Given /^I disable networking in Tails Greeter$/ do
   open_greeter_additional_settings
-  @screen.wait('TailsGreeterNetworkConnection.png', 30).click
-  @screen.wait('TailsGreeterSpecificTorConfiguration.png', 10).click
+  @screen.wait('TailsGreeterOfflineMode.png', 30).click
+  @screen.wait('TailsGreeterOfflineModeDisableNetwork.png', 10).click
   @screen.wait('TailsGreeterAdditionalSettingsAdd.png', 10).click
 end
 
@@ -404,7 +413,22 @@ end
 Given /^the Tails desktop is ready$/ do
   desktop_started_picture = "GnomeApplicationsMenu#{$language}.png"
   @screen.wait(desktop_started_picture, 180)
-  @screen.wait('DesktopTailsDocumentation.png', 30)
+  # We want to ensure the Tails Documentation desktop icon is visible,
+  # but it might be obscured by TCA or other windows depending on the
+  # order of steps run before this one.
+  # XXX: Once #18407 is fixed we may be able to remove this.
+  try_for(30) do
+    begin
+      @screen.find('DesktopTailsDocumentation.png')
+    rescue FindFailed
+      # Switch to new workspace
+      @screen.press('super', 'page_down')
+      next
+    end
+    true
+  end
+  # Switch back to initial workspace, in case we changed it above
+  @screen.press('super', 'home')
   # Disable screen blanking since we sometimes need to wait long
   # enough for it to activate, which can cause problems when we are
   # waiting for an image for a very long time.
@@ -417,6 +441,16 @@ Given /^the Tails desktop is ready$/ do
     'gsettings set org.gnome.desktop.interface toolkit-accessibility true',
     user: LIVE_USER
   )
+  # Since we use a simulated Tor network (via Chutney) we have to
+  # switch to its default bridges.
+  default_bridges_path = '/usr/share/tails/tca/default_bridges.txt'
+  $vm.file_overwrite(default_bridges_path, '')
+  chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+    $vm.file_append(default_bridges_path, bridge[:line])
+  end
+  # Optimize upgrade check: avoid 30 second sleep
+  $vm.execute_successfully('sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service')
+  $vm.execute_successfully('systemctl --user daemon-reload', user: LIVE_USER)
 end
 
 When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |title, timeout|
@@ -431,8 +465,40 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
+  # First we wait for tor to be running so its control port is open...
+  try_for(60) do
+    $vm.execute("systemctl -q is-active tor@default.service").success?
+  end
+  # ... so we can ask if the tor's networking is disabled, in which
+  # case Tor Connection Assistant has not been dealt with yet. If
+  # tor's networking is enabled at this stage it means we already ran
+  # some steps dealing with Tor Connection Assistant, presumably to
+  # configure bridges.  Otherwise we just treat this as the default
+  # case, where it is not important for the test scenario that we go
+  # through the extra hassle and use bridges, so we simply attempt a
+  # direct connection.
+  if $vm.execute_successfully('tor_control_getconf DisableNetwork', libs: 'tor').stdout.chomp == '1'
+    # This variable is initialized to nil in each scenario, and only
+    # ever set to true in some previously run step that configures tor
+    # to use PTs.
+    assert(!@tor_is_using_pluggable_transports, 'This is a test suite bug!')
+    @tor_is_using_pluggable_transports = false
+    step 'the Tor Connection Assistant autostarts'
+    step 'I configure a direct connection in the Tor Connection Assistant'
+  end
+
+  # Here we actually check that Tor is ready
   step 'Tor has built a circuit'
   step 'the time has synced'
+  if @tor_is_using_pluggable_transports
+    step 'Tor is not confined with Seccomp'
+  #else
+  #  step 'Tor is confined with Seccomp'
+  end
+  @tor_success_configs ||= []
+  @tor_success_configs << $vm.execute_successfully(
+    'tor_control_send "getinfo config-text"', libs: 'tor'
+  ).stdout.match(/^250\+config-text=\n(.*)^[.]/m)[1]
   # When we test for ASP upgrade failure the following tests would fail,
   # so let's skip them in this case.
   unless $vm.file_exist?('/run/live-additional-software/doomed_to_fail')
@@ -466,9 +532,6 @@ Given /^the time has synced$/ do
       try_for(300) { $vm.execute("test -e #{file}").success? }
     rescue Timeout::Error
       if file == '/run/htpdate/success'
-        File.open("#{$config['TMPDIR']}/log.htpdate", 'w') do |f|
-          f.write($vm.execute('cat /var/log/htpdate.log').stdout)
-        end
         raise HtpdateError, 'Time syncing failed'
       else
         raise TordateError, 'Time syncing failed'
@@ -483,8 +546,19 @@ Given /^available upgrades have been checked$/ do
   end
 end
 
+def tor_browser_is_alpha
+  tbb_dist_url_file = "#{GIT_DIR}/config/chroot_local-includes/usr/share/tails/tbb-dist-url.txt"
+  tbb_version = File.read(tbb_dist_url_file).chomp.split('/').last
+  /^[0-9.]+a[0-9]+(?:-build[0-9]+)?$/ =~ tbb_version
+end
+
 When /^I start the Tor Browser( in offline mode)?$/ do |offline|
-  step 'I start "TorBrowserOverviewIcon.png" via GNOME Activities Overview'
+  overview_icon = if tor_browser_is_alpha
+                    'TorBrowserOverviewIconAlpha.png'
+                  else
+                    'TorBrowserOverviewIcon.png'
+                  end
+  step "I start \"#{overview_icon}\" via GNOME Activities Overview"
   if offline
     start_button = Dogtail::Application
                    .new('zenity')
@@ -596,13 +670,6 @@ Then /^I (do not )?see "([^"]*)" after at most (\d+) seconds$/ do |negation, ima
   end
 end
 
-Then /^all Internet traffic has only flowed through Tor$/ do
-  allowed_hosts = allowed_hosts_under_tor_enforcement
-  assert_all_connections(@sniffer.pcap_file) do |c|
-    allowed_hosts.include?({ address: c.daddr, port: c.dport })
-  end
-end
-
 Given /^I enter the sudo password in the pkexec prompt$/ do
   step "I enter the \"#{@sudo_password}\" password in the pkexec prompt"
 end
@@ -671,7 +738,7 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-When /^I request a shutdown using the emergency shutdown applet$/ do
+When /^I request a shutdown using the system menu$/ do
   @screen.hide_cursor
   @screen.wait('TailsEmergencyShutdownButton.png', 10).click
   # Sometimes the next button too fast, before the menu has settled
@@ -686,10 +753,10 @@ When /^I warm reboot the computer$/ do
   $vm.spawn('reboot')
 end
 
-When /^I request a reboot using the emergency shutdown applet$/ do
+When /^I request a reboot using the system menu$/ do
   @screen.hide_cursor
   @screen.wait('TailsEmergencyShutdownButton.png', 10).click
-  # See comment on /^I request a shutdown using the emergency shutdown applet$/
+  # See comment on /^I request a shutdown using the system menu$/
   # that explains why we need to wait.
   step 'I wait 5 seconds'
   @screen.wait('TailsEmergencyShutdownReboot.png', 10).click

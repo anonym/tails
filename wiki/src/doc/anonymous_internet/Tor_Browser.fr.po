@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-06-25 15:36+0000\n"
-"PO-Revision-Date: 2021-06-29 17:22+0000\n"
-"Last-Translator: nihei <nihei@disroot.org>\n"
+"POT-Creation-Date: 2021-07-01 12:11+0200\n"
+"PO-Revision-Date: 2021-07-29 19:05+0000\n"
+"Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: Tails translators <tails@boum.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -41,8 +41,8 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!img Tor_Browser/tor-browser.png link=no alt=\"\"]]\n"
-msgstr "[[!img Tor_Browser/tor-browser.png link=no alt=\"\"]]\n"
+msgid "[[!img lib/apps/tor-browser.png link=no alt=\"\"]]\n"
+msgstr "[[!img lib/apps/tor-browser.png link=no alt=\"\"]]\n"
 
 #. type: Plain text
 msgid ""
@@ -86,6 +86,36 @@ msgid ""
 msgstr ""
 "Quelques questions fréquemment posées à propos du <span class=\"application\">Navigateur Tor</span> se trouvent dans\n"
 "[[la FAQ|support/faq#browser]].\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"proxy\">Proxy server refusing connections</h1>\n"
+msgstr "<h1 id=\"proxy\">Le serveur mandataire refuse les connexions</h1>\n"
+
+#. type: Plain text
+msgid ""
+"The following error message in *Tor Browser* means that Tails is not yet "
+"connected to the Tor network:"
+msgstr ""
+"Le message d'erreur suivant dans le *Navigateur Tor* signifie que Tails "
+"n'est pas encore connecté au réseau Tor :"
+
+#. type: Plain text
+#, no-wrap
+msgid "    The proxy server is refusing connections\n"
+msgstr "    La connexion a été refusée par le serveur proxy\n"
+
+#. type: Plain text
+msgid "Make sure that you are:"
+msgstr "Assurez-vous que vous êtes :"
+
+#. type: Bullet: '1. '
+msgid "[[Connected to a local network|anonymous_internet/networkmanager]]"
+msgstr "[[Connecté à un réseau local|anonymous_internet/networkmanager]]"
+
+#. type: Bullet: '1. '
+msgid "[[Connected to the Tor network|anonymous_internet/tor]]"
+msgstr "[[Connecté au réseau Tor|anonymous_internet/tor]]"
 
 #. type: Plain text
 #, no-wrap
@@ -181,6 +211,138 @@ msgstr ""
 "les très gros fichiers dans le dossier <em>Persistent/Tor Browser</em>.\n"
 "Tous les fichiers que vous téléchargez en dehors du stockage persistent sont\n"
 "stockés dans la mémoire vive (RAM), qui est plus limitée.</p>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"fingerprint\">Hiding that you are using <i>Tor Browser</i></h1>\n"
+msgstr ""
+"<h1 id=\"fingerprint\">Masquer le fait que vous utilisez le <i>Navigateur "
+"Tor</i></h1>\n"
+
+#. type: Plain text
+msgid ""
+"It is impossible to hide to the websites that you visit that you are using "
+"Tor, because the [list of exit nodes of the Tor network is public](https://"
+"metrics.torproject.org/exonerator.html)."
+msgstr ""
+"Il est impossible de cacher au sites web que vous visitez le fait que vous "
+"utilisiez Tor, car la [liste des nœuds de sortie du réseau Tor est "
+"publique](https://metrics.torproject.org/exonerator.html)."
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!img doc/about/warning/htw2-tails.png link=\"no\"]]\n"
+msgstr "[[!img doc/about/warning/htw2-tails.png link=\"no\" alt=\"\"]]\n"
+
+#. type: Plain text
+msgid ""
+"That is why many more websites ask you to solve a CAPTCHA when using *Tor "
+"Browser*."
+msgstr ""
+"C'est pourquoi beaucoup de sites web vous demandent de résoudre des CAPTCHA "
+"lorsque vous utilisez le *Navigateur Tor*."
+
+#. type: Plain text
+msgid ""
+"The anonymity provided by *Tor Browser* works by making all users look the "
+"same to make it impossible to know who is who among the millions of users of "
+"*Tor Browser*."
+msgstr ""
+"L'anonymat fourni par le *Navigateur Tor* fonctionne en rendant toutes les "
+"personnes qui l'utilisent semblables et qu'il soit impossible de savoir qui "
+"est qui parmi les millions de personnes utilisant le *Navigateur Tor*."
+
+#. type: Plain text
+msgid ""
+"Tails tries to make it as difficult as possible for websites to distinguish "
+"Tails users from other users of *Tor Browser*. If it was possible for a "
+"website to determine whether you are a user of *Tor Browser* inside or "
+"outside of Tails, this would provide a little bit more information about you "
+"and reduce your anonymity."
+msgstr ""
+"Tails essaie de rendre aussi difficile que possible pour les sites web de "
+"distinguer une personne qui utilise Tails d'une autre personne utilisant le *"
+"Navigateur Tor*. S'il était possible pour un site web de savoir si vous êtes "
+"une personne utilisant le *Navigateur Tor* depuis ou en-dehors de Tails, "
+"cela fournirait un peu plus d'informations sur vous et réduirais votre "
+"anonymat."
+
+#. type: Plain text
+msgid ""
+"The websites that you visit can retrieve a lot of information about your "
+"browser, whether it's *Tor Browser* or a regular browser. This information "
+"is called the *fingerprint* of the browser and includes the name and version "
+"of the browser, the size of the window, the time zone, the available fonts, "
+"etc."
+msgstr ""
+"Les sites web que vous visitez peuvent récupérer beaucoup d'informations sur "
+"votre navigateur, que ce soit le *Navigateur Tor* ou un navigateur "
+"classique. Ces informations sont appelées l'*empreinte* du navigateur et "
+"comprennent le nom et la version du navigateur, la taille de la fenêtre, le "
+"fuseau horaire, les polices disponibles, etc."
+
+#. type: Plain text
+msgid ""
+"To make it difficult to distinguish Tails users from other users of *Tor "
+"Browser*, *Tor Browser* in Tails tries to provide the same information as "
+"*Tor Browser* on other operating systems."
+msgstr ""
+"Pour rendre difficile de distinguer une personne utilisant Tails des autres "
+"personnes utilisant le *Navigateur Tor*, le *Navigateur Tor* de Tails essaie "
+"de fournir les mêmes informations que le *Navigateur Tor* sur les autres "
+"systèmes d'exploitation."
+
+#. type: Plain text
+#, no-wrap
+msgid "<!--\n"
+msgstr "<!--\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"Refer to the [[fingerprint section of our list of known issues\n"
+"|support/known_issues#fingerprint]] to know if there are differences\n"
+"between the fingerprints of <span class=\"application\">Tor Browser</span> inside and outside of Tails.\n"
+msgstr ""
+"Consultez la [[section empreintes de notre liste des problèmes connus\n"
+"|support/known_issues#fingerprint]] pour savoir s'il y a des différences\n"
+"entre les empreintes du <span class=\"application\">Navigateur Tor</span> "
+"dans et en-dehors de Tails.\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "-->\n"
+msgstr "-->\n"
+
+#. type: Plain text
+msgid ""
+"A difference is that Tails includes the *uBlock Origin* extension, which "
+"removes advertisements. If an attacker can determine that you are not "
+"downloading the advertisements that are included in a webpage, that could "
+"reveal that you are a Tails user."
+msgstr ""
+"Une différence est que Tails inclut l'extension *uBlock Origin*, qui "
+"supprime les publicités. Si un attaquant peut déterminer que vous ne "
+"téléchargez pas les publicités qui sont inclues dans un page web, cela peut "
+"révéler le fait que vous êtes une personne utilisant Tails."
+
+#. type: Plain text
+#, no-wrap
+msgid "<div class=\"next\">\n"
+msgstr "<div class=\"next\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>To hide to someone monitoring your Internet connection that you are\n"
+"connecting to Tor, see our documentation about [[connecting to the Tor\n"
+"network|tor]].</p>\n"
+msgstr ""
+"<p>Pour cacher à quelqu'un qui surveille votre connexion Internet que vous "
+"êtes\n"
+"connecté à Tor, lisez notre documentation à propos de la [[connexion au "
+"réseau\n"
+"Tor|tor]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -317,7 +479,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"security-level\">Security level</h1>\n"
-msgstr "<h1 id=\"security-level\">Security level</h1>\n"
+msgstr "<h1 id=\"security-level\">Niveau de sécurité</h1>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -385,7 +547,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"circuit-view\">Tor circuit</h1>\n"
-msgstr "<h1 id=\"circuit-view\">Tor circuit</h1>\n"
+msgstr "<h1 id=\"circuit-view\">Circuit Tor</h1>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -427,12 +589,14 @@ msgstr ""
 #, no-wrap
 msgid ""
 "You can use\n"
-"<span class=\"application\">[[Onion Circuits|doc/anonymous_internet/tor_status]]</span>\n"
+"<span class=\"application\">[[Onion Circuits|doc/anonymous_internet/tor/circuits]]</span>\n"
 "to get more detailed information about the circuits being used.\n"
 msgstr ""
 "Vous pouvez utiliser\n"
-"<span class=\"application\">[[Onion Circuits|doc/anonymous_internet/tor_status]]</span>\n"
-"pour obtenir des informations plus détaillées sur les circuits que vous êtes en train d'utiliser.\n"
+"<span class=\"application\">[[Circuits oignon|doc/anonymous_internet/tor/"
+"circuits]]</span>\n"
+"pour obtenir des informations plus détaillées sur les circuits que vous êtes "
+"en train d'utiliser.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -492,8 +656,7 @@ msgid ""
 "as the Tor circuits used ouside of\n"
 "<i>Tor Browser</i> are not changed.</p>\n"
 msgstr ""
-"<p>Cette fonctionnalité n'est pas suffisante pour correctement [[séparer des "
-"identités contextuelles|about/warnings/identity#contextual]]\n"
+"<p>Cette fonctionnalité n'est pas suffisante pour correctement [[séparer des identités contextuelles|about/warnings/identity#contextual]]\n"
 "car les circuits Tor utilisés en dehors du\n"
 "<i>Navigateur Tor</i> ne sont pas modifiées.</p>\n"
 
@@ -571,10 +734,13 @@ msgid ""
 "Without letterboxing, websites could use\n"
 "the size of the browser window to track visitors or weaken your anonymity.\n"
 msgstr ""
-"Le format papier à lettres du <span class=\"application\">navigateur Tor</span> aide\n"
-"à éviter que les sites web identifient votre navigateur en s'appuyant sur la taille de sa fenêtre.\n"
-"Sans le formation papier à lettre, les sites web peuvent utiliser\n"
-"la taille de la fenêtre du navigateur pour pister les personnes ou compromettre votre anonymat.\n"
+"Le format letterboxing du <span class=\"application\">navigateur Tor</span> "
+"aide\n"
+"à éviter que les sites web identifient votre navigateur en s'appuyant sur la "
+"taille de sa fenêtre.\n"
+"Sans ce format letterboxing, les sites web peuvent utiliser\n"
+"la taille de la fenêtre du navigateur pour pister les internautes ou "
+"compromettre votre anonymat.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -584,8 +750,10 @@ msgid ""
 "webpage remains as close as possible to the desired size without revealing the\n"
 "actual size of the window.\n"
 msgstr ""
-"Le format papier à lettre du <span class=\"application\">Navigateur Tor</span> fonctionne\n"
-"en ajoutant des marges grises à la fenêtre du navigateur lorsqu'elle est redimensionnée. La\n"
+"Le format letterboxing <span class=\"application\">Navigateur Tor</span> "
+"fonctionne\n"
+"en ajoutant des marges grises à la fenêtre du navigateur lorsqu'elle est "
+"redimensionnée. La\n"
 "page web reste la plus proche possible de la taille voulue sans révéler\n"
 "la taille réelle de la fenêtre.\n"
 
