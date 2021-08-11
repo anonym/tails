@@ -530,14 +530,14 @@ class HtpdateError < TimeSyncingError
 end
 
 Given /^the time has synced$/ do
-  try_for(300) { $vm.execute('test -e /run/htpdate/success').success? }
+  try_for(300) { $vm.file_exist?('/run/htpdate/success') }
 rescue Timeout::Error
   raise HtpdateError, 'Time syncing failed'
 end
 
 Given /^available upgrades have been checked$/ do
   try_for(300) do
-    $vm.execute("test -e '/run/tails-upgrader/checked_upgrades'").success?
+    $vm.file_exist?('/run/tails-upgrader/checked_upgrades')
   end
 end
 
