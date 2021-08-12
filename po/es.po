@@ -4,7 +4,7 @@
 #
 # Translators:
 # Cesar Enrique Sanchez Medina <cesare01@gmail.com>, 2014
-# David Figuera <dfb@fastmail.com>, 2020
+# David Figuera <dfb@fastmail.com>, 2020-2021
 # Edward Navarro, 2015
 # vareli <ehespinosa@ya.com>, 2020
 # el buve, 2015
@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-26 10:47+0200\n"
-"PO-Revision-Date: 2021-05-26 13:31+0000\n"
-"Last-Translator: eulalio barbero espinosa <eulaliob@gmail.com>\n"
+"POT-Creation-Date: 2021-07-01 11:43+0200\n"
+"PO-Revision-Date: 2021-08-06 15:56+0000\n"
+"Last-Translator: cacu <carlosm2@riseup.net>\n"
 "Language-Team: Spanish (http://www.transifex.com/otf/torproject/language/"
 "es/)\n"
 "Language: es\n"
@@ -30,16 +30,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: config/chroot_local-includes/etc/NetworkManager/dispatcher.d/60-tor-ready.sh:42
-#, fuzzy
-msgid "Tor is ready"
-msgstr "Tor no está listo"
-
-#: config/chroot_local-includes/etc/NetworkManager/dispatcher.d/60-tor-ready.sh:43
-#, fuzzy
-msgid "You can now access the Internet."
-msgstr "Tienes acceso a Internet"
 
 #: config/chroot_local-includes/etc/whisperback/config.py:69
 #, python-format
@@ -134,12 +124,12 @@ msgid "Do you want to start Electrum anyway?"
 msgstr "¿Quieres iniciar Electrum de todas formas?"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:70
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:41
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:43
 msgid "_Launch"
 msgstr "_Iniciar"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:71
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:42
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:44
 msgid "_Exit"
 msgstr "_Salir"
 
@@ -224,8 +214,8 @@ msgid "bytes"
 msgstr "bytes"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:198
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:699
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:880
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:710
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:891
 msgid ""
 "For debugging information, execute the following command: sudo tails-"
 "debugging-info"
@@ -275,7 +265,7 @@ msgstr ""
 "Comprueba tu conexión a la red y reinicia Tails para intentar actualizar de "
 "nuevo.\n"
 "\n"
-"Si el problema persiste, lee el fichero local file:///usr/share/doc/tails/"
+"Si el problema persiste, lee el archivo local file:///usr/share/doc/tails/"
 "website/doc/upgrade/error/check.es.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:360
@@ -305,16 +295,16 @@ msgstr "no hay suficiente memoria libre en este sistema"
 msgid "No explanation available for reason '{reason}'."
 msgstr "No hay explicación disponible para la razón '{reason}'."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:407
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:409
 msgid "The system is up-to-date"
 msgstr "El sistema está actualizado"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:412
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:414
 msgid "This version of Tails is outdated, and may have security issues."
 msgstr ""
 "Esta versión de Tails está desfasada, y puede tener problemas de seguridad."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:443
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:444
 #, perl-brace-format
 msgid ""
 "The available incremental upgrade requires {space_needed} of free space on "
@@ -324,7 +314,7 @@ msgstr ""
 "libre en la partición del sistema en Tails, pero sólo hay {free_space} "
 "disponible."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:455
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:456
 #, perl-brace-format
 msgid ""
 "The available incremental upgrade requires {memory_needed} of free memory, "
@@ -333,7 +323,20 @@ msgstr ""
 "La actualización incremental disponible requiere {memory_needed} de memoria "
 "libre pero sólo hay disponible {free_memory}."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:474
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:467
+msgid ""
+"An error ocurred while detecting available upgrades.\n"
+"This should not happen. Please report a bug."
+msgstr ""
+"Ocurrió un error mientras se detectaban actualizaciones disponibles.\n"
+"Esto no debería pasar. Por favor informa del error."
+
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:470
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:489
+msgid "Error while detecting available upgrades"
+msgstr "Error al comprobar si hay actualizaciones"
+
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:485
 msgid ""
 "An incremental upgrade is available, but no full upgrade is.\n"
 "This should not happen. Please report a bug."
@@ -342,11 +345,7 @@ msgstr ""
 "ninguna actualización completa.\n"
 "Esto no debería ocurrir. Por favor informe del fallo."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:478
-msgid "Error while detecting available upgrades"
-msgstr "Error al comprobar si hay actualizaciones"
-
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:487
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:498
 #, perl-brace-format
 msgid ""
 "<b>You should upgrade to {name} {version}.</b>\n"
@@ -374,19 +373,19 @@ msgstr ""
 "\n"
 "¿Deseas actualizar ahora?"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:500
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:511
 msgid "Upgrade available"
 msgstr "Actualización disponible"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:501
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:512
 msgid "Upgrade now"
 msgstr "Actualizar ahora"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:502
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:513
 msgid "Upgrade later"
 msgstr "Actualizar más tarde"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:509
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:520
 #, perl-brace-format
 msgid ""
 "<b>You should do a manual upgrade to {name} {version}.</b>\n"
@@ -407,20 +406,20 @@ msgstr ""
 "\n"
 "Para aprender a hacer una actualización manual, ir a {manual_upgrade_url}"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:520
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:531
 msgid "New version available"
 msgstr "Nueva versión disponible"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:601
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:612
 msgid "Downloading upgrade"
 msgstr "Descargando actualización"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:603
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:614
 #, perl-brace-format
 msgid "Downloading the upgrade to {name} {version}..."
 msgstr "Descargando la actualización de {name} {version}..."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:692
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:703
 msgid ""
 "<b>The upgrade could not be downloaded.</b>\\n\\nCheck your network "
 "connection, and restart Tails to try upgrading again.\\n\\nIf the problem "
@@ -432,12 +431,12 @@ msgstr ""
 "problema persiste, lee file:///usr/share/doc/tails/website/doc/upgrade/error/"
 "download.es.html"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:703
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:718
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:714
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:729
 msgid "Error while downloading the upgrade"
 msgstr "Error al descargar la actualización"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:713
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:724
 #, perl-brace-format
 msgid ""
 "Output file '{output_file}' does not exist, but tails-iuk-get-target-file "
@@ -446,15 +445,15 @@ msgstr ""
 "El archivo de salida '{output_file}' no existe, pero tails-iuk-get-target-"
 "file no se ha quejado. Por favor, informa de un error."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:729
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:740
 msgid "Error while creating temporary downloading directory"
 msgstr "Error al crear directorio de descarga temporal"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:732
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:743
 msgid "Failed to create temporary download directory"
 msgstr "Fallo al crear directorio de descarga temporal"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:756
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:767
 msgid ""
 "<b>Could not choose a download server.</b>\n"
 "\n"
@@ -464,11 +463,11 @@ msgstr ""
 "\n"
 "Esto no debería ocurrir. Por favor infórmanos del problema."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:759
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:770
 msgid "Error while choosing a download server"
 msgstr "Error al escoger un servidor de descarga"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:773
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:784
 msgid ""
 "The upgrade was successfully downloaded.\n"
 "\n"
@@ -482,15 +481,15 @@ msgstr ""
 "\n"
 "Por favor, guarda tu trabajo y cierra todas las demás aplicaciones."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:778
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:789
 msgid "Upgrade successfully downloaded"
 msgstr "La actualización se ha bajado correctamente."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:779
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:790
 msgid "Apply upgrade"
 msgstr "Aplicar la actualización"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:786
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:797
 msgid ""
 "<b>Your Tails device was successfully upgraded.</b>\n"
 "\n"
@@ -506,47 +505,47 @@ msgstr ""
 "\n"
 "¿Quieres reiniciar ahora?"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:791
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:802
 msgid "Restart Tails"
 msgstr "Reiniciar Tails"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:792
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:803
 msgid "Restart now"
 msgstr "Reiniciar ahora"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:793
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:804
 msgid "Restart later"
 msgstr "Reiniciar más tarde"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:803
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:814
 msgid "Error while restarting the system"
 msgstr "Error al reiniciar el sistema"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:804
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:815
 msgid "Failed to restart the system"
 msgstr "Fallo al reiniciar el sistema"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:817
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:828
 msgid "Error while shutting down the network"
 msgstr "Error al cerrar la red"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:818
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:829
 msgid "Failed to shutdown network"
 msgstr "Fallo al cerrar la red"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:828
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:839
 msgid "Error while cancelling the upgrade download"
 msgstr "Error cancelando la descarga de la actualización"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:829
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:840
 msgid "Failed to cancel the upgrade download"
 msgstr "Fallo al cancelar la descarga de la actualización"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:835
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:846
 msgid "Upgrading the system"
 msgstr "Actualizando el sistema"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:837
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:848
 msgid ""
 "<b>Your Tails device is being upgraded...</b>\n"
 "\n"
@@ -556,7 +555,7 @@ msgstr ""
 "\n"
 "Por razones de seguridad, la conexión de red está desconectada."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:874
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:885
 msgid ""
 "<b>An error occured while installing the upgrade.</b>\\n\\nYour Tails device "
 "needs to be repaired and might be unable to restart.\\n\\nPlease follow the "
@@ -568,7 +567,7 @@ msgstr ""
 "\\nPor favor, sigue las instrucciones en file:///usr/share/doc/tails/website/"
 "doc/upgrade/error/install.es.html"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:884
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:895
 msgid "Error while installing the upgrade"
 msgstr "Error al instalar la actualización"
 
@@ -580,7 +579,7 @@ msgstr "Configuración adicional"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:581
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:366
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
-#: config/chroot_local-includes/usr/local/bin/tor-browser:49
+#: config/chroot_local-includes/usr/bin/tor-browser:51
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -597,54 +596,56 @@ msgid "_Administration Password"
 msgstr " Contraseña de _administración"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:187
-#, fuzzy
-msgid "_MAC Address Spoofing"
+msgid "_MAC Address Anonymization"
 msgstr "Anonimización de _Dirección MAC"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:250
+msgid "_Offline Mode"
+msgstr "Modo _Offline"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:259
+#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:413
+msgid "Enable networking (default)"
+msgstr "Activar la red (por defecto)"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:261
+#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:459
+msgid "Disable all networking"
+msgstr "Deshabilitar todas las conexiones de red "
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:316
 msgid "_Network Connection"
 msgstr "Conexión de _red"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:259
-#, fuzzy
-msgid "Direct (default)"
-msgstr "Deshabilitado (predeterminado)"
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:324
+msgid "Obsolete"
+msgstr "Obsoleto"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:261
-#, fuzzy
-msgid "Bridge & Proxy"
-msgstr "Configurar un _Proxy"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:263
-#, fuzzy
-msgid "Offline"
-msgstr "Modo sin conexión "
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:333
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:339
 msgid "_Unsafe Browser"
 msgstr "_Navegador No Seguro"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:342
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:348
 msgid "Enabled"
 msgstr "Activado"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:344
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:350
 msgid "Disabled (default)"
 msgstr "Deshabilitado (predeterminado)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:395
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:401
 msgid "On (default)"
 msgstr "Activada (predeterminado)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:397
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:403
 msgid "On"
 msgstr "Activado"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:399
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:405
 msgid "Off"
 msgstr "Desactivado"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:401
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:407
 msgid "Off (default)"
 msgstr " Desactivada (predeterminado) "
 
@@ -696,7 +697,7 @@ msgid "Unlocking…"
 msgstr "Desbloqueando..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:95
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:462
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:394
 msgid "Unlock"
 msgstr "Desbloquear"
 
@@ -798,7 +799,7 @@ msgstr "No se pudo encontrar el dispositivo %s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:836
 msgid "Unknown filesystem.  Your device may need to be reformatted."
 msgstr ""
-"Sistema de ficheros desconocido. Tu dispositivo podría tener que ser "
+"Sistema de archivos desconocido. Tu dispositivo podría tener que ser "
 "formateado."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:622
@@ -859,7 +860,7 @@ msgstr "Tratando de continuar igualmente."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:833
 msgid "Verifying filesystem..."
-msgstr "Verificando el sistema de ficheros... "
+msgstr "Verificando el sistema de archivos... "
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:857
 #, python-format
@@ -1076,15 +1077,15 @@ msgid ""
 "The selected file is unreadable. Please fix its permissions or select "
 "another file."
 msgstr ""
-"El fichero seleccionado no se puede leer. Ajusta tus permisos o selecciona "
-"otro fichero."
+"El archivo seleccionado no se puede leer. Ajusta tus permisos o selecciona "
+"otro archivo."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:694
 msgid ""
 "Unable to use the selected file.  You may have better luck if you move your "
 "ISO to the root of your drive (ie: C:\\)"
 msgstr ""
-"No se pudo utilizar el fichero seleccionado. Puede que tengas más suerte si "
+"No se pudo utilizar el archivo seleccionado. Puede que tengas más suerte si "
 "mueves tu ISO a la carpeta raíz de su unidad (ej. C:\\)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:700
@@ -1140,7 +1141,7 @@ msgstr ""
 msgid "Could not open device for writing."
 msgstr "No se pudo abrir el dispositivo para la escritura"
 
-#: config/chroot_local-includes/usr/local/bin/keepassxc:15
+#: config/chroot_local-includes/usr/local/bin/keepassxc:17
 #, sh-format
 msgid ""
 "<b><big>Do you want to rename your <i>KeePassXC</i> database?</big></b>\n"
@@ -1168,11 +1169,11 @@ msgstr ""
 "Renombrando tu base de datos a <i>Passwords.kdbx</i> le permitirá a "
 "<i>KeePassXC</i> abrirla automáticamente en el futuro."
 
-#: config/chroot_local-includes/usr/local/bin/keepassxc:25
+#: config/chroot_local-includes/usr/local/bin/keepassxc:28
 msgid "Rename"
 msgstr "Renombrar"
 
-#: config/chroot_local-includes/usr/local/bin/keepassxc:26
+#: config/chroot_local-includes/usr/local/bin/keepassxc:30
 msgid "Keep current name"
 msgstr "Mantener el nombre actual"
 
@@ -1224,7 +1225,7 @@ msgid "Passphrase can't be empty"
 msgstr "La frase contraseña no puede estar vacía"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Step/Bootstrap.pm:226
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:394
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:326
 msgid "Show Passphrase"
 msgstr "Mostrar contraseña"
 
@@ -1415,11 +1416,13 @@ msgstr "Claves SSH, configuración y hosts conocidos"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:223
 msgid "Dotfiles"
-msgstr "Dotfiles (formato de '.ficheros' de configuración)"
+msgstr "Dotfiles (formato de '.archivos' de configuración)"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:225
 msgid "Symlink every file in the Dotfiles folder into the Home folder"
 msgstr ""
+"Crear un enlace simbólico de cada archivo de la carpeta Dotfiles en la "
+"carpeta Home"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Setting.pm:111
 msgid "Custom"
@@ -1433,7 +1436,9 @@ msgstr "Configurar el volumen persistente de Tails"
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Setup.pm:491
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:28
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:29
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:313
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:668
 msgid "Error"
 msgstr "Error"
 
@@ -1835,6 +1840,7 @@ msgid "Set up a password to unlock the screen."
 msgstr "Establece una contraseña para desbloquear la pantalla"
 
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:149
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1761
 msgid "Password"
 msgstr "Contraseña"
 
@@ -1857,11 +1863,11 @@ msgid "Network card ${nic} disabled"
 msgstr "Tarjeta de red ${nic} deshabilitada"
 
 #: config/chroot_local-includes/usr/local/lib/tails-spoof-mac:57
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
-"MAC spoofing failed for network card ${nic_name} (${nic}) so it is "
-"temporarily disabled.\n"
-"You might prefer to restart Tails and disable MAC spoofing."
+"MAC address anonymization failed for network card ${nic_name} (${nic}) so it "
+"is temporarily disabled.\n"
+"You might prefer to restart Tails and disable MAC address anonymization."
 msgstr ""
 "Ha fallado la anonimización de la dirección MAC para la tarjeta de red "
 "${nic_name} (${nic}) por lo que está temporalmente desactivada.\n"
@@ -1873,11 +1879,11 @@ msgid "All networking disabled"
 msgstr "Se deshabilitaron todas las redes"
 
 #: config/chroot_local-includes/usr/local/lib/tails-spoof-mac:67
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
-"MAC spoofing failed for network card ${nic_name} (${nic}). The error "
-"recovery also failed so all networking is disabled.\n"
-"You might prefer to restart Tails and disable MAC spoofing."
+"MAC address anonymization failed for network card ${nic_name} (${nic}). The "
+"error recovery also failed so all networking is disabled.\n"
+"You might prefer to restart Tails and disable MAC address anonymization."
 msgstr ""
 "Ha fallado la anonimización de la dirección MAC para la tarjeta de red "
 "${nic_name} (${nic}). La recuperación del error también falló, por lo que "
@@ -1908,7 +1914,7 @@ msgstr ""
 "Mira {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:76
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:27
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:28
 msgid "error:"
 msgstr "error:"
 
@@ -1940,11 +1946,78 @@ msgstr "No mostrar de nuevo"
 msgid "Learn More"
 msgstr "Más información"
 
-#: config/chroot_local-includes/usr/local/bin/thunderbird:40
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/config.py:8
+#: ../config/chroot_local-includes/usr/share/applications/tca.desktop.in.h:1
+msgid "Tor Connection"
+msgstr "Conexión Tor"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:203
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:495
+#, python-brace-format
+msgid "Invalid: {exception}"
+msgstr "No es válido: {exception}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:215
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:508
+msgid "You need to configure an obfs4 bridge to hide that you are using Tor"
+msgstr "Necesitas configurar un puente obfs4 para ocultar que estás usando Tor"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:308
+msgid "Connecting to Tor without bridges…"
+msgstr "Conectando a Tor sin puentes..."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:315
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:339
+msgid "Connecting to Tor with default bridges…"
+msgstr "Conectando a Tor con puentes predeterminados..."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:322
+msgid "Connecting to Tor with custom bridges…"
+msgstr "Conectando a Tor con puentes personalizados..."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:414
+msgid ""
+"Connected to Tor successfully!\n"
+"\n"
+"You can now browse the Internet anonymously and uncensored."
+msgstr ""
+"Conectado a Tor!\n"
+"\n"
+"Puedes navegar por Internet de forma anónima y sin censura."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:498
+msgid "Bridge address malformed"
+msgstr "Error de sintaxis en la dirección del puente"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:514
+msgid "Setting a bridge is needed if you want to hide that you are using Tor"
+msgstr ""
+"El uso de un puente es necesario si quieres ocultar el hecho de que estás "
+"usando Tor"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:777
+msgid "Are you sure you want to lose progress?"
+msgstr "¿Estás seguro de que quieres perder el progreso?"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:781
+msgid ""
+"Tails will continue connecting to Tor after you close the Tor Connection "
+"assistant.\n"
+"\n"
+"If connecting to Tor fails, you will have to wait again until the end of the "
+"progress bar to be able to troubleshoot your connection."
+msgstr ""
+"Tails continuará conectandose a Tor después de que cierres el asistente de "
+"conexión.\n"
+"\n"
+"Si la conexión falla, deberás esperar de nuevo hasta que la barra de "
+"progreso termine, para poder diagnosticar el problema con la conexión."
+
+#: config/chroot_local-includes/usr/local/bin/thunderbird:41
 msgid "You need to migrate your OpenPGP keys"
 msgstr "Necesitas migrar tus claves OpenPGP"
 
-#: config/chroot_local-includes/usr/local/bin/thunderbird:42
+#: config/chroot_local-includes/usr/local/bin/thunderbird:43
 msgid ""
 "<i>Thunderbird</i> 78 now replaces the <i>Enigmail</i> extension with built-"
 "in support for OpenPGP encryption. To continue using your OpenPGP keys in "
@@ -1955,23 +2028,24 @@ msgstr ""
 "claves OpenPGP en <i>Thunderbird</i>, sigue nuestras instrucciones de "
 "migración."
 
-#: config/chroot_local-includes/usr/local/bin/thunderbird:44
+#: config/chroot_local-includes/usr/local/bin/thunderbird:45
 msgid "_Open Migration Instructions"
 msgstr "_Abrir instrucciones de migración"
 
-#: config/chroot_local-includes/usr/local/bin/thunderbird:45
+#: config/chroot_local-includes/usr/local/bin/thunderbird:46
 msgid "_Migrate Later"
 msgstr "_Migrar más tarde"
 
-#: config/chroot_local-includes/usr/local/bin/tor-browser:46
+#: config/chroot_local-includes/usr/bin/tor-browser:48
 msgid "Tor is not ready"
 msgstr "Tor no está listo"
 
-#: config/chroot_local-includes/usr/local/bin/tor-browser:47
+#: config/chroot_local-includes/usr/bin/tor-browser:49
 msgid "Tor is not ready. Start Tor Browser anyway?"
 msgstr "Tor no está listo. ¿Iniciar el Tor Browser de todos modos?"
 
-#: config/chroot_local-includes/usr/local/bin/tor-browser:48
+#: config/chroot_local-includes/usr/bin/tor-browser:50
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1559
 msgid "Start Tor Browser"
 msgstr "Iniciar Tor Browser"
 
@@ -2127,7 +2201,7 @@ msgstr ""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:138
 msgid "Error opening file"
-msgstr "Error al abrir fichero"
+msgstr "Error al abrir archivo"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:160
 msgid "Not a VeraCrypt container"
@@ -2156,34 +2230,35 @@ msgstr ""
 msgid "Choose File Container"
 msgstr "Selecciona contenedor de archivo"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:38
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:40
 msgid "Launch the Unsafe Browser?"
 msgstr "¿Iniciar el Navegador No Seguro?"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:40
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:42
 msgid ""
 "The Unsafe Browser is not anonymous and the websites that you visit can see "
-"your real IP address.\\n\\nOnly use the Unsafe Browser to log in to a "
-"captive portal or browse trusted web pages on the local network."
+"your real IP address.\\n\\nOnly use the Unsafe Browser to sign in to a "
+"network using a captive portal or browse trusted web pages on the local "
+"network."
 msgstr ""
-"El Navegador No Seguro no es anónimo, y los sitios web que visitas pueden "
-"ver tu dirección IP real.\\n\\nUsa el Navegador No Seguro sólo para iniciar "
-"sesión en un portal cautivo o navegar páginas web en las cuales confías, en "
-"la red local."
+"El Navegador No Seguro no es anónimo y los sitios web que visita pueden ver "
+"tu dirección IP real.\\n\\n Únicamente utiliza el Navegador No Seguro para "
+"iniciar sesión en una red usando un portal cautivo o navegar por páginas web "
+"de confianza en la red local."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:51
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:54
 msgid "Starting the Unsafe Browser..."
 msgstr "Iniciando el Navegador No Seguro..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:52
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:55
 msgid "This may take a while, so please be patient."
 msgstr "Esto puede llevar un tiempo, por favor ten paciencia."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
 msgid "Shutting down the Unsafe Browser..."
 msgstr "Cerrando el Navegador No Seguro..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:62
 msgid ""
 "This may take a while, and you may not restart the Unsafe Browser until it "
 "is properly shut down."
@@ -2191,17 +2266,17 @@ msgstr ""
 "Esto puede llevar un tiempo, y no podrás reiniciar el Navegador No Seguro "
 "hasta que se haya cerrado adecuadamente."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:70
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
 msgid "Failed to restart Tor."
 msgstr "Fallo al reiniciar Tor."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:84
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:88
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:1
-#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:510
+#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:512
 msgid "Unsafe Browser"
 msgstr "Navegador No Seguro"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:90
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:94
 msgid ""
 "The Unsafe Browser was not enabled in the Welcome Screen.\\n\\nTo use the "
 "Unsafe Browser, restart Tails and enable the Unsafe Browser in the "
@@ -2216,7 +2291,7 @@ msgstr ""
 "Para habilitar siempre el Navegador No Seguro, activa la característica "
 "Pantalla de Bienvenida del Almacenamiento Persistente."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:99
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
 msgid ""
 "Another Unsafe Browser is currently running, or being cleaned up. Please "
 "retry in a while."
@@ -2224,15 +2299,15 @@ msgstr ""
 "En este momento se está ejecutando o apagando otro Navegador No Seguro. "
 "Inténtalo de nuevo en un rato."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:107
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:111
 msgid "Failed to setup chroot."
 msgstr "Fallo al establecer chroot."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:114
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:118
 msgid "Failed to configure browser."
 msgstr "Fallo al configurar el navegador."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:120
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:124
 msgid ""
 "You are not connected to a local network yet.\\n\\nTo be able to start the "
 "Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile "
@@ -2242,7 +2317,7 @@ msgstr ""
 "Navegador No Seguro, primero necesitas conectarte a una red Wi-Fi, cableada "
 "o móvil."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:131
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:135
 msgid "Failed to run browser."
 msgstr "Falló al iniciar el navegador."
 
@@ -2397,6 +2472,18 @@ msgstr "Clave OpenPGP de contacto no válida: %s"
 msgid "Invalid contact OpenPGP public key block"
 msgstr "Bloque de clave pública OpenPGP de contacto no válida"
 
+#: config/chroot_local-includes/usr/local/bin/tca:140
+msgid "You turned on Offline Mode in the Welcome Screen."
+msgstr "Activaste el modo sin conexión en la pantalla de bienvenida."
+
+#: config/chroot_local-includes/usr/local/bin/tca:141
+msgid "It is impossible to connect to Tor in Offline Mode."
+msgstr "Es imposible conectar a Tor en el modo sin conexión"
+
+#: config/chroot_local-includes/usr/local/bin/tca:142
+msgid "To connect to Tor and the Internet, restart Tails without Offline Mode."
+msgstr ""
+
 #: ../config/chroot_local-includes/etc/skel/Desktop/Report_an_error.desktop.in.h:1
 msgid "Report an error"
 msgstr "Informar de un error"
@@ -2447,6 +2534,10 @@ msgid ""
 msgstr ""
 "Configurar qué archivos y qué configuración de la aplicación se guardan en "
 "las sesiones de trabajo"
+
+#: ../config/chroot_local-includes/usr/share/applications/tca.desktop.in.h:2
+msgid "Connect Tails to the Tor network"
+msgstr "Conectar Tails a la red Tor"
 
 #: ../config/chroot_local-includes/usr/share/applications/tor-browser.desktop.in.h:1
 msgid "Tor Browser"
@@ -2511,7 +2602,7 @@ msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:18
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:56
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:693
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:625
 msgid "Administration Password"
 msgstr "Contraseña de administración"
 
@@ -2538,18 +2629,16 @@ msgid "Disable"
 msgstr "Deshabilitar"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:154
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:697
-#, fuzzy
-msgid "MAC Address Spoofing"
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:629
+msgid "MAC Address Anonymization"
 msgstr "Anonimización de direcciones MAC"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:170
-#, fuzzy
 msgid ""
-"MAC address spoofing hides the serial number of your network interface (Wi-"
-"Fi or wired) to the local network. Spoofing MAC addresses is generally safer "
-"as it helps you hide your geographical location. But it might also create "
-"connectivity problems or look suspicious."
+"MAC address anonymization hides the serial number of your network interface "
+"(Wi-Fi or wired) from the local network. Anonymizing MAC addresses is "
+"generally safer as it helps you hide your geographical location. But it "
+"might also create connectivity problems or look suspicious."
 msgstr ""
 "La anonimización de la dirección MAC oculta el número de serie de tu "
 "interfaz de red (Wi-Fi o cableada) desde la red local. Anonimizar la "
@@ -2558,66 +2647,78 @@ msgstr ""
 "sospechoso."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:212
-#, fuzzy
-msgid "Spoof all MAC addresses (default)"
+msgid "Anonymize all MAC addresses (default)"
 msgstr "Hacer anónimas todas las direcciones MAC"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:258
-#, fuzzy
-msgid "Don't spoof MAC addresses"
+msgid "Don't anonymize MAC addresses"
 msgstr "No hacer anónimas las direcciones MAC"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:311
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:701
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:633
 msgid "Network Configuration"
 msgstr "Configuración de la red"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:327
 msgid ""
-"If your Internet connection is censored, filtered, or proxied you can "
-"configure a Tor bridge or a local proxy. To work completely offline, you can "
-"disable all networking."
+"We replaced this additional setting in Tails 4.19 (June 2021) with a Tor "
+"Connection assistant integrated in the desktop.\n"
+"\n"
+"You will be asked whether you want to use Tor bridges when connecting to Tor "
+"after starting Tails.\n"
+"\n"
+"If you want to work offline, enable the Offline Mode in the additional "
+"settings."
 msgstr ""
+" Reemplazamos esta configuración adicional en Tails 4.19 (junio de 2021) con "
+"un asistente de conexión a Tor integrado en el escritorio.\n"
+"\n"
+"Se te preguntará si quieres usar puentes Tor cuando te conectes a Tor "
+"después de iniciar Tails.\n"
+"\n"
+"Si quieres trabajar sin conexión, activa el modo sin conexión en la "
+"configuración adicional."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:367
-#, fuzzy
-msgid "Connect directly to the Tor network (default)"
-msgstr "Conectar Tails a la red Tor"
+#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:357
+msgid "Offline Mode"
+msgstr "Modo sin conexión"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:413
-#, fuzzy
-msgid "Configure a Tor bridge or local proxy"
-msgstr "Configura un puente de Tor"
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:457
-msgid "Disable all networking"
-msgstr "Deshabilitar todas las conexiones de red "
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:526
+#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:373
 msgid ""
-"The Unsafe Browser allows you to log in to a captive portal.\n"
+"If you want to work completely offline, you can disable all networking for "
+"increased security."
+msgstr ""
+"Si quieres trabajar sin conectarte a Internet puedes desactivar todas las "
+"redes para aumentar la seguridad."
+
+#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:528
+msgid ""
+"The Unsafe Browser allows you to sign in to a network using a captive "
+"portal.\n"
 "\n"
 "A captive portal is a web page that is displayed before you can access the "
-"Internet. Captive portals usually require to log in to the network or enter "
-"information such as an email address.\n"
+"Internet. Captive portals usually require you to log in to the network or "
+"enter information such as an email address.\n"
 "\n"
 "The Unsafe Browser is not anonymous and can deanonymize you. Use it only to "
-"log in to captive portals."
+"sign in to networks."
 msgstr ""
-"El Navegador No Seguro te permite iniciar sesión en un portal cautivo.\n"
+"El Navegador No Seguro te permite iniciar sesión en una red que usa un "
+"portal cautivo.\n"
 "\n"
-"Un portal cautivo es una página web que aparece antes que puedas acceder al "
-"Internet.  Los portales cautivos usualmente requieren iniciar sesión en la "
-"red o ingresar información tal como una dirección de correo electrónico.\n"
+"Un portal cautivo es una página web que se muestra antes de que puedas "
+"acceder a Internet. Los portales cautivos normalmente requieren que te "
+"identifiques en la red o que introduzcas información como por ejemplo un "
+"correo electrónico.\n"
 "\n"
-"El Navegador No Seguro no es anónimo, y puede deanonimizarte. Úsalo "
-"solamente para iniciar sesión en portales cautivos."
+"El Navegador No Seguro no es anónimo y puede desanonimizarte. Úsalo solo "
+"para iniciar sesión en las redes."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:572
+#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:574
 msgid "Disable the Unsafe Browser (default)"
 msgstr "Deshabilita el Navegador No Seguro (predeterminado)"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:617
+#: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:619
 msgid "Enable the Unsafe Browser"
 msgstr "Habilita el Navegador No Seguro"
 
@@ -2625,49 +2726,43 @@ msgstr "Habilita el Navegador No Seguro"
 msgid "Settings were loaded from the persistent storage."
 msgstr "La configuración se cargó desde tu almacenamiento persistente"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:168
-msgid ""
-"You will configure the Tor bridge and local proxy later on after connecting "
-"to a network."
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:220
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:152
 msgid "Welcome to Tails!"
 msgstr "¡Bienvenido a Tails!"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:254
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:186
 msgid "Language & Region"
 msgstr "Idioma y región"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:290
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:222
 msgid "Default Settings"
 msgstr "Configuración predeterminada"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:353
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:285
 msgid "Encrypted _Persistent Storage"
 msgstr "Almacenamiento _Persistente Cifrado"
 
 #. The label for this placeholder text is not very big, so keep this string short.
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:447
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:379
 msgid "Enter your passphrase to unlock the persistent storage"
 msgstr ""
 "Introduce tu frase contraseña para desbloquear el almacenamiento persistente"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:495
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:427
 msgid "Your persistent storage is unlocked. Restart Tails to lock it again."
 msgstr ""
 "Tu almacenamiento persistente está desbloqueado. Reinicia Tails para volver "
 "a bloquearlo."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:533
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:465
 msgid "_Additional Settings"
 msgstr "Configuración _Adicional"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:616
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:548
 msgid "Add an additional setting"
 msgstr "Añadir una configuración adicional"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:665
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:597
 msgid ""
 "The default settings are safe in most situations. To add a custom setting, "
 "press the \"+\" button below."
@@ -2675,11 +2770,11 @@ msgstr ""
 "La configuración predeterminada es segura en la mayoría de los casos. Para "
 "añadir una configuración personalizada, pulsa debajo el botón \"+\". "
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:709
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:641
 msgid "Shutdown"
 msgstr "Cerrar"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:720
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:652
 msgid "_Start Tails"
 msgstr "Iniciar _Tails"
 
@@ -2784,7 +2879,7 @@ msgid "Summary"
 msgstr "Resumen"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:337
-#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:472
+#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:485
 msgid "Bug description"
 msgstr "Descripción del error"
 
@@ -2804,20 +2899,26 @@ msgstr "Correo electrónico (si quieres que te respondamos)"
 msgid "optional PGP key"
 msgstr "Clave PGP opcional"
 
-#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:489
-#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:600
+#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:470
+msgid "Please know that we are not able to reply to every bug report."
+msgstr ""
+"Por favor, ten en cuenta que no podemos responder a todos y cada uno de los "
+"informes de error."
+
+#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:502
+#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:613
 msgid "Technical details to include"
 msgstr "Detalles técnicos a incluir"
 
-#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:527
+#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:540
 msgid "headers"
 msgstr "cabeceras"
 
-#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:575
+#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:588
 msgid "debugging info"
 msgstr "información de depuración ('debugging')"
 
-#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:667
+#: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:680
 msgid "Send"
 msgstr "Enviar"
 
@@ -2825,215 +2926,338 @@ msgstr "Enviar"
 msgid "TrueCrypt/VeraCrypt container"
 msgstr "Contenedor TrueCrypt/VeraCrypt"
 
-#~ msgid "_Offline Mode"
-#~ msgstr "Modo _Offline"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:55
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:896
+msgid "Configure a Tor bridge"
+msgstr "Configura un puente de Tor"
 
-#~ msgid "Enable networking (default)"
-#~ msgstr "Activar la red (por defecto)"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:71
+msgid ""
+"Bridges are secret Tor relays. Use a bridge as your first Tor relay if "
+"accessing Tor is blocked from where you are."
+msgstr ""
+"Los puentes son repetidores secretos de Tor. Utiliza un puente como tu "
+"primer repetidor Tor si el acceso a Tor está bloqueado desde donde te "
+"encuentras."
 
-#~ msgid "Obsolete"
-#~ msgstr "Obsoleto"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:87
+msgid "<a href=\"doc/anonymous_internet/tor\">Learn more about Tor bridges</a>"
+msgstr ""
+"<a href=\"doc/anonymous_internet/tor\">Aprende más sobre los puentes Tor</a>"
 
-#~ msgid "Tor Connection"
-#~ msgstr "Conexión Tor"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:123
+msgid "Use a default bridge"
+msgstr "Usa un puente por defecto"
 
-#, python-brace-format
-#~ msgid "Invalid: {exception}"
-#~ msgstr "No es válido: {exception}"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:142
+msgid "obfs4 (recommended)"
+msgstr "obfs4 (recomendado)"
 
-#~ msgid "You need to configure an obfs4 bridge to hide that you are using Tor"
-#~ msgstr ""
-#~ "Necesitas configurar un puente obfs4 para ocultar que estás usando Tor"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:143
+msgid "meek"
+msgstr "meek"
 
-#~ msgid ""
-#~ "Connected to Tor successfully!\n"
-#~ "\n"
-#~ "You can now browse the Internet anonymously and uncensored."
-#~ msgstr ""
-#~ "Conectado a Tor!\n"
-#~ "\n"
-#~ "Puedes navegar por Internet de forma anónima y sin censura."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:166
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1069
+msgid "None"
+msgstr "Ninguno"
 
-#~ msgid ""
-#~ "We replaced this additional setting in Tails 4.19 (June 2021) with a Tor "
-#~ "Connection assistant integrated in the desktop.\n"
-#~ "\n"
-#~ "You will be asked whether you want to use Tor bridges when connecting to "
-#~ "Tor after starting Tails.\n"
-#~ "\n"
-#~ "If you want to work offline, enable the Offline Mode in the additional "
-#~ "settings."
-#~ msgstr ""
-#~ " Reemplazamos esta configuración adicional en Tails 4.19 (junio de 2021) "
-#~ "con un asistente de conexión a Tor integrado en el escritorio.\n"
-#~ "\n"
-#~ "Se te preguntará si quieres usar puentes Tor cuando te conectes a Tor "
-#~ "después de iniciar Tails.\n"
-#~ "\n"
-#~ "Si quieres trabajar sin conexión, activa el modo sin conexión en la "
-#~ "configuración adicional."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:194
+msgid "Request a new bridge"
+msgstr "Solicita un puente nuevo"
 
-#~ msgid ""
-#~ "If you want to work completely offline, you can disable all networking "
-#~ "for increased security."
-#~ msgstr ""
-#~ "Si quieres trabajar sin conectarte a Internet puedes desactivar todas las "
-#~ "redes para aumentar la seguridad."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:227
+msgid "Type in a bridge that I already know"
+msgstr "Escribe un puente que ya conoces"
 
-#~ msgid ""
-#~ "Bridges are secret Tor relays. Use a bridge as your first Tor relay if "
-#~ "accessing Tor is blocked from where you are."
-#~ msgstr ""
-#~ "Los puentes son repetidores secretos de Tor. Utiliza un puente como tu "
-#~ "primer repetidor Tor si el acceso a Tor está bloqueado desde donde te "
-#~ "encuentras."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:245
+msgid ""
+"Currently in Tails, only obfs4 bridges hide that you are using Tor.\n"
+"\n"
+"obfs4 bridges start with the word 'obfs4'.\n"
+"\n"
+"To request obfs4 bridges, you can send an empty email to\n"
+"<tt>bridges@torproject.org</tt> from a Gmail or Riseup email address.\n"
+msgstr ""
+"Actualmente en Tails, sólo los puentes obfs4 ocultan que estás usando Tor.\n"
+"\n"
+"Los puentes obfs4 comienzan con la palabra 'obfs4'.\n"
+"\n"
+"Para solicitar puentes obfs4, puedes enviar un correo electrónico vacío a\n"
+"<tt>bridges@torproject.org</tt>  desde una dirección de correo electrónico "
+"de Gmail o Riseup.\n"
 
-#~ msgid "Use a default bridge"
-#~ msgstr "Usa un puente por defecto"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:363
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:702
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1110
+msgid "Connect to _Tor"
+msgstr "Conecta a_Tor"
 
-#~ msgid "obfs4 (recommended)"
-#~ msgstr "obfs4 (recomendado)"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:410
+msgid "Error connecting to Tor"
+msgstr "Error de conexión a Tor"
 
-#~ msgid "meek"
-#~ msgstr "meek"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:433
+msgid "• Public network"
+msgstr "• Red pública"
 
-#~ msgid "None"
-#~ msgstr "Ninguno"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:453
+msgid ""
+"If you are in a shop, hotel, or airport, you might need to sign in to the "
+"local network using a captive portal."
+msgstr ""
+"Si estás en una tienda, hotel o aeropuerto, puede que necesites iniciar "
+"sesión en la red local usando un portal cautivo."
 
-#~ msgid "Request a new bridge"
-#~ msgstr "Solicita un puente nuevo"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:466
+msgid "Try Signing in to the Network"
+msgstr "Intenta conectarte a la red"
 
-#~ msgid "Type in a bridge that I already know"
-#~ msgstr "Escribe un puente que ya conoces"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:503
+msgid "• Local proxy"
+msgstr "• Proxy local"
 
-#~ msgid ""
-#~ "Currently in Tails, only obfs4 bridges hide that you are using Tor.\n"
-#~ "\n"
-#~ "obfs4 bridges start with the word 'obfs4'.\n"
-#~ "\n"
-#~ "To request obfs4 bridges, you can send an empty email to\n"
-#~ "<tt>bridges@torproject.org</tt> from a Gmail or Riseup email address.\n"
-#~ msgstr ""
-#~ "Actualmente en Tails, sólo los puentes obfs4 ocultan que estás usando "
-#~ "Tor.\n"
-#~ "\n"
-#~ "Los puentes obfs4 comienzan con la palabra 'obfs4'.\n"
-#~ "\n"
-#~ "Para solicitar puentes obfs4, puedes enviar un correo electrónico vacío "
-#~ "a\n"
-#~ "<tt>bridges@torproject.org</tt>  desde una dirección de correo "
-#~ "electrónico de Gmail o Riseup.\n"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:523
+msgid ""
+"If you are on a corporate or university network, you might need to configure "
+"a local proxy."
+msgstr ""
+"Si estas en una red de empresa o universtiaria, puede que necesites "
+"configurar un proxy local."
 
-#~ msgid "Connect to _Tor"
-#~ msgstr "Conecta a_Tor"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:536
+msgid "Configure a Local _Proxy"
+msgstr ""
 
-#~ msgid "Error connecting to Tor"
-#~ msgstr "Error de conexión a Tor"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:574
+msgid "• Bridges over email"
+msgstr "• Puentes por correo electrónico"
 
-#~ msgid "• Public network"
-#~ msgstr "• Red pública"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:594
+msgid ""
+"To request new Tor bridges, you can also:\n"
+"\n"
+"1. Send an empty email to <tt>bridges@torproject.org</tt> from a Gmail or "
+"Riseup email address.\n"
+"\n"
+"2. Type below the bridges that you received by email."
+msgstr ""
+"Para solicitar nuevos puentes Tor, también puedes:\n"
+"\n"
+"1. Enviar un correo vacío a <tt>bridges@torproject.org</tt> desde una "
+"dirección de Gmail o Riseup.\n"
+"\n"
+"2. Escribe debajo los puentes Tor que recibiste por email."
 
-#~ msgid ""
-#~ "If you are in a shop, hotel, or airport, you might need to sign in to the "
-#~ "network."
-#~ msgstr ""
-#~ "Si estás en una tienda, un hotel o un aeropuerto, a lo mejor tienes que "
-#~ "que conectarte a la red."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:740
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1154
+msgid ""
+"Everything you do on the Internet from Tails goes through the Tor network."
+msgstr "Todo lo que hagas en Internet desde Tails va a través de la red Tor"
 
-#~ msgid "Try Signing in to the Network"
-#~ msgstr "Intenta conectarte a la red"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:755
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1169
+msgid ""
+"Tor encrypts and anonymizes your connection by passing it through 3 relays.\n"
+"Tor relays are servers operated by different organizations and volunteers "
+"around the world."
+msgstr ""
+"Tor encripta y anonimiza tu conexión pasándola a través de 3 repetidores.\n"
+"Los repetidores de Tor son servidores operados por diferentes organizaciones "
+"y voluntarios de todo el mundo."
 
-#~ msgid "• Local proxy"
-#~ msgstr "• Proxy local"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:793
+msgid "<b>Connect to Tor automatically (easier)</b>"
+msgstr "<b>Conectar a Tor automáticamente (fácil)</b>"
 
-#~ msgid ""
-#~ "If you are on a corporate or university network, you might need to "
-#~ "configure a proxy."
-#~ msgstr ""
-#~ "Si estás en una red corporativa o universitaria, puede que necesites "
-#~ "configurar un proxy."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:841
+msgid ""
+"We recommend connecting to Tor automatically if you are on a public Wi-Fi "
+"network or if many people in your country use Tor to circumvent censorship."
+msgstr ""
+"Recomendamos conectar a Tor automáticamente si estás en una red pública de "
+"Wi-Fi o si muchas personas usan Tor en tu país para evitar la censura."
 
-#~ msgid "• Bridges over email"
-#~ msgstr "• Puentes por correo electrónico"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:859
+msgid ""
+"Tails will try different ways of connecting to Tor until it succeeds.\n"
+"\n"
+"Someone monitoring your Internet connection could identify these attempts as "
+"coming from a Tails user."
+msgstr ""
+"Tails intentará diferentes formas de conectarse a Tor hasta que tenga "
+"éxito.\n"
+"\n"
+"Alguien monitoreando tu conexión a Internet podría identificar estos "
+"intentos provenientes de un usuario de Tails."
 
-#~ msgid ""
-#~ "To request Tor bridges, you can also:\n"
-#~ "\n"
-#~ "1. send an empty email to <tt>bridges@torproject.org</tt> from a Gmail or "
-#~ "Riseup email address.\n"
-#~ "2. Type bridges clicking on the <i>Configure a Bridge</i> button"
-#~ msgstr ""
-#~ "Para solicitar puentes Tor, también puedes:\n"
-#~ "\n"
-#~ "1. enviar un correo vacío a <tt>bridges@torproject.org</tt> desde una "
-#~ "dirección de correo de Gmail o Riseup.\n"
-#~ "2. Escribir puentes haciendo clic en el botón <i>Configurar un Puente</i>"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:941
+msgid ""
+"Tor bridges are secret Tor relays. Use a bridge as your first Tor relay if "
+"connections to Tor are blocked, for example in some countries, by some "
+"public networks, or by some parental controls.\n"
+"\n"
+"Choose this option if you already know that you need bridges. Otherwise, "
+"Tails will autodetect whether you need bridges to connect to Tor from your "
+"local network."
+msgstr ""
+"Los puentes Tor son repetidores Tor secretos. Usa un puente como tu primer "
+"repetidor Tor si las conexiones a la red Tor están bloqueadas, como por "
+"ejemplo en ciertos paises, en algunas redes de acceso público o por algún "
+"sistema de control parental.\n"
+"\n"
+"Elige esta opción si sabes de antemano que necesitas puentes Tor. Si no, "
+"Tails detectará automáticamente si necesitas puentes para conectar a Tor "
+"desde tu red local."
 
-#~ msgid "Configure a _Bridge"
-#~ msgstr "Configurar un P_uente"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:984
+msgid "<b>Hide to my local network that I'm connecting to Tor (safer)</b>"
+msgstr ""
+"<b>Escónde a mi red local que me estoy conectando a Tor (más seguro)</b>"
 
-#~ msgid ""
-#~ "Everything you do on the Internet from Tails goes through the Tor network."
-#~ msgstr "Todo lo que hagas en Internet desde Tails va a través de la red Tor"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1032
+msgid ""
+"You might need to go unnoticed if using Tor could look suspicious to someone "
+"who monitors your Internet connection."
+msgstr ""
+"Es posible que necesites pasar desapercibido si el uso de Tor pudiera "
+"parecer sospechoso a alguien que monitorea tu conexión a Internet."
 
-#~ msgid ""
-#~ "Tor encrypts and anonymizes your connection by passing it through 3 "
-#~ "relays.\n"
-#~ "Tor relays are servers operated by different organizations and volunteers "
-#~ "around the world."
-#~ msgstr ""
-#~ "Tor encripta y anonimiza tu conexión pasándola a través de 3 "
-#~ "repetidores.\n"
-#~ "Los repetidores de Tor son servidores operados por diferentes "
-#~ "organizaciones y voluntarios de todo el mundo."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1050
+msgid ""
+"Tails will only connect to Tor after you configured Tor bridges. Bridges are "
+"secret Tor relays that hide that you are connecting to Tor.\n"
+"\n"
+"Our team is doing its best to help you connect to Tor using the most "
+"discrete types of Tor bridges.\n"
+"\n"
+"You will have to do extra configuration if you don't know any Tor bridges "
+"yet, if you connect from a public Wi-Fi network, or if you are in the "
+"Eastern Hemisphere."
+msgstr ""
+"Tails solo se conectará a Tor después de que configures los puentes Tor. Los "
+"puentes son repetidores Tor secretos que ocultan el hecho de que estás "
+"conectado a Tor.\n"
+"\n"
+"Nuestro equipo está haciendo todo lo posible para ayudarte a conectarte a "
+"Tor utilizando los tipos más discretos de puentes Tor.\n"
+"\n"
+"Tendrás que hacer configuración extra si no conoces ningún puente Tor "
+"todavía, si te conectas desde una red pública de Wi-Fi, o si estás en el "
+"hemisferio oriental."
 
-#~ msgid "You lost connection to the local network."
-#~ msgstr "Has perdido conexión de la red local."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1098
+msgid ""
+"<a href=\"doc/anonymous_internet/tor\">Learn more about how Tails connects "
+"to Tor</a>"
+msgstr ""
+"<a href=\"doc/anonymous_internet/tor\">Más información sobre cómo Tails se "
+"conecta a Tor</a>"
 
-#~ msgid "You can connect to Tor"
-#~ msgstr "Puedes conectar a Tor"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1184
+msgid "Connect to a local network"
+msgstr "Conectar a una red local"
 
-#~ msgid "Failed to connect to Tor without bridges."
-#~ msgstr "Fallo en la conexión a Tor sin puentes."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1201
+msgid ""
+"You are not connected to a local network yet. To be able to connect to the "
+"Tor network, you first need to connect to a Wi-Fi, wire, or mobile network."
+msgstr ""
+"No estás conectado a una red local aún. Para conectarte a la red Tor, "
+"primero necesitas conectarte a una red Wi-Fi, cable o móvil."
 
-#~ msgid "Your local network is blocking access to Tor."
-#~ msgstr "Tu red local está bloqueando el acceso a Tor."
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1213
+msgid "Open Wi-Fi settings"
+msgstr "Abrir ajustes Wi-Fi"
 
-#~ msgid "Open Network Monitor"
-#~ msgstr "Abrir el monitor de red"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1262
+msgid "Testing Internet access…"
+msgstr "Probando el acceso a Internet..."
 
-#~ msgid "View Tor Circuits"
-#~ msgstr "Ver los circuitos de Tor"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1302
+msgid "You have access to the Internet"
+msgstr "Tienes acceso a Internet"
 
-#~ msgid "Reset Tor Connection"
-#~ msgstr "Restablecer la conexión Tor"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1336
+msgid "Testing access to Tor…"
+msgstr "Probando acceso a Tor..."
 
-#~ msgid "Proxy Type"
-#~ msgstr "Tipo de proxy"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1379
+msgid "You can connect to Tor"
+msgstr "Puedes conectar a Tor"
 
-#~ msgid "No proxy"
-#~ msgstr "Sin proxy"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1409
+msgid "Failed to connect to Tor without bridges."
+msgstr "Fallo en la conexión a Tor sin puentes."
 
-#~ msgid "SOCKS 4"
-#~ msgstr "SOCKS 4"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1425
+msgid "Your local network is blocking access to Tor."
+msgstr "Tu red local está bloqueando el acceso a Tor."
 
-#~ msgid "SOCKS 5"
-#~ msgstr "SOCKS 5"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1457
+msgid "Connecting to Tor…"
+msgstr "Conectando a Tor"
 
-#~ msgid "HTTP / HTTPS"
-#~ msgstr "HTTP / HTTPS"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1513
+msgid "Connected to Tor successfully"
+msgstr "Conectado a Tor con éxito"
 
-#~ msgid "Address"
-#~ msgstr "Dirección"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1537
+msgid "You can now browse the Internet anonymously and uncensored."
+msgstr "Puedes navegar por Internet de forma anónima y sin censura"
 
-#~ msgid "Username"
-#~ msgstr "Nombre de usuario"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1578
+msgid "Open Network Monitor"
+msgstr "Abrir el monitor de red"
 
-#~ msgid "IP address or hostname"
-#~ msgstr "Dirección IP o nombre de máquina (host)"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1592
+msgid "View Tor Circuits"
+msgstr "Ver los circuitos de Tor"
 
-#~ msgid "Port"
-#~ msgstr "Puerto"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1606
+msgid "Reset Tor Connection"
+msgstr "Restablecer la conexión Tor"
 
-#~ msgid "_Save proxy settings"
-#~ msgstr "_Guardar la configuración del proxy"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1646
+msgid "Configure a Local Proxy"
+msgstr "Configurar un Proxy local"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1671
+msgid "Proxy Type"
+msgstr "Tipo de proxy"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1685
+msgid "No proxy"
+msgstr "Sin proxy"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1686
+msgid "SOCKS 4"
+msgstr "SOCKS 4"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1687
+msgid "SOCKS 5"
+msgstr "SOCKS 5"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1688
+msgid "HTTP / HTTPS"
+msgstr "HTTP / HTTPS"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1704
+msgid "Address"
+msgstr "Dirección"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1718
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1732
+msgid "IP address or hostname"
+msgstr "Dirección IP o nombre de máquina (host)"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1747
+msgid "Port"
+msgstr "Puerto"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1841
+msgid "_Save Proxy Settings"
+msgstr "_Guardar configuración de proxy"

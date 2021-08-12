@@ -9,8 +9,8 @@ chmod 00440 /etc/sudoers.d/*
 # NetworkManager requires these permissions
 chmod 00600 /etc/NetworkManager/system-connections/*
 
-# For persistent Tor settings via Tor Launcher, the debian-tor user
-# must be able to write into `/etc/tor`.
+# The debian-tor user must be able to write into `/etc/tor` in order
+# to allow SAVECONF over the control channel.
 chown -R debian-tor:debian-tor /etc/tor
 
 # Otherwise, such files may be copied to /home/amnesia, and in turn

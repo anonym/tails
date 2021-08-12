@@ -3,3 +3,18 @@ build-target: amd64
 channel: stable
 initial-install-version: '4.19'
 product-name: Tails
+upgrades:
+- details-url: https://tails.boum.org/news/version_4.21/
+  type: major
+  upgrade-paths:
+  - target-files:
+    - sha256: 94bf7b6697796465c6041954cbf4a556b05b97d198dd6ccac150c1552470f853
+      size: 1184440320
+      url: http://dl.amnesia.boum.org/tails/stable/tails-amd64-4.21/tails-amd64-4.21.iso
+    type: full
+  - target-files:
+    - sha256: 2466e20f4e35f77379c05e9d07a54635384c17122973260207dfc06a43e861bc
+      size: 404578304
+      url: http://dl.amnesia.boum.org/tails/stable/iuk/v2/Tails_amd64_4.19_to_4.21.iuk
+    type: incremental
+  version: '4.21'

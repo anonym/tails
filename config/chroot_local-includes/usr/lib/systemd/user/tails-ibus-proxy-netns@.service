@@ -1,0 +1,16 @@
+[Unit]
+Description=Proxy IBUS bus inside %i netns
+After=dbus.service
+Requires=dbus.service
+StopWhenUnneeded=true
+ConditionUser=1000
+
+[Service]
+Type=notify
+ExecStart=/usr/local/bin/netns-bus-proxy --component=ibus --log-level DEBUG %i
+ExecStop=/bin/kill -INT $MAINPID
+
+
+[Install]
+WantedBy=desktop.target
+
