@@ -190,7 +190,8 @@ class TorConnectionConfig:
         self.proxy: TorConnectionProxy = proxy
 
     def bridge_line_is_simple(self, line):
-        if line.split()[0].lower() == 'bridge': return True
+        if line.split()[0].lower() == 'bridge':
+            return True
         try:
             ipaddress.ip_address(line.split(":")[0])
         except ValueError:
