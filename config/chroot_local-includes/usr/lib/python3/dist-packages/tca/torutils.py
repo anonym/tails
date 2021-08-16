@@ -180,12 +180,12 @@ class TorConnectionConfig:
     def __init__(
         self,
         stem_controller: Controller,
-        set_tor_sandbox: Callable[[bool], None],
+        set_tor_sandbox_fn: Callable[[bool], None],
         bridges: list = [],
         proxy: TorConnectionProxy = TorConnectionProxy.noproxy(),
     ):
         self.stem_controller: Controller = stem_controller
-        self.set_tor_sandbox_fn: Callable[[bool], None] = set_tor_sandbox
+        self.set_tor_sandbox_fn: Callable[[bool], None] = set_tor_sandbox_fn
         self.bridges: List[str] = bridges
         self.proxy: TorConnectionProxy = proxy
 
@@ -351,7 +351,11 @@ class TorConnectionConfig:
         self.enable_bridges(bridges)
 
     @classmethod
-    def load_from_tor_stem(cls, stem_controller: Controller, set_tor_sandbox: Callable[[bool], None]):
+    def load_from_tor_stem(
+            cls,
+            stem_controller: Controller,
+            set_tor_sandbox_fn: Callable[[bool], None],
+    ):
         bridges: List[str] = []
         if stem_controller.get_conf("UseBridges") != "0":
             bridges = stem_controller.get_conf("Bridge", multiple=True)
@@ -371,7 +375,7 @@ class TorConnectionConfig:
         else:
             proxy = TorConnectionProxy.noproxy()
 
-        config = cls(stem_controller, set_tor_sandbox, bridges=bridges, proxy=proxy)
+        config = cls(stem_controller, set_tor_sandbox_fn, bridges=bridges, proxy=proxy)
 
         return config
 
@@ -417,26 +421,26 @@ class TorConnectionConfig:
 class TorLauncherUtils:
     def __init__(self, stem_controller: Controller,
                  config_buf, state_buf,
-                 set_tor_sandbox: Callable[[bool], None]):
+                 set_tor_sandbox_fn: Callable[[bool], None]):
         """
         Arguments:
         stem_controller -- an already connected and authorized stem Controller
         config_buf -- an already open read-write buffer to the configuration file
         state_buf -- an already open read-write buffer to the state file
-        set_tor_sandbox -- a Callable whose argument sets Tor's Sandbox value
+        set_tor_sandbox_fn -- a Callable whose argument sets Tor's Sandbox value
         """
         self.stem_controller = stem_controller
         self.config_buf = config_buf
         self.state_buf = state_buf
         self.tor_connection_config = None
-        self.set_tor_sandbox = set_tor_sandbox
+        self.set_tor_sandbox_fn = set_tor_sandbox_fn
 
     def load_conf_from_tor(self):
         if self.tor_connection_config is None:
             log.debug("Loading configuration from tor")
             self.tor_connection_config = TorConnectionConfig.load_from_tor_stem(
                 self.stem_controller,
-                self.set_tor_sandbox
+                self.set_tor_sandbox_fn
             )
 
     def load_conf_from_file(self):
