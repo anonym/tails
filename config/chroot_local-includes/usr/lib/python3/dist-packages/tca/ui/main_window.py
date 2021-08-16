@@ -973,34 +973,39 @@ class TCAMainWindow(
 
         def _get_right_step() -> Optional[str]:
             if not up:
-                if self.state["step"] != "offline":
-                    self.state["offline"]["previous"] = self.state["step"]
-                    return 'offline'
-                return
+                self.state["offline"]["previous"] = self.state["step"]
+                return "offline"
 
             # local network is ok
 
             if disable_network:
-                return 'hide'
+                if step in ["error", "progress"]:
+                    return "error"
+                else:
+                    return "hide"
 
             # tor network is enabled
 
             if not tor_working:
                 log.info("Tor not working")
-                if step != 'progress':
+                if step != "progress":
                     log.info("Not in progress, going there")
                     self.state["progress"]["success"] = False
-                    return 'progress'
+                    return "progress"
                 elif self.state["progress"]["success"]:
                     log.warn("We are not connected to Tor anymore!")
                     # TODO: what should we do? go to 0? go to consent question? go to error page?
-                    return 'error'
+                    return "error"
+                else:
+                    log.debug("Tor not working and we're in progress: just wait some more")
+                    return None
             else:
                 self.state["progress"]["success"] = True
-                return 'progress'
+                return "progress"
 
         new_step = _get_right_step()
-        if new_step:
+        if new_step and new_step != self.state["step"]:
+            log.info("Moving to %s", new_step)
             self.change_box(new_step)
         self.state["progress"]["success"] = tor_working
 
