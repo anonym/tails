@@ -7,15 +7,12 @@ import ipaddress
 import time
 import logging
 import os
-import sys
 import json
 import socket
 from stem.control import Controller
 import stem.socket
 from typing import List, Optional, Dict, Any, Tuple, cast, Callable
 import tca.config
-
-from tca.ui.asyncutils import GJsonRpcClient
 
 log = logging.getLogger("tor-launcher")
 
@@ -180,12 +177,10 @@ class TorConnectionConfig:
     def __init__(
         self,
         stem_controller: Controller,
-        set_tor_sandbox_fn: Callable[[bool], None],
         bridges: list = [],
         proxy: TorConnectionProxy = TorConnectionProxy.noproxy(),
     ):
         self.stem_controller: Controller = stem_controller
-        self.set_tor_sandbox_fn: Callable[[bool], None] = set_tor_sandbox_fn
         self.bridges: List[str] = bridges
         self.proxy: TorConnectionProxy = proxy
 
@@ -198,25 +193,7 @@ class TorConnectionConfig:
             return False
         return True
 
-    # Tor's Sandbox conf needs special care since this value cannot be
-    # changed at runtime, only through torrc and a tor restart.
-    def set_tor_sandbox(self, setting: bool):
-        requested_val = str(int(setting))
-        if requested_val == self.stem_controller.get_conf("Sandbox"):
-            return
-        self.set_tor_sandbox_fn(requested_val)
-        # The above function call's side-effects are async, so we have
-        # to wait until they are live.
-        start_time = time.time()
-        while requested_val != self.stem_controller.get_conf("Sandbox"):
-            time_delta = time.time() - start_time
-            if time_delta > 5.0:
-                log.warning("Timed out while waiting for async set-tor-sandbox call. Optimistically continuing any way...")
-                break
-            time.sleep(0.1)
-
     def disable_bridges(self):
-        self.set_tor_sandbox(True)
         self.bridges.clear()
 
     @classmethod
@@ -339,7 +316,6 @@ class TorConnectionConfig:
             raise ValueError("Can't set empty bridge list")
         self.bridges.clear()
         bridges = self.__class__.parse_bridge_lines(bridges)
-        self.set_tor_sandbox(all([self.bridge_line_is_simple(b) for b in bridges]))
         self.bridges.extend(bridges)
 
     def enable_default_bridges(self, only_type: Optional[str] = None):
@@ -355,7 +331,6 @@ class TorConnectionConfig:
     def load_from_tor_stem(
             cls,
             stem_controller: Controller,
-            set_tor_sandbox_fn: Callable[[bool], None],
     ):
         bridges: List[str] = []
         if stem_controller.get_conf("UseBridges") != "0":
@@ -376,7 +351,7 @@ class TorConnectionConfig:
         else:
             proxy = TorConnectionProxy.noproxy()
 
-        config = cls(stem_controller, set_tor_sandbox_fn, bridges=bridges, proxy=proxy)
+        config = cls(stem_controller, bridges=bridges, proxy=proxy)
 
         return config
 
@@ -418,6 +393,13 @@ class TorConnectionConfig:
         log.debug("TorOpts=%s", r)
         return r
 
+    def can_use_sandbox(self) -> bool:
+        """
+        Returns True iff. we can enable Tor's Sandbox configuration option.
+        """
+        return (not self.bridges
+                or all([self.bridge_line_is_simple(b) for b in self.bridges]))
+
 
 class TorLauncherUtils:
     def __init__(self, stem_controller: Controller,
@@ -441,7 +423,6 @@ class TorLauncherUtils:
             log.debug("Loading configuration from tor")
             self.tor_connection_config = TorConnectionConfig.load_from_tor_stem(
                 self.stem_controller,
-                self.set_tor_sandbox_fn
             )
 
     def load_conf_from_file(self):
@@ -476,10 +457,23 @@ class TorLauncherUtils:
     def read_tca_state(self):
         return decode_json_from_buf(self.state_buf)
 
-    def apply_conf(self):
+    def apply_conf(self, callback: Callable) -> bool:
+        """
+        Apply the configuration from self.tor_connection_config to the
+        running tor daemon, and asynchronously ensure Tor's Sandbox
+        configuration option is enabled iff. we can use it.
+
+        Upon completion, the callback is called.
+
+        This method can restart tor.
+
+        Rationale: Tor's Sandbox conf needs special care since this value
+        cannot be changed at runtime, only through torrc and a tor restart.
+        """
         tor_conf = self.tor_connection_config.to_tor_conf()
         log.debug("applying TorConf: %s", tor_conf)
         self.stem_controller.set_options(tor_conf)
+
         # We have seen a very odd bug where issuing "DisableNetwork 0"
         # when it already is 0 kills tor. There is a lot of
         # uncertainty remaining around what exactly is going on, and
@@ -488,6 +482,13 @@ class TorLauncherUtils:
         if self.stem_controller.get_conf("DisableNetwork") == "1":
             self.stem_controller.set_conf("DisableNetwork", "0")
         self.stem_controller.save_conf()
+
+        current_sandbox = self.stem_controller.get_conf("Sandbox")
+        can_use_sandbox = self.tor_connection_config.can_use_sandbox()
+        updating_sandbox_conf = str(int(current_sandbox)) != can_use_sandbox
+        if updating_sandbox_conf:
+            self.set_tor_sandbox_fn(callback, str(int(can_use_sandbox)))
+        return updating_sandbox_conf
 
     def tor_bootstrap_phase(self) -> int:
         resp = self.stem_controller.get_info("status/bootstrap-phase")
