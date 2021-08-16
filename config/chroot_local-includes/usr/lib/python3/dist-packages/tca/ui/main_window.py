@@ -964,56 +964,60 @@ class TCAMainWindow(
 
     # Called from parent application
 
-    def _decide_right_step(self):
+    def _move_to_right_step(self):
         disable_network = self.app.tor_info["DisableNetwork"] == '1'
         up = self.app.is_network_link_ok
         tor_working = self.app.is_tor_working
         step = self.state["step"]
         log.info(f"Status: up={up} disable_network={disable_network}, working={tor_working}, step={step}")
-        if not up:
-            if self.state["step"] != "offline":
-                self.state["offline"]["previous"] = self.state["step"]
-                self.change_box("offline")
-            return
 
-        # local network is ok
+        def _get_right_step() -> Optional[str]:
+            if not up:
+                if self.state["step"] != "offline":
+                    self.state["offline"]["previous"] = self.state["step"]
+                    return 'offline'
+                return
 
-        if disable_network:
-            self.change_box("hide")
-            return
+            # local network is ok
 
-        # tor network is enabled
+            if disable_network:
+                return 'hide'
 
-        if not tor_working:
-            log.info("Tor not working")
-            if step != 'progress':
-                log.info("Not in progress, going there")
-                self.state["progress"]["success"] = False
-                self.change_box("progress")
-            elif self.state["progress"]["success"]:
-                log.warn("We are not connected to Tor anymore!")
-                # TODO: what should we do? go to 0? go to consent question? go to error page?
-                self.change_box("error")
-        else:
-            self.state["progress"]["success"] = True
-            self.change_box("progress")
+            # tor network is enabled
 
+            if not tor_working:
+                log.info("Tor not working")
+                if step != 'progress':
+                    log.info("Not in progress, going there")
+                    self.state["progress"]["success"] = False
+                    return 'progress'
+                elif self.state["progress"]["success"]:
+                    log.warn("We are not connected to Tor anymore!")
+                    # TODO: what should we do? go to 0? go to consent question? go to error page?
+                    return 'error'
+            else:
+                self.state["progress"]["success"] = True
+                return 'progress'
+
+        new_step = _get_right_step()
+        if new_step:
+            self.change_box(new_step)
         self.state["progress"]["success"] = tor_working
 
     def on_network_changed(self):
         log.info("Local network changed %s", self.app.is_network_link_ok)
-        self._decide_right_step()
+        self._move_to_right_step()
         log.debug(self.state["step"])
 
     def on_tor_working_changed(self, working: bool):
         log.info("Tor working changed %s", working)
-        self._decide_right_step()
+        self._move_to_right_step()
         log.debug(self.state["step"])
 
     def on_tor_state_changed(self, tor_info: dict, changed: set):
         """Reacts to DisableNetwork changes."""
         log.info("DisableNetwork changed %s", tor_info["DisableNetwork"])
-        self._decide_right_step()
+        self._move_to_right_step()
         log.debug(self.state["step"])
 
     # called from parent Application }}}
