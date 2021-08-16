@@ -697,6 +697,10 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
       '/lib/live/mount/rootfs/filesystem.squashfs/etc/NetworkManager/dispatcher.d/00-firewall.sh ' \
       '/etc/NetworkManager/dispatcher.d/00-firewall.sh'
     )
+  else
+    # Tor Connection will fallback to default (obfs4) bridges if
+    # access to the Tor network is blocked
+    @tor_is_using_pluggable_transports = true
   end
 end
 

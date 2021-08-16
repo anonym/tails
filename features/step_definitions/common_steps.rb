@@ -491,7 +491,7 @@ Given /^Tor is ready$/ do
   if $vm.execute_successfully('tor_control_getconf DisableNetwork', libs: 'tor').stdout.chomp == '1'
     # This variable is initialized to nil in each scenario, and only
     # ever set to true in some previously run step that configures tor
-    # to use PTs.
+    # to use PTs, or while blocking/unblocking tor.
     assert(!@tor_is_using_pluggable_transports, 'This is a test suite bug!')
     @tor_is_using_pluggable_transports = false
     step 'the Tor Connection Assistant autostarts'
