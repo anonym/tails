@@ -965,6 +965,16 @@ class TCAMainWindow(
     # Called from parent application
 
     def _move_to_right_step(self):
+        '''
+        This method will make TCA interface move between different states.
+
+        Its purpose is to "centralize" as much as possible the logic that allows tca to move between different
+        steps in a single workflow, thus keeping it more readable and hopefully maintainable.
+
+        However, this is currently only called when reacting to changes in extenral components: Tor and
+        NetworkManager.
+        Other state transitions happen when reacting to events such as clicking.
+        '''
         disable_network = self.app.tor_info["DisableNetwork"] == '1'
         up = self.app.is_network_link_ok
         tor_working = self.app.is_tor_working
@@ -972,6 +982,11 @@ class TCAMainWindow(
         log.info(f"Status: up={up} disable_network={disable_network}, working={tor_working}, step={step}")
 
         def _get_right_step() -> Optional[str]:
+            """
+            Return the step we need to go to.
+
+            (or None if we should stay where we are)
+            """
             if not up:
                 self.state["offline"]["previous"] = step
                 return "offline"
