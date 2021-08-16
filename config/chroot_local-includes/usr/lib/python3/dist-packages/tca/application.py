@@ -53,7 +53,7 @@ class TCAApplication(Gtk.Application):
         self.portal.connect("response-error", self.on_portal_error)
         self.portal.connect("response-success", self.on_portal_response)
         self.portal.run()
-        set_tor_sandbox = functools.partial(self.portal.call_async, "set-tor-sandbox")
+        set_tor_sandbox = functools.partial(self.portal.call_async, "set-tor-sandbox", None)
         self.configurator = TorLauncherUtils(
             controller,
             self.config_buf,
