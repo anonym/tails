@@ -52,13 +52,13 @@ Feature: Using Tor bridges and pluggable transports
     Given the Tor network and default bridges are unblocked
     And I start "Tor Connection" via GNOME Activities Overview
     Then Tor is ready
-    And tca.conf includes no bridge
-    And available upgrades have been checked
     # XXX: Due to #18470, sometimes we end up connecting with the default
     # bridges, and sometimes we end up connecting directly (without bridges).
     # Our test suite does not support this at the moment.
     # Once #18470 is fixed, we should always connect directly,
-    # so we can uncomment the next step:
+    # so we can uncomment the steps that are commented out below.
+    # And tca.conf includes no bridge
+    And available upgrades have been checked
     # And all Internet traffic has only flowed through Tor
 
   Scenario: Normal bridges are not allowed in "Hide" mode

@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 
-import os
 import sys
 import logging
 import gettext
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 
 from stem.control import Controller
 import prctl
@@ -24,10 +23,6 @@ from tca.torutils import (
 )
 from tca.ui.asyncutils import GJsonRpcClient
 from tailslib.logutils import configure_logging
-from tailslib.persistence import (
-    has_persistence,
-    has_unlocked_persistence,
-)
 
 
 gi.require_version("GLib", "2.0")
@@ -77,8 +72,12 @@ class TCAApplication(Gtk.Application):
         self.last_nm_state = None
         self._tor_is_working: bool = TOR_HAS_BOOTSTRAPPED_PATH.exists()
         self.tor_info: Dict[str, Any] = {"DisableNetwork": None}
-        self.has_persistence = has_persistence()
-        self.has_unlocked_persistence = has_unlocked_persistence()
+        self.has_persistence = args.has_persistence
+        self.has_unlocked_persistence = args.has_unlocked_persistence
+        self.log.debug(
+            "Persistence = %s, unlocked = %s",
+            self.has_persistence, self.has_unlocked_persistence
+        )
 
     def has_been_started_already(self):
         return (self.configurator.read_tca_state() != {})
@@ -224,6 +223,18 @@ def get_parser():
     p = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     p.add_argument("--debug", dest="debug", action="store_true", default=False)
     p.add_argument("--debug-statefile")
+    p.add_argument(
+        "--has-persistence",
+        dest="has_persistence",
+        action="store_true",
+        default=False,
+    )
+    p.add_argument(
+        "--has-unlocked-persistence",
+        dest="has_unlocked_persistence",
+        action="store_true",
+        default=False,
+    )
     p.add_argument(
         "--log-level",
         default="DEBUG" if is_tails_debug_mode() else "INFO",

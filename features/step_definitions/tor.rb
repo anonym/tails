@@ -396,7 +396,7 @@ def tca_configure(mode, connect: true, &block)
   block.call if block_given?
   return unless connect
 
-  tor_connection_assistant.child('Connect to _Tor', roleName: 'push button')
+  tor_connection_assistant.child('_Connect to Tor', roleName: 'push button')
                           .click
   step 'the Tor Connection Assistant connects to Tor'
   @screen.press('alt', 'F4')
@@ -482,23 +482,28 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
   # rubocop:disable Metrics/BlockLength
   tca_configure(config_mode) do
     if config_mode == :easy
-      tor_connection_assistant.child('Configure a Tor bridge',
+      tor_connection_assistant.child('Configure a Tor _bridge',
                                      roleName: 'check box')
                               .click
     end
-    tor_connection_assistant.child('Connect to _Tor',
+    tor_connection_assistant.child('_Connect to Tor',
                                    roleName: 'push button')
                             .click
     if bridge_type == 'default'
       assert_equal(:easy, config_mode)
-      tor_connection_assistant.child('Use a default bridge',
+      tor_connection_assistant.child('Use a _default bridge',
                                      roleName: 'radio button')
                               .click
     else
-      tor_connection_assistant.child('Type in a bridge that I already know',
-                                     roleName: 'radio button')
-                              .click
-      tor_connection_assistant.child(roleName: 'scroll pane').click
+      btn = tor_connection_assistant.child(
+        '_Type in a bridge that I already know',
+        roleName: 'radio button'
+      )
+      btn.click
+      # btn.labelee is the widget "labelled by" btn.
+      # For details, see label-for and labelled-by accessibility relations
+      # in main.ui.in, aka. "Label For" and "Labeled By" in Glade.
+      btn.labelee.click
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
         @screen.type(bridge[:line], ['Return'])
@@ -513,15 +518,13 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
         raise TCAForbiddenBridgeType, 'Normal bridges are not allowed in hide mode'
       end
       if persistent
-        # XXX: do this in the GUI once implemented there
-        warn 'Gory hack for tracer bullet dev approach!'
-        $vm.execute_successfully(
-          'tails-persistence-setup --no-gui --no-display_finished_message --force_enable_preset TorConfiguration'
+        toggle_button = tor_connection_assistant.child(
+          'Save bridges to Persistent Storage',
+          roleName: 'toggle button'
         )
-        # XXX: this is a switch, not a checkbox
-        # tor_connection_assistant.child('Save bridges to Persistent Storage',
-        #                                roleName: 'check box')
-        #                         .click
+        assert(!toggle_button.checked)
+        toggle_button.click
+        try_for(10) { toggle_button.checked }
       end
     end
   end
@@ -529,11 +532,13 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
 end
 
 When /^I disable saving bridges to Persistent Storage$/ do
-  # XXX: do this in the GUI once implemented there
-  warn 'Gory hack for tracer bullet dev approach!'
-  $vm.execute_successfully(
-    'tails-persistence-setup --no-gui --no-display_finished_message --force_disable_preset TorConfiguration'
+  toggle_button = tor_connection_assistant.child(
+    'Save bridges to Persistent Storage',
+    roleName: 'toggle button'
   )
+  assert(toggle_button.checked)
+  toggle_button.click
+  try_for(10) { !toggle_button.checked }
 end
 
 When /^I unsuccessfully configure (a direct connection|some .* bridges) in the Tor Connection Assistant$/ do |conntype|
@@ -564,13 +569,13 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
   assert(
     tor_connection_assistant.child('Configure a Tor bridge',
                                    roleName: 'check box')
-      .checked
+                            .checked
   )
-  tor_connection_assistant.child('Connect to _Tor',
+  tor_connection_assistant.child('_Connect to Tor',
                                  roleName: 'push button')
                           .click
   assert(
-    tor_connection_assistant.child('Type in a bridge that I already know',
+    tor_connection_assistant.child('Use a bridge that I already know',
                                    roleName: 'radio button').checked
   )
   persistent_bridges_lines = tor_connection_assistant.child(roleName: 'text')
@@ -599,7 +604,7 @@ Then /^the Tor Connection Assistant complains that normal bridges are not allowe
 end
 
 When /^I click "Connect to Tor"$/ do
-  btn = tor_connection_assistant.child('Connect to _Tor')
+  btn = tor_connection_assistant.child('_Connect to Tor')
   assert_equal('True', btn.get_field('sensitive'))
   btn.click
 end
@@ -607,7 +612,7 @@ end
 Then /^I cannot click the "Connect to Tor" button$/ do
   assert_equal(
     'False',
-    tor_connection_assistant.child('Connect to _Tor').get_field('sensitive')
+    tor_connection_assistant.child('_Connect to Tor').get_field('sensitive')
   )
 end
 

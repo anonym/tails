@@ -15,6 +15,10 @@ from typing import List
 from tailslib import LIVE_USERNAME
 from tailslib.gnome import gnome_env_vars
 from tailslib.greeter import get_greeter_variable_bool
+from tailslib.persistence import (
+    has_persistence,
+    has_unlocked_persistence,
+)
 
 import tca.config
 
@@ -125,16 +129,21 @@ def main():
     # envcmd: set the "right" environment; this means getting all "normal" gnome variables, AND clarifying
     #         where is the {a11y,ibus} bus, which is related to bwrap
 
-    args = [
-        *connect_drop,
-        *ch_netns,
-        *runuser,
-        "--",
-        *bwrap,
-        *envcmd,
-        *tcacmd,
-        *sys.argv[1:],
-    ]
+    args = (
+        [
+            *connect_drop,
+            *ch_netns,
+            *runuser,
+            "--",
+            *bwrap,
+            *envcmd,
+            *tcacmd,
+            *sys.argv[1:],
+        ]
+        + (["--has-persistence"] if has_persistence() else [])
+        + (["--has-unlocked-persistence"] if has_unlocked_persistence() else [])
+    )
+
     log.info("%s", args)
 
     os.execv(args[0], args)

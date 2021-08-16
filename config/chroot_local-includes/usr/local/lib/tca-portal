@@ -27,8 +27,11 @@ import systemd.daemon
 from tailslib.logutils import configure_logging
 from tailslib.systemd import systemd_ready
 from tailslib.gnome import gnome_env_vars
-from tailslib.persistence import launch_persistence_setup
-from tailslib import LIVE_USERNAME
+from tailslib import (
+    LIVE_USERNAME,
+    PERSISTENCE_CONF_FILE,
+    PERSISTENCE_SETUP_USERNAME,
+)
 
 log = getLogger("tca-portal")
 
@@ -119,6 +122,15 @@ class UserCommand(Command):
         return args
 
 
+class PersistenceSetupCommand(Command):
+    def full_command(self, request: RPCRequest) -> list:
+        drop = ["runuser", "-u", PERSISTENCE_SETUP_USERNAME]
+        env = ["env", *gnome_env_vars()]
+
+        args = [*drop, "--", *env, *(super().full_command(request))]
+        return args
+
+
 class SetTimeCommand(Command):
     def __init__(self):
         super().__init__(['/usr/local/lib/tails-set-date'], True)
@@ -135,18 +147,6 @@ class SetTimeCommand(Command):
         if not self.re.fullmatch(datestring):
             raise InvalidArgsError("Datestring has invalid characters")
         return args
-
-
-class PersistenceSetup:
-    def __init__(self, *args):
-        self.args = args
-
-    def validate_request(self, request: RPCRequest):
-        return
-
-    def run(self, request: RPCRequest):
-        log.debug("Running tails-persistence-setup with args %s", self.args)
-        launch_persistence_setup(*self.args)
 
 
 class Handler(socketserver.StreamRequestHandler):
@@ -172,14 +172,21 @@ class Handler(socketserver.StreamRequestHandler):
         "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
-
+        # It would be nicer to do this in Python without calling out
+        # to external processes, but it would require either implementing
+        # the Popen interface that the portal assumes, or refactoring
+        # the Handler.run and Command.run code a fair bit:
+        # https://gitlab.tails.boum.org/tails/tails/-/merge_requests/544#note_174919
+        "is-tor-configuration-persistent?": PersistenceSetupCommand(
+            ["/usr/local/lib/tails-tor-config-persistence", "is-enabled"],
+            False),
+        "enable-tor-configuration-persistence": PersistenceSetupCommand(
+            ["/usr/local/lib/tails-tor-config-persistence", "enable"],
+            False),
+        "disable-tor-configuration-persistence": PersistenceSetupCommand(
+            ["/usr/local/lib/tails-tor-config-persistence", "disable"],
+            False),
         "set-system-time": SetTimeCommand(),
-        "enable-tor-configuration-persistence": PersistenceSetup(
-             "--no-gui", "--no-display_finished_message",
-             "--force_enable_preset", "TorConfiguration"),
-        "disable-tor-configuration-persistence": PersistenceSetup(
-             "--no-gui", "--no-display_finished_message",
-             "--force_disable_preset", "TorConfiguration"),
     }
     valid_commands = set(spawn_commands.keys())
 
