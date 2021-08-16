@@ -973,7 +973,7 @@ class TCAMainWindow(
 
         def _get_right_step() -> Optional[str]:
             if not up:
-                self.state["offline"]["previous"] = self.state["step"]
+                self.state["offline"]["previous"] = step
                 return "offline"
 
             # local network is ok
