@@ -56,5 +56,5 @@ start_notification_helper
 touch "$TORDATE_DONE_FILE"
 
 log "Restarting htpdate"
-systemctl --no-block restart htpdate.service
-log "htpdate service restarted with return code $?"
+systemctl --no-block start htpdate.service
+log "htpdate service started with return code $?"
