@@ -28,10 +28,6 @@ fi
 
 ### Functions
 
-log() {
-	logger -t time "$@"
-}
-
 start_notification_helper() {
 	export_gnome_env
 	exec /bin/su -c /usr/local/lib/tails-htp-notify-user "$LIVE_USERNAME" &
@@ -42,6 +38,4 @@ start_notification_helper() {
 
 start_notification_helper
 
-log "Restarting htpdate"
 systemctl --no-block start htpdate.service
-log "htpdate service started with return code $?"
