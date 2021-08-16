@@ -14,11 +14,6 @@ set -u
 # shellcheck source=../../../usr/local/lib/tails-shell-library/gnome.sh
 . /usr/local/lib/tails-shell-library/gnome.sh
 
-### Init variables
-
-TORDATE_DIR=/run/tordate
-TORDATE_DONE_FILE="${TORDATE_DIR}/done"
-
 ### Exit conditions
 
 # Run only when the interface is not "lo":
@@ -30,12 +25,6 @@ fi
 if [ "$2" != "up" ]; then
 	exit 0
 fi
-
-# Do not run twice
-if [ -e "$TORDATE_DONE_FILE" ]; then
-	exit 0
-fi
-
 
 ### Functions
 
@@ -52,8 +41,6 @@ start_notification_helper() {
 ### Main
 
 start_notification_helper
-
-touch "$TORDATE_DONE_FILE"
 
 log "Restarting htpdate"
 systemctl --no-block start htpdate.service
