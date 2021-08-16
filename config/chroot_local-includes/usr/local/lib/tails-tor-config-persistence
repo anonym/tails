@@ -10,7 +10,7 @@ SUBCOMMAND="$1"
 
 enable_persistence_setting() {
     [ -w "$CONF_FILE" ] || return 1
-    if ! grep -E --line-regexp -qs '/var/lib/tca\s+source=tca' "$CONF_FILE"; then
+    if ! grep -E --line-regexp -q '/var/lib/tca\s+source=tca' "$CONF_FILE"; then
 	echo '/var/lib/tca source=tca' >> "$CONF_FILE"
     fi
 }
