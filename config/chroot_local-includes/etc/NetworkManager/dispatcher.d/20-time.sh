@@ -1,11 +1,7 @@
 #!/bin/sh
 
-# Rationale: Tor needs a somewhat accurate clock to work.
-# If the clock is wrong enough to prevent it from opening circuits,
-# we set the time to the middle of the valid time interval found
-# in the Tor consensus, and we restart it.
-# In any case, we use HTP to ask more accurate time information to
-# a few authenticated HTTPS servers.
+# Use HTP to ask more accurate time information to a few authenticated
+# HTTPS servers.
 
 set -e
 set -u
