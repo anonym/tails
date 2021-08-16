@@ -33,7 +33,7 @@ Reset TCA state
 tca state is kept in `/var/lib/tca/` . That directory is owned by root, and a regular user can't
 access, nor delete it.
 
-    sudo rm -rf /var/lib/tca/
+    sudo rm -rf /var/lib/tca/ /run/tca/
 
 Really restart tor
 ---------------------
@@ -55,7 +55,7 @@ Simulate a slow network
 Command line options
 --------------------
 
-amensia can only run tca with no options. Any argument is ignored. However, tca *has* options. You can enable
+amnesia can only run tca with no options. Any argument is ignored. However, tca *has* options. You can enable
 them editing /usr/local/bin/tca, adding `sys.argv[1:]` to the list of arguments.
 
 Debug more

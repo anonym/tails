@@ -8,21 +8,23 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-06-22 00:39+0000\n"
-"PO-Revision-Date: 2021-06-16 14:05+0000\n"
+"PO-Revision-Date: 2021-07-21 22:05+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.11.3\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Install from Debian, Ubuntu, or Mint using the command line and GnuPG\"]]\n"
 msgstr ""
+"[[!meta title=\"Установка из Debian, Ubuntu или Mint с помощью командной "
+"строки и GnuPG\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -46,12 +48,12 @@ msgstr "[[!meta stylesheet=\"inc/stylesheets/expert\" rel=\"stylesheet\" title=\
 
 #. type: Plain text
 msgid "Start in Debian, Ubuntu, or Linux Mint."
-msgstr ""
+msgstr "Запустите Debian, Ubuntu или Linux Mint."
 
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"verify-key\">Verify the Tails signing key</h1>\n"
-msgstr ""
+msgstr "<h1 id=\"verify-key\">Проверьте ключ подписи Tails</h1>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -65,6 +67,9 @@ msgid ""
 "can skip this step and start [[downloading and verifying the USB\n"
 "image|usb#download]].</p>\n"
 msgstr ""
+"<p>Если вы уже сертифицировали подписывающий ключ Tails вашим собственным "
+"ключом, можете пропустить этот шаг. Переходите к [[скачиванию и проверке "
+"образа USB|usb#download]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -76,6 +81,8 @@ msgid ""
 "In this step, you will download and verify the *Tails signing key* which is "
 "the OpenPGP key that is used to cryptographically sign the Tails USB image."
 msgstr ""
+"На этом шаге вы скачаете и проверите *ключ подписи Tails*. Это ключ OpenPGP, "
+"который используют для криптографической подписи USB-образа Tails."
 
 #. type: Plain text
 #, no-wrap
@@ -88,6 +95,8 @@ msgid ""
 "<p>To follow these instructions you need to have your own OpenPGP\n"
 "key.</p>\n"
 msgstr ""
+"<p>Чтобы воспользоваться этой инструкцией, вам нужно иметь свой собственный "
+"ключ OpenPGP.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -96,18 +105,26 @@ msgid ""
 "<a href=\"https://riseup.net/en/security/message-security/openpgp/gpg-keys\">Managing\n"
 "OpenPGP Keys</a> by <em>Riseup</em>.</p>\n"
 msgstr ""
+"<p>Чтобы узнать, как создать ключ OpenPGP, см. раздел\n"
+"<a href=\"https://riseup.net/en/security/message-security/openpgp/gpg-keys\">"
+"Managing\n"
+"OpenPGP Keys</a> на сайте <em>Riseup</em>.</p>\n"
 
 #. type: Plain text
 msgid ""
 "This verification technique uses the OpenPGP Web of Trust and the "
 "certification made by official Debian developers on the Tails signing key."
 msgstr ""
+"Эта техника верификации использует модель Web of Trust от OpenPGP и "
+"подтверждение ключа Tails официальными разработчиками Debian."
 
 #. type: Bullet: '1. '
 msgid ""
 "Import the Tails signing key in your <span class=\"application\">GnuPG</"
 "span> keyring:"
 msgstr ""
+"Импортируйте ключ подписи Tails в свою связку ключей <span class=\""
+"application\">GnuPG</span>:"
 
 #. type: Plain text
 #, no-wrap
@@ -115,12 +132,16 @@ msgid ""
 "       wget https://tails.boum.org/tails-signing.key\n"
 "       gpg --import < tails-signing.key\n"
 msgstr ""
+"       wget https://tails.boum.org/tails-signing.key\n"
+"       gpg --import < tails-signing.key\n"
 
 #. type: Bullet: '1. '
 msgid ""
 "Install the Debian keyring. It contains the OpenPGP keys of all Debian "
 "developers:"
 msgstr ""
+"Установите связку ключей Debian. В ней содержится ключ OpenPGP от "
+"разработчиков Debian:"
 
 #. type: Plain text
 #, no-wrap
@@ -133,6 +154,9 @@ msgid ""
 "\"Chris Lamb\"]], a former Debian Project Leader, from the Debian keyring "
 "into your keyring:"
 msgstr ""
+"Импортируйте OpenPGP-ключ [[!wikipedia Chris_Lamb_(software_developer) desc="
+"\"Криса Лэмба\"]], бывшего лидера проекта Debian, из связки Debian в вашу "
+"связку:"
 
 #. type: Plain text
 #, no-wrap
@@ -141,7 +165,7 @@ msgstr "       gpg --keyring=/usr/share/keyrings/debian-keyring.gpg --export chr
 
 #. type: Bullet: '1. '
 msgid "Verify the certifications made on the Tails signing key:"
-msgstr ""
+msgstr "Проверьте сертификаты для ключа подписи Tails:"
 
 #. type: Plain text
 #, no-wrap
@@ -151,7 +175,7 @@ msgstr "       gpg --keyid-format 0xlong --check-sigs A490D0F4D311A4153E2BB7CADB
 #. type: Plain text
 #, no-wrap
 msgid "   In the output of this command, look for the following line:\n"
-msgstr ""
+msgstr "   Среди данных, которые появятся на экране, найдите такую строку:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -164,6 +188,8 @@ msgid ""
 "   Here, <code>sig!</code>, with an exclamation mark, means that Chris\n"
 "   Lamb verified and certified the Tails signing key with his key.\n"
 msgstr ""
+"   <code>sig!</code> (с восклицательным знаком) подразумевает, что\n"
+"   Крис Лэмб проверил и подтвердил ключ подписи Tails своим ключом.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -172,6 +198,9 @@ msgid ""
 "   people. Their name and email address appear in the list of\n"
 "   certification if you have their key in your keyring.\n"
 msgstr ""
+"   Также можно проверять подтверждения, сделанные другими\n"
+"   людьми. Если их ключи есть у вас в связке, то их имена и адреса email\n"
+"   появятся в подтверждающем списке.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -183,6 +212,12 @@ msgid ""
 "   Please [[get in touch with us|support/talk]].</p>\n"
 "   </div>\n"
 msgstr ""
+"   <div class=\"caution\">\n"
+"   <p>Если проверка сертификата не удалась, возможно, вы скачали \n"
+"    вредоносную «подмену» подписывающего ключа Tails – или наши инструкции \n"
+"   попросту устарели. \n"
+"   Пожалуйста, [[свяжитесь с нами|support/talk]].</p>\n"
+"   </div>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -193,10 +228,16 @@ msgid ""
 "   keys that are not in your keyring. This is not a problem.</p>\n"
 "   </div>\n"
 msgstr ""
+"   <div class=\"tip\">\n"
+"   <p>Строка вроде `175 signatures not checked due to missing keys` "
+"относится\n"
+"   к сертификации (*подписыванию*) другими открытыми ключами,\n"
+"   которых нет в вашей связке. Это не ошибка.</p>\n"
+"   </div>\n"
 
 #. type: Bullet: '1. '
 msgid "Certify the Tails signing key with your own key:"
-msgstr ""
+msgstr "Подпишите ключ подписи Tails своим ключом:"
 
 #. type: Plain text
 #, no-wrap
@@ -211,17 +252,19 @@ msgstr "<a id=\"download\"></a>\n"
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"download-verify\">Download and verify the USB image</h1>\n"
-msgstr ""
+msgstr "<h1 id=\"download-verify\">Скачайте и проверьте образ USB</h1>\n"
 
 #. type: Plain text
 msgid ""
 "In this step, you will download the latest Tails USB image and verify it "
 "using the Tails signing key."
 msgstr ""
+"На этом шаге вы скачаете свежий образ Tails для USB и проверите его с "
+"помощью ключа подписи Tails."
 
 #. type: Bullet: '1. '
 msgid "Download the USB image:"
-msgstr ""
+msgstr "Скачайте образ USB:"
 
 #. type: Plain text
 #, no-wrap
@@ -230,7 +273,7 @@ msgstr "   <p class=\"pre\">wget --continue [[!inline pages=\"inc/stable_amd64_i
 
 #. type: Bullet: '1. '
 msgid "Download the signature of the USB image:"
-msgstr ""
+msgstr "Скачайте подпись образа USB:"
 
 #. type: Plain text
 #, no-wrap
@@ -239,7 +282,7 @@ msgstr "   <p class=\"pre\">wget [[!inline pages=\"inc/stable_amd64_img_sig_url\
 
 #. type: Bullet: '1. '
 msgid "Verify that the USB image is signed by the Tails signing key:"
-msgstr ""
+msgstr "Удостоверьтесь, что USB-образ подписан ключом Tails:"
 
 #. type: Plain text
 #, no-wrap
@@ -249,7 +292,7 @@ msgstr "   <p class=\"pre\">[[!inline pages=\"inc/stable_amd64_img_gpg_verify\" 
 #. type: Plain text
 #, no-wrap
 msgid "   The output of this command should be the following:\n"
-msgstr ""
+msgstr "   Вывод команды должен выглядеть так:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -259,17 +302,19 @@ msgstr "   <p class=\"pre\">[[!inline pages=\"inc/stable_amd64_img_gpg_signature
 #. type: Plain text
 #, no-wrap
 msgid "   Verify in this output that:\n"
-msgstr ""
+msgstr "   Посмотрите и убедитесь, что:\n"
 
 #. type: Bullet: '     - '
 msgid "The date of the signature is the same."
-msgstr ""
+msgstr "Дата в подписи та же самая."
 
 #. type: Bullet: '     - '
 msgid ""
 "The signature is marked as <code>Good signature</code> since you certified "
 "the Tails signing key with your own key."
 msgstr ""
+"Подпись маркирована фразой <code>Good signature</code>, поскольку вы "
+"подписали ключ подписи Tails своим собственным ключом."
 
 #. type: Plain text
 #, no-wrap
@@ -279,16 +324,18 @@ msgstr "<a id=\"dd\"></a>\n"
 #. type: Title =
 #, no-wrap
 msgid "Install Tails using <span class=\"command\">dd</span>"
-msgstr ""
+msgstr "Установите Tails с использованием <span class=\"command\">dd</span>"
 
 #. type: Bullet: '1. '
 msgid ""
 "Make sure that the USB stick on which you want to install Tails is unplugged."
 msgstr ""
+"Убедитесь, что USB-флешка, на которой будет установлен Tails, не подключена "
+"к компьютеру."
 
 #. type: Bullet: '1. '
 msgid "Execute the following command:"
-msgstr ""
+msgstr "Выполните следующую команду:"
 
 #. type: Plain text
 #, no-wrap
@@ -298,7 +345,7 @@ msgstr "   <p class=\"pre command\">ls -1 /dev/sd?</p>\n"
 #. type: Plain text
 #, no-wrap
 msgid "   It returns a list of the storage devices on the system. For example:\n"
-msgstr ""
+msgstr "   Вы увидите список устройств хранения в системе. Например:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -307,21 +354,23 @@ msgstr "   <p class=\"pre command-output\">/dev/sda</p>\n"
 
 #. type: Bullet: '1. '
 msgid "Plug in the USB stick on which you want to install Tails."
-msgstr ""
+msgstr "Подключите к компьютеру флешку, на которую хотите установить Tails."
 
 #. type: Plain text
 #, no-wrap
 msgid "   <div class=\"caution\"><p>All the data on this USB stick will be lost.</p></div>\n"
 msgstr ""
+"   <div class=\"caution\"><p>Все данные на этой флешке будут "
+"потеряны.</p></div>\n"
 
 #. type: Bullet: '1. '
 msgid "Execute again the same command:"
-msgstr ""
+msgstr "Выполните ту же команду:"
 
 #. type: Plain text
 #, no-wrap
 msgid "   Your USB stick appears as a new device in the list.\n"
-msgstr ""
+msgstr "   Ваша флешка отображается в списке как новое устройство.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -334,7 +383,7 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid "Take note of the *device name* of your USB stick."
-msgstr ""
+msgstr "Запомните *название устройства* вашей флешки."
 
 #. type: Plain text
 #, no-wrap
@@ -342,6 +391,8 @@ msgid ""
 "   In this example, the device name of the USB stick is\n"
 "   <span class=\"code\">/dev/sdb</span>. Yours might be different.\n"
 msgstr ""
+"   В этом примере название устройства – \n"
+"   <span class=\"code\">/dev/sdb</span>. У вас может быть иначе.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -351,29 +402,39 @@ msgid ""
 "   <strong>you risk overwriting any hard disk on the system</strong>.</p>\n"
 "   </div>\n"
 msgstr ""
+"   <div class=\"caution\">\n"
+"   <p>Если не уверены насчёт имени устройства, лучше не рисковать. Иначе \n"
+"   <strong>вы можете записать данные на какой-нибудь жёсткий диск вашего "
+"компьютера</strong>.</p>\n"
+"   </div>\n"
 
 #. type: Bullet: '1. '
 msgid ""
 "Execute the following commands to copy the USB image that you downloaded "
 "earlier to the USB stick."
 msgstr ""
+"Чтобы записать скачанный ранее образ на флешку, выполните следующие команды:"
 
 #. type: Plain text
 #, no-wrap
 msgid "   Replace:\n"
-msgstr ""
+msgstr "   Замените:\n"
 
 #. type: Bullet: '   - '
 msgid ""
 "<span class=\"command-placeholder\">tails.img</span> with the path to the "
 "USB image"
 msgstr ""
+"<span class=\"command-placeholder\">tails.img</span> на путь к вашему "
+"USB-образу"
 
 #. type: Bullet: '   - '
 msgid ""
 "<span class=\"command-placeholder\">device</span> with the device name found "
 "in step 5"
 msgstr ""
+"<span class=\"command-placeholder\">device</span> на имя устройства (см. шаг "
+"5 выше)"
 
 #. type: Plain text
 #, no-wrap
@@ -383,7 +444,7 @@ msgstr "   <p class=\"pre command\">dd if=<span class=\"command-placeholder\">ta
 #. type: Plain text
 #, no-wrap
 msgid "   You should get something like this:\n"
-msgstr "   Вы должны увидеть что-то в этом роде:\n"
+msgstr "   Вы увидите что-то подобное:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -396,6 +457,8 @@ msgid ""
 "   If no error message is returned, Tails is being copied on the USB\n"
 "   stick. The copy takes some time, generally a few minutes.\n"
 msgstr ""
+"   Если нет сообщения об ошибке, значит, Tails установлен на флешку.\n"
+"   Копирование занимает время, обычно несколько минут.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -404,6 +467,10 @@ msgid ""
 "   <p>If you get a <span class=\"guilabel\">Permission denied</span> error, try\n"
 "   adding <code>sudo</code> at the beginning of the command:</p>\n"
 msgstr ""
+"   <div class=\"note\">\n"
+"   <p>Если вы видите ошибку типа <span class=\"guilabel\">Permission "
+"denied</span> (Доступ запрещён), попробуйте\n"
+"   добавить <code>sudo</code> в начало вашей команды:</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -418,6 +485,8 @@ msgstr ""
 #, no-wrap
 msgid "   The installation is complete after the command prompt reappears.\n"
 msgstr ""
+"   Когда вы снова увидите стандартное приглашение в командной строке, это "
+"значит, что установка завершена.\n"
 
 #. type: Plain text
 #, no-wrap

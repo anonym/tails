@@ -7,17 +7,18 @@ import copy
 
 import gi
 import stem
+import pytz
 
 from tca.ui.asyncutils import GAsyncSpawn, idle_add_chain
 from tca.torutils import (
     TorConnectionProxy,
     TorConnectionConfig,
-    InvalidBridgeException,
     InvalidBridgeTypeException,
     MalformedBridgeException,
     VALID_BRIDGE_TYPES,
 )
 import tca.config
+import tca.ui.dialogs
 
 
 gi.require_version("Gdk", "3.0")
@@ -69,7 +70,8 @@ log = logging.getLogger(__name__)
 
 class StepOfflineHideMixin:
     def cb_step_offline_wificonf_clicked(self, user_data=None):
-        self.app.portal.call_async("open-wifi-config")
+        self.app.portal.call_async("open-wifi-config", None)
+
 
 class StepChooseHideMixin:
     """
@@ -93,19 +95,15 @@ class StepChooseHideMixin:
             else:
                 self.builder.get_object("radio_unnoticed_yes").set_sensitive(False)
                 self.builder.get_object("radio_unnoticed_no").set_active(True)
-                if self.state["hide"]["bridge"]:
-                    self.builder.get_object("radio_unnoticed_no_bridge").set_active(
-                        True
-                    )
         elif (
             "hide" in self.state["hide"]
         ):  # the user is changing her mind before connecting to Tor
             hide = self.state["hide"]["hide"]
             self.builder.get_object("radio_unnoticed_yes").set_active(hide)
             self.builder.get_object("radio_unnoticed_no").set_active(not hide)
-            self.builder.get_object("radio_unnoticed_no_bridge").set_active(
-                self.state["hide"]["bridge"]
-            )
+        self.builder.get_object("radio_unnoticed_no_bridge").set_active(
+            self.state["hide"].get("bridge", False)
+        )
 
     def _step_hide_next(self):
         if self.state["hide"]["bridge"]:
@@ -175,10 +173,12 @@ class StepChooseBridgeMixin:
             "combo"
         ).hide()  # we are forcing that to obfs4 until we support meek
         self.get_object("box_warning").hide()
-        self._step_bridge_init_from_tor_state()
+        self._step_bridge_init_from_tor_config()
         self._step_bridge_set_actives()
+        self.persistence_config_failed = False
+        self._step_bridge_update_persistence_ui()
 
-    def _step_bridge_init_from_tor_state(self):
+    def _step_bridge_init_from_tor_config(self):
         bridges = self.app.configurator.tor_connection_config.bridges
         if not bridges:
             return
@@ -189,6 +189,64 @@ class StepChooseBridgeMixin:
         else:
             self.get_object("radio_type").set_active(True)
             self.get_object("text").get_property("buffer").set_text("\n".join(bridges))
+            self.get_object("label_type").set_label(
+                _("_Use a bridge that I already know")
+            )
+
+    def _step_bridge_set_persistence_sensitivity(self, sensitive: bool):
+        if self.persistence_config_failed:
+            sensitive = False
+        for obj in [
+                "step_bridge_persistence_switch_box",
+                "step_bridge_persistence_help_box",
+                "step_bridge_persistence_error_box",
+        ]:
+            self.builder.get_object(obj).set_sensitive(sensitive)
+
+    def _step_bridge_update_persistence_ui(self):
+        # Enable this UI iff. we're using custom bridges
+        self._step_bridge_set_persistence_sensitivity(
+            self.builder.get_object("step_bridge_radio_type").get_active()
+        )
+
+        # Unlocked persistence
+        if self.app.has_persistence and self.app.has_unlocked_persistence:
+            self.builder.get_object("step_bridge_persistence_help_box").hide()
+
+            def cb_set_up_persistence_switch(gjsonrpcclient, res, error):
+                log.debug("Persistence enabled: %s", res)
+                active = res and res.get("returncode", 1) == 0
+                self.builder.get_object(
+                    "step_bridge_persistence_switch"
+                ).set_active(active)
+                self.builder.get_object("step_bridge_persistence_switch_box").show()
+
+            self.app.portal.call_async(
+                "is-tor-configuration-persistent?",
+                cb_set_up_persistence_switch,
+            )
+
+        else:
+            self.builder.get_object("step_bridge_persistence_switch_box").hide()
+            # Locked persistence
+            if self.app.has_persistence:
+                help_label = _(
+                    "To save your bridges, "
+                    '<a href="doc/first_steps/persistence">'
+                    "unlock you Persistent Storage</a>."
+                )
+            # No persistence
+            else:
+                help_label = _(
+                    "To save your bridges, "
+                    '<a href="doc/first_steps/persistence">'
+                    "create a Persistent Storage</a> "
+                    "on your Tails USB stick."
+                )
+            self.builder.get_object(
+                "step_bridge_persistence_help_label"
+            ).set_label(help_label)
+            self.builder.get_object("step_bridge_persistence_help_box").show()
 
     def _step_bridge_is_text_valid(self, text: Optional[str] = None) -> bool:
         def set_warning(msg):
@@ -230,9 +288,58 @@ class StepChooseBridgeMixin:
 
     def cb_step_bridge_radio_changed(self, *args):
         self._step_bridge_set_actives()
+        manual = self.builder.get_object("step_bridge_radio_type").get_active()
+        self._step_bridge_set_persistence_sensitivity(manual)
 
     def cb_step_bridge_text_changed(self, *args):
         self._step_bridge_set_actives()
+
+    def cb_step_bridge_persistence_switch_toggled(self, switch, state, *args):
+        log.debug("Persistence switch toggled, setting state to %s", state)
+        btn_submit = self.builder.get_object("step_bridge_btn_submit")
+        btn_submit_initially_sensitive = btn_submit.get_sensitive()
+        btn_submit.set_sensitive(False)
+        disabled_widgets = ["step_bridge_text", "step_bridge_btn_back"]
+        for widget in disabled_widgets:
+            self.builder.get_object(widget).set_sensitive(False)
+        self.builder.get_object("step_bridge_persistence_spinner") \
+                    .set_visible(True)
+
+        def cb_persistence_config_changed(gjsonrpcclient, res, error):
+            log.debug(
+                "cb_persistence_config_changed called with args: %s",
+                args,
+            )
+            if res and res.get("returncode", 1) == 0:
+                switch.set_state(state)
+            else:
+                self.builder.get_object(
+                    "step_bridge_persistence_switch_box"
+                ).set_sensitive(False)
+                self.builder.get_object(
+                    "step_bridge_persistence_error_label"
+                ).set_label(_("Failed to configure your Persistent Storage"))
+                self.builder.get_object(
+                    "step_bridge_persistence_error_box"
+                ).show()
+                self.persistence_config_failed = True
+
+            for widget in disabled_widgets:
+                self.builder.get_object(widget).set_sensitive(True)
+            if btn_submit_initially_sensitive:
+                btn_submit.set_sensitive(True)
+            self.builder.get_object("step_bridge_persistence_spinner") \
+                        .set_visible(False)
+
+        if state:
+            portal_method = "enable-tor-configuration-persistence"
+        else:
+            portal_method = "disable-tor-configuration-persistence"
+        self.app.portal.call_async(
+            portal_method,
+            cb_persistence_config_changed,
+        )
+        return True  # disable the default handler
 
     def cb_step_bridge_btn_submit_clicked(self, *args):
         default = self.builder.get_object("step_bridge_radio_default").get_active()
@@ -308,7 +415,7 @@ class StepConnectProgressMixin:
                     _("Connecting to Tor without bridges…")
                 )
             elif self.state["bridge"].get("kind", "") == "default":
-                self.app.configurator.tor_connection_config.default_bridges(
+                self.app.configurator.tor_connection_config.enable_default_bridges(
                     only_type=self.state["bridge"]["default_method"]
                 )
                 self.get_object("label_status").set_text(
@@ -332,7 +439,7 @@ class StepConnectProgressMixin:
             return True
 
         def do_tor_connect_default_bridges():
-            self.app.configurator.tor_connection_config.default_bridges(
+            self.app.configurator.tor_connection_config.enable_default_bridges(
                 only_type="obfs4"
             )
             self.get_object("label_status").set_text(
@@ -441,16 +548,16 @@ class StepConnectProgressMixin:
             )
 
     def cb_step_progress_btn_starttbb_clicked(self, *args):
-        self.app.portal.call_async("open-tbb")
+        self.app.portal.call_async("open-tbb", None)
 
     def cb_step_progress_btn_reset_clicked(self, *args):
-        self.app.portal.call_async("tor/restart")
+        self.app.portal.call_async("tor/restart", None)
 
     def cb_step_progress_btn_monitor_clicked(self, *args):
-        self.app.portal.call_async("open-networkmonitor")
+        self.app.portal.call_async("open-networkmonitor", None)
 
     def cb_step_progress_btn_onioncircuits_clicked(self, *args):
-        self.app.portal.call_async("open-onioncircuits")
+        self.app.portal.call_async("open-onioncircuits", None)
 
 
 class StepErrorMixin:
@@ -473,8 +580,49 @@ class StepErrorMixin:
     def cb_step_error_btn_proxy_clicked(self, *args):
         self.change_box("proxy")
 
+    def cb_step_error_btn_time_clicked(self, *args):
+        tz = self.state["time"].get("tz", None)
+        time_dialog = tca.ui.dialogs.get_time_dialog(initial_tz=tz)
+        time_dialog.set_modal(True)
+        time_dialog.set_transient_for(self)
+        time_dialog.connect("response", self.on_time_dialog_complete)
+        time_dialog.show_all()
+
+    def on_time_dialog_complete(self, time_dialog, response):
+        log.debug("time dialog closed: %s", response == Gtk.ResponseType.APPLY)
+
+        def on_set_system_time(portal, result, error):
+            if error:
+                log.error("Error setting system time! %s", error)
+                dialog = Gtk.MessageDialog(
+                    transient_for=time_dialog,
+                    flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                    message_type=Gtk.MessageType.ERROR,
+                    buttons=Gtk.ButtonsType.OK,
+                    text="Error setting system time",
+                )
+                dialog.format_secondary_text("%s\n\nThis should not happen. Please report a bug." % error)
+                dialog.run()
+                dialog.destroy()
+                time_dialog.destroy()
+                return
+            self.state["error"]["fix_attempt"] = True
+            self._step_error_submit_allowed()
+            time_dialog.destroy()
+
+        if response == Gtk.ResponseType.APPLY:
+            self.state["time"]["tz"] = time_dialog.get_tz_name()
+            self.save_conf()
+            aware_dt = time_dialog.get_date()
+            utc_dt = aware_dt.astimezone(pytz.utc)
+            self.app.portal.call_async(
+                "set-system-time", on_set_system_time, utc_dt.isoformat('T', 'minutes')
+            )
+        else:
+            time_dialog.destroy()
+
     def cb_step_error_btn_captive_clicked(self, *args):
-        self.app.portal.call_async("open-unsafebrowser")
+        self.app.portal.call_async("open-unsafebrowser", None)
 
         # XXX: for proper handling of the btn_submit, we'd better wait for the unsafe-browser to be closed
         # XXX: this is considered a "fix attempt" even if the unsafe-browser was not enabled, which is clearly
@@ -654,21 +802,27 @@ class TCAMainWindow(
             "progress": {},
             "step": "hide",
             "offline": {},
+            "time": {},
         }
         if self.app.args.debug_statefile is not None:
-            log.debug("loading statefile")
+            log.debug("loading debug statefile")
             with open(self.app.args.debug_statefile) as buf:
                 content = json.load(buf)
                 log.debug("content found %s", content)
                 self.state.update(content)
         else:
-            data = self.app.configurator.read_conf()
+            data = self.app.configurator.read_tca_state()
+            config = self.app.configurator.tor_connection_config.to_dict()
             if data and data.get("ui"):
-                for key in ["hide", "bridge"]:
+                for key in ["hide", "bridge", "time"]:
                     self.state[key].update(data["ui"].get(key, {}))
                 self.state["progress"]["started"] = (
                     data["ui"].get("progress", {}).get("started", False)
                 )
+            elif config and config.get("bridges"):
+                self.state["hide"]["bridge"] = True
+                self.state["bridge"]["kind"] = "manual"
+                self.state["bridge"]["bridges"] = config["bridges"]
             self.state["progress"]["success"] = self.app.is_tor_working
             if self.state["progress"]["success"]:
                 self.state["step"] = "progress"
@@ -720,11 +874,14 @@ class TCAMainWindow(
 
     def save_conf(self, successful_connect=False):
         log.info("Saving configuration (success=%s)", successful_connect)
-        if not successful_connect:
-            data = {"ui": {"hide": self.state["hide"], "bridge": self.state["bridge"]}}
-        else:
+        if successful_connect:
             data = {"ui": self.state}
-        self.app.configurator.save_conf(data, save_torrc=successful_connect)
+        else:
+            save_only = ["hide", "bridge", "time"]
+            data = {"ui": {field: self.state[field] for field in save_only}}
+        self.app.configurator.save_tca_state(data)
+        if successful_connect:
+            self.app.configurator.save_conf()
 
     def get_screen_size(self) -> Tuple[int, int]:
         disp = Gdk.Display.get_default()
@@ -802,7 +959,7 @@ class TCAMainWindow(
         return True
 
     def on_link_help_clicked(self, label, uri: str):
-        self.app.portal.call_async("open-documentation", "--force-local", uri)
+        self.app.portal.call_async("open-documentation", None, "--force-local", uri)
 
     # Called from parent application
 

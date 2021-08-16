@@ -1,6 +1,5 @@
-#11589
-@product @fragile
-Feature: Using Tails with Tor bridges and pluggable transports
+@product
+Feature: Using Tor bridges and pluggable transports
   As a Tails user
   I want to circumvent censorship of Tor by using Tor bridges and pluggable transports
   And avoid connecting directly to the Tor Network
@@ -14,12 +13,14 @@ Feature: Using Tails with Tor bridges and pluggable transports
   Scenario: Using normal bridges
     When I configure some normal bridges in the Tor Connection Assistant
     Then Tor is ready
+    And tca.conf includes the configured bridges
     And available upgrades have been checked
     And all Internet traffic has only flowed through the configured bridges
 
   Scenario: Using obfs4 pluggable transports
     When I configure some obfs4 bridges in the Tor Connection Assistant
     Then Tor is ready
+    And tca.conf includes the configured bridges
     And available upgrades have been checked
     And all Internet traffic has only flowed through the configured bridges
 
@@ -27,29 +28,38 @@ Feature: Using Tails with Tor bridges and pluggable transports
     When I configure the default bridges in the Tor Connection Assistant
     Then Tor is ready
     And Tor is configured to use the default bridges
+    And tca.conf includes no bridge
     And available upgrades have been checked
-    And all Internet traffic has only flowed through the configured bridges
+    And Tor is configured to use the default bridges
+    And all Internet traffic has only flowed through the default bridges
 
   Scenario: Fall back to default bridges if failing to connect directly to the Tor network
     Given the Tor network is blocked
     When I configure a direct connection in the Tor Connection Assistant
     Then Tor is ready
+    And tca.conf includes no bridge
     And available upgrades have been checked
     And Tor is configured to use the default bridges
-    And all Internet traffic has only flowed through the configured bridges
+    And all Internet traffic has only flowed through the default bridges
 
   Scenario: TCA can reconnect after a connection failure
     Given the Tor network and default bridges are blocked
-    When I try to configure a direct connection in the Tor Connection Assistant
+    When I unsuccessfully configure a direct connection in the Tor Connection Assistant
     Then the Tor Connection Assistant reports that it failed to connect
+    And tca.conf is empty
     # TCA does not have a simple "retry" so we restart it
     And I close the Tor Connection Assistant
     Given the Tor network and default bridges are unblocked
     And I start "Tor Connection" via GNOME Activities Overview
     Then Tor is ready
+    # XXX: Due to #18470, sometimes we end up connecting with the default
+    # bridges, and sometimes we end up connecting directly (without bridges).
+    # Our test suite does not support this at the moment.
+    # Once #18470 is fixed, we should always connect directly,
+    # so we can uncomment the steps that are commented out below.
+    # And tca.conf includes no bridge
     And available upgrades have been checked
-    # XXX: When #18470 is resolved, uncomment the following step
-    #And all Internet traffic has only flowed through Tor
+    # And all Internet traffic has only flowed through Tor
 
   Scenario: Normal bridges are not allowed in "Hide" mode
     When I try to configure some normal bridges in the Tor Connection Assistant in hide mode
@@ -75,3 +85,4 @@ Feature: Using Tails with Tor bridges and pluggable transports
     And the Tor network and default bridges are blocked
     When I connect the network through GNOME
     Then the Tor Connection Assistant reports that it failed to connect
+

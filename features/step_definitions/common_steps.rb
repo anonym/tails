@@ -118,7 +118,15 @@ Given /^the network connection is ready(?: within (\d+) seconds)?$/ do |timeout|
 end
 
 Given /^the hardware clock is set to "([^"]*)"$/ do |time|
-  $vm.set_hardware_clock(DateTime.parse(time).to_time)
+  dt = if time.start_with?('+') || time.start_with?('-')
+         DateTime.parse(
+           cmd_helper(['date', '-d', time], env: { 'TZ' => 'UTC' })
+         )
+       else
+         DateTime.parse(time)
+       end
+  debug_log("Set hw clock to #{dt}")
+  $vm.set_hardware_clock(dt.to_time)
 end
 
 Given /^I capture all network traffic$/ do
@@ -358,13 +366,14 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
-  if RTL_LANGUAGES.include?(lang)
-    # If we select a RTL language below, the login and shutdown
-    # buttons will swap place.
-    login_button_region = @screen.find('TailsGreeterShutdownButton.png')
-  else
-    login_button_region = @screen.find('TailsGreeterLoginButton.png')
-  end
+  login_button_region = if RTL_LANGUAGES.include?(lang)
+                          # If we select a RTL language below, the
+                          # login and shutdown buttons will
+                          # swap place.
+                          @screen.find('TailsGreeterShutdownButton.png')
+                        else
+                          @screen.find('TailsGreeterLoginButton.png')
+                        end
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -444,17 +453,14 @@ Given /^the Tails desktop is ready$/ do
   # Since we use a simulated Tor network (via Chutney) we have to
   # switch to its default bridges.
   default_bridges_path = '/usr/share/tails/tca/default_bridges.txt'
-  # XXX: We can drop the if-statement and keep just its body once
-  # tails!375 (17215-tor-launcher-replacement) is merged in a stable
-  # release.
-  if $vm.file_exist?(default_bridges_path)
-    $vm.file_overwrite(default_bridges_path, '')
-    chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
-      $vm.file_append(default_bridges_path, bridge[:line])
-    end
+  $vm.file_overwrite(default_bridges_path, '')
+  chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+    $vm.file_append(default_bridges_path, bridge[:line])
   end
   # Optimize upgrade check: avoid 30 second sleep
-  $vm.execute_successfully('sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service')
+  $vm.execute_successfully(
+    'sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service'
+  )
   $vm.execute_successfully('systemctl --user daemon-reload', user: LIVE_USER)
 end
 
@@ -472,7 +478,7 @@ end
 Given /^Tor is ready$/ do
   # First we wait for tor to be running so its control port is open...
   try_for(60) do
-    $vm.execute("systemctl -q is-active tor@default.service").success?
+    $vm.execute('systemctl -q is-active tor@default.service').success?
   end
   # ... so we can ask if the tor's networking is disabled, in which
   # case Tor Connection Assistant has not been dealt with yet. If
@@ -525,30 +531,17 @@ end
 class TimeSyncingError < StandardError
 end
 
-class TordateError < TimeSyncingError
-end
-
 class HtpdateError < TimeSyncingError
 end
 
 Given /^the time has synced$/ do
-  ['/run/tordate/done', '/run/htpdate/success'].each do |file|
-    begin
-      try_for(300) { $vm.execute("test -e #{file}").success? }
-    rescue Timeout::Error
-      if file == '/run/htpdate/success'
-        raise HtpdateError, 'Time syncing failed'
-      else
-        raise TordateError, 'Time syncing failed'
-      end
-    end
-  end
+  try_for(300) { $vm.file_exist?('/run/htpdate/success') }
+rescue Timeout::Error
+  raise HtpdateError, 'Time syncing failed'
 end
 
 Given /^available upgrades have been checked$/ do
-  try_for(300) do
-    $vm.execute("test -e '/run/tails-upgrader/checked_upgrades'").success?
-  end
+  try_for(300) { $vm.file_exist?('/run/tails-upgrader/checked_upgrades') }
 end
 
 def tor_browser_is_alpha
@@ -672,13 +665,6 @@ Then /^I (do not )?see "([^"]*)" after at most (\d+) seconds$/ do |negation, ima
     @screen.wait_vanish(image, time.to_i)
   else
     @screen.wait(image, time.to_i)
-  end
-end
-
-Then /^all Internet traffic has only flowed through Tor$/ do
-  allowed_hosts = allowed_hosts_under_tor_enforcement
-  assert_all_connections(@sniffer.pcap_file) do |c|
-    allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
 end
 

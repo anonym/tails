@@ -56,7 +56,7 @@ def ensure_chutney_is_running
     chutney_status_log(cmd)
     cmd = 'stop' if cmd == 'stop_old'
     Dir.chdir(chutney_src_dir) do
-      cmd_helper([chutney_script, cmd, network_definition], env)
+      cmd_helper([chutney_script, cmd, network_definition], env: env)
     end
   end
 
