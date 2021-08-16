@@ -10,8 +10,6 @@ Feature: Time syncing
     And Tor is ready
     Then Tails clock is less than 5 minutes incorrect
 
-  #11589
-  @fragile
   Scenario: Clock with host's time while using bridges
     Given I have started Tails from DVD without network and logged in
     When the network is plugged
@@ -20,8 +18,6 @@ Feature: Time syncing
     And Tor is ready
     Then Tails clock is less than 5 minutes incorrect
 
-  #11589
-  @fragile
   Scenario: Clock is one day in the future while using bridges
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+1 day"
@@ -57,7 +53,7 @@ Feature: Time syncing
 
   Scenario: I can connect to obfs4 bridges having a clock East of UTC
     Given I have started Tails from DVD without network and logged in
-    When I bump the system time with "+8 hours"
+    When I bump the system time with "+8 hours +15 minutes"
     And all notifications have disappeared
     And I capture all network traffic
     And the network is plugged
@@ -65,9 +61,9 @@ Feature: Time syncing
     # Anti-test: Users east of UTC can't connect to obfs4 bridges
     When I unsuccessfully configure some obfs4 bridges in the Tor Connection Assistant
     Then the Tor Connection Assistant reports that it failed to connect
-    # The "set time" button allows users to recover from this bug
+    # The "Fix Clock" button allows users to recover from this bug
     When I set the time zone in Tor Connection to "Asia/Shanghai"
-    Then Tails clock is less than 5 minutes incorrect
+    Then Tails clock is less than 20 minutes incorrect
     # XXX: this fails if tor is too fast to recover after the restart implied by setting the time
     #      TCA will notice this and switch to the success window
     #      so the button "Connect to Tor" cannot be clicked
@@ -76,3 +72,5 @@ Feature: Time syncing
     When I click "Connect to Tor"
     Then Tor is ready
     And all Internet traffic has only flowed through the configured bridges
+    # check that htpdate has done its job
+    And Tails clock is less than 5 minutes incorrect

@@ -617,8 +617,8 @@ Then /^I cannot click the "Connect to Tor" button$/ do
 end
 
 When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
-  tor_connection_assistant.child('Set Time').click
-  time_dialog = tor_connection_assistant.child('Tor Connection - Set Time',
+  tor_connection_assistant.child('Fix Clock').click
+  time_dialog = tor_connection_assistant.child('Tor Connection - Fix Clock',
                                                roleName:    'dialog',
                                                showingOnly: true)
   select_tz = time_dialog.child('Time zone', roleName: 'panel')
@@ -632,7 +632,7 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
 
   # wait for the dialog to be closed
   try_for(30) do
-    tor_connection_assistant.child('Tor Connection - Set Time')
+    tor_connection_assistant.child('Tor Connection - Fix Clock')
   rescue Dogtail::Failure
     true
   else

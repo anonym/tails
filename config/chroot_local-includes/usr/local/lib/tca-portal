@@ -221,7 +221,6 @@ class Handler(socketserver.StreamRequestHandler):
         if req.method not in self.valid_commands:
             return req.error_respond(error="Invalid method")
         if req.method not in self.spawn_commands:
-            log.info("Running %s", req.method)
             return req.error_respond(error="Method not implemented")
 
         cmd = self.spawn_commands[req.method]
