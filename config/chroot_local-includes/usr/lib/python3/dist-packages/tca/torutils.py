@@ -176,11 +176,9 @@ VALID_BRIDGE_TYPES = {"bridge", "obfs4"}
 class TorConnectionConfig:
     def __init__(
         self,
-        stem_controller: Controller,
         bridges: list = [],
         proxy: TorConnectionProxy = TorConnectionProxy.noproxy(),
     ):
-        self.stem_controller: Controller = stem_controller
         self.bridges: List[str] = bridges
         self.proxy: TorConnectionProxy = proxy
 
@@ -351,7 +349,7 @@ class TorConnectionConfig:
         else:
             proxy = TorConnectionProxy.noproxy()
 
-        config = cls(stem_controller, bridges=bridges, proxy=proxy)
+        config = cls(bridges=bridges, proxy=proxy)
 
         return config
 
