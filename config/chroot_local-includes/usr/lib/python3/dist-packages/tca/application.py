@@ -47,6 +47,7 @@ class TCAApplication(Gtk.Application):
         self.log = logging.getLogger(self.__class__.__name__)
         self.config_buf, self.state_buf, portal_sock = recover_fd_from_parent()
         self.controller = controller = Controller.from_port(port=9051)
+        controller.set_caching(False)
         controller.authenticate(password=None)
         self.portal = GJsonRpcClient(portal_sock)
         self.portal.connect("response-error", self.on_portal_error)
