@@ -705,7 +705,7 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
     # if unblock
     #   # Undo what we did in the "else" clause while blocking tor:
     #   # once unblocked, we're going to use a direct connection.
-    #   true
+    #   false
     # else
       # Tor Connection will fallback to default (obfs4) bridges if
       # access to the Tor network is blocked
