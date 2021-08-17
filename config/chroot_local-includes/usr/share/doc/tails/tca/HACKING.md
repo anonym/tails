@@ -20,12 +20,13 @@ If you want to test tor-not-working-but-my-bridges-are-working, you can use
 
 If you want to test tor-not-working-but-default-bridges-are-working, you can use:
 
-    apt install -y ipset && ipset create defaultbridges hash:ip
-    grep -w obfs4 /usr/share/tails/tca/default_bridges.txt |
+    iptables -I OUTPUT 1 ! -o lo -m owner --uid-owner debian-tor -j REJECT
+    DEFAULT_BRIDGES_IPS=$(grep -E '^obfs4' /usr/share/tails/tca/default_bridges.txt |
       grep -Po '(\d{1,3}\.){3}\d{1,3}:\d{1,5}' |
-      cut -d: -f1 | sort -u |
-      while read ip; do ipset add defaultbridges $ip; done
-    iptables -I OUTPUT 1 ! -o lo -m owner --uid-owner debian-tor -m set ! --match-set defaultbridges dst -j REJECT
+      cut -d: -f1 | sort -u)
+    for BRIDGE_IP in $DEFAULT_BRIDGES_IPS; do
+        iptables -I OUTPUT 1 -m owner --uid-owner debian-tor -d $BRIDGE_IP -j ACCEPT
+    done
 
 Reset TCA state
 -------------
