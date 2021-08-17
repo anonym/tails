@@ -70,7 +70,7 @@ Feature: Chatting anonymously using Pidgin
     And I create my XMPP account
     And I close Pidgin's account manager window
     Then Pidgin automatically enables my XMPP account
-    And I can join the "tails" channel on "conference.riseup.net"
+    And I can join the "tails" channel on "chat.disroot.org"
 
   @check_tor_leaks
   Scenario: Using a persistent Pidgin configuration
@@ -87,7 +87,7 @@ Feature: Chatting anonymously using Pidgin
     When I close Pidgin
     # And I generate an OTR key for the default Pidgin account
     And I take note of the configured Pidgin accounts
-    # And I take note of the OTR key for Pidgin's "conference.riseup.net" account
+    # And I take note of the OTR key for Pidgin's "chat.disroot.org" account
     And I shutdown Tails and wait for the computer to power off
     Given a computer
     And I start Tails from USB drive "__internal" and I login with persistence enabled

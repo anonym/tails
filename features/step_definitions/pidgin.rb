@@ -64,9 +64,19 @@ def pidgin_account_connected?(account, prpl_protocol)
   pidgin_force_allowed_dbus_call('PurpleAccountIsConnected', account_id) == 1
 end
 
-def click_mid_right_edge(pattern, **opts)
+def mid_right_edge(pattern, **opts)
   m = @screen.find(pattern, **opts)
-  @screen.click(m.x + m.w, m.y + m.h / 2)
+  [m.x + m.w, m.y + m.h / 2]
+end
+
+def click_mid_right_edge(pattern, **opts)
+  target = mid_right_edge(pattern, **opts)
+  @screen.click(target[0], target[1])
+end
+
+def triple_click_mid_right_edge(pattern, **opts)
+  target = mid_right_edge(pattern, **opts)
+  @screen.click(target[0], target[1], triple: true)
 end
 
 When /^I create my XMPP account$/ do
@@ -262,7 +272,7 @@ end
 
 def chan_image(account, channel, image)
   images = {
-    'conference.riseup.net' => {
+    'chat.disroot.org' => {
       'tails' => {
         'conversation_tab' => 'PidginTailsConversationTab',
         'welcome'          => 'PidginTailsChannelWelcome',
@@ -274,7 +284,7 @@ end
 
 def default_chan(account)
   chans = {
-    'conference.riseup.net' => 'tails',
+    'chat.disroot.org' => 'tails',
   }
   chans[account]
 end
@@ -360,6 +370,10 @@ Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, account|
   @screen.wait('PidginJoinChatWindow.png', 10).click
   click_mid_right_edge('PidginJoinChatRoomLabel.png')
   @screen.type(channel)
+  # Replace the default server (which is based on the XMPP account
+  # being used by the client)
+  triple_click_mid_right_edge('PidginJoinChatServerLabel.png')
+  @screen.type(account)
   @screen.click('PidginJoinChatButton.png')
   @chat_room_jid = channel + '@' + account
   $vm.focus_window(@chat_room_jid)
