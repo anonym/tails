@@ -363,7 +363,7 @@ Then /^Pidgin successfully connects to the "([^"]+)" account$/ do |account|
   end
 end
 
-Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, account|
+Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, server|
   $vm.focus_window('Buddy List')
   @screen.wait('PidginBuddiesMenu.png', 20).click
   @screen.wait('PidginBuddiesMenuJoinChat.png', 10).click
@@ -373,14 +373,14 @@ Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, account|
   # Replace the default server (which is based on the XMPP account
   # being used by the client)
   triple_click_mid_right_edge('PidginJoinChatServerLabel.png')
-  @screen.type(account)
+  @screen.type(server)
   @screen.click('PidginJoinChatButton.png')
-  @chat_room_jid = channel + '@' + account
+  @chat_room_jid = channel + '@' + server
   $vm.focus_window(@chat_room_jid)
   @screen.hide_cursor
   try_for(60) do
     begin
-      @screen.wait(chan_image(account, channel, 'conversation_tab'), 5).click
+      @screen.wait(chan_image(server, channel, 'conversation_tab'), 5).click
     rescue FindFailed => e
       # If the channel tab can't be found it could be because there were
       # multiple connection attempts and the channel tab we want is off the
@@ -390,7 +390,7 @@ Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, account|
     end
   end
   @screen.hide_cursor
-  @screen.wait(chan_image(account, channel, 'welcome'), 10)
+  @screen.wait(chan_image(server, channel, 'welcome'), 10)
 end
 
 Then /^I take note of the configured Pidgin accounts$/ do
