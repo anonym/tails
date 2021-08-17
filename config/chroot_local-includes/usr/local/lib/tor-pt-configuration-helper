@@ -8,20 +8,22 @@ set -u
 # Import tor_control_getconf(), tor_set_in_torrc()
 . /usr/local/lib/tails-shell-library/tor.sh
 
-if [ "${1}" != 0 ] && [ "${1}" != 1 ]; then
-    echo "error: bad argument: ${1}" >&2
+ENABLE_SANDBOX="${1}"
+
+if [ "${ENABLE_SANDBOX}" != 0 ] && [ "${ENABLE_SANDBOX}" != 1 ]; then
+    echo "error: bad argument: ${ENABLE_SANDBOX}" >&2
     exit 1
 fi
 
-if [ "$(tor_control_getconf Sandbox)" = "${1}" ]; then
+if [ "$(tor_control_getconf Sandbox)" = "${ENABLE_SANDBOX}" ]; then
     exit 0
 fi
 
 systemctl stop tor@default.service
 
-tor_set_in_torrc Sandbox "${1}"
+tor_set_in_torrc Sandbox "${ENABLE_SANDBOX}"
 sed -i '/^ClientTransportPlugin /d' /etc/tor/torrc
-if [ "${1}" = 0 ]; then
+if [ "${ENABLE_SANDBOX}" = 0 ]; then
     tor_set_in_torrc ClientTransportPlugin 'obfs2,obfs3,obfs4,meek_lite exec /usr/bin/obfs4proxy managed'
 fi
 
