@@ -80,7 +80,7 @@ class InvalidArgsError(InvalidRequestError):
     pass
 
 
-class Command:
+class BaseCommand:
     def __init__(self, cmd: List[str], arguments: bool):
         self.cmd = cmd
         self.arguments = arguments
@@ -113,7 +113,11 @@ class Command:
         return Popen(cmd)
 
 
-class UserCommand(Command):
+class RootCommand(BaseCommand):
+    pass
+
+
+class UserCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> list:
         drop = ["runuser", "-u", LIVE_USERNAME]
         env = ["env", *gnome_env_vars()]
@@ -122,7 +126,7 @@ class UserCommand(Command):
         return args
 
 
-class PersistenceSetupCommand(Command):
+class PersistenceSetupCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> list:
         drop = ["runuser", "-u", PERSISTENCE_SETUP_USERNAME]
         env = ["env", *gnome_env_vars()]
@@ -131,7 +135,7 @@ class PersistenceSetupCommand(Command):
         return args
 
 
-class SetTimeCommand(Command):
+class SetTimeCommand(RootCommand):
     def __init__(self):
         super().__init__(['/usr/local/lib/tails-set-date'], True)
         # we know our argument is an ISO8601 date whose separator is a T, and with no microseconds
@@ -172,6 +176,7 @@ class Handler(socketserver.StreamRequestHandler):
         "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
+        "set-tor-sandbox": RootCommand(['/usr/local/lib/tor-pt-configuration-helper'], True),
         # It would be nicer to do this in Python without calling out
         # to external processes, but it would require either implementing
         # the Popen interface that the portal assumes, or refactoring

@@ -452,24 +452,40 @@ class StepConnectProgressMixin:
             return True
 
         def do_tor_connect_apply():
-            try:
-                self.app.configurator.apply_conf()
-            except stem.InvalidRequest as exc:
+
+            def error_handler(error):
                 self.connection_progress.set_fraction(0)
                 self.state["progress"]["error"] = "setconf"
-                self.state["progress"]["error_data"] = exc.message
+                self.state["progress"]["error_data"] = error
                 self.change_box("error")
+
+            def conf_applied_cb(gjsonrpcclient, res, error):
+                log.debug("tor configuration applied callback returned: %s", res)
+                success = res and res.get("returncode", 1) == 0
+                if not success:
+                    error_handler(error=error)
+                    return False
+                self.state["progress"]["started"] = True
+                self.connection_progress.set_fraction(
+                    ConnectionProgress.PROGRESS_CONFIGURATION_APPLIED
+                )
+                self.timer_check = GLib.timeout_add(
+                    1000,
+                    do_tor_connect_check,
+                    {"count": TOR_SIGNOFLIFE_TIMEOUT, "sign_of_life": False},
+                )
+
+            try:
+                updating_sandbox_conf = self.app.configurator.apply_conf(
+                    callback=conf_applied_cb
+                )
+                if updating_sandbox_conf:
+                    log.debug("updating sandbox configuration")
+                else:
+                    log.debug("tor configuration applied")
+            except stem.InvalidRequest as exc:
+                error_handler(exc.message)
                 return False
-            log.debug("tor configuration applied")
-            self.state["progress"]["started"] = True
-            self.connection_progress.set_fraction(
-                ConnectionProgress.PROGRESS_CONFIGURATION_APPLIED
-            )
-            self.timer_check = GLib.timeout_add(
-                1000,
-                do_tor_connect_check,
-                {"count": TOR_SIGNOFLIFE_TIMEOUT, "sign_of_life": False},
-            )
             return False
 
         def do_tor_connect_check(d: dict):

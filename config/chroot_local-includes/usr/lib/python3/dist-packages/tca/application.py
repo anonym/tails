@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import functools
 import sys
 import logging
 import gettext
@@ -46,11 +47,18 @@ class TCAApplication(Gtk.Application):
         self.log = logging.getLogger(self.__class__.__name__)
         self.config_buf, self.state_buf, portal_sock = recover_fd_from_parent()
         self.controller = controller = Controller.from_port(port=9051)
+        controller.set_caching(False)
         controller.authenticate(password=None)
+        self.portal = GJsonRpcClient(portal_sock)
+        self.portal.connect("response-error", self.on_portal_error)
+        self.portal.connect("response-success", self.on_portal_response)
+        self.portal.run()
+        set_tor_sandbox_fn = functools.partial(self.portal.call_async, "set-tor-sandbox")
         self.configurator = TorLauncherUtils(
             controller,
             self.config_buf,
             self.state_buf,
+            set_tor_sandbox_fn,
         )
         if self.has_been_started_already():
             self.configurator.load_conf_from_tor()
@@ -60,10 +68,6 @@ class TCAApplication(Gtk.Application):
             "Tor connection config: %s",
             self.configurator.tor_connection_config.to_dict()
         )
-        self.portal = GJsonRpcClient(portal_sock)
-        self.portal.connect("response-error", self.on_portal_error)
-        self.portal.connect("response-success", self.on_portal_response)
-        self.portal.run()
         self.netutils = TorLauncherNetworkUtils()
         self.args = args
         self.debug = args.debug
