@@ -618,11 +618,6 @@ end
 
 When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   tor_connection_assistant.child('Fix Clock').click
-  try_for(5) do
-    tor_connection_assistant.child('Tor Connection - Fix Clock',
-                                                 roleName:    'dialog',
-                                                 showingOnly: true)
-  end
   time_dialog = tor_connection_assistant.child('Tor Connection - Fix Clock',
                                                roleName:    'dialog',
                                                showingOnly: true)
