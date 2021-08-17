@@ -16,7 +16,7 @@ from the debian-tor users
 If you want to test tor-not-working-but-my-bridges-are-working, you can use
 
     iptables -I OUTPUT 1 ! -o lo -m owner --uid-owner debian-tor -j REJECT
-    iptables -I OUTPUT 1 -d $BRIDGE_IP -j ACCEPT
+    iptables -I OUTPUT 1 -m owner --uid-owner debian-tor -d $BRIDGE_IP -j ACCEPT
 
 If you want to test tor-not-working-but-default-bridges-are-working, you can use:
 
