@@ -289,10 +289,6 @@ def default_chan(account)
   chans[account]
 end
 
-def pidgin_otr_keys
-  $vm.file_content("/home/#{LIVE_USER}/.purple/otr.private_key")
-end
-
 When /^I open Pidgin's account manager window$/ do
   @screen.wait('PidginMenuAccounts.png', 20).click
   @screen.wait('PidginMenuManageAccounts.png', 20).click
@@ -397,10 +393,6 @@ Then /^I take note of the configured Pidgin accounts$/ do
   @persistent_pidgin_accounts = configured_pidgin_accounts
 end
 
-Then /^I take note of the OTR key for Pidgin's "(?:[^"]+)" account$/ do
-  @persistent_pidgin_otr_keys = pidgin_otr_keys
-end
-
 Then /^Pidgin has the expected persistent accounts configured$/ do
   current_accounts = configured_pidgin_accounts
   assert(
@@ -409,10 +401,6 @@ Then /^Pidgin has the expected persistent accounts configured$/ do
     "Current:\n#{current_accounts}\n" \
     "Persistent:\n#{@persistent_pidgin_accounts}"
   )
-end
-
-Then /^Pidgin has the expected persistent OTR keys$/ do
-  assert_equal(@persistent_pidgin_otr_keys, pidgin_otr_keys)
 end
 
 def pidgin_add_certificate_from(cert_file)
