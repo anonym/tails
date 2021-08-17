@@ -45,9 +45,9 @@ IMG_SIDE: Dict[str, str] = {
 
 TOR_BOOTSTRAP_STATUS_CONN_DONE = 10  # see tor.git:src/feature/control/control_events.h
 TOR_SIGNOFLIFE_TIMEOUT = (
-    30
+    10
 )  # this timeout means "time to wait for the first sign of life" which we define as bootstrap-phase=BOOTSTRAP_STATUS_CONN_DONE
-TOR_BOOTSTRAP_TIMEOUT = 120  # this is *summed* to the previous timeout
+TOR_BOOTSTRAP_TIMEOUT = 600  # this is *summed* to the previous timeout
 
 # META {{{
 # Naming convention for widgets:
