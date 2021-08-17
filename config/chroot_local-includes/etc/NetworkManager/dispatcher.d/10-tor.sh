@@ -25,8 +25,8 @@ fi
 # network is up, and then send it a SIGHUP here to make it start
 # bootstrapping swiftly, but it doesn't work because of a bug in
 # Tor. Details:
-# * https://trac.torproject.org/projects/tor/ticket/1247
-# * https://tails.boum.org/bugs/tor_vs_networkmanager/
+# * https://gitlab.torproject.org/tpo/core/tor/-/issues/1247
+# * https://gitlab.tails.boum.org/tails/tails/-/blob/7fae4a761a06e5a14048baff21e0bdb71a1f7226/wiki/src/bugs/tor_vs_networkmanager.mdwn
 # To work around this we restart Tor.
 systemctl restart tor@default.service
 
