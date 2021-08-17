@@ -699,18 +699,15 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
     )
   end
   @tor_is_using_pluggable_transports =
-    # XXX: uncomment once #18470 is fixed: currently the sandbox may
-    # or may not be enabled, depending on whether we end up connecting
-    # directly or with the default bridges.
-    # if unblock
-    #   # Undo what we did in the "else" clause while blocking tor:
-    #   # once unblocked, we're going to use a direct connection.
-    #   false
-    # else
+    if unblock
+      # Undo what we did in the "else" clause while blocking tor:
+      # once unblocked, we're going to use a direct connection.
+      false
+    else
       # Tor Connection will fallback to default (obfs4) bridges if
       # access to the Tor network is blocked
       true
-    # end
+    end
 end
 
 Then /^Tor is configured to use the default bridges$/ do
