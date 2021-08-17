@@ -51,7 +51,7 @@ Simulate a slow network
 
     wget https://slow.vado.li/ -O slow
     chmod +x slow
-    sudo ./slow 56k
+    sudo ./slow -b 100kbit -l 200ms
 
 Command line options
 --------------------
