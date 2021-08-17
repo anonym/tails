@@ -488,6 +488,16 @@ class TorLauncherUtils:
             self.set_tor_sandbox_fn(callback, str(int(can_use_sandbox)))
         return updating_sandbox_conf
 
+    def stop_connecting(self):
+        """
+        Stop trying to connect to Tor.
+
+        Particularly useful after timeout.
+        """
+        if self.stem_controller.get_conf("DisableNetwork") == "0":
+            self.stem_controller.set_conf("DisableNetwork", "1")
+        self.stem_controller.save_conf()
+
     def tor_bootstrap_phase(self) -> int:
         resp = self.stem_controller.get_info("status/bootstrap-phase")
         if resp is None:
