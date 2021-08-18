@@ -49,18 +49,10 @@ just using `systemctl restart tor@default` is probably not what you want. This i
 Simulate a slow network
 -------------------------
 
-Beware! This does not limit the bandwidth as effectively as what's written on
-the box: I've seen burst download speed 200 times faster than the limit. I tried
-adding "burst 0 cburst 0" to the "tc class [add|change]" command but it did
-not help.
+Use libvirt's own QoS support: https://libvirt.org/formatnetwork.html#elementQoS
 
-    wget https://slow.vado.li/ -O slow
-    chmod +x slow
-    sudo ./slow -b 100kbit -l 200ms
-
-To instead use libvirt's own QoS support
-(https://libvirt.org/formatnetwork.html#elementQoS), and limit bandwidth to 12
-KiB/s, add to the `<interface type="network">` section:
+For example, to limit bandwidth to 12 KiB/s, add to the `<interface
+type="network">` section:
 
     <bandwidth>
       <inbound average="12" peak="12"/>
