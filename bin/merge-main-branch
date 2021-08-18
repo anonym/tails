@@ -38,8 +38,8 @@ echo "I: Diff between the $SRC and $DST custom APT suites:"
 ssh reprepro@incoming.deb.tails.boum.org \
     tails-diff-suites "$SRC" "$DST"
 
-echo "Check if any package is newer in $DST than in $SRC."
-echo "If that's the case, abort."
+echo "Check, in the above diff, if any package is newer in $DST than in $SRC."
+echo "Abort if, and only if, that's the case."
 echo -n "Proceed with the merge? (y/n) "
 read -r answer
 [ "$answer" = 'y' ] || exit 1
