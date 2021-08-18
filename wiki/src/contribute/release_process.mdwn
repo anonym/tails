@@ -396,6 +396,10 @@ Update the Changelog entry for the release you're preparing:
 	git checkout "${RELEASE_BRANCH:?}" && \
 	./bin/update-changelog --version "${MILESTONE:?}"
 
+If you're preparing a release candidate, set the version for the new entry in
+`debian/changelog` to `$VERSION`: the above code has incorrectly set it to
+`$MILESTONE`.
+
 Then, gather other useful information from the diff between the previous
 version's `.packages` file and the one from the to-be-released images:
 
@@ -441,6 +445,7 @@ Included website
 
     ./bin/prepare-included-website-for-release
 
+Expect this to take 10-15 minutes.
 While the website is building, if this is not a good time for taking a break,
 you can follow the "Enable OpenPGP signing" instructions.
 
@@ -483,7 +488,7 @@ Build the almost-final images
    with `$TAILS_BUILD_OPTIONS` set like this:
    - Set `defaultcomp`, so we can more accurately optimize our
      SquashFS file ordering.
-   - Do _not_ set `keeprunning` nor `rescue`.
+   - Do _not_ set `keeprunning`, nor `ignorechanges`, nor `rescue`.
 
 2. Keep the resulting build artifacts until the end of this release process.
 
