@@ -129,7 +129,10 @@ you need to set a bunch of environment variables.
 
         "${EDITOR:?}" ~/.config/tails/release_management/current.yml
 
-3. Generate the resulting environment variables and export them into your
+3. Ensure there's a `iuks/v2` directory under the directory you specified for
+   `isos` in `~/.config/tails/release_management/local.yml`.
+
+4. Generate the resulting environment variables and export them into your
    environment:
 
         . $(./bin/rm-config generate-environment)
