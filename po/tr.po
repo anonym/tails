@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-10 10:57+0200\n"
-"PO-Revision-Date: 2021-07-12 05:05+0000\n"
+"POT-Creation-Date: 2021-08-18 10:11+0200\n"
+"PO-Revision-Date: 2021-08-11 14:23+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/otf/torproject/language/"
 "tr/)\n"
@@ -1345,13 +1345,12 @@ msgid "Language, administration password, and additional settings"
 msgstr "Dil, yönetim parolası ve diğer ayarlar"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:83
-#, fuzzy
 msgid "Tor Bridges"
-msgstr "Tor Browser"
+msgstr "Tor köprüleri"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:85
 msgid "Save the last bridges that you used to connect to Tor"
-msgstr ""
+msgstr "Tor ile bağlantı kurmak için son kullandığınız köprüleri kaydedin"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:98
 msgid "Browser Bookmarks"
@@ -1443,8 +1442,9 @@ msgstr "Tails kalıcı depolama birimini kur"
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:29
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:313
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:738
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:363
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:502
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:939
 msgid "Error"
 msgstr "Hata"
 
@@ -1840,7 +1840,7 @@ msgid "Set up a password to unlock the screen."
 msgstr "Ekran kilidini açmak için bir parola ayarlayın."
 
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:149
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1831
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2043
 msgid "Password"
 msgstr "Parola"
 
@@ -1951,31 +1951,53 @@ msgstr "Ayrıntılı Bilgi Alın"
 msgid "Tor Connection"
 msgstr "Tor Bağlantısı"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:202
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:535
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:193
+#, fuzzy
+msgid "_Use a bridge that I already know"
+msgstr "Bildiğim bir köprüyü yazacağım"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:234
+msgid ""
+"To save your bridges, <a href=\"doc/first_steps/persistence\">unlock you "
+"Persistent Storage</a>."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:241
+msgid ""
+"To save your bridges, <a href=\"doc/first_steps/persistence\">create a "
+"Persistent Storage</a> on your Tails USB stick."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:261
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:660
 #, python-brace-format
 msgid "Invalid: {exception}"
 msgstr "Geçersiz: {exception}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:214
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:548
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:273
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:673
 msgid "You need to configure an obfs4 bridge to hide that you are using Tor"
 msgstr "Tor kullandığınızı gizlemek için bir obfs4 köprüsü yapılandırmalısınız"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:307
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:321
+#, fuzzy
+msgid "Failed to configure your Persistent Storage"
+msgstr "Tarayıcıyı ayarlanamadı."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:415
 msgid "Connecting to Tor without bridges…"
 msgstr "Köprü kullanmadan Tor bağlantısı kuruluyor…"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:314
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:338
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:422
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:446
 msgid "Connecting to Tor with default bridges…"
 msgstr "Varsayılan köprüler kullanılarak Tor bağlantısı kuruluyor…"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:321
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:429
 msgid "Connecting to Tor with custom bridges…"
 msgstr "Özel köprüler kullanılarak Tor bağlantısı kuruluyor…"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:413
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:538
 msgid ""
 "Connected to Tor successfully!\n"
 "\n"
@@ -1985,19 +2007,19 @@ msgstr ""
 "\n"
 "Artık anonim kalarak engellenmeden Internet üzerinde dolaşabilirsiniz."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:538
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:663
 msgid "Bridge address malformed"
 msgstr "Köprü adresi hatalı"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:554
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:679
 msgid "Setting a bridge is needed if you want to hide that you are using Tor"
 msgstr "Tor kullandığınızı gizlemek istiyorsanız bir köprü ayarlamalısınız"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:826
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:951
 msgid "Are you sure you want to lose progress?"
 msgstr "Değişiklikleri kaybetmek istediğinize emin misiniz?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:830
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:955
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -2042,7 +2064,7 @@ msgid "Tor is not ready. Start Tor Browser anyway?"
 msgstr "Tor hazır değil. Gene de Tor Browser başlatılsın mı?"
 
 #: config/chroot_local-includes/usr/bin/tor-browser:48
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1629
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1824
 msgid "Start Tor Browser"
 msgstr "Tor Browser Başlatılsın"
 
@@ -2467,15 +2489,15 @@ msgstr "İletişim OpenPGP anahtarı geçersiz: %s"
 msgid "Invalid contact OpenPGP public key block"
 msgstr "İletişim OpenPGP herkese açık anahtar bloğu geçersiz"
 
-#: config/chroot_local-includes/usr/local/bin/tca:147
+#: config/chroot_local-includes/usr/local/bin/tca:156
 msgid "You turned on Offline Mode in the Welcome Screen."
 msgstr "Karşılama ekranından Çevrimdışı Kipi etkinleştirdiniz."
 
-#: config/chroot_local-includes/usr/local/bin/tca:148
+#: config/chroot_local-includes/usr/local/bin/tca:157
 msgid "It is impossible to connect to Tor in Offline Mode."
 msgstr "Çevrimdışı kipte Tor ile bağlantı kurulamaz."
 
-#: config/chroot_local-includes/usr/local/bin/tca:149
+#: config/chroot_local-includes/usr/local/bin/tca:158
 msgid "To connect to Tor and the Internet, restart Tails without Offline Mode."
 msgstr ""
 "Tor ve İnternet bağlantısı kurmak için Çevrimdış Kipi kapatıp Tails "
@@ -2913,12 +2935,19 @@ msgstr "Gönder"
 msgid "TrueCrypt/VeraCrypt container"
 msgstr "TrueCrypt/VeraCrypt kapsayıcısı"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:55
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:966
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:21
+msgid "image"
+msgstr ""
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:75
 msgid "Configure a Tor bridge"
 msgstr "Bir Tor köprüsü yapılandırın"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:71
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:81
+msgid "heading"
+msgstr ""
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:99
 msgid ""
 "Bridges are secret Tor relays. Use a bridge as your first Tor relay if "
 "accessing Tor is blocked from where you are."
@@ -2926,38 +2955,41 @@ msgstr ""
 "Köprüler gizli Tor aktarıcılarıdır. Bulunduğunuz yerde Tor ağı ile bağlantı "
 "kurulması engelleniyorsa ilk Tor aktarıcınız olarak bir köprü kullanın."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:87
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:115
 msgid "<a href=\"doc/anonymous_internet/tor\">Learn more about Tor bridges</a>"
 msgstr ""
 "<a href=\"doc/anonymous_internet/tor\">Tor köprüleri hakkında ayrıntılı "
 "bilgi alın</a>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:123
-msgid "Use a default bridge"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:151
+#, fuzzy
+msgid "Use a _default bridge"
 msgstr "Varsayılan köprülerden biri kullanılsın"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:142
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:175
 msgid "obfs4 (recommended)"
 msgstr "obfs4 (önerilir)"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:143
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:176
 msgid "meek"
 msgstr "meek"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:166
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1139
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:202
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1338
 msgid "None"
 msgstr "Hiçbiri"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:194
-msgid "Request a new bridge"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:230
+#, fuzzy
+msgid "_Request a new bridge"
 msgstr "Yeni köprü isteğinde bulun"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:227
-msgid "Type in a bridge that I already know"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:265
+#, fuzzy
+msgid "_Type in a bridge that I already know"
 msgstr "Bildiğim bir köprüyü yazacağım"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:245
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:288
 msgid ""
 "Currently in Tails, only obfs4 bridges hide that you are using Tor.\n"
 "\n"
@@ -2974,35 +3006,54 @@ msgstr ""
 "obfs4 köprü isteğinde bulunmak için, bir Gmail ya da Riseup adresinden\n"
 "<tt>bridges@torproject.org</tt> adresine boş bir e-posta gönderin.\n"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:363
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:772
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1180
-msgid "Connect to _Tor"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:391
+#, fuzzy
+msgid "Save bridges to _Persistent Storage"
+msgstr "Kalıcı Depolama Birimi Oluştur"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:416
+#, fuzzy
+msgid "Save bridges to Persistent Storage"
+msgstr "Kalıcı Depolama Birimi Oluştur"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:417
+msgid "toggle-button"
+msgstr ""
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:557
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:976
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1376
+#, fuzzy
+msgid "_Connect to Tor"
 msgstr "_Tor Bağlantısı Kur"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:410
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:607
 msgid "Error connecting to Tor"
 msgstr "Tor bağlantısı kurulurken sorun çıktı"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:433
-msgid "• Wrong time"
-msgstr ""
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:630
+#, fuzzy
+msgid "• Wrong clock"
+msgstr "• Saat yanlış"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:453
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:650
 msgid ""
 "To prevent network attacks, your time zone and clock need to be correct to "
 "connect to Tor using bridges."
 msgstr ""
+"Ağ saldırılarını engellemek ve Tor köprülerini kullanarak bağlantı kurmak "
+"için saat dilimi ve saat ayarının doğru yapılmış olması gereklidir."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:466
-msgid "Set Time"
-msgstr ""
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:663
+#, fuzzy
+msgid "Fix _Clock"
+msgstr "Saat"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:503
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:700
 msgid "• Public network"
 msgstr "• Herkese açık ağ"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:523
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:720
 msgid ""
 "If you are in a shop, hotel, or airport, you might need to sign in to the "
 "local network using a captive portal."
@@ -3010,15 +3061,16 @@ msgstr ""
 "Mağaza, otel ya da hava alanı gibi bir yerdeyseniz, kısıtlama portalı "
 "sayfasını kullanarak yerel ağda oturum açmanız istenebilir."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:536
-msgid "Try Signing in to the Network"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:733
+#, fuzzy
+msgid "Try _Signing in to the Network"
 msgstr "Ağda oturum açmayı deneyin"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:573
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:771
 msgid "• Local proxy"
 msgstr "• Yerel vekil sunucu"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:593
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:791
 msgid ""
 "If you are on a corporate or university network, you might need to configure "
 "a local proxy."
@@ -3026,15 +3078,15 @@ msgstr ""
 "Kurum ya da üniversite gibi bir yerdeyseniz bir yerel vekil sunucu "
 "yapılandırmanız gerekebilir."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:606
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:804
 msgid "Configure a Local _Proxy"
 msgstr "Bir Yerel _Vekil Sunucu Yapılandır"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:644
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:842
 msgid "• Bridges over email"
 msgstr "• E-posta ile köprü almak"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:664
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:862
 msgid ""
 "To request new Tor bridges, you can also:\n"
 "\n"
@@ -3050,15 +3102,15 @@ msgstr ""
 "\n"
 "2. Aşağıya e-posta ile gönderilen köprüleri yazın."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:810
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1224
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1011
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1419
 msgid ""
 "Everything you do on the Internet from Tails goes through the Tor network."
 msgstr ""
 "İnternet üzerinde Tails uygulaması ile yaptığınız her şey Tor ağından geçer."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:825
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1239
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1025
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1434
 msgid ""
 "Tor encrypts and anonymizes your connection by passing it through 3 relays.\n"
 "Tor relays are servers operated by different organizations and volunteers "
@@ -3068,11 +3120,12 @@ msgstr ""
 "Tor aktarıcıları, tüm dünyadan farklı kuruluşlar ve gönüllüler tarafından "
 "işletilen sunuculardır."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:863
-msgid "<b>Connect to Tor automatically (easier)</b>"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1061
+#, fuzzy
+msgid "<b>Connect to Tor _automatically (easier)</b>"
 msgstr "<b>Tor ile otomatik olarak bağlan (daha kolay)</b>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:911
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1111
 msgid ""
 "We recommend connecting to Tor automatically if you are on a public Wi-Fi "
 "network or if many people in your country use Tor to circumvent censorship."
@@ -3081,7 +3134,7 @@ msgstr ""
 "sansürü atlatmak için Tor kullanıyorsa, Tor ile otomatik bağlantı kurmanızı "
 "öneririz."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:929
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1129
 msgid ""
 "Tails will try different ways of connecting to Tor until it succeeds.\n"
 "\n"
@@ -3093,7 +3146,12 @@ msgstr ""
 "İnternet bağlantınızı izleyen biri, bu girişimlerin bir Tails "
 "kullanıcısından geldiğini belirleyebilir."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1011
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1163
+#, fuzzy
+msgid "Configure a Tor _bridge"
+msgstr "Bir Tor köprüsü yapılandırın"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1209
 msgid ""
 "Tor bridges are secret Tor relays. Use a bridge as your first Tor relay if "
 "connections to Tor are blocked, for example in some countries, by some "
@@ -3111,11 +3169,12 @@ msgstr ""
 "yerel ağınızdan Tor bağlantısı kurmak için köprü gerekip gerekmediğini "
 "otomatik olarak algılar.."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1054
-msgid "<b>Hide to my local network that I'm connecting to Tor (safer)</b>"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1251
+#, fuzzy
+msgid "<b>_Hide to my local network that I'm connecting to Tor (safer)</b>"
 msgstr "<b>Tor bağlantısı kurduğum yerel ağımdan gizlensin (daha güvenli)</b>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1102
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1301
 msgid ""
 "You might need to go unnoticed if using Tor could look suspicious to someone "
 "who monitors your Internet connection."
@@ -3123,7 +3182,7 @@ msgstr ""
 "Tor kullanmak, İnternet bağlantınızı izleyenlerin sizden şüphelenmesine "
 "neden olacaksa, fark edilmemeniz gerekebilir."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1120
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1319
 msgid ""
 "Tails will only connect to Tor after you configured Tor bridges. Bridges are "
 "secret Tor relays that hide that you are connecting to Tor.\n"
@@ -3145,7 +3204,7 @@ msgstr ""
 "Henüz bildiğiniz herhangi bir Tor köprüsü yoksa, halka açık bir Wi-Fi ağı "
 "kullanıyorsanız veya Doğu Yarımküre'deyseniz ek bir ayar yapmanız gerekir."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1168
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1364
 msgid ""
 "<a href=\"doc/anonymous_internet/tor\">Learn more about how Tails connects "
 "to Tor</a>"
@@ -3153,11 +3212,11 @@ msgstr ""
 "<a href=\"doc/anonymous_internet/tor\">Tails Tor ile nasıl bağlantı kuruyor "
 "ayrıntılı bilgi alın</a>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1254
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1449
 msgid "Connect to a local network"
 msgstr "Bir yerel ağ bağlantısı kurun"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1271
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1466
 msgid ""
 "You are not connected to a local network yet. To be able to connect to the "
 "Tor network, you first need to connect to a Wi-Fi, wire, or mobile network."
@@ -3166,184 +3225,198 @@ msgstr ""
 "kurabilmek için öncelikle bir Wi-Fi, kablo ya da mobil ağı ile bağlantı "
 "kurmalısınız."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1283
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1478
 msgid "Open Wi-Fi settings"
 msgstr "Wi-Fi ayarlarını aç"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1332
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1527
 msgid "Testing Internet access…"
 msgstr "İnternet erişimi sınanıyor…"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1372
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1567
 msgid "You have access to the Internet"
 msgstr "İnternet erişiminiz var"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1406
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1601
 msgid "Testing access to Tor…"
 msgstr "Tor erişimi sınanıyor…"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1449
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1644
 msgid "You can connect to Tor"
 msgstr "Tor bağlantısı kurabilirsiniz"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1479
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1674
 msgid "Failed to connect to Tor without bridges."
 msgstr "Köprü kullanmadan Tor bağlantısı kurulamadı."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1495
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1690
 msgid "Your local network is blocking access to Tor."
 msgstr "Yerel ağınızdan Tor bağlantısı kurulması engelleniyor."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1527
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1722
 msgid "Connecting to Tor…"
 msgstr "Tor bağlantıısı kuruluyor…"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1583
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1778
 msgid "Connected to Tor successfully"
 msgstr "Tor bağlantısı kuruldu"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1607
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1802
 msgid "You can now browse the Internet anonymously and uncensored."
 msgstr ""
 "Artık anonim kalarak ve sansüre takılmadan İnternet üzerinde "
 "gezinebilirsiniz."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1648
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1843
 msgid "Open Network Monitor"
 msgstr "Ağ İzleyiciyi Aç"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1662
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1856
 msgid "View Tor Circuits"
 msgstr "Tor Devrelerini Görüntüle"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1676
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1870
 msgid "Reset Tor Connection"
 msgstr "Tor Bağlantısını Sıfırla"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1716
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1910
 msgid "Configure a Local Proxy"
 msgstr "Bir yerel vekil sunucu yapılandırın"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1741
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1935
 msgid "Proxy Type"
 msgstr "Vekil Sunucu Türü"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1755
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1952
 msgid "No proxy"
 msgstr "Vekil sunucu yok"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1756
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1953
 msgid "SOCKS 4"
 msgstr "SOCKS 4"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1757
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1954
 msgid "SOCKS 5"
 msgstr "SOCKS 5"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1758
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1955
 msgid "HTTP / HTTPS"
 msgstr "HTTP / HTTPS"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1774
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1974
 msgid "Address"
 msgstr "Adres"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1788
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1991
 msgid "Username"
 msgstr "Kullanıcı adı"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1802
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2008
 msgid "IP address or hostname"
 msgstr "IP adresi ya da sunucu adı"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1817
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2026
 msgid "Port"
 msgstr "Kapı no"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1911
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2135
 msgid "_Save Proxy Settings"
 msgstr "_Vekil sunucu ayarlarını kaydet"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:7
 #, fuzzy
-msgid "Tor Connection - Set Time"
-msgstr "Tor Bağlantısı"
+msgid "Tor Connection - Fix Clock"
+msgstr "To bağlantısı - Saat ayarı"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:87
-msgid "Select the time zone you want to use"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:100
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:76
 msgid ""
-"Your time zone cannot be used to identify or geolocalize you. Your time zone "
-"will never be sent over the network."
+"To prevent network attacks, your time zone and clock need to be correct to "
+"connect to Tor using bridges.\n"
+"\n"
+"Your time zone and clock cannot be used to identify or geolocalize you. Your "
+"time zone will never be sent over the network and will only be used to fix "
+"your clock and connect to Tor."
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:117
+msgid "Select the time zone you want to use"
+msgstr "Kullanmak istediğiniz saat dilimini seçin"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:134
 msgid "Time zone"
-msgstr ""
+msgstr "Saat dilimi"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:155
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:178
 msgid "Time"
-msgstr ""
+msgstr "Saat"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:188
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:215
 msgid ":"
-msgstr ""
+msgstr ":"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:241
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:269
 msgid "Date"
-msgstr ""
+msgstr "Tarih"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:271
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:303
 msgid "January"
-msgstr ""
+msgstr "Ocak"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:272
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:304
 msgid "February"
-msgstr ""
+msgstr "Şubat"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:273
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:305
 msgid "March"
-msgstr ""
+msgstr "Mart"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:274
-msgid "Aprile"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:275
-msgid "May"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:276
-msgid "June"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:277
-msgid "July"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:278
-msgid "August"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:279
-msgid "September"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:280
-msgid "October"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:281
-msgid "November"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:282
-msgid "December"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:324
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:306
 #, fuzzy
+msgid "April"
+msgstr "Nisan"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:307
+msgid "May"
+msgstr "Mayıs"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:308
+msgid "June"
+msgstr "Haziran"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:309
+msgid "July"
+msgstr "Temmuz"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:310
+msgid "August"
+msgstr "Ağustos"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:311
+msgid "September"
+msgstr "Eylül"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:312
+msgid "October"
+msgstr "Ekim"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:313
+msgid "November"
+msgstr "Kasım"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:314
+msgid "December"
+msgstr "Aralık"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:360
 msgid "Clock"
-msgstr "Kilidi Aç"
+msgstr "Saat"
+
+#~ msgid "Set Time"
+#~ msgstr "Saat ayarı"
+
+#~ msgid ""
+#~ "Your time zone cannot be used to identify or geolocalize you. Your time "
+#~ "zone will never be sent over the network."
+#~ msgstr ""
+#~ "Saat diliminiz kimliğinizi belirlemek ya da coğrafi konumunuzu öğrenmek "
+#~ "için kullanılamaz. Saat diliminiz hiç bir zaman ağa gönderilmez."
