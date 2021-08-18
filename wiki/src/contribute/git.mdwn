@@ -192,7 +192,7 @@ team, please skip to the _Puppet modules_ section below.
 
         Host git.puppet.tails.boum.org
 		    HostName 2utzcq6igi4egjhojn46campt6jeriypxpffsmbsmanbhfv2radglkqd.onion
-		    ProxyCommand torsocks monkeysphere ssh-proxycommand %h %p
+		    ProxyCommand /bin/nc -X 5 -x 127.0.0.1:9050 %h %p
 
 2. Clone our private Puppet manifests repository:
 
