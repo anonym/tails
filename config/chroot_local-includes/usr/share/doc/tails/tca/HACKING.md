@@ -51,12 +51,12 @@ Simulate a slow network
 
 Use libvirt's own QoS support: https://libvirt.org/formatnetwork.html#elementQoS
 
-For example, to limit bandwidth to 12 KiB/s, add to the `<interface
+For example, to limit bandwidth to 24 KiB/s, add to the `<interface
 type="network">` section:
 
     <bandwidth>
-      <inbound average="12" peak="12"/>
-      <outbound average="12" peak="12"/>
+      <inbound average="24" peak="24"/>
+      <outbound average="24" peak="24"/>
     </bandwidth>
 
 Command line options
