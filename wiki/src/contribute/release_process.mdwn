@@ -711,7 +711,9 @@ To verify that Jenkins reproduced your images:
 
             . $(./bin/rm-config generate-environment --stage reproduced-images)
 
-   - If there is a hash mismatch for one of the images: ouch! Now we are in a
+   - Else, if there is a hash mismatch for one of the images: ouch!
+
+     Now we are in a
      tricky situation: on the one hand it seems like a poor idea to
      block users from benefiting from this release's security updates,
      but on the other hand the failure might imply that something
@@ -782,7 +784,8 @@ Else, if preparing a final release:
 Generate the OpenPGP signatures and Torrents
 ============================================
 
-Create a directory with a suitable name, go there, move the built
+Run the following command
+to create a directory with a suitable name, go there, move the built
 images to this brand new directory, generate detached OpenPGP
 signatures for the images to be published (in the same directory as the
 images and with a `.sig` extension), then go up to the parent
@@ -899,7 +902,7 @@ repo, so that:
  - The Jenkins `build_IUKs` job can fetch them.
  - Our isotesters can fetch them from there for their testing.
 
-Make sure that Jenkins has finished building so you have set
+Make sure that Jenkins has finished building the images so you have set
 `MATCHING_JENKINS_IMAGES_BUILD_ID` (see above), then run:
 
     cd "${RELEASE_CHECKOUT:?}" && \
