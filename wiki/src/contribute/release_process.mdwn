@@ -664,6 +664,10 @@ suite should be ready, so it is time to:
 1. Make sure the Jenkins build starts as soon as possible. If needed, remove
    other builds from the _Build Queue_ or cancel other running builds.
 
+   This could be a good time for break, because it takes quite a long time; but ensure Jenkins build actually
+   started, and it is about the right tag: you can recognize this is the case, when you see Jenkins starts
+   building the website.
+
 1. Compare the new build manifest with the one from the previous,
    almost-final build:
 
@@ -854,7 +858,7 @@ Build the Incremental Upgrade Kits locally
 
 Verify there's enough free disk space in `$IUKS_DIR`:
 
-    MIN_DISK_SPACE=15000
+    MIN_DISK_SPACE=30000
     FREE_DISK_SPACE=$(/bin/df --block-size=M --output=avail "${IUKS_DIR:?}" \
        | tail -n1 | sed --regexp-extended 's,M$,,')
     if [ "$FREE_DISK_SPACE" -lt "$MIN_DISK_SPACE" ]; then
