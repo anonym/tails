@@ -545,7 +545,7 @@ the release:
          sleep 5
       done && \
       ssh reprepro@incoming.deb.tails.boum.org \
-         tails-merge-suite "$RELEASE_BRANCH" "$TAG"
+         tails-merge-suite "${RELEASE_BRANCH:?}" "${TAG:?}"
 
 Tagged snapshots of upstream APT repositories
 ---------------------------------------------
