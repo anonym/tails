@@ -399,11 +399,21 @@ Update the Changelog entry for the release you're preparing:
 Then, gather other useful information from the diff between the previous
 version's `.packages` file and the one from the to-be-released images:
 
-1. Generate the diff:
+1. Generate the diff.
+
+   If you're preparing a final release:
+
+       NEW_BRANCH="$RELEASE_BRANCH"
+
+   Else, if you're preparing a release candidate:
+
+       NEW_BRANCH=devel
+
+   Then, in any case:
 
         diff --color=never -u \
            "wiki/src/torrents/files/tails-amd64-${PREVIOUS_STABLE_VERSION}.packages" \
-           <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${RELEASE_BRANCH}/lastSuccessful/archive/latest.packages") \
+           <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/latest.packages") \
         | wdiff --diff-input  --terminal
 
 2. In the diff, look for:
