@@ -185,8 +185,10 @@ Sanity check
 Visit the [Jenkins RM view](https://jenkins.tails.boum.org/view/RM/)
 and check that the jobs for the release branch have good enough results:
 
- - the last build and reproducibility testing builds have succeeded for the release branch
- - look at the last build of the relevant `test_Tails_ISO_RELEASEBRANCH` job;
+ - the last build and reproducibility testing builds have succeeded for:
+   - if you're preparing a final release: the release branch
+   - else, if you're preparing a release candidate: the `devel` branch
+ - look at the last build of the corresponding `test_Tails_ISO_*` job;
    if anything looks unusual or fishy, check the few previous builds
    to see if it's a one-off robustness issue, a serious regression,
    or what not.
