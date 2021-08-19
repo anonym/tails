@@ -980,10 +980,14 @@ Build the Incremental Upgrade Kits on Jenkins
 Verify that Jenkins reproduced your IUKs
 ----------------------------------------
 
+Run this command to verify that Jenkins reproduced your IUKs:
+
     "${RELEASE_CHECKOUT:?}"/bin/copy-iuks-to-rsync-server-and-verify \
        --hashes-file "${IUKS_HASHES:?}" \
        --work-dir /srv/tmp \
        --jenkins-build-id "${CANDIDATE_JENKINS_IUKS_BUILD_ID:?}"
+
+The download step takes a few minutes.
 
 If this verification succeeds, move on to the next section.
 
@@ -1005,7 +1009,8 @@ Else, if this verification fails, then:
 
    Else, if the parameters where correct, then follow the next steps.
 
-3. Leave the IUKs built by Jenkins in `rsync.lizard:/srv/tmp`: at least in some
+3. Leave the IUKs built by Jenkins where they already are
+   (in `rsync.lizard:/srv/tmp`): at least in some
    cases, this will speed up uploading your own IUKs later by a 500+ factor,
    thanks to `rsync --partial --inplace`.
 
@@ -1050,7 +1055,7 @@ Prepare upgrade-description files
       in the example command below do. You do not need to modify them.
 
     2. For every recent previous release that's _not_ listed in
-       `$IUK_SOURCE_VERSIONS` (i.e. those based on an older Debian
+       `$IUK_SOURCE_VERSIONS` (for example those based on an older Debian
        release): tell the users of that old version they need to
        manually upgrade to the version being released.
 
