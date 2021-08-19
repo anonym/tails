@@ -545,7 +545,7 @@ the release:
          sleep 5
       done && \
       ssh reprepro@incoming.deb.tails.boum.org \
-         tails-merge-suite "$RELEASE_BRANCH" "$TAG"
+         tails-merge-suite "${RELEASE_BRANCH:?}" "${TAG:?}"
 
 Tagged snapshots of upstream APT repositories
 ---------------------------------------------
@@ -664,6 +664,10 @@ suite should be ready, so it is time to:
 1. Make sure the Jenkins build starts as soon as possible. If needed, remove
    other builds from the _Build Queue_ or cancel other running builds.
 
+   This could be a good time for break, because it takes quite a long time; but ensure Jenkins build actually
+   started, and it is about the right tag: you can recognize this is the case, when you see Jenkins starts
+   building the website.
+
 1. Compare the new build manifest with the one from the previous,
    almost-final build:
 
@@ -711,7 +715,9 @@ To verify that Jenkins reproduced your images:
 
             . $(./bin/rm-config generate-environment --stage reproduced-images)
 
-   - If there is a hash mismatch for one of the images: ouch! Now we are in a
+   - Else, if there is a hash mismatch for one of the images: ouch!
+
+     Now we are in a
      tricky situation: on the one hand it seems like a poor idea to
      block users from benefiting from this release's security updates,
      but on the other hand the failure might imply that something
@@ -782,7 +788,8 @@ Else, if preparing a final release:
 Generate the OpenPGP signatures and Torrents
 ============================================
 
-Create a directory with a suitable name, go there, move the built
+Run the following command
+to create a directory with a suitable name, go there, move the built
 images to this brand new directory, generate detached OpenPGP
 signatures for the images to be published (in the same directory as the
 images and with a `.sig` extension), then go up to the parent
@@ -799,12 +806,16 @@ may start:
 
  - reply to the email you've sent them earlier
 
+ - encrypt and sign your email
+
  - point them to the images that Jenkins has built:
 
         echo "https://nightly.tails.boum.org/build_Tails_ISO_${RELEASE_BRANCH:?}/builds/${MATCHING_JENKINS_IMAGES_BUILD_ID:?}/archive/build-artifacts/"
 
    - if any of the expectations set in your initial email are outdated,
      update them now
+
+   - make it clear that the Torrents don't work yet
 
    - attach the Torrents
 
@@ -847,7 +858,7 @@ Build the Incremental Upgrade Kits locally
 
 Verify there's enough free disk space in `$IUKS_DIR`:
 
-    MIN_DISK_SPACE=15000
+    MIN_DISK_SPACE=30000
     FREE_DISK_SPACE=$(/bin/df --block-size=M --output=avail "${IUKS_DIR:?}" \
        | tail -n1 | sed --regexp-extended 's,M$,,')
     if [ "$FREE_DISK_SPACE" -lt "$MIN_DISK_SPACE" ]; then
@@ -899,7 +910,7 @@ repo, so that:
  - The Jenkins `build_IUKs` job can fetch them.
  - Our isotesters can fetch them from there for their testing.
 
-Make sure that Jenkins has finished building so you have set
+Make sure that Jenkins has finished building the images so you have set
 `MATCHING_JENKINS_IMAGES_BUILD_ID` (see above), then run:
 
     cd "${RELEASE_CHECKOUT:?}" && \
@@ -911,10 +922,6 @@ Make sure that Jenkins has finished building so you have set
 
 Then, wait (a few minutes, `*/15` crontab) until the images appear
 on <https://iso-history.tails.boum.org/?C=M&O=D>.
-
-While waiting, you can prepare the `build_IUKs` job and build in the
-next section. But do **not** click _Build_ until the images have appeared in the
-ISO history.
 
 <a id="build-iuks-on-jenkins"></a>
 
@@ -944,7 +951,7 @@ Build the Incremental Upgrade Kits on Jenkins
 3. After a few seconds, a new build appears on top of the _Build
    History_ sidebar. Click on the progress bar of this new build.
 
-4. Record the ID of the candidate Jenkins `build_IUKs` build:
+4. Record the ID of the Jenkins `build_IUKs` build:
 
    1. To update the `~/.config/tails/release_management/current.yml` template
       with newly required variables, run:
@@ -973,10 +980,14 @@ Build the Incremental Upgrade Kits on Jenkins
 Verify that Jenkins reproduced your IUKs
 ----------------------------------------
 
+Run this command to verify that Jenkins reproduced your IUKs:
+
     "${RELEASE_CHECKOUT:?}"/bin/copy-iuks-to-rsync-server-and-verify \
        --hashes-file "${IUKS_HASHES:?}" \
        --work-dir /srv/tmp \
        --jenkins-build-id "${CANDIDATE_JENKINS_IUKS_BUILD_ID:?}"
+
+The download step takes a few minutes.
 
 If this verification succeeds, move on to the next section.
 
@@ -998,7 +1009,8 @@ Else, if this verification fails, then:
 
    Else, if the parameters where correct, then follow the next steps.
 
-3. Leave the IUKs built by Jenkins in `rsync.lizard:/srv/tmp`: at least in some
+3. Leave the IUKs built by Jenkins where they already are
+   (in `rsync.lizard:/srv/tmp`): at least in some
    cases, this will speed up uploading your own IUKs later by a 500+ factor,
    thanks to `rsync --partial --inplace`.
 
@@ -1043,7 +1055,7 @@ Prepare upgrade-description files
       in the example command below do. You do not need to modify them.
 
     2. For every recent previous release that's _not_ listed in
-       `$IUK_SOURCE_VERSIONS` (i.e. those based on an older Debian
+       `$IUK_SOURCE_VERSIONS` (for example those based on an older Debian
        release): tell the users of that old version they need to
        manually upgrade to the version being released.
 
