@@ -402,9 +402,7 @@ if __name__ == "__main__":
                 user.username,
             )
             if not args.dry_run:
-                raise NotImplementedError(
-                    "User deletion is not implemented yet."
-                )
+                user.delete()
         elif args.action == "delete-user-and-contributions":
             log.info(
                 "Deleting user %s and contributions (previous state: %s): https://gitlab.tails.boum.org/%s",
@@ -413,8 +411,6 @@ if __name__ == "__main__":
                 user.username,
             )
             if not args.dry_run:
-                raise NotImplementedError(
-                    "User deletion is not implemented yet."
-                )
+                user.delete(hard_delete=True)
         else:
             sys.exit("Unsupported action: %s" % args.action)
