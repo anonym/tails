@@ -346,6 +346,12 @@ if __name__ == "__main__":
                         )
                         user.block()
         elif args.action == "delete":
-            raise NotImplementedError("User deletion is not implemented yet.")
+            log.info(
+                "Deleting user %s (previous state: %s)",
+                user_desc,
+                user.state,
+            )
+            if not args.dry_run:
+                raise NotImplementedError("User deletion is not implemented yet.")
         else:
             sys.exit("Unsupported action: %s" % args.action)
