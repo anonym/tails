@@ -127,7 +127,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--action",
         type=str,
-        help="Action to take on selected users, among: deactivate, block, deactivate-or-block, delete",
+        help="Action to take on selected users, among: deactivate, block, deactivate-or-block, delete, delete-user-and-contributions",
     )
 
     # General behavior control
@@ -386,6 +386,22 @@ if __name__ == "__main__":
                 "Deleting user %s (previous state: %s)",
                 user_desc,
                 user.state,
+            )
+            log.info(
+                "https://gitlab.tails.boum.org/admin/users/%s",
+                user.username,
+            )
+            if not args.dry_run:
+                raise NotImplementedError("User deletion is not implemented yet.")
+        elif args.action == "delete-user-and-contributions":
+            log.info(
+                "Deleting user %s and contributions (previous state: %s)",
+                user_desc,
+                user.state,
+            )
+            log.info(
+                "https://gitlab.tails.boum.org/admin/users/%s",
+                user.username,
             )
             if not args.dry_run:
                 raise NotImplementedError("User deletion is not implemented yet.")
