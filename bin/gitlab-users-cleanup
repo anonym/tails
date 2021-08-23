@@ -21,6 +21,38 @@ PYTHON_GITLAB_NAME = os.getenv("GITLAB_NAME", default="Tails")
 LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
 
+LEGIT_USERS = [
+    'amartinr',
+    'anonymousblabla',
+    'AnthonyV',
+    'Ballen',
+    'Brettermaik',
+    'cacahuatl',
+    'cailmdaley',
+    'cipherpunks',
+    'CyrilBrulebois',
+    'Joelsven1',
+    'juris',
+    'Moorm',
+    'nc89',
+    'olabini',
+    'pablonatalino',
+    'rojiro',
+    'saintmichael',
+    'sbrocca',
+    'singuliere',
+    'sjmurdoch',
+    'Sosthene',
+    'Standard8',
+    'sycamoreone',
+    'synthe',
+    'Tanejarahul',
+    'ttailor',
+    'underite',
+    'yawning',
+    'zooko',
+    'zopedi',
+]
 
 if __name__ == "__main__":
     import argparse
@@ -228,6 +260,13 @@ if __name__ == "__main__":
                     args.max_post_sign_up_activity,
                 )
                 continue
+
+        if user.id in LEGIT_USERS:
+            log.debug(
+                "User %s is legit ⇒ skipping",
+                user_desc,
+            )
+            continue
 
         if user.id in group_members_ids:
             log.info(
