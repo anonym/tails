@@ -70,6 +70,12 @@ if __name__ == "__main__":
         help="Only consider users who have not acted on issues more often than this",
     )
     parser.add_argument(
+        "--max-mrs-events",
+        type=int,
+        default=0,
+        help="Only consider users who have not acted on MRs more often than this",
+    )
+    parser.add_argument(
         "--not-in-group",
         type=str,
         default="contributors-team",
@@ -269,6 +275,22 @@ if __name__ == "__main__":
                 "User %s has done at least %i operations on issues ⇒ skipping",
                 user_desc,
                 len(issues_events),
+            )
+            continue
+        mrs_events = [
+            e for e in events if e.target_type in ["merge_request"]
+        ]
+        if len(mrs_events) <= args.max_mrs_events:
+            log.info(
+                "User %s has done less than %i operations on MRs",
+                user_desc,
+                args.max_mrs_events,
+            )
+        else:
+            log.debug(
+                "User %s has done at least %i operations on MRs ⇒ skipping",
+                user_desc,
+                len(mrs_events),
             )
             continue
 
