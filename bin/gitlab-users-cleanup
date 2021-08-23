@@ -148,13 +148,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--min-creation-age",
         type=django.utils.dateparse.parse_duration,
-        required=True,
+        default="57 days",
         help="Only consider users created at least this duration ago",
     )
     parser.add_argument(
         "--min-inactivity",
         type=django.utils.dateparse.parse_duration,
-        required=True,
+        default="56 days",
         help="Only consider users inactive since this duration",
     )
     parser.add_argument(
