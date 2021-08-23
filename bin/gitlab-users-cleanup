@@ -95,16 +95,16 @@ if __name__ == "__main__":
         help="Only consider users who have not signed-in more often than this",
     )
     parser.add_argument(
-        "--max-issues-events",
+        "--max-contribution-events",
         type=int,
-        default=0,
-        help="Only consider users who have not acted on issues more often than this",
+        default=sys.maxsize,
+        help="Only consider users who have not acted on issues or MRs more often than this",
     )
     parser.add_argument(
-        "--max-mrs-events",
+        "--min-contribution-events",
         type=int,
         default=0,
-        help="Only consider users who have not acted on MRs more often than this",
+        help="Only consider users who have acted on issues or MRs at least this often",
     )
     parser.add_argument(
         "--not-in-group",
@@ -302,36 +302,33 @@ if __name__ == "__main__":
             continue
 
         events = user_obj.events.list()
-        issues_events = [
-            e for e in events if e.target_type in ["Note", "DiscussionNote", "Issue"]
+        contribution_events = [
+            e for e in events if e.target_type in ["Note", "DiscussionNote", "Issue", "merge_request"]
         ]
-        if len(issues_events) <= args.max_issues_events:
-            log.info(
-                "User %s has done less than %i operations on issues",
+        if len(contribution_events) <= args.max_contribution_events:
+            log.debug(
+                "User %s has done less than %i contributions",
                 user_desc,
-                args.max_issues_events,
+                args.max_contribution_events,
             )
         else:
             log.debug(
-                "User %s has done at least %i operations on issues ⇒ skipping",
+                "User %s has done at least %i contributions ⇒ skipping",
                 user_desc,
-                len(issues_events),
+                args.max_contribution_events,
             )
             continue
-        mrs_events = [
-            e for e in events if e.target_type in ["merge_request"]
-        ]
-        if len(mrs_events) <= args.max_mrs_events:
-            log.info(
-                "User %s has done less than %i operations on MRs",
+        if len(contribution_events) >= args.min_contribution_events:
+            log.debug(
+                "User %s has done at least %i contributions",
                 user_desc,
-                args.max_mrs_events,
+                args.min_contribution_events,
             )
         else:
             log.debug(
-                "User %s has done at least %i operations on MRs ⇒ skipping",
+                "User %s has done less than %i contributions ⇒ skipping",
                 user_desc,
-                len(mrs_events),
+                args.min_contribution_events,
             )
             continue
 
