@@ -22,36 +22,36 @@ LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
 
 LEGIT_USERS = [
-    'amartinr',
-    'anonymousblabla',
-    'AnthonyV',
-    'Ballen',
-    'Brettermaik',
-    'cacahuatl',
-    'cailmdaley',
-    'cipherpunks',
-    'CyrilBrulebois',
-    'Joelsven1',
-    'juris',
-    'Moorm',
-    'nc89',
-    'olabini',
-    'pablonatalino',
-    'rojiro',
-    'saintmichael',
-    'sbrocca',
-    'singuliere',
-    'sjmurdoch',
-    'Sosthene',
-    'Standard8',
-    'sycamoreone',
-    'synthe',
-    'Tanejarahul',
-    'ttailor',
-    'underite',
-    'yawning',
-    'zooko',
-    'zopedi',
+    "amartinr",
+    "anonymousblabla",
+    "AnthonyV",
+    "Ballen",
+    "Brettermaik",
+    "cacahuatl",
+    "cailmdaley",
+    "cipherpunks",
+    "CyrilBrulebois",
+    "Joelsven1",
+    "juris",
+    "Moorm",
+    "nc89",
+    "olabini",
+    "pablonatalino",
+    "rojiro",
+    "saintmichael",
+    "sbrocca",
+    "singuliere",
+    "sjmurdoch",
+    "Sosthene",
+    "Standard8",
+    "sycamoreone",
+    "synthe",
+    "Tanejarahul",
+    "ttailor",
+    "underite",
+    "yawning",
+    "zooko",
+    "zopedi",
 ]
 
 if __name__ == "__main__":
@@ -162,7 +162,9 @@ if __name__ == "__main__":
     log.debug("Max activity date: %s", max_activity_date)
 
     if args.max_post_sign_up_activity is not None:
-        log.debug("Max post-sign-up activity: %s", args.max_post_sign_up_activity)
+        log.debug(
+            "Max post-sign-up activity: %s", args.max_post_sign_up_activity
+        )
 
     if args.not_in_group is not None:
         group = [
@@ -278,9 +280,17 @@ if __name__ == "__main__":
 
         if args.email_ends_with is not None:
             if user.email.endswith(args.email_ends_with):
-                log.debug("User %s has an email address that ends with %s", user_desc, args.email_ends_with)
+                log.debug(
+                    "User %s has an email address that ends with %s",
+                    user_desc,
+                    args.email_ends_with,
+                )
             else:
-                log.debug("User %s has no email address that ends with %s", user_desc, args.email_ends_with)
+                log.debug(
+                    "User %s has no email address that ends with %s",
+                    user_desc,
+                    args.email_ends_with,
+                )
                 continue
 
         user_obj = gl.users.get(user.id)
@@ -303,7 +313,10 @@ if __name__ == "__main__":
 
         events = user_obj.events.list()
         contribution_events = [
-            e for e in events if e.target_type in ["Note", "DiscussionNote", "Issue", "merge_request"]
+            e
+            for e in events
+            if e.target_type
+            in ["Note", "DiscussionNote", "Issue", "merge_request"]
         ]
         if len(contribution_events) <= args.max_contribution_events:
             log.debug(
@@ -392,7 +405,9 @@ if __name__ == "__main__":
                 user.username,
             )
             if not args.dry_run:
-                raise NotImplementedError("User deletion is not implemented yet.")
+                raise NotImplementedError(
+                    "User deletion is not implemented yet."
+                )
         elif args.action == "delete-user-and-contributions":
             log.info(
                 "Deleting user %s and contributions (previous state: %s)",
@@ -404,6 +419,8 @@ if __name__ == "__main__":
                 user.username,
             )
             if not args.dry_run:
-                raise NotImplementedError("User deletion is not implemented yet.")
+                raise NotImplementedError(
+                    "User deletion is not implemented yet."
+                )
         else:
             sys.exit("Unsupported action: %s" % args.action)
