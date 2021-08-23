@@ -152,6 +152,8 @@ if __name__ == "__main__":
         user_filters["blocked"] = True
     if args.active:
         user_filters["active"] = True
+    if args.deactivated:
+        user_filters["active"] = False
     if args.search is not None:
         user_filters["search"] = args.search
 
