@@ -1314,7 +1314,8 @@ Lead the internal manual testing to conclusion
 
    1. Wait until most mirrors in the pool have the new version:
 
-        ./check-mirrors.rb --channel ${DIST:?} --allow-multiple --fast \
+        ./check-mirrors.rb --channel ${DIST:?} \
+            --allow-multiple --fast --stats \
             tails-amd64-${VERSION:?}
 
    1. Delete "⚠ Wait until the Release Manager […]" in the "Incremental
@@ -1494,7 +1495,8 @@ Test downloading the ISO, USB image, and one of the new IUKs over HTTP.
 
 Check if every active mirror in the pool has the new version:
 
-	./check-mirrors.rb --channel ${DIST:?} --allow-multiple --fast \
+	./check-mirrors.rb --channel ${DIST:?} \
+        --allow-multiple --fast --stats \
         tails-amd64-${VERSION:?}
 
 To disable mirrors that are lagging behind:
