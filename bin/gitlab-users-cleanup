@@ -396,12 +396,9 @@ if __name__ == "__main__":
                         user.block()
         elif args.action == "delete":
             log.info(
-                "Deleting user %s (previous state: %s)",
+                "Deleting user %s (previous state: %s): https://gitlab.tails.boum.org/%s",
                 user_desc,
                 user.state,
-            )
-            log.info(
-                "https://gitlab.tails.boum.org/admin/users/%s",
                 user.username,
             )
             if not args.dry_run:
@@ -410,12 +407,9 @@ if __name__ == "__main__":
                 )
         elif args.action == "delete-user-and-contributions":
             log.info(
-                "Deleting user %s and contributions (previous state: %s)",
+                "Deleting user %s and contributions (previous state: %s): https://gitlab.tails.boum.org/%s",
                 user_desc,
                 user.state,
-            )
-            log.info(
-                "https://gitlab.tails.boum.org/admin/users/%s",
                 user.username,
             )
             if not args.dry_run:
