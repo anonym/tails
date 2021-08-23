@@ -86,7 +86,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "--max-post-sign-up-activity",
         type=django.utils.dateparse.parse_duration,
-        required=True,
         help="Don't consider users who have been active for at least this duration after signing-up",
     )
     parser.add_argument(
@@ -162,7 +161,8 @@ if __name__ == "__main__":
     max_activity_date = now - args.min_inactivity
     log.debug("Max activity date: %s", max_activity_date)
 
-    log.debug("Max post-sign-up activity: %s", args.max_post_sign_up_activity)
+    if args.max_post_sign_up_activity is not None:
+        log.debug("Max post-sign-up activity: %s", args.max_post_sign_up_activity)
 
     if args.not_in_group is not None:
         group = [
