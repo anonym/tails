@@ -506,8 +506,9 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
       btn.labelee.click
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
-        @screen.type(bridge[:line], ['Return'])
+        @screen.type(bridge[:line])
         @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
+        break # We currently support only 1 bridge
       end
       begin
         step 'the Tor Connection Assistant complains that normal bridges are not allowed'
@@ -519,7 +520,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
       end
       if persistent
         toggle_button = tor_connection_assistant.child(
-          'Save bridges to Persistent Storage',
+          'Save bridge to Persistent Storage',
           roleName: 'toggle button'
         )
         assert(!toggle_button.checked)
@@ -533,7 +534,7 @@ end
 
 When /^I disable saving bridges to Persistent Storage$/ do
   toggle_button = tor_connection_assistant.child(
-    'Save bridges to Persistent Storage',
+    'Save bridge to Persistent Storage',
     roleName: 'toggle button'
   )
   assert(toggle_button.checked)
@@ -576,8 +577,10 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
     tor_connection_assistant.child('Use a bridge that I already know',
                                    roleName: 'radio button').checked
   )
-  persistent_bridges_lines = tor_connection_assistant.child(roleName: 'text')
-                                                     .text.chomp.split("\n")
+  persistent_bridges_lines = [
+    tor_connection_assistant.child(roleName: 'text')
+                            .text.chomp,
+  ]
   assert(persistent_bridges_lines.size.positive?)
 end
 
