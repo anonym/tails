@@ -64,9 +64,19 @@ def pidgin_account_connected?(account, prpl_protocol)
   pidgin_force_allowed_dbus_call('PurpleAccountIsConnected', account_id) == 1
 end
 
-def click_mid_right_edge(pattern, **opts)
+def mid_right_edge(pattern, **opts)
   m = @screen.find(pattern, **opts)
-  @screen.click(m.x + m.w, m.y + m.h / 2)
+  [m.x + m.w, m.y + m.h / 2]
+end
+
+def click_mid_right_edge(pattern, **opts)
+  target = mid_right_edge(pattern, **opts)
+  @screen.click(target[0], target[1])
+end
+
+def triple_click_mid_right_edge(pattern, **opts)
+  target = mid_right_edge(pattern, **opts)
+  @screen.click(target[0], target[1], triple: true)
 end
 
 When /^I create my XMPP account$/ do
@@ -262,7 +272,7 @@ end
 
 def chan_image(account, channel, image)
   images = {
-    'conference.riseup.net' => {
+    'chat.disroot.org' => {
       'tails' => {
         'conversation_tab' => 'PidginTailsConversationTab',
         'welcome'          => 'PidginTailsChannelWelcome',
@@ -274,13 +284,9 @@ end
 
 def default_chan(account)
   chans = {
-    'conference.riseup.net' => 'tails',
+    'chat.disroot.org' => 'tails',
   }
   chans[account]
-end
-
-def pidgin_otr_keys
-  $vm.file_content("/home/#{LIVE_USER}/.purple/otr.private_key")
 end
 
 When /^I open Pidgin's account manager window$/ do
@@ -353,20 +359,24 @@ Then /^Pidgin successfully connects to the "([^"]+)" account$/ do |account|
   end
 end
 
-Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, account|
+Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, server|
   $vm.focus_window('Buddy List')
   @screen.wait('PidginBuddiesMenu.png', 20).click
   @screen.wait('PidginBuddiesMenuJoinChat.png', 10).click
   @screen.wait('PidginJoinChatWindow.png', 10).click
   click_mid_right_edge('PidginJoinChatRoomLabel.png')
   @screen.type(channel)
+  # Replace the default server (which is based on the XMPP account
+  # being used by the client)
+  triple_click_mid_right_edge('PidginJoinChatServerLabel.png')
+  @screen.type(server)
   @screen.click('PidginJoinChatButton.png')
-  @chat_room_jid = channel + '@' + account
+  @chat_room_jid = channel + '@' + server
   $vm.focus_window(@chat_room_jid)
   @screen.hide_cursor
   try_for(60) do
     begin
-      @screen.wait(chan_image(account, channel, 'conversation_tab'), 5).click
+      @screen.wait(chan_image(server, channel, 'conversation_tab'), 5).click
     rescue FindFailed => e
       # If the channel tab can't be found it could be because there were
       # multiple connection attempts and the channel tab we want is off the
@@ -376,15 +386,11 @@ Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, account|
     end
   end
   @screen.hide_cursor
-  @screen.wait(chan_image(account, channel, 'welcome'), 10)
+  @screen.wait(chan_image(server, channel, 'welcome'), 10)
 end
 
 Then /^I take note of the configured Pidgin accounts$/ do
   @persistent_pidgin_accounts = configured_pidgin_accounts
-end
-
-Then /^I take note of the OTR key for Pidgin's "(?:[^"]+)" account$/ do
-  @persistent_pidgin_otr_keys = pidgin_otr_keys
 end
 
 Then /^Pidgin has the expected persistent accounts configured$/ do
@@ -395,10 +401,6 @@ Then /^Pidgin has the expected persistent accounts configured$/ do
     "Current:\n#{current_accounts}\n" \
     "Persistent:\n#{@persistent_pidgin_accounts}"
   )
-end
-
-Then /^Pidgin has the expected persistent OTR keys$/ do
-  assert_equal(@persistent_pidgin_otr_keys, pidgin_otr_keys)
 end
 
 def pidgin_add_certificate_from(cert_file)
