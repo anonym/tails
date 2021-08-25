@@ -491,7 +491,9 @@ Given /^Tor is ready$/ do
   if $vm.execute_successfully('tor_control_getconf DisableNetwork', libs: 'tor').stdout.chomp == '1'
     # This variable is initialized to nil in each scenario, and only
     # ever set to true in some previously run step that configures tor
-    # to use PTs, or while blocking/unblocking tor.
+    # to explicitly use PTs; please note that when it is false, it still
+    # means that Tor _might_ be using bridges
+    debug_log('DisableNetwork=1, so we autoconnect')
     assert(!@tor_is_using_pluggable_transports, 'This is a test suite bug!')
     @tor_is_using_pluggable_transports = false
     step 'the Tor Connection Assistant autostarts'
@@ -501,7 +503,19 @@ Given /^Tor is ready$/ do
   # Here we actually check that Tor is ready
   step 'Tor has built a circuit'
   step 'the time has synced'
-  if @tor_is_using_pluggable_transports
+  debug_log('tor_is_using_pluggable_transports = ' \
+           "#{@tor_is_using_pluggable_transports} " \
+           'tor_needs_pluggable_transports = ' \
+           "#{@tor_needs_pluggable_transports}")
+  must_use_pluggable_transports = \
+    if !@tor_is_using_pluggable_transports
+      # In this case, tca is allowing both methods,
+      # and will use PTs depending on network conditions
+      defined?(@tor_needs_pluggable_transports) && @tor_needs_pluggable_transports
+    else
+      true
+    end
+  if must_use_pluggable_transports
     step 'Tor is not confined with Seccomp'
   else
     step 'Tor is confined with Seccomp'
