@@ -634,7 +634,7 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
                                                    if self.live.drive['parent_size']
                                                    else self.live.drive['size'])
                 }
-                if self.devices_with_persistence:
+                if self.live.drive['parent'] in self.devices_with_persistence:
                     delete_message     = _('\n\nThe persistent storage on this USB stick will be lost.')
                     confirmation_label = _('Delete Persistent Storage and Reinstall')
                 else:
