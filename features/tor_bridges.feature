@@ -81,3 +81,16 @@ Feature: Using Tor bridges and pluggable transports
     When I connect the network through GNOME
     Then the Tor Connection Assistant reports that it failed to connect
 
+
+  Scenario: Tor Connection observes user choice of using default bridges on retry, too
+    Given the Tor network and default bridges are blocked
+    When I unsuccessfully configure some default bridges in the Tor Connection Assistant
+    Then the Tor Connection Assistant reports that it failed to connect
+    Given the Tor network and default bridges are unblocked
+    # XXX: Setting the time zone is only useful because we have no way to just retry
+    #      see #18539
+    When I set the time zone in Tor Connection to "UTC"
+    And I click "Connect to Tor"
+    Then Tor is ready
+    And Tor is configured to use the default bridges
+    And all Internet traffic has only flowed through the default bridges
