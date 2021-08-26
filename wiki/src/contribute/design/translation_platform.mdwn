@@ -495,6 +495,26 @@ worked on in November 2019 and laid out before the end of the year
  - [[maintainers's role definition|contribute/working_together/roles/translation_platform]]
  - [[operations documentation|contribute/working_together/roles/translation_platform/operations]]
 
+Add a new language to the Tails website and the bundled offline documentation
+=============================================================================
+
+When a new language is sufficiently translated (especially the core pages),
+this are the steps needed to make it available on our website and ship it with
+new versions of Tails:
+
+- Browse the translation on our staging site and make sure that it has no big
+  issues.
+- Checkout and build locally the weblate repository, and see that there are no
+  errors.
+- Edit the `./ikiwiki.setup` file ([example for Russian locale](https://gitlab.tails.boum.org/tails/tails/-/commit/db7a64d89a5ecd062cfaf2545e03c048351aa19f)):
+  - Remove the locale from the regexp exclude line.
+  - Add locale to `po_slave_languages` list (in alphabetical order).
+- Edit ikiwiki template files:
+  - `wiki/src/templates/news.tmpl` and `wiki/src/templates/page.tmpl` may need
+     some strings as 'Donate' that can be learned from the translation
+     platform.
+- Add .donate and locale bits to wiki/src/local.css
+
 See also
 ========
 
