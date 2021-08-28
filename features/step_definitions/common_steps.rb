@@ -489,7 +489,7 @@ Given /^Tor is ready$/ do
   # through the extra hassle and use bridges, so we simply attempt a
   # direct connection.
   if $vm.execute_successfully('tor_control_getconf DisableNetwork', libs: 'tor').stdout.chomp == '1'
-    # This variable is initialized to nil in each scenario, and only
+    # This variable is initialized to false in each scenario, and only
     # ever set to true in some previously run step that configures tor
     # to explicitly use PTs; please note that when it is false, it still
     # means that Tor _might_ be using bridges
