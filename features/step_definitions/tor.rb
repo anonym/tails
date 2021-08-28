@@ -379,7 +379,7 @@ def tca_configure(mode, connect: true, &block)
   when :easy
     radio_button_label = '<b>Connect to Tor automatically (easier)</b>'
   when :hide
-    @tor_is_using_pluggable_transports = true
+    @user_wants_pluggable_transports = true
     radio_button_label = '<b>Hide to my local network that I\'m connecting to Tor (safer)</b>'
   else
     raise "bad TCA configuration mode '#{mode}'"
@@ -481,9 +481,9 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
   # XXX: giving up on a few worst offenders for now
   # rubocop:disable Metrics/BlockLength
   tca_configure(config_mode) do
-    @tor_is_using_pluggable_transports = bridge_type != 'bridge'
-    debug_log('tor_is_using_pluggable_transports = '\
-              "#{@tor_is_using_pluggable_transports}")
+    @user_wants_pluggable_transports = bridge_type != 'bridge'
+    debug_log('user_wants_pluggable_transports = '\
+              "#{@user_wants_pluggable_transports}")
     if config_mode == :easy
       tor_connection_assistant.child('Configure a Tor _bridge',
                                      roleName: 'check box')
@@ -701,16 +701,7 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
       '/etc/NetworkManager/dispatcher.d/00-firewall.sh'
     )
   end
-  @tor_needs_pluggable_transports =
-    if unblock
-      # Undo what we did in the "else" clause while blocking tor:
-      # once unblocked, we're going to use a direct connection.
-      false
-    else
-      # Tor Connection will fallback to default (obfs4) bridges if
-      # access to the Tor network is blocked
-      true
-    end
+  @tor_network_is_blocked = !unblock
 end
 
 Then /^Tor is configured to use the default bridges$/ do
