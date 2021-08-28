@@ -135,7 +135,9 @@ check_dependencies() {
         fi
         shift
     done
-    tor_version=$(tor --version | head -n1 | awk '{print $3}' | sed --regexp-extended 's,[.]$,,')
+    set -x
+    tor_version=$(tor --version | grep -Po '^Tor version \K.*' | sed --regexp-extended 's,[.]$,,')
+    set +x
     if dpkg --compare-versions "$tor_version" lt "$MINIMUM_TOR_VERSION"; then
 	error "Please upgrade to tor ${MINIMUM_TOR_VERSION} or newer."
     fi
