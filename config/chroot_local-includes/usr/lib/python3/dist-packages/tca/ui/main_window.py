@@ -690,12 +690,15 @@ class StepErrorMixin:
         self._step_error_submit_allowed()
 
     def cb_step_error_btn_submit_clicked(self, *args):
-        self.state["bridge"]["kind"] = "manual"
         text = self.get_object("text").get_property("buffer").get_property("text")
         self.state["bridge"]["bridges"] = TorConnectionConfig.parse_bridge_lines(
             text.split("\n")
         )
-        self.state['hide']['bridge'] = bool(self.state['bridge']['bridges'])
+        # If the user is selecting any bridge, encode it properly
+        # If they are _not_, let's keep the previous settings, which could be default bridges
+        if self.state['bridge']['bridges']:
+            self.state['hide']['bridge'] = True
+            self.state['bridge']['kind'] = 'manual'
         self.change_box("progress")
 
 
