@@ -682,7 +682,7 @@ class StepErrorMixin:
             if bridges:
                 return True
 
-            return self.state["error"]["fix_attempt"]
+            return True
 
         self.get_object("btn_submit").set_sensitive(is_allowed())
 
