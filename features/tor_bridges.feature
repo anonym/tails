@@ -82,7 +82,7 @@ Feature: Using Tor bridges and pluggable transports
     Then the Tor Connection Assistant reports that it failed to connect
 
 
-  Scenario: Tor Connection observes user choice of using default bridges on retry, too
+  Scenario: Tor Connection honors my choice of using default bridges on retry, too
     Given the Tor network and default bridges are blocked
     When I unsuccessfully configure some default bridges in the Tor Connection Assistant
     Then the Tor Connection Assistant reports that it failed to connect
