@@ -583,6 +583,13 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
   assert(persistent_bridges_lines.size.positive?)
 end
 
+
+When /^I retry connecting to Tor$/ do
+  tor_connection_assistant.child('_Connect to Tor',
+                                 roleName: 'push button')
+                          .click
+end
+
 When /^I close the Tor Connection Assistant$/ do
   $vm.execute(
     'pkill -f /usr/lib/python3/dist-packages/tca/application.py'
