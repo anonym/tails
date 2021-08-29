@@ -7,9 +7,6 @@ set -u
 TEXTDOMAIN="tails"
 export TEXTDOMAIN
 
-# Import tor_has_bootstrapped()
-. /usr/local/lib/tails-shell-library/systemd.sh
-
 # Import the TBB_EXT variable.
 . /usr/local/lib/tails-shell-library/tor-browser.sh
 
@@ -61,19 +58,6 @@ show_shutdown_notification () {
     title="$(gettext "Shutting down the Unsafe Browser...")"
     body="$(gettext "This may take a while, and you may not restart the Unsafe Browser until it is properly shut down.")"
     tails-notify-user "${title}" "${body}" 10000
-}
-
-maybe_restart_tor () {
-    # Restart Tor if it's not working (a captive portal may have prevented
-    # Tor from bootstrapping, and a restart is the fastest way to get
-    # wheels turning)
-    if ! tor_has_bootstrapped; then
-        echo "* Restarting Tor"
-        systemctl restart tor@default.service
-        if ! systemctl --quiet is-active tor@default.service; then
-            error "$(gettext "Failed to restart Tor.")"
-        fi
-    fi
 }
 
 # Main script:
@@ -144,6 +128,5 @@ run_browser_in_chroot "${CHROOT}" "${BROWSER_NAME}" "${BROWSER_USER}" \
 
 echo "* Exiting the Unsafe Browser"
 show_shutdown_notification
-maybe_restart_tor
 
 exit 0
