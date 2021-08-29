@@ -549,7 +549,7 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
             self.__button_start.set_sensitive(False)
             self.__button_force_reinstall.set_visible(False)
         self.__box_source.set_sensitive(not self.target_selected)
-        self.__combobox_target.set_sensitive(enabled and not self.target_selected)
+        self.__combobox_target.set_sensitive(not self.target_selected)
 
     def get_selected_drive(self):
         drive = None
