@@ -47,10 +47,8 @@ Feature: Using Tor bridges and pluggable transports
     When I unsuccessfully configure a direct connection in the Tor Connection Assistant
     Then the Tor Connection Assistant reports that it failed to connect
     And tca.conf is empty
-    # TCA does not have a simple "retry" so we restart it
-    And I close the Tor Connection Assistant
     Given the Tor network and default bridges are unblocked
-    And I start "Tor Connection" via GNOME Activities Overview
+    And I retry connecting to Tor
     Then Tor is ready
     And tca.conf includes no bridge
     And available upgrades have been checked
