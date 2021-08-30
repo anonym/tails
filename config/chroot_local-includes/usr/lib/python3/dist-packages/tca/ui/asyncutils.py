@@ -1,6 +1,7 @@
 import os
 from typing import Dict, List, Callable, Optional
 import socket
+from logging import getLogger
 
 import gi
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
@@ -11,6 +12,7 @@ gi.require_version("GLib", "2.0")
 from gi.repository import GObject  # noqa: E402
 from gi.repository import GLib  # noqa: E402
 
+log = getLogger('asyncutils')
 
 class GJsonRpcClient(GObject.GObject):
     """
@@ -56,7 +58,7 @@ class GJsonRpcClient(GObject.GObject):
 
     def call_async(self, method: str, callback: Optional[Callable], *args, **kwargs):
         req = self.protocol.create_request(method, args, kwargs)
-        print('call async', req.unique_id)
+        log.debug('call async', method, args, kwargs, req.unique_id)
         if callback is not None:
             self.connect('response::%d' % req.unique_id, callback)
         output = req.serialize() + "\n"
