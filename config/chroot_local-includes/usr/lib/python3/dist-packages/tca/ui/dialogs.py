@@ -1,25 +1,22 @@
 import datetime
-from typing import Optional
+from typing import Optional, List
 from logging import getLogger
+from collections import defaultdict
 
 import pytz
 import gi
 
+from tailsgreeter.ui.popover import Popover
 import tca.config
 
 gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
 gi.require_version("GLib", "2.0")
+gi.require_version("Pango", "1.0")
 
-from gi.repository import Gdk, GdkPixbuf, Gtk, GLib  # noqa: E402
+from gi.repository import Gdk, GdkPixbuf, Gtk, GLib, Pango  # noqa: E402
 
-log = getLogger('dialogs')
-
-def get_tz_model():
-    store = Gtk.ListStore(str)
-    for tz in pytz.common_timezones:
-        store.append([tz])
-    return store
+log = getLogger("dialogs")
 
 
 def get_time_dialog(initial_tz: Optional[str] = None):
@@ -28,25 +25,11 @@ def get_time_dialog(initial_tz: Optional[str] = None):
     builder.set_translation_domain("tails")
     builder.add_from_file(tca.config.data_path + "time-dialog.ui")
     time_dialog = builder.get_object("dialog")  # noqa: N806
-
-    tz_model = get_tz_model()
-    select_tz = builder.get_object("select_tz")
-    select_tz.set_model(tz_model)
-    if initial_tz:
-        for row in tz_model:
-            if row[0] == initial_tz:
-                select_tz.set_active_iter(row.iter)
-                break
-        else:
-            log.warning("Cannot find user-selected timezone %s", initial_tz)
-
-    renderer_text = Gtk.CellRendererText()
-    select_tz.pack_start(renderer_text, True)
-    select_tz.add_attribute(renderer_text, "text", 0)
-    select_tz.set_entry_text_column(0)
+    popover = TimezonePopover(builder, builder.get_object('listbox_tz_label_heading'))
 
     def get_tz_name(_=None):
-        return tz_model.get_value(select_tz.get_active_iter(), 0)
+        return builder.get_object('listbox_tz_label_value').get_text()
+        # return tz_model.get_value(select_tz.get_active_iter(), 0)
 
     def get_date(_=None):
         spec = {
@@ -59,6 +42,14 @@ def get_time_dialog(initial_tz: Optional[str] = None):
         aware_dt = tz.localize(naive_dt)
         return aware_dt
 
+    def cb_listbox_tz_clicked(*args):
+
+        def on_close(popover, tzpopover):
+            if tzpopover.value_changed_by_user:
+                builder.get_object('listbox_tz_label_value').set_text(tzpopover.value)
+            check_input_valid()
+        popover.popover.open(on_close, popover)
+
     time_dialog.get_date = get_date
     time_dialog.get_tz_name = get_tz_name
 
@@ -69,9 +60,7 @@ def get_time_dialog(initial_tz: Optional[str] = None):
         Let Apply be sensitive accordingly
         """
         def is_valid():
-            if not select_tz.get_active_iter():
-                return False
-            if not tz_model.get_value(select_tz.get_active_iter(), 0):
+            if not time_dialog.get_tz_name():
                 return False
             try:
                 # checks if the date is correct (ie: what about February 31?)
@@ -99,7 +88,7 @@ def get_time_dialog(initial_tz: Optional[str] = None):
         builder.get_object(spin).set_numeric(True)
         builder.get_object(spin).set_increments(1, 6)
 
-    for obj in ["hour", "minute", "day", "year", "select_month", "select_tz"]:
+    for obj in ["hour", "minute", "day", "year", "select_month"]:
         builder.get_object(obj).connect("changed", check_input_valid)
 
     builder.get_object("btn_cancel").connect(
@@ -109,4 +98,113 @@ def get_time_dialog(initial_tz: Optional[str] = None):
         "clicked", lambda *_: time_dialog.response(Gtk.ResponseType.APPLY)
     )
 
+    builder.get_object('listbox_tz').connect("row-activated", cb_listbox_tz_clicked)
+
     return time_dialog
+
+
+class TimezonePopover:
+    def _create_tz_store(self) -> Gtk.TreeStore:
+        self.treestore = Gtk.TreeStore(str)
+        timezones = pytz.common_timezones
+        timezone_tree: List[str] = defaultdict(list)
+        for tz in timezones:
+            if '/' in tz:
+                region, city = tz.split("/", 1)
+                timezone_tree[region].append(tz)
+            else:
+                timezone_tree[tz] = []
+
+        for region in sorted(timezone_tree):
+            regioniter = self.treestore.append(parent=None, row=[region])
+            for city in sorted(timezone_tree[region]):
+                self.treestore.append(parent=regioniter, row=[city])
+
+    def __init__(self, builder, relative_to):
+        self.id = "tz"
+        self.builder = builder
+        self.relative_to = relative_to
+        self._create_tz_store()
+        self.value_changed_by_user = False
+        popover_box = self.builder.get_object("box_{}_popover".format(self.id))
+        self.popover = Popover(self.relative_to, popover_box)
+        self.popover.widget.set_constrain_to(Gtk.PopoverConstraint.NONE)
+        self.popover.widget.set_position(Gtk.PositionType.RIGHT)
+
+        self.treeview = self.builder.get_object("treeview_{}".format(self.id))
+        self.treeview.connect("row-activated", self.cb_treeview_row_activated)
+
+        # Fill the treeview
+        renderer = Gtk.CellRendererText()
+        renderer.props.ellipsize = Pango.EllipsizeMode.END
+        column = Gtk.TreeViewColumn("", renderer, text=0)
+        self.treeview.append_column(column)
+
+        searchentry = self.builder.get_object("searchentry_{}".format(self.id))
+        searchentry.connect("search-changed", self.cb_searchentry_search_changed)
+        searchentry.connect("activate", self.cb_searchentry_activate)
+
+        self.treestore_filtered = self.treestore.filter_new()
+        self.treestore_filtered.set_visible_func(
+            self.cb_liststore_filtered_visible_func, data=searchentry
+        )
+        self.treeview.set_model(self.treestore_filtered)
+
+    def cb_searchentry_activate(self, searchentry, user_data=None):
+        """Selects the topmost item in the treeview when pressing Enter"""
+        if searchentry.get_text():
+            self.treeview.row_activated(
+                Gtk.TreePath.new_from_string("0"), self.treeview.get_column(0)
+            )
+        else:
+            self.popover.close(Gtk.ResponseType.CANCEL)
+
+    def cb_searchentry_search_changed(self, searchentry, user_data=None):
+        self.treestore_filtered.refilter()
+        if searchentry.get_text():
+            self.treeview.expand_all()
+            self.treeview.scroll_to_point(0, 0)  # scroll to top
+        else:
+            self.treeview.collapse_all()
+        return False
+
+    def cb_treeview_row_activated(self, treeview, path, column, user_data=None):
+        treemodel = treeview.get_model()
+        treeiter = treemodel.get_iter(path)
+        if treemodel.iter_parent(treeiter) is None:
+            # user cannot select a parent node like "Europe", because that's not a timezone
+            # XXX: expand/collapse this row would probably be better UX
+            return
+        self.value = treemodel.get_value(treeiter, 0)
+        self.value_changed_by_user = True
+        self.popover.close(Gtk.ResponseType.YES)
+
+    def cb_liststore_filtered_visible_func(self, model, treeiter, searchentry):
+        search_query = searchentry.get_text().lower()
+        value = model.get_value(treeiter, 0).lower()
+
+        if not search_query:
+            return True
+
+        # Does the current node match the search?
+        if search_query in value:
+            return True
+
+        # Does the parent node match the search?
+        treepath = model.get_path(treeiter)
+        parent_treepath = treepath.copy()
+        parent_treepath.up()
+        if parent_treepath.get_depth() == 1:
+            # treepath is now the parent
+            parent_value = model.get_value(model.get_iter(parent_treepath), 0)
+            return search_query in parent_value
+
+        # Does any of the children nodes match the search?
+        children_treeiter = model.iter_children(treeiter)
+        while children_treeiter:
+            child_value = model.get_value(children_treeiter, 0)
+            if search_query in child_value:
+                return True
+            children_treeiter = model.iter_next(children_treeiter)
+
+        return False
