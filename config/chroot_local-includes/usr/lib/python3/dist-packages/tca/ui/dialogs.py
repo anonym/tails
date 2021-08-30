@@ -180,30 +180,28 @@ class TimezonePopover:
         self.popover.close(Gtk.ResponseType.YES)
 
     def cb_liststore_filtered_visible_func(self, model, treeiter, searchentry):
-        search_query = searchentry.get_text().lower()
-        value = model.get_value(treeiter, 0).lower()
+        search_query = searchentry.get_text().replace(' ', '_').lower()
+        value = model.get_value(treeiter, 0)
 
-        if not search_query:
+        def matcher(v: str):
+            return search_query in v.lower()
+
+        if not search_query:  # display everything
             return True
 
         # Does the current node match the search?
-        if search_query in value:
+        if matcher(value):
             return True
 
         # Does the parent node match the search?
-        treepath = model.get_path(treeiter)
-        parent_treepath = treepath.copy()
-        parent_treepath.up()
-        if parent_treepath.get_depth() == 1:
-            # treepath is now the parent
-            parent_value = model.get_value(model.get_iter(parent_treepath), 0)
-            return search_query in parent_value
+        #   In theory that's important; but since we're matching agasint the whole timezone, which includes
+        #   the name of the parent, that's already covered
 
         # Does any of the children nodes match the search?
         children_treeiter = model.iter_children(treeiter)
-        while children_treeiter:
+        while children_treeiter is not None:
             child_value = model.get_value(children_treeiter, 0)
-            if search_query in child_value:
+            if matcher(child_value):
                 return True
             children_treeiter = model.iter_next(children_treeiter)
 
