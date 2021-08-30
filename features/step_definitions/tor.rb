@@ -629,9 +629,10 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   time_dialog = tor_connection_assistant.child('Tor Connection - Fix Clock',
                                                roleName:    'dialog',
                                                showingOnly: true)
-  select_tz = time_dialog.child('Time zone', roleName: 'panel')
-                         .child(roleName: 'combo box')
-  select_tz.combovalue = timezone
+  tz_label = time_dialog.child('Time zone', roleName: 'label')
+  tz_label.click
+  @screen.type(timezone)
+  @screen.pressKey('Enter')
 
   try_for(5) do
     time_dialog.child('Apply', roleName: 'push button').click
