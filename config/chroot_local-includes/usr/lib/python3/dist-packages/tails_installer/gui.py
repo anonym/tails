@@ -432,19 +432,6 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
 
         def add_devices():
             self.__liststore_target.clear()
-            if not len(self.live.drives):
-                self.__infobar.set_message_type(Gtk.MessageType.INFO)
-                self.__label_infobar_title.set_text(
-                        _('No device suitable to install Tails could be found'))
-                self.__label_infobar_details.set_text(
-                        _('Please plug a USB flash drive or SD card of at least %0.1f GB.')
-                        % (CONFIG['official_min_installation_device_size'] / 1000.))
-                self.__infobar.set_visible(True)
-                self.target_available = False
-                self.update_start_button()
-                return
-            else:
-                self.__infobar.set_visible(False)
             self.live.log.debug('drives: %s' % self.live.drives)
             target_list = []
             self.devices_with_persistence = []
@@ -502,11 +489,23 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
                     continue
                 target_list.append([pretty_name, device])
             if len(target_list):
+                self.__infobar.set_visible(False)
                 for target in target_list:
                     self.__liststore_target.append(target)
                 self.target_available = True
                 self.__combobox_target.set_active(0)
                 self.update_start_button()
+            else:
+                self.__infobar.set_message_type(Gtk.MessageType.INFO)
+                self.__label_infobar_title.set_text(
+                        _('No device suitable to install Tails could be found'))
+                self.__label_infobar_details.set_text(
+                        _('Please plug a USB flash drive or SD card of at least %0.1f GB.')
+                        % (CONFIG['official_min_installation_device_size'] / 1000.))
+                self.__infobar.set_visible(True)
+                self.target_available = False
+                self.update_start_button()
+                return
 
         try:
             self.live.detect_supported_drives(callback=add_devices)
