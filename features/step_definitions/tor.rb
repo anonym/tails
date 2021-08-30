@@ -396,8 +396,7 @@ def tca_configure(mode, connect: true, &block)
   block.call if block_given?
   return unless connect
 
-  tor_connection_assistant.child('_Connect to Tor', roleName: 'push button')
-                          .click
+  click_connect_to_tor
   step 'the Tor Connection Assistant connects to Tor'
   @screen.press('alt', 'F4')
 end
@@ -486,9 +485,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
                                      roleName: 'check box')
                               .click
     end
-    tor_connection_assistant.child('_Connect to Tor',
-                                   roleName: 'push button')
-                            .click
+    click_connect_to_tor
     if bridge_type == 'default'
       assert_equal(:easy, config_mode)
       tor_connection_assistant.child('Use a _default bridge',
@@ -571,9 +568,7 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
                                    roleName: 'check box')
                             .checked
   )
-  tor_connection_assistant.child('_Connect to Tor',
-                                 roleName: 'push button')
-                          .click
+  click_connect_to_tor
   assert(
     tor_connection_assistant.child('Use a bridge that I already know',
                                    roleName: 'radio button').checked
@@ -581,13 +576,6 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
   persistent_bridges_lines = tor_connection_assistant.child(roleName: 'text')
                                                      .text.chomp.split("\n")
   assert(persistent_bridges_lines.size.positive?)
-end
-
-
-When /^I retry connecting to Tor$/ do
-  tor_connection_assistant.child('_Connect to Tor',
-                                 roleName: 'push button')
-                          .click
 end
 
 When /^I close the Tor Connection Assistant$/ do
@@ -610,10 +598,17 @@ Then /^the Tor Connection Assistant complains that normal bridges are not allowe
   )
 end
 
-When /^I click "Connect to Tor"$/ do
-  btn = tor_connection_assistant.child('_Connect to Tor')
+def click_connect_to_tor()
+  btn = tor_connection_assistant.child(
+    '_Connect to Tor',
+    roleName: 'push button'
+  )
   assert_equal('True', btn.get_field('sensitive'))
   btn.click
+end
+
+When /^(?:I click "Connect to Tor"|I retry connecting to Tor)$/ do
+  click_connect_to_tor
 end
 
 Then /^I cannot click the "Connect to Tor" button$/ do
