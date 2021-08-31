@@ -157,8 +157,11 @@ class StepChooseBridgeMixin:
         self.builder.get_object("step_bridge_box").show()
         self.builder.get_object("step_bridge_radio_none").set_active(True)
         self.builder.get_object("step_bridge_radio_none").hide()
-        self.builder.get_object("step_bridge_text").get_property("buffer").connect(
-            "changed", self.cb_step_bridge_text_changed
+        self.builder.get_object("step_bridge_text").get_buffer().connect(
+            "inserted_text", self.cb_step_bridge_text_changed
+        )
+        self.builder.get_object("step_bridge_text").get_buffer().connect(
+            "deleted_text", self.cb_step_bridge_text_changed
         )
         hide_mode: bool = self.state["hide"]["hide"]
         if hide_mode:
@@ -188,7 +191,8 @@ class StepChooseBridgeMixin:
             self.get_object("radio_default").set_active(True)
         else:
             self.get_object("radio_type").set_active(True)
-            self.get_object("text").get_property("buffer").set_text("\n".join(bridges))
+            bridge = bridges[0]
+            self.get_object("text").get_buffer().set_text(bridge, len(bridge))
             self.get_object("label_type").set_label(
                 _("_Use a bridge that I already know")
             )
@@ -231,14 +235,14 @@ class StepChooseBridgeMixin:
             # Locked persistence
             if self.app.has_persistence:
                 help_label = _(
-                    "To save your bridges, "
+                    "To save your bridge, "
                     '<a href="doc/first_steps/persistence">'
                     "unlock you Persistent Storage</a>."
                 )
             # No persistence
             else:
                 help_label = _(
-                    "To save your bridges, "
+                    "To save your bridge, "
                     '<a href="doc/first_steps/persistence">'
                     "create a Persistent Storage</a> "
                     "on your Tails USB stick."
@@ -254,9 +258,9 @@ class StepChooseBridgeMixin:
             self.get_object("box_warning").show()
 
         if text is None:
-            text = self.get_object("text").get_property("buffer").get_property("text")
+            text = self.get_object("text").get_buffer().get_text()
         try:
-            bridges = TorConnectionConfig.parse_bridge_lines(text.split("\n"))
+            bridges = TorConnectionConfig.parse_bridge_lines([text])
         except InvalidBridgeTypeException as exc:
             set_warning(_("Invalid: {exception}").format(exception=str(exc)))
             return False
@@ -352,9 +356,9 @@ class StepChooseBridgeMixin:
             ).get_active_id()
         elif manual:
             self.state["bridge"]["kind"] = "manual"
-            text = self.get_object("text").get_property("buffer").get_property("text")
+            text = self.get_object("text").get_buffer().get_text()
             self.state["bridge"]["bridges"] = TorConnectionConfig.parse_bridge_lines(
-                text.split("\n")
+                [text]
             )
             log.info("Bridges parsed: %s", self.state["bridge"]["bridges"])
 
@@ -426,7 +430,7 @@ class StepConnectProgressMixin:
                     self.state["bridge"]["bridges"]
                 )
                 self.get_object("label_status").set_text(
-                    _("Connecting to Tor with custom bridges…")
+                    _("Connecting to Tor with a custom bridge…")
                 )
             else:
                 raise ValueError(
@@ -584,11 +588,15 @@ class StepErrorMixin:
         }
         if coming_from == "progress":
             if self.state['hide']['bridge'] and self.state["bridge"].get("kind") == "manual":
-                self.get_object("text").get_property("buffer").set_property(
-                    "text", "\n".join(self.state["bridge"]["bridges"])
+                bridge = self.state["bridge"]["bridges"][0]
+                self.get_object("text").get_buffer().set_text(
+                    bridge, len(bridge)
                 )
-        self.get_object("text").get_property("buffer").connect(
-            "changed", self.cb_step_error_text_changed
+        self.get_object("text").get_buffer().connect(
+            "inserted_text", self.cb_step_error_text_changed
+        )
+        self.get_object("text").get_buffer().connect(
+            "deleted_text", self.cb_step_error_text_changed
         )
         if coming_from in ["proxy"]:
             self.state["error"]["fix_attempt"] = True
@@ -653,9 +661,9 @@ class StepErrorMixin:
             self.get_object("box_warning").show()
 
         def is_allowed():
-            text = self.get_object("text").get_property("buffer").get_property("text")
+            text = self.get_object("text").get_buffer().get_text()
             try:
-                bridges = TorConnectionConfig.parse_bridge_lines(text.split("\n"))
+                bridges = TorConnectionConfig.parse_bridge_lines([text])
             except InvalidBridgeTypeException as exc:
                 set_warning(_("Invalid: {exception}").format(exception=str(exc)))
                 return False
@@ -690,9 +698,9 @@ class StepErrorMixin:
         self._step_error_submit_allowed()
 
     def cb_step_error_btn_submit_clicked(self, *args):
-        text = self.get_object("text").get_property("buffer").get_property("text")
+        text = self.get_object("text").get_buffer().get_text()
         self.state["bridge"]["bridges"] = TorConnectionConfig.parse_bridge_lines(
-            text.split("\n")
+            [text]
         )
         # If the user is selecting any bridge, encode it properly
         # If they are _not_, let's keep the previous settings, which could be default bridges
@@ -710,7 +718,7 @@ class StepProxyMixin:
         )
 
         for entry in ("address", "port", "username", "password"):
-            buf = self.get_object("entry_" + entry).get_property("buffer")
+            buf = self.get_object("entry_" + entry).get_buffer()
             buf.connect("deleted-text", self.cb_step_proxy_entry_changed)
             buf.connect("inserted-text", self.cb_step_proxy_entry_changed)
             if entry in self.state["proxy"]:
