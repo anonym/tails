@@ -152,6 +152,9 @@ class StepChooseHideMixin:
 
 
 class StepChooseBridgeMixin:
+    def __init__(self):
+        self.persistence_config_failed = False
+
     def before_show_bridge(self, coming_from):
         self.state["bridge"]: Dict[str, Any] = {}
         self.builder.get_object("step_bridge_box").show()
@@ -178,7 +181,6 @@ class StepChooseBridgeMixin:
         self.get_object("box_warning").hide()
         self._step_bridge_init_from_tor_config()
         self._step_bridge_set_actives()
-        self.persistence_config_failed = False
         self._step_bridge_update_persistence_ui()
 
     def _step_bridge_init_from_tor_config(self):
