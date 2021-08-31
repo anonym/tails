@@ -488,7 +488,20 @@ Given /^Tor is ready$/ do
   # case, where it is not important for the test scenario that we go
   # through the extra hassle and use bridges, so we simply attempt a
   # direct connection.
-  if $vm.execute_successfully('tor_control_getconf DisableNetwork', libs: 'tor').stdout.chomp == '1'
+  disable_network = nil
+  # Gather debugging information for #18293
+  try_for(10) do
+    disable_network = $vm.execute_successfully(
+      'tor_control_getconf DisableNetwork', libs: 'tor'
+    ).stdout.chomp
+    if disable_network == ''
+      debug_log('Tor reported claims DisableNetwork is an empty string')
+      false
+    else
+      true
+    end
+  end
+  if disable_network == '1'
     # This variable is initialized to false in each scenario, and only
     # ever set to true in some previously run step that configures tor
     # to explicitly use PTs; please note that when it is false, it still

@@ -53,10 +53,6 @@ systemctl disable cups.service
 systemctl enable  cups.socket
 
 # We're starting NetworkManager and Tor ourselves.
-# We disable tor.service (as opposed to tor@default.service) so that if some
-# other package enables tor@whatever.service someday, disabling tor.service
-# will disable it as well, while disabling tor@default.service would not.
-systemctl disable tor.service
 systemctl disable NetworkManager.service
 systemctl disable NetworkManager-wait-online.service
 
