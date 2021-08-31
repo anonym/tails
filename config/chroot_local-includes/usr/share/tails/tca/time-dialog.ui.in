@@ -112,26 +112,16 @@ Your time zone and clock cannot be used to identify or geolocalize you. Your tim
                         <child>
                           <object class="GtkListBox" id="listbox_tz">
                             <property name="name">listbox_tz</property>
+                            <property name="selection-mode">none</property>
                             <signal name="row-activated" handler="cb_listbox_tz_clicked" swapped="no"/>
                             <child>
                                 <object class="GtkListBoxRow" id="listboxrow_tz">
                                     <child>
-                                        <object class="GtkBox">
-                                            <property name="orientation">horizontal</property>
-                                            <property name="spacing">12</property>
-                                            <child>
-                                                <object class="GtkLabel" id="listbox_tz_label_heading">
-                                                    <property name="label" translatable="yes">Time zone</property>
-                                                    <attributes>
-                                                        <attribute name="weight" value="bold"/>
-                                                    </attributes>
-                                                </object>
-                                            </child>
-                                            <child>
-                                                <object class="GtkLabel" id="listbox_tz_label_value">
-                                                    <property name="label" translatable="yes"></property>
-                                                </object>
-                                            </child>
+                                        <object class="GtkLabel" id="listbox_tz_label_value">
+                                            <property name="xalign">0</property>
+                                            <property name="halign">start</property>
+                                            <property name="margin">8</property>
+                                            <property name="label" translatable="no">UTC (Greenwich time)</property>
                                         </object>
                                     </child>
                                 </object>

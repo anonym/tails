@@ -25,7 +25,10 @@ def get_time_dialog(initial_tz: Optional[str] = None):
     builder.set_translation_domain("tails")
     builder.add_from_file(tca.config.data_path + "time-dialog.ui")
     time_dialog = builder.get_object("dialog")  # noqa: N806
-    popover = TimezonePopover(builder, builder.get_object('listbox_tz_label_heading'))
+    if initial_tz:
+        builder.get_object('listbox_tz_label_value').set_text(initial_tz)
+    popover = TimezonePopover(builder, builder.get_object('listbox_tz_label_value'))
+    DEFAULT_TIMEZONE = 'UTC (Greenwich time)'
 
     def get_tz_name(_=None):
         return builder.get_object('listbox_tz_label_value').get_text()
@@ -38,7 +41,10 @@ def get_time_dialog(initial_tz: Optional[str] = None):
         }
         spec["month"] = int(builder.get_object("select_month").get_active_id())
         naive_dt = datetime.datetime(**spec)
-        tz = pytz.timezone(get_tz_name())
+        tz_name = get_tz_name()
+        if tz_name == DEFAULT_TIMEZONE:
+            tz_name = 'UTC'
+        tz = pytz.timezone(tz_name)
         aware_dt = tz.localize(naive_dt)
         return aware_dt
 
@@ -109,11 +115,10 @@ class TimezonePopover:
         timezones = pytz.common_timezones
         timezone_tree: List[str] = defaultdict(list)
         for tz in timezones:
-            if '/' in tz:
-                region, city = tz.split("/", 1)
-                timezone_tree[region].append(tz)
-            else:
-                timezone_tree[tz] = []
+            if '/' not in tz:  # discard GMT and UTC
+                continue
+            region, city = tz.split("/", 1)
+            timezone_tree[region].append(tz)
 
         for region in sorted(timezone_tree):
             regioniter = self.treestore.append(parent=None, row=[region])
