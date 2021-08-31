@@ -58,7 +58,7 @@ class GJsonRpcClient(GObject.GObject):
 
     def call_async(self, method: str, callback: Optional[Callable], *args, **kwargs):
         req = self.protocol.create_request(method, args, kwargs)
-        log.debug('call async', method, args, kwargs, req.unique_id)
+        log.debug('call async %s %s %s %d', method, args, kwargs, req.unique_id)
         if callback is not None:
             self.connect('response::%d' % req.unique_id, callback)
         output = req.serialize() + "\n"
