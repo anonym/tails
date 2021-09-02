@@ -39,6 +39,6 @@ However, Tails includes non-free firmware in order to work on as much hardware a
 
 email and mailing lists: https://tails.boum.org/about/contact
 
-XMPP: tails@conference.riseup.net and tails-dev@conference.riseup.net
+XMPP: tails@chat.disroot.org and tails-dev@chat.disroot.org
 
 [![Tails](https://tails.boum.org/contribute/how/promote/material/logo/tails-logo-flat.svg)](https://tails.boum.org)

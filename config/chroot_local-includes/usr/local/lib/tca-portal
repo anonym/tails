@@ -5,6 +5,7 @@ This service listens on a unix domain socket and provides a simple interface to 
 It is meant to be run as root.
 """
 
+import re
 import os
 import sys
 import stat
@@ -14,6 +15,8 @@ from logging import getLogger
 import socket
 import time
 from subprocess import Popen
+import multiprocessing
+from typing import List, Optional
 
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol, JSONRPCParseError
 from tinyrpc.protocols import RPCRequest, RPCResponse
@@ -24,9 +27,31 @@ import systemd.daemon
 from tailslib.logutils import configure_logging
 from tailslib.systemd import systemd_ready
 from tailslib.gnome import gnome_env_vars
-from tailslib import LIVE_USERNAME
+from tailslib import (
+    LIVE_USERNAME,
+    PERSISTENCE_CONF_FILE,
+    PERSISTENCE_SETUP_USERNAME,
+)
 
 log = getLogger("tca-portal")
+
+
+# notes about the process model of tca-portal:
+# - tca-portal runs a dedicated process for each incoming connection, thanks to ForkingUnixServer
+# - each Handler spawns a dedicated process to read incoming data
+# - if incoming data is valid, it will spawn a process to manage the actual command process. That's
+#   Handler.run. This method will spawn a Popen. This is the process that the user is actually interested in.
+#   Handler.run will wait for Popen to complete, get results, push data to a queue where Handler.handle will pick it up and send the response
+#
+# tca-portal
+#  + Handler1
+#    …
+#  + Handler2
+#  |-- reader
+#  |-- + run
+#  |   `-- Popen (the actual command that the user wants to run)
+#  `-- + run
+#      `-- Popen (the actual command that the user wants to run)
 
 
 class FDUnixStreamServer(socketserver.UnixStreamServer):
@@ -51,29 +76,80 @@ class ForkingUnixServer(socketserver.ForkingMixIn, FDUnixStreamServer):
     timeout = None
 
 
-class Command:
-    def __init__(self, cmd: list, arguments: bool):
+class InvalidArgsError(InvalidRequestError):
+    pass
+
+
+class BaseCommand:
+    def __init__(self, cmd: List[str], arguments: bool):
         self.cmd = cmd
         self.arguments = arguments
 
+    def validate_request(self, request: RPCRequest) -> None:
+        '''
+        raise if it's not valid
+        '''
+        self.full_command(request)
+
+    def validate_args(self, args: list) -> list:
+        '''
+        Validate or update the command arguments.
+
+        Raise an InvalidRequestError if the arguments are not valid
+
+        This method is meant to be overridden, so that you can easily add validation to your Command
+        '''
+        if not self.arguments and args:
+            raise InvalidArgsError("Arguments are not accepted for this command")
+        return args
+
     def full_command(self, request: RPCRequest) -> list:
-        cmd = self.cmd
-        if self.arguments:
-            cmd = cmd + request.args
+        cmd = self.cmd + self.validate_args(request.args)
         return cmd
 
     def run(self, request: RPCRequest):
         cmd = self.full_command(request)
         log.debug("Running %s", cmd)
-        Popen(cmd)
+        return Popen(cmd)
 
 
-class UserCommand(Command):
+class RootCommand(BaseCommand):
+    pass
+
+
+class UserCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> list:
         drop = ["runuser", "-u", LIVE_USERNAME]
         env = ["env", *gnome_env_vars()]
 
         args = [*drop, "--", *env, *(super().full_command(request))]
+        return args
+
+
+class PersistenceSetupCommand(BaseCommand):
+    def full_command(self, request: RPCRequest) -> list:
+        drop = ["runuser", "-u", PERSISTENCE_SETUP_USERNAME]
+        env = ["env", *gnome_env_vars()]
+
+        args = [*drop, "--", *env, *(super().full_command(request))]
+        return args
+
+
+class SetTimeCommand(RootCommand):
+    def __init__(self):
+        super().__init__(['/usr/local/lib/tails-set-date'], True)
+        # we know our argument is an ISO8601 date whose separator is a T, and with no microseconds
+        self.re = re.compile(r'[0-9+:T-]*')
+
+    def validate_args(self, args: list) -> list:
+        if len(args) != 1:
+            raise InvalidArgsError("Invalid number of arguments")
+        # args[0] should be sth like 2021-08-06T17:38+00:00
+        datestring = args[0]
+        if len(datestring) > 22:
+            raise InvalidArgsError("Datestring too long")
+        if not self.re.fullmatch(datestring):
+            raise InvalidArgsError("Datestring has invalid characters")
         return args
 
 
@@ -100,12 +176,34 @@ class Handler(socketserver.StreamRequestHandler):
         "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
         "open-documentation": UserCommand(["tails-documentation"], True),
         "open-wifi-config": UserCommand(['gnome-control-center', 'wifi'], False),
+        "set-tor-sandbox": RootCommand(['/usr/local/lib/tor-pt-configuration-helper'], True),
+        # It would be nicer to do this in Python without calling out
+        # to external processes, but it would require either implementing
+        # the Popen interface that the portal assumes, or refactoring
+        # the Handler.run and Command.run code a fair bit:
+        # https://gitlab.tails.boum.org/tails/tails/-/merge_requests/544#note_174919
+        "is-tor-configuration-persistent?": PersistenceSetupCommand(
+            ["/usr/local/lib/tails-tor-config-persistence", "is-enabled"],
+            False),
+        "enable-tor-configuration-persistence": PersistenceSetupCommand(
+            ["/usr/local/lib/tails-tor-config-persistence", "enable"],
+            False),
+        "disable-tor-configuration-persistence": PersistenceSetupCommand(
+            ["/usr/local/lib/tails-tor-config-persistence", "disable"],
+            False),
+        "set-system-time": SetTimeCommand(),
     }
     valid_commands = set(spawn_commands.keys())
 
     protocol = JSONRPCProtocol()
 
-    def handle_line(self, line: bytes) -> RPCResponse:
+    def handle_line(self, line: bytes) -> Optional[RPCResponse]:
+        """
+        Parse the line and do what's appropriate.
+
+        Return an RPCResponse only if there is some error.
+        Otherwise, will spawn a dedicated process. the outcome of it will be pushed to outgoing_q
+        """
         try:
             req = self.protocol.parse_request(line)
         except JSONRPCParseError as exc:
@@ -115,22 +213,58 @@ class Handler(socketserver.StreamRequestHandler):
 
         try:
             return self.handle_request(req)
+        except InvalidArgsError:
+            log.error("Invalid arguments: %s", str(req.args))
+            return req.error_respond(error="Invalid arguments")
+        except InvalidRequestError:
+            return req.error_respond(error="Invalid request")
         except Exception:
             log.exception("Error processing request %s", req)
             return req.error_respond(error="Server error")
 
-    def handle_request(self, req: RPCRequest) -> RPCResponse:
+    def handle_request(self, req: RPCRequest) -> Optional[RPCResponse]:
         if req.method not in self.valid_commands:
             return req.error_respond(error="Invalid method")
-        if req.method in self.spawn_commands:
-            cmd = self.spawn_commands[req.method]
-            cmd.run(req)
-            return req.respond(result={"ok": True})
-        return req.error_respond(error="Method not implemented")
+        if req.method not in self.spawn_commands:
+            return req.error_respond(error="Method not implemented")
 
-    def handle(self):
+        cmd = self.spawn_commands[req.method]
+        cmd.validate_request(req)
+        p = multiprocessing.Process(target=self.run, args=(cmd, req))
+        p.start()
+        return None
+
+    def run(self, cmd, req):
+        """
+        Spawn the intended cmd, then wait for it and put the appropriate response in the outgoing_q
+
+        this method is intended to be run in a dedicated Process
+        """
+        process = cmd.run(req)
+        process.communicate()
+        if process.returncode == 0:
+            response = req.respond(result={"returncode": process.returncode})
+        else:
+            # The library we use doesn't seem to support adding the optional "data" parameter to error
+            # responses. We could definitely implement our own subclass, if we ever need that.
+            response = req.error_respond(error="Command failed with returncode %d" % process.returncode)
+        self.outgoing_q.put(response)
+
+    def send(self, response: RPCResponse):
         log = getLogger("traffic")
+        output = response.serialize()
+        log.debug("-> %s", output)
+        output += "\n"
+        self.request.send(output.encode("utf8"))
 
+    def reader(self):
+        """
+        Read from the socket. This method is intended to be run as a dedicated process.
+
+        It reads from the socket, process the data accordingly, and pass it to handle_line (which will spawn
+        dedicated processes for it).
+        """
+        log = getLogger("traffic")
         while True:
             peek_ahead = self.request.recv(self.MAX_LINESIZE, socket.MSG_PEEK)
             if not peek_ahead:
@@ -144,10 +278,20 @@ class Handler(socketserver.StreamRequestHandler):
                 continue
             log.debug("<- %s", line_in)
             response = self.handle_line(line_in.lstrip())
-            output = response.serialize()
-            log.debug("-> %s", output)
-            output += "\n"
-            self.request.send(output.encode("utf8"))
+            if response is not None:
+                self.outgoing_q.put(response)
+
+    def handle(self):
+
+        self.pid = os.getpid()
+        self.outgoing_q = multiprocessing.Queue()
+
+        self.reader = multiprocessing.Process(target=self.reader)
+        self.reader.start()
+
+        while True:
+            response = self.outgoing_q.get()
+            self.send(response)
 
 
 def main():

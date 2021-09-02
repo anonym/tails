@@ -18,9 +18,7 @@ set_mozilla_pref() {
     echo "${prefix}(\"${name}\", ${value});" >> "${file}"
 }
 
-exec_firefox_helper() {
-    local binary="${1}"; shift
-
+exec_firefox() {
     export LD_LIBRARY_PATH="${TBB_INSTALL}"
     export FONTCONFIG_PATH="${TBB_INSTALL}/TorBrowser/Data/fontconfig"
     export FONTCONFIG_FILE="fonts.conf"
@@ -47,15 +45,7 @@ exec_firefox_helper() {
     # From start-tor-browser:
     unset SESSION_MANAGER
 
-    exec "${TBB_INSTALL}"/"${binary}" "${@}"
-}
-
-exec_firefox() {
-    exec_firefox_helper firefox.real "${@}"
-}
-
-exec_unconfined_firefox() {
-    exec_firefox_helper firefox-unconfined "${@}"
+    exec "${TBB_INSTALL}"/firefox.real "${@}"
 }
 
 guess_best_tor_browser_locale() {

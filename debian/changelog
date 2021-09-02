@@ -1,8 +1,388 @@
-tails (4.21) UNRELEASED; urgency=medium
+tails (4.22) UNRELEASED; urgency=medium
 
   * Dummy entry for next release.
 
- -- anonym <anonym@riseup.net>  Tue, 13 Jul 2021 16:33:25 +0200
+ -- boyska <boyska@riseup.net>  Thu, 19 Aug 2021 16:33:25 +0200
+
+tails (4.22~rc1) unstable; urgency=medium
+
+  * Upgrade Thunderbird to 78.13.0-1~deb10u1
+
+  * Persistent Bridges, iteration 4: integrate bridges persistence in Tor
+    Connection (tails/tails!543)
+
+    Commits:
+      - Tor Connection: remove visible border around scrolled window
+      - Drop unneeded grep option
+      - Test suite: be more defensive when interacting with toggle buttons
+      - Test suite: disable step that does not reflect the current implementation
+      - Roadmap--
+      - Mention alternate implementation idea in comment
+      - Fix typo in comment
+      - Make checks closer to our needs
+      - Move shell code from tca-portal to helper script
+      - Make tca-portal helper script more generic
+      - Tor Connection: when pre-filling bridges, adjust the verb from "Type in" to
+        "Use"
+      - Test suite: explain what labelee is
+      - Test suite: adjust to current UI
+      - TCA: fix display on low-height screen resolutions
+      - Test suite: update expected UI text to match current implementation
+      - TCA: correctly set the bridges persistence switch's initial state
+      - TCA: adapt to new tca-portal API
+      - TCA: remove unused imports
+      - TCA: display error when enabling/disabling persistence failed
+      - TCA: check success/failure of portal call when enabling/disabling persistence
+      - Test suite: lint
+      - Test suite: adjust strings to match current implementation
+      - TCA: lock the UI and display a spinner while enabling/disabling persistence
+      - TCA: add another keyboard accelerator
+      - TCA: when toggling bridges persistence, wait the portal call to return a
+        response
+      - TCA: remove unused import
+      - Change usages of call_async to new API
+      - TCA: remove incorrect signal handling
+      - TCA: actually enable/disable Tor bridges persistence when the user asks us to
+      - TCA: display vertical scrollbar when contents does not fit
+      - TCA: hide Network Monitor launcher
+      - Test suite: use the Tor Connection UI to enable bridges persistence
+      - TCA: add skeleton implementation for toggling bridges persistence on/off
+      - TCA: draft bridges Glade UI
+      - TCA: improve keyboard navigation
+      - TCA: add accessibility relationships between a bunch of widgets
+      - TCA: add debug output
+      - TCA: move persistence detection to the wrapper script
+      - TCA: avoid throwing an (invisible) KeyError exception on first launch
+      - Lint.
+
+  * Persistent Bridges, iteration 3: allow persisting bridges (tails/tails!539)
+
+    Commits:
+      - Test suite: lint, again
+      - Test suite: adjust expected owner to actual implementation
+      - TCA: check and save persistence status on startup
+      - tca-portal: add commands to enable/disable persistence of Tor configuration
+      - Test suite: mock functionality that's not implemented yet
+      - Test suite: add step implementation
+      - Test suite: disable incorrect step definition
+      - Test suite: implement steps
+      - Test suite: adjust to expected permissions of /var/lib/tca
+      - Persistence setup: add support for disabling a preset non-interactively
+      - Persistence setup: add a "Tor Bridges" feature
+      - On shutdown, copy to Persistent Storage the Tor configuration that should now
+        persist
+      - Test suite: implement "I accept Tor Connection's offer to use my persistent
+        bridges" step.
+      - Test suite: implement "I choose to connect to Tor automatically" step.
+      - Test suite: extend step to handle configuring persistent bridges.
+      - TDD: add (unimplemented) steps for Tor bridges persistence
+      - Test suite: simplify feature name
+
+  * Persistent Bridges, iteration 2: use settings from tca.conf on first start
+    (tails/tails!538)
+
+    Commits:
+      - Revert "Test suite: cope with current actual behavior"
+      - TCA: rename method to reflect what it now does
+      - TCA: on first run, pre-seed bridges UI state from configuration
+      - TCA: add debug logging to help understand what configuration we've loaded
+      - TCA: add debug output to help figure out whether we loaded tca.conf
+      - TCA: fix loading an empty or invalid configuration file
+      - TCA: on first start, load Tor connection configuration from tca.conf
+
+  * Persistent Bridges, iteration 1: split transient / potentially persistent state
+    (tails/tails!533)
+
+    Commits:
+      - Test suite: cope with current actual behavior
+      - Test suite: adjust to actual implementation
+      - TCA: don't save the default bridges to tca.conf
+      - Test suite: fix buggy "tca.conf is empty" test
+      - Make method name clearer and consistent with read_tca_state()
+      - TCA: Rename method
+      - Fix typo
+      - TCA: Migrate transient state information to a dedicated file
+      - TCA: Rename method
+      - TCA: Refactoring (extract code to functions)
+      - Test suite: Implement new steps
+      - Test suite: lint
+      - TDD: add (unimplemented) steps for the contents of tca.conf
+      - TCA: Disable loading proxy settings from the configuration file
+      - TCA: Set up, pass through, and inherit a new state file
+      - TCA: Remove unused import
+      - TCA: Drop unneeded call to expanduser()
+      - TCA: Only save known-working Tor configuration to tca.conf
+      - TCA: Minor refactoring (avoid having to reason about double-negations)
+      - TCA: Make methods names more specific
+
+  * Stop trying to connect to Tor when we reach the Tor Connection error screen
+    (tails/tails!559)
+
+    Commits:
+      - TCA hacking: add missing sudo
+      - TCA hacking: make test firewall rule not depend on already having connected to
+        tor
+      - TCA hacking: make test firewall rule more accurate
+      - Test suite: adjust to the new, fixed situation
+      - Revert "let's wait for the Fix Clock dialog to show up"
+      - let's wait for the Fix Clock dialog to show up
+      - state machine docstring
+      - minor cleaning use of variables
+      - FIX state machine wrt DisableNetwork
+      - refactor _decide_right_step
+      - remove hopefully-obsolete todo comments
+      - stop trying to connect after timeout
+
+  * Move wait_for_working_tor logic from NetworkManager to systemd
+    (tails/tails!558)
+
+    Commits:
+      - Update links in comment
+      - Drop useless logging
+      - Allow NM to start htpdate again if it failed last time
+      - Clean up implementation of "Does not run htpdate again after success"
+      - Update comment
+      - sw upgrade should only run when tor is ready
+      - waiting for readiness sounds like a pre-command
+      - Does not run htpdate again after success
+      - let's use the flag file, instead of asking tor
+      - systemd-controlled htpdate
+
+  * Add Russian to the bundled offline documentation (tails/tails!552)
+
+    Commits:
+      - enable Russian on our website. will-fix:
+        https://gitlab.tails.boum.org/tails/tails/-/issues/18454
+
+  * vagrant/lib/tails_build_settings.rb: use --no-signature with git log
+    (tails/tails!548)
+
+    Commits:
+      - vagrant/lib/tails_build_settings.rb: use --no-signature with git log
+      - .gitignore: ignore vmdb2.log
+
+  * GJsonRpcClient.call_async can set a callback (tails/tails!544)
+
+    Commits:
+      - tca-portal: add missing sentence bits
+      - Apply 3 suggestion(s) to 1 file(s)
+      - GJsonRpcClient response handler fix
+      - tca-portal is now fully asynchronous
+      - change previous usages of call_async to new API
+      - call_async can set callbacks
+
+  * drop tordate (tails/tails!542)
+
+    Commits:
+      - ooops, that wasn't useless!
+      - Tor Connection: make GtkSpinButton's UI consistent
+      - Tor Connection: add keyboard accelerators
+      - Tor Connection: use "Wrong clock" instead of "Wrong time" terminology
+      - Tor Connection: use "Fix Clock" instead of "Set Time" terminology
+      - Test suite: lint
+      - Test suite: simplify
+      - Test suite: use higher-level predicate
+      - Test suite: remove obsolete exception
+      - htpdate: increase timeout for working tor
+      - drop useless stuff from 10-time.sh
+      - 20-time imports: update comments, fix shellcheck
+      - remove confusing log line
+      - htpdate works successfully after manual time set
+      - tca sends stderr to journal
+      - no reason to delete the tor log anymore
+      - testing for tordate in test suite is now useless
+      - stop mentioning tordate in website
+      - update time syncing design doc
+      - remove unused code from 20-time.sh
+      - be bold: let's drop @fragile from tor bridges!
+      - drop tordate
+
+  * Re-enable the tor sandbox when no PTs are used (tails/tails!535)
+
+    Commits:
+      - Use variable name more readable than $1
+      - Add missing "set -eu"
+      - Test suite: fix typo in not-enabled-yet code
+      - Test suite: prepare sandbox test for when #18470 is fixed
+      - Test suite: adjust to tor sandbox being disabled when falling back to default
+        bridges
+      - Remove unused attribute
+      - Revamp management of the Tor Sandbox configuration option
+      - Lint.
+      - Use consistent and less confusing names for attribute and method
+      - Adjust to new call_async API
+      - Tor Connection: disable caching of information retrieved from tor by Stem
+      - Wait for side-effects of async call to complete.
+      - Improve encapsulation.
+      - Rename tor-sandbox-helper → tor-pt-configuration-helper.
+      - Be defensive about arguments.
+      - Give base-class a better name.
+      - Drop useless re-definition of method in subclass.
+      - Be more Pythonic.
+      - Apply 1 suggestion(s) to 1 file(s)
+      - Test suite: re-enable tor sandbox sanity check (refs: #18237).
+      - Drop unused, out-of-date main() used for testing a library.
+      - Re-enable the tor sandbox when no PTs are used (refs: #18237)
+
+  * TCA: Allow the user to manually set time (tails/tails!531)
+
+    Commits:
+      - time dialog: spacing + follow mockups better
+      - reference to how a problem might be solved
+      - Set time test scenario uses snapshots
+      - stricter date validation
+      - Test suite: lint
+      - Test suite re-introduce linting lost by merge conflict resolution
+      - FIX date format
+      - more bringing back from devel
+      - Tor Connection: translate 1 string to test l10n
+      - Update POT and PO files
+      - bring back lost changes to tor.rb
+      - fix datestring validation
+      - Test suite: revert indentation regression
+      - Test suite: use user-facing terminology in Gherkin
+      - fix test suite about time dialog
+      - loggers are better than prints
+      - tca remembers user timezone
+      - bring back "unsuccessfully configure" step
+      - reorder fixes in the error screen
+      - set-system-time has early input validation
+      - tca-portal can validate arguments
+      - set-system-time errors are handled
+      - less noisy logging
+      - tails-set-date cleaned a bit
+      - tails-set-date checks if the date is valid early
+      - wait for set time window to be closed
+      - rewrite Gherkin using more user-centric language
+      - fix "Apply suggestion"
+      - Apply 1 suggestion(s) to 1 file(s)
+      - tca test: combo box faster and cleaner
+      - Tooltip for combo box
+      - tca-portal is a bit more verbose
+      - when changing the time, tor must be restarted
+      - Test "set the time in tca" does what it says
+      - FIX time dialog
+      - FIX: missing .ui file translation support
+      - Connect to Tor can be clicked
+      - TCA: adds a dialog to Set Time
+      - tca-portal allows setting time
+      - Separate the anti-test from the fix
+      - reword: "I try to" actually check failure
+      - 15548 implementation is "simulated"
+      - test suite: hw clock can be set to relative time
+      - test: cmd_helper modernized
+      - DRAFT: Add a Scenario for #15548
+
+ -- Tails developers <tails@boum.org>  Wed, 18 Aug 2021 11:57:02 +0200
+
+tails (4.21) unstable; urgency=medium
+
+  * Upgrade to Linux 5.10.46-3 (tails/tails!549)
+
+    Closes issues:
+      - Upgrade to Linux 5.10.46-2+ (CVE-2021-33909) (tails/tails#18489)
+
+    Commits:
+      - Update /etc/group's expected lines ordering
+      - Ensure UIDs/GIDs don't change
+      - Remove obsolete dkms logs cleanup
+      - Don't (attempt to) build VirtualBox guest modules anymore
+      - Upgrade snapshot of the Debian archive to 2021080201
+
+  * Upgrade Thunderbird to 78.12.0-1~deb10u1
+  
+  * Don't (attempt to) build VirtualBox guest modules anymore (tails/tails!537)
+
+    Commits:
+      - Update /etc/group's expected lines ordering
+      - Ensure UIDs/GIDs don't change
+      - Remove obsolete dkms logs cleanup
+      - Don't (attempt to) build VirtualBox guest modules anymore
+
+  * Installer: allow choose Upgrade option when reinstall is cancelled
+    (tails/tails!553)
+
+    Closes issues:
+      - Choosing "Upgrade" option in Tails Installer can delete persistent volume
+        (tails/tails#18494)
+
+    Commits:
+      - Installer: allow choose Upgrade option when reinstall is cancelled
+
+  * Upgrade to Tor Browser 10.5.4 (based on Firefox 78.13esr) (tails/tails!555)
+
+    Closes issues:
+      - Upgrade to Tor Browser 10.5.4 (based on Firefox 78.13esr) (tails/tails#18479)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 10.5.4-build1
+
+  * Clean up code and pre-TCA leftovers (tails/tails!541)
+
+    Closes issues:
+      - Clean up pre-TCA leftovers (tails/tails#18365)
+      - Rename a11y-proxy-netns: it's now used for ibus as well (tails/tails#18366)
+
+    Commits:
+      - Give function the name we use
+      - Rename a11y-proxy-netns → netns-bus-proxy.
+      - Rename TCA's torlaunch network namespace from torlaunch to tca.
+      - Update comment.
+      - Test suite: drop obsolete workaround.
+      - Drop already done TODO comment.
+      - Fix outdated references to Tor Launcher.
+      - Drop unneeded workaround.
+      - Test suite: drop code used to support --old-iso for 4.20 release.
+      - Remove unused exec_unconfined_firefox().
+
+  * Refactor and consolidate how we explicitly check for Tor leaks in the automated
+    test suite (tails/tails!540)
+
+    Closes issues:
+      - "all Internet traffic has only flowed through Tor" sometimes fails: does not
+        allow for varying behavior (fallback to default bridges, or not)
+        (tails/tails#18493)
+
+    Commits:
+      - Test suite: refactor and consolidate how we explicitly check for Tor leaks.
+      - Revert "Test suite: temporarily disable failing step in scenario."
+
+  * Post-RM: doc improvements (tails/tails!528)
+
+    Commits:
+      - clarify release types
+      - after releasing: give more guidance
+      - one less bashism
+      - rm doc: give manual testers the signatures
+      - some parts are not related to freeze
+      - refresh-translations explains that it failed
+      - rm doc: clarify what to do with the package diff
+      - rm doc: clarify freezing
+
+  * Fix usage of mutable default arguments in Python (tails/tails!527)
+
+    Commits:
+      - Fix usage of mutable default arguments in Python
+
+  * More automated testing of TCA for Sponsor08/10 (tails/tails!435)
+
+    Commits:
+      - Refactor.
+      - Clarify.
+      - Clarify.
+      - Test suite: wait longer for the TCA to report errors.
+      - Test suite: test that TCA reports an error when reconnecting to a network where
+        Tor is blocked.
+      - Test suite: drop unnecessary step.
+      - Test suite: make blocking Tor survive reconnections.
+      - Test suite: monitor Tor leaks.
+      - Fix erroneous camel casing in translation.
+      - Test suite: test explicitly selecting default bridges in TCA.
+      - Test suite: test that the same Tor config is applied if TCA reconnects.
+      - Test suite: test that TCA disallows normal bridges in hide mode.
+
+ -- Tails developers <tails@boum.org>  Mon, 09 Aug 2021 07:55:57 +0000
 
 tails (4.20) unstable; urgency=medium
 
