@@ -632,7 +632,7 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   tz_label = time_dialog.child('UTC (Greenwich time)', roleName: 'label')
   tz_label.click
   @screen.type(timezone)
-  @screen.pressKey('Enter')
+  @screen.press('Return')
 
   try_for(5) do
     time_dialog.child('Apply', roleName: 'push button').click
