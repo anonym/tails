@@ -493,7 +493,7 @@ Given /^Tor is ready$/ do
   # Gather debugging information for #18293
   try_for(10) do
     $vm.execute('pidof tor')
-    $vm.execute('lsof -i :9052')
+    $vm.execute('fuser --namespace tcp 9052')
     $vm.execute('systemctl status tor@default.service')
     disable_network = $vm.execute_successfully(
       'tor_control_getconf DisableNetwork', libs: 'tor'
