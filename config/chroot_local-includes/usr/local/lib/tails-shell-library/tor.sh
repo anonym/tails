@@ -27,7 +27,11 @@ try:
     if controller == None:
         raise stem.SocketError("Cannot connect to Tor's control port")
     controller.authenticate()
-    ${1}
+$(
+    echo "${1}" | while IFS= read line; do
+        echo "    ${line}"
+    done
+)
     exit(0)
 except Exception as e:
     print(f"{type(e).__name__}: {str(e).strip()}", file=sys.stderr)
