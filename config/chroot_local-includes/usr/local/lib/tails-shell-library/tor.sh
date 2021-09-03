@@ -77,7 +77,7 @@ while ${timeout} <= 0 or time.time() < stop_time:
         try:
             progress = controller.get_info('status/bootstrap-phase').split()[2].split('=')[1]
         except ValueError:
-            progress = 0
+            progress = '0'
         enough_dir_info = controller.get_info('status/enough-dir-info')
         if enough_dir_info == '1' and progress == '100':
             exit(0)
