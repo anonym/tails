@@ -74,12 +74,15 @@ import time
 stop_time = time.time() + ${timeout}
 while ${timeout} <= 0 or time.time() < stop_time:
     try:
-        progress = controller.get_info('status/bootstrap-phase').split()[2].split('=')[1]
-    except ValueError:
-        progress = 0
-    enough_dir_info = controller.get_info('status/enough-dir-info')
-    if enough_dir_info == '1' and progress == '100':
-        exit(0)
+        try:
+            progress = controller.get_info('status/bootstrap-phase').split()[2].split('=')[1]
+        except ValueError:
+            progress = 0
+        enough_dir_info = controller.get_info('status/enough-dir-info')
+        if enough_dir_info == '1' and progress == '100':
+            exit(0)
+    except (stem.SocketClosed, stem.SocketError):
+        controller.reconnect()
     time.sleep(1)
 exit(1)
 "
