@@ -61,43 +61,11 @@ tor_bootstrap_progress() {
 }
 
 # Only use this if you truly want a one-off check, otherwise consider
-# using tor_wait_until_bootstrapped() which avoids firing up a new
-# python interpreter for each check.
+# /usr/local/lib/tor_wait_until_bootstrapped which avoids firing up a
+# new python interpreter for each check.
 tor_is_working() {
 	[ "$(tor_bootstrap_progress)" -eq 100 ] && \
 	    [ "$(tor_control_getinfo status/enough-dir-info)" -eq 1 ]
-}
-
-tor_wait_until_bootstrapped() {
-    local timeout
-    timeout="${1:-0}"
-    python3 <<EOF
-import stem
-import stem.connection
-import time
-stop_time = time.time() + ${timeout}
-controller = None
-while ${timeout} <= 0 or time.time() < stop_time:
-    try:
-        if controller == None:
-            controller = stem.connection.connect(
-                           control_port=('127.0.0.1', '$(tor_control_port)')
-                         )
-            if controller == None:
-                raise stem.SocketError
-            controller.authenticate()
-        try:
-            progress = controller.get_info('status/bootstrap-phase').split()[2].split('=')[1]
-        except ValueError:
-            progress = '0'
-        enough_dir_info = controller.get_info('status/enough-dir-info')
-        if enough_dir_info == '1' and progress == '100':
-            exit(0)
-    except (stem.SocketClosed, stem.SocketError):
-        controller = None
-    time.sleep(1)
-exit(1)
-EOF
 }
 
 tor_append_to_torrc () {

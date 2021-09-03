@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+
+import stem
+import stem.connection
+import sys
+import time
+
+try:
+    timeout = float(sys.argv[1])
+except IndexError:
+    timeout = -1.0
+stop_time = time.time() + timeout
+controller = None
+while timeout < 0.0 or time.time() < stop_time:
+    try:
+        if controller == None:
+            controller = stem.connection.connect(
+                           control_port=('127.0.0.1', 9052)
+                         )
+            if controller == None:
+                raise stem.SocketError
+            controller.authenticate()
+        try:
+            progress = controller.get_info('status/bootstrap-phase') \
+                                 .split()[2].split('=')[1]
+        except ValueError:
+            progress = '0'
+        enough_dir_info = controller.get_info('status/enough-dir-info')
+        if enough_dir_info == '1' and progress == '100':
+            exit(0)
+    except (stem.SocketClosed, stem.SocketError):
+        controller = None
+    time.sleep(1)
+
+exit(1)
