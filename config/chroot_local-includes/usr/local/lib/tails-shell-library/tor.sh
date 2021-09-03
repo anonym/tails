@@ -12,17 +12,19 @@ tor_rc_lookup() {
 	    sed --regexp-extended "s/^${1}\s+(.+)$/\1/" | tail -n1
 }
 
+tor_control_port() {
+	tor_rc_lookup ControlPort | sed --regexp-extended 's/.*://'
+}
+
 tor_control_stem_wrapper() {
 	local control_port
-	control_port="$(tor_rc_lookup ControlPort \
-	    | sed --regexp-extended 's/.*://')"
         python3 <<EOF
 import stem
 import stem.connection
 import sys
 try:
     controller = stem.connection.connect(
-                   control_port=('127.0.0.1', '${control_port}')
+                   control_port=('127.0.0.1', '$(tor_control_port)')
                  )
     if controller == None:
         raise stem.SocketError("Cannot connect to Tor's control port")
@@ -69,11 +71,21 @@ tor_is_working() {
 tor_wait_until_bootstrapped() {
     local timeout
     timeout="${1:-0}"
-    tor_control_stem_wrapper "
+    python3 <<EOF
+import stem
+import stem.connection
 import time
 stop_time = time.time() + ${timeout}
+controller = None
 while ${timeout} <= 0 or time.time() < stop_time:
     try:
+        if controller == None:
+            controller = stem.connection.connect(
+                           control_port=('127.0.0.1', '$(tor_control_port)')
+                         )
+            if controller == None:
+                raise stem.SocketError
+            controller.authenticate()
         try:
             progress = controller.get_info('status/bootstrap-phase').split()[2].split('=')[1]
         except ValueError:
@@ -82,10 +94,10 @@ while ${timeout} <= 0 or time.time() < stop_time:
         if enough_dir_info == '1' and progress == '100':
             exit(0)
     except (stem.SocketClosed, stem.SocketError):
-        controller.reconnect()
+        controller = None
     time.sleep(1)
 exit(1)
-"
+EOF
 }
 
 tor_append_to_torrc () {
