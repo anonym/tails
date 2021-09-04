@@ -1,3 +1,4 @@
+# coding: utf-8
 # Returns a hash that for each persistence preset the running Tails is aware of,
 # for each of the corresponding configuration lines,
 # maps the source to the destination.
@@ -186,9 +187,11 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
               action.capitalize
             end
     @installer.button(label).click
-    confirmation_label = action == 'upgrade' ? 'Upgrade' : 'Install'
-    @installer.child('Question',
-                     roleName: 'alert').button(confirmation_label).click
+   unless action ==  'upgrade'
+     confirmation_label = 'Delete All Data and Install'
+     @installer.child('Question',
+                      roleName: 'alert').button(confirmation_label).click
+    end
     try_for(15 * 60, delay: 10) do
       @installer
         .child('Information', roleName: 'alert')
