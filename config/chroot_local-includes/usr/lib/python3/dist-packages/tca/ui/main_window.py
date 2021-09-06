@@ -220,7 +220,7 @@ class StepChooseBridgeMixin:
 
             def cb_set_up_persistence_switch(gjsonrpcclient, res, error):
                 log.debug("Persistence enabled: %s", res)
-                active = res and res.get("returncode", 1) == 0
+                active = res is not None and res.get("returncode", 1) == 0
                 self.builder.get_object(
                     "step_bridge_persistence_switch"
                 ).set_active(active)
