@@ -144,33 +144,13 @@ types of Tor bridges. That is why, when you decide to hide that you are connecti
 
   Currently in Tails, only **obfs4 bridges** hide that you are using Tor.
 
-  An obfs4 bridge looks like:
-
-      obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0
-
-<div class="note">
-
-<p>The entire line needs to be entered, not just the IP address and port
-combination.</p>
-
-</div>
-
-If connecting to Tor using a custom bridge fails, the *Tor Connection* assistant
-helps you:
-
-- Set the clock of your computer to the correct timezone
-- [[Sign in to the network using a captive portal|unsafe_browser]]
-- Configure a local proxy
-- Enter a different bridge
-
 <div class="note">
 
 <p>In the future, we will make it easier to use custom bridges by:</p>
 
 <ul>
-<li>Allow you to save custom bridges in the Persistent Storage ([[!tails_ticket 5461]])</li>
-<li>Allow scanning the QR code returned by <a href="mailto:bridges@torproject.org">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>
-<li>Allow requesting bridges from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>
+<li>Allowing you to scan the QR code returned by <a href="mailto:bridges@torproject.org">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>
+<li>Allowing you to request bridges from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>
 </ul>
 
 </div>
@@ -178,21 +158,38 @@ helps you:
 Troubleshooting Tor bridges
 ===========================
 
-Bridges that were entered are no longer operational
+If connecting to Tor using a custom bridge fails, the *Tor Connection* assistant
+helps you:
+
+- Set the clock of your computer to the correct time zone
+- [[Sign in to the network using a captive portal|unsafe_browser]]
+- Configure a local proxy
+- Enter a different bridge
+
+The computer clock is set to an incorrect time zone
 ---------------------------------------------------
 
-If the bridge that you entered does not work, try entering another bridge, or requesting other
-bridges. It is possible that the bridge that you entered is no longer
-operational.
+For Tor bridges to work, the clock of your computer must be correct.
 
-The computer clock is set to an incorrect timezone
---------------------------------------------------
+Choose **Fix Clock** in the error screen of the *Tor Connection* assistant to
+set the time zone and time of your computer.
 
-For Tor bridges to work, the clock of your computer must be set to the correct
-timezone. The *Tor Connection* assistant helps you to set the clock of your
-computer to the correct timezone.
+You did not enter the bridge correctly
+--------------------------------------
 
-[[!img tor-connection-fix-clock.png alt="Screenshot of the fix clock feature of the Tor Connection assistant" link="no"]]
+An obfs4 bridge looks like:
+
+    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0
+
+You need to enter the entire line, not just the IP address and port
+combination.
+
+The bridge is no longer operational
+-----------------------------------
+
+It is possible that the bridge that you entered is no longer working.
+
+Try entering another bridge or requesting other bridges.
 
 Viewing the status of Tor
 =========================
