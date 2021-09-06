@@ -161,6 +161,7 @@ helps you:
 
 - [[Sign in to the network using a captive portal|unsafe_browser]]
 - Configure a local proxy
+- Set the clock of your computer to the correct timezone
 
 <div class="note">
 
@@ -170,7 +171,6 @@ helps you:
 <li>Allow you to save custom bridges in the Persistent Storage ([[!tails_ticket 5461]])</li>
 <li>Allow scanning the QR code returned by <a href="mailto:bridges@torproject.org">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>
 <li>Allow requesting bridges from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>
-<li>Synchronize the clock of the computer to be able to connect to Tor bridges more easily ([[!tails_ticket 15548]])</li>
 </ul>
 
 </div>
@@ -178,27 +178,21 @@ helps you:
 Troubleshooting Tor bridges
 ===========================
 
+Bridges that were entered are no longer operational
+---------------------------------------------------
+
 If the bridges that you entered do not work, try requesting another set of
 bridges. It is possible that the bridges you entered are no longer
 operational.
 
-<div class="bug">
+The computer clock is set to an incorrect timezone
+--------------------------------------------------
 
-<p>When connecting to Tor, Tails sets the system time to the current time
-in the [[!wikipedia Coordinated_Universal_Time]] (UTC) timezone.</p>
+For Tor bridges to work, the clock of your computer must be set to the correct
+timezone. The *Tor Connection* assistant helps you to set the clock of your
+computer to the correct timezone.
 
-<p>Many operating systems, such as Linux and macOS, write time expressed
-in UTC to the hardware clock of the computer. But, Windows instead
-writes time expressed in the local timezone to the hardware clock of
-the computer.</p>
-
-<p>So, if you are east of the United Kingdom (which is in the UTC timezone) on
-a computer that also runs Windows, Tails will make the system clock go
-backwards during startup. Unfortunately, this can prevent bridges from working.</p>
-
-<p>We are working on a fix for this issue. See [[!tails_ticket 15548]].</p>
-
-</div>
+[[!img tor-connection-fix-clock.png alt="Screenshot of the fix clock feature of the Tor Connection assistant" link="no"]]
 
 Viewing the status of Tor
 =========================
