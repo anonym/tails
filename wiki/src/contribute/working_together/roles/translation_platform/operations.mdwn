@@ -6,8 +6,8 @@ it might be moved somewhere else in the future ([[!tails_ticket 17063]]).
 
 [[!toc levels=1]]
 
-Enable a new language
-=====================
+Enable a new language on Weblate
+================================
 
 If the language you're planning to enable is part of our [[(Tier-1)
 languages|contribute/how/translate#tier-1-languages]], you may proceed.
@@ -40,6 +40,26 @@ Else, propose this on the [[tails-l10n mailing list|about/contact#tails-l10n]].
                   loadpo --all --lang <LANG>
 
    … where `<LANG>` is the newly added 2-letter language code.
+
+Add a new language to the Tails website and the bundled offline documentation
+=============================================================================
+
+When a new language is sufficiently translated (especially the core pages),
+this are the steps needed to make it available on our website and ship it with
+new versions of Tails:
+
+- Browse the translation on our staging site and make sure that it has no big
+  issues.
+- Checkout and build locally the weblate repository, and see that there are no
+  errors.
+- Edit the `./ikiwiki.setup` file ([example for Russian locale](https://gitlab.tails.boum.org/tails/tails/-/commit/db7a64d89a5ecd062cfaf2545e03c048351aa19f)):
+  - Remove the locale from the regexp exclude line.
+  - Add locale to `po_slave_languages` list (in alphabetical order).
+- Edit ikiwiki template files:
+  - `wiki/src/templates/news.tmpl` and `wiki/src/templates/page.tmpl` may need
+     some strings as 'Donate' that can be learned from the translation
+     platform.
+- Add .donate and locale bits to wiki/src/local.css
 
 Manually fix issues
 ===================
