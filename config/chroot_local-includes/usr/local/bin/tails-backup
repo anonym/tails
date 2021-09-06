@@ -1,0 +1,48 @@
+#!/bin/sh
+# tails-backup: Back up Tails' persistent disk into the mounted backup region.
+# Persistent storage & backup storage must already be unlocked, and
+# there must be an admin password set
+
+set -eu
+
+export TEXTDOMAIN='tails'
+
+SOURCE='/live/persistence/TailsData_unlocked/'
+DEST='/media/amnesia/TailsData/'
+LOG="$HOME/backup-log.txt"
+
+# Newline
+NL="$(printf '\nX')"
+NL="${NL%X}"
+
+if [ ! -d "$SOURCE" ]; then
+        msg="$(gettext -s 'Encrypted persistent storage must be unlocked first.  Please reboot, then unlock encrypted persistent storage and under additional settings set an administrative password.')"
+        zenity --error --ellipsize --text "$msg"
+        exit 1
+fi
+
+if [ ! -d "$DEST" ]; then
+        msg="$(gettext -s 'Backup storage area must be unlocked first. Please run Applications ▸ Accessories ▸ Files, select the backup encrypted volume (TailsData), and unlock it with your passphrase.')"
+        zenity --error --ellipsize --text "$msg"
+        exit 1
+fi
+
+title="$(gettext -s 'Alert')"
+msg="$(gettext -s 'Would you like to back up your persistent encrypted storage to the backup storage area? This will replace all data in the backup storage area.'"$NL"'If you agree, you will then need to enter your administrator password to actually run the backup.')"
+if ! zenity --question --ellipsize --title "$title" --text "$msg"; then
+        exit 1
+fi
+
+# Run real backup command. This requires privileges.
+if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST" ; then
+        # Ensure RAM buffers are written out
+        sync; sync; sync
+        sleep 1
+        msg="$(gettext -s 'Backup succeeded. Please eject (unmount) the backup storage area media.'"$NL"'You can do this by running Applications ▸ Accessories ▸ Files, selecting the backup encrypted volume (TailsData), and ejecting it.')"
+        zenity --info --ellipsize --text "$msg"
+        rm -fr "${LOG}"
+else
+        msg="$(gettext -s "Backup failed. See details in log file ${LOG}")"
+        zenity --error --ellipsize --text "$msg"
+        exit 1
+fi
