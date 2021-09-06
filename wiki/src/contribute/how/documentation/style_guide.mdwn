@@ -1,5 +1,68 @@
 [[!meta title="Documentation style guide"]]
 
+Introduction
+============
+
+We use this style guide to keep our documentation clear, consistent, and
+accessible to a global audience. Apply this style guide when writing new
+documentation or when updating existing documentation.
+
+Reference hierarchy
+===================
+
+Use references in the following order:
+
+1. This style guide.
+
+2. The [GNOME Documentation Style Guide](https://developer-old.gnome.org/gdp-style-guide/).
+
+   Read at least [Section 1 ― Fundamental Concepts of Technical
+   Documentation](http://developer-old.gnome.org/gdp-style-guide/2.32/gdp-style-guide.html#fundamentals).
+
+   The following sections are also of particular interest or have been
+   debated within Tails before:
+
+     - [4.&nbsp;Writing documentation for an International
+       Audience](http://developer-old.gnome.org/gdp-style-guide/2.32/gdp-style-guide.html#locale)
+       includes specific rules about how to write documentation that is
+       easier to translate, with practical examples.
+     - [5.2.&nbsp;Checks You Can Do
+       Yourself](http://developer-old.gnome.org/gdp-style-guide/2.32/gdp-style-guide.html#improving-6)
+       lists the top ten topics that you need to watch out for when you
+       review your work.
+     - [A.&nbsp;Recommended
+       Terminology](http://developer-old.gnome.org/gdp-style-guide/2.32/gdp-style-guide.html#wordlist)
+       contains a glossary of terms for use when writing documentation.
+
+3. Other style guides:
+
+   - [Google developer documentation style guide](https://developers.google.com/style)
+   - [Microsoft Writing Style Guide](https://docs.microsoft.com/en-us/style-guide/welcome/).
+   - [Apple Style Guide](https://help.apple.com/applestyleguide/)
+
+For spelling of words, we use the
+[Merriam-Webster](https://www.merriam-webster.com/) dictionary.
+
+The following resources can also be helpful when writing documentation for
+Tails:
+
+Related online resources
+------------------------
+
+- Jakob Nielsen's
+  [How Users Read on the Web](http://www.nngroup.com/articles/how-users-read-on-the-web/)
+  and [Be Succinct - Writing for the Web](http://www.nngroup.com/articles/be-succinct-writing-for-the-web/).
+  However do not use bold for scanning in instruction steps. Steps
+  should be short enough and bold mixes up with other GUI formatting.
+
+- [Wikipedia.org](https://en.wikipedia.org/),
+  [Webopedia.com](http://www.webopedia.com),
+  [Whatis.com](http://whatis.com) can be used as terminology websites
+  for technical terms.
+
+Style and usage
+===============
+
 <a id="administration-password"></a>
 
 - **administration password** vs **root password**
@@ -15,6 +78,34 @@
 
   - Start Tails and [[set up an administration
     password|doc/first_steps/welcome_screen/administration_password]].
+
+<a id="alt"></a>
+
+- **`alt` attributes for images**
+
+  The `alt` attribute of an image is, for example, read by screen readers
+  in place of images allowing the *content* and *function* of the image to
+  be accessible to those with visual or certain cognitive disabilities.
+
+  Every image must have an `alt` attribute but it can be empty (`alt=""`).
+
+  In the case of our documentation:
+
+  - Often screenshots require no additional information to clarify their
+    *content*. They often provide visual context that is useful for people
+    who see them but not necessary to people who don't see them.
+
+  - For graphical buttons or icons, use as `alt` attribute the text that
+    is read by the GNOME Screen Reader (or that you think should be read
+    if none is read). For example:
+
+    <pre>1. Click on the &lt;span class="guimenu"&gt;
+    \[[!img lib/unlock.png alt="Unlock" class="symbolic" link="no"]]
+    &lt;/span&gt; button.</pre>
+
+  For more guidelines and examples about writing good `alt` attributes,
+  read the article on [alternative text by
+  WebAIM](https://webaim.org/techniques/alttext/).
 
 <a id="anchor"></a>
 
@@ -49,12 +140,15 @@
     <span class="code">#index1h1</span> that might change with the
     structure of the page.
 
+  To reduce translation work, avoid adding anchors to translated pages when we
+  are not using them anywhere on the website.
+
 <a id="boot"></a>
 
 - **boot** vs **start**
 
   Use *start* and *restart* as much as possible to refer to starting a
-  computer on Tails; *boot* is almost always unecessary jargon.
+  computer on Tails; *boot* is almost always unnecessary jargon.
 
   You might use *boot* when the word is displayed to the user by the
   computer or when writing for a technical audience, like in our
@@ -73,6 +167,8 @@
     Boot Loader|doc/advanced_topics/boot_options]] when starting Tails:
 
         nouveau.noaccel=1
+
+<a id="boot-menu"></a>
 
 - **Boot Menu** and **Boot Loader**
 
@@ -101,6 +197,81 @@
   - Make them easier to translate. Each item from the list will be put
     in a separate PO string in PO files by the PO plugin when building
     the website.
+
+<a id="capitalization"></a>
+
+- **capitalization**
+
+   * **Use sentence case for titles and headings**
+
+     Do not capitalize the second or subsequent words,
+     unless they are proper nouns. Sentence case
+     looks less formal and is easier to read for a global audience.
+
+     See the [capitalization rules from Wikipedia](https://en.wikipedia.org/wiki/Wikipedia:Naming_conventions_%28capitalization%29).
+
+   * **Use title case for GUI items**
+
+     Buttons, dialogs, applications, menus, etc.
+
+<a id="css"></a>
+
+- **CSS formatting for documentation**
+
+  Use the following Markdown and HTML
+  to style your documentation using CSS.
+
+  - Features
+
+    Capitalize the name of major features of Tails.
+
+    *For example:*
+
+    * Welcome Screen
+    * Persistent Storage
+
+  - Application and file names
+
+    Write in italic the names of files and applications other than Tails.
+
+    *For example:*
+
+    * Markdown: <span class="code">\*Thunderbird\*</span>
+    * HTML: <span class="code">&lt;i&gt;Thunderbird&lt;/i&gt;</span>
+    * Result: *Thunderbird*
+
+    *For example:*
+
+    * Markdown: <span class="code">\*~/.gnupg/gpg.conf\*</span>
+    * HTML: <span class="code">&lt;i&gt;~/.gnupg/gpg.conf&lt;/i&gt;</span>
+    * Result: *~/.gnupg/gpg.conf*
+
+  - Button names, GUI labels, key caps, and menu items
+
+    Write in bold button names, GUI labels, key caps, and menu items, especially
+    in procedures.
+
+    *For example:*
+
+    * Markdown: <span class="code">Click \*\*Save\*\*</span>
+    * HTML: <span class="code">Click &lt;b&gt;Save&lt;/b&gt;</span>
+    * Result: Click **Save**
+
+    *For example:*
+
+    * Markdown: <span class="code">Choose \*\*Applications\*\*&amp;nbsp;▸ \*\*Tor Browser\*\*</span>
+    * HTML: <span class="code">Choose &lt;b&gt;Applications&lt;/b&gt;&amp;nbsp;▸ &lt;b&gt;Tor Browser&lt;/b&gt;</span>
+    * Result: Choose **Applications**&nbsp;▸ **Tor Browser**
+
+  - Commands and code excerpts:
+
+    Write in full HTML with the <span class="code">code</span> class commands and
+    code excerpts.
+
+    *For example:*
+
+    * Markdown and HTML: <span class="code">&lt;span class="code"&gt;live-media=removable&lt;/span&gt;</span>
+    * Result: <span class="code">live-media=removable</span>
 
 <a id="debian-versions"></a>
 
@@ -200,11 +371,26 @@
   And not *graphics adapters*, *graphics*, *graphical hardware*, or
   *video card*.
 
+<a id="compress-image"></a>
+
+- **Image compression**
+
+  - Images on our website are compressed and cleaned using the
+    [[compress-image.sh]] script. To run this script you need the
+    `trimage` and `mat2` packages.
+
 <a id="internet"></a>
 
 - **Internet**
 
   Capitalize. When used as a noun, always preceded by *the*.
+
+<a id="shortcuts"></a>
+
+- **Ikiwiki shortcuts**
+
+  The `\[[!tails_ticket ..]]` and `\[[!wikipedia ..]]` strings you can find in some files are ikiwiki [[shortcuts]].
+  You might also need to understand [[ikiwiki directives|ikiwiki/directive]].
 
 <a id="mac-address"></a>
 
@@ -279,6 +465,8 @@
 
   - Add To Persistent Storage (button)
 
+<a id="persistent-folder"></a>
+
 - **<em>Persistent</em> folder**
 
   The folder */home/amnesia/Persistent/*.
@@ -305,6 +493,8 @@
   - To install additional software automatically when starting Tails, turn on
     the [[Additional Software|doc/first_steps/persistence/configure#additional_software]]
     feature of the Persistent Storage.
+
+<a id="persistent"></a>
 
 - **persistent** and **persist**
 
@@ -346,8 +536,28 @@
 
   1. Start <i>Software Sources</i>.
 
-  1. Click on the <strong>PPAs</strong> button and then choose to <strong>Add a new PPA&hellip;</strong>.
+  1. Click on the <b>PPAs</b> button and then choose to <b>Add a new PPA&hellip;</b>.
   </pre>
+
+<a id="qr"></a>
+
+- **QR codes**
+
+  - To encode and decode QR codes, you can use the [[qrcode-encode.sh]]
+    and [[qrcode-decode.sh]] scripts. To run these scripts
+    you need to install the `qrencode` and `zbar-tools` packages.
+
+    For example (run from Tails' source root):
+
+        wiki/src/contribute/how/documentation/qrcode-encode.sh https://tails.boum.org/
+
+    Creates a QR code in tails_boum_org.png. And:
+
+        wiki/src/contribute/how/documentation/qrcode-decode.sh tails_boum_org.png
+
+    Outputs:
+
+        QR-Code:https://tails.boum.org/
 
 <a id="right-click"></a>
 
@@ -362,7 +572,53 @@
   *For example:*
 
   - Right-click (on Mac, click with two fingers) on the file and
-    choose <strong>Share via OnionShare</strong>.
+    choose <b>Share via OnionShare</b>.
+
+<a id="screenshot"></a>
+
+- **Screenshots**
+
+  Use screenshots only when they provide useful additional information to
+  complete the text. The text should be enough to follow our documentation but
+  screenshots might help provide context, engage the reader, or support a
+  complex procedure.
+
+  We limit the number of screenshots to the minimum
+  because they take time to produce, they need frequent update, are harder to
+  translate, and are not accessible.
+
+  When using screenshots of full windows, we include the window decoration
+  and a border of blue background to clarify the context and the nature of
+  the image. To take such a screenshot:
+
+  1. In *Gimp* choose **File**&nbsp;▸ **Create**&nbsp;▸ **Screenshot&hellip;**.
+  2. Select **Include windows decoration**.
+  3. Make sure the blue border (`0x204a87`) on each side of the screenshot is at least 18px.
+
+  We also most of the time resize the screenshots to 66%, either when they are
+  too big or when they can be confused for the actual application (see
+  [[!tails_ticket 11527]]). Use the *NoHalo* interpolation in *GIMP*.
+
+  We always compress screenshots using [[compress-image|documentation#compress-image]].
+
+  Good:
+
+  [[!img screenshot-blue.png link="no"]]
+
+  Bad:
+
+  [[!img screenshot-transparent.png link="no"]]
+
+  [[!img screenshot-cut.png link="no"]]
+
+  When an element of a screenshot needs to be highlighted, for example
+  because the element is small, has no label or is in a place that is hard
+  to describe, highlight it in red using *Inkscape*:
+
+  1. Create the base screenshot, resized at 66%.
+  1. Open it in Inkspace.
+  1. Create a red circle or rectangle with a width of 2 px.
+  1. Export the screenshot to PNG, respecting it's original size.
 
 <a id="secure-boot"></a>
 
@@ -414,6 +670,124 @@
 
   - Tails does not work on 32-bit computers since Tails 3.0 (June 2017).
 
+<a id="tips"></a>
+
+- **Tips, notes, cautions, bugs, and next**
+
+  Use tips, notes, and cautions to highlight important information.
+
+  * Tip:
+
+    <pre>
+    &lt;div class="tip"&gt;
+
+    &lt;p&gt;This tip could be useful to some readers.&lt;/p&gt;
+
+    &lt;/div&gt;
+    </pre>
+
+    <div class="tip">
+
+    <p>This tip could be useful to some readers.</p>
+
+    </div>
+
+  * Note:
+
+    <pre>
+    &lt;div class="note"&gt;
+
+    &lt;p&gt;This note attracts attention.&lt;/p&gt;
+
+    &lt;/div&gt;
+    </pre>
+
+    <div class="note">
+
+    <p>This note attracts attention.</p>
+
+    </div>
+
+  * Caution:
+
+    <pre>
+    &lt;div class="caution"&gt;
+
+    &lt;p&gt;This warning describes something dangerous.&lt;/p&gt;
+
+    &lt;/div&gt;
+    </pre>
+
+    <div class="caution">
+
+    <p>This warning describes something dangerous.</p>
+
+    </div>
+
+  * Bug:
+
+    <pre>
+    &lt;div class="bug"&gt;
+
+    &lt;p&gt;This bug describes an important flaw of the software.&lt;/p&gt;
+
+    &lt;/div&gt;
+    </pre>
+
+    <div class="bug">
+
+    <p>This bug describes an important flaw of the software.</p>
+
+    </div>
+
+  * Next:
+
+    <pre>
+    &lt;div class="next"&gt;
+
+    &lt;p&gt;This note helps to know what to read next.&lt;/p&gt;
+
+    &lt;/div&gt;
+    </pre>
+
+    <div class="next">
+
+    <p>This note helps to know what to read next.</p>
+
+    </div>
+
+  * Trophy:
+
+    <pre>
+    &lt;div class="trophy"&gt;
+
+    &lt;p&gt;This trophy celebrates a user achievement.&lt;/p&gt;
+
+    &lt;/div&gt;
+    </pre>
+
+    <div class="trophy">
+
+    <p>This trophy celebrates a user achievement.</p>
+
+    </div>
+
+  * Attack:
+
+    <pre>
+    &lt;div class="attack"&gt;
+
+    &lt;p&gt;This note decribes a security attack and its likelihood.&lt;/p&gt;
+
+    &lt;/div&gt;
+    </pre>
+
+    <div class="attack">
+
+    <p>This note decribes a security attack and its likelihood.</p>
+
+    </div>
+
 <a id="update"></a>
 
 - **update** vs **upgrade**
@@ -454,3 +828,11 @@
 - **Welcome Screen**
 
   With an article. Not *Tails Greeter* or *the Greeter*.
+
+<a id="wrap"></a>
+
+- **Wrap to 80 characters but only when needed**
+
+  New documentation should be wrapped to 80 characters. However, please do
+  not submit patches that merely re-wrap existing text, as this makes it
+  harder to read the Git history.
