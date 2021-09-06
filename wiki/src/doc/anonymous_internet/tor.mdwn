@@ -74,10 +74,10 @@ until it succeeds:
 1. Tails tries to connect to Tor directly using **public relays**, without
    using bridges.
 
-1. Tails tries to connect to Tor using a set of **default bridges**, already
+1. Tails tries to connect to Tor using one of the **default bridges**, already
    included in Tails, if connecting using public relays fails.
 
-1. Tails asks you to configure **custom bridges**, if connecting using the
+1. Tails asks you to configure a **custom bridge**, if connecting using the
    default bridges fails.
 
 Someone monitoring your Internet connection could identify these attempts as
@@ -106,7 +106,7 @@ Hiding to your local network that you are connecting to Tor
 You might need to go unnoticed if using Tor could look suspicious to someone
 who monitors your Internet connection.
 
-When you choose this option, Tails will only connect to Tor after you configure Tor bridges. Bridges are
+When you choose this option, Tails will only connect to Tor after you configure a Tor bridge. Bridges are
 secret Tor relays that hide that you are connecting to Tor.
 
 Our team is doing its best to help you connect to Tor using the most discrete
@@ -116,7 +116,7 @@ types of Tor bridges. That is why, when you decide to hide that you are connecti
 
 - Default bridges are not available.
 
-  You will have to know the address of custom bridges.
+  You will have to know the address of a custom bridge.
 
   To request custom bridges, you can either:
 
@@ -137,7 +137,7 @@ types of Tor bridges. That is why, when you decide to hide that you are connecti
 
   Currently in Tails, only **obfs4 bridges** hide that you are using Tor.
 
-  obfs4 bridges look like:
+  An obfs4 bridge looks like:
 
       obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0
 
@@ -156,7 +156,7 @@ of exit nodes of the Tor network is public</a>.</p>
 
 </div>
 
-If connecting to Tor using custom bridges fails, the *Tor Connection* assistant
+If connecting to Tor using a custom bridge fails, the *Tor Connection* assistant
 helps you:
 
 - [[Sign in to the network using a captive portal|unsafe_browser]]
@@ -181,8 +181,8 @@ Troubleshooting Tor bridges
 Bridges that were entered are no longer operational
 ---------------------------------------------------
 
-If the bridges that you entered do not work, try requesting another set of
-bridges. It is possible that the bridges you entered are no longer
+If the bridge that you entered does not work, try entering another bridge, or requesting other
+bridges. It is possible that the bridge that you entered is no longer
 operational.
 
 The computer clock is set to an incorrect timezone
