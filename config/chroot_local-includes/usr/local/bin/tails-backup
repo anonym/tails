@@ -1,37 +1,52 @@
 #!/bin/sh
-# tails-backup: Back up Tails' persistent disk into the mounted backup region.
-# Persistent storage & backup storage must already be unlocked, and
-# there must be an admin password set
+# tails-backup: Back up Tails' encrypted persistent storage
+# into the backup storage area.
 
 set -eu
 
 export TEXTDOMAIN='tails'
 
+# Tails' directories for source and destination
 SOURCE='/live/persistence/TailsData_unlocked/'
 DEST='/media/amnesia/TailsData/'
-LOG="$HOME/backup-log.txt"
+
+# In Tails, if you can get administrator powers then this file will exist,
+# otherwise this file will NOT exist.
+# See: https://tor.stackexchange.com/questions/16178/
+# tails-os-disable-administration-password-after-booting-tails-with-adminpasw
+CAN_BE_ADMINISTRATOR='/etc/sudoers.d/tails-greeter'
 
 # Newline
 NL="$(printf '\nX')"
 NL="${NL%X}"
 
-if [ ! -d "$SOURCE" ]; then
-        msg="$(gettext -s 'Encrypted persistent storage must be unlocked first.  Please reboot, then unlock encrypted persistent storage and under additional settings set an administrative password.')"
-        zenity --error --ellipsize --text "$msg"
-        exit 1
-fi
-
-if [ ! -d "$DEST" ]; then
-        msg="$(gettext -s 'Backup storage area must be unlocked first. Please run Applications ▸ Accessories ▸ Files, select the backup encrypted volume (TailsData), and unlock it with your passphrase.')"
-        zenity --error --ellipsize --text "$msg"
-        exit 1
-fi
-
-title="$(gettext -s 'Alert')"
-msg="$(gettext -s 'Would you like to back up your persistent encrypted storage to the backup storage area? This will replace all data in the backup storage area.'"$NL"'If you agree, you will then need to enter your administrator password to actually run the backup.')"
+title="$(gettext -s 'Alert: Do you want to back up?')"
+msg="$(gettext -s 'Do you want to back up your encrypted persistent storage to your backup storage area? This will replace all data in the backup storage area.'"$NL$NL"'For the backup process to work, you must have already unlocked your encrypted persistent storage area (if you haven'"'"'t, reboot Tails and unlock it).'"$NL"'You must create a backup storage area (a duplicate Tails setup) as explained in https://tails.boum.org/doc/first_steps/persistence/backup/'"$NL"'In addition, to back up you must first insert and unlock your backup storage area.'"$NL"'To unlock your backup storage area, run Applications▸ Accessories▸ Files, select the backup encrypted volume (TailsData), and unlock it with your passphrase.'"$NL"'If you select Yes to begin this backup, you must then enter your administrator password before the backup can begin.'"$NL$NL"'Do you want to back up your encrypted persistent storage now?')"
 if ! zenity --question --ellipsize --title "$title" --text "$msg"; then
         exit 1
 fi
+
+if [ ! -f "$CAN_BE_ADMINISTRATOR" ]; then
+        title="$(gettext -s 'Alert')"
+        msg="$(gettext -s 'You cannot obtain administrator rights. Please reboot Tails, then unlock encrypted persistent storage and under additional settings set an administrative password.')"
+        zenity --error --ellipsize --title "$title" --text "$msg"
+        exit 1
+fi
+
+if [ ! -d "$SOURCE" ]; then
+        title="$(gettext -s 'Alert')"
+        msg="$(gettext -s 'Encrypted persistent storage must be unlocked first.  Please reboot Tails, then unlock encrypted persistent storage and under additional settings set an administrative password.')"
+        zenity --error --ellipsize --title "$title" --text "$msg"
+        exit 1
+fi
+
+while [ ! -d "$DEST" ]; do
+        title="$(gettext -s 'Alert: Backup storage area not available.')"
+        msg="$(gettext -s 'Backup storage area must first be inserted and unlocked before it can be backed up.'"$NL"'Please insert it and run Applications ▸ Accessories ▸ Files, select the backup encrypted volume (TailsData), and unlock it with your passphrase.'"$NL"'Do you want to retry?')"
+        if ! zenity --question --ellipsize --title "$title" --text "$msg"; then
+                exit 1
+        fi
+done
 
 # Run real backup command. This requires privileges.
 if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST" ; then
@@ -40,9 +55,9 @@ if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST" ; then
         sleep 1
         msg="$(gettext -s 'Backup succeeded. Please eject (unmount) the backup storage area media.'"$NL"'You can do this by running Applications ▸ Accessories ▸ Files, selecting the backup encrypted volume (TailsData), and ejecting it.')"
         zenity --info --ellipsize --text "$msg"
-        rm -fr "${LOG}"
 else
-        msg="$(gettext -s "Backup failed. See details in log file ${LOG}")"
-        zenity --error --ellipsize --text "$msg"
+        title="$(gettext -s 'Alert')"
+        msg="$(gettext -s 'Backup failed.')"
+        zenity --error --ellipsize --title "$title" --text "$msg"
         exit 1
 fi
