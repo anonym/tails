@@ -152,11 +152,10 @@ class StepChooseHideMixin:
 
 
 class StepChooseBridgeMixin:
-    def __init__(self):
-        self.persistence_config_failed = False
-
     def before_show_bridge(self, coming_from):
         self.state["bridge"]: Dict[str, Any] = {}
+        self.persistence_config_failed = False
+
         self.builder.get_object("step_bridge_box").show()
         self.builder.get_object("step_bridge_radio_none").set_active(True)
         self.builder.get_object("step_bridge_radio_none").hide()
