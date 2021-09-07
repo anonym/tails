@@ -631,7 +631,28 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
                                                showingOnly: true)
   tz_label = time_dialog.child('UTC (Greenwich time)', roleName: 'label')
   tz_label.click
+
+  def get_visible_results(dialog)
+    table = dialog.child(roleName: 'tree table')
+    results = table.children(roleName: 'table cell').select do |res|
+      # Let's skip continents
+      res.name.include? '/'
+    end
+    results
+  end
+
   @screen.type(timezone)
+
+  try_for(10) do
+    # filtering could take some time, so let's wait until this has been properly done
+    results = get_visible_results(time_dialog)
+    results.length == 1
+  end
+
+  # XXX: we'd like a single "Return" to be enough,
+  #      but apparently activating the search entry is not working, so that's what we need to do
+  @screen.press('Tab')
+  @screen.press('Down')
   @screen.press('Return')
 
   try_for(5) do
