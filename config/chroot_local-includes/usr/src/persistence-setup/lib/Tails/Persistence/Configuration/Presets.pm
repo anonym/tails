@@ -80,7 +80,7 @@ method _build__presets () {
         },
         {
             id          => 'TorConfiguration',
-            name        => __(q{Tor Bridges}),
+            name        => __(q{Tor Bridge}),
             description => __(
                 q{Save the last bridge that you used to connect to Tor}
             ),
