@@ -39,9 +39,12 @@ Then /^the Unsafe Browser works in all supported languages$/ do
       step "the Unsafe Browser has started in the \"#{lang}\" locale"
     rescue StandardError
       failed << lang
-      next
     end
-    step 'I close the Unsafe Browser'
+    begin
+      step 'I kill the Unsafe Browser'
+    rescue ExecutionFailedInVM
+      # The Unsafe Browser wasn't running
+    end
     step 'the Unsafe Browser chroot is torn down'
   end
   assert(failed.empty?,
