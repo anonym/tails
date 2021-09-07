@@ -212,6 +212,16 @@ option 'force_enable_presets' => (
     default       => sub { [] },
 );
 
+option 'force_disable_presets' => (
+    is            => 'ro',
+    repeatable    => 1,
+    format        => 's@',
+    isa           => 'ArrayRef[Str]',
+    handles_via   => ['Array'],
+    documentation => q{Specify once per additional preset to forcibly disable.},
+    default       => sub { [] },
+);
+
 option 'display_finished_message' => (
     is            => 'ro',
     isa           => 'Bool',
@@ -368,8 +378,9 @@ method _build_configuration () {
     }
 
     Tails::Persistence::Configuration->new(
-        config_file_path     => $config_file_path,
-        force_enable_presets => $self->force_enable_presets,
+        config_file_path      => $config_file_path,
+        force_enable_presets  => $self->force_enable_presets,
+        force_disable_presets => $self->force_disable_presets,
     );
 }
 

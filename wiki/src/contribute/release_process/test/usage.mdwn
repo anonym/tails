@@ -139,6 +139,11 @@ by the local configuration file:
 * `VCPUS`: Integer value. Number of vCPUs given to the system under test.
   Default: see [[!tails_gitweb features/domains/default.xml]].
 
+* `LIBVIRT_CPUMODEL`: String or boolean. This is used to specify the cpu model that libvirt should use. Set it
+  to `false` (the default) to let libvirt figure it out. This is useful in case you have a cpu model which is
+  not supported by qemu, which seems to be the case for modern AMD CPUs. In that case, `core2duo` is a
+  well-supported value.
+
 ## "Secret" configuration
 
 This section describes the formats for all secret configurations that

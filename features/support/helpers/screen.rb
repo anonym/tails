@@ -297,6 +297,7 @@ class Screen
     opts[:button] = 3 if opts[:button] == 'right'
     opts[:repeat] ||= 1
     opts[:repeat] = 2 if opts[:double]
+    opts[:repeat] = 3 if opts[:triple]
     opts[:log] = true if opts[:log].nil?
     x, y = hover(*args, **opts.clone.update(log: false))
     action = 'clicking'

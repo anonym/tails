@@ -18,14 +18,10 @@ AutomapHostsSuffixes .exit,.onion
 TransPort 127.0.0.1:9040
 
 ## Enable the Seccomp sandbox. It will disabled later (by the
-## tor-sandox-helper script) if we configure any pluggable transport
-## in Tor Launcher; note that old-school "simple" bridges will still
+## tor-pt-configuration-helper) if we configure any pluggable transport
+## in TCA; note that old-school "simple" bridges will still
 ## have the sandbox enabled.
-#Sandbox 1
-
-# XXX: added temporarily for the 17215-tca-always-started branch. TCA
-# should instead set this whenever the sandbox is disabled.
-ClientTransportPlugin obfs2,obfs3,obfs4,meek_lite exec /usr/bin/obfs4proxy managed
+Sandbox 1
 
 ## Misc
 AvoidDiskWrites 1

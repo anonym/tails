@@ -255,6 +255,9 @@ Before('@product') do |scenario|
   @has_been_reset = false
   # See comment for add_extra_allowed_host() above.
   @extra_allowed_hosts ||= []
+
+  @user_wants_pluggable_transports = false
+  @tor_network_is_blocked = false
 end
 
 # Cucumber After hooks are executed in the *reverse* order they are

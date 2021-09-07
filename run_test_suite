@@ -130,12 +130,14 @@ package_installed() {
 check_dependencies() {
     local tor_version
     while [ -n "${1:-}" ]; do
-        if ! which "${1}" >/dev/null && ! package_installed "${1}" ; then
+        if ! command -v "${1}" >/dev/null && ! package_installed "${1}" ; then
             error "'${1}' is missing, please install it and run again."
         fi
         shift
     done
-    tor_version=$(tor --version | head -n1 | awk '{print $3}' | sed --regexp-extended 's,[.]$,,')
+    set -x
+    tor_version=$(tor --version | grep -Po '^Tor version \K.*' | sed --regexp-extended 's,[.]$,,')
+    set +x
     if dpkg --compare-versions "$tor_version" lt "$MINIMUM_TOR_VERSION"; then
 	error "Please upgrade to tor ${MINIMUM_TOR_VERSION} or newer."
     fi
@@ -217,6 +219,9 @@ eval set -- "$OPTS"
 while [ $# -gt 0 ]; do
     case $1 in
         --allow-non-root)
+            if ! /sbin/getcap /usr/bin/tcpdump | grep -q 'cap_net_raw=eip'; then
+                error "/usr/bin/tcpdump lacks cap_net_raw=eip"
+            fi
             ALLOW_NON_ROOT="yes"
             ;;
         --artifacts-base-uri)

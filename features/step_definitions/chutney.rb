@@ -56,7 +56,7 @@ def ensure_chutney_is_running
     chutney_status_log(cmd)
     cmd = 'stop' if cmd == 'stop_old'
     Dir.chdir(chutney_src_dir) do
-      cmd_helper([chutney_script, cmd, network_definition], env)
+      cmd_helper([chutney_script, cmd, network_definition], env: env)
     end
   end
 
@@ -145,8 +145,6 @@ When /^I configure Tails to use a simulated Tor network$/ do
   # abstraction impractical and it's better that we avoid it an go
   # with the more explicit, step-based approach.
 
-  assert($vm.execute('service tor status').failure?,
-         'Running this step when Tor is running is probably not intentional')
   ensure_chutney_is_running
   # Most of these lines are taken from chutney's client template.
   client_torrc_lines = [
@@ -178,4 +176,5 @@ When /^I configure Tails to use a simulated Tor network$/ do
   end
   client_torrc_lines.concat(dir_auth_lines)
   $vm.file_append('/etc/tor/torrc', client_torrc_lines)
+  $vm.execute_successfully('systemctl restart tor@default.service')
 end

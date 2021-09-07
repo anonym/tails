@@ -7,12 +7,11 @@ import ipaddress
 import time
 import logging
 import os
-import sys
 import json
 import socket
 from stem.control import Controller
 import stem.socket
-from typing import List, Optional, Dict, Any, Tuple, cast
+from typing import List, Optional, Dict, Any, Tuple, cast, Callable
 import tca.config
 
 log = logging.getLogger("tor-launcher")
@@ -44,12 +43,14 @@ class StemFDSocket(stem.socket.ControlSocket):
 def recover_fd_from_parent() -> tuple:
     fds = [int(fd) for fd in os.getenv("INHERIT_FD", "").split(",")]
     # fds[0] must be a rw fd for settings file
-    # fds[1] must be a socket to tca-portal
+    # fds[1] must be a rw fd for state file
+    # fds[2] must be a socket to tca-portal
 
     configfile = os.fdopen(fds[0], "r+")
-    portal = socket.socket(fileno=fds[1])
+    statefile = os.fdopen(fds[1], "r+")
+    portal = socket.socket(fileno=fds[2])
 
-    return (configfile, portal)
+    return (configfile, statefile, portal)
 
 
 # PROXY_TYPES is a sequence of Tor options related to proxing.
@@ -181,6 +182,15 @@ class TorConnectionConfig:
         self.bridges: List[str] = bridges
         self.proxy: TorConnectionProxy = proxy
 
+    def bridge_line_is_simple(self, line):
+        if line.split()[0].lower() == 'bridge':
+            return True
+        try:
+            ipaddress.ip_address(line.split(":")[0])
+        except ValueError:
+            return False
+        return True
+
     def disable_bridges(self):
         self.bridges.clear()
 
@@ -306,7 +316,7 @@ class TorConnectionConfig:
         bridges = self.__class__.parse_bridge_lines(bridges)
         self.bridges.extend(bridges)
 
-    def default_bridges(self, only_type: Optional[str] = None):
+    def enable_default_bridges(self, only_type: Optional[str] = None):
         """
         Set default bridges.
 
@@ -316,7 +326,10 @@ class TorConnectionConfig:
         self.enable_bridges(bridges)
 
     @classmethod
-    def load_from_tor_stem(cls, stem_controller: Controller):
+    def load_from_tor_stem(
+            cls,
+            stem_controller: Controller,
+    ):
         bridges: List[str] = []
         if stem_controller.get_conf("UseBridges") != "0":
             bridges = stem_controller.get_conf("Bridge", multiple=True)
@@ -341,22 +354,31 @@ class TorConnectionConfig:
         return config
 
     @classmethod
-    def load_from_dict(cls, obj):
+    def load_from_dict(cls, obj, load_proxy=False):
         """this method is suitable to retrieve configuration from a JSON object"""
         config = cls()
         config.bridges = obj.get("bridges", [])
-        proxy = obj.get("proxy", None)
-        if proxy is not None:
-            config.proxy = TorConnectionProxy.from_obj(proxy)
-        else:
-            config.proxy = TorConnectionProxy.noproxy()
+        # For now we ignore saved proxy configuration: our configuration
+        # is global, while proxy settings only make sense per network.
+        # When we implement #18423, we should drop the conditional
+        # and the load_proxy argument.
+        if load_proxy:
+            proxy = obj.get("proxy", None)
+            if proxy is not None:
+                config.proxy = TorConnectionProxy.from_obj(proxy)
+            else:
+                config.proxy = TorConnectionProxy.noproxy()
         return config
 
-    def to_dict(self) -> dict:
-        return {
+    def to_dict(self, include_default_bridges: bool = True) -> dict:
+        data = {
             "bridges": self.bridges,
             "proxy": self.proxy.to_dict() if self.proxy is not None else None,
         }
+        if not include_default_bridges and \
+           set(data.get("bridges", [])) == set(self.get_default_bridges()):
+            data["bridges"] = []
+        return data
 
     def to_tor_conf(self) -> Dict[str, Any]:
         """
@@ -369,57 +391,87 @@ class TorConnectionConfig:
         log.debug("TorOpts=%s", r)
         return r
 
+    def can_use_sandbox(self) -> bool:
+        """
+        Returns True iff. we can enable Tor's Sandbox configuration option.
+        """
+        return (not self.bridges
+                or all([self.bridge_line_is_simple(b) for b in self.bridges]))
+
 
 class TorLauncherUtils:
-    def __init__(self, stem_controller: Controller, config_buf):
+    def __init__(self, stem_controller: Controller,
+                 config_buf, state_buf,
+                 set_tor_sandbox_fn: Callable[[bool], None]):
         """
         Arguments:
         stem_controller -- an already connected and authorized stem Controller
         config_buf -- an already open read-write buffer to the configuration file
+        state_buf -- an already open read-write buffer to the state file
+        set_tor_sandbox_fn -- a Callable whose argument sets Tor's Sandbox value
         """
         self.stem_controller = stem_controller
         self.config_buf = config_buf
+        self.state_buf = state_buf
         self.tor_connection_config = None
+        self.set_tor_sandbox_fn = set_tor_sandbox_fn
 
-    def load_conf(self):
+    def load_conf_from_tor(self):
         if self.tor_connection_config is None:
+            log.debug("Loading configuration from tor")
             self.tor_connection_config = TorConnectionConfig.load_from_tor_stem(
-                self.stem_controller
+                self.stem_controller,
             )
 
-    def save_conf(self, extra={}, save_torrc=True):
+    def load_conf_from_file(self):
+        if self.tor_connection_config is None:
+            log.debug("Loading configuration from file")
+            self.tor_connection_config = TorConnectionConfig.load_from_dict(
+                self.read_tca_conf().get("tor", {})
+            )
+
+    def save_conf(self):
         if self.tor_connection_config is None:
             return
-        data = {"tor": self.tor_connection_config.to_dict()}
-        data.update(extra)
-        self.config_buf.seek(0, os.SEEK_SET)
-        self.config_buf.truncate()
-        self.config_buf.write(json.dumps(data, indent=2))
-        self.config_buf.flush()
 
-        if save_torrc:
-            self.stem_controller.save_conf()
+        # Save configuration to our own configuration file
+        data = {
+            "tor": self.tor_connection_config.to_dict(
+                # We only want to persist custom bridges, not the default ones
+                include_default_bridges=False
+            )
+        }
+        encode_to_json_buf(data, self.config_buf)
 
-    def read_conf(self):
-        self.config_buf.seek(0, os.SEEK_END)
-        size = self.config_buf.tell()
-        if not size:
-            log.debug("Empty config file")
-            return
-        self.config_buf.seek(0)
-        try:
-            obj = json.load(self.config_buf)
-        except json.JSONDecodeError:
-            log.warning("Invalid config file")
-            return
-        finally:
-            self.config_buf.seek(0)
-        return obj
+        # Save configuration to torrc
+        self.stem_controller.save_conf()
 
-    def apply_conf(self):
+    def save_tca_state(self, state):
+        encode_to_json_buf(state, self.state_buf)
+
+    def read_tca_conf(self):
+        return decode_json_from_buf(self.config_buf)
+
+    def read_tca_state(self):
+        return decode_json_from_buf(self.state_buf)
+
+    def apply_conf(self, callback: Callable) -> bool:
+        """
+        Apply the configuration from self.tor_connection_config to the
+        running tor daemon, and asynchronously ensure Tor's Sandbox
+        configuration option is enabled iff. we can use it.
+
+        Upon completion, the callback is called.
+
+        This method can restart tor.
+
+        Rationale: Tor's Sandbox conf needs special care since this value
+        cannot be changed at runtime, only through torrc and a tor restart.
+        """
         tor_conf = self.tor_connection_config.to_tor_conf()
         log.debug("applying TorConf: %s", tor_conf)
         self.stem_controller.set_options(tor_conf)
+
         # We have seen a very odd bug where issuing "DisableNetwork 0"
         # when it already is 0 kills tor. There is a lot of
         # uncertainty remaining around what exactly is going on, and
@@ -427,6 +479,23 @@ class TorLauncherUtils:
         # killing.
         if self.stem_controller.get_conf("DisableNetwork") == "1":
             self.stem_controller.set_conf("DisableNetwork", "0")
+        self.stem_controller.save_conf()
+
+        current_sandbox = self.stem_controller.get_conf("Sandbox")
+        can_use_sandbox = self.tor_connection_config.can_use_sandbox()
+        updating_sandbox_conf = str(int(current_sandbox)) != can_use_sandbox
+        if updating_sandbox_conf:
+            self.set_tor_sandbox_fn(callback, str(int(can_use_sandbox)))
+        return updating_sandbox_conf
+
+    def stop_connecting(self):
+        """
+        Stop trying to connect to Tor.
+
+        Particularly useful after timeout.
+        """
+        if self.stem_controller.get_conf("DisableNetwork") == "0":
+            self.stem_controller.set_conf("DisableNetwork", "1")
         self.stem_controller.save_conf()
 
     def tor_bootstrap_phase(self) -> int:
@@ -529,35 +598,25 @@ def backoff_wait(
         yield
 
 
-def main():
-    """
-    this main function is only called if you execute this file.
-
-    it's meant for testing, no "real" code should run that.
-    """
-    conf, controller = recover_fd_from_parent()
-    controller.authenticate(password=None)
-    launcher = TorLauncherUtils(controller, conf)
-    launcher.load_conf()
-    print(json.dumps(launcher.tor_connection_config.to_dict(), indent=4))
-    launcher.apply_conf()
-
-    bootstrapped = False
-    for _ in backoff_wait(30.0):
-        is_ok = launcher.tor_has_bootstrapped()
-        if is_ok:
-            bootstrapped = True
-            break
-
-    if not bootstrapped:
-        print("Bootstrap error!", file=sys.stderr)
-        return 1
-
-    launcher.save_conf()
-
-    return 0
+def decode_json_from_buf(buf):
+    buf.seek(0, os.SEEK_END)
+    size = buf.tell()
+    if not size:
+        log.debug("Empty file")
+        return {}
+    buf.seek(0)
+    try:
+        obj = json.load(buf)
+    except json.JSONDecodeError:
+        log.warning("Invalid file")
+        return {}
+    finally:
+        buf.seek(0)
+    return obj
 
 
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-    sys.exit(main())
+def encode_to_json_buf(data, buf):
+    buf.seek(0, os.SEEK_SET)
+    buf.truncate()
+    buf.write(json.dumps(data, indent=2))
+    buf.flush()
