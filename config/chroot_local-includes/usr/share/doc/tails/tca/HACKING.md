@@ -9,23 +9,24 @@ Testing failures
 -------------------
 
 If you want to test failures to Tor connection, the easiest thing you can do is block any outgoing connection
-from the debian-tor users
+from the debian-tor user
 
     iptables -I OUTPUT 1 ! -o lo -m owner --uid-owner debian-tor -j REJECT
 
 If you want to test tor-not-working-but-my-bridges-are-working, you can use
 
     iptables -I OUTPUT 1 ! -o lo -m owner --uid-owner debian-tor -j REJECT
-    iptables -I OUTPUT 1 -d $BRIDGE_IP -j ACCEPT
+    iptables -I OUTPUT 1 -m owner --uid-owner debian-tor -d $BRIDGE_IP -j ACCEPT
 
 If you want to test tor-not-working-but-default-bridges-are-working, you can use:
 
-    apt install -y ipset && ipset create defaultbridges hash:ip
-    grep -w obfs4 /usr/share/tails/tca/default_bridges.txt |
+    iptables -I OUTPUT 1 ! -o lo -m owner --uid-owner debian-tor -j REJECT
+    DEFAULT_BRIDGES_IPS=$(grep -E '^obfs4' /usr/share/tails/tca/default_bridges.txt |
       grep -Po '(\d{1,3}\.){3}\d{1,3}:\d{1,5}' |
-      cut -d: -f1 | sort -u |
-      while read ip; do ipset add defaultbridges $ip; done
-    iptables -I OUTPUT 1 ! -o lo -m owner --uid-owner debian-tor -m set ! --match-set defaultbridges dst -j REJECT
+      cut -d: -f1 | sort -u)
+    for BRIDGE_IP in $DEFAULT_BRIDGES_IPS; do
+        iptables -I OUTPUT 1 -m owner --uid-owner debian-tor -d $BRIDGE_IP -j ACCEPT
+    done
 
 Reset TCA state
 -------------
@@ -33,7 +34,7 @@ Reset TCA state
 tca state is kept in `/var/lib/tca/` . That directory is owned by root, and a regular user can't
 access, nor delete it.
 
-    sudo rm -rf /var/lib/tca/
+    sudo rm -rf /var/lib/tca/ /run/tca/
 
 Really restart tor
 ---------------------
@@ -48,14 +49,20 @@ just using `systemctl restart tor@default` is probably not what you want. This i
 Simulate a slow network
 -------------------------
 
-    wget https://slow.vado.li/ -O slow
-    chmod +x slow
-    ./slow 56k
+Use libvirt's own QoS support: https://libvirt.org/formatnetwork.html#elementQoS
+
+For example, to limit bandwidth to 24 KiB/s, add to the `<interface
+type="network">` section:
+
+    <bandwidth>
+      <inbound average="24" peak="24"/>
+      <outbound average="24" peak="24"/>
+    </bandwidth>
 
 Command line options
 --------------------
 
-amensia can only run tca with no options. Any argument is ignored. However, tca *has* options. You can enable
+amnesia can only run tca with no options. Any argument is ignored. However, tca *has* options. You can enable
 them editing /usr/local/bin/tca, adding `sys.argv[1:]` to the list of arguments.
 
 Debug more

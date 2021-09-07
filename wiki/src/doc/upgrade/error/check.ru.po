@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-08-03 23:08+0000\n"
+"POT-Creation-Date: 2021-09-07 14:15+0200\n"
 "PO-Revision-Date: 2021-07-17 02:38+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,55 +57,81 @@ msgstr ""
 "Если проблема сохраняется, выполните [[обновление вручную|doc/"
 "upgrade#manual]]."
 
-#~ msgid "Automatic upgrades are broken from Tails 4.14 and earlier"
-#~ msgstr "Проблемы с автоматическим обновлением версии Tails 4.14 и более ранних"
+#. type: Plain text
+#, no-wrap
+msgid "<a id=\"4.18\"></a>\n"
+msgstr ""
 
-#~ msgid "To upgrade from Tails 4.14 or earlier, you can either:"
-#~ msgstr ""
-#~ "Для обновления с Tails 4.14 или более ранней версии есть разные способы."
+#. type: Title =
+#, fuzzy, no-wrap
+#| msgid "Automatic upgrades are broken from Tails 4.14 and earlier"
+msgid "Automatic upgrades are broken between Tails 4.15 and Tails 4.18"
+msgstr "Проблемы с автоматическим обновлением версии Tails 4.14 и более ранних"
 
-#~ msgid "- Do a [[manual upgrade|doc/upgrade#manual]]."
-#~ msgstr "- Выполните [[обновление вручную|doc/upgrade#manual]]."
+#. type: Plain text
+#, fuzzy
+#| msgid "To upgrade from Tails 4.14 or earlier, you can either:"
+msgid ""
+"To upgrade from Tails 4.15, Tails 4.16, Tails 4.17, or Tails 4.18, you can "
+"either:"
+msgstr ""
+"Для обновления с Tails 4.14 или более ранней версии есть разные способы."
 
-#~ msgid "- Fix the automatic upgrade from a terminal. To do so:"
-#~ msgstr "- Исправьте автоматическое обновление из терминала."
+#. type: Plain text
+msgid "- Do a [[manual upgrade|doc/upgrade#manual]]."
+msgstr "- Выполните [[обновление вручную|doc/upgrade#manual]]."
 
-#~ msgid ""
-#~ "Start Tails and set up an [[administration password|doc/first_steps/"
-#~ "welcome_screen/administration_password]]."
-#~ msgstr ""
-#~ "Запустите Tails и установите [[пароль администратора|doc/first_steps/"
-#~ "welcome_screen/administration_password]]."
+#. type: Plain text
+msgid "- Fix the automatic upgrade from a terminal. To do so:"
+msgstr "- Исправьте автоматическое обновление из терминала."
 
-#~ msgid "In a terminal, execute the following command:"
-#~ msgstr "Выполните в терминале следующую команду:"
+#. type: Bullet: '  1. '
+msgid ""
+"Start Tails and set up an [[administration password|doc/first_steps/"
+"welcome_screen/administration_password]]."
+msgstr ""
+"Запустите Tails и установите [[пароль администратора|doc/first_steps/"
+"welcome_screen/administration_password]]."
 
-#~ msgid ""
-#~ "         torsocks curl --silent https://tails.boum.org/isrg-root-x1-cross-signed.pem \\\n"
-#~ "         | sudo tee --append /usr/local/etc/ssl/certs/tails.boum.org-CA.pem \\\n"
-#~ "         && systemctl --user restart tails-upgrade-frontend\n"
-#~ msgstr ""
-#~ "         torsocks curl --silent https://gitlab.tails.boum.org/tails/tails/-/raw/master/config/chroot_local-includes/usr/share/tails/certs/lets-encrypt-r3.pem \\\n"
-#~ "         | sudo tee --append /usr/local/etc/ssl/certs/tails.boum.org-CA.pem \\\n"
-#~ "         && systemctl --user restart tails-upgrade-frontend\n"
+#. type: Bullet: '  1. '
+msgid "In a terminal, execute the following command:"
+msgstr "Выполните в терминале следующую команду:"
 
-#~ msgid "     <div class=\"note\">\n"
-#~ msgstr "     <div class=\"note\">\n"
+#. type: Plain text
+#, no-wrap
+msgid ""
+"         torsocks curl --silent https://tails.boum.org/isrg-root-x1-cross-signed.pem \\\n"
+"         | sudo tee --append /usr/local/etc/ssl/certs/tails.boum.org-CA.pem \\\n"
+"         && systemctl --user restart tails-upgrade-frontend\n"
+msgstr ""
+"         torsocks curl --silent https://gitlab.tails.boum.org/tails/tails/-/raw/master/config/chroot_local-includes/usr/share/tails/certs/lets-encrypt-r3.pem \\\n"
+"         | sudo tee --append /usr/local/etc/ssl/certs/tails.boum.org-CA.pem \\\n"
+"         && systemctl --user restart tails-upgrade-frontend\n"
 
-#~ msgid ""
-#~ "     <p>This command is a single command that wraps across several lines.\n"
-#~ "     Copy and paste the entire block at once and make sure that it executes\n"
-#~ "     as a single command.</p>\n"
-#~ msgstr "     <p>Это одна команда, хотя на вид она занимает несколько строк. Скопируйте весь блок и вставьте его в терминал. Убедитесь, что команда исполняется.</p>\n"
+#. type: Plain text
+#, no-wrap
+msgid "     <div class=\"note\">\n"
+msgstr "     <div class=\"note\">\n"
 
-#~ msgid "     </div>\n"
-#~ msgstr "     </div>\n"
+#. type: Plain text
+#, no-wrap
+msgid ""
+"     <p>This command is a single command that wraps across several lines.\n"
+"     Copy and paste the entire block at once and make sure that it executes\n"
+"     as a single command.</p>\n"
+msgstr "     <p>Это одна команда, хотя на вид она занимает несколько строк. Скопируйте весь блок и вставьте его в терминал. Убедитесь, что команда исполняется.</p>\n"
 
-#~ msgid ""
-#~ "Approximately 30 seconds later, you should be prompted to upgrade to the "
-#~ "latest version of Tails. If no prompt appears, you might already be "
-#~ "running the latest version of Tails."
-#~ msgstr ""
-#~ "Примерно через 30 секунд вам предложат обновиться до свежей версии Tails. "
-#~ "Если вы не видите такое предложение, значит, вы, вероятно, уже "
-#~ "используете последнюю версию Tails."
+#. type: Plain text
+#, no-wrap
+msgid "     </div>\n"
+msgstr "     </div>\n"
+
+#. type: Bullet: '  1. '
+msgid ""
+"Approximately 30 seconds later, you should be prompted to upgrade to the "
+"latest version of Tails. If no prompt appears, you might already be running "
+"the latest version of Tails."
+msgstr ""
+"Примерно через 30 секунд вам предложат обновиться до свежей версии Tails. "
+"Если вы не видите такое предложение, значит, вы, вероятно, уже используете "
+"последнюю версию Tails."

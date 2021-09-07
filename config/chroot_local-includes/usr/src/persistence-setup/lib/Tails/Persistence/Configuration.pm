@@ -54,6 +54,11 @@ has 'force_enable_presets' => (
     isa     => 'ArrayRef[Str]',
     default => sub { [] },
 );
+has 'force_disable_presets' => (
+    is      => 'ro',
+    isa     => 'ArrayRef[Str]',
+    default => sub { [] },
+);
 has 'atoms' => (
     lazy_build => 1,
     is            => 'rw',
@@ -105,7 +110,10 @@ method atoms_not_in_presets () {
 
 method merge_file_with_presets () {
     $self->presets->set_state_from_lines($self->file->all_lines);
-    $self->presets->set_state_from_overrides($self->force_enable_presets);
+    $self->presets->set_state_from_overrides(
+        $self->force_enable_presets,
+        $self->force_disable_presets,
+    );
 
     [
         $self->presets->atoms,

@@ -7,9 +7,6 @@ set -u
 TEXTDOMAIN="tails"
 export TEXTDOMAIN
 
-# Import tor_has_bootstrapped()
-. /usr/local/lib/tails-shell-library/systemd.sh
-
 # Import the TBB_EXT variable.
 . /usr/local/lib/tails-shell-library/tor-browser.sh
 
@@ -20,7 +17,7 @@ export TEXTDOMAIN
 # and run_browser_in_chroot().
 . /usr/local/lib/tails-shell-library/chroot-browser.sh
 
-# Import unsafe_browser_is_enabled
+# Import unsafe_browser_is_enabled and persistence_is_enabled
 . /usr/local/lib/tails-shell-library/tails-greeter.sh
 
 error () {
@@ -63,19 +60,6 @@ show_shutdown_notification () {
     tails-notify-user "${title}" "${body}" 10000
 }
 
-maybe_restart_tor () {
-    # Restart Tor if it's not working (a captive portal may have prevented
-    # Tor from bootstrapping, and a restart is the fastest way to get
-    # wheels turning)
-    if ! tor_has_bootstrapped; then
-        echo "* Restarting Tor"
-        systemctl restart tor@default.service
-        if ! systemctl --quiet is-active tor@default.service; then
-            error "$(gettext "Failed to restart Tor.")"
-        fi
-    fi
-}
-
 # Main script:
 
 CMD="$(basename "${0}")"
@@ -91,10 +75,18 @@ HOME_PAGE="$(localized_tails_doc_page "${WARNING_PAGE}")"
 
 # Check if the Unsafe Browser was disabled in the startup options
 if ! unsafe_browser_is_enabled; then
-    error "$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
+    # Only mention the Persistent Storage if there is one (see #18551)
+    if persistence_is_enabled; then
+      msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
 To use the Unsafe Browser, restart Tails and enable \
 the Unsafe Browser in the additional settings of the Welcome Screen.\n
 To always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
+    else
+      msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
+To use the Unsafe Browser, restart Tails and enable \
+the Unsafe Browser in the additional settings of the Welcome Screen.")"
+    fi
+    error "${msg}"
 fi
 
 # Prevent multiple instances of the script.
@@ -136,6 +128,5 @@ run_browser_in_chroot "${CHROOT}" "${BROWSER_NAME}" "${BROWSER_USER}" \
 
 echo "* Exiting the Unsafe Browser"
 show_shutdown_notification
-maybe_restart_tor
 
 exit 0

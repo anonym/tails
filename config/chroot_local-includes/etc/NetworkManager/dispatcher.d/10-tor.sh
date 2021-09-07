@@ -17,22 +17,16 @@ else
     exit 0
 fi
 
-# Import tor_control_setconf(), TOR_LOG
+# Import tor_control_getconf()
+# shellcheck source=../../../usr/local/lib/tails-shell-library/tor.sh
 . /usr/local/lib/tails-shell-library/tor.sh
-
-# It's safest that Tor is not running when messing with its logs.
-systemctl stop tor@default.service
-
-# We depend on grepping stuff from the Tor log (especially for
-# tordate/20-time.sh), so deleting it seems like a Good Thing(TM).
-rm -f "${TOR_LOG}"
 
 # We would like Tor to be started during init time, even before the
 # network is up, and then send it a SIGHUP here to make it start
 # bootstrapping swiftly, but it doesn't work because of a bug in
 # Tor. Details:
-# * https://trac.torproject.org/projects/tor/ticket/1247
-# * https://tails.boum.org/bugs/tor_vs_networkmanager/
+# * https://gitlab.torproject.org/tpo/core/tor/-/issues/1247
+# * https://gitlab.tails.boum.org/tails/tails/-/blob/7fae4a761a06e5a14048baff21e0bdb71a1f7226/wiki/src/bugs/tor_vs_networkmanager.mdwn
 # To work around this we restart Tor.
 systemctl restart tor@default.service
 
