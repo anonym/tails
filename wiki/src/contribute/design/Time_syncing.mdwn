@@ -6,32 +6,19 @@ Tor sometimes freaks out if they detect too large clock
 skews. It is therefore important for us to ensure that Tails somehow
 automatically synchronizes the system time at start in a safe manner.
 
-There probably is a
-whole bunch of fingerprinting attacks an attacker could mount if it
-could pose as the time server and mess with the user's time. We
-therefore want to be able to *authenticate* the servers that provide
-us with supposedly accurate time information. Home-made research
-[[!tails_ticket 6113 desc="demonstrated"]] that NTPv4's server
-authentication features do not fit our usecase yet, so we have to look
-for solutions elsewhere.
-
-Since we want no direct internet traffic, the time syncing should be
-run through Tor, but that creates a catch 22: we want to set the time
-using Tor so we can make Tor usable.
+However, our only automated time syncing mechanism (`htpdate`) runs on Tor
+itself, which makes this a catch 22. We tackle this problem providing a method
+for the user to set the clock manually, if connection to Tor fails.
 
 # Overview
 
 In short this is how time syncing is performed when Tails starts:
 
-0. Start Tor. If Tor is already working, skip to HTP step.
-0. Let Tor fetch a consensus.
-0. If the time is too badly off, the authority certificate may not be
-   valid, so we set the system time to the `valid-after` of the unverified
-   consensus Tor fetched for us, which will guarantee that the certificate
-   and consensus are all valid. Then we restart Tor (since it behaves badly
-   with time jumps during the early bootstrap stages) and wait until it
-   accepts the consensus and finishes the bootstrap.
-0. Run HTP (see below) through Tor to get a more correct system time.
+0. Start Tor.
+0. If Tor can't connect, provide the user an opportunity to set the correct
+   time and retry.
+0. As soon as Tor works, run HTP (see below) through Tor to get a more correct
+   system time.
 
 A notification is shown while the whole process is running,
 informing the user that
@@ -40,67 +27,6 @@ services running Tor prior to version 0.2.3.7-alpha requires clients
 to have a time that is no more than 30 minutes incorrect).
 
 The hardware clock is not affected.
-
-# Guessing time based on Tor consensus
-
-This idea originates from Liberte Linux' `tordate` script which uses
-Tor's consensus file to initially roughly set the time. The consensus
-file contains such information:
-
-	valid-after 2010-12-27 16:00:00
-	fresh-until 2010-12-27 17:00:00
-	valid-until 2010-12-27 19:00:00
-
-A consensus is valid for three hours. If the system time is in the
-[valid-after, valid-after + 2 hours + 55 minutes] range, `tordate` exits.
-Else, it sets the system time to the middle of the [valid-after,
-fresh-until] range and restarts Tor.
-
-The system time is then ensured to be correct enough to enable Tor to
-successfully open a circuit, and HTP can then be used to more
-accurately set time *via Tor*. The whole idea is that while Tor does
-not manage to open a circuit if the system time is too incorrect, it
-still is able to retrieve its consensus file as soon as Internet
-connectivity is available.
-
-## Security discussion
-
-tordate's approach essentially removes the time skew check, which is
-used to prevent replay of consensus data. Let's discuss this class of
-attacks.
-
-First, replaying a consensus older than four weeks or so results in
-preventing access to the Tor network, and that's all, because onion
-keys will be wrong. An attacker who is in a position to replay a
-consensus to you could anyway do this, unrelated to time, so the issue
-at hand boils down to *replaying a consensus not older than four weeks
-or so*.
-
-Second, the same type of attacker as above could also try to forge a
-completely new consensus, which would be unverifiable since the
-attacker doesn't have access to the authorities' keys. We would still
-set Tails' system time according to the unverifiable consensus, but
-Tor would refuse to use the forged consensus, resulting in complete
-denial-of-service. An attacker in that position could do
-denial-of-service attacks in many other ways, so this doesn't make
-the situation any worse.
-
-Third, things are different depending on if you're using a bridge or
-not.
-
-If not using a bridge: Tails starts without a cached consensus, so its
-Tor client starts by connecting directly to a fallback directory
-mirror, so feeding you an old
-consensus requires the attacker either to break SSL, or to control the
-fallback directory mirror your Tor client connects to. Not good, but
-probably a compromise we can make.
-
-If using a bridge: your bridge can replay an old (four weeks old max.)
-consensus, which is used until HTP has fixed the time; not good, but
-probably a compromise we can make. If your bridge also can set up a SSL
-MitM attack against the HTP connections (e.g. the attacker also
-controls a SSL CA shipped by Debian), it can trick you into using this
-old consensus for max. four weeks, which is much worse.
 
 # HTP
 
@@ -175,11 +101,6 @@ limited to traffic flow only. It should be noted that HTP only fetches
 the HTTP header, so fingerprinting based on the known traffic pattern
 when fetching the full page of any of the members of Tails' HTP source
 pools is not possible.
-
-Our initial time guess based on the Tor consensus is probably easier
-to fingerprint, though: a fresh Tor is started,
-and restarted again right after the consensus has been
-downloaded.
 
 Tails developers still need to think thoroughly of these questions:
 are such fingerprinting possibilities a serious problem? What kind of

@@ -274,7 +274,7 @@ def convert_from_bytes(size, unit)
   size.to_f / convert_bytes_mod(unit)
 end
 
-def cmd_helper(cmd, env = {})
+def cmd_helper(cmd, env: {})
   if cmd.instance_of?(Array)
     cmd << { err: [:child, :out] }
   elsif cmd.instance_of?(String)

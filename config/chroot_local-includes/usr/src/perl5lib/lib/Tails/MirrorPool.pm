@@ -77,6 +77,7 @@ method transformURL (Str $url) {
     );
     $ENV{NODE_PATH} //= '/usr/local/lib/nodejs';
     $url = capturex(
+        'torsocks',
         'tails-transform-mirror-url', $url, $self->fallback_prefix,
         $mirrors_json
     );
