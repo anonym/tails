@@ -649,10 +649,6 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
     results.length == 1
   end
 
-  # XXX: we'd like a single "Return" to be enough,
-  #      but apparently activating the search entry is not working, so that's what we need to do
-  @screen.press('Tab')
-  @screen.press('Down')
   @screen.press('Return')
 
   try_for(5) do
