@@ -156,13 +156,27 @@ class TimezonePopover:
         self.treeview.set_model(self.treestore_filtered)
 
     def cb_searchentry_activate(self, searchentry, user_data=None):
-        """Selects the topmost item in the treeview when pressing Enter"""
-        if searchentry.get_text():
-            self.treeview.row_activated(
-                Gtk.TreePath.new_from_string("0"), self.treeview.get_column(0)
-            )
-        else:
+        """Select the topmost item in the treeview when pressing Enter."""
+        if not searchentry.get_text():
             self.popover.close(Gtk.ResponseType.CANCEL)
+            return
+
+        store = self.treestore_filtered
+        first_item_iter: Gtk.TreeIter = store.get_iter_first()
+
+        if first_item_iter is None: # store is empty
+            return
+
+        # Right now, this is always true. But if we add UTC again,
+        # then this could fail, so let's have this check
+        if store.iter_has_child(first_item_iter):
+            first_item_iter = store.iter_nth_child(first_item_iter, 0)
+
+
+        first_item_path: Gtk.TreePath = store.get_path(first_item_iter)
+        self.treeview.row_activated(
+            first_item_path, self.treeview.get_column(0)
+        )
 
     def cb_searchentry_search_changed(self, searchentry, user_data=None):
         self.treestore_filtered.refilter()
