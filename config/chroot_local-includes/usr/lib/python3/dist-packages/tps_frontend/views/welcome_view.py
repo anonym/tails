@@ -1,5 +1,6 @@
 from logging import getLogger
-from gi.repository import Gdk, Gio, Gtk
+from gi.repository import Gtk
+import subprocess
 
 from tps_frontend import WELCOME_VIEW_UI_FILE
 from tps_frontend.view import View
@@ -37,7 +38,7 @@ class WelcomeView(View):
 
     def on_activate_link(self, label: Gtk.Label, uri: str):
         logger.debug("Opening documentation: %s", uri)
-        Gtk.show_uri_on_window(self.window, uri, Gdk.CURRENT_TIME)
+        subprocess.run(["tails-documentation", uri])
         return True
 
     def on_continue_button_clicked(self, button: Gtk.Button):

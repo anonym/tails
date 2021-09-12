@@ -1,6 +1,7 @@
 from gi.repository import Gdk, Gio, Gtk
 import inspect
 from logging import getLogger
+import subprocess
 from typing import TYPE_CHECKING
 
 from tps_frontend import FEATURES_VIEW_UI_FILE
@@ -111,3 +112,8 @@ class FeaturesView(View):
             "file:///home/amnesia/Persistent",
             context=launch_context,
         )
+
+    def on_activate_link(self, label: Gtk.Label, uri: str):
+        logger.debug("Opening documentation: %s", uri)
+        subprocess.run(["tails-documentation", uri])
+        return True
