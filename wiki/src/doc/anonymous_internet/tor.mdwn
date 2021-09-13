@@ -8,7 +8,7 @@ Tor encrypts and anonymizes your connection by passing it through 3 relays. Tor
 relays are servers operated by different people and organizations around the
 world.
 
-[[!img doc/about/warnings/htw2-tails.png link="no"]]
+[[!img tor.svg link="no" alt="A Tor connection goes through 3 relays with the last one establishing the actual connection to the final destination"]]
 
 You cannot access the Internet from Tails until you are connected to Tor. For
 example, *Tor Browser* displays the error message <span class="code">Proxy
@@ -74,10 +74,10 @@ until it succeeds:
 1. Tails tries to connect to Tor directly using **public relays**, without
    using bridges.
 
-1. Tails tries to connect to Tor using a set of **default bridges**, already
+1. Tails tries to connect to Tor using one of the **default bridges**, already
    included in Tails, if connecting using public relays fails.
 
-1. Tails asks you to configure **custom bridges**, if connecting using the
+1. Tails asks you to configure a **custom bridge**, if connecting using the
    default bridges fails.
 
 Someone monitoring your Internet connection could identify these attempts as
@@ -95,7 +95,6 @@ you:
 
 <ul>
 <li>Detect if you have to sign in to the local network using a captive portal ([[!tails_ticket 5785]])</li>
-<li>Synchronize the clock of the computer to make it easier to use Tor bridges in Asia ([[!tails_ticket 15548]])</li>
 </ul>
 
 </div>
@@ -106,8 +105,16 @@ Hiding to your local network that you are connecting to Tor
 You might need to go unnoticed if using Tor could look suspicious to someone
 who monitors your Internet connection.
 
-When you choose this option, Tails will only connect to Tor after you configure Tor bridges. Bridges are
+When you choose this option, Tails will only connect to Tor after you configure a Tor bridge. Bridges are
 secret Tor relays that hide that you are connecting to Tor.
+
+<div class="note">
+
+<p>It is impossible to hide to the websites that you visit that you are using
+Tor, because the <a href="https://metrics.torproject.org/exonerator.html">list
+of exit nodes of the Tor network is public</a>.</p>
+
+</div>
 
 Our team is doing its best to help you connect to Tor using the most discrete
 types of Tor bridges. That is why, when you decide to hide that you are connecting to Tor:
@@ -116,7 +123,7 @@ types of Tor bridges. That is why, when you decide to hide that you are connecti
 
 - Default bridges are not available.
 
-  You will have to know the address of custom bridges.
+  You will have to know the address of a custom bridge.
 
   To request custom bridges, you can either:
 
@@ -137,40 +144,17 @@ types of Tor bridges. That is why, when you decide to hide that you are connecti
 
   Currently in Tails, only **obfs4 bridges** hide that you are using Tor.
 
-  obfs4 bridges look like:
-
-      obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0
-
-<div class="note">
-
-<p>The entire line needs to be entered, not just the IP address and port
-combination.</p>
-
-</div>
-
-<div class="note">
-
-<p>It is impossible to hide to the websites that you visit that you are using
-Tor, because the <a href="https://metrics.torproject.org/exonerator.html">list
-of exit nodes of the Tor network is public</a>.</p>
-
-</div>
-
-If connecting to Tor using custom bridges fails, the *Tor Connection* assistant
-helps you:
-
-- [[Sign in to the network using a captive portal|unsafe_browser]]
-- Configure a local proxy
+- To save the last Tor bridge that connected to Tor successfully, turn on the
+  [[Tor Bridge feature of the Persistent
+  Storage|doc/first_steps/persistence/configure#tor-bridge]].
 
 <div class="note">
 
 <p>In the future, we will make it easier to use custom bridges by:</p>
 
 <ul>
-<li>Allow you to save custom bridges in the Persistent Storage ([[!tails_ticket 5461]])</li>
-<li>Allow scanning the QR code returned by <a href="mailto:bridges@torproject.org">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>
-<li>Allow requesting bridges from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>
-<li>Synchronize the clock of the computer to be able to connect to Tor bridges more easily ([[!tails_ticket 15548]])</li>
+<li>Allowing you to scan the QR code returned by <a href="mailto:bridges@torproject.org">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>
+<li>Allowing you to request bridges from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>
 </ul>
 
 </div>
@@ -178,27 +162,38 @@ helps you:
 Troubleshooting Tor bridges
 ===========================
 
-If the bridges that you entered do not work, try requesting another set of
-bridges. It is possible that the bridges you entered are no longer
-operational.
+If connecting to Tor using a custom bridge fails, the *Tor Connection* assistant
+helps you:
 
-<div class="bug">
+- Set the clock of your computer to the correct time zone
+- [[Sign in to the network using a captive portal|unsafe_browser]]
+- Configure a local proxy
+- Enter a different bridge
 
-<p>When connecting to Tor, Tails sets the system time to the current time
-in the [[!wikipedia Coordinated_Universal_Time]] (UTC) timezone.</p>
+The computer clock is set to an incorrect time zone
+---------------------------------------------------
 
-<p>Many operating systems, such as Linux and macOS, write time expressed
-in UTC to the hardware clock of the computer. But, Windows instead
-writes time expressed in the local timezone to the hardware clock of
-the computer.</p>
+For Tor bridges to work, the clock of your computer must be correct.
 
-<p>So, if you are east of the United Kingdom (which is in the UTC timezone) on
-a computer that also runs Windows, Tails will make the system clock go
-backwards during startup. Unfortunately, this can prevent bridges from working.</p>
+Choose **Fix Clock** in the error screen of the *Tor Connection* assistant to
+set the time zone and time of your computer.
 
-<p>We are working on a fix for this issue. See [[!tails_ticket 15548]].</p>
+You did not enter the bridge correctly
+--------------------------------------
 
-</div>
+An obfs4 bridge looks like:
+
+    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0
+
+You need to enter the entire line, not just the IP address and port
+combination.
+
+The bridge is no longer operational
+-----------------------------------
+
+It is possible that the bridge that you entered is no longer working.
+
+Try entering another bridge or requesting other bridges.
 
 Viewing the status of Tor
 =========================
