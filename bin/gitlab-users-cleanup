@@ -21,6 +21,113 @@ PYTHON_GITLAB_NAME = os.getenv("GITLAB_NAME", default="Tails")
 LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
 
+LEGIT_USERS = [
+    "adrelanos",
+    "ajitari",
+    "alster",
+    "amartinr",
+    "anarcat",
+    "anonymousblabla",
+    "AnthonyV",
+    "AtomiKe",
+    "Ballen",
+    "bertagaz",
+    "BitingBird",
+    "boklm",
+    "Brettermaik",
+    "cacahuatl",
+    "cacukin",
+    "cailmdaley",
+    "chouchou",
+    "cipherpunks",
+    "co6",
+    "counterflow",
+    "cypherpunks",
+    "CyrilBrulebois",
+    "Dary",
+    "davidiw",
+    "dawuud",
+    "dgoulet",
+    "dkg",
+    "diva",
+    "Dr_Whax",
+    "elouann",
+    "enrico",
+    "espiv",
+    "flapflap",
+    "Gaff",
+    "garrettr",
+    "Guillaume",
+    "hellais",
+    "huertanix",
+    "hyas",
+    "import-from-Redmine",
+    "infinity0",
+    "ioerror",
+    "irregulator",
+    "iry",
+    "Joelsven1",
+    "johanbluecreek",
+    "johnnyvon",
+    "juris",
+    "lrnpenguin",
+    "ma1",
+    "maker",
+    "marcelisa2",
+    "matsa",
+    "mercedes508",
+    "micah",
+    "mjenglish",
+    "Moorm",
+    "mrphs",
+    "naar",
+    "nathan",
+    "natmaka",
+    "nc89",
+    "olabini",
+    "OneST8",
+    "ovitters",
+    "pablonatalino",
+    "png",
+    "pragmatic45",
+    "Rajie",
+    "rlrevell",
+    "rojiro",
+    "romeopapa",
+    "runa",
+    "runasand",
+    "s7r",
+    "saintmichael",
+    "sam_krd",
+    "SammyTheDuck",
+    "sascha.markus_gmail.com",
+    "sbrocca",
+    "sdibella",
+    "Seb35",
+    "senkdavid",
+    "singuliere",
+    "sjmurdoch",
+    "Sosthene",
+    "spriver",
+    "sriedel",
+    "sst",
+    "Standard8",
+    "sycamoreone",
+    "synthe",
+    "Tanejarahul",
+    "tchou",
+    "TheNerdyAnarchist",
+    "tim",
+    "ttailor",
+    "underite",
+    "usul",
+    "uzairfarooq",
+    "winterfairy",
+    "xmunoz",
+    "yawning",
+    "zooko",
+    "zopedi",
+]
 
 if __name__ == "__main__":
     import argparse
@@ -42,19 +149,18 @@ if __name__ == "__main__":
     parser.add_argument(
         "--min-creation-age",
         type=django.utils.dateparse.parse_duration,
-        required=True,
+        default="57 days",
         help="Only consider users created at least this duration ago",
     )
     parser.add_argument(
         "--min-inactivity",
         type=django.utils.dateparse.parse_duration,
-        required=True,
+        default="56 days",
         help="Only consider users inactive since this duration",
     )
     parser.add_argument(
         "--max-post-sign-up-activity",
         type=django.utils.dateparse.parse_duration,
-        required=True,
         help="Don't consider users who have been active for at least this duration after signing-up",
     )
     parser.add_argument(
@@ -64,10 +170,16 @@ if __name__ == "__main__":
         help="Only consider users who have not signed-in more often than this",
     )
     parser.add_argument(
-        "--max-issues-events",
+        "--max-contribution-events",
+        type=int,
+        default=10,
+        help="Only consider users who have not acted on issues or MRs more often than this",
+    )
+    parser.add_argument(
+        "--min-contribution-events",
         type=int,
         default=0,
-        help="Only consider users who have not acted on issues more often than this",
+        help="Only consider users who have acted on issues or MRs at least this often",
     )
     parser.add_argument(
         "--not-in-group",
@@ -90,7 +202,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--action",
         type=str,
-        help="Action to take on selected users, among: deactivate, block, deactivate-or-block, delete",
+        help="Action to take on selected users, among: deactivate, block, deactivate-or-block, delete, delete-user-and-contributions",
     )
 
     # General behavior control
@@ -124,7 +236,10 @@ if __name__ == "__main__":
     max_activity_date = now - args.min_inactivity
     log.debug("Max activity date: %s", max_activity_date)
 
-    log.debug("Max post-sign-up activity: %s", args.max_post_sign_up_activity)
+    if args.max_post_sign_up_activity is not None:
+        log.debug(
+            "Max post-sign-up activity: %s", args.max_post_sign_up_activity
+        )
 
     if args.not_in_group is not None:
         group = [
@@ -146,6 +261,8 @@ if __name__ == "__main__":
         user_filters["blocked"] = True
     if args.active:
         user_filters["active"] = True
+    if args.deactivated:
+        user_filters["active"] = False
     if args.search is not None:
         user_filters["search"] = args.search
 
@@ -167,7 +284,7 @@ if __name__ == "__main__":
             continue
 
         if dateutil.parser.isoparse(user.created_at) < max_creation_date:
-            log.info(
+            log.debug(
                 "User %s was created more than %s ago",
                 user_desc,
                 args.min_creation_age,
@@ -181,12 +298,12 @@ if __name__ == "__main__":
             continue
 
         if user.last_activity_on is None:
-            log.info("User %s was never active", user_desc)
+            log.debug("User %s was never active", user_desc)
         elif (
             dateutil.parser.isoparse(user.last_activity_on + "T00Z")
             < max_activity_date
         ):
-            log.info(
+            log.debug(
                 "User %s is inactive since at least %s",
                 user_desc,
                 args.min_inactivity,
@@ -208,7 +325,7 @@ if __name__ == "__main__":
                 user.last_activity_on + "T00Z"
             )
             if last_activity_on < created_at + args.max_post_sign_up_activity:
-                log.info(
+                log.debug(
                     "User %s has not been active for more than %s after sign-up",
                     user_desc,
                     args.max_post_sign_up_activity,
@@ -221,8 +338,15 @@ if __name__ == "__main__":
                 )
                 continue
 
+        if user.username in LEGIT_USERS:
+            log.debug(
+                "User %s is legit ⇒ skipping",
+                user_desc,
+            )
+            continue
+
         if user.id in group_members_ids:
-            log.info(
+            log.debug(
                 "User %s is in group %s ⇒ skipping",
                 user_desc,
                 args.not_in_group,
@@ -231,15 +355,23 @@ if __name__ == "__main__":
 
         if args.email_ends_with is not None:
             if user.email.endswith(args.email_ends_with):
-                log.info("User %s has an email address that ends with %s", user_desc, args.email_ends_with)
+                log.debug(
+                    "User %s has an email address that ends with %s",
+                    user_desc,
+                    args.email_ends_with,
+                )
             else:
-                log.debug("User %s has no email address that ends with %s", user_desc, args.email_ends_with)
+                log.debug(
+                    "User %s has no email address that ends with %s",
+                    user_desc,
+                    args.email_ends_with,
+                )
                 continue
 
         user_obj = gl.users.get(user.id)
 
         if user_obj.sign_in_count <= args.max_sign_in_count:
-            log.info(
+            log.debug(
                 "User %s has signed-in %i <= %i times",
                 user_desc,
                 user_obj.sign_in_count,
@@ -255,20 +387,36 @@ if __name__ == "__main__":
             continue
 
         events = user_obj.events.list()
-        issues_events = [
-            e for e in events if e.target_type in ["Note", "DiscussionNote", "Issue"]
+        contribution_events = [
+            e
+            for e in events
+            if e.target_type
+            in ["Note", "DiscussionNote", "Issue", "merge_request"]
         ]
-        if len(issues_events) <= args.max_issues_events:
-            log.info(
-                "User %s has done less than %i operations on issues",
+        if len(contribution_events) <= args.max_contribution_events:
+            log.debug(
+                "User %s has done less than %i contributions",
                 user_desc,
-                args.max_issues_events,
+                args.max_contribution_events,
             )
         else:
             log.debug(
-                "User %s has done at least %i operations on issues ⇒ skipping",
+                "User %s has done at least %i contributions ⇒ skipping",
                 user_desc,
-                len(issues_events),
+                args.max_contribution_events,
+            )
+            continue
+        if len(contribution_events) >= args.min_contribution_events:
+            log.debug(
+                "User %s has done at least %i contributions",
+                user_desc,
+                args.min_contribution_events,
+            )
+        else:
+            log.debug(
+                "User %s has done less than %i contributions ⇒ skipping",
+                user_desc,
+                args.min_contribution_events,
             )
             continue
 
@@ -322,6 +470,22 @@ if __name__ == "__main__":
                         )
                         user.block()
         elif args.action == "delete":
-            raise NotImplementedError("User deletion is not implemented yet.")
+            log.info(
+                "Deleting user %s (previous state: %s): https://gitlab.tails.boum.org/%s",
+                user_desc,
+                user.state,
+                user.username,
+            )
+            if not args.dry_run:
+                user.delete()
+        elif args.action == "delete-user-and-contributions":
+            log.info(
+                "Deleting user %s and contributions (previous state: %s): https://gitlab.tails.boum.org/%s",
+                user_desc,
+                user.state,
+                user.username,
+            )
+            if not args.dry_run:
+                user.delete(hard_delete=True)
         else:
             sys.exit("Unsupported action: %s" % args.action)
