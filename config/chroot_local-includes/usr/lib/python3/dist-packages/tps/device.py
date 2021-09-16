@@ -53,26 +53,25 @@ class BootDevice(object):
     def get_tails_boot_device(cls) -> "BootDevice":
         """Get the device which Tails was booted from"""
         # Get the underlying block device of the Tails system partition
-        # Note: It might be possible to simplify this via
-        # udisks.get_block_for_dev(stat_res.st_dev), but I found no
-        # way to convert a UDisks.Block to UDisks.Object.
-        cmd = ["findmnt", TAILS_MOUNTPOINT, "--output=SOURCE", "--noheadings"]
-        device_path = executil.check_output(cmd).strip()
-        device_path = os.path.realpath(device_path)
-        device = os.path.basename(device_path)
-        # Get the udisks object of the block device
-        system_partition = udisks.get_object(
-            f"/org/freedesktop/UDisks2/block_devices/{device}")
-        if not system_partition:
-            msg = f"Could not get udisks object of boot device {device}"
+        try:
+            dev_num = os.stat(TAILS_MOUNTPOINT).st_dev
+        except FileNotFoundError as e:
+            raise InvalidBootDeviceError(e)
+
+        block = udisks.get_block_for_dev(dev_num)
+        if not block or not block.get_object():
+            msg = f"Could not get udisks object of boot device " \
+                  f"{os.major(dev_num)}:{os.minor(dev_num)}"
             raise InvalidBootDeviceError(msg)
+        device_object = block.get_object()
+
         # Get the udisks partition object
-        partition = UDisks.Object.get_partition(system_partition)
-        if partition:
-            return BootDevice(udisks.get_object(partition.props.table))
-        else:
-            msg = f"Boot device {device} is not a partition"
+        partition = device_object.get_partition()
+        if not partition:
+            msg = f"Boot device {block.props.device} is not a partition"
             raise InvalidBootDeviceError(msg)
+
+        return BootDevice(udisks.get_object(partition.props.table))
 
     def get_beginning_of_free_space(self) -> int:
         """Get the beginning of the free space on the device, in bytes"""
