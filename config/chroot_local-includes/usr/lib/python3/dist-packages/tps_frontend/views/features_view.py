@@ -27,6 +27,9 @@ class Printers(Feature):
 class NetworkConnections(Feature):
     pass
 
+class TorConfiguration(Feature):
+    pass
+
 class Electrum(Feature):
     pass
 

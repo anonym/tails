@@ -36,6 +36,11 @@ class NetworkConnections(Feature):
                     "/etc/NetworkManager/system-connections")]
 
 
+class TorConfiguration(Feature):
+    Id = "TorConfiguration"
+    Mounts = [Mount("tca", "/var/lib/tca")]
+
+
 class AdditionalSoftware(Feature):
     Id = "AdditionalSoftware"
     Mounts = [Mount("apt/cache", "/var/cache/apt/archives"),
