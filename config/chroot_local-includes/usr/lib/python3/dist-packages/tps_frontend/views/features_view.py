@@ -18,9 +18,6 @@ class PersistentDirectory(Feature):
 class BrowserBookmarks(Feature):
     pass
 
-class LanguageAndRegion(Feature):
-    pass
-
 class AdministrationPassword(Feature):
     pass
 
