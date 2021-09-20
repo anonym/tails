@@ -635,8 +635,8 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   def get_visible_results(dialog)
     table = dialog.child(roleName: 'tree table')
     results = table.children(roleName: 'table cell').select do |res|
-      # Let's skip continents
-      res.name.include? '/'
+      # Let's skip continents, but keep special timezones: UTC and GMT
+      res.name.include? '/' or ["UTC", "GMT"].include?(res.name)
     end
     results
   end
