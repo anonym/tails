@@ -7,7 +7,7 @@ Tails has a time-based release schedule, aligned with
 which itself depends on the
 [Firefox ESR
 (Extended Support Release) release schedule](https://wiki.mozilla.org/Release_Management/Calendar).
-In the examples below we'll assume a 6-weeks release cycle.
+In the examples below we'll assume a 4-weeks release cycle.
 
 We generally publish 2 or 3 major Tails releases every year.
 Between two consecutive major releases, we publish as many bugfix
@@ -26,26 +26,25 @@ See our actual [[release schedule|contribute/calendar]].
 Schedule
 ========
 
-	  /          4w         \/   2w    /4d\
+	  /          2w       \/   2w    /4d\
 	                                     
-	  previous               RC1    ESR sources
-	  ESR + Tails             |        |
-	  release          freeze |        |  new ESR + Tails
-	  |                     | |        |  release
-	  |                     | |        |  |
-	  ↓                     ↓ ↓        ↓  ↓
-	._____._____._____._____._____._____._____.
-	0     1     2     3     4     5     6
+	previous            freeze        Tor Browser
+	ESR + Tails         + RC1         ready for QA
+	release                |                |
+	  |                    |                |  new ESR
+	  |                    |                |  + Tails release
+	  ↓                    ↓                ↓  ↓
+	._________._________._________._________._________.
+	0         1         2         3         4
 
 In the above:
 
-* *ESR sources* means the source code for the upcoming Firefox ESR is
-  available, but the ESR is not officially out yet: it has to go
-  through Mozilla's QA process first. Sources are generally available
-  on Friday night (US time).
+* *Tor Browser ready for QA* means that binaries for the upcoming Tor Browser
+  are available, ready for testing, but they are not officially out yet: it has to go
+  through Tor's QA process first.
 * *ESR + Tails release* means Mozilla announces the new Firefox ESR,
   and we release a new version of Tails (roughly) the same day.
-  This usually happens on Tuesday night (US time).
+  This usually happens on Tuesday.
 
 What if things go wrong?
 ========================

@@ -198,6 +198,14 @@ module Dogtail
       run("#{@var}.#{key} = #{self.class.value_to_s(value)}")
     end
 
+    def combovalue
+      get_field('combovalue')
+    end
+
+    def combovalue=(value)
+      set_field('combovalue', value)
+    end
+
     def checked
       get_field('checked') == 'True'
     end
