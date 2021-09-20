@@ -1,5 +1,5 @@
 import datetime
-from typing import Optional, List
+from typing import Optional, List, Dict
 from logging import getLogger
 from collections import defaultdict
 
@@ -113,17 +113,22 @@ class TimezonePopover:
     def _create_tz_store(self) -> Gtk.TreeStore:
         self.treestore = Gtk.TreeStore(str)
         timezones = pytz.common_timezones
-        timezone_tree: List[str] = defaultdict(list)
+        timezone_tree: Dict[List[str]] = defaultdict(list)
+        toplevel_timezones: List[str] = []
         for tz in timezones:
-            if '/' not in tz:  # discard GMT and UTC
-                continue
-            region, city = tz.split("/", 1)
-            timezone_tree[region].append(tz)
+            if "/" not in tz:  # GMT and UTC
+                toplevel_timezones.append(tz)
+            else:  # everything else
+                region, city = tz.split("/", 1)
+                timezone_tree[region].append(tz)
 
         for region in sorted(timezone_tree):
             regioniter = self.treestore.append(parent=None, row=[region])
             for city in sorted(timezone_tree[region]):
                 self.treestore.append(parent=regioniter, row=[city])
+
+        for tz in toplevel_timezones:
+            self.treestore.append(parent=None, row=[tz])
 
     def __init__(self, builder, relative_to):
         self.id = "tz"
@@ -190,10 +195,13 @@ class TimezonePopover:
     def cb_treeview_row_activated(self, treeview, path, column, user_data=None):
         treemodel = treeview.get_model()
         treeiter = treemodel.get_iter(path)
-        if treemodel.iter_parent(treeiter) is None:
-            # user cannot select a parent node like "Europe", because that's not a timezone
-            # XXX: expand/collapse this row would probably be better UX
-            return
+        if treemodel.iter_parent(treeiter) is None:  # is top-level
+            if (
+                treemodel.iter_children(treeiter) is not None
+            ):  # has children: it is a region
+                # user cannot select a parent node like "Europe", because that's not a timezone
+                # XXX: expand/collapse this row would probably be better UX
+                return
         self.value = treemodel.get_value(treeiter, 0)
         self.value_changed_by_user = True
         self.popover.close(Gtk.ResponseType.YES)
