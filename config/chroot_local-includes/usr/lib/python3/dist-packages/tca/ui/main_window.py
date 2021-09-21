@@ -1021,7 +1021,6 @@ class TCAMainWindow(
                     return "progress"
                 elif self.state["progress"]["success"]:
                     log.warn("We are not connected to Tor anymore!")
-                    # TODO: what should we do? go to 0? go to consent question? go to error page?
                     return "error"
                 else:
                     log.debug("Tor not working and we're in progress: just wait some more")
