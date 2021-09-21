@@ -815,7 +815,7 @@ class TCAMainWindow(
         )
         self.app = app
         self.set_role(tca.config.APPLICATION_WM_CLASS)
-        # XXX: set_wm_class is deprecated, but it's the only way I found to set taskbar title
+        # set_wm_class is deprecated, but it's the only way I found to set taskbar title; see #18610
         self.set_wmclass(
             tca.config.APPLICATION_WM_CLASS, tca.config.APPLICATION_WM_CLASS
         )
