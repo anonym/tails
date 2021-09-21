@@ -647,11 +647,9 @@ class StepErrorMixin:
             time_dialog.destroy()
 
     def cb_step_error_btn_captive_clicked(self, *args):
+        # we are not checking the result of this command, because nothing depends on it
         self.app.portal.call_async("open-unsafebrowser", None)
 
-        # XXX: for proper handling of the btn_submit, we'd better wait for the unsafe-browser to be closed
-        # XXX: this is considered a "fix attempt" even if the unsafe-browser was not enabled, which is clearly
-        #      not true
         self.state["error"]["fix_attempt"] = True
         self._step_error_submit_allowed()
 
