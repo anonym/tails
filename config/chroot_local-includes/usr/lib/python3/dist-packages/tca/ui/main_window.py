@@ -885,19 +885,6 @@ class TCAMainWindow(
         self.show()
         self.change_box(self.state["step"])
 
-    def todo_dialog(self, msg=""):
-        print("TODO:", msg)
-        dialog = Gtk.MessageDialog(
-            transient_for=self,
-            flags=0,
-            message_type=Gtk.MessageType.ERROR,
-            buttons=Gtk.ButtonsType.CANCEL,
-            text="This is still TODO",
-        )
-        dialog.format_secondary_text(msg)
-        dialog.run()
-        dialog.destroy()
-
     def save_conf(self, successful_connect=False):
         log.info("Saving configuration (success=%s)", successful_connect)
         if successful_connect:
