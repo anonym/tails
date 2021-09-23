@@ -88,14 +88,7 @@ adequate to the situations we have in mind.
 
 # Implementation
 
-TODO: this is outdated ([[!tails_ticket 18360]]).
-
-In the Welcome Screen the "Network Configuration" section contains a
-non-default option called "My Internet Connection is
-censored...". When activated, the following deviations from normal
-Tails behaviour occur, in order:
-
-0. Tails sessions begin with `DisableNetwork 1` in torrc so Tor will not
+0. Tails sessions all begin with `DisableNetwork 1` in torrc so Tor will not
    connect to the network without user intervention.
 
 0. The `tor` process is configured to not use the system resolver
@@ -103,31 +96,97 @@ Tails behaviour occur, in order:
    NetworkManager instead. This enables the use of hostnames for
    proxies and pluggable transports (which is required for e.g. Meek).
 
-0. When we connect to the network, a NetworkManager hook starts Tor
-   Launcher in the background, i.e. non-blocking.
+0. When we connect to the network, a NetworkManager hook starts
+   _Tor Connection_ in the background, i.e. non-blocking.
 
-0. [[Time_syncing]] waits until the user has committed their
-   configuration via Tor Launcher and then does its usual magic to
-   ensure that Tor bootstraps even if the clock was incorrect. That is
-   the reason why we have to take the more complex approach of
-   starting Tor Launcher in parallel.
-
-We install Tor Launcher by extracting it from the Tor Browser tarball,
-when building the ISO image.
+0. [[Time_syncing]] waits until tor has successfully bootstrapped before
+   running. This waiting happens in systemd-land, not inside a NetworkManager
+   hook.
 
 Scripts:
 
-* [[!tails_gitweb config/chroot_local-hooks/10-tbb]] (installs Tor Launcher)
-
-* [[!tails_gitweb config/chroot_local-includes/usr/local/sbin/tails-tor-launcher]]
+* [[!tails_gitweb config/chroot_local-includes/usr/local/bin/tca]]
   (Wrapper for Tor Launcher)
 
 * [[!tails_gitweb config/chroot_local-includes/etc/NetworkManager/dispatcher.d/10-tor.sh]]
-  (Tor Launcher is started here)
+  (_Tor Connection_ is started here)
 
 * [[!tails_gitweb config/chroot_local-includes/etc/NetworkManager/dispatcher.d/20-time.sh]]
   (Time syncing)
 
 * [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/tor@default.service.d/writable-etc-tor.conf]]
   and [[!tails_gitweb config/chroot_local-patches/apparmor-adjust-tor-profile.diff]]
-  (allow Tor to modify its configuration)
+  (allow tor to modify its configuration)
+
+## Tor Connection
+
+_Tor Connection_ (sometimes nicknamed `tca`), is a graphical interface to
+configure tor. Configuring tor is something that we consider to be a privileged
+operation, because it can lead to deanonymization quite easily.
+
+We want:
+ - _Tor Connection_ to run as `amnesia`. This is required to nicely integrate
+   with the desktop environment
+ - the `amnesia` user not to be able to configure tor. ie: an attacker
+   exploting TorBrowser and able to run code as amnesia, cannot change tor
+   configuration.
+ - _Tor Connection_ to be able to configure tor
+ - similarly, we want _Tor Connection_ to be able to keep some configuration
+   and state files that the user has no permission to read
+ - _Tor Connection_ to perform some specific action that require
+   root privileges: changing the system date and time is one example of this.
+   Those actions must not be permitted to the user outside of _Tor Connection_.
+
+So that's what we do:
+ - _Tor Connection_ is started in a dedicated, privileged, network namespace;
+   this is needed to be able to reach onion-grater properly; see
+   [[!tails_ticket 18123]]
+ - `tca-portal` is run. This is a daemon that runs as root and runs specific
+   commands if you can access its listening socket. The listening socket is a
+   unix domain socket, and the permissions make it so that only root can connect
+   to it.
+ - before _Tor Connection_ is started, a wrapper that runs as root creates
+   configuration/state files, applies restrictive permissions, and opens them.
+   Those file descriptors are then passed to _Tor Connection_ using
+   [[!tails_gitweb config/chroot_local-includes/usr/local/lib/connect-drop]].
+   _Tor Connection_ will be able to read/write those files, while amnesia will
+   not.
+ - the same wrapper also opens a connection to `tca-portal`. This portal will
+   perform specific privileged actions on behalf of _Tor Connection_.
+   `connect-drop` is responsible for this, too
+
+The code lives in:
+ * [[!tails_gitweb config/chroot_local-includes/usr/lib/python3/dist-packages/tca]]
+ * [[!tails_gitweb config/chroot_local-includes/usr/local/bin/tca]]
+ * [[!tails_gitweb config/chroot_local-includes/usr/share/applications/tca.desktop.in]]
+ * [[!tails_gitweb config/chroot_local-includes/usr/local/lib/tca-portal]]
+ * [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/tca-portal.service]]
+ * [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/tca-portal.socket]]
+
+### Why privileged network namespaces
+
+The usage of _unprivileged network namespaces_ has been considered, but they
+didn't seem appropriate to our requirements.
+
+Let's suppose that we want the amnesia user to be able to enter a new network
+namespace on its own. Then, what would prevent the attacker to do exactly the
+same?
+Unprivileged namespaces seems to be appropriate when your software wants to
+drop permissions; here, we use network namespaces to become *more* privileged,
+not less.
+
+### Why connect-drop
+
+Many programs implement the acquire-then-drop-privileges pattern on their own.
+Connect-drop is a dedicated helper for this. Why so?
+
+ - Reusability. Separating building blocks is always nice.
+ - Easier audit. _Tor Connection_ is a big program, while `connect-drop` is a
+   short script. Auditing it and testing it might be simpler.
+ - Clearer definition of goal and threat model.
+ - "Hidden" ways of gaining back privileges. Running `setuid` is not always
+   enough; for example if you still have some file descriptor open, you can
+   sometimes use that again for other purposes, violating the security goal.  Of
+   course you can just be careful about it, but having one process that runs
+   another defines more clearly what is passed from the first process to the
+   second.
