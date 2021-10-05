@@ -82,7 +82,7 @@ the Foundations Team's duties.
   ie, you can run this inside isos.git:
 
         git annex sync
-        (cd "${TAILS_GIT_REPO:?}" && ./bin/iuk-source-versions "${VERSION:?}" | sed -e 's/^/tails-amd64-/') | xargs -r git annex get
+        (cd ${TAILS_GIT_REPO:?}; ./bin/iuk-source-versions ${VERSION:?}" | tr ' ' '\n' | sed -e 's/^/tails-amd64-/') | xargs -r git annex get
 
 
 
