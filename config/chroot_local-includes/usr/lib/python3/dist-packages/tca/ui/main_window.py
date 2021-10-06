@@ -194,7 +194,7 @@ class StepChooseBridgeMixin:
             bridge = bridges[0]
             self.get_object("text").get_buffer().set_text(bridge, len(bridge))
             self.get_object("label_type").set_label(
-                _("_Use a bridge that I already know")
+                _("_Use a bridge that you already know")
             )
 
     def _step_bridge_set_persistence_sensitivity(self, sensitive: bool):
