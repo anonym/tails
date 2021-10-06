@@ -175,6 +175,11 @@ Then /^(no|the "([^"]+)") USB drive is selected$/ do |mode, name|
   end
 end
 
+def persistence_exists?(name)
+  data_part_dev = $vm.disk_dev(name) + '2'
+  $vm.execute("test -b #{data_part_dev}").success?
+end
+
 When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by cloning$/ do |action, name|
   step 'I start Tails Installer'
   # If the device was plugged *just* before this step, it might not be
@@ -188,7 +193,11 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
             end
     @installer.button(label).click
    unless action ==  'upgrade'
-     confirmation_label = 'Delete All Data and Install'
+     confirmation_label = if persistence_exists?(name)
+                            'Delete Persistent Storage and Reinstall'
+                          else
+                            'Delete All Data and Install'
+                          end
      @installer.child('Question',
                       roleName: 'alert').button(confirmation_label).click
     end
