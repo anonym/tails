@@ -389,8 +389,6 @@ heavily restricted by a firewall:
   explicitly configured to use Tor will reach the Internet).
 - All DNS lookups SHOULD be made through the Tor network (i.e.
   redirected to `DNSPort` as set in `torrc`).
-- All IPv6 traffic SHOULD be forbidden as it is not supported by the Tor
-  network.
 
 Note that the above is not necessary (or desirable) for local network
 (RFC1918) addresses; it is RECOMMENDED to special-case DNS queries
@@ -1094,7 +1092,7 @@ status. Only IRC and Jabber/XMPP protocols are left available, to
 avoid the usage of less well audited plugins. The Off-the-record
 plugin is enabled
 to help one-to-one conversations being as private and unrecordable as
-possible. 
+possible.
 
 - [[!tails_gitweb_dir config/chroot_local-includes/etc/skel/.purple]]
 - [[!tails_gitweb config/chroot_local-hooks/09-remove_unsupported_pidgin_libs]]
@@ -1334,9 +1332,8 @@ this choice is:
 Tails currently offers almost no protection against live physical
 monitoring, except for hardware keyloggers.
 
-UDP and IPv6 are a problem. The Tor network does not support any of
-those yet. Outgoing UDP and IPv6 packets are dropped altogether by
-netfilter for this reason.
+UDP is a problem. The Tor network does not support it. Outgoing UDP
+packets are dropped altogether by netfilter for this reason.
 
 Support for [[!tails_ticket 6070 desc="arbitrary DNS queries"]] is not
 provided anymore since we removed ttdnsd in Tails 3.0.
