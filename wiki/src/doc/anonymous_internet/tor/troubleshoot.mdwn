@@ -1,0 +1,34 @@
+[[!meta title="Troubleshooting connecting to Tor"]]
+
+If connecting to Tor using a custom bridge fails, the *Tor Connection* assistant
+helps you:
+
+- Set the clock of your computer to the correct time zone
+- [[Sign in to the network using a captive portal|unsafe_browser]]
+- Configure a local proxy
+- Enter a different bridge
+
+The computer clock is set to an incorrect time zone
+---------------------------------------------------
+
+For Tor bridges to work, the clock of your computer must be correct.
+
+Choose **Fix Clock** in the error screen of the *Tor Connection* assistant to
+set the time zone and time of your computer.
+
+You did not enter the bridge correctly
+--------------------------------------
+
+An obfs4 bridge looks like:
+
+    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0
+
+You need to enter the entire line, not just the IP address and port
+combination.
+
+The bridge is no longer operational
+-----------------------------------
+
+It is possible that the bridge that you entered is no longer working.
+
+Try entering another bridge or requesting other bridges.
