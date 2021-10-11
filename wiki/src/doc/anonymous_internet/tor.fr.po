@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-10-07 11:10+0000\n"
+"POT-Creation-Date: 2021-10-11 15:21+0000\n"
 "PO-Revision-Date: 2021-10-08 18:06+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,9 +46,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!img tor.svg link=\"no\" alt=\"A Tor connection goes through 3 relays with the last one establishing the actual connection to the final destination\"]]\n"
-msgstr ""
-"[[!img tor.svg link=\"no\" alt=\"Une connexion Tor passe par trois relais, "
-"le dernier établissant la connexion réelle à la destination finale\"]]\n"
+msgstr "[[!img tor.svg link=\"no\" alt=\"Une connexion Tor passe par trois relais, le dernier établissant la connexion réelle à la destination finale\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -67,11 +65,15 @@ msgid "<div class=\"note\">\n"
 msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<p>Because Tor routes your Internet traffic through 3 relays\n"
+#| "before reaching its destination, the\n"
+#| "connection is slower than when your are not using Tor.</p>\n"
 msgid ""
 "<p>Because Tor routes your Internet traffic through 3 relays\n"
 "before reaching its destination, the\n"
-"connection is slower than when your are not using Tor.</p>\n"
+"connection is slower than when you are not using Tor.</p>\n"
 msgstr ""
 "<p>Parce que Tor fait passer votre trafic Internet par trois relais\n"
 "avant d'arriver à sa destination, la\n"
@@ -267,22 +269,6 @@ msgstr ""
 "que ces tentatives proviennent d'un utilisateur de Tails."
 
 #. type: Plain text
-msgid ""
-"If connecting to Tor automatically fails, the *Tor Connection* assistant "
-"helps you:"
-msgstr ""
-"Si la connexion automatique à Tails échoue, l'assistant de *Connexion à Tor* "
-"vous aide à :"
-
-#. type: Plain text
-msgid ""
-"- [[Sign in to the network using a captive portal|unsafe_browser]] - "
-"Configure a local proxy"
-msgstr ""
-"- [[Se connecter à un réseau utilisant un portail captif|unsafe_browser]] - "
-"Configurer un mandataire local"
-
-#. type: Plain text
 #, no-wrap
 msgid "<p>In the future, Tails will also automatically:</p>\n"
 msgstr "<p>Dans le futur, Tails va également automatiquement :</p>\n"
@@ -295,8 +281,7 @@ msgid ""
 "</ul>\n"
 msgstr ""
 "<ul>\n"
-"<li>Détecter si vous devez vous connecter à un réseau local utilisant un "
-"portail captif ([[!tails_ticket 5785]])</li>\n"
+"<li>Détecter si vous devez vous connecter à un réseau local utilisant un portail captif ([[!tails_ticket 5785]])</li>\n"
 "</ul>\n"
 
 #. type: Title =
@@ -329,10 +314,8 @@ msgid ""
 "Tor, because the <a href=\"https://metrics.torproject.org/exonerator.html\">list\n"
 "of exit nodes of the Tor network</a> is public.</p>\n"
 msgstr ""
-"<p>Il est impossible de cacher aux sites web que vous visitez que vous "
-"utilisez\n"
-"Tor, parce que la <a href=\"https://metrics.torproject.org/exonerator.html\">"
-"liste\n"
+"<p>Il est impossible de cacher aux sites web que vous visitez que vous utilisez\n"
+"Tor, parce que la <a href=\"https://metrics.torproject.org/exonerator.html\">liste\n"
 "des nœuds de sortie du réseau Tor</a> est publique.</p>\n"
 
 #. type: Plain text
@@ -414,7 +397,7 @@ msgstr ""
 msgid "  Currently in Tails, only **obfs4 bridges** hide that you are using Tor.\n"
 msgstr "  Actuellement dans Tails, seuls les **ponts obfs4** dissimulent le fait que vous utilisiez Tor.\n"
 
-#. type: Bullet: '- '
+#. type: Plain text
 msgid ""
 "To save the last Tor bridge that connected to Tor successfully, turn on the "
 "[[Tor Bridge feature of the Persistent Storage|doc/first_steps/persistence/"
@@ -438,92 +421,9 @@ msgid ""
 "</ul>\n"
 msgstr ""
 "<ul>\n"
-"<li>Vous permettant de scanner le QR code envoyé par <a href=\""
-"mailto:bridges@torproject.org\">bridges@torproject.org</a> ([[!tails_ticket "
-"18219]])</li>\n"
-"<li>Vous permettant de  demander des ponts depuis Tails en résolvant des "
-"CAPTCHA ([[!tails_ticket 15331]])</li>\n"
+"<li>Vous permettant de scanner le QR code envoyé par <a href=\"mailto:bridges@torproject.org\">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>\n"
+"<li>Vous permettant de  demander des ponts depuis Tails en résolvant des CAPTCHA ([[!tails_ticket 15331]])</li>\n"
 "</ul>\n"
-
-#. type: Title =
-#, no-wrap
-msgid "Troubleshooting Tor bridges"
-msgstr "Résoudre les problèmes liés aux ponts Tor"
-
-#. type: Plain text
-msgid ""
-"If connecting to Tor using a custom bridge fails, the *Tor Connection* "
-"assistant helps you:"
-msgstr ""
-"Si la connexion à Tor à l'aide d'un pont personnalisé échoue, l'assistant de "
-"*Connexion à Tor* vous aide à :"
-
-#. type: Plain text
-msgid ""
-"- Set the clock of your computer to the correct time zone - [[Sign in to the "
-"network using a captive portal|unsafe_browser]] - Configure a local proxy - "
-"Enter a different bridge"
-msgstr ""
-"- Réglez l'horloge de votre ordinateur sur le bon fuseau horaire - [[Se "
-"connecter à un réseau utilisant un portail captif|unsafe_browser]] - "
-"Configurer un mandataire local - Saisir un pont différent"
-
-#. type: Title -
-#, no-wrap
-msgid "The computer clock is set to an incorrect time zone"
-msgstr "L'horloge de l'ordinateur est réglée sur un fuseau horaire incorrect"
-
-#. type: Plain text
-msgid "For Tor bridges to work, the clock of your computer must be correct."
-msgstr ""
-"Pour que les ponts Tor fonctionnent, l'horloge de votre ordinateur doit être "
-"correcte."
-
-#. type: Plain text
-msgid ""
-"Choose **Fix Clock** in the error screen of the *Tor Connection* assistant "
-"to set the time zone and time of your computer."
-msgstr ""
-"Choisissez **Fix Clock** dans l'écran d'erreur de l'assistant de **Connexion "
-"à Tor**  pour définir le fuseau horaire et l'heure de votre ordinateur."
-
-#. type: Title -
-#, no-wrap
-msgid "You did not enter the bridge correctly"
-msgstr "Vous n'avez pas saisi le pont correctement"
-
-#. type: Plain text
-msgid "An obfs4 bridge looks like:"
-msgstr "Un pont obfs4 ressemble à ça :"
-
-#. type: Plain text
-#, no-wrap
-msgid "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
-msgstr ""
-"    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 "
-"cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ "
-"iat-mode=0\n"
-
-#. type: Plain text
-msgid ""
-"You need to enter the entire line, not just the IP address and port "
-"combination."
-msgstr ""
-"Vous devez saisir la ligne entière, pas seulement la combinaison adresse IP "
-"et numéro de port."
-
-#. type: Title -
-#, no-wrap
-msgid "The bridge is no longer operational"
-msgstr "Le pont n'est plus opérationnel"
-
-#. type: Plain text
-msgid "It is possible that the bridge that you entered is no longer working."
-msgstr "Il est possible que le pont que vous avez saisi ne fonctionne plus."
-
-#. type: Plain text
-msgid "Try entering another bridge or requesting other bridges."
-msgstr "Essayez de saisir un autre pont ou demandez d'autres ponts."
 
 #. type: Title =
 #, no-wrap
@@ -556,6 +456,100 @@ msgid ""
 msgstr ""
 "[[!img lib/symbolic/tor-disconnected.png alt=\"Icône oignon barré\" link=no "
 "class=\"symbolic\"]] Vous n'êtes pas connecté à Tor."
+
+#. type: Title =
+#, fuzzy, no-wrap
+#| msgid "Troubleshooting Tor bridges"
+msgid "Troubleshooting connecting to Tor"
+msgstr "Résoudre les problèmes liés aux ponts Tor"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "<div class=\"note\">\n"
+msgid "<div class=\"next\">\n"
+msgstr "<div class=\"note\">\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<p>See our documentation on\n"
+#| "[[why Tor is slow|doc/anonymous_internet/tor/slow]].</p>\n"
+msgid "<p>See our documentation on [[troubleshooting connecting to Tor|tor/troubleshoot]].</p>\n"
+msgstr ""
+"<p>Voir notre documentation sur\n"
+"[[pourquoi Tor est lent|doc/anonymous_internet/tor/slow]].</p>\n"
+
+#~ msgid ""
+#~ "If connecting to Tor automatically fails, the *Tor Connection* assistant "
+#~ "helps you:"
+#~ msgstr ""
+#~ "Si la connexion automatique à Tails échoue, l'assistant de *Connexion à "
+#~ "Tor* vous aide à :"
+
+#~ msgid ""
+#~ "- [[Sign in to the network using a captive portal|unsafe_browser]] - "
+#~ "Configure a local proxy"
+#~ msgstr ""
+#~ "- [[Se connecter à un réseau utilisant un portail captif|unsafe_browser]] "
+#~ "- Configurer un mandataire local"
+
+#~ msgid ""
+#~ "If connecting to Tor using a custom bridge fails, the *Tor Connection* "
+#~ "assistant helps you:"
+#~ msgstr ""
+#~ "Si la connexion à Tor à l'aide d'un pont personnalisé échoue, l'assistant "
+#~ "de *Connexion à Tor* vous aide à :"
+
+#~ msgid ""
+#~ "- Set the clock of your computer to the correct time zone - [[Sign in to "
+#~ "the network using a captive portal|unsafe_browser]] - Configure a local "
+#~ "proxy - Enter a different bridge"
+#~ msgstr ""
+#~ "- Réglez l'horloge de votre ordinateur sur le bon fuseau horaire - [[Se "
+#~ "connecter à un réseau utilisant un portail captif|unsafe_browser]] - "
+#~ "Configurer un mandataire local - Saisir un pont différent"
+
+#~ msgid "The computer clock is set to an incorrect time zone"
+#~ msgstr "L'horloge de l'ordinateur est réglée sur un fuseau horaire incorrect"
+
+#~ msgid "For Tor bridges to work, the clock of your computer must be correct."
+#~ msgstr ""
+#~ "Pour que les ponts Tor fonctionnent, l'horloge de votre ordinateur doit "
+#~ "être correcte."
+
+#~ msgid ""
+#~ "Choose **Fix Clock** in the error screen of the *Tor Connection* "
+#~ "assistant to set the time zone and time of your computer."
+#~ msgstr ""
+#~ "Choisissez **Fix Clock** dans l'écran d'erreur de l'assistant de "
+#~ "**Connexion à Tor**  pour définir le fuseau horaire et l'heure de votre "
+#~ "ordinateur."
+
+#~ msgid "You did not enter the bridge correctly"
+#~ msgstr "Vous n'avez pas saisi le pont correctement"
+
+#~ msgid "An obfs4 bridge looks like:"
+#~ msgstr "Un pont obfs4 ressemble à ça :"
+
+#~ msgid "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
+#~ msgstr "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
+
+#~ msgid ""
+#~ "You need to enter the entire line, not just the IP address and port "
+#~ "combination."
+#~ msgstr ""
+#~ "Vous devez saisir la ligne entière, pas seulement la combinaison adresse "
+#~ "IP et numéro de port."
+
+#~ msgid "The bridge is no longer operational"
+#~ msgstr "Le pont n'est plus opérationnel"
+
+#~ msgid ""
+#~ "It is possible that the bridge that you entered is no longer working."
+#~ msgstr "Il est possible que le pont que vous avez saisi ne fonctionne plus."
+
+#~ msgid "Try entering another bridge or requesting other bridges."
+#~ msgstr "Essayez de saisir un autre pont ou demandez d'autres ponts."
 
 #~ msgid "[[!img doc/about/warnings/htw2-tails.png link=\"no\"]]\n"
 #~ msgstr "[[!img doc/about/warnings/htw2-tails.png link=\"no\"]]\n"
