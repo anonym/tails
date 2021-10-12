@@ -496,7 +496,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
                               .click
     else
       btn = tor_connection_assistant.child(
-        '_Type in a bridge that you already know',
+        '_Enter a bridge that you already know',
         roleName: 'radio button'
       )
       btn.click
