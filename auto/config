@@ -68,14 +68,14 @@ fi
 
 
 # space-separated list of additional packages debootstrap installs
-#  - gnupg: needed by apt-key, not installed by default anymore on Buster
+#  - gnupg: needed by apt-key, not installed by default since Buster
 export LB_BOOTSTRAP_INCLUDE="gnupg"
 
 # init variables
 RUN_LB_CONFIG="lb config noauto"
 
 # init config/ with defaults for the target distribution
-$RUN_LB_CONFIG --distribution buster "${@}"
+$RUN_LB_CONFIG --distribution bullseye "${@}"
 
 # set up everything for time-based snapshots:
 if [ -n "${APT_SNAPSHOTS_SERIALS:-}" ]; then
