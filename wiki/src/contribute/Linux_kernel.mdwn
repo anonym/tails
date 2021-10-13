@@ -69,6 +69,25 @@ Team member (you!) gathers the data that will inform our decision.
 There are two aspects to it: how it works for us and what the
 risk/benefit of the upgrade is.
 
+## Determine what kernel package you want to test
+
+Linux kernel in debian is a bit harder to grasp than other packages. So, what
+kernel are currently available in debian? [linux-signed-amd64 tracker
+page](https://tracker.debian.org/pkg/linux-signed-amd64) will tell us. In the
+"versions" block there are the currently available kernel versions. Those
+versions are not, however, the package name you need. Click on that, and look
+for every `linux-image-(.*)-amd64` package. The regex group is what you need
+later for `KERNEL_VERSION`.
+
+To know if a package fixes a specific CVE, go to [the CVE
+page](https://security-tracker.debian.org/tracker/CVE-2021-12345) and see the
+status of every version.
+
+Also have a look at the changelog if you have any doubt: that will most probably
+mention the most important CVEs that gets fixed, and which upstream version is
+used. Also have a look at the date! That can give you a good hint of whether
+it's possible that you'll find a specific bugfix in it, or not.
+
 ## Test the new kernel
 
 To learn how the new kernel works for us:
