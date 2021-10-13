@@ -128,6 +128,25 @@ popularity _in Tails_ of the affected hardware: while assessing the impact of
 regressions, we need to take into account that some devices are much more
 popular among Tails users than among the general Debian users population.
 
+#### Debian BTS tips
+
+scanning through udd.debian.org can be boring. The advanced search can't always express the logic you want. So
+here is some tip:
+
+```sh
+curl -s 'https://udd.debian.org/bugs.cgi?release=sid&merged=ign&fnewerval=7&flastmodval=7&packages=linux&cseverity=1&sortby=id&sorto=desc&format=json' | jq '.[]|select(.severity != "normal" and .severity != "wishlist" and .severity != "minor")' > linux-bugs.json
+jq < linux-bugs.json .
+# recent bugs with severity >= important, only ID and title, easy to grep
+jq -r < linux-bugs.json 'select(.last_modified >= "2021-10-01") | [.last_modified, .id, .title] |join("\t")'
+# this is what you need for the second criterion!
+jq -r < linux-bugs.json 'select(.last_modified >= "2021-10-01") | [.last_modified, .id, .title] |join("\t")' | grep -v linux-image-
+# this is the first criterion, of course you must select the right version
+jq -r < linux-bugs.json '[.last_modified, .id, .title] |join("\t")' | grep -F linux-image-5.10.0-9
+
+# exclude "5.14" from results
+jq < linux-bugs.json 'select(.title | test("^(?!.*5\\.14)"; "i"))'
+```
+
 ### Relevant hardware support improvements
 
 To get a rough guts feeling about it, look for improvements related to graphics
