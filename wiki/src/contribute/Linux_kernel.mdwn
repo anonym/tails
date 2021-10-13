@@ -81,7 +81,15 @@ To learn how the new kernel works for us:
    run our entire test suite (`+force-all-tests`). But since this
    branch has no commit on top of `devel`, Jenkins will ignore it, so
    you need to create a dummy commit.
-3. Push this new branch to our CI.
+   Despite the variable name, `KERNEL_VERSION` must be set to the package
+   *name*.  For example, if you want to get the kernel version 4.42.1337, most
+   probably `4.2.1337` is *not* the right value for the variable. Instead, what
+   you need to do is determine which kernel package contains the intended kernel
+   version.
+3. Check if the pinning is right in `config/chroot_apt/preferences`. We
+   might have pinned the current kernel, or you may need to pin the one you want
+   to install.
+4. Push this new branch to our CI.
 5. Quickly test a build from this branch on your hardware.
 6. Compare the Jenkins build and test results to the ones for our
    `stable` and `devel` branch.
