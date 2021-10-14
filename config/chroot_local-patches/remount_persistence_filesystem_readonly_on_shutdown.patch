@@ -1,14 +1,11 @@
-diff --git a/bin/live-medium-cache b/bin/live-medium-cache
-index f85b2b2..fec1496 100755
---- a/bin/live-medium-cache
-+++ b/bin/live-medium-cache
+--- a/bin/live-medium-cache	2021-10-14 10:58:06.772345301 +0000
++++ b/bin/live-medium-cache	2021-10-14 11:03:06.682856087 +0000
 @@ -74,7 +74,7 @@
- mount -o remount,ro /lib/live/mount/overlay > /dev/null 2>&1
+ mount -o remount,ro /run/live/overlay > /dev/null 2>&1
  
  # Remounting any persistence devices read-only
--for _MOUNT in $(awk '/\/lib\/live\/mount\/persistence/ { print $2 }' /proc/mounts)
-+for _MOUNT in $(awk '/\/(lib\/live\/mount|live)\/persistence/ { print $2 }' /proc/mounts)
+-for _MOUNT in $(awk '/\/run\/live\/persistence/ { print $2 }' /proc/mounts)
++for _MOUNT in $(awk '/\/((lib|run)\/live\/persistence|live)/ { print $2 }' /proc/mounts)
  do
  	mount -o remount,ro ${_MOUNT} > /dev/null 2>&1
  done
-
