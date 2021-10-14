@@ -190,10 +190,14 @@ upgrade to. So there are two options:
 
    1. Update `config/APT_snapshots.d/debian/serial`, commit, push and
       trigger a build on Jenkins.
-   2. Compare the `.build-manifest` and `.packages` files generated
+   2. [[Bump the expiration
+      date|contribute/APT_repository/time-based_snapshots/#bump-expiration-date]],
+      for the snapshot of the `debian` archive that you've switched the
+      branch _to_, to 6 months from now.
+   3. Compare the `.build-manifest` and `.packages` files generated
       by building your topic branch with [[!tails_gitweb_dir desc="the
       ones for the current Tails release" wiki/src/torrents/files]].
-   3. If the diff seems reasonable, fine. Otherwise, fall back to the
+   4. If the diff seems reasonable, fine. Otherwise, fall back to the
       next option (freeze exception).
 
  - Or use our [[freeze
