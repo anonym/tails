@@ -18,13 +18,7 @@ output_tagged_snapshot() {
 output_time_based_snapshot() {
    local archive="$1"
    local serial="$2"
-   if   [ "${archive}" = "debian-security" ]; then
-       echo "http://deb.debian.org/debian-security"
-   elif [ "${archive}" = "torproject" ]; then
-       echo "http://deb.torproject.org/torproject.org/"
-   else
-       echo "http://time-based.snapshots.deb.tails.boum.org/$archive/$serial"
-   fi
+   echo "http://time-based.snapshots.deb.tails.boum.org/$archive/$serial"
 }
 
 ### Sanity checks
