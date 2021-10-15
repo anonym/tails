@@ -44,9 +44,13 @@ class LocalisationSettings(object):
     def __on_usermanager_loaded(self, manager, pspec, data=None):
         logging.debug("Received AccountsManager signal is-loaded")
         user_account = manager.get_user(tailsgreeter.config.LUSER)
-        if not user_account.is_loaded():
-            raise RuntimeError("User manager for %s not loaded"
-                               % tailsgreeter.config.LUSER)
+        # XXX: user_account.is_loaded() is false since Bullseye, so
+        # the code below results in a crash. Removing it makes the
+        # Greeter start and allows us to login.
+        #
+        # if not user_account.is_loaded():
+        #     raise RuntimeError("User manager for %s not loaded"
+        #                        % tailsgreeter.config.LUSER)
         self.language._user_account = user_account
 
         if self._usermanager_loaded_cb:
