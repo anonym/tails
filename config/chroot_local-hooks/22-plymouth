@@ -9,6 +9,6 @@ set -e
 echo "Installing and configuring Plymouth"
 
 apt-get --yes purge console-common
-apt-get --yes install plymouth
+apt-get --yes install plymouth plymouth-label plymouth-themes
 
 patch -p1 < /usr/share/tails/build/plymouth-theme.diff
