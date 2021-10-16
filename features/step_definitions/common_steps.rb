@@ -545,7 +545,7 @@ Given /^Tor is ready$/ do
       try_for(30) { $vm.execute('systemctl is-system-running').success? }
     rescue Timeout::Error
       jobs = $vm.execute('systemctl list-jobs').stdout
-      units_status = $vm.execute('systemctl').stdout
+      units_status = $vm.execute('systemctl --all --state=failed').stdout
       raise "The system is not fully running yet:\n#{jobs}\n#{units_status}"
     end
   end
