@@ -934,15 +934,13 @@ Then /^the (amnesiac|persistent) Tor Browser directory (exists|does not exist)$/
 end
 
 Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser directory$/ do |persistent_or_not|
-  case persistent_or_not
-  when 'amnesiac'
-    bookmark_image = 'TorBrowserAmnesicFilesBookmark.png'
-  when 'persistent'
-    bookmark_image = 'TorBrowserPersistentFilesBookmark.png'
-  end
-  @screen.wait('GnomePlaces.png', 10).click
-  @screen.wait(bookmark_image, 40)
-  @screen.press('Escape')
+  bookmark = 'Tor Browser'
+  bookmark += ' (persistent)' if persistent_or_not == 'persistent'
+  gnome_shell = Dogtail::Application.new('gnome-shell')
+  places = gnome_shell.menu('Places')
+  places.click
+  gnome_shell.child(bookmark, roleName: 'label', showingOnly: true)
+  places.click
 end
 
 Then /^there is no GNOME bookmark for the persistent Tor Browser directory$/ do
