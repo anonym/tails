@@ -28,18 +28,18 @@ Then:
 
    1. Ensure `vmdb2` is installed from Debian Bullseye:
 
-        sudo tee /etc/apt/sources.list.d/bullseye.list <<EOF
-        deb http://ftp.us.debian.org/debian/ bullseye main
-        EOF
-        sudo tee /etc/apt/preferences.d/vmdb2.pref <<EOF
-        Package: *
-        Pin: release o=Debian,n=bullseye
-        Pin-Priority: 100
+          sudo tee /etc/apt/sources.list.d/bullseye.list <<EOF
+          deb http://ftp.us.debian.org/debian/ bullseye main
+          EOF
+          sudo tee /etc/apt/preferences.d/vmdb2.pref <<EOF
+          Package: *
+          Pin: release o=Debian,n=bullseye
+          Pin-Priority: 100
 
-        Package: vmdb2
-        Pin: release o=Debian,n=bullseye
-        Pin-Priority: 990
-        EOF
+          Package: vmdb2
+          Pin: release o=Debian,n=bullseye
+          Pin-Priority: 990
+          EOF
 
 # Setup the build environment
 
