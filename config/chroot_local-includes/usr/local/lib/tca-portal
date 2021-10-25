@@ -25,7 +25,6 @@ from tinyrpc.exc import InvalidRequestError
 import systemd.daemon
 
 from tailslib.logutils import configure_logging
-from tailslib.systemd import systemd_ready
 from tailslib.gnome import gnome_env_vars
 from tailslib import (
     LIVE_USERNAME,
@@ -343,7 +342,7 @@ def main():
             log.info("Listening on %s", args.listen)
         else:
             log.info("Serving on a systemd-activated socket")
-        systemd_ready()
+        systemd.daemon.notify('READY=1')
         server.serve_forever()
 
 
