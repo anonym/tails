@@ -641,7 +641,7 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
   @screen.press('ctrl', 'd')
   @screen.wait('TorBrowserBookmarkPrompt.png', 10)
   @screen.type(url)
-  # The new default location for bookmarks is "Other Bookmarks", but our test
+  # The new default location for bookmarks is "Bookmarks Toolbar", but our test
   # expects the new entry is available in "Bookmark Menu", that's why we need
   # to select the location explicitly.
   @screen.wait('TorBrowserBookmarkLocation.png', 10).click
