@@ -306,7 +306,7 @@ Then /^DuckDuckGo is the default search engine$/ do
   ddg_search_prompt = 'DuckDuckGoSearchPrompt.png'
   case $language
   when 'Arabic', 'Persian'
-    ddg_search_prompt = "DuckDuckGoSearchPromptRTL.png"
+    ddg_search_prompt = 'DuckDuckGoSearchPromptRTL.png'
   when 'Chinese', 'Hindi'
     ddg_search_prompt = "DuckDuckGoSearchPrompt#{$language}.png"
   end
