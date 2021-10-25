@@ -23,7 +23,7 @@ When(/^I kill the ((?:Tor|Unsafe) Browser)$/) do |browser|
   try_for(10) do
     $vm.execute("pgrep --full --exact '#{info[:cmd_regex]}'").failure?
   end
-  
+
   # ugly fix to #18568; in my local testing, 3 seconds are always needed. Let's add some more.
   # a better solution would be to wait until gnome "received" the fact that TorBrowser has gone away.
   sleep 5

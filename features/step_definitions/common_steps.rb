@@ -261,13 +261,11 @@ def start_up_spammer(domain_name)
   bus = ENV['USER'] == 'root' ? '--system' : '--user'
   systemctl = ['/bin/systemctl', bus]
   kill_up_spammer = proc do
-    begin
-      if system(*systemctl, '--quiet', 'is-active', up_spammer_unit_name)
-        system(*systemctl, 'stop', up_spammer_unit_name)
-      end
-    rescue StandardError
-      # noop
+    if system(*systemctl, '--quiet', 'is-active', up_spammer_unit_name)
+      system(*systemctl, 'stop', up_spammer_unit_name)
     end
+  rescue StandardError
+    # noop
   end
   kill_up_spammer.call
   up_spammer_job = fatal_system(

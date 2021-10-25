@@ -15,6 +15,7 @@ def supported_torbrowser_locales
     locale = line.split(':').first.sub('-', '_')
     language = locale.split('_').first
     next unless supported_locales.include?(language)
+
     "#{locale}.utf8"
   end.compact
 end
@@ -32,7 +33,7 @@ Then /^I can start the Unsafe Browser in a few supported languages$/ do
   locales = ['fr_FR.UTF-8', 'fa_IR.UTF-8']
   # ... then we just pick one *other* random non-English locale.
   locales += (supported_torbrowser_locales - locales - ['en_US.utf8'])
-               .sample(1)
+             .sample(1)
   locales.each do |lang|
     step "I start the Unsafe Browser in the \"#{lang}\" locale"
     begin

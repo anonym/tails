@@ -187,7 +187,7 @@ Then /^Tor is (not )?confined with Seccomp$/ do |not_confined|
   # "Sandbox 0", but let's still make sure that is the case.
   seccomp_status = get_seccomp_status('tor')
   assert_equal(2, seccomp_status,
-               "Tor is not confined with Seccomp in filter mode")
+               'Tor is not confined with Seccomp in filter mode')
 end
 
 Then /^the running process "(.+)" is confined with AppArmor in (complain|enforce) mode$/ do |process, mode|
