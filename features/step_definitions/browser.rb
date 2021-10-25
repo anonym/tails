@@ -138,7 +138,7 @@ def page_has_loaded_in_the_tor_browser(page_titles)
     # that the page has fully loaded.
     @torbrowser.children(roleName: 'frame', showingOnly: true).any? do |frame|
       page_titles
-        .map  { |page_title| "#{page_title} - #{browser_name}" }
+        .map  { |page_title| "#{page_title} — #{browser_name}" }
         .any? { |page_title| page_title == frame.name }
     end &&
       @torbrowser.child(reload_action, roleName:    'push button',
@@ -251,19 +251,19 @@ end
 
 Then /^the Tor Browser shows the "([^"]+)" error$/ do |error|
   try_for(60) do
-    page_has_heading('Problem loading page - Tor Browser', error)
+    page_has_heading('Problem loading page — Tor Browser', error)
   end
 end
 
 Then /^Tor Browser displays a "([^"]+)" heading on the "([^"]+)" page$/ do |heading, page_title|
   try_for(60) do
-    page_has_heading("#{page_title} - Tor Browser", heading)
+    page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
 
 Then /^Tor Browser displays a '([^']+)' heading on the "([^"]+)" page$/ do |heading, page_title|
   try_for(60) do
-    page_has_heading("#{page_title} - Tor Browser", heading)
+    page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
 

@@ -114,7 +114,7 @@ Then /^the support documentation page opens in Tor Browser$/ do
   browser_name = $language == 'German' ? 'Tor-Browser' : 'Tor Browser'
   try_for(60) do
     @torbrowser
-      .child(expected_title + " - #{browser_name}", roleName: 'frame')
+      .child(expected_title + " — #{browser_name}", roleName: 'frame')
       .children(roleName: 'heading')
       .any? { |heading| heading.text == expected_heading }
   end
