@@ -25,7 +25,7 @@ Then /^I start the Unsafe Browser in the "([^"]+)" locale$/ do |loc|
   step 'I see and accept the Unsafe Browser start verification'
 end
 
-Then /^the Unsafe Browser works in all supported languages$/ do
+Then /^I can start the Unsafe Browser in a few supported languages$/ do
   failed = []
   # We always want the locale which we verify the startup page warning
   # for, and one RTL locale ...
