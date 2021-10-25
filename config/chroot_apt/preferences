@@ -11,6 +11,11 @@ Package: electrum python3-electrum python3-aiohttp-socks python3-aiorpcx python3
 Pin: release o=Debian,n=bullseye
 Pin-Priority: 999
 
+Explanation: unavailable in Buster
+Package: electrum python3-electrum python3-aiohttp-socks python3-aiorpcx python3-ecdsa
+Pin: release o=Debian,n=bullseye-security
+Pin-Priority: 999
+
 Explanation: Electrum needs a version newer than the one in Buster
 Package: python3-attr python3-protobuf libprotobuf23
 Pin: release o=Debian,n=buster-backports
@@ -29,6 +34,11 @@ Pin-Priority: 999
 Explanation: Electrum 4.0.2 needs >= 0.1.30
 Package: python3-btchip
 Pin: release o=Debian,n=bullseye
+Pin-Priority: 999
+
+Explanation: Electrum 4.0.2 needs >= 0.1.30
+Package: python3-btchip
+Pin: release o=Debian,n=bullseye-security
 Pin-Priority: 999
 
 Package: firmware-b43-installer
@@ -66,6 +76,11 @@ Package: grub*
 Pin: release o=Debian,n=bullseye
 Pin-Priority: 999
 
+Explanation: install 2.04 (refs: #15806)
+Package: grub*
+Pin: release o=Debian,n=bullseye-security
+Pin-Priority: 999
+
 Explanation: We want to set default database directory to ~/Persistent, which
 Explanation: is only possible since 2.4.0, which is unavailable in Buster.
 Package: keepassxc
@@ -74,6 +89,10 @@ Pin-Priority: 999
 
 Package: linux-compiler-* linux-headers-* linux-image-* linux-kbuild-* linux-source-*
 Pin: release o=Debian,n=bullseye
+Pin-Priority: 999
+
+Package: linux-compiler-* linux-headers-* linux-image-* linux-kbuild-* linux-source-*
+Pin: release o=Debian,n=bullseye-security
 Pin-Priority: 999
 
 Explanation: src:live-boot (#15477)
@@ -89,8 +108,16 @@ Package: onionshare
 Pin: release o=Debian,n=bullseye
 Pin-Priority: 999
 
+Package: onionshare
+Pin: release o=Debian,n=bullseye-security
+Pin-Priority: 999
+
 Package: python3-dogtail
 Pin: release o=Debian,n=bullseye
+Pin-Priority: 999
+
+Package: python3-dogtail
+Pin: release o=Debian,n=bullseye-security
 Pin-Priority: 999
 
 Explanation: #18464
@@ -98,8 +125,17 @@ Package: shim*
 Pin: release o=Debian,n=bullseye
 Pin-Priority: 999
 
+Explanation: #18464
+Package: shim*
+Pin: release o=Debian,n=bullseye-security
+Pin-Priority: 999
+
 Package: squashfs-tools libzstd1
 Pin: release o=Debian,n=bullseye
+Pin-Priority: 999
+
+Package: squashfs-tools libzstd1
+Pin: release o=Debian,n=bullseye-security
 Pin-Priority: 999
 
 Package: virtualbox*
