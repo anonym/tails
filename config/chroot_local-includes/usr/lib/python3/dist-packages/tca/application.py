@@ -107,7 +107,6 @@ class TCAApplication(Gtk.Application):
 
     def check_tor_state(self, repeat: bool):
         # this is called periodically
-        # XXX: change with proper notification handling from tor daemon itself
         changed = set()
         for infokey in ["DisableNetwork"]:
             resp = self.controller.get_conf(infokey)
