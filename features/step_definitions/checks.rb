@@ -112,9 +112,10 @@ Then /^the support documentation page opens in Tor Browser$/ do
   end
   step "\"#{expected_title}\" has loaded in the Tor Browser"
   browser_name = $language == 'German' ? 'Tor-Browser' : 'Tor Browser'
+  separator = $language == 'German' ? '-' : '—'
   try_for(60) do
     @torbrowser
-      .child(expected_title + " — #{browser_name}", roleName: 'frame')
+      .child("#{expected_title} #{separator} #{browser_name}", roleName: 'frame')
       .children(roleName: 'heading')
       .any? { |heading| heading.text == expected_heading }
   end

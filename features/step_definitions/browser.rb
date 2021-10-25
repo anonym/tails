@@ -127,9 +127,11 @@ def page_has_loaded_in_the_tor_browser(page_titles)
   if $language == 'German'
     browser_name = 'Tor-Browser'
     reload_action = 'Neu laden'
+    separator = '-'
   else
     browser_name = 'Tor Browser'
     reload_action = 'Reload'
+    separator = '—'
   end
   try_for(180) do
     # The 'Reload' button (graphically shown as a looping arrow)
@@ -138,7 +140,7 @@ def page_has_loaded_in_the_tor_browser(page_titles)
     # that the page has fully loaded.
     @torbrowser.children(roleName: 'frame', showingOnly: true).any? do |frame|
       page_titles
-        .map  { |page_title| "#{page_title} — #{browser_name}" }
+        .map  { |page_title| "#{page_title} #{separator} #{browser_name}" }
         .any? { |page_title| page_title == frame.name }
     end &&
       @torbrowser.child(reload_action, roleName:    'push button',
