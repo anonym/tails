@@ -309,7 +309,7 @@ Then /^DuckDuckGo is the default search engine$/ do
   case $language
   when 'Arabic', 'Persian'
     ddg_search_prompt = 'DuckDuckGoSearchPromptRTL.png'
-  when 'Chinese', 'Hindi'
+  when 'Hindi'
     ddg_search_prompt = "DuckDuckGoSearchPrompt#{$language}.png"
   end
   step 'I start the Tor Browser'
@@ -328,7 +328,7 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   case $language
   when 'Arabic'
     browser_bar_x = 'BrowserAddressBarXRTL.png'
-  when 'Chinese', 'Hindi'
+  when 'Hindi'
     browser_bar_x = "BrowserAddressBarX#{$language}.png"
   when 'Persian'
     osk_key = 'ScreenKeyboardKeyPersian.png'
