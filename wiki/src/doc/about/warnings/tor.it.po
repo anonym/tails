@@ -3,41 +3,44 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2021-09-07 14:15+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2021-10-24 20:06+0000\n"
+"Last-Translator: _ignifugo <ignifugo@insicuri.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #. type: Content of: outside any tag (error?)
 msgid "[[!meta title=\"Limitations of the Tor network\"]]"
-msgstr ""
+msgstr "[[!meta title=\"Limiti della rete Tor\"]]"
 
 #. type: Content of: <h1>
 msgid "Limitations of the Tor network"
-msgstr ""
+msgstr "Limiti della rete Tor"
 
 #. type: Content of: <div>
 msgid ""
 "[[!inline pages=\"doc/about/warning/tor.inline\" raw=\"yes\" sort=\"age\"]] "
 "[[!toc levels=2]]"
 msgstr ""
+"[[!inline pages=\"doc/about/warning/tor.inline\" raw=\"yes\" sort=\"age\"]] "
+"[[!toc levels=2]]"
 
 #. type: Content of: <h2>
 msgid "Tails makes it clear that you are using Tor and probably Tails"
-msgstr ""
+msgstr "Tails rende visibile che stai usando Tor e probabilmente Tails"
 
 #. type: Content of: <p>
 msgid ""
 "Everything you do on the Internet from Tails goes through the Tor network."
-msgstr ""
+msgstr "Tutto quello che fai in Internet da Tails passa attraverso la rete Tor."
 
 #. type: Content of: <p>
 msgid ""
@@ -45,6 +48,9 @@ msgid ""
 "user, but by making all Tor and Tails users look the same. It becomes "
 "impossible to know who is who among them."
 msgstr ""
+"Tor e Tails non ti proteggono facendoti sembrare un qualsiasi utente "
+"Internet a casaccio, ma rendendo tutti gli utenti Tor e Tails uguali. "
+"Diviene impossibile sapere tra di loro chi è chi."
 
 #. type: Content of: <ul><li><p>
 msgid ""
@@ -53,6 +59,10 @@ msgid ""
 "hide that you connect to Tor, you can use [[Tor bridges|first_steps/"
 "welcome_screen/bridge_mode]]."
 msgstr ""
+"Il tuo Internet service provider (ISP) e la rete locale possono vedere che "
+"ti connetti alla rete Tor. Non possono comunque sapere quali siti visiti.  "
+"Per nascondere che ti sei connesso a Tor, puoi usare [[Tor bridges|"
+"first_steps/welcome_screen/bridge_mode]]."
 
 #. type: Content of: <ul><li><p>
 msgid ""
@@ -60,6 +70,9 @@ msgid ""
 "href=\"https://metrics.torproject.org/exonerator.html\">list of exit nodes "
 "of the Tor network</a> is public."
 msgstr ""
+"I siti che visiti possono sapere che stai usando Tor, perché la <a href=\""
+"https://metrics.torproject.org/exonerator.html\">lista degli exit node della "
+"rete Tor</a> è pubblica."
 
 #. type: Content of: <div><p>
 msgid ""
@@ -67,16 +80,23 @@ msgid ""
 "censorship can identify and block connections to the Tor network that don't "
 "use Tor bridges."
 msgstr ""
+"I controlli parentali, i fornitori di servizi Internet e i paesi con una "
+"pesante censura possono identificare e bloccare le connessioni alla rete Tor "
+"che non utilizzano i Tor bridges."
 
 #. type: Content of: <div><p>
 msgid ""
 "Many websites ask you to solve a CAPTCHA or block access from the Tor "
 "network."
 msgstr ""
+"Molti siti web richiedono di risolvere un CAPTCHA o di bloccare l'accesso "
+"dalla rete Tor."
 
 #. type: Content of: <h2>
 msgid "Exit nodes can intercept traffic to the destination server"
 msgstr ""
+"Gli  exit node possono intercettare il traffico verso il server di "
+"destinazione"
 
 #. type: Content of: <p>
 msgid ""
@@ -85,6 +105,10 @@ msgid ""
 "<i>exit node</i>, establishes the actual connection to the destination "
 "server. This last step can be unencrypted."
 msgstr ""
+"Tor nasconde la tua posizione ai server di destinazione, ma non cripta "
+"<i>tutte</i> le tue comunicazioni. L'ultimo relè di un circuito Tor, "
+"chiamato <i>exit node</i>, stabilisce l'effettiva connessione al server di "
+"destinazione. Quest'ultimo passo può essere non criptato ma in chiaro."
 
 #. type: Content of: outside any tag (error?)
 msgid ""
@@ -92,10 +116,13 @@ msgid ""
 "goes through 3 relays with the last one establishing the actual connection "
 "to the final destination\"]]"
 msgstr ""
+"[[!img doc/anonymous_internet/tor/tor.svg link=\"no\" alt=\"A Tor connection "
+"goes through 3 relays with the last one establishing the actual connection "
+"to the final destination\"]]"
 
 #. type: Content of: <p>
 msgid "The exit node can:"
-msgstr ""
+msgstr "L'exit node può:"
 
 #. type: Content of: <ul><li><p>
 msgid ""
@@ -104,6 +131,10 @@ msgid ""
 "Tor_Browser#https-everywhere]], to encrypt the connection between the exit "
 "node and the destination server, whenever possible."
 msgstr ""
+"Osservare il tuo traffico. Questo è il motivo per cui <i>Tor Browser</i> e "
+"Tails  hanno inclusi strumenti, come [[<i>HTTPS Everywhere</i>|doc/"
+"anonymous_internet/Tor_Browser#https-everywhere]], per criptare la "
+"connessione tra l'exit node e il server di destinazione, quando possibile."
 
 #. type: Content of: <ul><li><p>
 msgid ""
@@ -113,12 +144,19 @@ msgid ""
 "the [[New Identity|doc/anonymous_internet/Tor_Browser#new-identity]] feature "
 "of <i>Tor Browser</i> to change exit node."
 msgstr ""
+"Fingere di essere il server di destinazione, una tecnica conosciuta come "
+"attacco <i>machine-in-the-middle</i> (MitM). Ecco perché dovresti prestare "
+"ancora più attenzione agli avvisi di sicurezza in <i>Tor Browser</i>. Se "
+"ricevi questo avviso, usa la funzione [[New Identity|doc/anonymous_internet/"
+"Tor_Browser#new-identity]] di <i>Tor Browser</i> per cambiare l'exit node."
 
 #. type: Content of: outside any tag (error?)
 msgid ""
 "[[!img ssl_warning.png link=no alt=\"Warning: Potential Security Risk Ahead"
 "\"]]"
 msgstr ""
+"[[!img ssl_warning.png link=no alt=\"Warning: Potential Security Risk Ahead\""
+"]]"
 
 #. type: Content of: <p>
 msgid ""
@@ -127,6 +165,10 @@ msgid ""
 "\"https://support.torproject.org/https/https-1/\">Tor FAQ: Can exit nodes "
 "eavesdrop on communications?</a>."
 msgstr ""
+"Per saperne di più su quali informazioni sono disponibili per qualcuno che "
+"osserva le diverse parti di un circuito Tor, vedi la grafica interattiva a <"
+"a href=\"https://support.torproject.org/https/https-1/\">Tor FAQ: Gli exit "
+"node possono spiare le comunicazioni?</a>."
 
 #. type: Content of: <div><p>
 msgid ""
@@ -137,10 +179,19 @@ msgid ""
 "collect-government-e-mail-passwords/\">Ars Technica: Security expert used "
 "Tor to collect government e-mail passwords</a>."
 msgstr ""
+"Gli exit node di Tor sono stati usati in passato per raccogliere "
+"informazioni sensibili da connessioni non criptate. I nodi di uscita "
+"Pericolosi sono regolarmente identificati e rimossi dalla rete Tor. Come "
+"esempio, vedi <a href=\"https://arstechnica.com/information-technology/2007/"
+"09/security-expert-used-tor-to-collect-government-e-mail-passwords/\">Ars "
+"Technica: Esperto di sicurezza ha usato Tor per raccogliere le password "
+"delle e-mail del governo</a>."
 
 #. type: Content of: <h2>
 msgid "Adversaries watching both ends of a Tor circuit could identify users"
 msgstr ""
+"Gli avversari che guardano entrambe le estremità di un circuito Tor "
+"potrebbero identificare gli utenti"
 
 #. type: Content of: <p>
 msgid ""
@@ -150,6 +201,11 @@ msgid ""
 "because the attacker has to observe both ends of a Tor circuit at the same "
 "time."
 msgstr ""
+"Un potente avversario, in grado di analizzare i tempi e la forma del "
+"traffico in entrata e in uscita dalla rete Tor, potrebbe essere in grado di "
+"rendere identificabili  gli utenti Tor.  Questi attacchi sono chiamati "
+"attacchi di <i>correlazione end-to-end</i>, perché l'attaccante deve "
+"osservare entrambe le estremità di un circuito Tor nello stesso momento."
 
 #. type: Content of: <p>
 msgid ""
@@ -158,6 +214,10 @@ msgid ""
 "this case, VPNs (Virtual Private Networks) are less secure than Tor, because "
 "they do not use 3 independent relays."
 msgstr ""
+"Nessuna rete di anonimato utilizzata per connessioni rapide, come la "
+"navigazione sul web o la messaggistica istantanea, può proteggere al 100% da "
+"attacchi di correlazione end-to-end. In questo caso, le VPN (Virtual Private "
+"Network) sono meno sicure di Tor, perché non utilizzano 3 relè indipendenti."
 
 #. type: Content of: <div><p>
 msgid ""
@@ -167,3 +227,9 @@ msgid ""
 "\">Murdoch and Zieliński: Sampled Traffic Analysis by Internet-Exchange-"
 "Level Adversaries</a>."
 msgstr ""
+"Gli attacchi di correlazione end-to-end sono stati materia di studi di "
+"ricerca, ma non siamo a conoscenza di alcun uso effettivo per rendere "
+"identificabili gli utenti di Tor. Come esempio, si veda <a href=\""
+"https://www.freehaven.net/anonbib/cache/murdoch-pet2007.pdf\">Murdoch e "
+"Zieliński: Sampled Traffic Analysis by Internet-Exchange-Level "
+"Adversaries</a>."

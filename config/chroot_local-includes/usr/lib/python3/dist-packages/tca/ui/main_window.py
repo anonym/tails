@@ -154,6 +154,8 @@ class StepChooseHideMixin:
 class StepChooseBridgeMixin:
     def before_show_bridge(self, coming_from):
         self.state["bridge"]: Dict[str, Any] = {}
+        self.persistence_config_failed = False
+
         self.builder.get_object("step_bridge_box").show()
         self.builder.get_object("step_bridge_radio_none").set_active(True)
         self.builder.get_object("step_bridge_radio_none").hide()
@@ -178,7 +180,6 @@ class StepChooseBridgeMixin:
         self.get_object("box_warning").hide()
         self._step_bridge_init_from_tor_config()
         self._step_bridge_set_actives()
-        self.persistence_config_failed = False
         self._step_bridge_update_persistence_ui()
 
     def _step_bridge_init_from_tor_config(self):
@@ -219,7 +220,7 @@ class StepChooseBridgeMixin:
 
             def cb_set_up_persistence_switch(gjsonrpcclient, res, error):
                 log.debug("Persistence enabled: %s", res)
-                active = res and res.get("returncode", 1) == 0
+                active = res is not None and res.get("returncode", 1) == 0
                 self.builder.get_object(
                     "step_bridge_persistence_switch"
                 ).set_active(active)
