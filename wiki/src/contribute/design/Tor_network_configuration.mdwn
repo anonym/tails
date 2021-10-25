@@ -128,7 +128,7 @@ We want:
  - _Tor Connection_ to run as `amnesia`. This is required to nicely integrate
    with the desktop environment
  - the `amnesia` user not to be able to configure tor. ie: an attacker
-   exploting TorBrowser and able to run code as amnesia, cannot change tor
+   exploiting Tor Browser and able to run code as `amnesia`, cannot change tor
    configuration.
  - _Tor Connection_ to be able to configure tor
  - similarly, we want _Tor Connection_ to be able to keep some configuration
@@ -156,7 +156,7 @@ So that's what we do:
    `connect-drop` is responsible for this, too
 
 The code lives in:
- * [[!tails_gitweb config/chroot_local-includes/usr/lib/python3/dist-packages/tca]]
+ * [[!tails_gitweb_dir config/chroot_local-includes/usr/lib/python3/dist-packages/tca]]
  * [[!tails_gitweb config/chroot_local-includes/usr/local/bin/tca]]
  * [[!tails_gitweb config/chroot_local-includes/usr/share/applications/tca.desktop.in]]
  * [[!tails_gitweb config/chroot_local-includes/usr/local/lib/tca-portal]]
@@ -171,7 +171,7 @@ didn't seem appropriate to our requirements.
 Let's suppose that we want the amnesia user to be able to enter a new network
 namespace on its own. Then, what would prevent the attacker to do exactly the
 same?
-Unprivileged namespaces seems to be appropriate when your software wants to
+Unprivileged namespaces seem to be appropriate when your software wants to
 drop permissions; here, we use network namespaces to become *more* privileged,
 not less.
 
