@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-09-07 14:15+0200\n"
-"PO-Revision-Date: 2021-08-17 11:06+0000\n"
-"Last-Translator: cacukin <cacukin@cryptolab.net>\n"
+"POT-Creation-Date: 2021-10-11 15:21+0000\n"
+"PO-Revision-Date: 2021-10-05 13:06+0000\n"
+"Last-Translator: emmapeel <emma.peel@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Connecting to the Tor network\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Conectarse a la red Tor\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -30,7 +30,7 @@ msgstr "[[!toc levels=2]]\n"
 #. type: Plain text
 msgid ""
 "Everything you do on the Internet from Tails goes through the Tor network."
-msgstr ""
+msgstr "Todo lo que haces en Internet desde Tails pasa por la red Tor. "
 
 #. type: Plain text
 msgid ""
@@ -54,6 +54,31 @@ msgid ""
 "example, *Tor Browser* displays the error message <span class=\"code\">Proxy\n"
 "server refusing connections</span> until you are connected to Tor.\n"
 msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<div class=\"note\">\n"
+msgstr "<div class=\"note\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>Because Tor routes your Internet traffic through 3 relays\n"
+"before reaching its destination, the\n"
+"connection is slower than when you are not using Tor.</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>See our documentation on\n"
+"[[why Tor is slow|doc/anonymous_internet/tor/slow]].</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "</div>\n"
+msgstr "</div>\n"
 
 #. type: Plain text
 msgid "To connect to the Tor network:"
@@ -84,12 +109,12 @@ msgstr "Conectar a Tor automáticamente"
 
 #. type: Bullet: '   - '
 msgid "Hide to your local network that you are connecting to Tor"
-msgstr ""
+msgstr "Ocultar a la red local que estás usando Tor"
 
 #. type: Plain text
 #, no-wrap
 msgid "   The implications of both methods are detailed below.\n"
-msgstr ""
+msgstr "   Las implicaciones de ambos métodos se detallan a continuación.\n"
 
 #. type: Title =
 #, no-wrap
@@ -117,7 +142,7 @@ msgstr ""
 
 #. type: Plain text
 msgid "- **Tor bridges**"
-msgstr ""
+msgstr "- **Puentes Tor**"
 
 #. type: Plain text
 #, no-wrap
@@ -159,19 +184,23 @@ msgstr ""
 #. type: Title =
 #, no-wrap
 msgid "Connecting to Tor automatically"
-msgstr ""
+msgstr "Conectarse a Tor automáticamente"
 
 #. type: Plain text
 msgid ""
 "We recommend connecting to Tor automatically if you are on a public Wi-Fi "
 "network or if many people in your country use Tor to circumvent censorship."
 msgstr ""
+"Recomendamos conectarse a Tor automáticamente si está en una red Wi-Fi "
+"pública o si muchas personas en su país usan Tor para eludir la censura. "
 
 #. type: Plain text
 msgid ""
 "When you choose this option, Tails tries different ways of connecting to Tor "
 "until it succeeds:"
 msgstr ""
+"Cuando eliges esta opción, Tails intenta diferentes formas de conectarse a "
+"Tor hasta que tiene éxito:"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -196,23 +225,8 @@ msgid ""
 "Someone monitoring your Internet connection could identify these attempts as "
 "coming from a Tails user."
 msgstr ""
-
-#. type: Plain text
-msgid ""
-"If connecting to Tor automatically fails, the *Tor Connection* assistant "
-"helps you:"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"- [[Sign in to the network using a captive portal|unsafe_browser]] - "
-"Configure a local proxy"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<div class=\"note\">\n"
-msgstr "<div class=\"note\">\n"
+"Alguien que esté monitoreando tu conexión a Internet podría identificar "
+"estos intentos como provenientes de un usuario de Tails."
 
 #. type: Plain text
 #, no-wrap
@@ -226,11 +240,6 @@ msgid ""
 "<li>Detect if you have to sign in to the local network using a captive portal ([[!tails_ticket 5785]])</li>\n"
 "</ul>\n"
 msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "</div>\n"
-msgstr "</div>\n"
 
 #. type: Title =
 #, no-wrap
@@ -255,7 +264,7 @@ msgstr ""
 msgid ""
 "<p>It is impossible to hide to the websites that you visit that you are using\n"
 "Tor, because the <a href=\"https://metrics.torproject.org/exonerator.html\">list\n"
-"of exit nodes of the Tor network is public</a>.</p>\n"
+"of exit nodes of the Tor network</a> is public.</p>\n"
 msgstr ""
 
 #. type: Plain text
@@ -322,7 +331,7 @@ msgstr ""
 msgid "  Currently in Tails, only **obfs4 bridges** hide that you are using Tor.\n"
 msgstr ""
 
-#. type: Bullet: '- '
+#. type: Plain text
 msgid ""
 "To save the last Tor bridge that connected to Tor successfully, turn on the "
 "[[Tor Bridge feature of the Persistent Storage|doc/first_steps/persistence/"
@@ -341,72 +350,6 @@ msgid ""
 "<li>Allowing you to scan the QR code returned by <a href=\"mailto:bridges@torproject.org\">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>\n"
 "<li>Allowing you to request bridges from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>\n"
 "</ul>\n"
-msgstr ""
-
-#. type: Title =
-#, no-wrap
-msgid "Troubleshooting Tor bridges"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"If connecting to Tor using a custom bridge fails, the *Tor Connection* "
-"assistant helps you:"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"- Set the clock of your computer to the correct time zone - [[Sign in to the "
-"network using a captive portal|unsafe_browser]] - Configure a local proxy - "
-"Enter a different bridge"
-msgstr ""
-
-#. type: Title -
-#, no-wrap
-msgid "The computer clock is set to an incorrect time zone"
-msgstr ""
-
-#. type: Plain text
-msgid "For Tor bridges to work, the clock of your computer must be correct."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"Choose **Fix Clock** in the error screen of the *Tor Connection* assistant "
-"to set the time zone and time of your computer."
-msgstr ""
-
-#. type: Title -
-#, no-wrap
-msgid "You did not enter the bridge correctly"
-msgstr ""
-
-#. type: Plain text
-msgid "An obfs4 bridge looks like:"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"You need to enter the entire line, not just the IP address and port "
-"combination."
-msgstr ""
-
-#. type: Title -
-#, no-wrap
-msgid "The bridge is no longer operational"
-msgstr ""
-
-#. type: Plain text
-msgid "It is possible that the bridge that you entered is no longer working."
-msgstr ""
-
-#. type: Plain text
-msgid "Try entering another bridge or requesting other bridges."
 msgstr ""
 
 #. type: Title =
@@ -435,6 +378,21 @@ msgid ""
 "\" link=no class=\"symbolic\"]] You are not connected to Tor."
 msgstr ""
 
+#. type: Title =
 #, no-wrap
+msgid "Troubleshooting connecting to Tor"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "<div class=\"note\">\n"
+msgid "<div class=\"next\">\n"
+msgstr "<div class=\"note\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<p>See our documentation on [[troubleshooting connecting to Tor|tor/troubleshoot]].</p>\n"
+msgstr ""
+
 #~ msgid "[[!img doc/about/warnings/htw2-tails.png link=\"no\"]]\n"
 #~ msgstr "[[!img doc/about/warnings/htw2-tails.png link=\"no\"]]\n"

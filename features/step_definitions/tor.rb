@@ -496,7 +496,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
                               .click
     else
       btn = tor_connection_assistant.child(
-        '_Type in a bridge that I already know',
+        '_Enter a bridge that you already know',
         roleName: 'radio button'
       )
       btn.click
@@ -574,7 +574,7 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
   )
   click_connect_to_tor
   assert(
-    tor_connection_assistant.child('Use a bridge that I already know',
+    tor_connection_assistant.child('Use a bridge that you already know',
                                    roleName: 'radio button').checked
   )
   persistent_bridges_lines = [
