@@ -1013,7 +1013,7 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                  "/home/#{LIVE_USER}/Tor Browser"
                end
   @screen.press('ctrl', 'p')
-  print_dialog = @torbrowser.child('Print', roleName: 'dialog')
+  print_dialog = @torbrowser.child('Print', roleName: 'panel')
   print_dialog.child('Save', roleName: 'push button').click
   @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
