@@ -116,6 +116,11 @@ else
     error "$(gettext "You are not connected to a local network yet.\n\nTo be able to start the Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile network.")"
 fi
 
+# Disable some Firefox "phone home" features
+# (https://bugzilla.mozilla.org/show_bug.cgi?id=1598562)
+echo '127.0.0.42 firefox.settings.services.mozilla.com' \
+     >> "${CHROOT}"/etc/hosts
+
 echo "* Starting Unsafe Browser"
 # Do not localize the 5th argument: it becomes WM_CLASS and then GNOME
 # displays the localized app name found in the matching .desktop file;
