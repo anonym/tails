@@ -629,9 +629,27 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   time_dialog = tor_connection_assistant.child('Tor Connection - Fix Clock',
                                                roleName:    'dialog',
                                                showingOnly: true)
-  select_tz = time_dialog.child('Time zone', roleName: 'panel')
-                         .child(roleName: 'combo box')
-  select_tz.combovalue = timezone
+  tz_label = time_dialog.child('UTC (Greenwich time)', roleName: 'label')
+  tz_label.click
+
+  def get_visible_results(dialog)
+    table = dialog.child(roleName: 'tree table')
+    results = table.children(roleName: 'table cell').select do |res|
+      # Let's skip continents, but keep special timezones: UTC and GMT
+      res.name.include? '/' or ["UTC", "GMT"].include?(res.name)
+    end
+    results
+  end
+
+  @screen.type(timezone)
+
+  try_for(10) do
+    # filtering could take some time, so let's wait until this has been properly done
+    results = get_visible_results(time_dialog)
+    results.length == 1
+  end
+
+  @screen.press('Return')
 
   try_for(5) do
     time_dialog.child('Apply', roleName: 'push button').click
