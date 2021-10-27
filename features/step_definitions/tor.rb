@@ -604,7 +604,7 @@ Then /^the Tor Connection Assistant complains that normal bridges are not allowe
   )
 end
 
-def click_connect_to_tor()
+def click_connect_to_tor
   btn = tor_connection_assistant.child(
     '_Connect to Tor',
     roleName: 'push button'

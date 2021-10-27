@@ -261,13 +261,11 @@ def start_up_spammer(domain_name)
   bus = ENV['USER'] == 'root' ? '--system' : '--user'
   systemctl = ['/bin/systemctl', bus]
   kill_up_spammer = proc do
-    begin
-      if system(*systemctl, '--quiet', 'is-active', up_spammer_unit_name)
-        system(*systemctl, 'stop', up_spammer_unit_name)
-      end
-    rescue StandardError
-      # noop
+    if system(*systemctl, '--quiet', 'is-active', up_spammer_unit_name)
+      system(*systemctl, 'stop', up_spammer_unit_name)
     end
+  rescue StandardError
+    # noop
   end
   kill_up_spammer.call
   up_spammer_job = fatal_system(
@@ -641,7 +639,7 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
   @screen.press('ctrl', 'd')
   @screen.wait('TorBrowserBookmarkPrompt.png', 10)
   @screen.type(url)
-  # The new default location for bookmarks is "Other Bookmarks", but our test
+  # The new default location for bookmarks is "Bookmarks Toolbar", but our test
   # expects the new entry is available in "Bookmark Menu", that's why we need
   # to select the location explicitly.
   @screen.wait('TorBrowserBookmarkLocation.png', 10).click
@@ -1015,22 +1013,13 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                  "/home/#{LIVE_USER}/Tor Browser"
                end
   @screen.press('ctrl', 'p')
-  print_dialog = @torbrowser.child('Print', roleName: 'dialog')
-  print_dialog.child('Print to File', roleName: 'table cell').click
-  print_dialog.child('~/Tor Browser/output.pdf', roleName: 'push button').click
-  # Yes, TorBrowserPrintFileDialog.png != Gtk3PrintFileDialog.png.
-  # If you try to unite them, make sure this does not break the tests
-  # that use either.
-  @screen.wait('TorBrowserPrintFileDialog.png', 10)
+  @torbrowser.child('Save', roleName: 'push button').click
+  @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it
   $vm.set_clipboard(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
   @screen.press('ctrl', 'v')
   @screen.press('Return')
-  # Yes, TorBrowserPrintButton.png != Gtk3PrintButton.png.
-  # If you try to unite them, make sure this does not break the tests
-  # that use either.
-  @screen.wait('TorBrowserPrintButton.png', 10).click
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do
     $vm.file_exist?("#{output_dir}/#{output_file}")
