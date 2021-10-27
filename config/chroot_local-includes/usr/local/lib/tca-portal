@@ -1,8 +1,12 @@
 #!/usr/bin/python3
 """
-This service listens on a unix domain socket and provides a simple interface to run privileged actions.
+This service listens on a unix domain socket and provides a simple interface to
+run privileged actions.
 
-It is meant to be run as root.
+It is meant to be run as root: in fact, some of the functionalities it is
+exposing require root privileges. Some others are not (see UserCommand), so in
+theory we could split this portal into a privileged one and an unprivileged
+one. However, that wouldn't reduce the attack surface much, if at all.
 """
 
 import re

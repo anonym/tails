@@ -149,7 +149,7 @@ When /^I start Tails Installer$/ do
   # lost *and* the installer does not go to the foreground. So let's
   # wait a bit extra.
   sleep 3
-  @screen.wait("TailsInstallerWindow.png", 10).click
+  @screen.wait('TailsInstallerWindow.png', 10).click
 end
 
 When /^I am told by Tails Installer that.*"([^"]+)".*$/ do |status|
