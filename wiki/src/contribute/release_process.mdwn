@@ -56,8 +56,7 @@ To release Tails you'll need some packages installed:
     them from a more recent Debian release with APT pinning.
 * `perl5lib` [[dependencies|contribute/release_process/perl5lib#build-deps]]
 * `iuk` [[dependencies|contribute/release_process/tails-iuk#build-deps]]
-* [[!debpts squashfs-tools]] 1:4.4-1+0.tails1
-  from our custom `iukbuilder-stretch` APT suite.
+* `squashfs-tools-ng` and `libsquashfs1` from Bullseye
 * `po4a` 0.55:
    - Different versions extract Markdown headings in a different way, which
      makes tons of strings fuzzy.
@@ -840,11 +839,14 @@ Reference: [[design documentation|contribute/design/incremental_upgrades]]
 Sanity checks
 -------------
 
-Check that you have the correct version of `squashfs-tools` installed:
+Check that you have the correct version of `squashfs-tools-ng` and `libsquashfs1` installed:
 
-    [ "$(dpkg-query --showformat '${Version}\n' --show squashfs-tools)" \
-      = '1:4.4-1+0.tails1' \
-    ] || echo 'ERROR! Your squashfs-tools is not the required version, so any generated IUKs will *not* be reproducible!'
+    [ "$(dpkg-query --showformat '${Version}\n' --show squashfs-tools-ng)" \
+      = '1.0.4-1' \
+    ] || echo 'ERROR! Your squashfs-tools-ng is not the required version, so any generated IUKs will *not* be reproducible!'
+    [ "$(dpkg-query --showformat '${Version}\n' --show libsquashfs1)" \
+      = '1.0.4-1' \
+    ] || echo 'ERROR! Your libsquashfs1 is not the required version, so any generated IUKs will *not* be reproducible!'
 
 Check that you have the password for <https://iso-history.tails.boum.org> (it
 will be used by `wrap_tails_create_iuks` below, in order to download any ISO
