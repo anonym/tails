@@ -947,15 +947,13 @@ Build the Incremental Upgrade Kits on Jenkins
 
 1. On <https://jenkins.tails.boum.org/job/build_IUKs/configure>,
    in the _Configuration Matrix_ section,
-   set the value of `label_exp` to an expression that matches the isobuilders
-   that use a CPU of the same brand as yours, and only those:
+   set the value of `label_exp` to our Bullseye isobuilders:
 
-     - Intel: `isobuilder1.lizard || isobuilder2.lizard || isobuilder3.lizard || isobuilder4.lizard`
-     - AMD: `isobuilder5.iguana`
+    `isobuilder3.lizard || isobuilder4.lizard || isobuilder6.iguana`
 
    Then save the updated configuration.
 
-   Rationale: workaround [[!tails_ticket 18536]]
+   Rationale: [[!tails_ticket 18577]]
 
 1. On <https://jenkins.tails.boum.org/job/build_IUKs/build?delay=0sec>,
    fill the form with these values:
