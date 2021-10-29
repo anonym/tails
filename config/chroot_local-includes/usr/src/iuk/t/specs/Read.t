@@ -112,8 +112,9 @@ describe 'A read IUK object' => sub {
                 make_iuk(my $iuk_filename = Path::Tiny->tempfile);
                 $iuk = Tails::IUK::Read->new_from_file($iuk_filename);
             };
-            it 'should return 0' => $ENV{SKIP_SUDO} ? () : sub {
-                is($iuk->space_needed, 0);
+            it 'should return ~ 0' => $ENV{SKIP_SUDO} ? () : sub {
+                cmp_ok($iuk->space_needed, '>=', 0);
+                cmp_ok($iuk->space_needed, '<=', 10);
             };
         };
         describe 'if called on an IUK whose overlay directory contains two 1MB files' => sub {
@@ -126,8 +127,10 @@ describe 'A read IUK object' => sub {
                 );
                 $iuk = Tails::IUK::Read->new_from_file($iuk_filename);
             };
-            it 'should return 2 * 2**10' => $ENV{SKIP_SUDO} ? () : sub {
-                is($iuk->space_needed, 2 * 2**20);
+            it 'should return ~ 2 * 2**10' => $ENV{SKIP_SUDO} ? () : sub {
+                my $expected_size = 2 * 2**20;
+                cmp_ok($iuk->space_needed, '>=', $expected_size);
+                cmp_ok($iuk->space_needed, '<=', $expected_size * 1.1);
             };
         };
     };
