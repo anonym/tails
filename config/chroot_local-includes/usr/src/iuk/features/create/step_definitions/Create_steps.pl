@@ -358,6 +358,7 @@ fun squashfs_in_iuk_contains(:$iuk_in, :$squashfs_name, :$expected_file,
     return unless $exists;
 
     if (defined $expected_mtime) {
+        $expected_mtime = $ENV{SOURCE_DATE_EPOCH} if $expected_mtime eq 'SOURCE_DATE_EPOCH';
         return unless $expected_mtime == $tempdir->child('squashfs-root', $expected_file)->stat->mtime
     }
 
@@ -456,11 +457,11 @@ Then qr{^the delete_files list is empty$}, fun ($c) {
     is($c->{stash}->{scenario}->{iuk_in}->delete_files_count, 0);
 };
 
-Then qr{^the saved IUK contains a SquashFS that contains file "([^"]+)"(?:| modified at ([0-9]+)| owned by ([a-z-]+))$}, fun ($c) {
+Then qr{^the saved IUK contains a SquashFS that contains file "([^"]+)"(?:| modified at ([0-9]+|SOURCE_DATE_EPOCH)| owned by ([a-z-]+))$}, fun ($c) {
     my $expected_file  = $c->matches->[0];
     my ($expected_mtime, $expected_owner);
     if (defined $c->matches->[1]) {
-        if ($c->matches->[1] =~ m{\A[0-9]+\z}) {
+        if ($c->matches->[1] =~ m{\A(?:[0-9]+|SOURCE_DATE_EPOCH)\z}) {
             $expected_mtime = $c->matches->[1];
         } elsif ($c->matches->[1] =~ m{\A[a-z-]+\z}) {
             $expected_owner = $c->matches->[1];
