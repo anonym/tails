@@ -19,6 +19,7 @@ use Types::Path::Tiny qw{Path};
 
 use Tails::IUK;
 use Tails::IUK::Read;
+use Tails::IUK::Utils qw{run_as_root};
 
 
 my $bindir = path(__FILE__)->parent->parent->parent->parent->child('bin')->absolute;
