@@ -657,7 +657,7 @@ method get_target_files (HashRef $upgrade_path, CodeRef $url_transform, AbsDir $
                     # If a line contains only a number, the percentage is updated with that number.
 
                     ### Get download progress percentage
-                    $download_h->pump_nb;
+                    $download_h->pump;
                     next unless $download_out;
 
                     ### Update the progress dialog bar percentage

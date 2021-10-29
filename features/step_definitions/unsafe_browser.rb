@@ -15,6 +15,7 @@ def supported_torbrowser_locales
     locale = line.split(':').first.sub('-', '_')
     language = locale.split('_').first
     next unless supported_locales.include?(language)
+
     "#{locale}.utf8"
   end.compact
 end
@@ -25,23 +26,26 @@ Then /^I start the Unsafe Browser in the "([^"]+)" locale$/ do |loc|
   step 'I see and accept the Unsafe Browser start verification'
 end
 
-Then /^the Unsafe Browser works in all supported languages$/ do
+Then /^I can start the Unsafe Browser in a few supported languages$/ do
   failed = []
   # We always want the locale which we verify the startup page warning
   # for, and one RTL locale ...
   locales = ['fr_FR.UTF-8', 'fa_IR.UTF-8']
   # ... then we just pick one *other* random non-English locale.
   locales += (supported_torbrowser_locales - locales - ['en_US.utf8'])
-               .sample(1)
+             .sample(1)
   locales.each do |lang|
     step "I start the Unsafe Browser in the \"#{lang}\" locale"
     begin
       step "the Unsafe Browser has started in the \"#{lang}\" locale"
     rescue StandardError
       failed << lang
-      next
     end
-    step 'I close the Unsafe Browser'
+    begin
+      step 'I kill the Unsafe Browser'
+    rescue ExecutionFailedInVM
+      # The Unsafe Browser wasn't running
+    end
     step 'the Unsafe Browser chroot is torn down'
   end
   assert(failed.empty?,

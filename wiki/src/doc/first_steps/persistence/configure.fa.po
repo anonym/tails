@@ -6,7 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-05-28 17:57-0500\n"
+"Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
+"POT-Creation-Date: 2021-10-12 18:07+0000\n"
 "PO-Revision-Date: 2015-10-15 07:26+0000\n"
 "Last-Translator: sprint5 <translation5@451f.org>\n"
 "Language-Team: Persian <http://weblate.451f.org:8889/projects/tails/"
@@ -20,7 +21,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "[[!meta title=\"Create & configure the persistent volume\"]]\n"
 msgid "[[!meta title=\"Creating and configuring the Persistent Storage\"]]\n"
 msgstr "[[!meta title=\"درایو مانا را ایجاد و تنظیم کنید\"]]\n"
 
@@ -47,18 +47,43 @@ msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
 #, no-wrap
+msgid ""
+"<p>If you receive the error message <em>Device was not created using a USB\n"
+"image or Tails installer</em>, then you need to reinstall Tails either by:</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<ul>\n"
+"  <li>Installing using our [[USB image|install/download]] instead of our ISO image</li>\n"
+"  <li>[[Installing from another Tails|install/linux/clone-overview]]</li>\n"
+"</ul>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>If you receive the error message while running Tails using\n"
+"<i>virt-manager</i>, then you need to\n"
+"[[run Tails from our USB image|doc/advanced_topics/virtualization/virt-manager#usb_image]]\n"
+"instead of our ISO image.</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "</div>\n"
+msgstr "</div>\n"
+
+#. type: Plain text
+#, no-wrap
 msgid "<!-- We should improve this error message in #10048 and get rid of this note. -->\n"
 msgstr ""
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid ""
-#| "The error message <span class=\"emphasis\">Error, Persistence partition is not\n"
-#| "unlocked.</span> means that the persistent volume was not enabled from\n"
-#| "<span class=\"application\">Tails Greeter</span>. So you can not configure it\n"
-#| "but you can delete it and create a new one.\n"
 msgid ""
-"<p>The error message <em>Error, Persistence partition is not\n"
+"<p>The error message <em>Error, Persistence volume is not\n"
 "unlocked.</em> means that the Persistent Storage was not unlocked in\n"
 "the Welcome Screen. You cannot use or configure your Persistent Storage\n"
 "but you can delete it and create a new one.</p>\n"
@@ -79,15 +104,26 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "</div>\n"
-msgstr "</div>\n"
+msgid "<div class=\"bug\">\n"
+msgstr "<div class=\"bug\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>There is currently no visible way to close the\n"
+"<b>Configure persistent volume</b> application when no changes have been made.\n"
+"See [[!tails_ticket 18379]].</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>To close the <b>Configure persistent volume</b> application,\n"
+"press <span class=\"keycap\">Esc</span>.</p>\n"
+msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When run for the first time, or after [[deleting the persistent volume|"
-#| "delete]], the assistant proposes to create a new persistent volume on the "
-#| "device from which Tails is running."
 msgid ""
 "When run for the first time, or after [[deleting the Persistent Storage|"
 "delete]], an assistant allows you to create a Persistent Storage in the free "
@@ -101,15 +137,11 @@ msgstr ""
 
 #. type: Title =
 #, fuzzy, no-wrap
-#| msgid "Creating the persistent volume\n"
 msgid "Features of the Persistent Storage"
 msgstr "ایجاد درایو مانا\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid ""
-#| "<strong>Restart Tails to apply the changes</strong> after selecting or\n"
-#| "unselecting one or several features.\n"
 msgid ""
 "<p><strong>Restart Tails to apply the changes</strong> after selecting or\n"
 "deselecting one or several features.</p>\n"
@@ -151,7 +183,6 @@ msgstr "<div class=\"bug\" id=\"deselect\">\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "If you unselect a feature that used to be activated, it will be deactivated after restarting Tails but the corresponding files will remain on the persistent volume."
 msgid ""
 "<p>If you turn off a feature, it will be\n"
 "unavailable after restarting Tails but the\n"
@@ -235,9 +266,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid ""
-#| "When this feature is activated, you can save your personal files and working\n"
-#| "documents in the <span class=\"filename\">Persistent</span> folder.\n"
 msgid ""
 "When the Personal Data feature is turned on, you can save your personal files and working\n"
 "documents in the <span class=\"filename\">Persistent</span> folder.\n"
@@ -260,21 +288,16 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "<a id=\"gnome_keyring\"></a>\n"
 msgid "<a id=\"welcome_screen\"></a>\n"
 msgstr "<a id=\"gnome_keyring\"></a>\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "[[!img preferences-desktop.png link=no]]\n"
 msgid "[[!img lib/apps/preferences-system.png link=\"no\"]]\n"
 msgstr "[[!img preferences-desktop.png link=no]]\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid ""
-#| "<div class=\"text\"><h2>Bitcoin Client</h2></div>\n"
-#| "</div>\n"
 msgid ""
 "<div class=\"text\"><h2>Welcome Screen</h2></div>\n"
 "</div>\n"
@@ -284,9 +307,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When this feature is activated, all the files related to the secure-shell "
-#| "client are saved in the persistent volume:"
 msgid ""
 "When the Welcome Screen feature is turned on, the settings from the Welcome "
 "Screen are saved in the Persistent Storage: language, keyboard, and "
@@ -300,6 +320,38 @@ msgid ""
 "To restore your settings when starting Tails, unlock your Persistent Storage "
 "in the Welcome Screen."
 msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "<a id=\"tor-bridge\">\n"
+msgstr "<a id=\"thunderbird\"></a>\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "[[!img onioncircuits.png link=no]]\n"
+msgstr "[[!img printer.png link=no]]\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid ""
+"<div class=\"text\"><h2>Tor Bridge</h2></div>\n"
+"</div>\n"
+msgstr ""
+"<div class=\"text\"><h2>پیجین</h2></div>\n"
+"</div>\n"
+
+#. type: Plain text
+#, fuzzy
+msgid ""
+"When the Tor Bridge feature is turned on, the last [[Tor bridge|doc/"
+"anonymous_internet/tor]] that you used to connect to Tor successfully is "
+"saved in the Persistent Storage."
+msgstr ""
+"وقتی این ویژگی فعال باشد، تنظیمات و رایانامه‌هایی \n"
+"که توسط \n"
+"[[<span class=\"application\">Claws Mail</span>کارخواه رایانامهٔ |doc/"
+"anonymous_internet/claws_mail]]\n"
+"ذخیره می‌شوند، روی درایو مانا ذخیره خواهند شد.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -322,13 +374,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When this feature is activated, changes to the bookmarks in\n"
-#| "[[<span class=\"application\">Tor Browser</span>|doc/anonymous_internet/"
-#| "Tor_Browser]]\n"
-#| "are saved in the persistent volume. This does not apply to the\n"
-#| "[[<span class=\"application\">Unsafe Browser</span>|doc/"
-#| "anonymous_internet/unsafe_browser]].\n"
 msgid ""
 "When the Browser Bookmarks feature is turned on, changes to the bookmarks in "
 "[[*Tor Browser*|doc/anonymous_internet/Tor_Browser]] are saved in the "
@@ -363,10 +408,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When this feature is activated, the [[configuration of the network "
-#| "devices and connections|doc/anonymous_internet/networkmanager]] is saved "
-#| "in the persistent volume."
 msgid ""
 "When the Network Connections feature is turned on, the [[configuration of "
 "the network devices and connections|doc/anonymous_internet/networkmanager]] "
@@ -384,15 +425,11 @@ msgstr "<a id=\"additional_software\"></a>\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "[[!img printer.png link=no]]\n"
 msgid "[[!img additional-software.png link=no]]\n"
 msgstr "[[!img printer.png link=no]]\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid ""
-#| "<div class=\"text\"><h2>Personal Data</h2></div>\n"
-#| "</div>\n"
 msgid ""
 "<div class=\"text\"><h2>Additional Software</h2></div>\n"
 "</div>\n"
@@ -448,10 +485,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When this feature is activated, the [[configuration of the printers|doc/"
-#| "sensitive_documents/printing_and_scanning]] is saved in the persistent "
-#| "volume."
 msgid ""
 "When the Printers feature is turned on, the [[configuration of the printers|"
 "doc/sensitive_documents/printing_and_scanning]] is saved in the Persistent "
@@ -467,15 +500,11 @@ msgstr "<a id=\"thunderbird\"></a>\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "[[!img thunderbird.png link=no]]\n"
 msgid "[[!img lib/apps/thunderbird.png link=no]]\n"
 msgstr "[[!img thunderbird.png link=no]]\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid ""
-#| "<div class=\"text\"><h2>Dotfiles</h2></div>\n"
-#| "</div>\n"
 msgid ""
 "<div class=\"text\"><h2>Thunderbird</h2></div>\n"
 "</div>\n"
@@ -485,12 +514,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When this feature is activated, the configuration and emails stored\n"
-#| "locally by the\n"
-#| "[[<span class=\"application\">Claws Mail</span> email client|doc/"
-#| "anonymous_internet/claws_mail]]\n"
-#| "are saved in the persistent volume.\n"
 msgid ""
 "When the Thunderbird feature is turned on, the email, feeds, and OpenPGP "
 "keys in the [[*Thunderbird* email client|doc/anonymous_internet/"
@@ -523,9 +546,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When this feature is activated, the OpenPGP keys that you create or "
-#| "import are saved in the persistent volume."
 msgid ""
 "When the GnuPG feature is turned on, the OpenPGP keys that you create or "
 "import are saved in the Persistent Storage."
@@ -557,7 +577,6 @@ msgstr "<a id=\"bitcoin\"></a>\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "[[!img electrum.png link=no]]\n"
 msgid "[[!img lib/apps/electrum.png link=no]]\n"
 msgstr "[[!img electrum.png link=no]]\n"
 
@@ -572,10 +591,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When this feature is activated, the bitcoin wallet and preferences of the "
-#| "[[*Electrum* bitcoin client|anonymous_internet/electrum]] are saved in "
-#| "the persistent volume."
 msgid ""
 "When the Bitcoin Client feature is turned on, the bitcoin wallet and "
 "preferences of the [[*Electrum* bitcoin client|anonymous_internet/electrum]] "
@@ -591,7 +606,6 @@ msgstr "<a id=\"pidgin\"></a>\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "[[!img pidgin.png link=no]]\n"
 msgid "[[!img lib/apps/pidgin.png link=no]]\n"
 msgstr "[[!img pidgin.png link=no]]\n"
 
@@ -606,11 +620,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When this feature is activated, all the configuration files of the\n"
-#| "[[<span class=\"application\">Pidgin</span> Internet messenger|doc/"
-#| "anonymous_internet/pidgin]]\n"
-#| "are saved in the persistent volume:\n"
 msgid ""
 "When the Pidgin feature is turned on, all the configuration files of the "
 "[[*Pidgin* internet messenger|doc/anonymous_internet/pidgin]] are saved in "
@@ -639,9 +648,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "All the configuration options are available from the graphical interface. "
-#| "There is no need to manually edit or overwrite the configuration files."
 msgid ""
 "All the configuration options are available from the graphical interface of "
 "*Pidgin*. There is no need to manually edit or overwrite the configuration "
@@ -671,9 +677,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "When this feature is activated, all the files related to the secure-shell "
-#| "client are saved in the persistent volume:"
 msgid ""
 "When the SSH Client feature is turned on, all the files related to the "
 "secure-shell (SSH) client are saved in the Persistent Storage:"
@@ -753,9 +756,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "For example, having the following files in <span\n"
-#| "class=\"filename\">/live/persistence/TailsData_unlocked/dotfiles</span>:\n"
 msgid ""
 "For example, having the following files in */live/persistence/"
 "TailsData_unlocked/dotfiles*:"
@@ -784,9 +784,6 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy
-#| msgid ""
-#| "Produces the following result in <span class=\"filename\">/home/amnesia</"
-#| "span>:\n"
 msgid "Produces the following result in */home/amnesia*:"
 msgstr ""
 "منجر به چنین نتیجه‌ای در <span class=\"filename\">/home/amnesia</span> "
@@ -827,13 +824,11 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "<a id=\"dotfiles\"></a>\n"
 msgid "<a id=\"displays\"></a>\n"
 msgstr "<a id=\"dotfiles\"></a>\n"
 
 #. type: Title ###
 #, fuzzy, no-wrap
-#| msgid "The configuration of your accounts, buddies and chats."
 msgid "Save the configuration of your displays"
 msgstr "تنظیمات حساب‌ها، دوستان و گفتگوهای شما"
 
@@ -847,7 +842,6 @@ msgstr ""
 
 #. type: Bullet: '1. '
 #, fuzzy
-#| msgid "Click on the <span class=\"guilabel\">Create</span> button."
 msgid "Turn on the *Dotfiles* feature and restart Tails."
 msgstr "روی دکمهٔ <span class=\"guilabel\">ایجاد</span> کلیک کنید."
 
@@ -857,12 +851,6 @@ msgstr ""
 
 #. type: Bullet: '1. '
 #, fuzzy
-#| msgid ""
-#| "To start the persistent volume assistant, choose\n"
-#| "<span class=\"menuchoice\">\n"
-#| "  <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-#| "  <span class=\"guisubmenu\">Tails</span>&nbsp;▸\n"
-#| "  <span class=\"guimenuitem\">Configure persistent volume</span></span>.\n"
 msgid ""
 "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Devices</"
 "span>&nbsp;▸ <span class=\"guisubmenu\">Displays</span></span>."
@@ -879,9 +867,6 @@ msgstr ""
 
 #. type: Bullet: '1. '
 #, fuzzy
-#| msgid ""
-#| "For example, having the following files in <span\n"
-#| "class=\"filename\">/live/persistence/TailsData_unlocked/dotfiles</span>:\n"
 msgid ""
 "Choose **Places**&nbsp;▸ **Dotfiles** to open the <span class=\"filename\">/"
 "live/persistence/TailsData_unlocked/dotfiles</span> folder in the <span "
@@ -892,12 +877,6 @@ msgstr ""
 
 #. type: Bullet: '1. '
 #, fuzzy
-#| msgid ""
-#| "To start the persistent volume assistant, choose\n"
-#| "<span class=\"menuchoice\">\n"
-#| "  <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-#| "  <span class=\"guisubmenu\">Tails</span>&nbsp;▸\n"
-#| "  <span class=\"guimenuitem\">Configure persistent volume</span></span>.\n"
 msgid ""
 "Click on the <span class=\"guimenu\">[[!img lib/pan-down.png alt=\"menu "
 "toggle\" class=\"symbolic\" link=\"no\"]]</span> button in the title bar and "
@@ -917,9 +896,6 @@ msgstr ""
 
 #. type: Bullet: '1. '
 #, fuzzy
-#| msgid ""
-#| "For example, having the following files in <span\n"
-#| "class=\"filename\">/live/persistence/TailsData_unlocked/dotfiles</span>:\n"
 msgid ""
 "Copy the <span class=\"filename\">.config/monitors.xml</span> file from your "
 "<span class=\"filename\">Home</span> folder to <span class=\"filename\">/"
@@ -1177,9 +1153,6 @@ msgstr ""
 
 #~ msgid "Additional software packages\n"
 #~ msgstr "بسته‌های نرم‌افزارهای اضافی\n"
-
-#~ msgid "<div class=\"bug\">\n"
-#~ msgstr "<div class=\"bug\">\n"
 
 #~ msgid ""
 #~ "<p>Pidgin fails to load any account if you enable persistence and\n"

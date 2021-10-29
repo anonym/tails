@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-18 10:11+0200\n"
-"PO-Revision-Date: 2021-08-12 04:47+0000\n"
+"POT-Creation-Date: 2021-10-04 16:34+0200\n"
+"PO-Revision-Date: 2021-10-02 17:16+0000\n"
 "Last-Translator: Jonatan Nyberg <jonatan@autistici.org>\n"
 "Language-Team: Swedish (http://www.transifex.com/otf/torproject/language/"
 "sv/)\n"
@@ -125,12 +125,12 @@ msgid "Do you want to start Electrum anyway?"
 msgstr "Vill du starta Electrum ändå?"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:70
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:43
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:40
 msgid "_Launch"
 msgstr "_Starta"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:71
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:44
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:41
 msgid "_Exit"
 msgstr "_Avsluta"
 
@@ -1335,11 +1335,13 @@ msgid "Language, administration password, and additional settings"
 msgstr "Språk, administrationslösenord och ytterligare inställningar"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:83
-msgid "Tor Bridges"
+#, fuzzy
+msgid "Tor Bridge"
 msgstr "Använd broar"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:85
-msgid "Save the last bridges that you used to connect to Tor"
+#, fuzzy
+msgid "Save the last bridge that you used to connect to Tor"
 msgstr "Spara de sista broarna som du använde för att ansluta till Tor"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:98
@@ -1430,10 +1432,10 @@ msgstr "Konfigurera bestående lagring för Tails"
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Setup.pm:502
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:29
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:363
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:502
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:939
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:26
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:344
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:483
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:899
 msgid "Error"
 msgstr "Fel"
 
@@ -1830,7 +1832,7 @@ msgid "Set up a password to unlock the screen."
 msgstr "Ställ in ett lösenord för att låsa upp skärmen."
 
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:149
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2043
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2003
 msgid "Password"
 msgstr "Lösenord"
 
@@ -1904,7 +1906,7 @@ msgstr ""
 "Se {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:76
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:28
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:25
 msgid "error:"
 msgstr "fel:"
 
@@ -1940,53 +1942,55 @@ msgstr "Lär dig mer"
 msgid "Tor Connection"
 msgstr "Tor-anslutning"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:193
-#, fuzzy
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:197
 msgid "_Use a bridge that I already know"
-msgstr "Skriv in en bro som jag redan känner till"
+msgstr "_Använd en bro som jag redan känner till"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:234
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:238
 msgid ""
-"To save your bridges, <a href=\"doc/first_steps/persistence\">unlock you "
+"To save your bridge, <a href=\"doc/first_steps/persistence\">unlock you "
 "Persistent Storage</a>."
 msgstr ""
+"För att spara din bro, <a href=\"doc/first_steps/persistence\">lås du upp "
+"din bestående lagring</a>."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:241
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:245
 msgid ""
-"To save your bridges, <a href=\"doc/first_steps/persistence\">create a "
+"To save your bridge, <a href=\"doc/first_steps/persistence\">create a "
 "Persistent Storage</a> on your Tails USB stick."
 msgstr ""
+"För att spara din bro, <a href=\"doc/first_steps/persistence\">skapa en "
+"bestående lagring</a> på ditt Tails-USB-minne."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:261
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:660
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:265
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:668
 #, python-brace-format
 msgid "Invalid: {exception}"
 msgstr "Ogiltig: {exception}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:273
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:673
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:277
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:681
 msgid "You need to configure an obfs4 bridge to hide that you are using Tor"
 msgstr "Du måste konfigurera en obfs4-bro för att dölja att du använder Tor"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:321
-#, fuzzy
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:325
 msgid "Failed to configure your Persistent Storage"
-msgstr "Det gick inte att konfigurera webbläsare."
+msgstr "Det gick inte att konfigurera din bestående lagring"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:415
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:419
 msgid "Connecting to Tor without bridges…"
 msgstr "Ansluter till Tor utan broar..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:422
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:446
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:426
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:450
 msgid "Connecting to Tor with default bridges…"
 msgstr "Ansluter till Tor med standardbroar..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:429
-msgid "Connecting to Tor with custom bridges…"
-msgstr "Ansluter till Tor med anpassade broar..."
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:433
+msgid "Connecting to Tor with a custom bridge…"
+msgstr "Ansluter till Tor med en anpassad bro..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:538
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:542
 msgid ""
 "Connected to Tor successfully!\n"
 "\n"
@@ -1996,19 +2000,19 @@ msgstr ""
 "\n"
 "Du kan nu surfa på internet anonymt och ocensurerad."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:663
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:671
 msgid "Bridge address malformed"
 msgstr "Broadress missbildad"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:679
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:687
 msgid "Setting a bridge is needed if you want to hide that you are using Tor"
 msgstr "Att ställa in en bro behövs om du vill dölja att du använder Tor"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:951
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:962
 msgid "Are you sure you want to lose progress?"
-msgstr ""
+msgstr "Är du säker på att du vill förlora framsteg?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:955
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:966
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -2053,7 +2057,7 @@ msgid "Tor is not ready. Start Tor Browser anyway?"
 msgstr "Tor är inte redo. Starta Tor Browser ändå?"
 
 #: config/chroot_local-includes/usr/bin/tor-browser:48
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1824
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1784
 msgid "Start Tor Browser"
 msgstr "Starta Tor Browser"
 
@@ -2239,11 +2243,11 @@ msgstr ""
 msgid "Choose File Container"
 msgstr "Välj filbehållare"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:40
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:37
 msgid "Launch the Unsafe Browser?"
-msgstr "Starta Osäkra webbläsaren?"
+msgstr "Starta den osäkra webbläsaren?"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:42
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:39
 msgid ""
 "The Unsafe Browser is not anonymous and the websites that you visit can see "
 "your real IP address.\\n\\nOnly use the Unsafe Browser to sign in to a "
@@ -2255,19 +2259,19 @@ msgstr ""
 "in på ett nätverk med en intern portal eller bläddra bland pålitliga "
 "webbsidor i det lokala nätverket."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:54
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:51
 msgid "Starting the Unsafe Browser..."
 msgstr "Startar den osäkra webbläsaren..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:55
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:52
 msgid "This may take a while, so please be patient."
 msgstr "Detta kan ta en liten stund, vänligen ha tålamod."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
 msgid "Shutting down the Unsafe Browser..."
 msgstr "Stänger av den osäkra webbläsaren..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:62
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
 msgid ""
 "This may take a while, and you may not restart the Unsafe Browser until it "
 "is properly shut down."
@@ -2275,17 +2279,13 @@ msgstr ""
 "Detta kan ta ett tag och du kanske inte kan startar om den osäkra "
 "webbläsaren förrän den är ordentligt avstängd."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
-msgid "Failed to restart Tor."
-msgstr "Det gick inte att starta om Tor."
-
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:88
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:72
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:1
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:512
 msgid "Unsafe Browser"
 msgstr "Osäker webbläsare"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:94
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:80
 msgid ""
 "The Unsafe Browser was not enabled in the Welcome Screen.\\n\\nTo use the "
 "Unsafe Browser, restart Tails and enable the Unsafe Browser in the "
@@ -2293,13 +2293,23 @@ msgid ""
 "To always enable the Unsafe Browser, turn on the Welcome Screen feature of "
 "the Persistent Storage."
 msgstr ""
-"Osäkra webbläsaren var inte aktiverad i välkomstskärmen.\\n\\nFör att "
-"använda Osäkra webbläsaren, starta om Tails och aktivera Osäkra webbläsaren "
-"i extra inställningarna på välkomstskärmen.\\n\n"
-"För att att Osäkra webbläsaren alltid ska vara aktiverad, slå på "
-"välkomstskärmfunktionen i den beständiga lagringen."
+"Den osäkra webbläsaren var inte aktiverad på välkomstskärmen.\\n\\nAnvänd "
+"den osäkra webbläsaren genom att starta om Tails och aktivera den osäkra "
+"webbläsaren i de ytterligare inställningarna på välkomstskärmen.\\n\n"
+"För att alltid aktivera den osäkra webbläsaren, aktivera "
+"välkomstskärmsfunktionen i den beständiga lagringen."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:85
+msgid ""
+"The Unsafe Browser was not enabled in the Welcome Screen.\\n\\nTo use the "
+"Unsafe Browser, restart Tails and enable the Unsafe Browser in the "
+"additional settings of the Welcome Screen."
+msgstr ""
+"Den osäkra webbläsaren var inte aktiverad på välkomstskärmen.\\n\\nOm du "
+"vill använda den osäkra webbläsaren startar du om Tails och aktiverar den "
+"osäkra webbläsaren i de ytterligare inställningarna på välkomstskärmen."
+
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:95
 msgid ""
 "Another Unsafe Browser is currently running, or being cleaned up. Please "
 "retry in a while."
@@ -2307,15 +2317,15 @@ msgstr ""
 "En annan osäker webbläsare körs eller rensas för närvarande. Vänligen Försök "
 "igen om en stund."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:111
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
 msgid "Failed to setup chroot."
 msgstr "Det gick inte att ställa in chroot."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:118
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:110
 msgid "Failed to configure browser."
 msgstr "Det gick inte att konfigurera webbläsare."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:124
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:116
 msgid ""
 "You are not connected to a local network yet.\\n\\nTo be able to start the "
 "Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile "
@@ -2325,7 +2335,7 @@ msgstr ""
 "den osäkra webbläsaren måste du först ansluta till ett Wi-Fi-, trådbundet "
 "eller mobilt nätverk."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:135
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:127
 msgid "Failed to run browser."
 msgstr "Det gick inte att starta webbläsare."
 
@@ -2724,7 +2734,7 @@ msgstr "Inaktivera den osäkra webbläsaren (standard)"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:619
 msgid "Enable the Unsafe Browser"
-msgstr "Aktivera osäker webbläsare"
+msgstr "Aktivera den osäkra webbläsaren"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:100
 msgid "Settings were loaded from the persistent storage."
@@ -2927,17 +2937,17 @@ msgstr "TrueCrypt/VeraCrypt behållare"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:21
 msgid "image"
-msgstr ""
+msgstr "bild"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:75
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:70
 msgid "Configure a Tor bridge"
 msgstr "Konfigurera en Tor-bro"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:81
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:76
 msgid "heading"
-msgstr ""
+msgstr "rubrik"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:99
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:94
 msgid ""
 "Bridges are secret Tor relays. Use a bridge as your first Tor relay if "
 "accessing Tor is blocked from where you are."
@@ -2945,39 +2955,36 @@ msgstr ""
 "Broar är hemliga Tor-reläer. Använd en bro som din första Tor-relä om "
 "åtkomst till Tor är blockerad där du är."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:115
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:110
 msgid "<a href=\"doc/anonymous_internet/tor\">Learn more about Tor bridges</a>"
 msgstr "<a href=\"doc/anonymous_internet/tor\">Lär dig mer om Tor-broar</a>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:151
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:146
 msgid "Use a _default bridge"
-msgstr "Använd en standardbro"
+msgstr "Använd en _standardbro"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:175
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:170
 msgid "obfs4 (recommended)"
 msgstr "obfs4 (rekommenderas)"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:176
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:171
 msgid "meek"
 msgstr "meek"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:202
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1338
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:197
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1298
 msgid "None"
 msgstr "Ingen"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:230
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:225
 msgid "_Request a new bridge"
-msgstr "Begär en ny bro"
+msgstr "_Begär en ny bro"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:265
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:260
 msgid "_Type in a bridge that I already know"
-msgstr "Skriv in en bro som jag redan känner till"
+msgstr "_Skriv in en bro som jag redan känner till"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:288
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:283
 msgid ""
 "Currently in Tails, only obfs4 bridges hide that you are using Tor.\n"
 "\n"
@@ -2993,54 +3000,49 @@ msgstr ""
 "För att begära obfs4-broar kan du skicka ett tomt e-postmeddelande till\n"
 "<tt>bridges@torproject.org</tt> från en Gmail- eller Riseup-e-postadress.\n"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:391
-#, fuzzy
-msgid "Save bridges to _Persistent Storage"
-msgstr "Skapa bestående lagring"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:372
+msgid "Save bridge to _Persistent Storage"
+msgstr "Spara bro till _bestående lagring"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:416
-#, fuzzy
-msgid "Save bridges to Persistent Storage"
-msgstr "Skapa bestående lagring"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:397
+msgid "Save bridge to Persistent Storage"
+msgstr "Spara bro till bestående lagring"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:417
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:398
 msgid "toggle-button"
-msgstr ""
+msgstr "växla-knapp"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:557
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:976
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1376
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:538
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:936
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1336
 msgid "_Connect to Tor"
-msgstr "Anslut till _Tor"
+msgstr "_Anslut till Tor"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:607
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:583
 msgid "Error connecting to Tor"
 msgstr "Anslutning till Tor misslyckades"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:630
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:606
 msgid "• Wrong clock"
-msgstr "• Fel tid"
+msgstr "• Fel klocka"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:650
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:626
 msgid ""
 "To prevent network attacks, your time zone and clock need to be correct to "
-"connect to Tor using bridges."
+"connect to Tor using a bridge."
 msgstr ""
 "För att förhindra nätverksattacker måste din tidszon och klocka vara "
-"korrekta för att ansluta till Tor med broar."
+"korrekta för att ansluta till Tor med en bro."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:663
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:639
 msgid "Fix _Clock"
-msgstr "Klocka"
+msgstr "Rätta _klocka"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:700
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:676
 msgid "• Public network"
 msgstr "• Publikt nätverk"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:720
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:696
 msgid ""
 "If you are in a shop, hotel, or airport, you might need to sign in to the "
 "local network using a captive portal."
@@ -3048,16 +3050,15 @@ msgstr ""
 "Om du befinner dig i en butik, ett hotell eller en flygplats kan du behöva "
 "logga in på det lokala nätverket med en intern portal."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:733
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:709
 msgid "Try _Signing in to the Network"
-msgstr "Försök att logga in på nätverket"
+msgstr "Försök att _logga in på nätverket"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:771
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:747
 msgid "• Local proxy"
 msgstr "• Lokal proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:791
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:767
 msgid ""
 "If you are on a corporate or university network, you might need to configure "
 "a local proxy."
@@ -3065,38 +3066,38 @@ msgstr ""
 "Om du är på ett företags- eller universitetsnätverk kan du behöva "
 "konfigurera en lokal proxy."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:804
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:780
 msgid "Configure a Local _Proxy"
 msgstr "Konfigurera en lokal _proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:842
-msgid "• Bridges over email"
-msgstr "• Broar över e-post"
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:818
+msgid "• Bridge over email"
+msgstr "• Bro över e-post"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:862
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:838
 msgid ""
 "To request new Tor bridges, you can also:\n"
 "\n"
 "1. Send an empty email to <tt>bridges@torproject.org</tt> from a Gmail or "
 "Riseup email address.\n"
 "\n"
-"2. Type below the bridges that you received by email."
+"2. Type below one of the bridges that you received by email."
 msgstr ""
 "För att begära nya Tor-broar kan du också:\n"
 "\n"
 "1. Skicka ett tomt e-postmeddelande till <tt>bridges@torproject.org</tt> "
 "från en Gmail- eller Riseup-e-postadress.\n"
 "\n"
-"2. Skriv nedanför broarna som du fick via e-post."
+"2. Skriv nedanför en av broarna som du fick via e-post."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1011
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1419
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:971
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1379
 msgid ""
 "Everything you do on the Internet from Tails goes through the Tor network."
 msgstr "Allt du gör på internet från Tails går via Tor-nätverket."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1025
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1434
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:985
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1394
 msgid ""
 "Tor encrypts and anonymizes your connection by passing it through 3 relays.\n"
 "Tor relays are servers operated by different organizations and volunteers "
@@ -3107,12 +3108,11 @@ msgstr ""
 "Tor-reläer är servrar som drivs av olika organisationer och volontärer runt "
 "om i världen."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1061
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1021
 msgid "<b>Connect to Tor _automatically (easier)</b>"
-msgstr "<b>Anslut till Tor automatiskt (enklare)</b>"
+msgstr "<b>Anslut till Tor _automatiskt (enklare)</b>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1111
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1071
 msgid ""
 "We recommend connecting to Tor automatically if you are on a public Wi-Fi "
 "network or if many people in your country use Tor to circumvent censorship."
@@ -3121,7 +3121,7 @@ msgstr ""
 "offentligt Wi-Fi-nätverk eller om många människor i ditt land använder Tor "
 "för att kringgå censur."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1129
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1089
 msgid ""
 "Tails will try different ways of connecting to Tor until it succeeds.\n"
 "\n"
@@ -3133,36 +3133,34 @@ msgstr ""
 "Någon som övervakar din internetanslutning kan identifiera att dessa försök "
 "kommer från en Tails-användare."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1163
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1123
 msgid "Configure a Tor _bridge"
-msgstr "Konfigurera en Tor-bro"
+msgstr "Konfigurera en Tor-_bro"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1209
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1169
 msgid ""
 "Tor bridges are secret Tor relays. Use a bridge as your first Tor relay if "
 "connections to Tor are blocked, for example in some countries, by some "
 "public networks, or by some parental controls.\n"
 "\n"
-"Choose this option if you already know that you need bridges. Otherwise, "
-"Tails will autodetect whether you need bridges to connect to Tor from your "
+"Choose this option if you already know that you need a bridge. Otherwise, "
+"Tails will autodetect whether you need a bridge to connect to Tor from your "
 "local network."
 msgstr ""
 "Tor-broar är hemliga Tor-reläer. Använd en bro som din första Tor-relä om "
 "anslutningar till Tor blockeras, till exempel i vissa länder, av vissa "
 "offentliga nätverk eller av vissa föräldrakontroller.\n"
 "\n"
-"Välj det här alternativet om du redan vet att du behöver broar. Annars "
-"kommer Tails automatiskt att upptäcka om du behöver broar för att ansluta "
+"Välj det här alternativet om du redan vet att du behöver en bro. Annars "
+"kommer Tails automatiskt att upptäcka om du behöver en bro för att ansluta "
 "till Tor från ditt lokala nätverk."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1251
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1211
 msgid "<b>_Hide to my local network that I'm connecting to Tor (safer)</b>"
 msgstr ""
-"<b>Dölj för mitt lokala nätverk att jag ansluter till Tor (säkrare)</b>"
+"<b>_Dölj för mitt lokala nätverk att jag ansluter till Tor (säkrare)</b>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1301
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1261
 msgid ""
 "You might need to go unnoticed if using Tor could look suspicious to someone "
 "who monitors your Internet connection."
@@ -3170,10 +3168,10 @@ msgstr ""
 "Du kan behöva gå obemärkt om användning av Tor kan se misstänksam ut för "
 "någon som övervakar din internetanslutning."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1319
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1279
 msgid ""
-"Tails will only connect to Tor after you configured Tor bridges. Bridges are "
-"secret Tor relays that hide that you are connecting to Tor.\n"
+"Tails will only connect to Tor after you configured a Tor bridge. Bridges "
+"are secret Tor relays that hide that you are connecting to Tor.\n"
 "\n"
 "Our team is doing its best to help you connect to Tor using the most "
 "discrete types of Tor bridges.\n"
@@ -3182,7 +3180,7 @@ msgid ""
 "yet, if you connect from a public Wi-Fi network, or if you are in the "
 "Eastern Hemisphere."
 msgstr ""
-"Tails ansluter bara till Tor efter att du har konfigurerat Tor-broar. Broar "
+"Tails ansluter bara till Tor efter att du har konfigurerat en Tor-bro. Broar "
 "är hemliga Tor-reläer som döljer att du ansluter till Tor.\n"
 "\n"
 "Vårt team gör sitt bästa för att hjälpa dig att ansluta till Tor med de mest "
@@ -3192,7 +3190,7 @@ msgstr ""
 "ännu, om du ansluter från ett offentligt Wi-Fi-nätverk eller om du befinner "
 "dig på östra halvklotet."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1364
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1324
 msgid ""
 "<a href=\"doc/anonymous_internet/tor\">Learn more about how Tails connects "
 "to Tor</a>"
@@ -3200,11 +3198,11 @@ msgstr ""
 "<a href=\"doc/anonymous_internet/tor\">Lär dig mer om hur Tails ansluter "
 "till Tor</a>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1449
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1409
 msgid "Connect to a local network"
 msgstr "Anslut till ett lokalt nätverk"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1466
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1426
 msgid ""
 "You are not connected to a local network yet. To be able to connect to the "
 "Tor network, you first need to connect to a Wi-Fi, wire, or mobile network."
@@ -3213,106 +3211,105 @@ msgstr ""
 "Tor-nätverket måste du först ansluta till ett Wi-Fi-, trådbundet- eller "
 "mobilnätverk."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1478
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1438
 msgid "Open Wi-Fi settings"
 msgstr "Öppna Wi-Fi-inställningar"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1527
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1487
 msgid "Testing Internet access…"
 msgstr "Testar internetåtkomst..."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1567
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1527
 msgid "You have access to the Internet"
 msgstr "Du har tillgång till internet"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1601
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1561
 msgid "Testing access to Tor…"
 msgstr "Testar åtkomst till Tor..."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1644
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1604
 msgid "You can connect to Tor"
 msgstr "Du kan ansluta till Tor"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1674
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1634
 msgid "Failed to connect to Tor without bridges."
 msgstr "Det gick inte att ansluta till Tor utan broar."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1690
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1650
 msgid "Your local network is blocking access to Tor."
 msgstr "Ditt lokala nätverk blockerar åtkomst till Tor."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1722
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1682
 msgid "Connecting to Tor…"
 msgstr "Ansluter till Tor..."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1778
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1738
 msgid "Connected to Tor successfully"
 msgstr "Ansluten till Tor"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1802
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1762
 msgid "You can now browse the Internet anonymously and uncensored."
 msgstr "Du kan nu surfa på internet anonymt och ocensurerat."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1843
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1803
 msgid "Open Network Monitor"
 msgstr "Öppna nätverksmonitor"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1856
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1816
 msgid "View Tor Circuits"
 msgstr "Visa Tor-kretsar"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1870
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1830
 msgid "Reset Tor Connection"
 msgstr "Återställ Tor-anslutning"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1910
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1870
 msgid "Configure a Local Proxy"
 msgstr "Konfigurera en lokal proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1935
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1895
 msgid "Proxy Type"
 msgstr "Proxytyp"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1952
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1912
 msgid "No proxy"
 msgstr "Ingen proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1953
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1913
 msgid "SOCKS 4"
 msgstr "SOCKS 4"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1954
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1914
 msgid "SOCKS 5"
 msgstr "SOCKS 5"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1955
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1915
 msgid "HTTP / HTTPS"
 msgstr "HTTP / HTTPS"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1974
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1934
 msgid "Address"
 msgstr "Adress"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1991
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1951
 msgid "Username"
 msgstr "Användarnamn"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2008
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1968
 msgid "IP address or hostname"
 msgstr "IP-adress eller värdnamn"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2026
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1986
 msgid "Port"
 msgstr "Port"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2135
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2095
 msgid "_Save Proxy Settings"
 msgstr "_Spara proxyinställningar"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:7
-#, fuzzy
 msgid "Tor Connection - Fix Clock"
-msgstr "Tor-anslutning - Ställ in tid"
+msgstr "Tor-anslutning - Rätta klocka"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:76
 msgid ""
@@ -3323,6 +3320,12 @@ msgid ""
 "time zone will never be sent over the network and will only be used to fix "
 "your clock and connect to Tor."
 msgstr ""
+"För att förhindra nätverksattacker måste din tidszon och klocka vara "
+"korrekta för att ansluta till Tor med broar. \n"
+"\n"
+"Din tidszon och klocka kan inte användas för att identifiera eller "
+"geolokalisera dig. Din tidszon kommer aldrig att skickas över nätverket och "
+"kommer bara att användas för att rätta din klocka och ansluta till Tor."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:117
 msgid "Select the time zone you want to use"
@@ -3357,7 +3360,6 @@ msgid "March"
 msgstr "Mars"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:306
-#, fuzzy
 msgid "April"
 msgstr "April"
 
@@ -3396,13 +3398,3 @@ msgstr "December"
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:360
 msgid "Clock"
 msgstr "Klocka"
-
-#~ msgid "Set Time"
-#~ msgstr "Ställ in tid"
-
-#~ msgid ""
-#~ "Your time zone cannot be used to identify or geolocalize you. Your time "
-#~ "zone will never be sent over the network."
-#~ msgstr ""
-#~ "Din tidszon kan inte användas för att identifiera eller geolokalisera "
-#~ "dig. Din tidszon kommer aldrig att skickas över nätverket."

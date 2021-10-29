@@ -114,7 +114,7 @@ def main():
         # 'GTK_DEBUG=interactive',
     ]
     if get_greeter_variable_bool("TAILS_NETWORK"):
-        tcacmd = [python_bin, program]
+        tcacmd = [python_bin, '-u', program]
     else:
         tcacmd = get_display_error_cmd()
         connect_drop = []

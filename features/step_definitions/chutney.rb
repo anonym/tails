@@ -24,7 +24,9 @@ end
 
 # XXX: giving up on a few worst offenders for now
 # rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/PerceivedComplexity
 def ensure_chutney_is_running
   # Ensure that a fresh chutney instance is running, and that it will
   # be cleaned upon exit. We only do it once, though, since the same
@@ -117,7 +119,9 @@ def ensure_chutney_is_running
   chutney_status_log('done')
 end
 # rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/PerceivedComplexity
 
 When /^I configure Tails to use a simulated Tor network$/ do
   # At the moment this step essentially assumes that we boot with 'the

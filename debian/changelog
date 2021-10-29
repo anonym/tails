@@ -1,12 +1,106 @@
-tails (4.22) UNRELEASED; urgency=medium
+tails (4.24) UNRELEASED; urgency=medium
 
   * Dummy entry for next release.
 
- -- boyska <boyska@riseup.net>  Thu, 19 Aug 2021 16:33:25 +0200
+ -- boyska <boyska@riseup.net>  Thu, 07 Oct 2021 09:38:13 +0200
 
-tails (4.22~rc1) unstable; urgency=medium
+tails (4.23) unstable; urgency=medium
+
+  * Upgrade Tor Browser to 10.5.8-build2 (tails/tails!611)
+
+    Closes issues:
+      - Upgrade to Tor Browser 10.5.8 (based on Firefox 78.15.0esr) (tails/tails#18623)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 10.5.8-build2
+
+  * FIX #18568: wait after killing TBB (tails/tails!607)
+
+    Closes issues:
+      - "Tails is localized for every tier-1 language" test fails on iguana
+        (tails/tails#18568)
+
+    Commits:
+      - FIX #18568: wait after killing TBB
+
+  * Fix devel FTBFS (tails/tails!601)
+
+    Commits:
+      - Install squashfs-tools from bullseye.
+      - Refresh uBlock patch vs version 1.37.0+dfsg-1 (fixes: #18537)
+
+  * copy-iuks-to-rsync-server-and-verify: handle arbitrary build agents
+    (tails/tails!597)
+
+    Closes issues:
+      - copy-iuks-to-rsync-server-and-verify: needs adjustment for changing isobuilder
+        names (tails/tails#18574)
+
+    Commits:
+      - copy-iuks-to-rsync-server-and-verify: handle arbitrary build agents.
+
+ -- Tails developers <tails@boum.org>  Tue, 05 Oct 2021 08:20:24 +0200
+
+tails (4.22) unstable; urgency=medium
 
   * Upgrade Thunderbird to 78.13.0-1~deb10u1
+
+  * Upgrade to Tor Browser 10.5.6 (78.14.0esr) (tails/tails!594)
+
+    Commits:
+      - Upgrade Tor Browser to 10.5.6-build2 (fixes: #18566)
+
+  * Remove Prestera firmware, that's useless in the context of Tails
+    (tails/tails!572)
+
+    Commits:
+      - Stop setting up a kernel module build environment during the images build
+      - Remove Prestera firmware, that's useless in the context of Tails
+
+  * Only allow typing 1 bridge (tails/tails!587)
+
+    Commits:
+      - Only allow typing 1 bridge
+
+  * Don't pretend tor has bootstrapped when tor@default.service failed to start
+    (tails/tails!585)
+
+    Commits:
+      - Don't pretend tor has bootstrapped when tor@default.service failed to start
+
+  * Upgrade firmware-amd-graphics to 20210818-1 (tails/tails!582)
+
+    Commits:
+      - Install version 20210818-1 of packages built from src:firmware-nonfree
+      - Enable the 18556-amd-gpu-firmware APT overlay (refs: #18556).
+
+  * Ensure we use a working mirror to download automatic upgrades (tails/tails!581)
+
+    Commits:
+      - Update mirror-pool-dispatcher submodule
+      - Allow the Upgrader to use tor, now needed by tails-transform-mirror-url for
+        testing mirrors
+      - many improvements to mirror-pool-dispatcher
+      - FIX dependency for tails-transform-mirror-url
+      - apply suggestion from mirror-pool-dispatcher!2
+      - mirror-pool-dispatcher tests mirrors
+
+  * Test suite: fix Pidgin scenarios with XMPP accounts on a server that requires
+    going through the "Create New Room" UI (tails/tails!580)
+
+    Closes issues:
+      - Some Pidgin test suite scenarios fail when using XMPP accounts on a server that
+        requires going through the "Create New Room" UI (tails/tails#18560)
+
+    Commits:
+      - Test suite: update expected Pidgin images
+
+  * Test suite: fail if tor reports that DisableNetwork is an empty string
+    (tails/tails!573)
+
+    Commits:
+      - Test suite: log and fail if tor reports that DisableNetwork is an empty string
 
   * Persistent Bridges, iteration 4: integrate bridges persistence in Tor
     Connection (tails/tails!543)
@@ -114,6 +208,77 @@ tails (4.22~rc1) unstable; urgency=medium
       - TCA: Only save known-working Tor configuration to tca.conf
       - TCA: Minor refactoring (avoid having to reason about double-negations)
       - TCA: Make methods names more specific
+
+  * Always start tor@default.service at boot, don't restart it after closing the
+    Unsafe Browser (tails/tails!584)
+
+    Commits:
+      - Test suite: adjust to the fact tor@default.service is started during boot
+      - Don't restart tor after exiting the Unsafe Browser
+      - Always start tor@default.service at boot
+
+  * Unsafe Browser: Only mention the Persistent Storage when there is one
+    (tails/tails!583)
+
+    Commits:
+      - Unsafe Browser: Only mention the Persistent Storage when there is one
+
+  * Fix running the test suite on sid (tails/tails!579)
+
+    Commits:
+      - Drop another instance of the obsolete which(1)
+      - Test suite: migrate away from obsolete which(1)
+      - Test suite: switch to virtio graphics
+
+  * FIX run_test_suite usage of tor --version for corner-cases (tails/tails!575)
+
+    Commits:
+      - FIX run_test_suite for corner-cases
+
+  * Installer: fix combobox freezes (tails/tails!571)
+
+    Commits:
+      - Installer: fix combobox freezes (refs: #18531)
+
+  * Update Tor Browser AppArmor policy (tails/tails!568)
+
+    Commits:
+      - Update Tor Browser AppArmor policy
+
+  * Tor Connection: decrease "sign of life" timeout, increase bootstrap timeout
+    (tails/tails!567)
+
+    Commits:
+      - Test suite: DRY clicking "Connect to Tor"
+      - Test suite: drop obsolete workaround
+      - Fix typo
+      - Tor Connection: allow the user to retry connecting to Tor from the error screen
+        with the same settings
+      - TCA hacking: use numbers that we have a chance to somewhat support
+      - TCA hacking: drop buggy option
+      - Add dummy entry for next release
+      - Tor Connection: decrease "sign of life" timeout, increase bootstrap timeout
+
+  * Test suite: use new XMPP chat rooms (tails/tails!566)
+
+    Closes issues:
+      - Deal with xmpp.riseup.net going away (tails/tails#17956)
+
+    Commits:
+      - Test suite: remove dead code
+      - Test suite: rename argument to match its current usage
+      - Test suite: use new XMPP chat rooms
+
+  * Resolve "TCA does not connect with default bridges when it should"
+    (tails/tails!563)
+
+    Commits:
+      - Let's use user-centric (first person) phrasing whenever possible
+      - Always set variables
+      - better variable names
+      - test suite: support using bridges w/o needing them
+      - Gherkin for #18462
+      - preserve user's choice of using default bridges
 
   * Stop trying to connect to Tor when we reach the Tor Connection error screen
     (tails/tails!559)
@@ -273,7 +438,14 @@ tails (4.22~rc1) unstable; urgency=medium
       - test: cmd_helper modernized
       - DRAFT: Add a Scenario for #15548
 
- -- Tails developers <tails@boum.org>  Wed, 18 Aug 2021 11:57:02 +0200
+  * Allow running our test suite on modern AMD CPUs (tails/tails!406)
+
+    Commits:
+      - document LIBVIRT_CPUMODEL
+      - amd hack: convert to config file
+      - modern AMD CPUs apparently benefit from this fix
+
+ -- Tails developers <tails@boum.org>  Mon, 06 Sep 2021 15:14:57 +0200
 
 tails (4.21) unstable; urgency=medium
 
