@@ -271,7 +271,7 @@ task :parse_build_options do
         warn "Building a release ⇒ ignoring #{opt} build option"
         ENV['MKSQUASHFS_OPTIONS'] = nil
       else
-        ENV['MKSQUASHFS_OPTIONS'] = '-comp xz -no-exports'
+        ENV['MKSQUASHFS_OPTIONS'] = '-comp zstd -no-exports'
       end
     when 'defaultcomp'
       ENV['MKSQUASHFS_OPTIONS'] = nil
