@@ -419,6 +419,7 @@ method create_squashfs_diff () {
         '--pack-dir', $union_upperdir,
         $self->overlay_dir->child('live', $self->squashfs_diff_name),
     );
+    assert(-e $self->overlay_dir->child('live', $self->squashfs_diff_name));
     printf "TIME (main gensquashfs for %s): %d seconds\n",
         $self->squashfs_diff_name,
         (time - $t1);
