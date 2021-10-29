@@ -52,7 +52,7 @@ describe 'A read IUK object' => sub {
                 my $iuk_filename = Path::Tiny->tempfile;
                 $tempdir->child('FORMAT')->spew("2");
                 $tempdir->child('whatever.file')->touch;
-                systemx('mksquashfs', $tempdir, $iuk_filename, '-no-progress', '-noappend');
+                systemx('gensquashfs', '--quiet', '--force', '--pack-dir', $tempdir, $iuk_filename);
                 $iuk = Tails::IUK::Read->new_from_file($iuk_filename);
             };
             it 'should return true when called on "whatever.file"' => $ENV{SKIP_SUDO} ? () : sub {
@@ -65,7 +65,7 @@ describe 'A read IUK object' => sub {
                 my $tempdir = Path::Tiny->tempdir;
                 my $iuk_filename = Path::Tiny->tempfile;
                 $tempdir->child('FORMAT')->spew("2");
-                systemx('mksquashfs', $tempdir, $iuk_filename, '-no-progress', '-noappend');
+                systemx('gensquashfs', '--quiet', '--force', '--pack-dir', $tempdir, $iuk_filename);
                 $iuk = Tails::IUK::Read->new_from_file($iuk_filename);
             };
             it 'should return false when called on "whatever.file"' => $ENV{SKIP_SUDO} ? () : sub {
@@ -81,7 +81,7 @@ describe 'A read IUK object' => sub {
                 my $iuk_filename = Path::Tiny->tempfile;
                 $tempdir->child('FORMAT')->spew("2");
                 $tempdir->child('control.yml')->spew("delete_files:\n");
-                systemx('mksquashfs', $tempdir, $iuk_filename, '-no-progress', '-noappend');
+                systemx('gensquashfs', '--quiet', '--force', '--pack-dir', $tempdir, $iuk_filename);
                 $iuk = Tails::IUK::Read->new_from_file($iuk_filename);
             };
             it 'should return an empty list' => $ENV{SKIP_SUDO} ? () : sub {
@@ -97,7 +97,7 @@ describe 'A read IUK object' => sub {
                 $tempdir->child('control.yml')->spew(
                     "delete_files:\n  - file1\n  - file2\n  - whatever.file\n  - file4\n"
                 );
-                systemx('mksquashfs', $tempdir, $iuk_filename, '-no-progress', '-noappend');
+                systemx('gensquashfs', '--quiet', '--force', '--pack-dir', $tempdir, $iuk_filename);
                 $iuk = Tails::IUK::Read->new_from_file($iuk_filename);
             };
             it 'should return a list that contains whatever.file' => $ENV{SKIP_SUDO} ? () : sub {

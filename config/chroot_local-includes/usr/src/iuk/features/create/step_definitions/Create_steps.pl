@@ -53,7 +53,7 @@ fun geniso($srcdir, $outfile) {
         my $squashfs_tempdir = Path::Tiny->tempdir;
         # an empty SquashFS is invalid
         path($squashfs_tempdir, '.placeholder')->touch;
-        capture("mksquashfs '$squashfs_tempdir' '$srcdir/live/filesystem.squashfs' -no-progress 2>/dev/null");
+        capture("gensquashfs --quiet --pack-dir '$squashfs_tempdir' '$srcdir/live/filesystem.squashfs' 2>/dev/null");
     }
     capture(EXIT_ANY,
             "genisoimage --quiet -J -l -cache-inodes -allow-multidot -o '$outfile' '$srcdir' 2>/dev/null");
@@ -174,7 +174,11 @@ Given qr{^(an old|a new) ISO image whose filesystem.squashfs( does not|) contain
         run_as_root('chown', $owner, path($squashfs_tempdir, $file)) if defined($owner);
     }
     path($iso_tempdir, 'live')->mkpath();
-    capture("mksquashfs '$squashfs_tempdir' '$iso_tempdir/live/filesystem.squashfs' -no-progress 2>/dev/null");
+    systemx(
+        'gensquashfs', '--quiet', '--keep-time',
+        '--pack-dir', $squashfs_tempdir,
+        $iso_tempdir->child('live/filesystem.squashfs')
+    );
     inject_new_bootloader_bits_into($iso_tempdir) if $generation eq 'new';
     ok(geniso($iso_tempdir, $iso_filename));
 };
@@ -245,7 +249,7 @@ When qr{^I create an IUK$}, fun ($c) {
 };
 
 Then qr{^the created IUK is a SquashFS image$}, fun ($c) {
-    system('unsquashfs -l ' . $c->{stash}->{scenario}->{iuk_path} . '>/dev/null 2>&1');
+    system('rdsquashfs --list / ' . $c->{stash}->{scenario}->{iuk_path} . '>/dev/null 2>&1');
     is(${^CHILD_ERROR_NATIVE}, 0, "The generated IUK is not a SquashFS image");
 };
 
@@ -259,15 +263,18 @@ fun squashfs_contains_only_files_owned_by ($squashfs_filename, $owner, $group) {
         $_,
         qr{
              \A            # at the beginning of the string
-             [-a-z]+       # permissions
+             (?:file|dir)  # file type
              [[:space:]]+
-             $owner        # owner
-             /
-             $group        # group
+             [^ ]+?        # path
              [[:space:]]+
+             [[:digit:]]+  # permissions
+             [[:space:]]+
+             $owner        # UID
+             [[:space:]]+
+             $group        # GID
          }xms,
         "line looks like a file description with owner $owner and group $group"
-    ) } split(/\n/, `unsquashfs -q -lln '$squashfs_filename'`);
+    ) } split(/\n/, `rdsquashfs --quiet --describe '$squashfs_filename'`);
 }
 
 Then qr{^all files in the saved IUK belong to owner 0 and group 0$}, fun ($c) {
@@ -331,9 +338,10 @@ fun squashfs_in_iuk_contains(:$iuk_in, :$squashfs_name, :$expected_file,
         # on overlayfs, deleted files are stored using character devices,
         # that one needs to be root to create
         'sudo',
-        "unsquashfs", '-no-progress',
+        'rdsquashfs', '--quiet', '--set-times',
+        '--unpack-root', $tempdir->child('squashfs-root'),
+        '--unpack-path', $expected_file,
         $iuk_in->mountpoint->child($squashfs_path),
-        $expected_file
     );
     my $exists = $EXITVAL == 0 ? 1 : 0;
     chdir $orig_cwd;
@@ -375,7 +383,8 @@ fun squashfs_in_iuk_deletes($iuk_in, $squashfs_name, $deleted_file) {
         # on overlayfs, deleted files are stored using character devices,
         # that one needs to be root to create
         'sudo',
-        "unsquashfs", '-no-progress', "-force", "-dest", $new_dir,
+        "rdsquashfs", '--quiet', "--unpack-root", $new_dir,
+        '--unpack-path', '.',
         $iuk_in->mountpoint->child($squashfs_path),
     );
     chdir $orig_cwd;
