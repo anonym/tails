@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-10-26 20:40+0000\n"
-"PO-Revision-Date: 2021-10-31 15:23+0000\n"
+"PO-Revision-Date: 2021-10-31 17:03+0000\n"
 "Last-Translator: gallium69 <gallium69@riseup.net>\n"
 "Language-Team: ita <transitails@inventati.org>\n"
 "Language: it\n"
@@ -111,19 +111,12 @@ msgstr ""
 "OpenPGP Keys</a> di <em>Riseup</em>.</p>\n"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "This verification technique uses the OpenPGP Web of Trust and the "
-#| "certification made by official Debian developers on the Tails signing "
-#| "key. [[Learn more about the OpenPGP Web of Trust|install/"
-#| "download#openpgp]]."
 msgid ""
 "This verification technique uses the OpenPGP Web of Trust and the "
 "certification made by official Debian developers on the Tails signing key."
 msgstr ""
 "Questa tecnica di verifica usa la Web of Trust OpenPGP e la certificazione "
-"fatta da sviluppatori Debian ufficiali sulla chiave di firma Tails. [[Impara "
-"di più sulla Web of Trust OpenPGP|install/download#openpgp]]."
+"fatta da sviluppatori Debian ufficiali sulla chiave di firma Tails."
 
 #. type: Bullet: '1. '
 msgid ""
@@ -151,10 +144,9 @@ msgstr ""
 "persone che sviluppano Debian:"
 
 #. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "       sudo apt install debian-keyring\n"
+#, no-wrap
 msgid "       sudo apt update && sudo apt install debian-keyring\n"
-msgstr "       sudo apt install debian-keyring\n"
+msgstr "       sudo apt update && sudo apt install debian-keyring\n"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -346,10 +338,7 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid "Execute the following command:"
-msgstr ""
-"<!-- This comment is here to confirm the existing translation and to prevent "
-"wrong suggestions from appearing on the staging website. -->\n"
-"Esegui il comando seguente:"
+msgstr "Esegui il comando seguente:"
 
 #. type: Plain text
 #, no-wrap
@@ -359,7 +348,9 @@ msgstr "   <p class=\"pre command\">ls -1 /dev/sd?</p>\n"
 #. type: Plain text
 #, no-wrap
 msgid "   It returns a list of the storage devices on the system. For example:\n"
-msgstr "   Restituisce un elenco dei dispositivi di archiviazione sul sistema. Per esempio:\n"
+msgstr ""
+"   Il comando restituisce una lista dei dispositivi di archiviazione "
+"presenti sul sistema. Per esempio:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -368,7 +359,7 @@ msgstr "   <p class=\"pre command-output\">/dev/sda</p>\n"
 
 #. type: Bullet: '1. '
 msgid "Plug in the USB stick on which you want to install Tails."
-msgstr "Inserite la chiavetta USB sulla quale volete installare Tails."
+msgstr "Inserisci la chiavetta USB sulla quale vuoi installare Tails."
 
 #. type: Plain text
 #, no-wrap
@@ -377,12 +368,12 @@ msgstr "   <div class=\"caution\"><p>Tutti i dati su questa chiavetta USB verran
 
 #. type: Bullet: '1. '
 msgid "Execute again the same command:"
-msgstr "Eseguite nuovamente lo stesso comando:"
+msgstr "Esegui di nuovo lo stesso comando:"
 
 #. type: Plain text
 #, no-wrap
 msgid "   Your USB stick appears as a new device in the list.\n"
-msgstr "   La vostra chiavetta USB apparirà come un nuovo dispositivo nella lista.\n"
+msgstr "   La tua chiavetta USB appare come un nuovo dispositivo nella lista.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -395,7 +386,7 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid "Take note of the *device name* of your USB stick."
-msgstr "Prendete nota del *nome dispositivo* della vostra chiavetta USB."
+msgstr "Prendi nota del *nome di dispositivo* della tua chiavetta USB."
 
 #. type: Plain text
 #, no-wrap
@@ -403,8 +394,9 @@ msgid ""
 "   In this example, the device name of the USB stick is\n"
 "   <span class=\"code\">/dev/sdb</span>. Yours might be different.\n"
 msgstr ""
-"   In questo esempio, il nome dispositivo della chiavetta USB è\n"
-"   <span class=\"code\">/dev/sdb</span>. Il vostro potrebbe essere differente.\n"
+"   In questo esempio, il nome di dispositivo della chiavetta USB è\n"
+"   <span class=\"code\">/dev/sdb</span>. Quello della tua chiavetta potrebbe "
+"essere differente.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -415,8 +407,10 @@ msgid ""
 "   </div>\n"
 msgstr ""
 "   <div class=\"caution\">\n"
-"   <p>Se non siete sicuri del nome del dispositivo dovreste smettere la procedura oppure\n"
-"   <strong>rischiate di sovrascrivere qualunque disco rigido sul sistema</strong>.</p>\n"
+"   <p>Se non sei sicura del nome di dispositivo, dovresti interrompere la "
+"procedura o\n"
+"   <strong>rischi di sovrascrivere qualsiasi disco fisso del "
+"sistema</strong>.</p>\n"
 "   </div>\n"
 
 #. type: Bullet: '1. '
@@ -424,46 +418,49 @@ msgid ""
 "Execute the following commands to copy the USB image that you downloaded "
 "earlier to the USB stick."
 msgstr ""
-"Eseguite i seguenti comandi per copiare l'immagine USB scaricata "
-"precedentemente sulla chiavetta USB."
+"Esegui i comandi seguenti per copiare sulla chiavetta USB l'immagine USB che "
+"hai scaricato in precedenza."
 
 #. type: Plain text
 #, no-wrap
 msgid "   Replace:\n"
-msgstr "   Sostituire:\n"
+msgstr "   Sostituisci:\n"
 
 #. type: Bullet: '   - '
 msgid ""
 "<span class=\"command-placeholder\">tails.img</span> with the path to the "
 "USB image"
 msgstr ""
-"<span class=\"command-placeholder\">tails.img</span> con il path "
-"all'immagine USB"
+"<span class=\"command-placeholder\">tails.img</span> con il percorso "
+"dell'immagine USB"
 
 #. type: Bullet: '   - '
 msgid ""
 "<span class=\"command-placeholder\">device</span> with the device name found "
 "in step 5"
 msgstr ""
-"<span class=\"command-placeholder\">dispositivo</span> con il nome del "
-"dispositivo trovato nello step 5"
+"<span class=\"command-placeholder\">dispositivo</span> con il nome di "
+"dispositivo trovato al passaggio 5"
 
 #. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "   <p class=\"pre command\">dd if=<span class=\"command-placeholder\">tails.img</span> of=<span class=\"command-placeholder\">device</span> bs=16M && sync</p>\n"
+#, no-wrap
 msgid "   <p class=\"pre command\">dd if=<span class=\"command-placeholder\">tails.img</span> of=<span class=\"command-placeholder\">device</span> bs=16M oflag=direct status=progress</p>\n"
-msgstr "   <p class=\"pre command\">dd if=<span class=\"command-placeholder\">tails.img</span> of=<span class=\"command-placeholder\">device</span> bs=16M && sync</p>\n"
+msgstr ""
+"   <p class=\"pre command\">dd if=<span class=\"command-placeholder\""
+">tails.img</span> of=<span class=\"command-placeholder\">dispositivo</span> "
+"bs=16M oflag=direct status=progress</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "   You should get something like this:\n"
-msgstr "   Dovreste ottenere qualcosa del genere:\n"
+msgstr "   Dovresti ottenere qualcosa del genere:\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "   <p class=\"pre command-example\">dd if=/home/user/tails-amd64-3.12.img of=/dev/sdb bs=16M && sync</p>\n"
+#, no-wrap
 msgid "   <p class=\"pre command-example\">dd if=/home/user/tails-amd64-3.12.img of=/dev/sdb bs=16M oflag=direct status=progress</p>\n"
-msgstr "   <p class=\"pre command-example\">dd if=/home/user/tails-amd64-3.12.img of=/dev/sdb bs=16M && sync</p>\n"
+msgstr ""
+"   <p class=\"pre command-example\">dd if=/home/user/tails-amd64-3.12.img "
+"of=/dev/sdb bs=16M oflag=direct status=progress</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -471,8 +468,9 @@ msgid ""
 "   If no error message is returned, Tails is being copied on the USB\n"
 "   stick. The copy takes some time, generally a few minutes.\n"
 msgstr ""
-"   Se non compaiono messaggi di errore, Tails è stato copiato sulla chiavetta\n"
-"USB. La copia richiede tempo, solitamente alcuni minuti.\n"
+"   Se non vengono restituiti messaggi d'errore, è in corso la copia di Tails "
+"sulla chiavetta\n"
+"   USB. La copia richiede un po' di tempo, in genere alcuni minuti.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -482,21 +480,25 @@ msgid ""
 "   adding <code>sudo</code> at the beginning of the command:</p>\n"
 msgstr ""
 "   <div class=\"note\">\n"
-"<p>Se ottenete un errore di <span class=\"guilabel\">Permesso negato</span> , provate\n"
-"ad aggiungere <code>sudo</code> all'inizio del comando:</p>\n"
+"   <p>Se ottieni un errore <span class=\"guilabel\">Permission denied</span>"
+", prova\n"
+"   ad aggiungere <code>sudo</code> all'inizio del comando:</p>\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "   <p class=\"pre command\">dd if=<span class=\"command-placeholder\">tails.img</span> of=<span class=\"command-placeholder\">device</span> bs=16M && sync</p>\n"
+#, no-wrap
 msgid ""
 "   <p class=\"pre command\">sudo dd if=<span class=\"command-placeholder\">tails.img</span> of=<span class=\"command-placeholder\">device</span> bs=16M oflag=direct status=progress</p>\n"
 "   </div>\n"
-msgstr "   <p class=\"pre command\">dd if=<span class=\"command-placeholder\">tails.img</span> of=<span class=\"command-placeholder\">device</span> bs=16M && sync</p>\n"
+msgstr ""
+"   <p class=\"pre command\">sudo dd if=<span class=\"command-placeholder\""
+">tails.img</span> of=<span class=\"command-placeholder\">dispositivo</span> "
+"bs=16M oflag=direct status=progress</p>\n"
+"   </div>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "   The installation is complete after the command prompt reappears.\n"
-msgstr "   L'installazione viene completata con la ricomparsa del prompt dei comandi.\n"
+msgstr "   L'installazione è completa quando ricompare il prompt dei comandi.\n"
 
 #. type: Plain text
 #, no-wrap
