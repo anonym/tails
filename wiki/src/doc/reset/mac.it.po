@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2020-04-12 16:10+0200\n"
 "PO-Revision-Date: 2021-10-31 21:03+0000\n"
-"Last-Translator: _ignifugo <ignifugo@insicuri.net>\n"
+"Last-Translator: gallium69 <gallium69@riseup.net>\n"
 "Language-Team: ita <transitails@inventati.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -184,7 +184,7 @@ msgstr "Esegui il comando seguente:"
 #. type: Plain text
 #, no-wrap
 msgid "       diskutil list\n"
-msgstr ""
+msgstr "       diskutil list\n"
 
 #. type: Plain text
 #, no-wrap
@@ -205,10 +205,18 @@ msgid ""
 "         3:                      EFI              134.1 GB  disk0s3\n"
 "         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
 msgstr ""
+"       $ diskutil list\n"
+"       /dev/disk0\n"
+"         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
+"         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
+"         1:                      EFI              209.7 MB  disk0s1\n"
+"         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
+"         3:                      EFI              134.1 GB  disk0s3\n"
+"         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
 
 #. type: Bullet: '1. '
 msgid "Plug the USB stick in the computer."
-msgstr ""
+msgstr "Inserisci la chiavetta USB nel computer."
 
 #. type: Bullet: '1. '
 msgid "Execute again the same command:"
@@ -240,6 +248,18 @@ msgid ""
 "         0:   FDisk_partition_scheme             *8.0 GB    disk1\n"
 "         1:                Apple_HFS Untitled 1   8.0 GB    disk1s1\n"
 msgstr ""
+"       $ diskutil list\n"
+"       /dev/disk0\n"
+"         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
+"         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
+"         1:                      EFI              209.7 MB  disk0s1\n"
+"         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
+"         3:                      EFI              134.1 GB  disk0s3\n"
+"         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
+"       /dev/disk1\n"
+"         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
+"         0:   FDisk_partition_scheme             *8.0 GB    disk1\n"
+"         1:                Apple_HFS Untitled 1   8.0 GB    disk1s1\n"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -272,25 +292,33 @@ msgid ""
 "Execute the following command to safely remove the USB stick. Replace <span "
 "class=\"code\">[device]</span> with the device name found in step 6."
 msgstr ""
+"Esegui il comando seguente per rimuovere in modo sicuro la chiavetta USB. "
+"Sostituisci <span class=\"code\">[dispositivo]</span> con il nome di "
+"dispositivo trovato al passaggio 6."
 
 #. type: Plain text
 #, no-wrap
 msgid "       diskutil unmountDisk [device]\n"
-msgstr ""
+msgstr "       diskutil unmountDisk [dispositivo]\n"
 
 #. type: Bullet: '2. '
 msgid ""
 "Execute the following command to format the USB stick. Replace <span class="
 "\"code\">[device]</span> with the device name found in step 6."
 msgstr ""
+"Esegui il comando seguente per formattare la chiavetta USB. Sostituisci <"
+"span class=\"code\">[dispositivo]</span> con il nome di dispositivo trovato "
+"al passaggio 6."
 
 #. type: Plain text
 #, no-wrap
 msgid "       sudo fdisk -iy [device]\n"
-msgstr ""
+msgstr "       sudo fdisk -iy [dispositivo]\n"
 
 #. type: Bullet: '1. '
 msgid ""
 "You can try to reset the USB stick again using <span class=\"application"
 "\">Disk Utility</span> from the beginning of this page."
 msgstr ""
+"Puoi provare di nuovo a inizializzare la chiavetta USB con l'<span class=\""
+"application\">Utilità disco</span> tornando all'inizio di questa pagina."
