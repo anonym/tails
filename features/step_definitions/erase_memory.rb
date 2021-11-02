@@ -2,11 +2,9 @@ def udev_watchdog_monitored_device
   ps_output = $vm.execute_successfully('ps -wweo cmd').stdout
   udev_watchdog_cmd = '/usr/local/sbin/udev-watchdog'
 
-  # rubocop:disable Layout/LineLength
   # The regex below looks for a line like the following:
   # /usr/local/sbin/udev-watchdog /devices/pci0000:00/0000:00:01.1/ata2/host1/target1:0:0/1:0:0:0/block/sr0 cd
   # We're only interested in the device itself, not in the type
-  # rubocop:enable Layout/LineLength
   ps_output_scan = ps_output.scan(
     /^#{Regexp.escape(udev_watchdog_cmd)}\s(\S+)\s(?:cd|disk)$/
   )

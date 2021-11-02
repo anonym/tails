@@ -112,9 +112,10 @@ Then /^the support documentation page opens in Tor Browser$/ do
   end
   step "\"#{expected_title}\" has loaded in the Tor Browser"
   browser_name = $language == 'German' ? 'Tor-Browser' : 'Tor Browser'
+  separator = $language == 'German' ? '-' : '—'
   try_for(60) do
     @torbrowser
-      .child(expected_title + " - #{browser_name}", roleName: 'frame')
+      .child("#{expected_title} #{separator} #{browser_name}", roleName: 'frame')
       .children(roleName: 'heading')
       .any? { |heading| heading.text == expected_heading }
   end
@@ -186,7 +187,7 @@ Then /^Tor is (not )?confined with Seccomp$/ do |not_confined|
   # "Sandbox 0", but let's still make sure that is the case.
   seccomp_status = get_seccomp_status('tor')
   assert_equal(2, seccomp_status,
-               "Tor is not confined with Seccomp in filter mode")
+               'Tor is not confined with Seccomp in filter mode')
 end
 
 Then /^the running process "(.+)" is confined with AppArmor in (complain|enforce) mode$/ do |process, mode|

@@ -39,7 +39,7 @@ Then /^if releasing, no unversioned Tails APT source is enabled$/ do
     puts 'Not on a tag ⇒ skipping this step'
     next
   end
-  assert_no_match(/umjqavufhoix3smyq6az2sx4istmuvsgmz4bq5u5x56rnayejoo6l2qd[.]onion\/?\s+(stable|testing|devel)\s/,
+  assert_no_match(%r{umjqavufhoix3smyq6az2sx4istmuvsgmz4bq5u5x56rnayejoo6l2qd[.]onion\/?\s+(stable|testing|devel)\s},
                   apt_sources)
 end
 

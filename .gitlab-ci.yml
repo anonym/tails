@@ -71,14 +71,15 @@ test-iuk:
        libmodule-build-perl
        sudo
        attr
-       bsdtar
+       libarchive-tools
        libdevice-cdio-perl
        faketime
        genisoimage
        gnutls-bin
        libdata-dumper-concise-perl
        libdatetime-perl
-       libfile-copy-recursive-perl'
+       libfile-copy-recursive-perl
+       libtest-lwp-useragent-perl'
   - apt-get update -qq # Take into account APT configuration added by apt-file
   # Otherwise, apt-get called by "dzil authordebs --install" asks confirmation
   - echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/yes
