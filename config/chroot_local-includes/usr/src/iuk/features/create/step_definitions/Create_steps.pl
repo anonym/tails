@@ -266,7 +266,7 @@ fun squashfs_contains_only_files_owned_by ($squashfs_filename, $owner, $group) {
              \A            # at the beginning of the string
              (?:file|dir)  # file type
              [[:space:]]+
-             [^ ]+?        # path
+             .+?           # path
              [[:space:]]+
              [[:digit:]]+  # permissions
              [[:space:]]+
