@@ -1,3 +1,4 @@
+# coding: utf-8
 # Returns a hash that for each persistence preset the running Tails is aware of,
 # for each of the corresponding configuration lines,
 # maps the source to the destination.
@@ -174,6 +175,11 @@ Then /^(no|the "([^"]+)") USB drive is selected$/ do |mode, name|
   end
 end
 
+def persistence_exists?(name)
+  data_part_dev = $vm.disk_dev(name) + '2'
+  $vm.execute("test -b #{data_part_dev}").success?
+end
+
 When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by cloning$/ do |action, name|
   step 'I start Tails Installer'
   # If the device was plugged *just* before this step, it might not be
@@ -186,9 +192,15 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
               action.capitalize
             end
     @installer.button(label).click
-    confirmation_label = action == 'upgrade' ? 'Upgrade' : 'Install'
-    @installer.child('Question',
-                     roleName: 'alert').button(confirmation_label).click
+   unless action ==  'upgrade'
+     confirmation_label = if persistence_exists?(name)
+                            'Delete Persistent Storage and Reinstall'
+                          else
+                            'Delete All Data and Install'
+                          end
+     @installer.child('Question',
+                      roleName: 'alert').button(confirmation_label).click
+    end
     try_for(15 * 60, delay: 10) do
       @installer
         .child('Information', roleName: 'alert')
