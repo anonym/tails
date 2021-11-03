@@ -4,6 +4,7 @@ import argparse
 import os
 import logging
 from contextlib import contextmanager
+from pathlib import Path
 import tempfile
 import time
 import subprocess
@@ -293,6 +294,16 @@ class ImageCreator(object):
                 '--directory', '/syslinux/',
                 '--install', self.image
             ])
+        # Detect a class of syslinux installation failure in which syslinux
+        # returns a 0 exit code (#18664)
+        with set_env("MTOOLS_SKIP_CHECK", "1"):
+            try:
+                execute(['mdir',
+                         '-i', self.partition.props.block.props.device,
+                         '-a',
+                         '::syslinux/ldlinux.sys'])
+            except subprocess.CalledProcessError:
+                raise ImageCreationError("syslinux installation failed")
 
     def set_guids(self):
         logger.info("Setting disk and partition GUID")
