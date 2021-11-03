@@ -63,6 +63,7 @@ Then /^the Unsafe Browser has only Firefox's default bookmarks configured$/ do
   # "Show all bookmarks"
   @screen.press('shift', 'ctrl', 'o')
   @screen.wait('UnsafeBrowserExportBookmarksButton.png', 20).click
+  @screen.wait('UnsafeBrowserExportBookmarksButtonSelected.png', 20)
   @screen.wait('UnsafeBrowserExportBookmarksMenuEntry.png', 20).click
   @screen.wait('UnsafeBrowserExportBookmarksSavePrompt.png', 20)
   path = "/home/#{info[:user]}/bookmarks"
