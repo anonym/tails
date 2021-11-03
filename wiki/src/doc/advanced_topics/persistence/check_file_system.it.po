@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2020-09-25 10:43+0000\n"
 "PO-Revision-Date: 2021-11-03 19:44+0000\n"
-"Last-Translator: la_r_go* <largo@tracciabi.li>\n"
+"Last-Translator: gallium69 <gallium69@riseup.net>\n"
 "Language-Team: ita <transitails@inventati.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -58,17 +58,28 @@ msgid ""
 "   </span>\n"
 "   to open <span class=\"application\">GNOME Disks</span>.\n"
 msgstr ""
+"1. Seleziona\n"
+"   <span class=\"menuchoice\">\n"
+"     <span class=\"guimenu\">Applicazioni</span>&nbsp;▸\n"
+"     <span class=\"guisubmenu\">Utilità</span>&nbsp;▸\n"
+"     <span class=\"guimenuitem\">Dischi</span>\n"
+"   </span>\n"
+"   per aprire l'utilità <span class=\"application\">Dischi di GNOME</span>.\n"
 
 #. type: Bullet: '1. '
 msgid ""
 "In the left pane, click on the device corresponding to your Tails USB stick."
 msgstr ""
+"Nel pannello sinistro, fai clic sul dispositivo corrispondente alla tua "
+"chiavetta USB Tails."
 
 #. type: Bullet: '1. '
 msgid ""
 "In the right pane, click on the partition labeled as <span class=\"guilabel"
 "\">TailsData LUKS</span>."
 msgstr ""
+"Nel pannello destro, fai clic sulla partizione etichettata come <span class="
+"\"guilabel\">TailsData LUKS</span>."
 
 #. type: Bullet: '1. '
 msgid ""
@@ -84,13 +95,15 @@ msgid ""
 "<span class=\"guilabel\">Authenticate</span>."
 msgstr ""
 "Nella finestra di conferma, inserisci la tua password di amministrazione e "
-"fai click su <span class=\"guilabel\">Autentica</span>."
+"fai clic su <span class=\"guilabel\">Autentica</span>."
 
 #. type: Bullet: '1. '
 msgid ""
 "Click on the <span class=\"guilabel\">TailsData Ext4</span> partition that "
 "appears below the <span class=\"guilabel\">TailsData LUKS</span> partition."
 msgstr ""
+"Fai clic sulla partizione <span class=\"guilabel\">TailsData Ext4</span> che "
+"appare sotto la partizione <span class=\"guilabel\">TailsData LUKS</span>."
 
 #. type: Bullet: '1. '
 msgid ""
@@ -126,17 +139,26 @@ msgid ""
 "      <span class=\"guimenuitem\">Root Terminal</span></span>\n"
 "   and enter your administration password to open a root terminal.\n"
 msgstr ""
+"1. Seleziona\n"
+"    <span class=\"menuchoice\">\n"
+"      <span class=\"guimenu\">Applicazioni</span>&nbsp;▸\n"
+"      <span class=\"guisubmenu\">Strumenti di sistema</span>&nbsp;▸\n"
+"      <span class=\"guimenuitem\">Terminale Root</span></span>\n"
+"   e inserisci la tua password di amministrazione per aprire un terminale "
+"amministrativo.\n"
 
 #. type: Bullet: '1. '
 msgid ""
 "In the terminal, execute the following command, replacing `[device]` with "
 "the device name found in step 8:"
 msgstr ""
+"Nel terminale, esegui il comando seguente, sostituendo `[dispositivo]` con "
+"il nome di dispositivo trovato al passaggio 8:"
 
 #. type: Plain text
 #, no-wrap
 msgid "        fsck -y [device]\n"
-msgstr "        fsck -y [device]\n"
+msgstr "        fsck -y [dispositivo]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -145,6 +167,11 @@ msgid ""
 "   <span class=\"keycap\">Shift+Ctrl+V</span> to paste the device name from the\n"
 "   clipboard.\n"
 msgstr ""
+"   Per farlo, puoi digitare <span class=\"command\">fsck -y&nbsp;</span> e "
+"premere\n"
+"   <span class=\"keycap\">Shift+Ctrl+V</span> per incollare il nome di "
+"dispositivo dagli\n"
+"   appunti.\n"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -152,6 +179,9 @@ msgid ""
 "class=\"command\">fsck</span> starts with <span class=\"command\">TailsData: "
 "clean</span>."
 msgstr ""
+"Se il file system è privo di errori, l'ultima riga dell'output di <span "
+"class=\"command\">fsck</span> comincia con <span class=\"command\">TailsData:"
+" clean</span>."
 
 #. type: Plain text
 #, no-wrap
@@ -160,3 +190,9 @@ msgid ""
 "   fix them automatically. After it finishes, you can try executing the same\n"
 "   command again to check if all errors are solved.\n"
 msgstr ""
+"   Se il file system contiene errori, <span class=\"command\">fsck</span> "
+"tenta di\n"
+"   correggerli automaticamente. Dopo che ha terminato, puoi provare a "
+"eseguire di nuovo\n"
+"   lo stesso comando per controllare se tutti gli errori sono stati corretti."
+"\n"
