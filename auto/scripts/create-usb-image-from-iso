@@ -105,7 +105,6 @@ class ImageCreator(object):
             self.create_gpt()
             self.create_partition()
             self.set_partition_flags()
-            # XXX: Rescan?
             self.format_partition()
             with self.mount_iso():
                 self.extract_iso()
@@ -198,7 +197,7 @@ class ImageCreator(object):
             arg_name=PARTITION_LABEL,
             arg_options=GLib.Variant('a{sv}', None)
         )
-        # XXX: Tails Installer ignores GLib errors here
+        # Note: Tails Installer ignores GLib errors here
 
         logger.info("Partition: %r", partition)
         self._partition = partition
