@@ -207,6 +207,9 @@ steps:
     tag: rootfs
 
   # <Work around Debian#951257>
+  # XXX:bookworm: remove this workaround, because this was worked around upstream
+  # in udisks2 2.9.4-1:
+  # https://salsa.debian.org/utopia-team/udisks2/-/commit/050527c84bed6bc6c90d46d3eb612c48baf92e7d)
   - chroot: rootfs
     shell: mv /bin/udevadm /bin/udevadm.orig
 
