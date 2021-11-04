@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-10-26 20:40+0000\n"
-"PO-Revision-Date: 2020-11-10 15:43+0000\n"
+"PO-Revision-Date: 2021-11-01 14:48+0000\n"
 "Last-Translator: drebs <drebs@riseup.net>\n"
 "Language-Team: Portuguese <http://translate.tails.boum.org/projects/tails/"
 "install-expert-usb/pt/>\n"
@@ -46,12 +46,12 @@ msgstr ""
 
 #. type: Plain text
 msgid "Start in Debian, Ubuntu, or Linux Mint."
-msgstr ""
+msgstr "Comece a partir de um Debian, Ubutu, ou Linux Mint."
 
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"verify-key\">Verify the Tails signing key</h1>\n"
-msgstr ""
+msgstr "<h1 id=\"verify-key\">Verifique a chave de assinatura do Tails</h1>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -65,6 +65,10 @@ msgid ""
 "can skip this step and start [[downloading and verifying the USB\n"
 "image|usb#download]].</p>\n"
 msgstr ""
+"<p>Se você já tiver certificado as chaves de assinatura do Tails com sua "
+"própria chave,\n"
+"você pode pular este passo e começar a [[baixar e verificar a imagem\n"
+"USB|usb#download]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -76,6 +80,9 @@ msgid ""
 "In this step, you will download and verify the *Tails signing key* which is "
 "the OpenPGP key that is used to cryptographically sign the Tails USB image."
 msgstr ""
+"Neste passo, você irá baixar e verificar a *chave de assinatura do Tails*, "
+"que é a chave OpenPGP usada para assinar criptograficamente a imagem USB do "
+"Tails."
 
 #. type: Plain text
 #, no-wrap
@@ -88,6 +95,8 @@ msgid ""
 "<p>To follow these instructions you need to have your own OpenPGP\n"
 "key.</p>\n"
 msgstr ""
+"<p>Para seguir estas instruções você precisa ter sua própria chave "
+"OpenPGP</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -96,18 +105,26 @@ msgid ""
 "<a href=\"https://riseup.net/en/security/message-security/openpgp/gpg-keys\">Managing\n"
 "OpenPGP Keys</a> by <em>Riseup</em>.</p>\n"
 msgstr ""
+"<p>Para aprender como criar uma chave OpenPGP você mesmo, veja\n"
+"<a href=\"https://riseup.net/en/security/message-security/openpgp/gpg-keys\">"
+"Administrando\n"
+"chaves OpenPGP</a> por <em>Riseup</em> (em inglês).</p>\n"
 
 #. type: Plain text
 msgid ""
 "This verification technique uses the OpenPGP Web of Trust and the "
 "certification made by official Debian developers on the Tails signing key."
 msgstr ""
+"Esta técnica de verificação usa a Rede de Confiança OpenPGP e a certificação "
+"feita na chave de assinatura do Tails por desenvolvedores oficiais do Debian."
 
 #. type: Bullet: '1. '
 msgid ""
 "Import the Tails signing key in your <span class=\"application\">GnuPG</"
 "span> keyring:"
 msgstr ""
+"Importe a chave de assinatura do Tails para o seu chaveiro <span class=\""
+"application\">GnuPG</span>:"
 
 #. type: Plain text
 #, no-wrap
@@ -121,12 +138,13 @@ msgid ""
 "Install the Debian keyring. It contains the OpenPGP keys of all Debian "
 "developers:"
 msgstr ""
+"Instale o chaveiro do Debian. Ele contem as chaves OpenPGP de todos os "
+"desenvolvedores do Debian:"
 
 #. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "       sudo apt install debian-keyring\n"
+#, no-wrap
 msgid "       sudo apt update && sudo apt install debian-keyring\n"
-msgstr "       sudo apt install debian-keyring\n"
+msgstr "       sudo apt update && sudo apt install debian-keyring\n"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -134,6 +152,9 @@ msgid ""
 "\"Chris Lamb\"]], a former Debian Project Leader, from the Debian keyring "
 "into your keyring:"
 msgstr ""
+"Importe a chave OpenPGP de [[!wikipedia Chris_Lamb_(software_developer) desc="
+"\"Chris Lamb\"]], um ex-líder do projeto Debian, do chaveiro do Debian para "
+"o seu chaveiro:"
 
 #. type: Plain text
 #, no-wrap
@@ -142,7 +163,7 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid "Verify the certifications made on the Tails signing key:"
-msgstr ""
+msgstr "Verifique as certificações feitas na chave de assinatura do Tails:"
 
 #. type: Plain text
 #, no-wrap
@@ -152,7 +173,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   In the output of this command, look for the following line:\n"
-msgstr ""
+msgstr "   Na saída desse comando, procure pela seguinte linha:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -165,6 +186,9 @@ msgid ""
 "   Here, <code>sig!</code>, with an exclamation mark, means that Chris\n"
 "   Lamb verified and certified the Tails signing key with his key.\n"
 msgstr ""
+"   Aqui, <code>sig!</code>, com um ponto de exclamação, significa que Chris\n"
+"   Lamb verificou e certificou a chave de assinatura do Tails com sua chave."
+"\n"
 
 #. type: Plain text
 #, no-wrap
@@ -173,6 +197,9 @@ msgid ""
 "   people. Their name and email address appear in the list of\n"
 "   certification if you have their key in your keyring.\n"
 msgstr ""
+"   Também é possível verificar as certificações feitas por outras\n"
+"   pessoas. Os nomes e endereços de email delas aparecerão na lista de \n"
+"   certificações caso você possua as chaves delas em seu chaveiro.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -184,6 +211,12 @@ msgid ""
 "   Please [[get in touch with us|support/talk]].</p>\n"
 "   </div>\n"
 msgstr ""
+"   <div class=\"caution\">\n"
+"   <p>Se a verificação da certificação falhar, é possível que você\n"
+"   tenha baixado uma versão maliciosa da chave de assinatura do Tails, ou\n"
+"  então pode ser que nossas instruções estejam desatualizadas.\n"
+"   Por favor, [[entre em contato conosco|support/talk]].</p>\n"
+"   </div>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -194,10 +227,17 @@ msgid ""
 "   keys that are not in your keyring. This is not a problem.</p>\n"
 "   </div>\n"
 msgstr ""
+"   <div class=\"tip\">\n"
+"   <p>A linha `175 signatures not checked due to missing keys` ou similar\n"
+"   se refere às certificações (também chamadas de *assinaturas*) feitas por "
+"outras\n"
+"   chaves públicas que não estão em seu chaveiro. Isso não é um problema.</p>"
+"\n"
+"   </div>\n"
 
 #. type: Bullet: '1. '
 msgid "Certify the Tails signing key with your own key:"
-msgstr ""
+msgstr "Certifique a chave de assinatura do Tails com sua própria chave:"
 
 #. type: Plain text
 #, no-wrap
@@ -212,7 +252,7 @@ msgstr "<a id=\"download\"></a>\n"
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"download-verify\">Download and verify the USB image</h1>\n"
-msgstr ""
+msgstr "<h1 id=\"download-verify\">Baixe e verifique a imagem USB</h1>\n"
 
 #. type: Plain text
 msgid ""
