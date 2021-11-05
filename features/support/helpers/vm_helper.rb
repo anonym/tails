@@ -326,14 +326,12 @@ class VM
 
   def disk_xml_desc(name)
     domain_xml.elements.each('domain/devices/disk') do |e|
-      begin
-        if e.elements['source'].attribute('file').to_s \
-           == @storage.disk_path(name)
-          return e.to_s
-        end
-      rescue StandardError
-        next
+      if e.elements['source'].attribute('file').to_s \
+         == @storage.disk_path(name)
+        return e.to_s
       end
+    rescue StandardError
+      next
     end
     nil
   end
@@ -484,7 +482,7 @@ class VM
       execute_successfully("echo '#{msg}'").stdout.chomp == msg
     end
   rescue StandardError
-    debug_log("The remote shell failed to respond within 3 seconds")
+    debug_log('The remote shell failed to respond within 3 seconds')
     false
   end
 
