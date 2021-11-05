@@ -4,9 +4,9 @@ set -e
 set -u
 set -x
 
-for dir in chroot/{dev/pts,proc,sys,var/lib/dpkg} ; do
-   if mountpoint -q "$dir" ; then
-      umount "$dir"
+for dir in dev/pts proc sys var/lib/dpkg ; do
+   if mountpoint -q "chroot/$dir" ; then
+      umount "chroot/$dir"
    fi
 done
 
