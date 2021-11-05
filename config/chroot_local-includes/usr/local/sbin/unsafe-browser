@@ -49,20 +49,15 @@ $(gettext "The Unsafe Browser is not anonymous and the websites that you visit c
 verify_is_enabled () {
     # Check if the Unsafe Browser was disabled in the startup options
     if ! unsafe_browser_is_enabled; then
-	local msg restart close doc_file
-	doc_file="'file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#index3h1'"
-
+	local msg restart close
+	msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
+To <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#using'>use the Unsafe Browser</a>, restart Tails and enable \
+the Unsafe Browser in the additional settings of the Welcome Screen.")"
 	# Only mention the Persistent Storage if there is one (see #18551)
 	if persistence_is_enabled; then
-	    msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
-To <a href=${doc_file}>use the Unsafe Browser</a>, restart Tails and enable \
-the Unsafe Browser in the additional settings of the Welcome Screen.\n
-To always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
-	else
-	    msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
-To <a href=${doc_file}>use the Unsafe Browser</a>, restart Tails and enable \
-the Unsafe Browser in the additional settings of the Welcome Screen.")"
+	    msg="${msg}""$(gettext "\n\nTo always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
 	fi
+
 	restart="$(gettext "_Restart")"
 	close="$(gettext "_Close")"
 	if  sudo -u "${SUDO_USER}" \
