@@ -73,9 +73,7 @@
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="margin_bottom">18</property>
-                <property name="label" translatable="yes">To prevent network attacks, your time zone and clock need to be correct to connect to Tor using bridges.
-
-Your time zone and clock cannot be used to identify or geolocalize you. Your time zone will never be sent over the network and will only be used to fix your clock and connect to Tor.</property>
+                <property name="label" translatable="yes">Your time zone cannot be used to identify or locate you. Your time zone will never be sent over the network and will only be used to fix your clock and connect to Tor.</property>
                 <property name="wrap">True</property>
                 <property name="width_chars">0</property>
                 <property name="max_width_chars">80</property>
@@ -110,12 +108,22 @@ Your time zone and clock cannot be used to identify or geolocalize you. Your tim
                         <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
-                          <object class="GtkComboBox" id="select_tz">
-                            <property name="name">select_tz</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Select the time zone you want to use</property>
-                            <property name="id_column">0</property>
+                          <object class="GtkListBox" id="listbox_tz">
+                            <property name="name">listbox_tz</property>
+                            <property name="selection-mode">none</property>
+                            <signal name="row-activated" handler="cb_listbox_tz_clicked" swapped="no"/>
+                            <child>
+                                <object class="GtkListBoxRow" id="listboxrow_tz">
+                                    <child>
+                                        <object class="GtkLabel" id="listbox_tz_label_value">
+                                            <property name="xalign">0</property>
+                                            <property name="halign">start</property>
+                                            <property name="margin">8</property>
+                                            <property name="label" translatable="no">UTC (Greenwich time)</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -378,6 +386,56 @@ Your time zone and clock cannot be used to identify or geolocalize you. Your tim
           </packing>
         </child>
       </object>
+    </child>
+  </object>
+  <object class="GtkBox" id="box_tz_popover">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_left">12</property>
+    <property name="margin_right">12</property>
+    <property name="margin_top">12</property>
+    <property name="margin_bottom">12</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
+    <child>
+      <object class="GtkSearchEntry" id="searchentry_tz">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="primary_icon_name">edit-find-symbolic</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">False</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow" id="scrolledwindow_tz">
+        <property name="width_request">400</property>
+        <property name="height_request">200</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="hscrollbar_policy">never</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkTreeView" id="treeview_tz">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="headers_visible">False</property>
+            <property name="activate_on_single_click">True</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="treeview-selection_tz"/>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
     </child>
   </object>
 </interface>

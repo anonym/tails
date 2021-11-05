@@ -545,12 +545,8 @@ class TorLauncherNetworkUtils:
         It does NOT care if we're really connected to the Internet
         """
 
-        # XXX: does it do the right thing? we should check!
-        try:
-            subprocess.check_call(["nm-online", "-xq"])
-            return True
-        except subprocess.CalledProcessError:
-            return False
+        # nm-online -xq could be what we need
+        raise NotImplementedError()
 
     def is_internet_up(self):
         """

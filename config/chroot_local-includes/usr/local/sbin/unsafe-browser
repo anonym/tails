@@ -36,7 +36,7 @@ verify_start () {
     local dialog_msg launch exit
     dialog_msg="<b><big>$(gettext "Launch the Unsafe Browser?")</big></b>
 
-$(gettext "The Unsafe Browser is not anonymous and the websites that you visit can see your real IP address.\n\nOnly use the Unsafe Browser to sign in to a network using a captive portal or browse trusted web pages on the local network.")"
+$(gettext "The Unsafe Browser is not anonymous and the websites that you visit can see your real IP address.\n\nOnly use the Unsafe Browser to sign in to a network using a captive portal.")"
     launch="$(gettext "_Launch")"
     exit="$(gettext "_Exit")"
     if ! sudo -u "${SUDO_USER}" \
@@ -115,6 +115,11 @@ if grep --quiet "^nameserver\s" /etc/resolv-over-clearnet.conf; then
 else
     error "$(gettext "You are not connected to a local network yet.\n\nTo be able to start the Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile network.")"
 fi
+
+# Disable some Firefox "phone home" features
+# (https://bugzilla.mozilla.org/show_bug.cgi?id=1598562)
+echo '127.0.0.42 firefox.settings.services.mozilla.com' \
+     >> "${CHROOT}"/etc/hosts
 
 echo "* Starting Unsafe Browser"
 # Do not localize the 5th argument: it becomes WM_CLASS and then GNOME
