@@ -20,7 +20,7 @@ AMNESIA_APPEND="live-media=removable nopersistence noprompt timezone=Etc/UTC spl
 AMNESIA_ISOHYBRID_OPTS="-h 255 -s 63 --id 42 --verbose"
 
 # Kernel version
-KERNEL_VERSION='5.10.0-0.bpo.3'
+KERNEL_VERSION='5.10.0-9'
 KERNEL_SOURCE_VERSION=$(
    echo "$KERNEL_VERSION" \
        | perl -p -E 's{\A (\d+ [.] \d+) [.] .*}{$1}xms'
@@ -29,7 +29,7 @@ KERNEL_SOURCE_VERSION=$(
 ### You should not have to change anything below this line ####################
 
 # sanity checks
-if [ ! -x "`which dpkg-parsechangelog`" ]; then
+if [ ! -x "`command -v dpkg-parsechangelog`" ]; then
    echo "could not find dpkg-parsechangelog, please apt-get install dpkg-dev" >&2
    exit 2
 fi

@@ -30,17 +30,6 @@ CHECKPOINTS =
       ],
     },
 
-    'no-network-bridge-mode'                     => {
-      temporary:         true,
-      description:       'I have started Tails from DVD without network and logged in with bridge mode enabled',
-      parent_checkpoint: 'tails-greeter',
-      steps:             [
-        'I enable the specific Tor configuration option',
-        'I log in to a new session',
-        'all notifications have disappeared',
-      ],
-    },
-
     'no-network-logged-in-sudo-passwd'           => {
       temporary:         true,
       description:       'I have started Tails from DVD without network and logged in with an administration password',
@@ -203,12 +192,10 @@ end
 CHECKPOINTS.each do |name, desc|
   step_regex = Regexp.new("^#{Regexp.escape(desc[:description])}$")
   Given step_regex do
-    begin
-      reach_checkpoint(name)
-    rescue StandardError => e
-      debug_log("    Generated snapshot step failed with exception:\n" \
-                "      #{e.class}: #{e}\n", color: :red, timestamp: false)
-      raise e
-    end
+    reach_checkpoint(name)
+  rescue StandardError => e
+    debug_log("    Generated snapshot step failed with exception:\n" \
+              "      #{e.class}: #{e}\n", color: :red, timestamp: false)
+    raise e
   end
 end

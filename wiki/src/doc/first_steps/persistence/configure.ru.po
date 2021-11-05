@@ -7,27 +7,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-05-25 20:09+0000\n"
-"PO-Revision-Date: 2021-05-18 17:51+0000\n"
-"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
+"POT-Creation-Date: 2021-10-12 18:07+0000\n"
+"PO-Revision-Date: 2021-10-30 11:03+0000\n"
+"Last-Translator: Weblate Admin <tails-weblate@boum.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.11.3\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Creating and configuring the Persistent Storage\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Создание и настройка Постоянного хранилища\"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!inline pages=\"doc/first_steps/persistence.caution\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr "[[!inline pages=\"doc/first_steps/persistence.caution\" raw=\"yes\" sort=\"age\"]]\n"
+msgstr "[[!inline pages=\"doc/first_steps/persistence.caution.ru\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -39,6 +39,9 @@ msgid ""
 "To create or configure the Persistent Storage, choose **Applications**&nbsp;"
 "▸ **Tails**&nbsp;▸ **Configure persistent volume**."
 msgstr ""
+"Для создания и настройки Постоянного хранилища выберите **Приложения**&nbsp;"
+"▸ **Tails**&nbsp;▸ **Настройка Постоянного хранилища** (Configure persistent "
+"volume)."
 
 #. type: Plain text
 #, no-wrap
@@ -47,17 +50,52 @@ msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<!-- We should improve this error message in #10048 and get rid of this note. -->\n"
-msgstr "<!-- We should improve this error message in #10048 and get rid of this note. -->\n"
+msgid ""
+"<p>If you receive the error message <em>Device was not created using a USB\n"
+"image or Tails installer</em>, then you need to reinstall Tails either by:</p>\n"
+msgstr ""
 
 #. type: Plain text
 #, no-wrap
 msgid ""
-"<p>The error message <em>Error, Persistence partition is not\n"
+"<ul>\n"
+"  <li>Installing using our [[USB image|install/download]] instead of our ISO image</li>\n"
+"  <li>[[Installing from another Tails|install/linux/clone-overview]]</li>\n"
+"</ul>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>If you receive the error message while running Tails using\n"
+"<i>virt-manager</i>, then you need to\n"
+"[[run Tails from our USB image|doc/advanced_topics/virtualization/virt-manager#usb_image]]\n"
+"instead of our ISO image.</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "</div>\n"
+msgstr "</div>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<!-- We should improve this error message in #10048 and get rid of this note. -->\n"
+msgstr "<!-- We should improve this error message in #10048 and get rid of this note. -->\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<p>The error message <em>Error, Persistence partition is not\n"
+#| "unlocked.</em> means that the Persistent Storage was not unlocked in\n"
+#| "the Welcome Screen. You cannot use or configure your Persistent Storage\n"
+#| "but you can delete it and create a new one.</p>\n"
+msgid ""
+"<p>The error message <em>Error, Persistence volume is not\n"
 "unlocked.</em> means that the Persistent Storage was not unlocked in\n"
 "the Welcome Screen. You cannot use or configure your Persistent Storage\n"
 "but you can delete it and create a new one.</p>\n"
-msgstr ""
+msgstr "<p>Сообщение об ошибке <em>Error, Persistence partition is not unlocked.</em> означает, что Постоянное хранилище не было разблокировано на экране приветствия. Вы не сможете использовать или настроить Постоянное хранилище, но вы можете удалить его и создать новое.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -67,13 +105,28 @@ msgid ""
 "<strong>Tails</strong>&nbsp;▸ <strong>Configure persistent volume</strong>\n"
 "again.</p>\n"
 msgstr ""
-"<p>Чтобы изменить настройки Постоянного хранилища, перезагрузите Tails, разблокируйте Постоянное хранилище и снова выберите <strong>Applications</strong>&nbsp;▸\n"
+"<p>Чтобы изменить настройки Постоянного хранилища, перезагрузите Tails, разблокируйте Постоянное хранилище и снова выберите <strong>Приложения</strong>&nbsp;▸\n"
 "<strong>Tails</strong>&nbsp;▸ <strong>Настроить Постоянное хранилище</strong> (Configure persistent volume).</p>\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "</div>\n"
-msgstr "</div>\n"
+msgid "<div class=\"bug\">\n"
+msgstr "<div class=\"bug\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>There is currently no visible way to close the\n"
+"<b>Configure persistent volume</b> application when no changes have been made.\n"
+"See [[!tails_ticket 18379]].</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>To close the <b>Configure persistent volume</b> application,\n"
+"press <span class=\"keycap\">Esc</span>.</p>\n"
+msgstr ""
 
 #. type: Plain text
 msgid ""
@@ -83,25 +136,30 @@ msgid ""
 "install/clone#create-persistence]] for more guidance on creating the "
 "Persistent Storage."
 msgstr ""
+"При первом запуске или после [[удаления Постоянного хранилища|delete]] "
+"система позволит вам создать Постоянное хранилище, используя всё свободное "
+"пространство на USB-флешке. Если нужна дополнительная помощь по созданию "
+"Постоянного хранилища, обратите внимание на наши [[инструкции по установке|"
+"install/clone#create-persistence]]."
 
 #. type: Title =
 #, no-wrap
 msgid "Features of the Persistent Storage"
-msgstr ""
+msgstr "Свойства Постоянного хранилища"
 
 #. type: Plain text
 #, no-wrap
 msgid ""
 "<p><strong>Restart Tails to apply the changes</strong> after selecting or\n"
 "deselecting one or several features.</p>\n"
-msgstr ""
+msgstr "<p>После выбора нужных пунктов <strong>перезагрузите Tails, чтобы применить изменения</strong>.</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid ""
 "<p>Only the features that are listed below can currently be made\n"
 "persistent.</p>\n"
-msgstr ""
+msgstr "<p>В настоящее время только те функции, которые перечислены ниже, могут быть частью Постоянного хранилища.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -114,7 +172,7 @@ msgid ""
 "mouse and touchpad settings,\n"
 "etc.\n"
 "See the\n"
-msgstr ""
+msgstr "<p>Нас часто просят добавить к Постоянному хранилищу новые функции: настройки Tor Browser, конфигурацию сети Tor, фон рабочего стола, параметры мыши и тачпада, и так далее. См.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -122,6 +180,8 @@ msgid ""
 "groups/tails/-/issues?scope=all&utf8=✓&state=opened&label_name%5B%5D=C%3APersistence\n"
 "desc=\"list of issues about the Persistent Storage\"]].<p>\n"
 msgstr ""
+"groups/tails/-/issues?scope=all&utf8=✓&state=opened&label_name%5B%5D=C%3APersistence\n"
+"desc=\"список вопросов о Постоянном хранилище\"]].<p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -135,12 +195,12 @@ msgid ""
 "unavailable after restarting Tails but the\n"
 "corresponding files\n"
 "are still saved in the Persistent Storage.</p>\n"
-msgstr ""
+msgstr "<p>Если вы отключите какую-либо функцию, она будет недоступна после перезагрузки Tails, но все соответствующие файлы останутся в Постоянном хранилище.</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<p>To delete the files corresponding to a feature:</p>\n"
-msgstr ""
+msgstr "<p>Чтобы удалить файлы, связанные с функцией:</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -186,6 +246,42 @@ msgid ""
 "  </li>\n"
 "</ol>\n"
 msgstr ""
+"<ol>\n"
+"  <li>\n"
+"    Запустите Tails и установите [[пароль администратора|doc/first_steps/welcome_screen/administration_password]].\n"
+"  </li>\n"
+"  <li>\n"
+"    Выберите\n"
+"    <span class=\"menuchoice\">\n"
+"      <span class=\"guimenu\">Приложения</span>&nbsp;▸\n"
+"      <span class=\"guisubmenu\">Системные</span>&nbsp;▸\n"
+"      <span class=\"guimenuitem\">Root Terminal</span>\n"
+"    </span>. Откроется окно терминала с правами администратора.\n"
+"  </li>\n"
+"  <li>\n"
+"    Выполните команду <span class=\"code\">nautilus</span>, чтобы открыть менеджер файлов с правами администратора.\n"
+"  </li>\n"
+"  <li>\n"
+"    В менеджере файлов перейдите к <span class=\"filename\">/live/persistence/TailsData_unlocked</span>.\n"
+"  </li>\n"
+"  <li>\n"
+"    В зависимости от выбранного вами компонента удалите соответствующую папку:\n"
+"    <ul>\n"
+"      <li><strong>Персональные данные</strong> (Personal Data): папка <code>Persistent</code></li>\n"
+"      <li><strong>Экран приветствия</strong> (Welcome Screen): папка <code>greeter-settings</code></li>\n"
+"      <li><strong>Закладки браузера</strong> (Browser Bookmarks): папка <code>bookmarks</code></li>\n"
+"      <li><strong>Сетевые соединения</strong> (Network Connections): <code>nm-system-connections</code></li>\n"
+"      <li><strong>Дополнительные программы</strong> (Additional Software): папка <code>apt</code>, папка <code>apt-sources.list.d</code>, файл <code>live-additional-software.conf</code></li>\n"
+"      <li><strong>Принтеры</strong> (Printers): папка <code>cups-configuration</code></li>\n"
+"      <li><strong>Thunderbird</strong>: папка <code>thunderbird</code></li>\n"
+"      <li><strong>GnuPG</strong>: папка <code>gnupg</code></li>\n"
+"      <li><strong>Клиент Bitcoin</strong> (Bitcoin Client): папка <code>electrum</code></li>\n"
+"      <li><strong>Pidgin</strong>: папка <code>pidgin</code></li>\n"
+"      <li><strong>Клиент SSH</strong> (SSH Client): папка <code>openssh-client</code></li>\n"
+"      <li><strong>Дотфайлы</strong> (Dotfiles): папка <code>dotfiles</code></li>\n"
+"    </ul>\n"
+"  </li>\n"
+"</ol>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -208,13 +304,15 @@ msgid ""
 "<div class=\"text\"><h2>Personal Data</h2></div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\"><h2>Персональные данные</h2></div>\n"
+"</div>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid ""
 "When the Personal Data feature is turned on, you can save your personal files and working\n"
 "documents in the <span class=\"filename\">Persistent</span> folder.\n"
-msgstr "Когда включена функция Персональных данных, вы можете сохранять свои файлы и другие рабочие материалы в папке <span class=\"filename\">Persistent</span>.\n"
+msgstr "Когда включена функция Персональных данных (Personal Data), вы можете сохранять свои файлы и другие рабочие материалы в папке <span class=\"filename\">Persistent</span>.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -224,6 +322,10 @@ msgid ""
 "  <span class=\"guimenu\">Places</span>&nbsp;▸\n"
 "  <span class=\"guimenuitem\">Persistent</span></span>.\n"
 msgstr ""
+"Чтобы открыть <span class=\"filename\">постоянную</span> папку, выберите в меню\n"
+"<span class=\"menuchoice\">\n"
+"  <span class=\"guimenu\">Места</span>&nbsp;▸\n"
+"  <span class=\"guimenuitem\">Persistent</span></span>.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -232,16 +334,16 @@ msgstr "<a id=\"welcome_screen\"></a>\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!img preferences-system.png link=\"no\"]]\n"
-msgstr "[[!img preferences-system.png link=\"no\"]]\n"
+msgid "[[!img lib/apps/preferences-system.png link=\"no\"]]\n"
+msgstr "[[!img lib/apps/preferences-system.png link=\"no\"]]\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
+#, no-wrap
 msgid ""
 "<div class=\"text\"><h2>Welcome Screen</h2></div>\n"
 "</div>\n"
 msgstr ""
-"<div class=\"text\"><h2>APT Pakete</h2></div>\n"
+"<div class=\"text\"><h2>Экран приветствия</h2></div>\n"
 "</div>\n"
 
 #. type: Plain text
@@ -250,14 +352,56 @@ msgid ""
 "Screen are saved in the Persistent Storage: language, keyboard, and "
 "additional settings."
 msgstr ""
-"Когда включена функция Экрана приветствия, соответствующие настройки "
-"сохраняются в Постоянном хранилище: язык, раскладка клавиатуры и др."
+"Когда включена функция Экрана приветствия (Welcome Screen), соответствующие "
+"настройки сохраняются в Постоянном хранилище: язык, раскладка клавиатуры и "
+"др."
 
 #. type: Plain text
 msgid ""
 "To restore your settings when starting Tails, unlock your Persistent Storage "
 "in the Welcome Screen."
 msgstr ""
+"Чтобы восстановить настройки при запуске Tails, разблокируйте своё "
+"Постоянное хранилище на Экране приветствия."
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "<a id=\"thunderbird\"></a>\n"
+msgid "<a id=\"tor-bridge\">\n"
+msgstr "<a id=\"thunderbird\"></a>\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "[[!img printer.png link=no]]\n"
+msgid "[[!img onioncircuits.png link=no]]\n"
+msgstr "[[!img printer.png link=no]]\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<div class=\"text\"><h2>Pidgin</h2></div>\n"
+#| "</div>\n"
+msgid ""
+"<div class=\"text\"><h2>Tor Bridge</h2></div>\n"
+"</div>\n"
+msgstr ""
+"<div class=\"text\"><h2>Pidgin</h2></div>\n"
+"</div>\n"
+
+#. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "When the Thunderbird feature is turned on, the email, feeds, and OpenPGP "
+#| "keys in the [[*Thunderbird* email client|doc/anonymous_internet/"
+#| "thunderbird]] are saved in the Persistent Storage."
+msgid ""
+"When the Tor Bridge feature is turned on, the last [[Tor bridge|doc/"
+"anonymous_internet/tor]] that you used to connect to Tor successfully is "
+"saved in the Persistent Storage."
+msgstr ""
+"Когда включена функция Thunderbird, то электронные письма, ленты, ключи "
+"OpenPGP [[почтового клиента *Thunderbird*|doc/anonymous_internet/"
+"thunderbird]] сохраняются в Постоянном хранилище."
 
 #. type: Plain text
 #, no-wrap
@@ -275,6 +419,8 @@ msgid ""
 "<div class=\"text\"><h2>Browser Bookmarks</h2></div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\"><h2>Закладки браузера</h2></div>\n"
+"</div>\n"
 
 #. type: Plain text
 msgid ""
@@ -283,9 +429,9 @@ msgid ""
 "Persistent Storage. This does not apply to the [[*Unsafe Browser*|doc/"
 "anonymous_internet/unsafe_browser]]."
 msgstr ""
-"Когда включена функция Закладок браузера, изменения в закладках [[*Tor "
-"Browser*|doc/anonymous_internet/Tor_Browser]] сохраняются в Постоянном "
-"хранилище. Это не относится к [[*Небезопасному браузеру*|doc/"
+"Когда включена функция Закладок браузера (Browser Bookmarks), изменения в "
+"закладках [[*Tor Browser*|doc/anonymous_internet/Tor_Browser]] сохраняются в "
+"Постоянном хранилище. Это не относится к [[*Небезопасному браузеру*|doc/"
 "anonymous_internet/unsafe_browser]]."
 
 #. type: Plain text
@@ -304,6 +450,8 @@ msgid ""
 "<div class=\"text\"><h2>Network Connections</h2></div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\"><h2>Сетевые соединения</h2></div>\n"
+"</div>\n"
 
 #. type: Plain text
 msgid ""
@@ -312,9 +460,9 @@ msgid ""
 "is saved in the Persistent Storage, for example the passwords of Wi-Fi "
 "networks."
 msgstr ""
-"Когда включена функция Сетевых соединений, [[настройки сетевых устройств и "
-"подключений|doc/anonymous_internet/networkmanager]] сохраняются в Постоянном "
-"хранилище (например, пароли к сетям wi-fi)."
+"Когда включена функция Сетевых соединений (Network Connections), [[настройки "
+"сетевых устройств и подключений|doc/anonymous_internet/networkmanager]] "
+"сохраняются в Постоянном хранилище (например, пароли к сетям wi-fi)."
 
 #. type: Plain text
 #, no-wrap
@@ -332,6 +480,8 @@ msgid ""
 "<div class=\"text\"><h2>Additional Software</h2></div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\"><h2>Дополнительные программы</h2></div>\n"
+"</div>\n"
 
 #. type: Plain text
 msgid ""
@@ -339,9 +489,9 @@ msgid ""
 "software|doc/first_steps/additional_software]] of your choice is "
 "automatically installed every time you start Tails."
 msgstr ""
-"Когда включена функция Дополнительных программ, [[программы|doc/first_steps/"
-"additional_software]] по вашему выбору будут установлены каждый раз при "
-"запуске Tails."
+"Когда включена функция Дополнительных программ (Additional Software), "
+"[[программы|doc/first_steps/additional_software]] по вашему выбору будут "
+"установлены каждый раз при запуске Tails."
 
 #. type: Plain text
 msgid ""
@@ -349,6 +499,8 @@ msgid ""
 "They are automatically upgraded for security after a network connection is "
 "established."
 msgstr ""
+"Соответствующие пакеты программ хранятся в Постоянном хранилище. Обновления "
+"безопасности устанавливаются при подключении к сети."
 
 #. type: Plain text
 #, no-wrap
@@ -361,7 +513,7 @@ msgid ""
 "<p>The packages included in Tails are carefully tested for security.\n"
 "Installing additional packages might break the security built in Tails,\n"
 "so [[be careful with what you install|additional_software#warning]].</p>\n"
-msgstr ""
+msgstr "<p>Программы в составе Tails были тщательно протестированы и признаны безопасными. Установка дополнительных программ может снизить уровень безопасности Tails, поэтому [[будьте осторожны|additional_software#warning]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -379,6 +531,8 @@ msgid ""
 "<div class=\"text\"><h2>Printers</h2></div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\"><h2>Принтеры</h2></div>\n"
+"</div>\n"
 
 #. type: Plain text
 msgid ""
@@ -386,7 +540,7 @@ msgid ""
 "doc/sensitive_documents/printing_and_scanning]] is saved in the Persistent "
 "Storage."
 msgstr ""
-"Когда включена функция Принтеров, [[настройки принтеров|doc/"
+"Когда включена функция Принтеров (Printers), [[настройки принтеров|doc/"
 "sensitive_documents/printing_and_scanning]] сохраняются в Постоянном "
 "хранилище."
 
@@ -397,8 +551,8 @@ msgstr "<a id=\"thunderbird\"></a>\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!img thunderbird.png link=no]]\n"
-msgstr "[[!img thunderbird.png link=no]]\n"
+msgid "[[!img lib/apps/thunderbird.png link=no]]\n"
+msgstr "[[!img lib/apps/thunderbird.png link=no]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -415,6 +569,9 @@ msgid ""
 "keys in the [[*Thunderbird* email client|doc/anonymous_internet/"
 "thunderbird]] are saved in the Persistent Storage."
 msgstr ""
+"Когда включена функция Thunderbird, то электронные письма, ленты, ключи "
+"OpenPGP [[почтового клиента *Thunderbird*|doc/anonymous_internet/"
+"thunderbird]] сохраняются в Постоянном хранилище."
 
 #. type: Plain text
 #, no-wrap
@@ -440,6 +597,8 @@ msgid ""
 "When the GnuPG feature is turned on, the OpenPGP keys that you create or "
 "import are saved in the Persistent Storage."
 msgstr ""
+"Когда включена функция GnuPG, ключи OpenPGP, которые вы создаёте или "
+"импортируете, сохраняются в Постоянном хранилище."
 
 #. type: Plain text
 #, no-wrap
@@ -448,7 +607,7 @@ msgid ""
 "different from the keyring used by <em>GnuPG</em>. You don't need to enable the GnuPG\n"
 "feature anymore if you only use OpenPGP encryption in\n"
 "<em>Thunderbird</em>.</p>\n"
-msgstr ""
+msgstr "<p>Начиная с версии Tails 4.13 (ноябрь 2020 года), <em>Thunderbird</em> использует собственную связку ключей OpenPGP. Она отличается от связки ключей <em>GnuPG</em>. Вам не нужно включать функцию GnuPG, если вы используете шифрование OpenPGP только в <em>Thunderbird</em>.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -456,7 +615,7 @@ msgid ""
 "<p>You might lessen your anonymity, weaken encryption, or break features of\n"
 "GnuPG if you manually edit or overwrite the <em>~/.gnupg/gpg.conf</em>\n"
 "configuration file.</p>\n"
-msgstr ""
+msgstr "<p>Если вы будете вручную редактировать или перезаписывать файл конфигурации<em>~/.gnupg/gpg.conf</em>, то можете подорвать вашу анонимность, ослабить пароль, навредить функционалу GnuPG.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -465,8 +624,8 @@ msgstr "<a id=\"bitcoin\"></a>\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!img electrum.png link=no]]\n"
-msgstr "[[!img electrum.png link=no]]\n"
+msgid "[[!img lib/apps/electrum.png link=no]]\n"
+msgstr "[[!img lib/apps/electrum.png link=no]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -474,6 +633,8 @@ msgid ""
 "<div class=\"text\"><h2>Bitcoin Client</h2></div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\"><h2>Клиент Bitcoin</h2></div>\n"
+"</div>\n"
 
 #. type: Plain text
 msgid ""
@@ -481,7 +642,7 @@ msgid ""
 "preferences of the [[*Electrum* bitcoin client|anonymous_internet/electrum]] "
 "are saved in the Persistent Storage."
 msgstr ""
-"Когда включена функция Клиента Bitcoin (Bitcoin Client), настройки кошелька "
+"Когда включена функция клиента Bitcoin (Bitcoin Client), настройки кошелька "
 "Bitcoin [[клиента *Electrum*|anonymous_internet/electrum]] сохраняются в "
 "Постоянном хранилище."
 
@@ -492,8 +653,8 @@ msgstr "<a id=\"pidgin\"></a>\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!img pidgin.png link=no]]\n"
-msgstr "[[!img pidgin.png link=no]]\n"
+msgid "[[!img lib/apps/pidgin.png link=no]]\n"
+msgstr "[[!img lib/apps/pidgin.png link=no]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -510,20 +671,24 @@ msgid ""
 "[[*Pidgin* internet messenger|doc/anonymous_internet/pidgin]] are saved in "
 "the Persistent Storage:"
 msgstr ""
+"Когда включена функция Pidgin, все настройки [[интернет-мессенджера *Pidgin*|"
+"doc/anonymous_internet/pidgin]] сохраняются в Постоянном хранилище:"
 
 #. type: Bullet: '  - '
 msgid "The configuration of your accounts, buddies and chats."
-msgstr ""
+msgstr "настройки ваших аккаунтов, друзей и чатов;"
 
 #. type: Bullet: '  - '
 msgid "Your OTR encryption keys and keyring."
-msgstr ""
+msgstr "ваши ключи шифрования OTR и связка ключей;"
 
 #. type: Bullet: '  - '
 msgid ""
 "The content of the discussions is not saved unless you configure <span class="
 "\"application\">Pidgin</span> to do so."
 msgstr ""
+"содержание самих разговоров не сохраняется, если только вы не настроили "
+"<span class=\"application\">Pidgin</span> соответствующим образом."
 
 #. type: Plain text
 msgid ""
@@ -531,6 +696,9 @@ msgid ""
 "*Pidgin*. There is no need to manually edit or overwrite the configuration "
 "files."
 msgstr ""
+"Все настройки доступны из графического интерфейса *Pidgin*. Нет "
+"необходимости вручную редактировать или перезаписывать какие-то "
+"конфигурационные файлы."
 
 #. type: Plain text
 #, no-wrap
@@ -548,27 +716,30 @@ msgid ""
 "<div class=\"text\"><h2>SSH Client</h2></div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\"><h2>Клиент SSH</h2></div>\n"
+"</div>\n"
 
 #. type: Plain text
 msgid ""
 "When the SSH Client feature is turned on, all the files related to the "
 "secure-shell (SSH) client are saved in the Persistent Storage:"
 msgstr ""
-"Когда включена функция Клиента SSH, все файлы, связанные с клиентом SSH, "
-"сохраняются в Постоянном хранилище:"
+"Когда включена функция клиента SSH (SSH Client), все файлы, связанные с "
+"клиентом SSH, сохраняются в Постоянном хранилище:"
 
 #. type: Bullet: '  - '
 msgid "The SSH keys that you create or import"
-msgstr ""
+msgstr "создаваемые и импортируемые ключи SSH;"
 
 #. type: Bullet: '  - '
 msgid "The public keys of the hosts you connect to"
-msgstr ""
+msgstr "открытые ключи хостов, с которыми вы соединяетесь;"
 
 #. type: Bullet: '  - '
 msgid ""
 "The SSH configuration file in <span class=\"filename\">~/.ssh/config</span>"
 msgstr ""
+"конфигурационный файл SSH в <span class=\"filename\">~/.ssh/config</span>."
 
 #. type: Plain text
 #, no-wrap
@@ -579,6 +750,8 @@ msgid ""
 "<span class=\"filename\">/etc/ssh/ssh_config</span> file. Otherwise, you may weaken the\n"
 "encryption defaults or render SSH unusable.\n"
 msgstr ""
+"Если вы редактируете конфигурационный файл в <span class=\"filename\">~/.ssh/config</span> вручную, убедитесь, что не перезапишете конфигурацию по умолчанию в файле \n"
+"<span class=\"filename\">/etc/ssh/ssh_config</span>. Иначе вы ослабите настройки шифрования, или SSH вообще перестанет работать.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -596,29 +769,30 @@ msgid ""
 "<div class=\"text\"><h2>Dotfiles</h2></div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\"><h2>Дотфайлы</h2></div>\n"
+"</div>\n"
 
 #. type: Plain text
 msgid "When the Dotfiles feature is turned on:"
-msgstr "Если включена функция Дотфайлов  (Dotfiles):"
+msgstr "Если включена функция дотфайлов (Dotfiles):"
 
 #. type: Bullet: '- '
-#, fuzzy
 msgid ""
 "All the files in the */live/persistence/TailsData_unlocked/dotfiles* folder "
 "are linked in the *Home* folder using Linux symbolic links."
 msgstr ""
 "все файлы в папке */live/persistence/TailsData_unlocked/dotfiles* связаны с "
-"папкой *Home*."
+"папкой *Home* через символические ссылки Linux;"
 
 #. type: Bullet: '- '
-#, fuzzy
 msgid ""
 "All the files in subfolders of */live/persistence/TailsData_unlocked/"
 "dotfiles* are also linked in the corresponding subfolder of the *Home* "
 "folder using Linux symbolic links."
 msgstr ""
-"все файлы в папке */live/persistence/TailsData_unlocked/dotfiles* связаны с "
-"папкой *Home*."
+"все файлы в подпапках */live/persistence/TailsData_unlocked/dotfiles* также "
+"связаны с соответствующими подпапками *Home* через символические ссылки "
+"Linux;"
 
 #. type: Bullet: '- '
 msgid ""
@@ -626,12 +800,17 @@ msgid ""
 "**Places** menu in the top navigation bar to access the */live/persistence/"
 "TailsData_unlocked/dotfiles* folder."
 msgstr ""
+"в левой панели файлового менеджера *Файлы* и в меню **Места** (верхняя "
+"навигационная панель) виден ярлык, указывающий на папку */live/persistence/"
+"TailsData_unlocked/dotfiles*."
 
 #. type: Plain text
 msgid ""
 "For example, having the following files in */live/persistence/"
 "TailsData_unlocked/dotfiles*:"
 msgstr ""
+"Предположим, в */live/persistence/TailsData_unlocked/dotfiles* находится "
+"такая структура:"
 
 #. type: Plain text
 #, no-wrap
@@ -654,7 +833,7 @@ msgstr ""
 
 #. type: Plain text
 msgid "Produces the following result in */home/amnesia*:"
-msgstr ""
+msgstr "В */home/amnesia* будет следующее:"
 
 #. type: Plain text
 #, no-wrap
@@ -680,6 +859,9 @@ msgid ""
 "the Persistent Storage. Accordingly, empty folders are ignored, as shown in\n"
 "the above example.</p>\n"
 msgstr ""
+"<p>Функция дотфайлов связывает только отдельные файлы \n"
+"в Постоянном хранилище, но не папки целиком. Пустые папки игнорируются, \n"
+"как следует из примера выше.</p>\n"
 
 #. type: Plain text
 msgid ""
@@ -688,6 +870,11 @@ msgid ""
 "reason.  The Dotfiles feature of the Persistent Storage makes it easy to "
 "persist such \"*dotfiles*\", for example *~/.gitconfig* or *~/.bashrc*."
 msgstr ""
+"В Tails (и вообще в Linux) названия конфигурационных файлов часто начинаются "
+"с точки. Они называются [дотфайлами](https://en.wikipedia.org/wiki/"
+"Hidden_file_and_hidden_directory). Функция Дотфайлов Постоянного хранилища "
+"позволяет сохранять такие \"*дотфайлы*\", например, *~/.gitconfig* или *~/."
+"bashrc*."
 
 #. type: Plain text
 #, no-wrap
@@ -697,7 +884,7 @@ msgstr "<a id=\"displays\"></a>\n"
 #. type: Title ###
 #, no-wrap
 msgid "Save the configuration of your displays"
-msgstr "Как сохранить настройки ваших мониторов"
+msgstr "Как сохранить настройки ваших дисплеев"
 
 #. type: Plain text
 #, no-wrap
@@ -705,25 +892,27 @@ msgid ""
 "If you have more than one display (for example, two monitors or a\n"
 "projector), you can save the configuration of your displays using the\n"
 "<span class=\"guilabel\">Dotfiles</span> feature.\n"
-msgstr "Если у вас более двух мониторов (например, вы выводите сигнал с компьютера на два монитора или на монитор и проектор), можно сохранить настройки с использованием функции <span class=\"guilabel\">Дотфайлов</span>.\n"
+msgstr "Если у вас более двух дисплеев (например, вы выводите сигнал с компьютера на два монитора или на монитор и проектор), можно сохранить настройки с использованием функции <span class=\"guilabel\">Дотфайлов</span>.\n"
 
 #. type: Bullet: '1. '
 msgid "Turn on the *Dotfiles* feature and restart Tails."
-msgstr ""
+msgstr "Включите функцию *Дотфайлы* и перезапустите Tails."
 
 #. type: Bullet: '1. '
 msgid "Open the <span class=\"application\">Settings</span> utility."
-msgstr ""
+msgstr "Откройте <span class=\"application\">Параметры</span>."
 
 #. type: Bullet: '1. '
 msgid ""
 "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Devices</"
 "span>&nbsp;▸ <span class=\"guisubmenu\">Displays</span></span>."
 msgstr ""
+"Выберите <span class=\"menuchoice\"> <span class=\"guimenu\">Устройства</"
+"span>&nbsp;▸ <span class=\"guisubmenu\">Дисплеи</span></span>."
 
 #. type: Bullet: '1. '
 msgid "Configure your displays."
-msgstr ""
+msgstr "Настройте дисплеи."
 
 #. type: Bullet: '1. '
 msgid ""
@@ -731,7 +920,7 @@ msgid ""
 "live/persistence/TailsData_unlocked/dotfiles</span> folder in the <span "
 "class=\"application\">Files</span> browser."
 msgstr ""
-"Выберите **Места**&nbsp;▸ **Дотфайлы**, чтобы открыть папку <span class="
+"Выберите **Места**&nbsp;▸ **Dotfiles**, чтобы открыть папку <span class="
 "\"filename\">/live/persistence/TailsData_unlocked/dotfiles</span> в "
 "менеджере <span class=\"application\">Файлы</span>."
 
@@ -741,12 +930,17 @@ msgid ""
 "toggle\" class=\"symbolic\" link=\"no\"]]</span> button in the title bar and "
 "choose <span class=\"guilabel\">Show Hidden Files</span>."
 msgstr ""
+"Нажмите кнопку <span class=\"guimenu\">[[!img lib/pan-down.png alt=\"menu "
+"toggle\" class=\"symbolic\" link=\"no\"]]</span> в меню заголовка и выберите "
+"<span class=\"guilabel\">Показать скрытые файлы</span>."
 
 #. type: Bullet: '1. '
 msgid ""
 "Create a folder called <span class=\"filename\">.config</span> (<span class="
 "\"filename\">config</span> preceded by a dot)."
 msgstr ""
+"Создайте папку с названием <span class=\"filename\">.config</span> (<span "
+"class=\"filename\">config</span> с точкой в качестве первого знака)."
 
 #. type: Bullet: '1. '
 msgid ""
@@ -754,6 +948,9 @@ msgid ""
 "<span class=\"filename\">Home</span> folder to <span class=\"filename\">/"
 "live/persistence/TailsData_unlocked/dotfiles/.config</span>."
 msgstr ""
+"Скопируйте файл <span class=\"filename\">.config/monitors.xml</span> из "
+"папки <span class=\"filename\">Home</span> в <span class=\"filename\">/live/"
+"persistence/TailsData_unlocked/dotfiles/.config</span>."
 
 #~ msgid ""
 #~ "As in the previous example, empty folders are ignored. The Dotfiles "

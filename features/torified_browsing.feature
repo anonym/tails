@@ -80,7 +80,7 @@ Feature: Browsing the web using the Tor Browser
     And AppArmor has denied "torbrowser_firefox" from opening "/lib/live/mount/overlay/rw/home/amnesia/.gnupg/synaptic.html"
     # We do not get any AppArmor log for when access to files in /tmp is denied
     # since we explictly override (commit 51c0060) the rules (from the user-tmp
-    # abstration) that would otherwise allow it, and we do so with "deny", which
+    # abstraction) that would otherwise allow it, and we do so with "deny", which
     # also specifies "noaudit". We could explicitly specify "audit deny" and
     # then have logs, but it could be a problem when we set up desktop
     # notifications for AppArmor denials (#9337).
@@ -102,12 +102,6 @@ Feature: Browsing the web using the Tor Browser
     When I request a new identity using Torbutton
     And I acknowledge Torbutton's New Identity confirmation prompt
     Then the Tor Browser loads the startup page
-
-  Scenario: The Tor Browser should not have any plugins enabled
-    Given I have started Tails from DVD and logged in and the network is connected
-    When I start the Tor Browser
-    And the Tor Browser loads the startup page
-    Then the Tor Browser has no plugins installed
 
   Scenario: WebRTC is disabled in Tor Browser
     Given I have started Tails from DVD and logged in and the network is connected

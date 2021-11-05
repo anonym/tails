@@ -285,7 +285,7 @@ to use strong encryption for the Persistent Storage.
 As an alternative to running the PELD natively from a DVD or USB, it
 SHOULD also be possible to run it inside virtual machines.
 
-Running the PELD is such a virtualized environment provides weakened
+Running the PELD in such a virtualized environment provides weakened
 security compared to running it natively. This drawback is due to the
 dependency on the host OS. When the PELD runs as a guest OS:
 
@@ -293,7 +293,7 @@ dependency on the host OS. When the PELD runs as a guest OS:
   that could be present in the host OS. The user activities in the
   PELD might thus be under surveillance by an attacker who would
   control the host OS enough.
-- The PELD can not guarantee anything with respect to writing to local
+- The PELD cannot guarantee anything with respect to writing to local
   storage: the host OS does its own memory management and can write to
   swap any part of the memory being used by the PELD without the user
   being told.
@@ -370,7 +370,7 @@ required elsewhere in this specification. This includes:
   the kernel level is a good idea. Executable space protection with
   the NX bit, address space layout randomization and similar
   techniques are all interesting in this respect. Access control in
-  the form of Mandatory Access Control, Role-Based Access control and
+  the form of Mandatory Access Control, Role-Based Access Control and
   so on SHOULD also be considered.
 
 ### 2.6.2 Network requirements
@@ -389,8 +389,6 @@ heavily restricted by a firewall:
   explicitly configured to use Tor will reach the Internet).
 - All DNS lookups SHOULD be made through the Tor network (i.e.
   redirected to `DNSPort` as set in `torrc`).
-- All IPv6 traffic SHOULD be forbidden as it is not supported by the Tor
-  network.
 
 Note that the above is not necessary (or desirable) for local network
 (RFC1918) addresses; it is RECOMMENDED to special-case DNS queries
@@ -660,8 +658,8 @@ This specification must warn about such matters.
 ### 2.7.4 Miscellaneous
 
 - FireWire is known to allow read access to the system memory, at
-  least when such devices are allowed to use DMA (Linux: `options
-  ohci1394 phys_dma=0` helps mitigating that).
+  least when such devices are allowed to use DMA (Linux:
+  `options ohci1394 phys_dma=0` helps mitigating that).
 - IrDA and other network links might allow attacks.
 
 # 3 Implementation
@@ -690,7 +688,7 @@ the risks involved and how to manage those risks.
 See the [[installation section|install]] on [[Tails's website|/index]]
 for download information. Published Tails images integrity can be
 checked using OpenPGP detached signatures made with a key that is well
-linked to the web-of-trust.
+linked to the Web of Trust.
 
 The sources are stored in a bunch of [Git](http://git-scm.com/)
 repositories. The [[git page|contribute/git]] on the Tails website provides all
@@ -805,7 +803,7 @@ A dedicated application called *WhisperBack*
 is also available in every running Tails copy. WhisperBack allows
 users to send anonymous or pseudonymous feedback via OpenPGP-encrypted
 email. It is configured in Tails to use a Tor onion service run by
-Tails developers as the outgoing SMTP server. WhiperBack only sends
+Tails developers as the outgoing SMTP server. WhisperBack only sends
 email over a STARTTLS session after carefully verifying the remote
 SMTP SSL certificate. Some minimal information about the system is
 gathered and sent along with the report; the reporting user can
@@ -835,7 +833,7 @@ for remapped onion services) and as a DNS server on port 8853.
 The client listens on a few SOCKS address/ports (the rationale being
 detailed on the [[Tor stream isolation design
 page|contribute/design/stream_isolation]]): 9050 (both for localhost and
-for the TorBrowser netns) and and 9062.
+for the TorBrowser netns) and 9062.
 
 Only connections from localhost or from specific network namespaces are
 accepted. It can be argued that running a Tor server (onion router)
@@ -853,7 +851,7 @@ A filtering proxy to the control port runs on port 9051 (i.e. the default
 Tor ControlPort), so for instance
 Torbutton still can perform safe commands like `SIGNAL NEWNYM`. It
 allows defining fine-grained lists of allowed commands (and their
-argunents) and events on a per-application basis, which can enforce
+arguments) and events on a per-application basis, which can enforce
 rules like "this `$user` (e.g. `amnesia`) when running this
 `$application` (e.g. `/usr/bin/onionshare`) from this network namespace,
 can only run these commands (`ADD_ONION` etc.) and listen to these
@@ -1003,9 +1001,7 @@ We only modify this Tor Browser installation slightly:
 * We ship all langpacks and select the UI language depending on
   the locale chosen by the user in our Welcome Screen.
 * Tails does not install the Tor Launcher extension as part of the
-  browser. Instead we extract Tor Launcher from the bundled .xpi and
-  make it available as a stand-alone XUL application for Tor
-  bridge/proxy configuration.  
+  browser.
   Rationale: Tor Browser in Tails is not allowed to configure tor.
 * We modify preferences in `browser/omni.ja` to slightly adjust the UI.
 * We append Tails-specific preferences to `browser/omni.ja`.
@@ -1029,11 +1025,6 @@ browser anyway:
 - [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/tails-wait-until-tor-has-bootstrapped.service]]
 - [[!tails_gitweb config/chroot_local-includes/usr/lib/systemd/user/tails-wait-until-tor-has-bootstrapped.service]]
 - [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/tails-tor-has-bootstrapped-flag-file.service]]
-
-Once Tor is ready to be used, the user is informed they can now use
-the Internet:
-
-- [[!tails_gitweb config/chroot_local-includes/etc/NetworkManager/dispatcher.d/60-tor-ready.sh]]
 
 The remaining configuration differences can be found in:
 
@@ -1101,7 +1092,7 @@ status. Only IRC and Jabber/XMPP protocols are left available, to
 avoid the usage of less well audited plugins. The Off-the-record
 plugin is enabled
 to help one-to-one conversations being as private and unrecordable as
-possible. 
+possible.
 
 - [[!tails_gitweb_dir config/chroot_local-includes/etc/skel/.purple]]
 - [[!tails_gitweb config/chroot_local-hooks/09-remove_unsupported_pidgin_libs]]
@@ -1341,9 +1332,8 @@ this choice is:
 Tails currently offers almost no protection against live physical
 monitoring, except for hardware keyloggers.
 
-UDP and IPv6 are a problem. The Tor network does not support any of
-those yet. Outgoing UDP and IPv6 packets are dropped altogether by
-netfilter for this reason.
+UDP is a problem. The Tor network does not support it. Outgoing UDP
+packets are dropped altogether by netfilter for this reason.
 
 Support for [[!tails_ticket 6070 desc="arbitrary DNS queries"]] is not
 provided anymore since we removed ttdnsd in Tails 3.0.
@@ -1377,8 +1367,7 @@ almost exclusively generating Tor activity and that is probably quite
 different from other Tor Browser users. We believe this would be hard to avoid.
 Other possible fingerprint issues on the LAN or ISP exist but we believe
 they would be harder to detect. See the discussion on fingerprinting in
-the [[Time sync|contribute/design/Time_syncing]] design document and the
-[[fingerprint|doc/about/fingerprint]] documentation.
+the [[Time sync|contribute/design/Time_syncing]] design document.
 
 # 4 Security analysis
 

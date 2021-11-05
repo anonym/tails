@@ -1,3 +1,1664 @@
+tails (4.24) unstable; urgency=medium
+
+  * Upgrade to Tor Browser based on Firefox 91 ESR (tails/tails!639)
+
+    Closes issues:
+      - Upgrade to Tor Browser based on Firefox 91 ESR (tails/tails#18261)
+
+    Commits:
+      - Unsafe Browser: disable more "phone home" features
+      - Unsafe Browser: disable services.settings.server
+      - Test suite: search for element more widely.
+      - Test suite: Firefox' Print dialog is now a panel (refs #18261)
+      - Update the Tor Browser AppArmor policy for Tor Browser 11 (Firefox 91)
+      - Test suite: lint
+      - Test suite: make Gherkin test description more honest
+      - Rubocop: disable a pattern we use all over the place
+      - Test suite: update expected images and drop obsolete special-case for Chinese
+      - Test suite: account for different separator used in German
+      - Lint.
+      - Test suite: update comment
+      - Fix typo in comment
+      - Test suite: adjust to new Firefox print dialog
+      - Test suite: update expected windows titles
+      - Test suite: update expected images
+      - Upgrade Tor Browser to 11.0a9
+
+  * Test suite: make "Unsafe Browser has only Firefox's default bookmarks
+    configured" step more robust (tails/tails!646)
+
+    Closes issues:
+      - Fragile test since the upgrade to Tor Browser 11: "Unsafe Browser has only
+        Firefox's default bookmarks configured" (tails/tails#18658)
+
+    Commits:
+      - Test suite: wait for menu to really open before looking for menu entry
+      - Test suite: update expected picture
+
+  * APT sources: add Bullseye security (stable) (tails/tails!637)
+
+    Closes issues:
+      - APT sources: add Bullseye security (tails/tails#18492)
+
+    Commits:
+      - APT pinning: ensure we get security updates for the packages we pull from
+        Bullseye
+      - APT sources: add Bullseye security repo
+
+  * Move tca developer doc to more appropriate places (tails/tails!636)
+
+    Closes issues:
+      - Update "Tor network configuration" design doc (tails/tails#18360)
+
+    Commits:
+      - tips to develop Tor Connection are reachable
+      - tca doc behavior.md moved to Gherkin
+      - move tca/HACKING.md to website
+
+  * APT sources: add Bullseye security (tails/tails!626)
+
+    Commits:
+      - APT pinning: ensure we get security updates for the packages we pull from
+        Bullseye
+      - APT sources: add Bullseye security repo
+
+  * Upgrade kernel to 5.10.46-5 in stable (tails/tails!625)
+
+    Closes issues:
+      - Upgrade Linux to 5.10.46-5 (DSA 4978-1) (tails/tails#18613)
+      - Upgrade to Buster 10.11 (tails/tails#18608)
+
+    Commits:
+      - Pull libzstd1 from Bullseye: needed by updated squashfs-tools
+      - Install squashfs-tools from bullseye.
+      - FIX uBlock patch
+      - to get a new kernel in stable, bump debian/serial
+      - change pinning to get kernel from bullseye
+      - bump kernel to 5.10.46-5
+
+  * Upgrade kernel to 5.10.46-5 in devel (tails/tails!622)
+
+    Commits:
+      - Pull libzstd1 from Bullseye: needed by updated squashfs-tools
+      - change pinning to get kernel from bullseye
+      - bump kernel to 5.10.46-5
+
+  * update Tor network configuration design doc (tails/tails!606)
+
+    Commits:
+      - TCA is not a Tor Launcher wrapper.
+      - Apply intrigeri's proofreading suggestions.
+      - explain why tca-portal runs as root
+      - Document connect-drop security model
+      - update Tor network configuration design doc
+
+  * TCA: clean leftovers (tails/tails!604)
+
+    Closes issues:
+      - TCA clean leftovers (tails/tails#18273)
+
+    Commits:
+      - systemd-notify: move to better way
+      - we considered this implementation good enough
+      - remove dead code
+      - move XXX to #18610
+      - clarify comment after tails/tails!567
+      - remove code that was never used and never tested
+      - comment moved to #18609
+
+  * Upgrade Tor Browser to 11.0a10-build1 (tails/tails!655)
+
+    Commits:
+      - Upgrade Tor Browser to 11.0a10-build1
+
+  * Remove obsolete freeze exception (tails/tails!648)
+
+    Commits:
+      - Remove obsolete freeze exception
+
+  * Port the iuk test suite from squashfs-tools to squashfs-tools-ng
+    (tails/tails!644)
+
+    Closes issues:
+      - Port the iuk test suite from squashfs-tools to squashfs-tools-ng
+        (tails/tails#18653)
+
+    Commits:
+      - IUK test suite: support file names with spaces
+      - IUK test suite: take into account gensquashfs behavior wrt. SOURCE_DATE_EPOCH
+      - IUK test suite: add missing import
+      - IUK test suite: port from squashfs-tools to squashfs-tools-ng
+      - IUK generation: add assertion
+      - Upgrader: use apparent size to compute space needed to install an IUK
+
+  * Switch to zstd for SquashFS compression in development ISO/USB images
+    (tails/tails!643)
+
+    Commits:
+      - Switch to zstd for SquashFS compression in development ISO/USB images
+
+  * Switch to squashfs-tools-ng to build IUKs (tails/tails!640)
+
+    Closes issues:
+      - Switch to squashfs-tools-ng to fix IUKs build reproducibly (tails/tails#18577)
+      - Failure reproducing IUKs for 4.22~rc1 (tails/tails#18536)
+      - Failure reproducing IUKs for 4.23 (tails/tails#18627)
+
+    Commits:
+      - GitLab CI: avoid confusing error message
+      - Release process: use only the isobuilders that have squashfs-tools-ng
+      - Switch to squashfs-tools-ng to generate our IUKs
+      - Update release process requirements for building IUKs
+
+  * Resolve "Tor Connection bridge tests fail" (tails/tails!621)
+
+    Closes issues:
+      - Tor Connection bridge tests fail (tails/tails#18634)
+
+    Commits:
+      - FIX tests for 84e047ebd39e too
+      - fix tests after 68b0e77119e
+
+  * Upgrader: avoid high cpu usage when getting download progress info
+    (tails/tails!619)
+
+    Closes issues:
+      - tails-upgrade-frontend causes very high CPU load when downloading upgrade
+        (tails/tails#18632)
+
+    Commits:
+      - Upgrader: avoid high cpu usage when getting download progress info
+
+  * Explain better how to type a bridge (#18597) (tails/tails!617)
+
+    Closes issues:
+      - Explain better "type in a bridge" (tails/tails#18597)
+
+    Commits:
+      - Fix grammar
+      - Use singular as much as possible
+      - Use 'bridge' in singular as much as possible
+      - Fix broken link
+      - Explain better how to type a bridge (#18597)
+      - Style guide: not everybody types
+
+  * Don't mention local network in Unsafe Browser confirmation (tails/tails!615)
+
+    Closes issues:
+      - Don't mention local network in Unsafe Browser confirmation (tails/tails#18600)
+
+    Commits:
+      - Simplify
+
+  * Rephrase intro of Fix Clock dialog (tails/tails!614)
+
+    Closes issues:
+      - Rephrase intro of Fix Clock dialog (tails/tails#18572)
+
+    Commits:
+      - Be consistent with /doc/about/warnings/identity
+      - Simply
+      - Remove duplicate text
+      - Simplify and be more correct
+
+  * Improve time zone selection UX (tails/tails!595)
+
+    Closes issues:
+      - Improve time zone selection UX (tails/tails#18514)
+
+    Commits:
+      - the test suite correctly handles UTC/GMT
+      - UTC can be selected, too
+      - test suite enjoys better UX, too
+      - pressing enter selects topmost entry
+      - tca gtk errors are logged immediately
+      - test suite waits for filtering to be applied
+      - Test suite: replace usage of non-existing Screen.pressKey with Screen.press
+      - revamp the time selection dialog
+      - fix logging
+      - test suite updated for new timezone selection
+      - FIX matching (lets hope so)
+      - better UX for timezone selection
+      - proper logging in asyncutils
+
+  * Installer: make the confirmation dialog more scary (tails/tails!593)
+
+    Closes issues:
+      - Make the confirmation more scary when reinstalling a USB stick that has a
+        Persistent Storage (tails/tails#18301)
+
+    Commits:
+      - Test suite: adjust confirmation label when reinstalling over a usb with a
+        persistent volume
+      - Test suite: adjust confirmation dialog label in Installer (refs #18301)
+      - Installer: inform when there is no target available
+      - Installer: enforce Persistent Storage detection
+      - Installer: display if the target device has a Persistence Storage
+      - Make the confirmation more scary when reinstalling a USB stick that has a
+        Persistent Storage (refs: #18301)
+
+  * TCA: Fix "AttributeError: no attribute persistence_config_failed"
+    (tails/tails!590)
+
+    Commits:
+      - FIX condition
+      - make the diff smaller
+      - TCA: Fix "AttributeError: no attribute persistence_config_failed"
+
+ -- Tails developers <tails@boum.org>  Thu, 04 Nov 2021 14:25:18 +0100
+
+tails (4.23) unstable; urgency=medium
+
+  * Upgrade Tor Browser to 10.5.8-build2 (tails/tails!611)
+
+    Closes issues:
+      - Upgrade to Tor Browser 10.5.8 (based on Firefox 78.15.0esr) (tails/tails#18623)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 10.5.8-build2
+
+  * FIX #18568: wait after killing TBB (tails/tails!607)
+
+    Closes issues:
+      - "Tails is localized for every tier-1 language" test fails on iguana
+        (tails/tails#18568)
+
+    Commits:
+      - FIX #18568: wait after killing TBB
+
+  * Fix devel FTBFS (tails/tails!601)
+
+    Commits:
+      - Install squashfs-tools from bullseye.
+      - Refresh uBlock patch vs version 1.37.0+dfsg-1 (fixes: #18537)
+
+  * copy-iuks-to-rsync-server-and-verify: handle arbitrary build agents
+    (tails/tails!597)
+
+    Closes issues:
+      - copy-iuks-to-rsync-server-and-verify: needs adjustment for changing isobuilder
+        names (tails/tails#18574)
+
+    Commits:
+      - copy-iuks-to-rsync-server-and-verify: handle arbitrary build agents.
+
+ -- Tails developers <tails@boum.org>  Tue, 05 Oct 2021 08:20:24 +0200
+
+tails (4.22) unstable; urgency=medium
+
+  * Upgrade Thunderbird to 78.13.0-1~deb10u1
+
+  * Upgrade to Tor Browser 10.5.6 (78.14.0esr) (tails/tails!594)
+
+    Commits:
+      - Upgrade Tor Browser to 10.5.6-build2 (fixes: #18566)
+
+  * Remove Prestera firmware, that's useless in the context of Tails
+    (tails/tails!572)
+
+    Commits:
+      - Stop setting up a kernel module build environment during the images build
+      - Remove Prestera firmware, that's useless in the context of Tails
+
+  * Only allow typing 1 bridge (tails/tails!587)
+
+    Commits:
+      - Only allow typing 1 bridge
+
+  * Don't pretend tor has bootstrapped when tor@default.service failed to start
+    (tails/tails!585)
+
+    Commits:
+      - Don't pretend tor has bootstrapped when tor@default.service failed to start
+
+  * Upgrade firmware-amd-graphics to 20210818-1 (tails/tails!582)
+
+    Commits:
+      - Install version 20210818-1 of packages built from src:firmware-nonfree
+      - Enable the 18556-amd-gpu-firmware APT overlay (refs: #18556).
+
+  * Ensure we use a working mirror to download automatic upgrades (tails/tails!581)
+
+    Commits:
+      - Update mirror-pool-dispatcher submodule
+      - Allow the Upgrader to use tor, now needed by tails-transform-mirror-url for
+        testing mirrors
+      - many improvements to mirror-pool-dispatcher
+      - FIX dependency for tails-transform-mirror-url
+      - apply suggestion from mirror-pool-dispatcher!2
+      - mirror-pool-dispatcher tests mirrors
+
+  * Test suite: fix Pidgin scenarios with XMPP accounts on a server that requires
+    going through the "Create New Room" UI (tails/tails!580)
+
+    Closes issues:
+      - Some Pidgin test suite scenarios fail when using XMPP accounts on a server that
+        requires going through the "Create New Room" UI (tails/tails#18560)
+
+    Commits:
+      - Test suite: update expected Pidgin images
+
+  * Test suite: fail if tor reports that DisableNetwork is an empty string
+    (tails/tails!573)
+
+    Commits:
+      - Test suite: log and fail if tor reports that DisableNetwork is an empty string
+
+  * Persistent Bridges, iteration 4: integrate bridges persistence in Tor
+    Connection (tails/tails!543)
+
+    Commits:
+      - Tor Connection: remove visible border around scrolled window
+      - Drop unneeded grep option
+      - Test suite: be more defensive when interacting with toggle buttons
+      - Test suite: disable step that does not reflect the current implementation
+      - Roadmap--
+      - Mention alternate implementation idea in comment
+      - Fix typo in comment
+      - Make checks closer to our needs
+      - Move shell code from tca-portal to helper script
+      - Make tca-portal helper script more generic
+      - Tor Connection: when pre-filling bridges, adjust the verb from "Type in" to
+        "Use"
+      - Test suite: explain what labelee is
+      - Test suite: adjust to current UI
+      - TCA: fix display on low-height screen resolutions
+      - Test suite: update expected UI text to match current implementation
+      - TCA: correctly set the bridges persistence switch's initial state
+      - TCA: adapt to new tca-portal API
+      - TCA: remove unused imports
+      - TCA: display error when enabling/disabling persistence failed
+      - TCA: check success/failure of portal call when enabling/disabling persistence
+      - Test suite: lint
+      - Test suite: adjust strings to match current implementation
+      - TCA: lock the UI and display a spinner while enabling/disabling persistence
+      - TCA: add another keyboard accelerator
+      - TCA: when toggling bridges persistence, wait the portal call to return a
+        response
+      - TCA: remove unused import
+      - Change usages of call_async to new API
+      - TCA: remove incorrect signal handling
+      - TCA: actually enable/disable Tor bridges persistence when the user asks us to
+      - TCA: display vertical scrollbar when contents does not fit
+      - TCA: hide Network Monitor launcher
+      - Test suite: use the Tor Connection UI to enable bridges persistence
+      - TCA: add skeleton implementation for toggling bridges persistence on/off
+      - TCA: draft bridges Glade UI
+      - TCA: improve keyboard navigation
+      - TCA: add accessibility relationships between a bunch of widgets
+      - TCA: add debug output
+      - TCA: move persistence detection to the wrapper script
+      - TCA: avoid throwing an (invisible) KeyError exception on first launch
+      - Lint.
+
+  * Persistent Bridges, iteration 3: allow persisting bridges (tails/tails!539)
+
+    Commits:
+      - Test suite: lint, again
+      - Test suite: adjust expected owner to actual implementation
+      - TCA: check and save persistence status on startup
+      - tca-portal: add commands to enable/disable persistence of Tor configuration
+      - Test suite: mock functionality that's not implemented yet
+      - Test suite: add step implementation
+      - Test suite: disable incorrect step definition
+      - Test suite: implement steps
+      - Test suite: adjust to expected permissions of /var/lib/tca
+      - Persistence setup: add support for disabling a preset non-interactively
+      - Persistence setup: add a "Tor Bridges" feature
+      - On shutdown, copy to Persistent Storage the Tor configuration that should now
+        persist
+      - Test suite: implement "I accept Tor Connection's offer to use my persistent
+        bridges" step.
+      - Test suite: implement "I choose to connect to Tor automatically" step.
+      - Test suite: extend step to handle configuring persistent bridges.
+      - TDD: add (unimplemented) steps for Tor bridges persistence
+      - Test suite: simplify feature name
+
+  * Persistent Bridges, iteration 2: use settings from tca.conf on first start
+    (tails/tails!538)
+
+    Commits:
+      - Revert "Test suite: cope with current actual behavior"
+      - TCA: rename method to reflect what it now does
+      - TCA: on first run, pre-seed bridges UI state from configuration
+      - TCA: add debug logging to help understand what configuration we've loaded
+      - TCA: add debug output to help figure out whether we loaded tca.conf
+      - TCA: fix loading an empty or invalid configuration file
+      - TCA: on first start, load Tor connection configuration from tca.conf
+
+  * Persistent Bridges, iteration 1: split transient / potentially persistent state
+    (tails/tails!533)
+
+    Commits:
+      - Test suite: cope with current actual behavior
+      - Test suite: adjust to actual implementation
+      - TCA: don't save the default bridges to tca.conf
+      - Test suite: fix buggy "tca.conf is empty" test
+      - Make method name clearer and consistent with read_tca_state()
+      - TCA: Rename method
+      - Fix typo
+      - TCA: Migrate transient state information to a dedicated file
+      - TCA: Rename method
+      - TCA: Refactoring (extract code to functions)
+      - Test suite: Implement new steps
+      - Test suite: lint
+      - TDD: add (unimplemented) steps for the contents of tca.conf
+      - TCA: Disable loading proxy settings from the configuration file
+      - TCA: Set up, pass through, and inherit a new state file
+      - TCA: Remove unused import
+      - TCA: Drop unneeded call to expanduser()
+      - TCA: Only save known-working Tor configuration to tca.conf
+      - TCA: Minor refactoring (avoid having to reason about double-negations)
+      - TCA: Make methods names more specific
+
+  * Always start tor@default.service at boot, don't restart it after closing the
+    Unsafe Browser (tails/tails!584)
+
+    Commits:
+      - Test suite: adjust to the fact tor@default.service is started during boot
+      - Don't restart tor after exiting the Unsafe Browser
+      - Always start tor@default.service at boot
+
+  * Unsafe Browser: Only mention the Persistent Storage when there is one
+    (tails/tails!583)
+
+    Commits:
+      - Unsafe Browser: Only mention the Persistent Storage when there is one
+
+  * Fix running the test suite on sid (tails/tails!579)
+
+    Commits:
+      - Drop another instance of the obsolete which(1)
+      - Test suite: migrate away from obsolete which(1)
+      - Test suite: switch to virtio graphics
+
+  * FIX run_test_suite usage of tor --version for corner-cases (tails/tails!575)
+
+    Commits:
+      - FIX run_test_suite for corner-cases
+
+  * Installer: fix combobox freezes (tails/tails!571)
+
+    Commits:
+      - Installer: fix combobox freezes (refs: #18531)
+
+  * Update Tor Browser AppArmor policy (tails/tails!568)
+
+    Commits:
+      - Update Tor Browser AppArmor policy
+
+  * Tor Connection: decrease "sign of life" timeout, increase bootstrap timeout
+    (tails/tails!567)
+
+    Commits:
+      - Test suite: DRY clicking "Connect to Tor"
+      - Test suite: drop obsolete workaround
+      - Fix typo
+      - Tor Connection: allow the user to retry connecting to Tor from the error screen
+        with the same settings
+      - TCA hacking: use numbers that we have a chance to somewhat support
+      - TCA hacking: drop buggy option
+      - Add dummy entry for next release
+      - Tor Connection: decrease "sign of life" timeout, increase bootstrap timeout
+
+  * Test suite: use new XMPP chat rooms (tails/tails!566)
+
+    Closes issues:
+      - Deal with xmpp.riseup.net going away (tails/tails#17956)
+
+    Commits:
+      - Test suite: remove dead code
+      - Test suite: rename argument to match its current usage
+      - Test suite: use new XMPP chat rooms
+
+  * Resolve "TCA does not connect with default bridges when it should"
+    (tails/tails!563)
+
+    Commits:
+      - Let's use user-centric (first person) phrasing whenever possible
+      - Always set variables
+      - better variable names
+      - test suite: support using bridges w/o needing them
+      - Gherkin for #18462
+      - preserve user's choice of using default bridges
+
+  * Stop trying to connect to Tor when we reach the Tor Connection error screen
+    (tails/tails!559)
+
+    Commits:
+      - TCA hacking: add missing sudo
+      - TCA hacking: make test firewall rule not depend on already having connected to
+        tor
+      - TCA hacking: make test firewall rule more accurate
+      - Test suite: adjust to the new, fixed situation
+      - Revert "let's wait for the Fix Clock dialog to show up"
+      - let's wait for the Fix Clock dialog to show up
+      - state machine docstring
+      - minor cleaning use of variables
+      - FIX state machine wrt DisableNetwork
+      - refactor _decide_right_step
+      - remove hopefully-obsolete todo comments
+      - stop trying to connect after timeout
+
+  * Move wait_for_working_tor logic from NetworkManager to systemd
+    (tails/tails!558)
+
+    Commits:
+      - Update links in comment
+      - Drop useless logging
+      - Allow NM to start htpdate again if it failed last time
+      - Clean up implementation of "Does not run htpdate again after success"
+      - Update comment
+      - sw upgrade should only run when tor is ready
+      - waiting for readiness sounds like a pre-command
+      - Does not run htpdate again after success
+      - let's use the flag file, instead of asking tor
+      - systemd-controlled htpdate
+
+  * Add Russian to the bundled offline documentation (tails/tails!552)
+
+    Commits:
+      - enable Russian on our website. will-fix:
+        https://gitlab.tails.boum.org/tails/tails/-/issues/18454
+
+  * vagrant/lib/tails_build_settings.rb: use --no-signature with git log
+    (tails/tails!548)
+
+    Commits:
+      - vagrant/lib/tails_build_settings.rb: use --no-signature with git log
+      - .gitignore: ignore vmdb2.log
+
+  * GJsonRpcClient.call_async can set a callback (tails/tails!544)
+
+    Commits:
+      - tca-portal: add missing sentence bits
+      - Apply 3 suggestion(s) to 1 file(s)
+      - GJsonRpcClient response handler fix
+      - tca-portal is now fully asynchronous
+      - change previous usages of call_async to new API
+      - call_async can set callbacks
+
+  * drop tordate (tails/tails!542)
+
+    Commits:
+      - ooops, that wasn't useless!
+      - Tor Connection: make GtkSpinButton's UI consistent
+      - Tor Connection: add keyboard accelerators
+      - Tor Connection: use "Wrong clock" instead of "Wrong time" terminology
+      - Tor Connection: use "Fix Clock" instead of "Set Time" terminology
+      - Test suite: lint
+      - Test suite: simplify
+      - Test suite: use higher-level predicate
+      - Test suite: remove obsolete exception
+      - htpdate: increase timeout for working tor
+      - drop useless stuff from 10-time.sh
+      - 20-time imports: update comments, fix shellcheck
+      - remove confusing log line
+      - htpdate works successfully after manual time set
+      - tca sends stderr to journal
+      - no reason to delete the tor log anymore
+      - testing for tordate in test suite is now useless
+      - stop mentioning tordate in website
+      - update time syncing design doc
+      - remove unused code from 20-time.sh
+      - be bold: let's drop @fragile from tor bridges!
+      - drop tordate
+
+  * Re-enable the tor sandbox when no PTs are used (tails/tails!535)
+
+    Commits:
+      - Use variable name more readable than $1
+      - Add missing "set -eu"
+      - Test suite: fix typo in not-enabled-yet code
+      - Test suite: prepare sandbox test for when #18470 is fixed
+      - Test suite: adjust to tor sandbox being disabled when falling back to default
+        bridges
+      - Remove unused attribute
+      - Revamp management of the Tor Sandbox configuration option
+      - Lint.
+      - Use consistent and less confusing names for attribute and method
+      - Adjust to new call_async API
+      - Tor Connection: disable caching of information retrieved from tor by Stem
+      - Wait for side-effects of async call to complete.
+      - Improve encapsulation.
+      - Rename tor-sandbox-helper → tor-pt-configuration-helper.
+      - Be defensive about arguments.
+      - Give base-class a better name.
+      - Drop useless re-definition of method in subclass.
+      - Be more Pythonic.
+      - Apply 1 suggestion(s) to 1 file(s)
+      - Test suite: re-enable tor sandbox sanity check (refs: #18237).
+      - Drop unused, out-of-date main() used for testing a library.
+      - Re-enable the tor sandbox when no PTs are used (refs: #18237)
+
+  * TCA: Allow the user to manually set time (tails/tails!531)
+
+    Commits:
+      - time dialog: spacing + follow mockups better
+      - reference to how a problem might be solved
+      - Set time test scenario uses snapshots
+      - stricter date validation
+      - Test suite: lint
+      - Test suite re-introduce linting lost by merge conflict resolution
+      - FIX date format
+      - more bringing back from devel
+      - Tor Connection: translate 1 string to test l10n
+      - Update POT and PO files
+      - bring back lost changes to tor.rb
+      - fix datestring validation
+      - Test suite: revert indentation regression
+      - Test suite: use user-facing terminology in Gherkin
+      - fix test suite about time dialog
+      - loggers are better than prints
+      - tca remembers user timezone
+      - bring back "unsuccessfully configure" step
+      - reorder fixes in the error screen
+      - set-system-time has early input validation
+      - tca-portal can validate arguments
+      - set-system-time errors are handled
+      - less noisy logging
+      - tails-set-date cleaned a bit
+      - tails-set-date checks if the date is valid early
+      - wait for set time window to be closed
+      - rewrite Gherkin using more user-centric language
+      - fix "Apply suggestion"
+      - Apply 1 suggestion(s) to 1 file(s)
+      - tca test: combo box faster and cleaner
+      - Tooltip for combo box
+      - tca-portal is a bit more verbose
+      - when changing the time, tor must be restarted
+      - Test "set the time in tca" does what it says
+      - FIX time dialog
+      - FIX: missing .ui file translation support
+      - Connect to Tor can be clicked
+      - TCA: adds a dialog to Set Time
+      - tca-portal allows setting time
+      - Separate the anti-test from the fix
+      - reword: "I try to" actually check failure
+      - 15548 implementation is "simulated"
+      - test suite: hw clock can be set to relative time
+      - test: cmd_helper modernized
+      - DRAFT: Add a Scenario for #15548
+
+  * Allow running our test suite on modern AMD CPUs (tails/tails!406)
+
+    Commits:
+      - document LIBVIRT_CPUMODEL
+      - amd hack: convert to config file
+      - modern AMD CPUs apparently benefit from this fix
+
+ -- Tails developers <tails@boum.org>  Mon, 06 Sep 2021 15:14:57 +0200
+
+tails (4.21) unstable; urgency=medium
+
+  * Upgrade to Linux 5.10.46-3 (tails/tails!549)
+
+    Closes issues:
+      - Upgrade to Linux 5.10.46-2+ (CVE-2021-33909) (tails/tails#18489)
+
+    Commits:
+      - Update /etc/group's expected lines ordering
+      - Ensure UIDs/GIDs don't change
+      - Remove obsolete dkms logs cleanup
+      - Don't (attempt to) build VirtualBox guest modules anymore
+      - Upgrade snapshot of the Debian archive to 2021080201
+
+  * Upgrade Thunderbird to 78.12.0-1~deb10u1
+  
+  * Don't (attempt to) build VirtualBox guest modules anymore (tails/tails!537)
+
+    Commits:
+      - Update /etc/group's expected lines ordering
+      - Ensure UIDs/GIDs don't change
+      - Remove obsolete dkms logs cleanup
+      - Don't (attempt to) build VirtualBox guest modules anymore
+
+  * Installer: allow choose Upgrade option when reinstall is cancelled
+    (tails/tails!553)
+
+    Closes issues:
+      - Choosing "Upgrade" option in Tails Installer can delete persistent volume
+        (tails/tails#18494)
+
+    Commits:
+      - Installer: allow choose Upgrade option when reinstall is cancelled
+
+  * Upgrade to Tor Browser 10.5.4 (based on Firefox 78.13esr) (tails/tails!555)
+
+    Closes issues:
+      - Upgrade to Tor Browser 10.5.4 (based on Firefox 78.13esr) (tails/tails#18479)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 10.5.4-build1
+
+  * Clean up code and pre-TCA leftovers (tails/tails!541)
+
+    Closes issues:
+      - Clean up pre-TCA leftovers (tails/tails#18365)
+      - Rename a11y-proxy-netns: it's now used for ibus as well (tails/tails#18366)
+
+    Commits:
+      - Give function the name we use
+      - Rename a11y-proxy-netns → netns-bus-proxy.
+      - Rename TCA's torlaunch network namespace from torlaunch to tca.
+      - Update comment.
+      - Test suite: drop obsolete workaround.
+      - Drop already done TODO comment.
+      - Fix outdated references to Tor Launcher.
+      - Drop unneeded workaround.
+      - Test suite: drop code used to support --old-iso for 4.20 release.
+      - Remove unused exec_unconfined_firefox().
+
+  * Refactor and consolidate how we explicitly check for Tor leaks in the automated
+    test suite (tails/tails!540)
+
+    Closes issues:
+      - "all Internet traffic has only flowed through Tor" sometimes fails: does not
+        allow for varying behavior (fallback to default bridges, or not)
+        (tails/tails#18493)
+
+    Commits:
+      - Test suite: refactor and consolidate how we explicitly check for Tor leaks.
+      - Revert "Test suite: temporarily disable failing step in scenario."
+
+  * Post-RM: doc improvements (tails/tails!528)
+
+    Commits:
+      - clarify release types
+      - after releasing: give more guidance
+      - one less bashism
+      - rm doc: give manual testers the signatures
+      - some parts are not related to freeze
+      - refresh-translations explains that it failed
+      - rm doc: clarify what to do with the package diff
+      - rm doc: clarify freezing
+
+  * Fix usage of mutable default arguments in Python (tails/tails!527)
+
+    Commits:
+      - Fix usage of mutable default arguments in Python
+
+  * More automated testing of TCA for Sponsor08/10 (tails/tails!435)
+
+    Commits:
+      - Refactor.
+      - Clarify.
+      - Clarify.
+      - Test suite: wait longer for the TCA to report errors.
+      - Test suite: test that TCA reports an error when reconnecting to a network where
+        Tor is blocked.
+      - Test suite: drop unnecessary step.
+      - Test suite: make blocking Tor survive reconnections.
+      - Test suite: monitor Tor leaks.
+      - Fix erroneous camel casing in translation.
+      - Test suite: test explicitly selecting default bridges in TCA.
+      - Test suite: test that the same Tor config is applied if TCA reconnects.
+      - Test suite: test that TCA disallows normal bridges in hide mode.
+
+ -- Tails developers <tails@boum.org>  Mon, 09 Aug 2021 07:55:57 +0000
+
+tails (4.20) unstable; urgency=medium
+
+  * Upgrade Thunderbird to 78.11.0-1~deb10u1
+
+  * Upgrade KeePassXC to 2.6.2+dfsg.1-1~bpo10+1
+
+  * 20-time.sh: actually abort if Tor has failed to bootstrap (tails/tails!514)
+
+    Commits:
+      - 20-time.sh: temporarily workaround buggy check
+      - 20-time.sh: fix success and error handling
+      - 20-time.sh: simplify control flow
+      - Lint.
+      - 20-time.sh: actually abort if Tor has failed to bootstrap
+
+  * Resolve "TCA sometimes fails to start: "bwrap: Can't find source path
+    /tmp/netns-specific/torlaunch: No such file or directory"" (tails/tails!489)
+
+    Commits:
+      - tails-ibus-proxy-netns@.service: remove now unneeded NotifyAccess=all
+      - a11y: systemd-notify -> import systemd.daemon
+      - silence useless information to syslog
+      - avoid errors when started directly
+      - clean systemd unit
+      - more timeout on a11y-proxy-netns
+      - FIX gnome.sh search for exact name gnome-shell
+      - drop tca watchdog
+      - safer watchdog
+      - wait for user systemd session to be ready
+      - FIX systemctl path
+      - remove testing leftover
+      - a11y/ibus proxy wait socket to signal readiness
+      - tca-related proxies only active when unneeded
+      - tails-tor-launcher not needed anymore
+      - a11y/ibus proxies for TCA only started with TCA
+      - FIX: call systemctl --user
+      - tentatively setting TCA as a systemd service
+
+  * Resolve "TCA asks consent question when changing network" (tails/tails!460)
+
+    Commits:
+      - FIX: switching to progress, not success, on connection
+      - small code cleaning
+      - FIX #18336 again
+      - tca: FIX success-error-retry
+      - tca reacts to DisableNetwork changes
+      - reduce stem logging noise
+      - tca application monitors DisableNetwork
+
+  * tca-portal service (tails/tails!422)
+
+    Commits:
+      - start tca-portal at boot
+      - restrict access to tca-portal.socket!
+      - tca-portal: add open-documentation + refactoring
+      - FIX FTBFS on tca-portal.service
+      - gnome-system-monitor opens at network tab
+      - ooops: enable tca-portal unit
+      - tca-portal opens onioncircuits
+      - tca-portal (sic!) has systemd socket-activation
+      - tca can talk to its portal
+      - tca-connection-helper based on tinyrpc
+      - draft of a tor-connection-helper service
+
+  * Resolve "TCA: buggy window detection logic on app startup" (tails/tails!457)
+
+    Commits:
+      - TCA sends startup notification to DE
+
+  * Resolve "The amnesia user might have too much power over TCA's configuration
+    directory" (tails/tails!442)
+
+    Commits:
+      - change documentation wrt to tca.conf
+      - tca.conf path changed to /var/lib/tca/
+
+  * Install Linux 5.10.46 and upgrade shim (tails/tails!521)
+
+    Commits:
+      - Update shim* to the version from sid
+      - Update Linux to 5.10.46
+
+  * Don't run a useless IBus proxy for OnionCircuits (tails/tails!510)
+
+    Commits:
+      - Don't run a useless IBus proxy for OnionCircuits
+
+  * Rakefile: actually build with the base branch merged (tails/tails!504)
+
+    Closes issues:
+      - Merging the base branch is not effective ⇒ different Git state between
+        isobuilders and isotesters (tails/tails#18441)
+
+    Commits:
+      - Rakefile: actually build with the base branch merged
+
+  * Rewrite notification when closing TCA on progress bar (tails/tails!496)
+
+    Commits:
+      - Rewrite notification when closing TCA on progress bar (#18362)
+
+  * Implement "Connect to Tor" button in error screen (tails/tails!494)
+
+    Commits:
+      - Revert "avoid errors when started directly"
+      - step error correctly indicates that bridges are on
+      - better textarea alignment
+      - put the current bridges in the textarea
+      - keeps more state about bridge configuration
+      - avoid errors when started directly
+      - error: step proxy now goes back to error screen
+      - connect to tor actually does something
+      - bridges + "connect to tor" on error
+      - DRAFT of better error screen
+
+  * Tor Connection Assistant (tails/tails!375)
+
+    Commits:
+      - open unsafe-browser (if configured)
+      - Test suite: properly tear down after cloding TCA.
+      - Test suite: add some extra error handling.
+      - Test suite: pass showingOnly even though it should not be needed.
+      - Test suite: add error message.
+      - Test suite: fix bad syntax.
+      - Test suite: add delay between tries in override_child().
+      - Test suite: add optional delay between retry_action() tries.
+      - Make is_tor_working() more accurate.
+      - Test suite: only set default bridges when relevant.
+      - design change: Tor Launcher is just removed.
+      - document tca behaviour
+      - bootstrap/phase may include WARN, too
+      - Test suite: work around closing TCA too fast.
+      - more logging to debug test suite
+      - remove leftover commit
+      - proper place for hacking tips
+      - Add icon for the Tor Connection assistant
+      - Generate the list of default bridges at build time.
+      - Test suite: drop workaround.
+      - success indication and fallback to default bridges
+      - more hacking tips to test tca
+      - cover corner cases better
+      - NetworkManager state: signal instead of polling
+      - tca calls NM immediately
+      - tca reacts to nm state changes
+      - Test suite: save Tor journal if TCA fails to start.
+      - Test suite: bump image.
+      - Test suite: TCA has a new internal name.
+      - Test suite: attempt to make try_for() more robust.
+      - Test suite: adapt to TCA UI change.
+      - Test suite: fix retring for child() with regexp matching.
+      - TCA: move to Gtk.Application style
+      - progress bar get data from bootstrap-phase
+      - TCA: drop debugging.
+      - Test suite: convert potentially endless loop to try_for() with timeout.
+      - Persistent Welcome Screen settings: migrate obsolete network setting to new
+        offline mode setting.
+      - Test suite: optimize upgrade check.
+      - smoother progress bar
+      - connect-drop: clean unnecessary hacks
+      - s/amnesia/LIVE_USERNAME/
+      - drop tor-sandbox-helper: not used right now
+      - FIX proxy not working
+      - document tca wrappers
+      - some css rule to style TCA a bit
+      - refactoring: utils -> torutils
+      - more user freedom: consent question can be changed
+      - current Tor state is observed when filling bridges
+      - SAVECONF
+      - resize window on every change_box
+      - FIX GAsyncSpawn 100% CPU
+      - no internet probe anymore: also fix 100% CPU bug
+      - Welcome Screen: use "airplane mode" icon for Offline mode.
+      - Test suite: add scenario testing that TCA can connect after an initial
+        connection failure.
+      - Test suite: make function usable in more contexts.
+      - Test suite: also make it possible to block default bridges.
+      - Test suite: detect TCA errors and fail early.
+      - Test suite: add scenario testing that TCA falls back to default bridges if Tor
+        is blocked.
+      - Test suite: run a dedicated default bridge.
+      - Test suite: refactor.
+      - Test suite: adapt to another changed label.
+      - FIX doc about how to check for non-working Tor
+      - improve display size detection
+      - FIX layout
+      - Test suite: refer to the correct variable.
+      - Test suite: adapt to changed label.
+      - Test suite: fix syntax error.
+      - Rephrase warning
+      - Improve user-visible strings
+      - Test suite: improve names.
+      - Test suite: use TCA's "hide Tor usage" path when testing PTs.
+      - Disable launcher buttons: broken because of netns
+      - use the 3 images + better layout
+      - normal bridges are not accepted in Hide Mode
+      - Bridge validation + better handle IPv6
+      - Always obfs4 + bridge documentation link
+      - GitLab CI: tails-documentation
+      - tails-documentation gains --force-local
+      - document tips&tricks for tca
+      - don't kill TCA on network reconnection
+      - syslog logging really has identity set
+      - lots of logging  to understand bridge bug
+      - put doctests in gitlab in shape again
+      - FIX IBus connection for onion-circuits
+      - more debug about bridge-connection part
+      - Port TCA to onion-grater-over-netns magic
+      - TCA will honor debug flag
+      - more logging
+      - a bit less noise for translatable mixin
+      - TCA logs to syslog/stderr automagically
+      - gitlab-ci: TCA doctest dependency
+      - FIX .gitlab-ci.yml (syntax error)
+      - normal bridges were to be stripped, not expanded
+      - default bridges imported
+      - FIX: bridges have ip-port, not only IP!
+      - put TCA testing in gitlab-ci
+      - bridges doctests
+      - reformatting
+      - Revert "Test suite: add workaround for TCA not sanitizing bridge input
+        properly."
+      - Decent validation for bridge lines
+      - rewrite tca wrapper in python
+      - Test suite: reorder steps to avoid TCA blocking the desktop.
+      - Revert "Test suite: wait for TCA's GUI to be available before using it."
+      - Test suite: work around lost click around TCA start.
+      - Test suite: refactor.
+      - Test suite: add workaround for TCA not sanitizing bridge input properly.
+      - Test suite: wait for TCA's GUI to be available before using it.
+      - Test suite: add timeout.
+      - Test suite: work around Ruby <2.7 args vs keywords handling.
+      - Test suite: fix exception message.
+      - Test suite: adapt scenario for new "Offline Mode" Greeter setting.
+      - Welcome Screen: obsolete "Network Connection" and add new "Offline Mode"
+        setting.
+      - Test suite: rewrite Tor Launcher tests for Tor Connection Assistant.
+      - Test suite: allow regexp matching in Dogtail's child() method.
+      - Test suite: drop unnecessary methods from subclass.
+      - ignore main.ui
+      - tca: state saved, still to little use
+      - tca: don't run two times
+      - minor UI changes
+      - tca: side icon will be added from Python
+      - Temporarily add pluggable transport config to torrc.
+      - Convert Tor Launcher .desktop file to one for TCA.
+      - Remove Tor Launcher, for real!
+      - tca: small text improvement
+      - connect-drop works fine without environment
+      - Revert "Remove Tor Launcher"
+      - tails-tor-launcher actually runs tca
+      - Remove Tor Launcher
+      - another workaround for #18123
+      - onion-grater: quoting matters
+      - Move very context-specific script out of root's PATH.
+      - onion-grater: options are case insensitive
+      - adapt profile to onion-grater's case-sensitiveness
+      - Temporarily workaround tor bug by always disabling the seccomp sandbox.
+      - FIX onion-grater tca profile
+      - run `tca` and it will auto-sudo
+      - tca can connect to onion-grater
+      - translations refreshed for TCA
+      - FIX connect-drop
+      - add tca .ui file to POTFILES.in for l10n
+      - Test suite: delete obsolete scenario.
+      - Improve comment.
+      - Test suite: use correct bridge/PT terminology.
+      - Test suite: fix tor seccomp check in the normal bridge case.
+      - Improve comment.
+      - Fix assertion failure message.
+      - Let's settle for 'normal' bridge when no PT is used.
+      - Add Tor Launcher to GNOME favorite applications.
+      - Tor Launcher: allow amnesia to start and add suitable .desktop file.
+      - Tor Launcher: kill old instances when starting.
+      - Remove the "Tor is ready" notification.
+      - side image
+      - small TorConnectionProxy fixes
+      - step proxy
+      - tca: --debug-statefile for better simulation
+      - error page + early proxy config
+      - back button
+      - main workflows work!
+      - Step forwards for bridge configuration
+      - bridge selection: beginning
+      - easy Tor configuration works!
+      - sudo tca will do; start Tor integration
+      - more steps in Tor launcher UI
+      - GUI: first step implemented (more or less)
+      - a first attempt at a GUI
+      - Test suite: always verify that Tor's Sandbox setting.
+      - Handle multiline GETCONF responses.
+      - Welcome Screen: add note about the missing bridge mode option.
+      - Test suite: fix tor Seccomp verification.
+      - Tor Launcher: enable tor's Seccomp sandbox when not using pluggable transports.
+      - tor-launcher: repair the --force-net-config feature.
+      - Drop now unused restart-tor script.
+      - Unsafe Browser: don't restart tor with restart-tor.
+      - Drop ugly hook killing Tor Launcher.
+      - onion-grater: transparently recover lost tor controller connections.
+      - Work around event handling bug in stem?
+      - Make dynamic configuration we always do static.
+      - Test suite: another attempt to deal with lost key press.
+      - Test suite: deal with lost key press.
+      - Test suite: adapt to Tor Launcher always starting (refs: #17330)
+      - small refactoring
+      - tor launcher: set *every* option
+      - tor-launcher supports proxy authentication
+      - detect Tor bootstrapping status
+      - Tor Launcher some more implementation
+      - WIP: a first attempt at rewriting Tor Launcher
+      - onion-grater: fix error handling.
+      - onion-grater: workaround tor bug by switch from control socket to control port.
+      - Always start Tor Launcher (refs: #17330).
+      - onion-grater: connect to control socket without control port fallback.
+      - Improve check by verifying at least one "nameserver" line.
+      - Drop unused imports.
+
+  * Upgrade Tor Browser to 10.5.2 (tails/tails!524)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Tor Browser upgrade process: adjust branch name
+      - Upgrade Tor Browser to 10.5.2-build1
+      - Tor Browser upgrade process: adjust instructions to new file names
+      - Factorize export of TOR_USE_LEGACY_LAUNCHER (fixes: #18459)
+
+  * Fix feature branch commit encoded into the artifacts' names (fixes: #18468)
+    (tails/tails!522)
+
+    Closes issues:
+      - Built images encode incorrect topic branch commit (tails/tails#18468)
+
+    Commits:
+      - Fix feature branch commit encoded into the artifacts' names (fixes: #18468)
+
+  * Update the jenkins-tools submodule, to fix po.feature (tails/tails!520)
+
+    Commits:
+      - Update the jenkins-tools submodule, to fix po.feature
+
+  * Upgrader: more robust upgrade download and verification failure detection
+    (tails/tails!519)
+
+    Closes issues:
+      - Upgrader: confusing download failure but upgrade still applied
+        (tails/tails#18162)
+
+    Commits:
+      - tails-iuk-cancel-download: return exit code as-is if it's neither 0 nor 1
+      - tails-iuk-cancel-download: fix shell syntax errors
+      -  Avoid that the Upgrader breaks if pgrep won't match any process
+      - Upgrader: cancell the IUK download if an error appears
+      - Upgrader: more defensive programming
+      - Upgrader: ensure we fail closed on download and verification errors
+
+  * Test suite: consistently save artifacts for various Tor connection failures
+    (tails/tails!517)
+
+    Commits:
+      - Test suite: handle case where the htpdate logs do not exist.
+      - Test suite: add headings to output in Tor failure artifacts.
+      - Test suite: make save_tor_journal() possible to run without Tor logs.
+      - Revert "Revert "Test suite: consistently save artifacts for various Tor
+        connection failures.""
+
+  * Upgrade to OnionShare 2.2 (tails/tails!515)
+
+    Commits:
+      - OnionShare: use ~/Downloads/ as the upload directory in "Receive Files" mode
+      - AppArmor: allow a few more things that OnionShare v2 needs
+      - OnionShare config: use the same indentation as what the app saves
+      - OnionShare config: import new settings
+      - onion-grater: update rules for OnionShare v2
+      - OnionShare: hide Tor settings
+      - Install OnionShare from Bullseye
+
+  * Upgrade Tor Browser to 10.5a17 (tails/tails!513)
+
+    Commits:
+      - Test suite: update expected image
+      - Unsafe Browser: Disable Tor Browser's tor bootstrapping mechanism
+      - Test suite: add support for testing Tor Browser alpha versions
+      - Fetch Tor Browser from our own archive.
+      - Disable Tor Browser's tor bootstrapping UI
+      - Upgrade Tor Browser to 10.5a17.
+
+  * WhisperBack: set lower expectations for handling of error reports
+    (tails/tails!511)
+
+    Closes issues:
+      - Temporarily set low expectations for handling of error reports, via our website
+        and/or in WhisperBack (tails/tails#18427)
+
+    Commits:
+      - WhisperBack: set lower expectations
+
+  * Fix issues in testing's test suite (tails/tails!509)
+
+    Commits:
+      - Revert "Test suite: consistently save artifacts for various Tor connection
+        failures."
+      - Test suite: consistently save artifacts for various Tor connection failures.
+      - Test suite: work around the desktop icons being obscured by TCA.
+      - Nitpick.
+      - Test suite: correctly identify supported Tor Browser locales (fixes #18319)
+      - Test suite: drop unknown keyword parameters from translate().
+      - Test suite: rework translate() to not always use the tails domain (fixes:
+        #18447).
+
+  * onion-grater: fix support for restrict-stream-events for namespace matched
+    profiles (tails/tails!508)
+
+    Commits:
+      - Lint.
+      - Move hard-coded network address to constant
+      - onion-grater: fix remote connection check.
+      - Untangle if-statements a bit.
+      - onion-grater: fix support for restrict-stream-events for namespace matched
+        profiles (closes: #18417).
+
+  * Upgrade Linux to 5.10.40 (tails/tails!507)
+
+    Commits:
+      - Upgrade Linux to 5.10.40 (5.10.0-0.bpo.7)
+
+  * Upgrade to Debian Buster 10.10 (tails/tails!506)
+
+    Commits:
+      - Upgrade to Debian Buster 10.10 by bumping APT snapshot of the Debian archive to
+        2021062201
+      - Test suite: don't break if there are multiple Firefox processes
+      - lint_po: ignore torbrowser-launcher's PO files
+      - generate-build-manifest: support builds that used no source package
+      - Switch to a simpler way to maintain our Tor Browser AppArmor profile delta
+      - Rebase AppArmor profile for Tor Browser on top of torbrowser-launcher 0.3.3-5
+
+  * Upgrade Tor to 0.4.5.9 (tails/tails!505)
+
+    Closes issues:
+      - Upgrade tor to 0.4.5.9 (tails/tails#18309)
+
+    Commits:
+      - Upgrade Tor to 0.4.5.9
+
+  * build-tails: fix bugs that prevent local submodules from being used
+    (tails/tails!503)
+
+    Commits:
+      - build-tails: fix resetting the submodules' origin
+      - build-tails: fix syntax error
+
+  * Installer: Make "Reinstall" option not disappear when coming back from
+    confirmation dialog (tails/tails!502)
+
+    Closes issues:
+      - "Reinstall" option disappears when coming back from Upgrade confirmation
+        (tails/tails#18300)
+      - Disable Tails Installer options when there is no target USB stick available
+        (tails/tails#18346)
+
+    Commits:
+      - Installer: disable widgets when there is no target available
+      - Make "Reinstall" option not disappear when coming back from confirmation dialog
+
+  * always start tor (except offline mode) (tails/tails!497)
+
+    Commits:
+      - FIX comment explaining how we user tor@ units
+      - always start tor (except offline mode)
+
+  * Fix build vmdb2 without http proxy (tails/tails!490)
+
+    Commits:
+      - variables are better than hardcoded names!
+      - logs are preserved in case of error
+      - cleaner temporary files handling
+      - FIX building without a http_proxy
+
+  * Resolve "Run tails-*-proxy-netns@.service only for the amnesia user"
+    (tails/tails!487)
+
+    Commits:
+      - a11y/ibus: description includes netns name
+      - a11y/ibus proxy are only enabled for amnesia user
+
+  * Jenkins lib: support extracting issue number at the beginning of the branch
+    name (tails/tails!482)
+
+    Commits:
+      - adds doctests to ActiveBranches
+      - Jenkins lib: support extracting issue number at the beginning of the branch
+        name
+
+  * Resolve "TCA: Implement screen when not connected to a local network"
+    (tails/tails!481)
+
+    Commits:
+      - open the _real_ wifi settings page
+      - wording follows wireframe design
+      - gnome env: add XDG_CURRENT_DESKTOP
+      - tca can open wi-fi config window
+
+  * Test suite: drop low-value tests, add Cucumber tags, improve wording a little
+    (tails/tails!479)
+
+    Commits:
+      - Test suite: try harder not to click a button before it's active
+      - Test suite: remove a few low-value USB installation, upgrade, and boot tests
+      - Test suite: remove wget plaintext http:// test
+      - fixup! Test suite: remove whois(1) tests
+      - Test suite: give generic method a more generic name
+      - Test suite: remove whois(1) tests
+      - Test suite: merge closely related scenarios to improve performance
+      - Test suite: use an existing snapshot instead of booting a fresh Tails
+      - Test suite: improve wording of scenarios and steps
+      - Test suite: remove Pidgin custom certificates tests
+      - Test suite: remove basic AppArmor test
+      - Test suite: remove GnuPG keyserver test
+      - Test suite: remove browser plugins tests
+      - Test suite: add @slow and @not_release_blockers Cucumber tags
+      - Test suite: remove definition for unused step
+      - Test suite: remove VirtualBox test
+
+  * Generate the Vagrant base boxes using vmdb2 instead of vmdebootstrap
+    (tails/tails!478)
+
+    Commits:
+      - Add shellcheck exception.
+      - Drop insane backticks.
+      - Re-introduce some comments that were lost when migrating to vmdb2.
+      - Build doc: remove obsolete instructions
+      - vmdb2: remove no-op duplicated mirror parameters
+      - Fix copy-paste mistakes.
+      - Use grub.d instead of fighting with sed/perl escaping.
+      - vmdb2: disable caching
+      - Drop duplicated work.
+      - Update docs and instructions for migration from vmdebootstrap to vmdb2.
+      - Let's stop claiming Tails can be built from Stretch.
+      - Escape \ in here doc.
+      - Vagrant: work around Debian#951257.
+      - Vagrant: abort when the proxy is invalid.
+      - Vagrant: use IP address for internal proxy.
+      - Drop leftovers from when we used vmdeboostrap to generate Vagrant boxes.
+      - Apply policy-rc.d trick to workaround Debian bug when installing udisks2 in a
+        chroot.
+      - tails-builder: install missing udisks2 deps.
+      - Workaround the fact subshells don't inherit set -e
+      - Drop debugging.
+      - Include the .qcow2, not raw image, in the Vagrant box.
+      - Bump tails-builder image back to 20G.
+      - More clean up.
+      - Switch to vmdb2-based Vagrant box creation (refs: #15349)
+      - Split long command over multiple lines.
+      - Generate .box file.
+      - Add back --rootfs-tarball argument to vmdb2.
+      - Use correct sed syntax in replacement to refer to matched groups.
+      - Use variables in place of hard-coded strings.
+      - Shell quoting++
+      - Drop unnecessary `touch`.
+      - Clean up before and after calling vmdb2.
+      - Generate image name dynamically.
+      - Set APT serials dynamically.
+      - Use mktemp for temporary file.
+      - Drop unused stuff for generating container images.
+      - Do `set -u` in script.
+      - vmdb2: append newline at the end of authorized_keys entry
+      - vmdb2: add HTTP proxy support
+      - WIP: Vagrant: script for generating tails-builder images using vmdb2 instead of
+        vmdebootstrap (refs: #15349)
+
+  * Drop obsolete workaround for Jenkins passing mergebasebranch (tails/tails!475)
+
+    Commits:
+      - Revert "Rakefile: handle jenkins passing the now obsolete mergebasebranch."
+
+  * custom-apt-cruft-check: indentify used binary packages where we lack the source
+    (tails/tails!473)
+
+    Commits:
+      - custom-apt-cruft-check: add support for the testing suite
+      - custom-apt-cruft-check: indentify used binary packages where we lack the
+        source.
+
+  * GitLab CI (test-tca): add missing python3-dbus dependency (tails/tails!472)
+
+    Commits:
+      - GitLab CI (test-tca): add missing python3-dbus dependency
+
+  * Disable shellcheck false positive (tails/tails!471)
+
+    Commits:
+      - Disable shellcheck false positive
+
+  * Fix the dependencies of tca-portal.service and tca-portal.socket
+    (tails/tails!461)
+
+    Commits:
+      - Fix tca-portl.{socket,service} dependencies
+      - Let tca-portal.service be started via systemd socket activation
+
+  * Resolve "No spinner when starting Tor Browser from TCA" (tails/tails!459)
+
+    Commits:
+      - offline step now follows wording from our design
+      - FIX: going offline should not display error step
+      - tca-portal open applications using gtk stuff
+
+  * Drop monkeysphere configuration (tails/tails!454)
+
+    Commits:
+      - Drop monkeysphere configuration
+
+  * Use v3 Onion Service for the deb.torproject.org APT repository
+    (tails/tails!453)
+
+    Commits:
+      - Use v3 Onion Service for the deb.torproject.org APT repository
+
+  * Test suite: drop Seahorse tests (tails/tails!451)
+
+    Commits:
+      - Test suite: drop now useless background
+      - Test suite: update rationale for workaround
+      - Test suite: drop support for running v2 Onion services in Chutney
+      - Test suite: drop Seahorse tests
+
+  * Maintain our Tor Browser AppArmor profile delta in a simpler way
+    (tails/tails!449)
+
+    Commits:
+      - Test suite: don't break if there are multiple Firefox processes
+      - lint_po: ignore torbrowser-launcher's PO files
+      - generate-build-manifest: support builds that used no source package
+      - Switch to a simpler way to maintain our Tor Browser AppArmor profile delta
+      - Rebase AppArmor profile for Tor Browser on top of torbrowser-launcher 0.3.3-5
+
+  * Recover TCA fix + test suite work from now defunct !431 (tails/tails!447)
+
+    Commits:
+      - Test suite: fix racy test.
+      - Test suite: avoid using regex matching since we can.
+      - Test suite: drop escaping we already deal with.
+      - Test suite: implement proper dropping of markup.
+      - Test suite: escape single-quotes in generated Python strings.
+      - Test suite: drop markup from translated strings.
+      - Test suite: make Dogtail automatically translate strings.
+      - TCA: fix tor crashing when falling back to default bridges.
+
+  * TCA asks for confirmation if you close it during progress (tails/tails!446)
+
+    Commits:
+      - Apply 1 suggestion(s) to 1 file(s)
+      - asks confirmation on quit during progress
+
+  * TCA: explain the autoconfig better and implement designed behavior for
+    displaying help (tails/tails!445)
+
+    Commits:
+      - TCA: hide bridge help by default
+      - TCA: use the designed toggle instead of a link near "Configure a Tor bridge" in
+        consent question
+      - TCA: Explain more about the implications of the autoconfig of Tor
+
+  * Resolve "TCA connects with default bridges when it shouldn't" (tails/tails!444)
+
+    Commits:
+      - TCA always saves configuration
+
+  * Resolve "TCA status does not reflect the current status of the connection to
+    Tor" (tails/tails!443)
+
+    Commits:
+      - tca reacts to /run/tor-has-bootstrapped/done
+      - tca monitors /run/tor-has-bootstrapped/done
+
+  * Improve Tor Connection GUI (tails/tails!438)
+
+    Commits:
+      - Test suite: adapt to UI changes in TCA.
+      - Fix shellcheck regressions
+      - TCA: add title to proxy configuration window
+      - TCA: add link to doc in consent question
+      - TCA: make status messages consistently include "to Tor"
+      - TCA: define margin in 1 single place
+      - TCA: make the bridges config screen breathe
+      - TCA: implement designed link to the bridges doc
+      - TCA: remove icons on proxy port & pasword entries
+      - TCA: make the "Connecting" progress screen breathe
+      - TCA: make proxy configuration visual layout linear
+      - TCA: basic visual layout for the "Error connecting to Tor" screen
+      - TCA: reorganize container/child structure to fix vertical text alignment
+      - TCA: Fix vertical text alignment
+      - TCA: Fix vertical text alignment
+      - TCA: make "Connected to Tor successfully" a progress-box-heading
+      - TCA: add standard spacing between label and progress bar
+      - TCA: make "Connecting to Tor…" a progress-box-heading
+      - TCA: move progress-box-heading styling to CSS
+      - TCA: make it breathe
+      - TCA: drop duplicate margin
+      - TCA: improve vertical alignment of success icon
+      - TCA: hide percentage
+      - fixup! TCA: use Unicode ellipsis char
+      - TCA: use correct Unicode char
+      - TCA: hide non-functional "Reset Tor Connection" button
+      - TCA: explicitly declare translation domain in Glade UI file
+      - TCA: style step titles via CSS, make them larger
+      - TCA: make layout more GNOME HIG compliant
+      - TCA: use non-deprecated margin properties, make them multiples of 6px
+      - TCA: make the "Start Tor Browser button" fill the dialog width as designed
+      - TCA: drop custom font size
+      - TCA: use standard GNOME HIG spacing
+      - TCA: improve visual layout
+      - TCA: fix alignment
+      - TCA: improve visual layout
+      - TCA: simplify CSS
+      - TCA: port CSS to pixels and start making it a bit more GNOME HIG compliant
+      - TCA: give widget a name so it can be styled with CSS
+      - WIP: save with glade/sid
+      - Git, please ignore Glade backup files for TCA
+      - TCA Glade UI: require the GTK version we're shipping in Tails 4.x
+
+  * Resolve "Confusing behavior of Tor Connection in offline mode"
+    (tails/tails!436)
+
+    Commits:
+      - better function naming
+      - offline mode error strings changed
+      - FIX ci dependencies for tca
+      - update gettext strings
+      - tca offline mode errors are translatable
+      - TCA give clear error message in Offline Mode
+      - tailslib has doctests
+      - tailslib: can check greeter variables
+
+  * Resolve "Ensure WhisperBack still tells us how successful connections to Tor
+    were made" (tails/tails!434)
+
+    Commits:
+      - whisperback includes tca details
+
+  * TCA UI improvements (tails/tails!428)
+
+    Commits:
+      - Test suite: don't throw TCAConnectionFailure on try_for() timeout.
+      - Test suite: adapt for recent UI changes in TCA.
+      - explain bridge requirements in hide mode
+      - smaller image in TCA
+      - Improvements to TCA GUI
+      - doc: how to tweak tca GUI
+      - corner case about bridge validation
+      - FIX resize problems through GtkStack
+      - tca UI improvements
+      - changing to default bridges is honored
+      - tca ui more consistent
+
+  * TCA reports an error in case of slow connection (tails/tails!426)
+
+    Commits:
+      - progress bar was very slow; + more testing
+      - tca timeout understands "sign-of-life" UX concept
+      - quick & dirty: increase timeout
+
+  * Display an error message when upgrader fails to check for available upgrades
+    (tails/tails!412)
+
+    Closes issues:
+      - Display an error message when the Upgrader fails to check for available
+        upgrades (tails/tails#18238)
+
+    Commits:
+      - Display a dialog if an error happens when getting the UDF
+      - Make debugging_info parameter optional
+      - Display an error dialog when the Upgrader fails to check for available upgrades
+
+  * Rename "MAC address spoofing" as "MAC address anonymization" (tails/tails!411)
+
+    Commits:
+      - Be more helpful
+      - Avoid in-page link
+      - Rewrite
+      - Rename "MAC address spoofing" as "MAC address anonymization" (#18286)
+
+  * Upgrade Linux to 5.10.24 (tails/tails!409)
+
+    Commits:
+      - Upgrade Linux to 5.10.24
+      - Revert "Install linux-compiler-* linux-kbuild-* from our custom APT repository"
+
+  * Fix shellcheck error (tails/tails!394)
+
+    Commits:
+      - Fix shellcheck error
+
+  * Establish a coding standards baseline on our shell code base (tails/tails!190)
+
+    Commits:
+      - GitLab CI: install "file" for the shellcheck test
+      - Lint
+      - Lint
+      - GitLab CI: use Unit test reports for shellcheck
+      - shellcheck-tree: drop unused import
+      - shellcheck-tree: drop obsolete comment
+      - GitLab CI: check shell scripts
+      - ShellCheck: fix remaining offenses
+      - ShellCheck: fix remaining SC2086 offenses
+      - shellcheck-tree: skip built website
+      - Drop unused variables
+      - ShellCheck: make exceptions where warranted
+      - Misc. linting suggested by ShellCheck
+      - shellcheck-tree: new script, that runs shellcheck on all shell scripts
+      - Misc. linting suggested by ShellCheck
+      - ShellCheck: make exceptions where warranted
+      - Drop $ in arithmetic variables
+      - Drop useless calls to cat
+      - ShellCheck: fix offenses
+      - ShellCheck: fix SC2155 offenses
+      - ShellCheck: backticks → $()
+      - auto/config: fix stderr redirection
+      - Factorize
+      - ShellCheck: make exceptions where warranted
+      - ShellCheck: add missing quoting
+      - branch_name_to_suite: fix bug in tr call
+      - ShellCheck: disable false positive
+      - unsafe-browser: use $* when our intent is to concatenate
+      - keepassxc wrapper: fix behavior in case 2+ arguments are passed
+      - live-persist: fix usage message
+      - ShellCheck: fix SC2162 offense
+      - ShellCheck: make exceptions where warranted
+      - ShellCheck: add missing quoting
+      - ShellCheck: fix SC2006 offenses
+      - ShellCheck: fix SC2155 offenses
+      - Drop useless "echo"
+      - ShellCheck: make exceptions where warranted
+      - ShellCheck: fix SC2006 offenses
+      - ShellCheck: replace deprecated tempfile with mktemp (SC2186)
+      - ShellCheck: add missing quoting
+      - Replace antiquated use of expr
+      - Drop unused variables
+      - ShellCheck: fix SC2155 offenses
+      - ShellCheck: disable check that generates mostly false positives
+      - Simplify
+      - Drop unused variables
+      - ShellCheck: add missing quoting
+      - Drop unused variable
+      - ShellCheck: fix SC2059 offense
+      - Ensure here-doc text is not subject to parameter expansion, command
+        substitution, and arithmetic expansion, unless we do need it
+      - ShellCheck: fix SC2162 offenses
+      - chroot_local-hooks: consistently set the executable bit
+      - Simplify
+      - Make for loop more robust
+      - Ensure filenames that start with '-' are not interpreted as switches
+      - Ensure glob is not expanded by the shell interpreter
+      - 10-tbb: fix typo in variable name
+      - ShellCheck: lint
+      - ShellCheck: make exceptions where warranted
+      - ShellCheck: disable false positive
+      - ShellCheck: disable following included source files
+
+ -- Tails developers <tails@boum.org>  Mon, 12 Jul 2021 13:50:41 +0200
+
 tails (4.19) unstable; urgency=medium
 
   * Upgrade Tor Browser to 10.0.17-build1 (tails/tails!468)

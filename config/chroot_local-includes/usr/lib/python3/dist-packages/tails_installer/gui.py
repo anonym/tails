@@ -215,13 +215,13 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
 
         self.opts = opts
         self.args = args
-        self.in_process = False
         self.signals_connected = []
         self.source_available = False
         self.target_available = False
         self.target_selected = False
         self.devices_with_persistence = []
         self.force_reinstall = False
+        self.force_reinstall_button_available = False
 
         self._build_ui()
 
@@ -341,7 +341,6 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
             return
         self.force_reinstall = True
         self.opts.partition = True
-        self.__button_force_reinstall.set_visible(False)
         self.on_start_clicked(button)
 
     def on_source_file_set(self, filechooserbutton):
@@ -351,6 +350,7 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         # get selected device
         drive = self.get_selected_drive()
         if drive is None:
+            self.enable_widgets(False)
             return
 
         device = self.live.drives[drive]
@@ -362,13 +362,16 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
             self.__help_link.set_label(_('Manual Upgrade Instructions'))
             self.__help_link.set_uri('https://tails.boum.org/upgrade/')
             if device['is_device_big_enough_for_reinstall']:
+                self.force_reinstall_button_available = True
                 self.__button_force_reinstall.set_visible(True)
             else:
+                self.force_reinstall_button_available = False
                 self.__button_force_reinstall.set_visible(False)
         else:
             self.opts.partition = True
             self.force_reinstall = True
             self.__button_start.set_label(_('Install'))
+            self.force_reinstall_button_available = False
             self.__button_force_reinstall.set_visible(False)
             self.__help_link.set_label(_('Installation Instructions'))
             self.__help_link.set_uri('https://tails.boum.org/install/')
@@ -424,24 +427,11 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
             self.__button_start.set_sensitive(False)
 
     def populate_devices(self, *args, **kw):
-        if self.in_process or self.target_selected:
+        if self.target_selected:
             return
 
         def add_devices():
             self.__liststore_target.clear()
-            if not len(self.live.drives):
-                self.__infobar.set_message_type(Gtk.MessageType.INFO)
-                self.__label_infobar_title.set_text(
-                        _('No device suitable to install Tails could be found'))
-                self.__label_infobar_details.set_text(
-                        _('Please plug a USB flash drive or SD card of at least %0.1f GB.')
-                        % (CONFIG['official_min_installation_device_size'] / 1000.))
-                self.__infobar.set_visible(True)
-                self.target_available = False
-                self.update_start_button()
-                return
-            else:
-                self.__infobar.set_visible(False)
             self.live.log.debug('drives: %s' % self.live.drives)
             target_list = []
             self.devices_with_persistence = []
@@ -499,11 +489,23 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
                     continue
                 target_list.append([pretty_name, device])
             if len(target_list):
+                self.__infobar.set_visible(False)
                 for target in target_list:
                     self.__liststore_target.append(target)
                 self.target_available = True
                 self.__combobox_target.set_active(0)
                 self.update_start_button()
+            else:
+                self.__infobar.set_message_type(Gtk.MessageType.INFO)
+                self.__label_infobar_title.set_text(
+                        _('No device suitable to install Tails could be found'))
+                self.__label_infobar_details.set_text(
+                        _('Please plug a USB flash drive or SD card of at least %0.1f GB.')
+                        % (CONFIG['official_min_installation_device_size'] / 1000.))
+                self.__infobar.set_visible(True)
+                self.target_available = False
+                self.update_start_button()
+                return
 
         try:
             self.live.detect_supported_drives(callback=add_devices)
@@ -540,12 +542,13 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
     def enable_widgets(self, enabled=True):
         if enabled:
             self.update_start_button()
+            if self.force_reinstall_button_available:
+                self.__button_force_reinstall.set_visible(True)
         else:
             self.__button_start.set_sensitive(False)
             self.__button_force_reinstall.set_visible(False)
-        self.__box_source.set_sensitive(enabled)
-        self.__combobox_target.set_sensitive(enabled and not self.target_selected)
-        self.in_process = not enabled
+        self.__box_source.set_sensitive(not self.target_selected)
+        self.__combobox_target.set_sensitive(not self.target_selected)
 
     def get_selected_drive(self):
         drive = None
@@ -580,6 +583,8 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         if not warning:
             dialog.add_button(_('Cancel'), Gtk.ResponseType.CANCEL)
             dialog.add_button(label_string, Gtk.ResponseType.YES)
+            ok_button = dialog.get_widget_for_response(response_id=Gtk.ResponseType.YES)
+            Gtk.StyleContext.add_class(ok_button.get_style_context(),'destructive-action')
         reply = dialog.run()
         dialog.hide()
         if reply == Gtk.ResponseType.YES:
@@ -620,53 +625,47 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
 
         if self.opts.partition:
             if not self.confirmed:
-                if self.show_confirmation_dialog(
-                        _('Confirm the target USB stick'),
-                        _('%(size)s %(vendor)s %(model)s device (%(device)s)\n\n'
-                          'All data on this USB stick will be lost.') %
-                        {'vendor': self.live.drive['vendor'],
-                         'model':  self.live.drive['model'],
-                         'device': self.live.drive['device'],
-                         'size':   _format_bytes_in_gb(self.live.drive['parent_size']
-                                                       if self.live.drive['parent_size']
-                                                       else self.live.drive['size'])},
-                        False,
-                        label_string=_('Install')):
+                description = _('%(parent_size)s %(vendor)s %(model)s device (%(device)s)') % {
+                'vendor': self.live.drive['vendor'],
+                'model':  self.live.drive['model'],
+                'device': self.live.drive['device'],
+                'parent_size': _format_bytes_in_gb(self.live.drive['parent_size']
+                                                   if self.live.drive['parent_size']
+                                                   else self.live.drive['size'])
+                }
+                if self.live.drive['parent'] in self.devices_with_persistence:
+                    delete_message     = _('\n\nThe persistent storage on this USB stick will be lost.')
+                    confirmation_label = _('Delete Persistent Storage and Reinstall')
+                else:
+                    delete_message     = _('\n\nAll data on this USB stick will be lost.')
+                    confirmation_label = _('Delete All Data and Install')
+                msg = _('%(description)s%(delete_message)s') % {
+                        'description': description,
+                        'delete_message': delete_message,
+                }
+                if self.show_confirmation_dialog(_('Confirm the target USB stick'),
+                                             msg, False,confirmation_label):
                     self.confirmed = True
                 else:
+                    if self.force_reinstall_button_available:
+                        self.force_reinstall = False
+                        self.opts.partition = False
                     return
             else:
                 # The user has confirmed that they wish to partition their device,
                 # let's go on
                 self.confirmed = False
         else:
-            description = _('%(parent_size)s %(vendor)s %(model)s device (%(device)s)') % {
-                'vendor': self.live.drive['vendor'],
-                'model':  self.live.drive['model'],
-                'device': self.live.drive['device'],
-                'parent_size': _format_bytes_in_gb(self.live.drive['parent_size']),
-            }
-            persistence_message = ''
-            if self.devices_with_persistence:
-                persistence_message = _('\n\nThe persistent storage on this USB stick will be preserved.')
-            msg = _('%(description)s%(persistence_message)s') % {
-                'description': description,
-                'persistence_message': persistence_message,
-            }
-            if self.show_confirmation_dialog(_('Confirm the target USB stick'),
-               msg, False, label_string=_('Upgrade')):
                 # The user has confirmed that they wish to overwrite their
                 # existing Live OS.  Here we delete it first, in order to
                 # accurately calculate progress.
-                self.delete_existing_liveos_confirmed = False
-                try:
-                    self.live.delete_liveos()
-                except TailsInstallerError as ex:
-                    self.status(ex.args[0])
-                    # self.live.unmount_device()
-                    self.enable_widgets(True)
-                    return
-            else:
+            self.delete_existing_liveos_confirmed = False
+            try:
+                self.live.delete_liveos()
+            except TailsInstallerError as ex:
+                self.status(ex.args[0])
+                # self.live.unmount_device()
+                self.enable_widgets(True)
                 return
 
         # Remove the log handler, because our live thread will register its own

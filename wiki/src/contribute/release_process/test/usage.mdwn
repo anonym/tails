@@ -87,7 +87,7 @@ A Git repository, shared among a bunch of core Tails contributors,
 includes _some_ of the needed secrets (more specifically, those that
 can be use by concurrent test suite runs):
 
-	git clone git@gitlab.tails.boum.org:tails/test-suite-shared-secrets \
+	git clone git@gitlab-ssh.tails.boum.org:tails/test-suite-shared-secrets \
 	   features/config/shared-secrets.d
 
 ## Non-secret configuration
@@ -138,6 +138,11 @@ by the local configuration file:
 
 * `VCPUS`: Integer value. Number of vCPUs given to the system under test.
   Default: see [[!tails_gitweb features/domains/default.xml]].
+
+* `LIBVIRT_CPUMODEL`: String or boolean. This is used to specify the cpu model that libvirt should use. Set it
+  to `false` (the default) to let libvirt figure it out. This is useful in case you have a cpu model which is
+  not supported by qemu, which seems to be the case for modern AMD CPUs. In that case, `core2duo` is a
+  well-supported value.
 
 ## "Secret" configuration
 
@@ -192,7 +197,6 @@ test will fail.
 XMPP services known to work well both for `Tails_account` and
 `Friend_account` are:
 
-* riseup.net (use `connect_server: xmpp.riseup.net`)
 * jabber.org (doesn't allow creating arbitrary chatrooms, so setting
   `chat_room` may be needed)
 * jabber.ccc.de

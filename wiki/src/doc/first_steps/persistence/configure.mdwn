@@ -9,9 +9,26 @@ To create or configure the Persistent Storage, choose
 
 <div class="note">
 
+<p>If you receive the error message <em>Device was not created using a USB
+image or Tails installer</em>, then you need to reinstall Tails either by:</p>
+
+<ul>
+  <li>Installing using our [[USB image|install/download]] instead of our ISO image</li>
+  <li>[[Installing from another Tails|install/linux/clone-overview]]</li>
+</ul>
+
+<p>If you receive the error message while running Tails using
+<i>virt-manager</i>, then you need to
+[[run Tails from our USB image|doc/advanced_topics/virtualization/virt-manager#usb_image]]
+instead of our ISO image.</p>
+
+</div>
+
+<div class="note">
+
 <!-- We should improve this error message in #10048 and get rid of this note. -->
 
-<p>The error message <em>Error, Persistence partition is not
+<p>The error message <em>Error, Persistence volume is not
 unlocked.</em> means that the Persistent Storage was not unlocked in
 the Welcome Screen. You cannot use or configure your Persistent Storage
 but you can delete it and create a new one.</p>
@@ -20,6 +37,17 @@ but you can delete it and create a new one.</p>
 unlock the Persistent Storage, and choose <strong>Applications</strong>&nbsp;▸
 <strong>Tails</strong>&nbsp;▸ <strong>Configure persistent volume</strong>
 again.</p>
+
+</div>
+
+<div class="bug">
+
+<p>There is currently no visible way to close the
+<b>Configure persistent volume</b> application when no changes have been made.
+See [[!tails_ticket 18379]].</p>
+
+<p>To close the <b>Configure persistent volume</b> application,
+press <span class="keycap">Esc</span>.</p>
 
 </div>
 
@@ -128,7 +156,7 @@ To open the <span class="filename">Persistent</span> folder, choose
 <a id="welcome_screen"></a>
 
 <div class="icon">
-[[!img preferences-system.png link="no"]]
+[[!img lib/apps/preferences-system.png link="no"]]
 <div class="text"><h2>Welcome Screen</h2></div>
 </div>
 
@@ -138,6 +166,17 @@ and additional settings.
 
 To restore your settings when starting Tails, unlock your Persistent
 Storage in the Welcome Screen.
+
+<a id="tor-bridge">
+
+<div class="icon">
+[[!img onioncircuits.png link=no]]
+<div class="text"><h2>Tor Bridge</h2></div>
+</div>
+
+When the Tor Bridge feature is turned on, the last [[Tor
+bridge|doc/anonymous_internet/tor]] that you used to connect to Tor
+successfully is saved in the Persistent Storage.
 
 <a id="browser_bookmarks"></a>
 
@@ -201,7 +240,7 @@ is saved in the Persistent Storage.
 <a id="thunderbird"></a>
 
 <div class="icon">
-[[!img thunderbird.png link=no]]
+[[!img lib/apps/thunderbird.png link=no]]
 <div class="text"><h2>Thunderbird</h2></div>
 </div>
 
@@ -239,7 +278,7 @@ configuration file.</p>
 <a id="bitcoin"></a>
 
 <div class="icon">
-[[!img electrum.png link=no]]
+[[!img lib/apps/electrum.png link=no]]
 <div class="text"><h2>Bitcoin Client</h2></div>
 </div>
 
@@ -250,7 +289,7 @@ Persistent Storage.
 <a id="pidgin"></a>
 
 <div class="icon">
-[[!img pidgin.png link=no]]
+[[!img lib/apps/pidgin.png link=no]]
 <div class="text"><h2>Pidgin</h2></div>
 </div>
 

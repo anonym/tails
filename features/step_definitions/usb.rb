@@ -1,3 +1,4 @@
+# coding: utf-8
 # Returns a hash that for each persistence preset the running Tails is aware of,
 # for each of the corresponding configuration lines,
 # maps the source to the destination.
@@ -91,6 +92,15 @@ def persistent_presets_ui_settings
   end
 end
 
+# Returns the list of mountpoints which are configured in persistence.conf
+def configured_persistent_mountpoints
+  $vm.file_content(
+    '/live/persistence/TailsData_unlocked/persistence.conf'
+  ).split("\n").map do |line|
+    line.split[0]
+  end
+end
+
 def recover_from_upgrader_failure
   $vm.execute('pkill --full tails-upgrade-frontend-wrapper')
   $vm.execute('killall tails-upgrade-frontend zenity')
@@ -140,7 +150,7 @@ When /^I start Tails Installer$/ do
   # lost *and* the installer does not go to the foreground. So let's
   # wait a bit extra.
   sleep 3
-  @screen.wait("TailsInstallerWindow.png", 10).click
+  @screen.wait('TailsInstallerWindow.png', 10).click
 end
 
 When /^I am told by Tails Installer that.*"([^"]+)".*$/ do |status|
@@ -165,6 +175,11 @@ Then /^(no|the "([^"]+)") USB drive is selected$/ do |mode, name|
   end
 end
 
+def persistence_exists?(name)
+  data_part_dev = $vm.disk_dev(name) + '2'
+  $vm.execute("test -b #{data_part_dev}").success?
+end
+
 When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by cloning$/ do |action, name|
   step 'I start Tails Installer'
   # If the device was plugged *just* before this step, it might not be
@@ -177,9 +192,15 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
               action.capitalize
             end
     @installer.button(label).click
-    confirmation_label = action == 'upgrade' ? 'Upgrade' : 'Install'
-    @installer.child('Question',
-                     roleName: 'alert').button(confirmation_label).click
+   unless action ==  'upgrade'
+     confirmation_label = if persistence_exists?(name)
+                            'Delete Persistent Storage and Reinstall'
+                          else
+                            'Delete All Data and Install'
+                          end
+     @installer.child('Question',
+                      roleName: 'alert').button(confirmation_label).click
+    end
     try_for(15 * 60, delay: 10) do
       @installer
         .child('Information', roleName: 'alert')
@@ -239,7 +260,9 @@ When /^I disable the first persistence preset$/ do
   @screen.press('alt', 'F4')
 end
 
-Given /^I create a persistent partition( for Additional Software)?$/ do |asp|
+Given /^I create a persistent partition( with the default settings| for Additional Software)?$/ do |mode|
+  default_settings = mode
+  asp = mode == ' for Additional Software'
   unless asp
     step 'I start "Configure persistent volume" via GNOME Activities Overview'
   end
@@ -248,7 +271,7 @@ Given /^I create a persistent partition( for Additional Software)?$/ do |asp|
   @screen.press('Tab')
   @screen.type(@persistence_password, ['Return'])
   @screen.wait('PersistenceWizardPresets.png', 300)
-  step 'I enable all persistence presets' unless asp
+  step 'I enable all persistence presets' unless default_settings
 end
 
 def check_disk_integrity(name, dev, scheme)
@@ -593,6 +616,9 @@ Then /^all persistent directories(| from the old Tails version) have safe access
       elsif File.basename(src) == 'greeter-settings'
         expected_perms = '700'
         expected_owner = 'Debian-gdm'
+      elsif File.basename(src) == 'tca'
+        expected_perms = '700'
+        expected_owner = 'root'
       else
         expected_perms = '755'
         expected_owner = 'root'
@@ -1127,7 +1153,9 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   try_for(10) do
     !select_disk_image_dialog.showing
   end
-  restore_dialog.child('Start Restoring…', roleName: 'push button').click
+  restore_dialog.child('Start Restoring…',
+                       roleName:    'push button',
+                       showingOnly: true).click
   disks.child('Information', roleName: 'alert', showingOnly: true)
        .child('Restore', roleName: 'push button', showingOnly: true)
        .click
@@ -1143,7 +1171,7 @@ Given /^I set all Greeter options to non-default values$/ do
   # otherwise we might detect the + button or language entry before it
   # has been readjusted, so while we try to click it, it moves so we
   # miss it.
-  step 'I enable the specific Tor configuration option'
+  step 'I disable networking in Tails Greeter'
   sleep 2
   step 'I allow the Unsafe Browser to be started'
   sleep 2
@@ -1166,7 +1194,7 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_FORMATS=de_DE
       TAILS_LOCALE_NAME=de_DE
       TAILS_MACSPOOF_ENABLED=false
-      TAILS_NETCONF=obstacle
+      TAILS_NETWORK=false
       TAILS_UNSAFE_BROWSER_ENABLED=true
       TAILS_XKBLAYOUT=de
       TAILS_XKBMODEL=pc105
@@ -1185,7 +1213,7 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_FORMATS=en_US
       TAILS_LOCALE_NAME=en_US
       TAILS_MACSPOOF_ENABLED=true
-      TAILS_NETCONF=direct
+      TAILS_NETWORK=true
       TAILS_UNSAFE_BROWSER_ENABLED=false
       TAILS_XKBLAYOUT=us
       TAILS_XKBMODEL=pc105
@@ -1203,4 +1231,12 @@ Then /^(no )?persistent Greeter options were restored$/ do |no|
     $language = 'German'
     @screen.wait('TailsGreeterPersistentSettingsRestored.png', 10)
   end
+end
+
+Then /^(.*) is (?:still )?configured to persist$/ do |dir|
+  assert(configured_persistent_mountpoints.include?(dir))
+end
+
+Then /^(.*) is not configured to persist$/ do |dir|
+  assert(!configured_persistent_mountpoints.include?(dir))
 end

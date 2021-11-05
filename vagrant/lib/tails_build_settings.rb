@@ -1,9 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Hostname of the virtual machine (must be in /etc/hosts)
-VIRTUAL_MACHINE_HOSTNAME = 'vagrant-buster'.freeze
-
 # Approximate amount of RAM needed to run the builder's base system
 # and perform a build
 VM_MEMORY_BASE = 1.5 * 1024
@@ -24,7 +21,7 @@ DISTRIBUTION = 'buster'.freeze
 # The name of the Vagrant box
 def box_name
   git_root = `git rev-parse --show-toplevel`.chomp
-  shortid, date = `git log -1 --date="format:%Y%m%d" --pretty="%h %ad" -- \
+  shortid, date = `git log -1 --date="format:%Y%m%d" --no-show-signature --pretty="%h %ad" -- \
                    #{git_root}/vagrant/`.chomp.split
   "tails-builder-#{ARCHITECTURE}-#{DISTRIBUTION}-#{date}-#{shortid}"
 end

@@ -168,7 +168,7 @@ method _build_free_space () {
 
 =cut
 
-method fatal (Str $msg, Str :$title, Str :$debugging_info) {
+method fatal (Str $msg, Str :$title, Str :$debugging_info = '') {
     say STDERR $self->encoding->encode("$title\n$msg\n$debugging_info");
     $self->dialog($msg, type => 'error', title => $title) unless $self->batch;
     croak($self->encoding->encode("$title\n$msg\n$debugging_info"));
@@ -186,9 +186,9 @@ method fatal_run_cmd (Str :$error_msg, ArrayRef :$cmd, Maybe[Str] :$as = undef, 
     }
 
     my ($stdout, $stderr);
-    my $success = 1;
+    my $success = 0;
     my $exit_code;
-    IPC::Run::run \@cmd, '>', \$stdout, '2>', \$stderr or $success = 0;
+    $success = 1 if IPC::Run::run \@cmd, '>', \$stdout, '2>', \$stderr;
     $exit_code = $?;
     $success or $self->fatal(
         errf("<b>%{error_msg}s</b>\n\n%{details}s",
@@ -306,10 +306,9 @@ method refresh_signing_key () {
         );
     };
     my ($stdout, $stderr, $exit_code);
-    my $success = 1;
-    IPC::Run::run ['gpg', '--import'],
-          '<', \$new_key_content, '>', \$stdout, '2>', \$stderr
-          or $success = 0;
+    my $success = 0;
+    $success = 1 if IPC::Run::run ['gpg', '--import'],
+          '<', \$new_key_content, '>', \$stdout, '2>', \$stderr;
     $exit_code = $?;
     $success or $self->fatal(
         $error_msg,
@@ -395,71 +394,82 @@ method no_incremental_explanation (Str $no_incremental_reason) {
 method run () {
     $self->refresh_signing_key;
     my ($upgrade_description_text) = $self->get_upgrade_description;
-    my $upgrade_description = Tails::IUK::UpgradeDescriptionFile->new_from_text(
+    my ($upgrade_description, $upgrade_path, $upgrade_type, $no_incremental_reason);
+    try {
+        $upgrade_description = Tails::IUK::UpgradeDescriptionFile->new_from_text(
         text            => $upgrade_description_text,
         product_version => $self->running_system->product_version,
-    );
-    assert_isa($upgrade_description, 'Tails::IUK::UpgradeDescriptionFile');
+       );
+        assert_isa($upgrade_description, 'Tails::IUK::UpgradeDescriptionFile');
 
-    $self->checked_upgrades_file->touch;
+        $self->checked_upgrades_file->touch;
 
-    unless ($upgrade_description->contains_upgrade_path) {
-        $self->info(__("The system is up-to-date"));
-        exit(0);
-    }
-
-    $self->info(__(
-        'This version of Tails is outdated, and may have security issues.'
-    ));
-    my ($upgrade_path, $upgrade_type, $no_incremental_reason);
-
-    if ($self->running_system->started_from_writable_device) {
-        if ($self->running_system->started_from_device_installed_with_tails_installer) {
-            $upgrade_description->contains_incremental_upgrade_path or
-                $no_incremental_reason = 'no-incremental-upgrade-path';
+        unless ($upgrade_description->contains_upgrade_path) {
+            $self->info(__("The system is up-to-date"));
+            exit(0);
         }
-        else {
-            $no_incremental_reason = 'not-installed-with-tails-installer';
-        }
-    }
-    else {
-        $no_incremental_reason = 'non-writable-device';
-    }
 
-    if (! defined($no_incremental_reason)) {
-        my $incremental_upgrade_path = $upgrade_description->incremental_upgrade_path;
-        my $free_memory             = $self->running_system->free_memory;
-        my $memory_needed           = memory_needed($incremental_upgrade_path);
-        if ($free_memory >= $memory_needed) {
-            my $free_space   = $self->free_space;
-            my $space_needed = space_needed($incremental_upgrade_path);
-            if ($free_space >= $space_needed) {
-                $upgrade_path = $incremental_upgrade_path;
-                $upgrade_type = 'incremental';
+        $self->info(__(
+                        'This version of Tails is outdated, and may have security issues.'
+        ));
+
+        if ($self->running_system->started_from_writable_device) {
+            if ($self->running_system->started_from_device_installed_with_tails_installer) {
+                $upgrade_description->contains_incremental_upgrade_path or
+                    $no_incremental_reason = 'no-incremental-upgrade-path';
             }
             else {
-                $no_incremental_reason = 'not-enough-free-space';
+                $no_incremental_reason = 'not-installed-with-tails-installer';
+            }
+        }
+        else {
+            $no_incremental_reason = 'non-writable-device';
+        }
+
+        if (! defined($no_incremental_reason)) {
+            my $incremental_upgrade_path = $upgrade_description->incremental_upgrade_path;
+            my $free_memory             = $self->running_system->free_memory;
+            my $memory_needed           = memory_needed($incremental_upgrade_path);
+            if ($free_memory >= $memory_needed) {
+                my $free_space   = $self->free_space;
+                my $space_needed = space_needed($incremental_upgrade_path);
+                if ($free_space >= $space_needed) {
+                    $upgrade_path = $incremental_upgrade_path;
+                    $upgrade_type = 'incremental';
+                }
+                else {
+                    $no_incremental_reason = 'not-enough-free-space';
+                    $self->info(__x(
+                                    "The available incremental upgrade requires ".
+                                    "{space_needed} ".
+                                    "of free space on Tails system partition, ".
+                                    " but only {free_space} is available.",
+                                    space_needed => $self->format_bytes($space_needed),
+                                    free_space   => $self->format_bytes($free_space),
+                    ));
+                }
+            }
+            else {
+                $no_incremental_reason = 'not-enough-free-memory';
                 $self->info(__x(
-                    "The available incremental upgrade requires ".
-                    "{space_needed} ".
-                    "of free space on Tails system partition, ".
-                    " but only {free_space} is available.",
-                    space_needed => $self->format_bytes($space_needed),
-                    free_space   => $self->format_bytes($free_space),
+                                "The available incremental upgrade requires ".
+                                "{memory_needed} of free memory, but only ".
+                                "{free_memory} is available.",
+                                memory_needed => $self->format_bytes($memory_needed),
+                                free_memory   => $self->format_bytes($free_memory),
                 ));
             }
         }
-        else {
-            $no_incremental_reason = 'not-enough-free-memory';
-            $self->info(__x(
-                "The available incremental upgrade requires ".
-                "{memory_needed} of free memory, but only ".
-                "{free_memory} is available.",
-                memory_needed => $self->format_bytes($memory_needed),
-                free_memory   => $self->format_bytes($free_memory),
-            ));
-        }
-    }
+    } catch {
+        $self->fatal(
+            __(
+                "An error ocurred while detecting available upgrades.\n".
+                "This should not happen. Please report a bug.",
+            ),
+            title => __(q{Error while detecting available upgrades}),
+            debugging_info => $self->encoding->decode($_),
+        );
+    };
 
     # incremental upgrade is not available or possible,
     # let's see if we can do a full upgrade
@@ -620,10 +630,10 @@ method get_target_files (HashRef $upgrade_path, CodeRef $url_transform, AbsDir $
             @cmd = ('sudo', '-n', '-u', 'tails-iuk-get-target-file', @cmd);
         }
         my ($exit_code, $stderr);
-        my $success = 1;
+        my $success = 0;
 
         if ($self->batch) {
-            IPC::Run::run \@cmd, '2>', \$stderr or $success = 0;
+            $success = 1 if IPC::Run::run \@cmd, '2>', \$stderr;
             $exit_code = $?;
         }
         else {
@@ -647,7 +657,7 @@ method get_target_files (HashRef $upgrade_path, CodeRef $url_transform, AbsDir $
                     # If a line contains only a number, the percentage is updated with that number.
 
                     ### Get download progress percentage
-                    $download_h->pump_nb;
+                    $download_h->pump;
                     next unless $download_out;
 
                     ### Update the progress dialog bar percentage
@@ -672,6 +682,7 @@ method get_target_files (HashRef $upgrade_path, CodeRef $url_transform, AbsDir $
             }
             catch {
                 $stderr = $_;
+                $self->cancel_download;
             }
             finally {
                 $zenity_h->kill_kill;
@@ -685,7 +696,7 @@ method get_target_files (HashRef $upgrade_path, CodeRef $url_transform, AbsDir $
                 }
             };
         }
-        $success or $self->fatal(
+        $success and defined $exit_code and $exit_code == 0 or $self->fatal(
             errf("<b>%{error_msg}s</b>\n\n%{details}s",
                  {
                      error_msg => __(
@@ -861,9 +872,9 @@ method install_iuk (HashRef $upgrade_path, AbsDir $target_files_tempdir) {
     }
 
     my ($exit_code, $stdout, $stderr);
-    my $success = 1;
+    my $success = 0;
 
-    IPC::Run::run \@cmd, '>', \$stdout, '2>', \$stderr or $success = 0;
+    $success = 1 if IPC::Run::run \@cmd, '>', \$stdout, '2>', \$stderr;
     $exit_code = $?;
     $zenity_h->kill_kill unless $self->batch;
 

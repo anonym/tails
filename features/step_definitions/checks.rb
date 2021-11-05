@@ -69,7 +69,7 @@ Then /^the live user is a member of only its own group and "(.*?)"$/ do |groups|
                "live user not in expected groups #{missing}")
 end
 
-Then /^the live user owns its home dir and it has normal permissions$/ do
+Then /^the live user owns its home directory which has strict permissions$/ do
   home = "/home/#{LIVE_USER}"
   assert_vmcommand_success(
     $vm.execute("test -d #{home}"),
@@ -102,16 +102,6 @@ Then /^no unexpected services are listening for network connections$/ do
   end
 end
 
-When /^Tails has booted a 64-bit kernel$/ do
-  assert_vmcommand_success($vm.execute("uname -r | grep -qs 'amd64$'"),
-                           'Tails has not booted a 64-bit kernel.')
-end
-
-Then /^the VirtualBox guest modules are available$/ do
-  assert_vmcommand_success($vm.execute('modinfo vboxguest'),
-                           'The vboxguest module is not available.')
-end
-
 Then /^the support documentation page opens in Tor Browser$/ do
   if $language == 'German'
     expected_title = 'Tails - Hilfe & Support'
@@ -122,9 +112,10 @@ Then /^the support documentation page opens in Tor Browser$/ do
   end
   step "\"#{expected_title}\" has loaded in the Tor Browser"
   browser_name = $language == 'German' ? 'Tor-Browser' : 'Tor Browser'
+  separator = $language == 'German' ? '-' : '—'
   try_for(60) do
     @torbrowser
-      .child(expected_title + " - #{browser_name}", roleName: 'frame')
+      .child("#{expected_title} #{separator} #{browser_name}", roleName: 'frame')
       .children(roleName: 'heading')
       .any? { |heading| heading.text == expected_heading }
   end
@@ -166,16 +157,6 @@ Then /^MAT can clean some sample PNG file$/ do
   end
 end
 
-Then /^AppArmor is enabled$/ do
-  assert_vmcommand_success($vm.execute('aa-status'),
-                           'AppArmor is not enabled')
-end
-
-Then /^some AppArmor profiles are enforced$/ do
-  assert($vm.execute('aa-status --enforced').stdout.chomp.to_i.positive?,
-         'No AppArmor profile is enforced')
-end
-
 def get_seccomp_status(process)
   assert($vm.process_running?(process), "Process #{process} not running.")
   pid = $vm.pidof(process)[0]
@@ -194,33 +175,28 @@ def get_apparmor_status(pid)
   end
 end
 
+Then /^Tor is (not )?confined with Seccomp$/ do |not_confined|
+  expected_sandbox_status = not_confined.nil? ? 1 : 0
+  sandbox_status = $vm.execute_successfully(
+    'tor_control_getconf Sandbox', libs: 'tor'
+  ).stdout.to_i
+  assert_equal(expected_sandbox_status, sandbox_status,
+               'Tor says that the sandbox is ' +
+               (sandbox_status == 1 ? 'enabled' : 'disabled'))
+  # tor's Seccomp status will always be 2 (filter mode), even with
+  # "Sandbox 0", but let's still make sure that is the case.
+  seccomp_status = get_seccomp_status('tor')
+  assert_equal(2, seccomp_status,
+               'Tor is not confined with Seccomp in filter mode')
+end
+
 Then /^the running process "(.+)" is confined with AppArmor in (complain|enforce) mode$/ do |process, mode|
   assert($vm.process_running?(process), "Process #{process} not running.")
   pid = $vm.pidof(process)[0]
   assert_equal(mode, get_apparmor_status(pid))
 end
 
-Then /^the running process "(.+)" is confined with Seccomp in (filter|strict) mode$/ do |process, mode|
-  status = get_seccomp_status(process)
-  if mode == 'strict'
-    assert_equal(1, status,
-                 "#{process} not confined with Seccomp in strict mode")
-  elsif mode == 'filter'
-    assert_equal(2, status,
-                 "#{process} not confined with Seccomp in filter mode")
-  else
-    raise "Unsupported mode #{mode} passed"
-  end
-end
-
-When /^I disable all networking in the Tails Greeter$/ do
-  open_greeter_additional_settings
-  @screen.wait('TailsGreeterNetworkConnection.png', 30).click
-  @screen.wait('TailsGreeterDisableAllNetworking.png', 10).click
-  @screen.wait('TailsGreeterAdditionalSettingsAdd.png', 10).click
-end
-
 Then /^the Tor Status icon tells me that Tor is( not)? usable$/ do |not_usable|
   picture = not_usable ? 'TorStatusNotUsable' : 'TorStatusUsable'
-  @screen.find("#{picture}.png")
+  @screen.wait("#{picture}.png", 10)
 end

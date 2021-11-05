@@ -23,6 +23,10 @@ When(/^I kill the ((?:Tor|Unsafe) Browser)$/) do |browser|
   try_for(10) do
     $vm.execute("pgrep --full --exact '#{info[:cmd_regex]}'").failure?
   end
+
+  # ugly fix to #18568; in my local testing, 3 seconds are always needed. Let's add some more.
+  # a better solution would be to wait until gnome "received" the fact that TorBrowser has gone away.
+  sleep 5
 end
 
 def tor_browser_application_info(defaults)
@@ -63,34 +67,6 @@ def unsafe_browser_application_info(defaults)
   )
 end
 
-def tor_launcher_application_info(defaults)
-  user = 'tor-launcher'
-  # We do not enable AppArmor confinement for the Tor Launcher.
-  binary = $vm.execute_successfully(
-    'echo ${TBB_INSTALL}/firefox-unconfined', libs: 'tor-browser'
-  ).stdout.chomp
-  tor_launcher_install = $vm.execute_successfully(
-    'echo ${TOR_LAUNCHER_INSTALL}', libs: 'tor-browser'
-  ).stdout.chomp
-  cmd_regex = "#{binary}\s+-app #{tor_launcher_install}/application\.ini.*"
-  defaults.merge(
-    {
-      user:                        user,
-      cmd_regex:                   cmd_regex,
-      chroot:                      '',
-      new_tab_button_image:        nil,
-      browser_reload_button_image: nil,
-      browser_stop_button_image:   nil,
-      address_bar_images:          [],
-      # The standalone Tor Launcher uses fewer libs than the full
-      # browser.
-      unused_tbb_libs:             defaults[:unused_tbb_libs]
-        .concat(['libfreebl3.so', 'libfreeblpriv3.so',
-                 'libnssckbi.so', 'libsoftokn3.so',]),
-    }
-  )
-end
-
 def xul_application_info(application)
   defaults = {
     address_bar_images: ["BrowserAddressBar#{$language}.png",
@@ -102,8 +78,6 @@ def xul_application_info(application)
     tor_browser_application_info(defaults)
   when 'Unsafe Browser'
     unsafe_browser_application_info(defaults)
-  when 'Tor Launcher'
-    tor_launcher_application_info(defaults)
   else
     raise "Invalid browser or XUL application: #{application}"
   end
@@ -153,9 +127,11 @@ def page_has_loaded_in_the_tor_browser(page_titles)
   if $language == 'German'
     browser_name = 'Tor-Browser'
     reload_action = 'Neu laden'
+    separator = '-'
   else
     browser_name = 'Tor Browser'
     reload_action = 'Reload'
+    separator = '—'
   end
   try_for(180) do
     # The 'Reload' button (graphically shown as a looping arrow)
@@ -164,7 +140,7 @@ def page_has_loaded_in_the_tor_browser(page_titles)
     # that the page has fully loaded.
     @torbrowser.children(roleName: 'frame', showingOnly: true).any? do |frame|
       page_titles
-        .map  { |page_title| "#{page_title} - #{browser_name}" }
+        .map  { |page_title| "#{page_title} #{separator} #{browser_name}" }
         .any? { |page_title| page_title == frame.name }
     end &&
       @torbrowser.child(reload_action, roleName:    'push button',
@@ -176,11 +152,6 @@ end
 # uses the same interface.
 Then /^"([^"]+)" has loaded in the Tor Browser$/ do |title|
   page_has_loaded_in_the_tor_browser(title)
-end
-
-Then /^the (.*) has no plugins installed$/ do |browser|
-  step "I open the address \"about:plugins\" in the #{browser}"
-  step 'I see "TorBrowserNoPlugins.png" after at most 30 seconds'
 end
 
 def xul_app_shared_lib_check(pid, chroot, expected_absent_tbb_libs = [])
@@ -214,6 +185,7 @@ Then /^the (.*) uses all expected TBB shared libraries$/ do |application|
   pid = $vm.execute_successfully(
     "pgrep --uid #{info[:user]} --full --exact '#{info[:cmd_regex]}'"
   ).stdout.chomp
+  pid = pid.scan(/\d+/).first
   assert_match(/\A\d+\z/, pid, "It seems like #{application} is not running")
   xul_app_shared_lib_check(pid, info[:chroot], info[:unused_tbb_libs])
 end
@@ -281,19 +253,19 @@ end
 
 Then /^the Tor Browser shows the "([^"]+)" error$/ do |error|
   try_for(60) do
-    page_has_heading('Problem loading page - Tor Browser', error)
+    page_has_heading('Problem loading page — Tor Browser', error)
   end
 end
 
 Then /^Tor Browser displays a "([^"]+)" heading on the "([^"]+)" page$/ do |heading, page_title|
   try_for(60) do
-    page_has_heading("#{page_title} - Tor Browser", heading)
+    page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
 
 Then /^Tor Browser displays a '([^']+)' heading on the "([^"]+)" page$/ do |heading, page_title|
   try_for(60) do
-    page_has_heading("#{page_title} - Tor Browser", heading)
+    page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
 
@@ -336,8 +308,8 @@ Then /^DuckDuckGo is the default search engine$/ do
   ddg_search_prompt = 'DuckDuckGoSearchPrompt.png'
   case $language
   when 'Arabic', 'Persian'
-    ddg_search_prompt = "DuckDuckGoSearchPromptRTL.png"
-  when 'Chinese', 'Hindi'
+    ddg_search_prompt = 'DuckDuckGoSearchPromptRTL.png'
+  when 'Hindi'
     ddg_search_prompt = "DuckDuckGoSearchPrompt#{$language}.png"
   end
   step 'I start the Tor Browser'
@@ -356,7 +328,7 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   case $language
   when 'Arabic'
     browser_bar_x = 'BrowserAddressBarXRTL.png'
-  when 'Chinese', 'Hindi'
+  when 'Hindi'
     browser_bar_x = "BrowserAddressBarX#{$language}.png"
   when 'Persian'
     osk_key = 'ScreenKeyboardKeyPersian.png'

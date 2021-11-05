@@ -70,27 +70,7 @@ Feature: Chatting anonymously using Pidgin
     And I create my XMPP account
     And I close Pidgin's account manager window
     Then Pidgin automatically enables my XMPP account
-    And I can join the "tails" channel on "conference.riseup.net"
-
-  Scenario: Adding a certificate to Pidgin
-    Given I have started Tails from DVD and logged in and the network is connected
-    And I start "Pidgin Internet Messenger" via GNOME Activities Overview
-    And I see Pidgin's account manager window
-    And I close Pidgin's account manager window
-    Then I can add a certificate from the "/home/amnesia" directory to Pidgin
-
-  Scenario: Failing to add a certificate to Pidgin
-    Given I have started Tails from DVD and logged in and the network is connected
-    When I start "Pidgin Internet Messenger" via GNOME Activities Overview
-    And I see Pidgin's account manager window
-    And I close Pidgin's account manager window
-    Then I cannot add a certificate from the "/home/amnesia/.gnupg" directory to Pidgin
-    When I close Pidgin's certificate import failure dialog
-    And I close Pidgin's certificate manager
-    Then I cannot add a certificate from the "/lib/live/mount/overlay/rw/home/amnesia/.gnupg" directory to Pidgin
-    When I close Pidgin's certificate import failure dialog
-    And I close Pidgin's certificate manager
-    Then I cannot add a certificate from the "/live/overlay/rw/home/amnesia/.gnupg" directory to Pidgin
+    And I can join the "tails" channel on "chat.disroot.org"
 
   @check_tor_leaks
   Scenario: Using a persistent Pidgin configuration
@@ -105,14 +85,11 @@ Feature: Chatting anonymously using Pidgin
     And I close Pidgin's account manager window
     Then Pidgin automatically enables my XMPP account
     When I close Pidgin
-    # And I generate an OTR key for the default Pidgin account
     And I take note of the configured Pidgin accounts
-    # And I take note of the OTR key for Pidgin's "conference.riseup.net" account
     And I shutdown Tails and wait for the computer to power off
     Given a computer
     And I start Tails from USB drive "__internal" and I login with persistence enabled
     And Pidgin has the expected persistent accounts configured
-    # And Pidgin has the expected persistent OTR keys
     When I start "Pidgin Internet Messenger" via GNOME Activities Overview
     Then Pidgin automatically enables my XMPP account
     And I join some empty multi-user chat

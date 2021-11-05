@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-06-10 19:54+0000\n"
+"POT-Creation-Date: 2021-10-14 07:37+0000\n"
 "PO-Revision-Date: 2020-12-21 10:34+0100\n"
 "Last-Translator: _ignifugo <ignifugo@insicuri.net>\n"
 "Language-Team: ita <transitails@inventati.org>\n"
@@ -49,9 +49,13 @@ msgid "<h2 id=\"tor\">What is the relationship between Tor and Tails?</h2>\n"
 msgstr "Come funziona la risoluzione DNS in Tails?\n"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "See our explanation about [[why does Tails use Tor|doc/about/"
+#| "tor#relationship]]."
 msgid ""
-"See our explanation about [[why does Tails use Tor|doc/about/"
-"tor#relationship]]."
+"See our explanation about [[why does Tails use Tor|doc/anonymous_internet/"
+"tor/why#relationship]]."
 msgstr ""
 "Leggi le nostre spiegazioni riguardo al [[perché Tails utilizza Tor|doc/"
 "about/tor#relationship]]."
@@ -416,40 +420,6 @@ msgstr ""
 "del tuo dispositivo di Tails è qualcosa a cui teniamo molto."
 
 #. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"checksum\">Where can I find the checksum to verify my Tails download?</h2>\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"We do not provide a checksum (SHA hash or similar) to verify your Tails "
-"download."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"Verification using a checksum would be no better than verifying using one of "
-"the techniques documented on our download page: our JavaScript verification, "
-"BitTorrent, or basic OpenPGP."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"These verification methods all rely on some information being securely "
-"downloaded from our website using HTTPS. Similarly, verification using a "
-"checksum would rely on the checksum being securely downloaded from our "
-"website."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"In order to verify your Tails download without having to rely on some "
-"information being securely downloaded from our website, you need to use "
-"[[OpenPGP and authenticate our signing key through the OpenPGP Web of Trust|"
-"install/download#openpgp]]."
-msgstr ""
-
-#. type: Plain text
 #, fuzzy, no-wrap
 #| msgid "<a id=\"browser\"></a>\n"
 msgid "<h1 id=\"browser\">Web browser</h1>\n"
@@ -475,8 +445,8 @@ msgid ""
 "Tor_browser#security-level]] and the [[NoScript|doc/anonymous_internet/"
 "Tor_browser#noscript]] extension to optionally disable more JavaScript. This "
 "might improve security in some cases. However, if you disable JavaScript, "
-"then the [[fingerprint|doc/about/fingerprint]] of your browser will differ "
-"from most Tor users. This might break your anonymity."
+"then the [[fingerprint|doc/anonymous_internet/Tor_Browser#fingerprint]] of "
+"your *Tor Browser* differs from most users. This reduces your anonymity."
 msgstr ""
 
 #. type: Plain text
@@ -484,6 +454,21 @@ msgid ""
 "We think that having JavaScript enabled by default is the best possible "
 "compromise between usability and security in this case."
 msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<div class=\"note\">\n"
+msgstr "<div class=\"note\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<p>We have plans to allow storing the security level in the Persistent Storage. ([[!tails_ticket 9700]])</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "</div>\n"
+msgstr "</div>\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
@@ -577,7 +562,6 @@ msgid ""
 "  <ul>\n"
 "    <li>[[Warnings about the Persistent Storage|doc/first_steps/persistence/warnings#index3h1]]</li>\n"
 "    <li>[[Browsing the web with <span class=\"application\">Tor Browser</span>|doc/anonymous_internet/Tor_browser]]</li>\n"
-"    <li>[[Can I hide the fact that I am using Tails?|doc/about/fingerprint/]]</li>\n"
 "  </ul>\n"
 "</div>\n"
 msgstr ""
@@ -648,10 +632,15 @@ msgstr ""
 "identificarti."
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "As explained in our documentation about\n"
+#| "[[fingerprinting|doc/about/fingerprint]], Tails provides anonymity on the web by\n"
+#| "making it difficult to distinguish a particular user amongst all the users of\n"
+#| "<span class=\"application\">Tor Browser</span> (either in Tails or on other operating systems).\n"
 msgid ""
 "As explained in our documentation about\n"
-"[[fingerprinting|doc/about/fingerprint]], Tails provides anonymity on the web by\n"
+"[[the fingerprint of *Tor Browser* in Tails|doc/anonymous_internet/Tor_Browser#fingerprint]], Tails provides anonymity by\n"
 "making it difficult to distinguish a particular user amongst all the users of\n"
 "<span class=\"application\">Tor Browser</span> (either in Tails or on other operating systems).\n"
 msgstr ""
@@ -919,9 +908,9 @@ msgstr ""
 
 #. type: Plain text
 msgid ""
-"It is [[fundamental to Tails|doc/about/tor]] that all outgoing traffic be "
-"forced through Tor. We have no plans to make it possible to use a VPN "
-"*instead* of Tor in the future."
+"It is [[fundamental to Tails|doc/anonymous_internet/tor/why]] that all "
+"outgoing traffic be forced through Tor. We have no plans to make it possible "
+"to use a VPN *instead* of Tor in the future."
 msgstr ""
 
 #. type: Title ###
@@ -950,9 +939,8 @@ msgstr ""
 #| "[[Tor bridges|doc/first_steps/welcome_screen/bridge_mode]] can also be "
 #| "useful to bypass the limitations imposed by your ISP."
 msgid ""
-"In these situations, try using [[Tor bridges|doc/first_steps/welcome_screen/"
-"bridge_mode]] to bypass the restrictions imposed by your ISP or local "
-"network."
+"In these situations, try using [[Tor bridges|doc/anonymous_internet/tor]] to "
+"bypass the restrictions imposed by your ISP or local network."
 msgstr ""
 "[[Tor bridges|doc/first_steps/welcome_screen/bridge_mode]] può anche essere "
 "utile per ignorare le limitazioni imposte dal tuo ISP."
@@ -1126,18 +1114,6 @@ msgstr ""
 "ma è complicato e non ancora documentato."
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "For example, some people have been working on how to run a web server "
-#| "behind a hidden service on Tails. See [[!tails_ticket 7879]]."
-msgid ""
-"For example, some people have been working on [[!tails_ticket 5688 desc="
-"\"self-hosted services behind Tails-powered onion services\"]]."
-msgstr ""
-"Ad esempio, alcune persone hanno lavorato su come eseguire un server web "
-"dietro un servizio nascosto su Tails. Vedi [[!tails_ticket 7879]]."
-
-#. type: Plain text
 #, fuzzy, no-wrap
 #| msgid "Can I use <span class=\"command\">ping</span> in Tails?\n"
 msgid "<h2 id=\"ping\">Can I use <span class=\"command\">ping</span> in Tails?</h2>\n"
@@ -1279,14 +1255,15 @@ msgid ""
 msgstr "Se un software non è incluso in Tails, ma è incluso in Debian, è possibile utilizzare la funzionalità [[software aggiuntivo|doc/first_steps/persistence/configure#additional_software]] del volume persistente per installarlo automaticamente all'inizio di ogni sessione di lavoro."
 
 #. type: Plain text
-#, no-wrap
-msgid "</div>\n"
-msgstr "</div>\n"
-
-#. type: Plain text
 msgid "Here is some of the software we are often asked to include in Tails:"
 msgstr ""
 "Ecco alcuni dei software che ci viene spesso richiesto di includere in Tails:"
+
+#. type: Bullet: '  - '
+#, fuzzy
+#| msgid "**torchat**: see [[!tails_ticket 5554]]"
+msgid "**monero**: not in Debian, but see [[!tails_ticket 17823]]"
+msgstr "**torchat**: vedi [[!tails_ticket 5554]]"
 
 #. type: Bullet: '  - '
 msgid "**bitmessage**: not in Debian"
@@ -1378,13 +1355,36 @@ msgid "    torsocks youtube-dl \"https://www.youtube.com/watch?v=JWII85UlzKw\"\n
 msgstr "    torsocks youtube-dl \"https://www.youtube.com/watch?v=JWII85UlzKw\"\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "For more information, refer to the [official\n"
+#| "<span class=\"application\">youtube-dl</span> documentation](https://rg3.github.io/youtube-dl/).\n"
 msgid ""
-"For more information, refer to the [official\n"
-"<span class=\"application\">youtube-dl</span> documentation](https://rg3.github.io/youtube-dl/).\n"
+"For more information, refer to the official\n"
+"[<span class=\"application\">youtube-dl</span> website](https://ytdl-org.github.io/youtube-dl/index.html).\n"
 msgstr ""
 "Per ulteriori informazioni, fai riferimento alla sezione [ufficiale\n"
 "<span class=\"application\">youtube-dl</span> documentation](https://rg3.github.io/youtube-dl/).\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "Can I run a Tor hidden service on Tails?\n"
+msgid "<h2 id=\"monero\">How can I use Monero in Tails?</h2>\n"
+msgstr "Posso eseguire un Tor hidden service su Tails?\n"
+
+#. type: Plain text
+msgid ""
+"You can install the [[*Feather*|doc/advanced_topics/feather]] Monero wallet "
+"as an AppImage."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"Tails currently does not include a Monero wallet. However, we are interested\n"
+"in making it easier to use Monero in Tails in the future. See [[!tails_ticket\n"
+"17823]] for a list of unofficial guides on how to use Monero in Tails.\n"
+msgstr ""
 
 #. type: Plain text
 #, fuzzy, no-wrap
@@ -1426,11 +1426,6 @@ msgid ""
 msgstr ""
 "Avendo tutti gli utenti di Tails impostato lo stesso fuso orario, rende più "
 "difficile distinguerne uno tra tutti gli altri utenti."
-
-#. type: Plain text
-#, no-wrap
-msgid "<div class=\"note\">\n"
-msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
 msgid ""
@@ -1507,94 +1502,32 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "Is it safe to use Tails on a compromised system?\n"
-msgid "<h2 id=\"compromised-system\">Is it safe to use Tails on a compromised system?</h2>\n"
-msgstr "È sicuro utilizzare Tails su un sistema compromesso?\n"
-
-#. type: Plain text
-msgid ""
-"Tails runs independently from the operating system installed on the "
-"computer.  So, if the computer has only been compromised by software, "
-"running from inside your regular operating system (virus, trojan, etc.), "
-"then it is safe to use Tails. This is true as long as Tails itself has been "
-"installed using a trusted system."
-msgstr ""
-"Tails funziona indipendentemente dal sistema operativo installato sul "
-"computer. Quindi, se il computer è stato compromesso solo dal software, "
-"eseguendo da dentro il sistema operativo regolare (virus, trojan, ecc.), "
-"allora è sicuro utilizzare Tails. Questo è vero finché Tails è stato "
-"installato utilizzando un sistema affidabile."
-
-#. type: Plain text
-msgid ""
-"If the computer has been compromised by someone having physical access to it "
-"and who installed untrusted pieces of hardware, then it might be unsafe to "
-"use Tails."
-msgstr ""
-"Se il computer è stato compromesso da qualcuno che ha accesso fisico ad esso "
-"e che ha installato pezzi di hardware non attendibili, potrebbe essere "
-"impossibile utilizzare Tails."
-
-#. type: Plain text
-msgid ""
-"If the BIOS of the computer has been compromised, then it might also be "
-"unsafe to use Tails."
-msgstr ""
-"Se è stato compromesso il BIOS del computer, potrebbe anche essere "
-"impossibile utilizzare Tails."
-
-#. type: Plain text
-msgid "See our [[warning page|doc/about/warning]] for more details."
-msgstr ""
-"Vedi la nostra [[pagina di avvertenze|doc/about/warning]] per ulteriori "
-"dettagli."
-
-#. type: Plain text
-#, fuzzy, no-wrap
 #| msgid "Can I verify the integrity of a Tails USB stick or DVD?\n"
 msgid "<h2 id=\"integrity\">Can I verify the integrity of a Tails USB stick or DVD?</h2>\n"
 msgstr "Posso verificare l'integrità di un dispositivo Tails?\n"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "It is not possible to verify the integrity of a Tails device, USB stick "
+#| "or DVD, when running Tails from this same device. This would be like "
+#| "asking to someone whether she is a liar; the answer of a true liar would "
+#| "always be \"no\"."
 msgid ""
-"It is not possible to verify the integrity of a Tails device, USB stick or "
-"DVD, when running Tails from this same device. This would be like asking to "
-"someone whether she is a liar; the answer of a true liar would always be \"no"
-"\"."
+"It is impossible to verify the integrity of a Tails USB stick or DVD while "
+"running Tails from it. It would be like asking to someone whether they are "
+"lying: a true liar would always pretend to tell the truth."
 msgstr ""
 "Non è possibile verificare l'integrità di un dispositivo Tails quando si "
 "esegue Tails dal dispositivo stesso. Sarebbe come chiedere a qualcuno se è "
 "un bugiardo; la risposta di un vero bugiardo sarebbe sempre \"no\"."
 
-#. type: Bullet: '- '
+#. type: Plain text
 msgid ""
-"To verify the integrity of a DVD from a separate trusted system, you can "
-"verify the signature of the ISO image as documented in [[verify the ISO "
-"image using OpenPGP|install/download-iso#openpgp]] against the DVD itself."
+"If you worry that your Tails might be corrupted, do a [[manual upgrade|"
+"upgrade]] from a trusted operating system to upgrade it to a trusted version "
+"of Tails."
 msgstr ""
-"Per verificare l'integrità di un DVD da un sistema di fiducia separato, è "
-"possibile verificare la firma dell'immagine ISO come documentato in "
-"[[verificare l'immagine ISO utilizzando OpenPGP|install/download-"
-"iso#openpgp]] rispetto al DVD stesso."
-
-#. type: Bullet: '- '
-#, fuzzy
-#| msgid ""
-#| "There is no documented method of verifying the integrity of a USB stick "
-#| "or SD card installed using <span class=\"application\">Tails Installer</"
-#| "span>. However, if you have another trusted Tails device, you can [[clone "
-#| "it onto the untrusted device|doc/upgrade]] to reset it to a trusted state."
-msgid ""
-"There is no documented method of verifying the integrity of a Tails USB "
-"stick.  However, if you have another trusted Tails USB stick, you can "
-"[[clone it onto the untrusted USB stick|doc/upgrade]] to reset it to a "
-"trusted state."
-msgstr ""
-"Non esiste alcun metodo documentato per verificare l'integrità di una "
-"chiavetta USB o di una scheda SD installata utilizzando <span class="
-"\"application\">Tails Installer</span>. Tuttavia, se si dispone di un altro "
-"dispositivo di fiducia Tails, è possibile [[clonarlo sul dispositivo non "
-"attendibile|doc/upgrade]] per ripristinarlo in uno stato attendibile."
 
 #. type: Plain text
 #, fuzzy, no-wrap
@@ -1667,13 +1600,9 @@ msgstr ""
 "è limitato al browser.\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "<div class=\"next\">\n"
-msgstr "<div class=\"next\">\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "<p>See also our [[warning about contextual identities|doc/about/warning#identities]].</p>\n"
+msgid ""
+"See also our warning about [[using Tails sessions for only one purpose at a "
+"time|doc/about/warnings/identity#contextual]]."
 msgstr ""
 
 #. type: Plain text
@@ -1754,6 +1683,91 @@ msgid ""
 msgstr ""
 "Vedere la [[!wikipedia Linux_malware desc=\"Wikipedia page on Linux malware"
 "\"]] per ulteriori dettagli."
+
+#, fuzzy
+#~| msgid ""
+#~| "For example, some people have been working on how to run a web server "
+#~| "behind a hidden service on Tails. See [[!tails_ticket 7879]]."
+#~ msgid ""
+#~ "For example, some people have been working on [[!tails_ticket 5688 desc="
+#~ "\"self-hosted services behind Tails-powered onion services\"]]."
+#~ msgstr ""
+#~ "Ad esempio, alcune persone hanno lavorato su come eseguire un server web "
+#~ "dietro un servizio nascosto su Tails. Vedi [[!tails_ticket 7879]]."
+
+#, fuzzy
+#~| msgid "Is it safe to use Tails on a compromised system?\n"
+#~ msgid ""
+#~ "<h2 id=\"compromised-system\">Is it safe to use Tails on a compromised "
+#~ "system?</h2>\n"
+#~ msgstr "È sicuro utilizzare Tails su un sistema compromesso?\n"
+
+#~ msgid ""
+#~ "Tails runs independently from the operating system installed on the "
+#~ "computer.  So, if the computer has only been compromised by software, "
+#~ "running from inside your regular operating system (virus, trojan, etc.), "
+#~ "then it is safe to use Tails. This is true as long as Tails itself has "
+#~ "been installed using a trusted system."
+#~ msgstr ""
+#~ "Tails funziona indipendentemente dal sistema operativo installato sul "
+#~ "computer. Quindi, se il computer è stato compromesso solo dal software, "
+#~ "eseguendo da dentro il sistema operativo regolare (virus, trojan, ecc.), "
+#~ "allora è sicuro utilizzare Tails. Questo è vero finché Tails è stato "
+#~ "installato utilizzando un sistema affidabile."
+
+#~ msgid ""
+#~ "If the computer has been compromised by someone having physical access to "
+#~ "it and who installed untrusted pieces of hardware, then it might be "
+#~ "unsafe to use Tails."
+#~ msgstr ""
+#~ "Se il computer è stato compromesso da qualcuno che ha accesso fisico ad "
+#~ "esso e che ha installato pezzi di hardware non attendibili, potrebbe "
+#~ "essere impossibile utilizzare Tails."
+
+#~ msgid ""
+#~ "If the BIOS of the computer has been compromised, then it might also be "
+#~ "unsafe to use Tails."
+#~ msgstr ""
+#~ "Se è stato compromesso il BIOS del computer, potrebbe anche essere "
+#~ "impossibile utilizzare Tails."
+
+#~ msgid "See our [[warning page|doc/about/warning]] for more details."
+#~ msgstr ""
+#~ "Vedi la nostra [[pagina di avvertenze|doc/about/warning]] per ulteriori "
+#~ "dettagli."
+
+#~ msgid "<div class=\"next\">\n"
+#~ msgstr "<div class=\"next\">\n"
+
+#~ msgid ""
+#~ "To verify the integrity of a DVD from a separate trusted system, you can "
+#~ "verify the signature of the ISO image as documented in [[verify the ISO "
+#~ "image using OpenPGP|install/download-iso#openpgp]] against the DVD itself."
+#~ msgstr ""
+#~ "Per verificare l'integrità di un DVD da un sistema di fiducia separato, è "
+#~ "possibile verificare la firma dell'immagine ISO come documentato in "
+#~ "[[verificare l'immagine ISO utilizzando OpenPGP|install/download-"
+#~ "iso#openpgp]] rispetto al DVD stesso."
+
+#, fuzzy
+#~| msgid ""
+#~| "There is no documented method of verifying the integrity of a USB stick "
+#~| "or SD card installed using <span class=\"application\">Tails Installer</"
+#~| "span>. However, if you have another trusted Tails device, you can "
+#~| "[[clone it onto the untrusted device|doc/upgrade]] to reset it to a "
+#~| "trusted state."
+#~ msgid ""
+#~ "There is no documented method of verifying the integrity of a Tails USB "
+#~ "stick.  However, if you have another trusted Tails USB stick, you can "
+#~ "[[clone it onto the untrusted USB stick|doc/upgrade]] to reset it to a "
+#~ "trusted state."
+#~ msgstr ""
+#~ "Non esiste alcun metodo documentato per verificare l'integrità di una "
+#~ "chiavetta USB o di una scheda SD installata utilizzando <span class="
+#~ "\"application\">Tails Installer</span>. Tuttavia, se si dispone di un "
+#~ "altro dispositivo di fiducia Tails, è possibile [[clonarlo sul "
+#~ "dispositivo non attendibile|doc/upgrade]] per ripristinarlo in uno stato "
+#~ "attendibile."
 
 #~ msgid ""
 #~ "We had relatively vague [[!tails_ticket 9563 desc=\"plans to improve\n"
@@ -2010,9 +2024,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Attualmente la cifratura predefinita è `aes-cbc-essiv:sha256` con una "
 #~ "chiave di 256 bit."
-
-#~ msgid "**torchat**: see [[!tails_ticket 5554]]"
-#~ msgstr "**torchat**: vedi [[!tails_ticket 5554]]"
 
 #~ msgid ""
 #~ "**veracrypt**: can not be in Debian because of license issues, see [[!"

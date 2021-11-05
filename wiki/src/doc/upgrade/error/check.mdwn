@@ -13,10 +13,12 @@ To solve it:
 
 1. If the problem persists, do a [[manual upgrade|doc/upgrade#manual]].
 
-Automatic upgrades are broken from Tails 4.14 and earlier
-=========================================================
+<a id="4.18"></a>
 
-To upgrade from Tails 4.14 or earlier, you can either:
+Automatic upgrades are broken between Tails 4.15 and Tails 4.18
+===============================================================
+
+To upgrade from Tails 4.15, Tails 4.16, Tails 4.17, or Tails 4.18, you can either:
 
 - Do a [[manual upgrade|doc/upgrade#manual]].
 
@@ -27,7 +29,7 @@ To upgrade from Tails 4.14 or earlier, you can either:
 
   1. In a terminal, execute the following command:
 
-         torsocks curl --silent https://letsencrypt.org/certs/lets-encrypt-r3.pem \
+         torsocks curl --silent https://tails.boum.org/isrg-root-x1-cross-signed.pem \
          | sudo tee --append /usr/local/etc/ssl/certs/tails.boum.org-CA.pem \
          && systemctl --user restart tails-upgrade-frontend
 

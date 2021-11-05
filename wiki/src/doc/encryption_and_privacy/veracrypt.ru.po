@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2020-05-01 15:53+0000\n"
-"PO-Revision-Date: 2021-05-13 18:51+0000\n"
-"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
+"PO-Revision-Date: 2021-09-27 21:06+0000\n"
+"Last-Translator: Алексей Коломенцев <Themanwhosoldtheworld2021@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Using VeraCrypt encrypted volumes\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Использование зашифрованных томов VeraCrypt\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -32,7 +32,7 @@ msgstr "[[!toc levels=2]]\n"
 #. type: Title =
 #, no-wrap
 msgid "Introduction to <span class=\"application\">VeraCrypt</span>"
-msgstr ""
+msgstr "Знакомство с <span class=\"application\">VeraCrypt</span>"
 
 #. type: Plain text
 #, no-wrap
@@ -40,11 +40,15 @@ msgid ""
 "<span class=\"application\">[VeraCrypt](https://www.veracrypt.fr/)</span> is a\n"
 "disk encryption tool that works on Windows, macOS, and Linux.\n"
 msgstr ""
+"<span class=\"application\">[VeraCrypt](https://www.veracrypt.fr/)</span> — "
+"утилита для шифрования диска, совместимая с Windows, macOS и Linux.\n"
 
 #. type: Title -
 #, no-wrap
 msgid "Comparison between <span class=\"application\">LUKS</span> and <span class=\"application\">VeraCrypt</span>"
 msgstr ""
+"Сравнение <span class=\"application\">LUKS</span> и <span class=\""
+"application\">VeraCrypt</span>"
 
 #. type: Plain text
 #, no-wrap
@@ -54,11 +58,16 @@ msgid ""
 "standard for disk encryption in Linux. [[See our documentation about\n"
 "<span class=\"application\">LUKS</span>.|encrypted_volumes]]\n"
 msgstr ""
+"Вы также можете создавать и открывать в Tails зашифрованные тома <span class="
+"\"application\">LUKS</span>. Это стандарт шифрования дисков Linux. [[См. "
+"описание <span class=\"application\">LUKS</span>.|encrypted_volumes]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!inline pages=\"doc/encryption_and_privacy/luks_vs_veracrypt.inline\" raw=\"yes\" sort=\"age\"]]\n"
 msgstr ""
+"[[!inline pages=\"doc/encryption_and_privacy/luks_vs_veracrypt.inline.ru\" "
+"raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -66,6 +75,9 @@ msgid ""
 "To create new <span class=\"application\">VeraCrypt</span> volumes, do so\n"
 "outside of Tails. See the step-by-step guides by Security-in-a-Box:\n"
 msgstr ""
+"Новые тома <span class=\"application\">VeraCrypt</span> придётся создавать "
+"вне Tails. О том, как это сделать, рассказано в руководстве "
+"«Безопасность-в-коробке»:\n"
 
 #. type: Plain text
 msgid ""
@@ -74,16 +86,20 @@ msgid ""
 "veracrypt/mac/)  - [VeraCrypt for Linux](https://securityinabox.org/en/guide/"
 "veracrypt/linux/)"
 msgstr ""
+"- [VeraCrypt для Windows](https://securityinabox.org/ru/guide/veracrypt/"
+"windows/)  - [VeraCrypt для macOS](https://securityinabox.org/en/guide/"
+"veracrypt/mac/)  - [VeraCrypt для Linux](https://securityinabox.org/ru/guide/"
+"veracrypt/linux/)"
 
 #. type: Plain text
 #, no-wrap
 msgid "<a id=\"container-vs-partition\"></a>\n"
-msgstr ""
+msgstr "<a id=\"container-vs-partition\"></a>\n"
 
 #. type: Title -
 #, no-wrap
 msgid "Difference between file containers and partitions"
-msgstr ""
+msgstr "Разница между файловыми контейнерами и разделами"
 
 #. type: Plain text
 #, no-wrap
@@ -91,11 +107,14 @@ msgid ""
 "With <span class=\"application\">VeraCrypt</span> you can store your files\n"
 "encrypted in two different kinds of *volumes*:\n"
 msgstr ""
+"С помощью <span class=\"application\">VeraCrypt</span> вы можете хранить "
+"ваши файлы\n"
+"зашифрованными в *томах* двух разных типов:\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<h3>File containers</h3>\n"
-msgstr ""
+msgstr "<h3>Файловые контейнеры</h3>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -116,16 +135,21 @@ msgid ""
 "</div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\">\n"
+"<p>Файловый контейнер — большой файл, в котором вы можете хранить \n"
+"другие, зашифрованные файлы. Он чем-то похож на ZIP-архив.</p>\n"
+"</div>\n"
+"</div>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<h3>Partitions or drives</h3>\n"
-msgstr ""
+msgstr "<h3>Разделы или диски</h3>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!img partition-icon.png link=\"no\"]]\n"
-msgstr ""
+msgstr "[[!img partition-icon.png link=\"no\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -137,16 +161,22 @@ msgid ""
 "</div>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"text\">\n"
+"<p>Обычно у накопителя (USB-флешки или жёсткого диска) только один раздел, "
+"который занимает весь объём. Так вы можете зашифровать всю флешку. Однако на "
+"накопителе можно создать и несколько разделов.\n"
+"</div>\n"
+"</div>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<a id=\"parameters\"></a>\n"
-msgstr ""
+msgstr "<a id=\"parameters\"></a>\n"
 
 #. type: Title -
 #, no-wrap
 msgid "Unlocking parameters"
-msgstr ""
+msgstr "Параметры разблокировки"
 
 #. type: Plain text
 #, no-wrap
@@ -155,15 +185,18 @@ msgid ""
 "the following parameters, depending on the options that were selected when the\n"
 "volume was created:\n"
 msgstr ""
+"Для разблокировки тома <span class=\"application\">VeraCrypt</span> обратите "
+"внимание на следующее (в зависимости от опций, выбранных в процессе создания "
+"тома):\n"
 
 #. type: Plain text
 msgid "- **Passphrase**"
-msgstr ""
+msgstr "- **Пароль**"
 
 #. type: Plain text
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "  <div class=\"bug\">\n"
-msgstr "<div class=\"bug\">\n"
+msgstr "  <div class=\"bug\">\n"
 
 #. type: Plain text
 #, no-wrap
@@ -173,6 +206,10 @@ msgid ""
 "  <em>VeraCrypt</em> volumes with a passphrase of more than 64 characters.\n"
 "  ([[!tails_ticket 17474]])</p>\n"
 msgstr ""
+"  <p>Из-за <a href=\"https://gitlab.com/cryptsetup/cryptsetup/issues/532\">"
+"проблемы в <em>cryptsetup</em></a> в настоящее время нельзя открыть том "
+"<em>VeraCrypt</em>, если пароль к нему содержит более 64 символов.\n"
+"  ([[!tails_ticket 17474]])</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -185,6 +222,9 @@ msgid ""
 "\"application\">VeraCrypt</span> volume can be unlocked using a particular "
 "file or set of files."
 msgstr ""
+"**Ключевой файл.** Вместо пароля или в дополнение к нему для разблокировки "
+"тома <span class=\"application\">VeraCrypt</span> можно использовать какой-"
+"либо файл или набор файлов."
 
 #. type: Plain text
 #, no-wrap
@@ -192,12 +232,16 @@ msgid ""
 "  [See the <span class=\"application\">VeraCrypt</span> documentation on\n"
 "  keyfiles.](https://www.veracrypt.fr/en/Keyfiles.html)\n"
 msgstr ""
+"  [О ключевых файлах в документации<span class=\"application\""
+">VeraCrypt</span>](https://www.veracrypt.fr/en/Keyfiles.html)\n"
 
 #. type: Bullet: '- '
 msgid ""
 "**PIM**: a number that is needed if it was specified when creating the <span "
 "class=\"application\">VeraCrypt</span> volume."
 msgstr ""
+"**PIM.** Номер, который вам понадобится, если он был указан при создании "
+"тома <span class=\"application\">VeraCrypt</span>."
 
 #. type: Plain text
 #, no-wrap
@@ -205,12 +249,17 @@ msgid ""
 "  [See the <span class=\"application\">VeraCrypt</span> documentation on\n"
 "  PIM.](https://www.veracrypt.fr/en/Personal%20Iterations%20Multiplier%20\\(PIM\\).html)\n"
 msgstr ""
+"  [Информация о PIM в документации <span class=\"application\""
+">VeraCrypt</span>](https://www.veracrypt.fr/en/"
+"Personal%20Iterations%20Multiplier%20\\(PIM\\).html)\n"
 
 #. type: Bullet: '- '
 msgid ""
 "**Hidden volume**: if you want to unlock the hidden volume inside the <span "
 "class=\"application\">VeraCrypt</span> volume."
 msgstr ""
+"**Скрытый том.** Если вы хотите разблокировать скрытый том <span class=\""
+"application\">VeraCrypt</span>."
 
 #. type: Plain text
 #, no-wrap
@@ -218,12 +267,16 @@ msgid ""
 "  [See the <span class=\"application\">VeraCrypt</span> documentation on hidden\n"
 "  volumes.](https://www.veracrypt.fr/en/Hidden%20Volume.html)\n"
 msgstr ""
+"  [О скрытых томах в документации <span class=\"application\""
+">VeraCrypt</span>](https://www.veracrypt.fr/en/Hidden%20Volume.html)\n"
 
 #. type: Plain text
 msgid ""
 "- **System volume**: if you want to unlock an encrypted Windows system "
 "partition."
 msgstr ""
+"- **Системный диск.** Если вы хотите разблокировать зашифрованный системный "
+"диск Windows."
 
 #. type: Plain text
 #, no-wrap
@@ -231,26 +284,29 @@ msgid ""
 "  [See the <span class=\"application\">VeraCrypt</span> documentation on\n"
 "  encrypting a Windows system partition.](https://www.veracrypt.fr/en/System%20Encryption.html)\n"
 msgstr ""
+"  [О шифровании системного диска Windows в документации <span class=\""
+"application\">VeraCrypt</span>](https://www.veracrypt.fr/en/"
+"System%20Encryption.html)\n"
 
 #. type: Title =
 #, no-wrap
 msgid "Using a file container"
-msgstr ""
+msgstr "Файловые контейнеры"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!img container-icon.png link=\"no\" alt=\"\"]]\n"
-msgstr ""
+msgstr "[[!img container-icon.png link=\"no\" alt=\"\"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<a id=\"container-files\"></a>\n"
-msgstr ""
+msgstr "<a id=\"container-files\"></a>\n"
 
 #. type: Title -
 #, no-wrap
 msgid "Unlocking a file container without keyfiles"
-msgstr ""
+msgstr "Разблокирование файлового контейнера без ключевых файлов"
 
 #. type: Plain text
 #, no-wrap
@@ -261,58 +317,75 @@ msgid ""
 "     <span class=\"guisubmenu\">Utilities</span>&nbsp;▸\n"
 "     <span class=\"guisubmenuitem\">Unlock VeraCrypt Volumes</span></span>.\n"
 msgstr ""
+"1. Выберите\n"
+"   <span class=\"menuchoice\">\n"
+"     <span class=\"guimenu\">Приложения</span>&nbsp;▸\n"
+"     <span class=\"guisubmenu\">Утилиты</span>&nbsp;▸\n"
+"     <span class=\"guisubmenuitem\">Разблокировать тома "
+"VeraCrypt</span></span>.\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "   [[!img unlock-veracrypt-volumes.png link=\"no\" alt=\"\"]]\n"
-msgstr "[[!img container-icon.png link=\"no\"]]\n"
+msgstr "   [[!img unlock-veracrypt-volumes.png link=\"no\" alt=\"\"]]\n"
 
 #. type: Bullet: '1. '
 msgid ""
-"Click <span class=\"button\">Add</span> and choose the file container that "
+"Click <span class=\"bold\">Add</span> and choose the file container that "
 "you want to unlock."
 msgstr ""
+"Нажмите <span class=\"bold\">Добавить</span> и выберите файловый контейнер, "
+"который хотите разблокировать."
 
 #. type: Bullet: '1. '
 msgid ""
 "Enter the parameters to unlock the volume. For more information, see the "
 "[[Unlocking parameters|veracrypt#parameters]] section above."
 msgstr ""
+"Введите параметры для разблокировки тома. Подробнее см. раздел выше [["
+"Параметры разблокировки|veracrypt#parameters]]."
 
 #. type: Plain text
 #, no-wrap
-msgid "   Click <span class=\"button\">Unlock</span>.\n"
-msgstr ""
+msgid "   Click <span class=\"bold\">Unlock</span>.\n"
+msgstr "   Click <span class=\"bold\">Разблокировать</span>.\n"
 
 #. type: Bullet: '1. '
 msgid ""
 "<span class=\"application\">Unlock VeraCrypt Volumes</span> unlocks your "
 "volume."
 msgstr ""
+"<span class=\"application\">Unlock VeraCrypt Volumes</span> разблокирует ваш "
+"том."
 
 #. type: Plain text
 #, no-wrap
 msgid ""
 "   If unlocking the volume fails (for example, if you mistyped the\n"
-"   password), click on <span class=\"button\">Unlock</span> to try\n"
+"   password), click on <span class=\"bold\">Unlock</span> to try\n"
 "   unlocking again.\n"
 msgstr ""
+"   Если разблокировать том не удаётся (например, вы неправильно ввели пароль)"
+", нажмите на <span class=\"bold\">Разблокировать</span> и попытайтесь снова."
+"\n"
 
 #. type: Bullet: '1. '
 msgid ""
-"Click <span class=\"button\">Open</span> to open the volume in the <span "
+"Click <span class=\"bold\">Open</span> to open the volume in the <span "
 "class=\"application\">Files</span> browser."
 msgstr ""
+"Нажмите <span class=\"bold\">Открыть</span>, чтобы открыть том в файловом "
+"менеджере <span class=\"application\">Файлы</span>."
 
 #. type: Plain text
 #, no-wrap
 msgid "<a id=\"container-disks\"></a>\n"
-msgstr ""
+msgstr "<a id=\"container-disks\"></a>\n"
 
 #. type: Title -
 #, no-wrap
 msgid "Unlocking a file container with keyfiles"
-msgstr ""
+msgstr "Разблокирование файлового контейнера с помощью ключевых файлов"
 
 #. type: Plain text
 #, no-wrap
@@ -324,6 +397,12 @@ msgid ""
 "     <span class=\"guisubmenuitem\">Disks</span></span>\n"
 "   to start the <span class=\"application\">Disks</span> utility.\n"
 msgstr ""
+"1. Выберите\n"
+"   <span class=\"menuchoice\">\n"
+"     <span class=\"guimenu\">Приложения</span>&nbsp;▸\n"
+"     <span class=\"guisubmenu\">Утилиты</span>&nbsp;▸\n"
+"     <span class=\"guisubmenuitem\">Диски</span></span>\n"
+"  и запустите  утилиту <span class=\"application\">Диски</span>.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -333,16 +412,22 @@ msgid ""
 "     <span class=\"guimenuitem\">Attach Disk Image&hellip;</span></span> from the\n"
 "     top navigation bar.\n"
 msgstr ""
+"1. Выберите <span class=menuchoice\">\n"
+"     <span class=\"guimenu\">Диски</span>&nbsp;▸\n"
+"     <span class=\"guimenuitem\">Attach Disk Image&hellip;</span></span> в "
+"верхней навигационной панели.\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "     [[!img disks-menu.png link=\"no\" alt=\"\"]]\n"
-msgstr "[[!img container-icon.png link=\"no\"]]\n"
+msgstr "     [[!img disks-menu.png link=\"no\" alt=\"\"]]\n"
 
 #. type: Bullet: '1. '
 msgid ""
-"In the <span class=\"button\">Select Disk Image to Attach</span> dialog:"
+"In the <span class=\"bold\">Select Disk Image to Attach</span> dialog:"
 msgstr ""
+"В диалоговом окне <span class=\"bold\">Выберите изображение, которое хотите "
+"прикрепить</span>:"
 
 #. type: Bullet: '   - '
 msgid ""
@@ -374,7 +459,7 @@ msgstr ""
 
 #. type: Bullet: '   - '
 msgid ""
-"Select the file container and click <span class=\"button\">Attach</span>."
+"Select the file container and click <span class=\"bold\">Attach</span>."
 msgstr ""
 
 #. type: Bullet: '1. '
@@ -397,7 +482,7 @@ msgstr "[[!img container-icon.png link=\"no\"]]\n"
 
 #. type: Bullet: '1. '
 msgid ""
-"Click the <span class=\"button\">[[!img lib/unlock.png alt=\"Unlock selected "
+"Click the <span class=\"bold\">[[!img lib/unlock.png alt=\"Unlock selected "
 "encrypted partition\" class=\"symbolic\" link=\"no\"]]</span> button in the "
 "right pane."
 msgstr ""
@@ -411,7 +496,7 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid ""
-"Click the <span class=\"button\">[[!img lib/media-playback-start.png alt="
+"Click the <span class=\"bold\">[[!img lib/media-playback-start.png alt="
 "\"Mount selected partition\" class=\"symbolic\" link=\"no\"]]</span> button "
 "to mount the volume."
 msgstr ""
@@ -435,7 +520,7 @@ msgstr ""
 #. type: Bullet: '- '
 msgid ""
 "In the sidebar of the <span class=\"application\">Files</span> browser, "
-"click on the <span class=\"button\">[[!img lib/media-eject.png alt=\"Eject\" "
+"click on the <span class=\"bold\">[[!img lib/media-eject.png alt=\"Eject\" "
 "class=\"symbolic\" link=\"no\"]]</span> button on the label of the volume "
 "corresponding to your file container."
 msgstr ""
@@ -448,7 +533,7 @@ msgstr "[[!img container-icon.png link=\"no\"]]\n"
 #. type: Bullet: '- '
 msgid ""
 "In <span class=\"application\">Unlock VeraCrypt Volumes</span>, click on the "
-"<span class=\"button\">[[!img lib/window-close.png class=\"symbolic\" link="
+"<span class=\"bold\">[[!img lib/window-close.png class=\"symbolic\" link="
 "\"no\" alt=\"\"]]</span> button in the line that corresponds to your file "
 "container."
 msgstr ""
@@ -489,7 +574,7 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid ""
-"In the list of partitions, click <span class=\"button\">Unlock</span> in the "
+"In the list of partitions, click <span class=\"bold\">Unlock</span> in the "
 "line that corresponds to your USB stick or hard disk."
 msgstr ""
 
@@ -538,7 +623,7 @@ msgstr ""
 #. type: Bullet: '- '
 msgid ""
 "In the sidebar of the <span class=\"application\">Files</span> browser, "
-"click on the <span class=\"button\">[[!img lib/media-eject.png alt=\"Eject\" "
+"click on the <span class=\"bold\">[[!img lib/media-eject.png alt=\"Eject\" "
 "class=\"symbolic\" link=\"no\"]]</span> button on the label of the volume "
 "corresponding to your partition."
 msgstr ""
@@ -551,7 +636,7 @@ msgstr "[[!img container-icon.png link=\"no\"]]\n"
 #. type: Bullet: '- '
 msgid ""
 "In <span class=\"application\">Unlock VeraCrypt Volumes</span>, click on the "
-"<span class=\"button\">[[!img lib/window-close.png class=\"symbolic\" link="
+"<span class=\"bold\">[[!img lib/window-close.png class=\"symbolic\" link="
 "\"no\" alt=\"\"]]</span> button in the line that corresponds to your USB "
 "stick or hard disk."
 msgstr ""

@@ -255,6 +255,9 @@ Before('@product') do |scenario|
   @has_been_reset = false
   # See comment for add_extra_allowed_host() above.
   @extra_allowed_hosts ||= []
+
+  @user_wants_pluggable_transports = false
+  @tor_network_is_blocked = false
 end
 
 # Cucumber After hooks are executed in the *reverse* order they are
@@ -285,13 +288,12 @@ After('@product') do |scenario|
       $vm.display.screenshot(screenshot_path)
       save_failure_artifact('Screenshot', screenshot_path)
     end
-    exception_name = scenario.exception.class.name
-    case exception_name
-    when 'FirewallAssertionFailedError'
+    if scenario.exception.is_a?(FirewallAssertionFailedError)
       Dir.glob("#{$config['TMPDIR']}/*.pcap").each do |pcap_file|
         save_failure_artifact('Network capture', pcap_file)
       end
-    when 'TorBootstrapFailure'
+    elsif [TorBootstrapFailure, TimeSyncingError].any? { |c| scenario.exception.is_a?(c) }
+      save_tor_journal
       save_failure_artifact('Tor logs', "#{$config['TMPDIR']}/log.tor")
       chutney_logs = sanitize_filename(
         "#{elapsed}_#{scenario.name}_chutney-data"
@@ -307,8 +309,16 @@ After('@product') do |scenario|
         'Chutney logs',
         "#{ARTIFACTS_DIR}/#{chutney_logs}"
       )
-    when 'HtpdateError'
-      save_failure_artifact('Htpdate logs', "#{$config['TMPDIR']}/log.htpdate")
+      if scenario.exception.instance_of?(HtpdateError)
+        File.open("#{$config['TMPDIR']}/log.htpdate", 'w') do |f|
+          if $vm.file_exist?('/var/log/htpdate.log')
+            f.write($vm.file_content('/var/log/htpdate.log'))
+          else
+            f.write("The htpdate logs did not exist\n")
+          end
+        end
+        save_failure_artifact('Htpdate logs', "#{$config['TMPDIR']}/log.htpdate")
+      end
     end
     # Note that the remote shell isn't necessarily running at all
     # times a scenario can fail (and a scenario failure could very

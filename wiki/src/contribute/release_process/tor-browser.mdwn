@@ -35,7 +35,7 @@ Still, one can set an arbitrary download location in
 for development purposes.
 
 Occasionally, the new Tor Browser requires adjustments to the corresponding
-AppArmor profile: [[tor-browser_AppArmor_patch]].
+AppArmor profile: [[tor-browser/AppArmor_policy]].
 
 Upgrade Tor Browser in Tails
 ============================
@@ -64,17 +64,23 @@ Browser, and `TBB_IMPORT_BRANCH` to the branch we'll work on, which
 must include the `+force-all-tests` suffix:
 
     TBB_TAILS_TICKET=123456
-    TBB_IMPORT_BRANCH=feature/${TBB_TAILS_TICKET}-tor-browser-${TBB_VERSION%%-*}+force-all-tests
+    TBB_IMPORT_BRANCH=${TBB_TAILS_TICKET}-tor-browser-${TBB_VERSION%%-*}+force-all-tests
 
 Check out the new branch:
 
     git checkout -b ${TBB_IMPORT_BRANCH} origin/stable
 
+Set `TBB_SIGNER` to the nickname of the Tor Browser developer who signed the
+`sha256sums-unsigned-build.txt` file; the detached signature at `$TBB_DIST_URL`
+is named `sha256sums-unsigned-build.txt.asc-${TBB_SIGNER}`:
+
+    TBB_SIGNER=XXX
+
 Fetch the version's hash file and its detached signature, and verify
 with GnuPG:
 
-    wget ${TBB_DIST_URL:?}/sha256sums-unsigned-build.txt{.asc,} && \
-    gpg --verify sha256sums-unsigned-build.txt{.asc,}
+    wget ${TBB_DIST_URL:?}/sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},} && \
+    gpg --verify sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},}
 
 Build the list of tarballs we want and their hashes,
 so this information is available at build time,
@@ -106,7 +112,7 @@ we verify the checksum file.
 Lastly, commit:
 
     git commit config/chroot_local-includes/usr/share/tails/tbb-*.txt \
-        -m "Upgrade Tor Browser to ${TBB_VERSION:?}." && \
+        -m "Upgrade Tor Browser to ${TBB_VERSION:?}" && \
     git show
 
 <div class="caution">
@@ -125,7 +131,7 @@ and/or
 `config/chroot_local-includes/usr/local/lib/tails-shell-library/tor-browser.sh`
 for recent changes made in the Tor Browser build Git repo
 (`git clone https://git.torproject.org/builders/tor-browser-build.git`),
-on the `maint-X.Y-desktop` branch:
+on the `maint-X.Y-desktop` branch (if it does not exist, fall back to `maint-X.Y`):
 
     git log -p \
         projects/firefox/abicheck.cc \
@@ -220,7 +226,7 @@ Commit and push your changes
 ----------------------------
 
 	cd "${TBB_ARCHIVE:?}" && \
-	git commit -m "Add Tor Browser ${TBB_VERSION:?}." && \
+	git commit -m "Add Tor Browser ${TBB_VERSION:?}" && \
 	git annex sync && \
 	git annex copy --to origin -- "${TBB_VERSION:?}" && \
 	git annex sync
@@ -243,7 +249,7 @@ Adjust the URL in the main Git repository
        echo "http://torbrowser-archive.tails.boum.org/${TBB_VERSION:?}/" > \
             config/chroot_local-includes/usr/share/tails/tbb-dist-url.txt && \
        git commit config/chroot_local-includes/usr/share/tails/tbb-dist-url.txt \
-           -m "Fetch Tor Browser from our own archive." && \
+           -m "Fetch Tor Browser from our own archive" && \
        git show
     done
 
@@ -254,4 +260,4 @@ Clean up
 	git annex drop -- "${TBB_VERSION:?}" && \
     git annex sync && \
     rm -rf "${DL_DIR:?}" && \
-    rm -f "${TAILS_GIT_REPO:?}"/sha256sums-unsigned-build.txt{,.asc}
+    rm -f "${TAILS_GIT_REPO:?}"/sha256sums-unsigned-build.txt{,.asc-${TBB_SIGNER}}

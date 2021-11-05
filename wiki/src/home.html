@@ -1,4 +1,4 @@
-<div>[[!meta title="Welcome to Tails!"]]</div>
+<div>[[!meta title="Dear Tails user,"]]</div>
 
 [[!meta stylesheet="home" rel="stylesheet" title=""]]
 [[!meta stylesheet="hide-breadcrumbs" rel="stylesheet" title=""]]
@@ -13,49 +13,21 @@
   </a>
 </div>
 
-<div class="caution">
+<div id="donate-campaign">
 
-<p><strong>Automatic upgrades are broken since Tails 4.14 (December 15).</strong> ([[!tails_ticket 18127]])</p>
+<p>Today, we are asking you to help Tails. Everybody can get Tails for free
+because we believe that nobody should have to pay to be safe while using
+computers. And we will keep it this way, with your support.</p>
 
-<p>If you haven't upgraded your Tails since December, you should upgrade
-to the latest version of Tails.</p>
+<p><span class="highlight">If
+everyone reading this gave $5, our fundraiser would be done in one
+day.</span> The price of a USB stick is all we need.</p>
 
-<p>To do so, you can either:</p>
+<p>But, not everyone can donate. So when you do, you are offering to many
+others who need it, this precious tool that is Tails.</p>
 
-<ul>
-<li>
-  <p>Do a [[manual upgrade|doc/upgrade#manual]].</p>
-</li>
-<li>
-  <p>Fix the automatic upgrade from a terminal. To do so:</p>
-  <ol>
-    <li>
-      <p>Start Tails and set up an [[administration password|doc/first_steps/welcome_screen/administration_password]].</p>
-    </li>
-    <li>
-      <p>In a terminal, execute the following command:</p>
-      <pre><code>torsocks curl --silent https://letsencrypt.org/certs/lets-encrypt-r3.pem \
-| sudo tee --append /usr/local/etc/ssl/certs/tails.boum.org-CA.pem \
-&amp;&amp; systemctl --user restart tails-upgrade-frontend
-</code></pre>
+<p>[[Donate now to fight surveillance and censorship!|donate]]</p>
 
-      <p>This command is a single command that wraps across several lines.
-      Copy and paste the entire block at once and make sure that it executes
-      as a single command.</p>
-    </li>
-    <li>
-      <p>Approximately 30 seconds later, you should be prompted to upgrade to the
-      latest version of Tails. If no prompt appear, you might already be running the
-      latest version of Tails.</p>
-    </li>
-  </ol>
-</li>
-</ul>
-
-</div>
-
-<div>
-[[!inline pages="home/donate.inline" raw="yes" sort="age"]]
 </div>
 
 <div>

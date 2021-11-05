@@ -13,6 +13,7 @@ systemctl enable initramfs-shutdown.service
 systemctl enable onion-grater.service
 systemctl enable tails-allow-external-TailsData-access.service
 systemctl enable tails-synchronize-data-to-new-persistent-volume-on-shutdown.service
+systemctl enable tails-synchronize-tor-configuration-to-persistent-storage-on-shutdown.service
 systemctl enable tails-autotest-broken-Xorg.service
 systemctl enable tails-autotest-remote-shell.service
 systemctl enable tails-create-netns.service
@@ -22,6 +23,7 @@ systemctl enable tails-shutdown-on-media-removal.service
 systemctl enable tails-tor-has-bootstrapped.target
 systemctl enable tails-wait-until-tor-has-bootstrapped.service
 systemctl enable tails-tor-has-bootstrapped-flag-file.service
+systemctl enable tca-portal.socket
 systemctl enable run-initramfs.mount
 systemctl enable var-tmp.mount
 
@@ -35,7 +37,13 @@ systemctl --global enable tails-security-check.service
 systemctl --global enable tails-upgrade-frontend.service
 systemctl --global enable tails-virt-notify-user.service
 systemctl --global enable tails-wait-until-tor-has-bootstrapped.service
-systemctl --global enable tails-a11y-proxy-netns@onioncircs.service
+
+# OnionCircuits has no text input area so it does not need an IBus proxy
+systemctl --global enable "tails-a11y-proxy-netns@onioncircs.service"
+
+for bus in a11y ibus; do
+    systemctl --global enable "tails-$bus-proxy-netns@tbb.service"
+done
 
 # Use socket activation only, to delay the startup of cupsd.
 # In practice, this means that cupsd is started during
@@ -45,12 +53,6 @@ systemctl disable cups.service
 systemctl enable  cups.socket
 
 # We're starting NetworkManager and Tor ourselves.
-# We disable tor.service (as opposed to tor@default.service) because
-# it's an important goal to never start Tor before the user has had
-# a chance to choose to do so in an obfuscated way: if some other
-# package enables tor@whatever.service someday, disabling tor.service
-# will disable it as well, while disabling tor@default.service would not.
-systemctl disable tor.service
 systemctl disable NetworkManager.service
 systemctl disable NetworkManager-wait-online.service
 

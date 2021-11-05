@@ -148,9 +148,8 @@ The `master` branch is merged into `devel` from time to time.
 
 #### Topic branches
 
-We use topic branches called `bugfix/*` and
-`feature/*`, respectively aimed at fixing a single bug and
-implementing a single new feature. Once ready, a topic branch is
+We generally use topic branches called `NNNNN-*`, with "NNNNN" being the main
+issue addressed by the branch. Once ready, a topic branch is
 merged (with `--no-ff`) into the appropriate branch (generally
 `devel`). Until it has been merged, a topic branch's history may be
 rewritten, e.g. it may be rebased on top of `devel`.
@@ -164,8 +163,7 @@ merge at first, like an experimenting branch that you still want to push
 to share with other developers, you can prefix its name by the keyword
 `wip/`.  It will make it clear to everyone that this branch shouldn't be
 merged before being renamed, and our Jenkins instance will not build nor
-test it, so you won't get notifications for a branch that you know is
-breaking the build and/or the test suite.
+test it.
 
 <a id="promotion-material"></a>
 
@@ -194,7 +192,7 @@ team, please skip to the _Puppet modules_ section below.
 
         Host git.puppet.tails.boum.org
 		    HostName 2utzcq6igi4egjhojn46campt6jeriypxpffsmbsmanbhfv2radglkqd.onion
-		    ProxyCommand torsocks monkeysphere ssh-proxycommand %h %p
+		    ProxyCommand /bin/nc -X 5 -x 127.0.0.1:9050 %h %p
 
 2. Clone our private Puppet manifests repository:
 
@@ -298,7 +296,7 @@ Initializing a git-remote-gcrypt repository
 Clone the new, empty repository in a way that tells Git it's going to
 be encrypted:
 
-	git clone gcrypt::git@gitlab.tails.boum.org:$REPOSITORY
+	git clone gcrypt::git@gitlab-ssh.tails.boum.org:$REPOSITORY
 
 Change directory into the newly cloned repository:
 

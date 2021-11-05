@@ -84,6 +84,16 @@ class VM
     rexml.elements['domain/name'].text = @domain_name
     rexml.elements['domain'].add_element('uuid')
     rexml.elements['domain/uuid'].text = LIBVIRT_DOMAIN_UUID
+
+    if $config['LIBVIRT_CPUMODEL']
+      rexml.elements['domain/cpu'].add_attribute('mode', 'custom')
+      rexml.elements['domain/cpu'].add_attribute('match', 'exact')
+      rexml.elements['domain/cpu'].add_attribute('check', 'partial')
+      rexml.elements['domain/cpu'].add_element('model')
+      rexml.elements['domain/cpu/model'].text = $config['LIBVIRT_CPUMODEL']
+      rexml.elements['domain/cpu/model'].add_attribute('fallback', 'allow')
+    end
+
     update(xml: rexml.to_s)
     set_vcpu($config['VCPUS']) if $config['VCPUS']
     @display = Display.new(@domain_name, x_display)
@@ -316,14 +326,12 @@ class VM
 
   def disk_xml_desc(name)
     domain_xml.elements.each('domain/devices/disk') do |e|
-      begin
-        if e.elements['source'].attribute('file').to_s \
-           == @storage.disk_path(name)
-          return e.to_s
-        end
-      rescue StandardError
-        next
+      if e.elements['source'].attribute('file').to_s \
+         == @storage.disk_path(name)
+        return e.to_s
       end
+    rescue StandardError
+      next
     end
     nil
   end
@@ -474,7 +482,7 @@ class VM
       execute_successfully("echo '#{msg}'").stdout.chomp == msg
     end
   rescue StandardError
-    debug_log("The remote shell failed to respond within 3 seconds")
+    debug_log('The remote shell failed to respond within 3 seconds')
     false
   end
 

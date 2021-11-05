@@ -24,7 +24,9 @@ end
 
 # XXX: giving up on a few worst offenders for now
 # rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/PerceivedComplexity
 def ensure_chutney_is_running
   # Ensure that a fresh chutney instance is running, and that it will
   # be cleaned upon exit. We only do it once, though, since the same
@@ -56,7 +58,7 @@ def ensure_chutney_is_running
     chutney_status_log(cmd)
     cmd = 'stop' if cmd == 'stop_old'
     Dir.chdir(chutney_src_dir) do
-      cmd_helper([chutney_script, cmd, network_definition], env)
+      cmd_helper([chutney_script, cmd, network_definition], env: env)
     end
   end
 
@@ -117,7 +119,9 @@ def ensure_chutney_is_running
   chutney_status_log('done')
 end
 # rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/PerceivedComplexity
 
 When /^I configure Tails to use a simulated Tor network$/ do
   # At the moment this step essentially assumes that we boot with 'the
@@ -145,8 +149,6 @@ When /^I configure Tails to use a simulated Tor network$/ do
   # abstraction impractical and it's better that we avoid it an go
   # with the more explicit, step-based approach.
 
-  assert($vm.execute('service tor status').failure?,
-         'Running this step when Tor is running is probably not intentional')
   ensure_chutney_is_running
   # Most of these lines are taken from chutney's client template.
   client_torrc_lines = [
@@ -178,50 +180,5 @@ When /^I configure Tails to use a simulated Tor network$/ do
   end
   client_torrc_lines.concat(dir_auth_lines)
   $vm.file_append('/etc/tor/torrc', client_torrc_lines)
-end
-
-def chutney_onionservice_info
-  hs_hostname_file_path = Dir.glob(
-    "#{$config['TMPDIR']}/chutney-data/nodes/*hs/hidden_service/hostname"
-  ).first
-  hs_hostname = File.open(hs_hostname_file_path) do |f|
-    f.read.chomp
-  end
-  hs_torrc_path = Dir.glob(
-    "#{$config['TMPDIR']}/chutney-data/nodes/*hs/torrc"
-  ).first
-  _, hs_port, local_address_port = File.open(hs_torrc_path) do |f|
-    f.grep(/^HiddenServicePort/).first.split
-  end
-  local_address, local_port = local_address_port.split(':')
-  [local_address, local_port, hs_hostname, hs_port]
-end
-
-def chutney_onionservice_redir(remote_address, remote_port)
-  redir_unit_name = 'tails-test-suite-redir.service'
-  bus = ENV['USER'] == 'root' ? '--system' : '--user'
-  kill_redir = proc do
-    begin
-      if system('/bin/systemctl', bus, '--quiet', 'is-active', redir_unit_name)
-        system('/bin/systemctl', bus, 'stop', redir_unit_name)
-      end
-    rescue StandardError
-      # noop
-    end
-  end
-  kill_redir.call
-  local_address, local_port, = chutney_onionservice_info
-  $chutney_onionservice_job = fatal_system(
-    '/usr/bin/systemd-run',
-    bus,
-    "--unit=#{redir_unit_name}",
-    '--service-type=forking',
-    '--quiet',
-    '--collect',
-    '/usr/bin/redir',
-    "#{local_address}:#{local_port}",
-    "#{remote_address}:#{remote_port}"
-  )
-  add_after_scenario_hook { kill_redir.call }
-  $chutney_onionservice_job
+  $vm.execute_successfully('systemctl restart tor@default.service')
 end
