@@ -341,20 +341,32 @@ div.header { /* override style.css */
   position: relative;
   margin: 10px auto 0 auto;
   width: 150px;
+  display: flex;
+  height: 28px;
+  width: 180px;
 }
 
 #searchform input {
-  background: white url(lib/search.png) no-repeat;
-  background-position: 97% 50%;
-  padding: 3px 16px 3px 3px;
-  border-radius: 0.5em;
+  background: white;
+  padding: 6px;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
   font-size: 13px;
-  text-align: center;
-  color: #333;
+  color: black;
+  width: 140px;
 }
 
-#searchform input::placeholder {
-  opacity: 100%;
+#searchform button {
+  background: #53b351 url(lib/search.png) no-repeat center;
+  width: 40px;
+  border: 0;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  box-shadow: 1px 1px 1px #170036, 1px 1px 4px #280a4d, inset 1px 1px 1px #a8ffa0;
+}
+
+#searchform button span {
+  display: none;
 }
 
 label[for="searchbox"]{
@@ -376,7 +388,8 @@ label[for="searchbox"]{
   display: flex;
   justify-content: center;
   box-shadow: 1px 1px 1px #170036, 1px 1px 4px #280a4d, inset 1px 1px 1px #a8ffa0;
-  width: 150px;
+  width: 180px;
+  height: 28px;
 }
 
 .donate {
@@ -389,7 +402,7 @@ label[for="searchbox"]{
   padding-left: 18px;
 }
 
-@media (min-width: 390px) {
+@media (min-width: 450px) {
   #search-and-donate {
     flex-direction: row;
     margin: 10px 30px 0 30px;
@@ -400,7 +413,7 @@ label[for="searchbox"]{
   }
 }
 
-@media (min-width: 550px) {
+@media (min-width: 600px) {
   #search-and-donate {
     flex-direction: column;
     justify-content: space-evenly;
@@ -412,6 +425,9 @@ label[for="searchbox"]{
     gap: 0;
   }
   #searchform, .donate a {
+    width: 240px;
+  }
+  #searchform input {
     width: 200px;
   }
   #searchform input, .donate a {
