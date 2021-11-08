@@ -909,7 +909,7 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     sleep 2
     # Type the rest of the search query
     @screen.type(app_name[1..-1])
-    sleep 2
+    sleep 4
     @screen.press('ctrl', 'Return')
   end
 end

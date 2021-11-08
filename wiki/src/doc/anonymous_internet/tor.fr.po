@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-10-11 15:21+0000\n"
+"POT-Creation-Date: 2021-11-04 13:11+0100\n"
 "PO-Revision-Date: 2021-10-12 09:06+0000\n"
 "Last-Translator: nihei <nihei@disroot.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -233,9 +233,13 @@ msgstr ""
 "connecter à Tor jusqu'à ce qu'il y réussisse :"
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "Tails tries to connect to Tor directly using **public relays**, without "
+#| "using bridges."
 msgid ""
 "Tails tries to connect to Tor directly using **public relays**, without "
-"using bridges."
+"using a bridge."
 msgstr ""
 "Tails essaie de se connecter directement à Tor à l'aide de **relais "
 "publics**, sans utiliser de ponts."
@@ -339,13 +343,18 @@ msgid "  You will have to know the address of a custom bridge.\n"
 msgstr "  Vous devrez connaître l'adresse d'un pont personnalisé.\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "  To request custom bridges, you can either:\n"
+#, fuzzy, no-wrap
+#| msgid "  To request custom bridges, you can either:\n"
+msgid "  To request a custom bridge, you can either:\n"
 msgstr "  Pour demander des ponts personnalisés, vous pouvez soit :\n"
 
 #. type: Bullet: '  1. '
+#, fuzzy
+#| msgid ""
+#| "Request bridges on [https://bridges.torproject.org/](https://bridges."
+#| "torproject.org/bridges?transport=obfs4)."
 msgid ""
-"Request bridges on [https://bridges.torproject.org/](https://bridges."
+"Request a bridge on [https://bridges.torproject.org/](https://bridges."
 "torproject.org/bridges?transport=obfs4)."
 msgstr ""
 "Demander des ponts sur [https://bridges.torproject.org/](https://bridges."
@@ -373,12 +382,23 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid ""
-"     Sending such an email, from your phone for example, does not reveal to\n"
-"     your local network that you are trying to connect to Tor.\n"
+msgid "     For example, you can send the email from your phone and type the bridge in Tails.\n"
 msgstr ""
-"     L'envoi d'un tel courriel, par exemple depuis votre téléphone, ne révèle pas à \n"
-"     votre réseau local que vous essayez de vous connecter à Tor.\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "You might need to go unnoticed if using Tor could look suspicious to someone who monitors your Internet connection."
+msgid ""
+"     Sending the email reveals to Gmail or Riseup that you are trying to\n"
+"     connect to Tor but not to someone who monitors your Internet connection.\n"
+msgstr "Vous pourriez vouloir passer inaperçu si l'utilisation de Tor peut sembler suspecte à quiconque surveillerait votre connexion Internet."
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"     Even someone who knows your bridge cannot know what you are doing online\n"
+"     from Tails.\n"
+msgstr ""
 
 #. type: Plain text
 msgid ""
@@ -404,22 +424,108 @@ msgstr ""
 "persistence/configure#tor-bridge]]."
 
 #. type: Plain text
-#, no-wrap
-msgid "<p>In the future, we will make it easier to use custom bridges by:</p>\n"
+#, fuzzy, no-wrap
+#| msgid "<p>In the future, we will make it easier to use custom bridges by:</p>\n"
+msgid "<p>In the future, we will make it easier to use a custom bridge by:</p>\n"
 msgstr "<p>Dans le futur, nous allons rendre plus facile l'utilisation de ponts personnalisés en :</p>\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<ul>\n"
+#| "<li>Allowing you to scan the QR code returned by <a href=\"mailto:bridges@torproject.org\">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>\n"
+#| "<li>Allowing you to request bridges from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>\n"
+#| "</ul>\n"
 msgid ""
 "<ul>\n"
 "<li>Allowing you to scan the QR code returned by <a href=\"mailto:bridges@torproject.org\">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>\n"
-"<li>Allowing you to request bridges from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>\n"
+"<li>Allowing you to request a bridge from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>\n"
 "</ul>\n"
 msgstr ""
 "<ul>\n"
 "<li>Vous permettant de scanner le QR code envoyé par <a href=\"mailto:bridges@torproject.org\">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>\n"
 "<li>Vous permettant de  demander des ponts depuis Tails en résolvant des CAPTCHA ([[!tails_ticket 15331]])</li>\n"
 "</ul>\n"
+
+#. type: Title =
+#, fuzzy, no-wrap
+#| msgid "Troubleshooting connecting to Tor"
+msgid "Troubleshooting Tor bridges"
+msgstr "Résoudre les problèmes pour se connecter à Tor"
+
+#. type: Plain text
+msgid ""
+"If connecting to Tor using a custom bridge fails, the *Tor Connection* "
+"assistant helps you:"
+msgstr ""
+"Si la connexion à Tor à l'aide d'un pont personnalisé échoue, l'assistant de "
+"*Connexion à Tor* vous aide à :"
+
+#. type: Plain text
+msgid ""
+"- Set the clock of your computer to the correct time zone - [[Sign in to the "
+"network using a captive portal|unsafe_browser]] - Configure a local proxy - "
+"Enter a different bridge"
+msgstr ""
+"- Réglez l'horloge de votre ordinateur sur le bon fuseau horaire - [[Se "
+"connecter à un réseau utilisant un portail captif|unsafe_browser]] - "
+"Configurer un mandataire local - Saisir un pont différent"
+
+#. type: Title -
+#, no-wrap
+msgid "The computer clock is set to an incorrect time zone"
+msgstr "L'horloge de l'ordinateur est réglée sur un fuseau horaire incorrect"
+
+#. type: Plain text
+#, fuzzy
+#| msgid "For Tor bridges to work, the clock of your computer must be correct."
+msgid "For a Tor bridge to work, the clock of your computer must be correct."
+msgstr ""
+"Pour que les ponts Tor fonctionnent, l'horloge de votre ordinateur doit être "
+"correcte."
+
+#. type: Plain text
+msgid ""
+"Choose **Fix Clock** in the error screen of the *Tor Connection* assistant "
+"to set the time zone and time of your computer."
+msgstr ""
+"Choisissez **Fix Clock** dans l'écran d'erreur de l'assistant de **Connexion "
+"à Tor**  pour définir le fuseau horaire et l'heure de votre ordinateur."
+
+#. type: Title -
+#, no-wrap
+msgid "You did not enter the bridge correctly"
+msgstr "Vous n'avez pas saisi le pont correctement"
+
+#. type: Plain text
+msgid "An obfs4 bridge looks like:"
+msgstr "Un pont obfs4 ressemble à ça :"
+
+#. type: Plain text
+#, no-wrap
+msgid "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
+msgstr "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
+
+#. type: Plain text
+msgid ""
+"You need to enter the entire line, not just the IP address and port "
+"combination."
+msgstr ""
+"Vous devez saisir la ligne entière, pas seulement la combinaison adresse IP "
+"et numéro de port."
+
+#. type: Title -
+#, no-wrap
+msgid "The bridge is no longer operational"
+msgstr "Le pont n'est plus opérationnel"
+
+#. type: Plain text
+msgid "It is possible that the bridge that you entered is no longer working."
+msgstr "Il est possible que le pont que vous avez saisi ne fonctionne plus."
+
+#. type: Plain text
+msgid "Try entering another bridge or requesting other bridges."
+msgstr "Essayez de saisir un autre pont ou demandez d'autres ponts."
 
 #. type: Title =
 #, no-wrap
@@ -466,9 +572,15 @@ msgstr "<div class=\"next\">\n"
 #. type: Plain text
 #, no-wrap
 msgid "<p>See our documentation on [[troubleshooting connecting to Tor|tor/troubleshoot]].</p>\n"
-msgstr ""
-"<p>Voir notre documentation sur [[comment résoudre les problèmes de "
-"connexion à Tor|tor/troubleshoot]].</p>\n"
+msgstr "<p>Voir notre documentation sur [[comment résoudre les problèmes de connexion à Tor|tor/troubleshoot]].</p>\n"
+
+#, no-wrap
+#~ msgid ""
+#~ "     Sending such an email, from your phone for example, does not reveal to\n"
+#~ "     your local network that you are trying to connect to Tor.\n"
+#~ msgstr ""
+#~ "     L'envoi d'un tel courriel, par exemple depuis votre téléphone, ne révèle pas à \n"
+#~ "     votre réseau local que vous essayez de vous connecter à Tor.\n"
 
 #~ msgid ""
 #~ "If connecting to Tor automatically fails, the *Tor Connection* assistant "
@@ -483,64 +595,6 @@ msgstr ""
 #~ msgstr ""
 #~ "- [[Se connecter à un réseau utilisant un portail captif|unsafe_browser]] "
 #~ "- Configurer un mandataire local"
-
-#~ msgid ""
-#~ "If connecting to Tor using a custom bridge fails, the *Tor Connection* "
-#~ "assistant helps you:"
-#~ msgstr ""
-#~ "Si la connexion à Tor à l'aide d'un pont personnalisé échoue, l'assistant "
-#~ "de *Connexion à Tor* vous aide à :"
-
-#~ msgid ""
-#~ "- Set the clock of your computer to the correct time zone - [[Sign in to "
-#~ "the network using a captive portal|unsafe_browser]] - Configure a local "
-#~ "proxy - Enter a different bridge"
-#~ msgstr ""
-#~ "- Réglez l'horloge de votre ordinateur sur le bon fuseau horaire - [[Se "
-#~ "connecter à un réseau utilisant un portail captif|unsafe_browser]] - "
-#~ "Configurer un mandataire local - Saisir un pont différent"
-
-#~ msgid "The computer clock is set to an incorrect time zone"
-#~ msgstr "L'horloge de l'ordinateur est réglée sur un fuseau horaire incorrect"
-
-#~ msgid "For Tor bridges to work, the clock of your computer must be correct."
-#~ msgstr ""
-#~ "Pour que les ponts Tor fonctionnent, l'horloge de votre ordinateur doit "
-#~ "être correcte."
-
-#~ msgid ""
-#~ "Choose **Fix Clock** in the error screen of the *Tor Connection* "
-#~ "assistant to set the time zone and time of your computer."
-#~ msgstr ""
-#~ "Choisissez **Fix Clock** dans l'écran d'erreur de l'assistant de "
-#~ "**Connexion à Tor**  pour définir le fuseau horaire et l'heure de votre "
-#~ "ordinateur."
-
-#~ msgid "You did not enter the bridge correctly"
-#~ msgstr "Vous n'avez pas saisi le pont correctement"
-
-#~ msgid "An obfs4 bridge looks like:"
-#~ msgstr "Un pont obfs4 ressemble à ça :"
-
-#~ msgid "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
-#~ msgstr "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
-
-#~ msgid ""
-#~ "You need to enter the entire line, not just the IP address and port "
-#~ "combination."
-#~ msgstr ""
-#~ "Vous devez saisir la ligne entière, pas seulement la combinaison adresse "
-#~ "IP et numéro de port."
-
-#~ msgid "The bridge is no longer operational"
-#~ msgstr "Le pont n'est plus opérationnel"
-
-#~ msgid ""
-#~ "It is possible that the bridge that you entered is no longer working."
-#~ msgstr "Il est possible que le pont que vous avez saisi ne fonctionne plus."
-
-#~ msgid "Try entering another bridge or requesting other bridges."
-#~ msgstr "Essayez de saisir un autre pont ou demandez d'autres ponts."
 
 #~ msgid "[[!img doc/about/warnings/htw2-tails.png link=\"no\"]]\n"
 #~ msgstr "[[!img doc/about/warnings/htw2-tails.png link=\"no\"]]\n"
