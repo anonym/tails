@@ -17,7 +17,6 @@ tor_control_port() {
 }
 
 tor_control_stem_wrapper() {
-	local control_port
         python3 <<EOF
 import stem
 import stem.connection
