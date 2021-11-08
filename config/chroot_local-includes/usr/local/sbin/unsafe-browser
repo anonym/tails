@@ -62,7 +62,7 @@ the Unsafe Browser in the additional settings of the Welcome Screen.")"
 	close="$(gettext "_Close")"
 	if  sudo -u "${SUDO_USER}" \
          zenity --question --ellipsize --title "" --text "${msg}" --icon-name="dialog-error" \
-         --ok-label "${restart}"  --cancel-label "${close}"; then
+                --ok-label "${restart}"  --cancel-label "${close}"; then
             if ! /sbin/reboot; then
 		error "$(gettext "Failed to restart the system.")"
 	    fi
