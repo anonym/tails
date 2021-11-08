@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-09-20 07:41+0000\n"
-"PO-Revision-Date: 2021-07-22 06:05+0000\n"
-"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
+"POT-Creation-Date: 2021-11-04 13:11+0100\n"
+"PO-Revision-Date: 2021-10-30 13:04+0000\n"
+"Last-Translator: Weblate Admin <tails-weblate@boum.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgstr "<div class=\"note\">\n"
 msgid ""
 "<p>Because Tor routes your Internet traffic through 3 relays\n"
 "before reaching its destination, the\n"
-"connection is slower than when your are not using Tor.</p>\n"
+"connection is slower than when you are not using Tor.</p>\n"
 msgstr ""
 
 #. type: Plain text
@@ -207,9 +207,13 @@ msgstr ""
 "не добьётся успеха."
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "Tails tries to connect to Tor directly using **public relays**, without "
+#| "using bridges."
 msgid ""
 "Tails tries to connect to Tor directly using **public relays**, without "
-"using bridges."
+"using a bridge."
 msgstr ""
 "Tails  старается подключиться к Tor напрямую через **публичные узлы** без "
 "использования мостов."
@@ -243,22 +247,6 @@ msgid ""
 msgstr ""
 "Если кто-то мониторит ваше подключение к Интернету, он может определить, что "
 "эти попытки исходят от пользователя Tails."
-
-#. type: Plain text
-msgid ""
-"If connecting to Tor automatically fails, the *Tor Connection* assistant "
-"helps you:"
-msgstr ""
-"Если автоматически подключиться к Tails не удалось, воспользуйтесь "
-"помощником по соединению с Tor."
-
-#. type: Plain text
-msgid ""
-"- [[Sign in to the network using a captive portal|unsafe_browser]] - "
-"Configure a local proxy"
-msgstr ""
-"- [[Войдите в сеть через сайт авторизации|unsafe_browser]] — настройте "
-"локальный прокси"
 
 #. type: Plain text
 #, no-wrap
@@ -311,11 +299,15 @@ msgstr ""
 "факт вашего подключения к Tor. Их нужно настроить."
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<p>It is impossible to hide to the websites that you visit that you are using\n"
+#| "Tor, because the <a href=\"https://metrics.torproject.org/exonerator.html\">list\n"
+#| "of exit nodes of the Tor network is public</a>.</p>\n"
 msgid ""
 "<p>It is impossible to hide to the websites that you visit that you are using\n"
 "Tor, because the <a href=\"https://metrics.torproject.org/exonerator.html\">list\n"
-"of exit nodes of the Tor network is public</a>.</p>\n"
+"of exit nodes of the Tor network</a> is public.</p>\n"
 msgstr ""
 "<p>Нельзя скрыть от посещаемых вами сайтов то, что вы используете Tor, \n"
 "потому что <a href=\"https://metrics.torproject.org/exonerator.html\">список выходных узлов Tor открыт</a>.</p>\n"
@@ -346,13 +338,18 @@ msgid "  You will have to know the address of a custom bridge.\n"
 msgstr "  Нужно знать адрес хотя бы одного моста для настройки вручную.\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "  To request custom bridges, you can either:\n"
+#, fuzzy, no-wrap
+#| msgid "  To request custom bridges, you can either:\n"
+msgid "  To request a custom bridge, you can either:\n"
 msgstr "  Получить мосты можно одним из двух способов.\n"
 
 #. type: Bullet: '  1. '
+#, fuzzy
+#| msgid ""
+#| "Request bridges on [https://bridges.torproject.org/](https://bridges."
+#| "torproject.org/bridges?transport=obfs4)."
 msgid ""
-"Request bridges on [https://bridges.torproject.org/](https://bridges."
+"Request a bridge on [https://bridges.torproject.org/](https://bridges."
 "torproject.org/bridges?transport=obfs4)."
 msgstr ""
 "Запросить мосты по адресу [https://bridges.torproject.org/](https://bridges."
@@ -379,12 +376,23 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid ""
-"     Sending such an email, from your phone for example, does not reveal to\n"
-"     your local network that you are trying to connect to Tor.\n"
+msgid "     For example, you can send the email from your phone and type the bridge in Tails.\n"
 msgstr ""
-"     Если вы отправите такое сообщение, например, с мобильного телефона, \n"
-"     ваша локальная сеть не узнает, что вы хотите подключиться к Tor.\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "You might need to go unnoticed if using Tor could look suspicious to someone who monitors your Internet connection."
+msgid ""
+"     Sending the email reveals to Gmail or Riseup that you are trying to\n"
+"     connect to Tor but not to someone who monitors your Internet connection.\n"
+msgstr "Что, если злоумышленник мониторит ваше подключение к Интернету, а вам нужно подключиться к Tor незаметно и не вызывая подозрений?"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"     Even someone who knows your bridge cannot know what you are doing online\n"
+"     from Tails.\n"
+msgstr ""
 
 #. type: Plain text
 msgid ""
@@ -399,7 +407,7 @@ msgstr ""
 msgid "  Currently in Tails, only **obfs4 bridges** hide that you are using Tor.\n"
 msgstr "  В настоящее время для сокрытия факта использования Tor в Tails подходят только **мосты obfs4**.\n"
 
-#. type: Bullet: '- '
+#. type: Plain text
 msgid ""
 "To save the last Tor bridge that connected to Tor successfully, turn on the "
 "[[Tor Bridge feature of the Persistent Storage|doc/first_steps/persistence/"
@@ -407,8 +415,9 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
-msgid "<p>In the future, we will make it easier to use custom bridges by:</p>\n"
+#, fuzzy, no-wrap
+#| msgid "<p>In the future, we will make it easier to use custom bridges by:</p>\n"
+msgid "<p>In the future, we will make it easier to use a custom bridge by:</p>\n"
 msgstr "<p>В перспективе использовать вручную настроенные мосты станет проще:</p>\n"
 
 #. type: Plain text
@@ -423,7 +432,7 @@ msgstr "<p>В перспективе использовать вручную н�
 msgid ""
 "<ul>\n"
 "<li>Allowing you to scan the QR code returned by <a href=\"mailto:bridges@torproject.org\">bridges@torproject.org</a> ([[!tails_ticket 18219]])</li>\n"
-"<li>Allowing you to request bridges from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>\n"
+"<li>Allowing you to request a bridge from Tails by solving a CAPTCHA ([[!tails_ticket 15331]])</li>\n"
 "</ul>\n"
 msgstr ""
 "<ul>\n"
@@ -434,7 +443,8 @@ msgstr ""
 "</ul>\n"
 
 #. type: Title =
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid "Troubleshooting Tor bridges"
 msgid "Troubleshooting Tor bridges"
 msgstr "Решение проблем с мостами Tor"
 
@@ -469,7 +479,7 @@ msgid "The computer clock is set to an incorrect time zone"
 msgstr ""
 
 #. type: Plain text
-msgid "For Tor bridges to work, the clock of your computer must be correct."
+msgid "For a Tor bridge to work, the clock of your computer must be correct."
 msgstr ""
 
 #. type: Plain text
@@ -548,6 +558,44 @@ msgstr ""
 "[[!img lib/symbolic/tor-disconnected.png alt=\"Значок луковицы зачёркнут\" "
 "link=no class=\"symbolic\"]] Вы не подключены к Tor."
 
+#. type: Title =
+#, fuzzy, no-wrap
+#| msgid "Troubleshooting Tor bridges"
+msgid "Troubleshooting connecting to Tor"
+msgstr "Решение проблем с мостами Tor"
+
+#. type: Plain text
+#, no-wrap
+msgid "<div class=\"next\">\n"
+msgstr "<div class=\"next\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<p>See our documentation on [[troubleshooting connecting to Tor|tor/troubleshoot]].</p>\n"
+msgstr ""
+
+#, no-wrap
+#~ msgid ""
+#~ "     Sending such an email, from your phone for example, does not reveal to\n"
+#~ "     your local network that you are trying to connect to Tor.\n"
+#~ msgstr ""
+#~ "     Если вы отправите такое сообщение, например, с мобильного телефона, \n"
+#~ "     ваша локальная сеть не узнает, что вы хотите подключиться к Tor.\n"
+
+#~ msgid ""
+#~ "If connecting to Tor automatically fails, the *Tor Connection* assistant "
+#~ "helps you:"
+#~ msgstr ""
+#~ "Если автоматически подключиться к Tails не удалось, воспользуйтесь "
+#~ "помощником по соединению с Tor."
+
+#~ msgid ""
+#~ "- [[Sign in to the network using a captive portal|unsafe_browser]] - "
+#~ "Configure a local proxy"
+#~ msgstr ""
+#~ "- [[Войдите в сеть через сайт авторизации|unsafe_browser]] — настройте "
+#~ "локальный прокси"
+
 #~ msgid "[[!img doc/about/warnings/htw2-tails.png link=\"no\"]]\n"
 #~ msgstr "[[!img doc/about/warnings/htw2-tails.png link=\"no\"]]\n"
 
@@ -563,25 +611,41 @@ msgstr ""
 #~ msgstr "<div class=\"bug\">\n"
 
 #~ msgid ""
-#~ "<p>When connecting to Tor, Tails sets the system time to the current time\n"
+#~ "<p>When connecting to Tor, Tails sets the system time to the current "
+#~ "time\n"
 #~ "in the [[!wikipedia Coordinated_Universal_Time]] (UTC) timezone.</p>\n"
-#~ msgstr "<p>При подключении к Tor Tails устанавливает системное время в соответствии с текущим временем [[!wikipedia Coordinated_Universal_Time]] (UTC).</p>\n"
+#~ msgstr ""
+#~ "<p>При подключении к Tor Tails устанавливает системное время в "
+#~ "соответствии с текущим временем [[!wikipedia Coordinated_Universal_Time]] "
+#~ "(UTC).</p>\n"
 
 #~ msgid ""
 #~ "<p>Many operating systems, such as Linux and macOS, write time expressed\n"
 #~ "in UTC to the hardware clock of the computer. But, Windows instead\n"
 #~ "writes time expressed in the local timezone to the hardware clock of\n"
 #~ "the computer.</p>\n"
-#~ msgstr "<p>Многие операционные системы, такие как Linux и macOS, настраивают часы вашего компьютера на время UTC. Windows настраивает часы компьютера на местный часовой пояс.</p>\n"
+#~ msgstr ""
+#~ "<p>Многие операционные системы, такие как Linux и macOS, настраивают часы "
+#~ "вашего компьютера на время UTC. Windows настраивает часы компьютера на "
+#~ "местный часовой пояс.</p>\n"
 
 #~ msgid ""
-#~ "<p>So, if you are east of the United Kingdom (which is in the UTC timezone) on\n"
+#~ "<p>So, if you are east of the United Kingdom (which is in the UTC "
+#~ "timezone) on\n"
 #~ "a computer that also runs Windows, Tails will make the system clock go\n"
-#~ "backwards during startup. Unfortunately, this can prevent bridges from working.</p>\n"
-#~ msgstr "<p>Если вы находитесь к востоку от Великобритании (UTC-время) и работаете на компьютере с Windows, Tails при запуске сдвинет ваше системное время назад. К сожалению, это может помешать работе мостов Tor.</p>\n"
+#~ "backwards during startup. Unfortunately, this can prevent bridges from "
+#~ "working.</p>\n"
+#~ msgstr ""
+#~ "<p>Если вы находитесь к востоку от Великобритании (UTC-время) и работаете "
+#~ "на компьютере с Windows, Tails при запуске сдвинет ваше системное время "
+#~ "назад. К сожалению, это может помешать работе мостов Tor.</p>\n"
 
-#~ msgid "<p>We are working on a fix for this issue. See [[!tails_ticket 15548]].</p>\n"
-#~ msgstr "<p>Мы работаем над исправлением этой ошибки. ([[!tails_ticket 15548]])</p>\n"
+#~ msgid ""
+#~ "<p>We are working on a fix for this issue. See [[!tails_ticket 15548]].</"
+#~ "p>\n"
+#~ msgstr ""
+#~ "<p>Мы работаем над исправлением этой ошибки. ([[!tails_ticket 15548]])</"
+#~ "p>\n"
 
 #~ msgid ""
 #~ "  obfs4 bridges start with the word <span class=\"code\">obfs4</span>.\n"
