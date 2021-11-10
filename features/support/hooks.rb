@@ -367,6 +367,19 @@ After('@product') do |scenario|
   elsif @video_path && File.exist?(@video_path) && !(($config['CAPTURE_ALL']))
     FileUtils.rm(@video_path)
   end
+  begin
+    if $vm&.remote_shell_is_up?
+      # We gracefully stop tor in order to make the bridges/guards not
+      # keep sending packets that has a potential to bleed into the
+      # next scenario. It has been observed that this can cause the
+      # system under testing to send a TCP RST to the bridge/guard,
+      # which then may break the check that we only contact the
+      # expected bridges/guards.
+      $vm.execute('systemctl stop tor@default')
+    end
+  rescue
+    # At least we tried!
+  end
   # If we don't shut down the system under testing it will continue to
   # run during the next scenario's Before hooks, which we have seen
   # causing trouble (for instance, packets from the previous scenario
