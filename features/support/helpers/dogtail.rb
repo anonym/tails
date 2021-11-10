@@ -68,7 +68,7 @@ module Dogtail
       @opts = opts
       @opts[:user] ||= LIVE_USER
       @find_code = "dogtail.tree.root.application('#{@app_name}')"
-      script_lines = [
+      init = [
         'import dogtail.config',
         'import dogtail.tree',
         'import dogtail.predicate',
@@ -77,20 +77,26 @@ module Dogtail
         'dogtail.config.logDebugToStdOut = False',
         'dogtail.config.blinkOnActions = True',
         'dogtail.config.searchShowingOnly = True',
+      ]
+      code = [
         "#{@var} = #{@find_code}",
       ]
-      run(script_lines)
+      run(code, init: init)
     end
 
     def to_s
       @var
     end
 
-    def run(code)
+    def run(code, init: nil)
+      if init
+        init = init.join("\n") if init.class == Array
+        c = RemoteShell::PythonCommand.new($vm, init, user: @opts[:user], debug_log: false)
+        raise Failure, "The Dogtail init script raised: #{c.exception}" if c.failure?
+      end
       code = code.join("\n") if code.class == Array
       c = RemoteShell::PythonCommand.new($vm, code, user: @opts[:user])
       raise Failure, "The Dogtail script raised: #{c.exception}" if c.failure?
-
       c
     end
 

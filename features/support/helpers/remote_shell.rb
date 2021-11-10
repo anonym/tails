@@ -131,6 +131,7 @@ module RemoteShell
   class PythonCommand
     def self.execute(vm, code, **opts)
       opts[:user] ||= 'root'
+      opts[:debug_log] = true unless opts.key?(:debug_log)
       show_code = code.chomp
       if show_code["\n"]
         show_code = "\n" +
@@ -138,11 +139,11 @@ module RemoteShell
                              .map { |l| ' ' * 4 + l.chomp }
                              .join("\n")
       end
-      debug_log("executing Python as #{opts[:user]}: #{show_code}")
+      debug_log("executing Python as #{opts[:user]}: #{show_code}") if opts[:debug_log]
       ret = RemoteShell.communicate(
         vm, 'python_execute', opts[:user], code, **opts
       )
-      debug_log('execution complete')
+      debug_log('execution complete') if opts[:debug_log]
       ret
     end
 
