@@ -6,12 +6,17 @@ from argparse import ArgumentParser
 import stem
 import stem.connection
 
+
 def get_parser():
     p = ArgumentParser()
-    p.add_argument("--timeout", type=float, default=-1.0,
-            help="A negative value means 'no timeout' (default)"
-            )
+    p.add_argument(
+        "--timeout",
+        type=float,
+        default=-1.0,
+        help="A negative value means 'no timeout' (default)",
+    )
     return p
+
 
 def main():
     args = get_parser().parse_args()
@@ -20,19 +25,20 @@ def main():
     while args.timeout < 0.0 or time.time() < stop_time:
         try:
             if controller == None:
-                controller = stem.connection.connect(
-                               control_port=('127.0.0.1', 9052)
-                             )
+                controller = stem.connection.connect(control_port=("127.0.0.1", 9052))
                 if controller == None:
                     raise stem.SocketError
                 controller.authenticate()
             try:
-                progress = controller.get_info('status/bootstrap-phase') \
-                                     .split()[2].split('=')[1]
+                progress = (
+                    controller.get_info("status/bootstrap-phase")
+                    .split()[2]
+                    .split("=")[1]
+                )
             except IndexError:
-                progress = '0'
-            enough_dir_info = controller.get_info('status/enough-dir-info')
-            if enough_dir_info == '1' and progress == '100':
+                progress = "0"
+            enough_dir_info = controller.get_info("status/enough-dir-info")
+            if enough_dir_info == "1" and progress == "100":
                 exit(0)
         except (stem.SocketClosed, stem.SocketError):
             controller = None
@@ -40,5 +46,6 @@ def main():
 
     exit(1)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
