@@ -28,19 +28,8 @@ tor_control_setconf() {
     /usr/local/lib/tor_variable set --type=conf "$1" "$2"
 }
 
-tor_bootstrap_progress() {
-    local res
-    res=$(tor_control_getinfo status/bootstrap-phase | \
-              sed --regexp-extended 's/^.* BOOTSTRAP PROGRESS=([[:digit:]]+) .*$/\1/')
-    echo "${res:-0}"
-}
-
-# Only use this if you truly want a one-off check, otherwise consider
-# /usr/local/lib/tor_wait_until_bootstrapped which avoids firing up a
-# new python interpreter for each check.
 tor_is_working() {
-    [ "$(tor_bootstrap_progress)" -eq 100 ] && \
-	[ "$(tor_control_getinfo status/enough-dir-info)" -eq 1 ]
+    /usr/local/lib/tor_wait_until_bootstrapped --no-wait
 }
 
 tor_append_to_torrc () {
