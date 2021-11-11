@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 
-import stem
-import stem.connection
 import sys
 import time
+from argparse import ArgumentParser
+
+import stem
+import stem.connection
+
+def get_parser():
+    p = ArgumentParser()
+    p.add_argument("--timeout", type=float, default=-1.0,
+            help="A negative value means 'no timeout' (default)"
+            )
+    return p
 
 def main():
-    try:
-        timeout = float(sys.argv[1])
-    except IndexError:
-        timeout = -1.0
-    stop_time = time.time() + timeout
+    args = get_parser().parse_args()
+    stop_time = time.time() + args.timeout
     controller = None
-    while timeout < 0.0 or time.time() < stop_time:
+    while args.timeout < 0.0 or time.time() < stop_time:
         try:
             if controller == None:
                 controller = stem.connection.connect(
