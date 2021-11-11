@@ -16,40 +16,16 @@ tor_control_port() {
     tor_rc_lookup ControlPort | sed --regexp-extended 's/.*://'
 }
 
-tor_control_stem_wrapper() {
-    python3 <<EOF
-import stem
-import stem.connection
-import sys
-try:
-    controller = stem.connection.connect(
-                   control_port=('127.0.0.1', '$(tor_control_port)')
-                 )
-    if controller == None:
-        raise stem.SocketError("Cannot connect to Tor's control port")
-    controller.authenticate()
-$(
-    echo "${1}" | while IFS= read line; do
-        echo "    ${line}"
-    done
-)
-    exit(0)
-except Exception as e:
-    print(f"{type(e).__name__}: {str(e).strip()}", file=sys.stderr)
-    exit(1)
-EOF
-}
-
 tor_control_getinfo() {
-    tor_control_stem_wrapper "print(controller.get_info('${1}'))"
+    /usr/local/lib/tor_variable get --type=info "$1"
 }
 
 tor_control_getconf() {
-    tor_control_stem_wrapper "print(controller.get_conf('${1}'))"
+    /usr/local/lib/tor_variable get --type=conf "$1"
 }
 
 tor_control_setconf() {
-    tor_control_stem_wrapper "controller.set_conf('${1}', '${2}')"
+    /usr/local/lib/tor_variable set --type=conf "$1" "$2"
 }
 
 tor_bootstrap_progress() {
