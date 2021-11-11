@@ -24,9 +24,9 @@ def main():
     controller = None
     while args.timeout < 0.0 or time.time() < stop_time:
         try:
-            if controller == None:
+            if controller is None:
                 controller = stem.connection.connect(control_port=("127.0.0.1", 9052))
-                if controller == None:
+                if controller is None:
                     raise stem.SocketError
                 controller.authenticate()
             try:
