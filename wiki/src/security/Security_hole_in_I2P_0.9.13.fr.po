@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-05-25 19:54-0500\n"
-"PO-Revision-Date: 2019-09-24 14:00+0000\n"
-"Last-Translator: xin <xin@riseup.net>\n"
+"PO-Revision-Date: 2021-11-14 10:13+0000\n"
+"Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: French <http://translate.tails.boum.org/projects/tails/"
 "security_hole_in_i2p_0913/fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.20\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #. type: Plain text
 #, no-wrap
@@ -27,7 +27,7 @@ msgstr "[[!meta date=\"Thu, 24 Jul 2014 21:15:00 +0000\"]]\n"
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Security hole in I2P 0.9.13\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Trous de sécurité dans I2P 0.9.13\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -43,21 +43,26 @@ msgstr "[[!tag security/fixed]]\n"
 msgid ""
 "A security hole affects I2P 0.9.13, that is part of Tails 1.1 and earlier."
 msgstr ""
+"Une brèche de sécurité affecte I2P 0.9.13, qui est un composant de Tails 1.1 "
+"et plus ancien."
 
 #. type: Title =
 #, no-wrap
 msgid "Scope and severity"
-msgstr ""
+msgstr "Portée et gravité"
 
 #. type: Plain text
 msgid ""
 "If you are using I2P in Tails 1.1 and earlier, an attacker can de-anonymize "
 "you: they can learn the IP address that identifies you on the Internet."
 msgstr ""
+"Si vous utilisez I2P dans Tails 1.1 et plus ancien, un attaquant peut vous "
+"désanonymiser : il peut découvrir l'adresse IP qui vous identifie sur "
+"Internet."
 
 #. type: Plain text
 msgid "To be able to conduct this attack:"
-msgstr ""
+msgstr "Pour être capable de réaliser cette attaque :"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -65,6 +70,9 @@ msgid ""
 "visiting using the [[Tor Browser|doc/anonymous_internet/Tor_Browser]] in "
 "Tails — many people are able to do so;"
 msgstr ""
+"l'attaquant doit pouvoir modifier le contenu d'un site web que vous êtes en "
+"train de visiter en utilisant le [[Navigateur Tor|doc/anonymous_internet/"
+"Tor_Browser]] de Tails — beaucoup de personnes sont capables de faire cela ;"
 
 #. type: Bullet: '2. '
 msgid ""
@@ -72,6 +80,9 @@ msgid ""
 "information has not been published yet, but they may somehow already have "
 "discovered it, or been made aware of it."
 msgstr ""
+"et l'attaquant doit trouver comment utiliser cette brèche de sécurité ; "
+"cette information n'est pas encore publiée, mais il est possible qu'il l'ait "
+"déjà découvert ou qu'il ai été mis au courant  d'une manière ou d'une autre."
 
 #. type: Plain text
 #, no-wrap
@@ -86,6 +97,11 @@ msgid ""
 "protect the Tails users who do not use I2P from security holes in this\n"
 "piece of software.</p>\n"
 msgstr ""
+"<p><strong>Tails ne démarre pas I2P par défaut.</strong> Ce choix\n"
+"de conception a été fait précisément pour\n"
+"protéger les personnes utilisant Tails qui n'utilisent pas I2P des failles "
+"de sécurité\n"
+"de ce logiciel.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -95,6 +111,11 @@ msgid ""
 "tricking you into starting it yourself, could then use this I2P\n"
 "security hole to de-anonymize you.</p>\n"
 msgstr ""
+"<p>Pour autant, un attaquant qui serait capable de démarrer I2P sur votre\n"
+"Tails, soit en exploitant un autre trou de sécurité inconnu ou en\n"
+"vous trompant pour que vous le démarriez vous-même, pourrait alors utiliser "
+"cette faille\n"
+"de sécurité I2P pour vous désanonymiser.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -104,27 +125,36 @@ msgstr "</div>\n"
 #. type: Title =
 #, no-wrap
 msgid "Temporary solutions"
-msgstr ""
+msgstr "Solutions temporaires"
 
 #. type: Plain text
 msgid "You can protect yourself from this security hole until it is corrected."
 msgstr ""
+"Vous pouvez vous protéger vous-même de cette faille de sécurité jusqu'à ce "
+"qu'il soit corrigé."
 
 #. type: Plain text
 msgid ""
 "Do not start I2P in Tails 1.1 and earlier. You can protect yourself further "
 "by removing the `i2p` package every time you start Tails:"
 msgstr ""
+"Ne démarrez pas I2P dans Tails 1.1 et plus ancien. Vous pouvez vous protéger "
+"d'avantage en enlevant le paquet `i2p` à chaque fois que vous démarrez Tails "
+":"
 
 #. type: Bullet: '1. '
 msgid ""
 "[[Set an administration password|doc/first_steps/welcome_screen/"
 "administration_password]]."
 msgstr ""
+"[[Définir un mot de passe d'administration|doc/first_steps/welcome_screen/"
+"administration_password]]."
 
 #. type: Bullet: '1. '
 msgid "Run this command in a <span class=\"application\">Root Terminal</span>:"
 msgstr ""
+"Exécutez cette commande dans un <span class=\"application\">Terminal "
+"Root</span> :"
 
 #. type: Plain text
 #, no-wrap
@@ -137,12 +167,15 @@ msgid ""
 "disable JavaScript globally [[with NoScript|doc/anonymous_internet/"
 "Tor_Browser#noscript]] in the Tor Browser."
 msgstr ""
+"Toutefois, si vous avez réellement besoin d'utiliser I2P dans Tails 1.1 : "
+"avant de démarrer I2P, désactivez globalement JavaScript [[avec NoScript|doc/"
+"anonymous_internet/Tor_Browser#noscript]] dans le Navigateur Tor."
 
 #. type: Title =
 #, no-wrap
 msgid "Credits"
-msgstr ""
+msgstr "Remerciements"
 
 #. type: Plain text
 msgid "This security hole was reported to us by Exodus Intelligence."
-msgstr ""
+msgstr "Cette faille de sécurité nous a été signalé par Exodus Intelligence."
