@@ -16,7 +16,7 @@ VM_MEMORY_FOR_RAM_BUILDS = VM_MEMORY_BASE + BUILD_SPACE_REQUIREMENT
 
 # The builder VM's platform
 ARCHITECTURE = 'amd64'.freeze
-DISTRIBUTION = 'buster'.freeze
+DISTRIBUTION = 'bullseye'.freeze
 
 # The name of the Vagrant box
 def box_name
