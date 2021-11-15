@@ -88,7 +88,9 @@ steps:
       iface eth0 inet6 auto
 
   - chroot: rootfs
-    shell: echo ${HOSTNAME} > /etc/hostname
+    shell: |
+      echo ${HOSTNAME} > /etc/hostname
+      echo 127.0.0.1 ${HOSTNAME} >> /etc/hosts
 
   - copy-file: /tmp/tails.binary.gpg
     src: config/chroot_sources/tails.binary.gpg
