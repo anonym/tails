@@ -19,20 +19,23 @@ end
 
 def source_package(package)
   matches = []
-  APT_SOURCES.each_package do |dsc|
-    # The -dbg(sym) packages are not listed, so we look for the
-    # original package's source instead, which will be the same.
-    matches << dsc if dsc.binary.include?(package.sub(/-dbg(sym)?$/, ''))
+  $apt_sources.each do |repo|
+    repo.each_package do |dsc|
+      # The -dbg(sym) packages are not listed, so we look for the
+      # original package's source instead, which will be the same.
+      matches << dsc.package if dsc.binary.include?(package.sub(/-dbg(sym)?$/, ''))
+    end
   end
   raise NoSource, "found no source package for #{package}" if matches.size.zero?
-
-  raise "found multiple source packages for #{package}" if matches.size > 1
-
-  matches.first.package
+  raise "found multiple source packages for #{package}: #{matches.join(', ')}" if matches.uniq.size > 1
+  matches.first
 end
 
 def binary_packages(package)
-  APT_SOURCES[package].binary
+  $apt_sources.each do |repo|
+    return repo[package].binary if repo.member?(package)
+  end
+  nil
 end
 
 Options = Struct.new(:suite, :build_manifest, keyword_init: true)
@@ -73,22 +76,25 @@ unless allowed_suites.include?(options.suite)
   raise "we only support checking the following' " \
         "custom APT suites: #{allowed_suites.join(', ')}"
 end
-begin
-  apt_repo_hostnames = [
-    'deb.tails.boum.org',
-    'umjqavufhoix3smyq6az2sx4istmuvsgmz4bq5u5x56rnayejoo6l2qd.onion',
-  ]
+apt_repo_hostnames = [
+  'deb.tails.boum.org',
+  'umjqavufhoix3smyq6az2sx4istmuvsgmz4bq5u5x56rnayejoo6l2qd.onion',
+]
+['main', 'contrib', 'non-free'].each do |repo|
   apt_repo_filenames = apt_repo_hostnames.map do |hostname|
-    "/var/lib/apt/lists/#{hostname}_dists_#{options.suite}_main_source_Sources"
+    "/var/lib/apt/lists/#{hostname}_dists_#{options.suite}_#{repo}_source_Sources"
   end
   apt_repo_filename = apt_repo_filenames.find do |filename|
     File.exist?(filename)
   end
-  APT_SOURCES = Debian::Sources.new(apt_repo_filename).freeze
-rescue
+  next if apt_repo_filename.nil?
+  $apt_sources ||= []
+  $apt_sources << Debian::Sources.new(apt_repo_filename).freeze
+end
+if $apt_sources.empty?
   raise "could not find Tails custom APT repo's sources, " \
         "please add this to your APT sources:\n" \
-        "deb-src [arch=amd64] http://deb.tails.boum.org/ #{options.suite} main"
+        "deb-src [arch=amd64] http://deb.tails.boum.org/ #{options.suite} main contrib non-free"
 end
 
 if options.build_manifest.nil?
