@@ -590,281 +590,98 @@ For example, you can send the email from your phone and type the bridge in Tails
       </packing>
     </child>
     <child>
-      <object class="GtkBox">
+      <object class="GtkBox" id="step_error_box_actions">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="valign">center</property>
-        <property name="vexpand">True</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="label" translatable="yes">• Wrong clock</property>
-            <attributes>
-              <attribute name="weight" value="semibold"/>
-            </attributes>
-            <style>
-              <class name="step-error-section-title"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="margin_top">6</property>
-            <property name="label" translatable="yes">Your clock and time zone need to be correct to connect to Tor.</property>
-            <style>
-              <class name="step-error-section-description"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="step_error_btn_time">
-            <property name="label" translatable="yes">Fix _Clock</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="halign">end</property>
-            <property name="margin_top">6</property>
-            <property name="use_underline">True</property>
-            <signal name="clicked" handler="cb_step_error_btn_time_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <style>
-          <class name="step-error-section"/>
-        </style>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="valign">center</property>
-        <property name="vexpand">True</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="label" translatable="yes">• Public network</property>
-            <attributes>
-              <attribute name="weight" value="semibold"/>
-            </attributes>
-            <style>
-              <class name="step-error-section-title"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="margin_top">6</property>
-            <property name="label" translatable="yes">If you are in a shop, hotel, or airport, you might need to sign in to the local network using a captive portal.</property>
-            <style>
-              <class name="step-error-section-description"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="step_error_btn_captive">
-            <property name="label" translatable="yes">Try _Signing in to the Network</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="halign">end</property>
-            <property name="margin_top">6</property>
-            <property name="use_underline">True</property>
-            <signal name="activate" handler="cb_step_error_btn_captive_clicked" swapped="no"/>
-            <signal name="clicked" handler="cb_step_error_btn_captive_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <style>
-          <class name="step-error-section"/>
-        </style>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="valign">center</property>
-        <property name="vexpand">True</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="label" translatable="yes">• Local proxy</property>
-            <attributes>
-              <attribute name="weight" value="semibold"/>
-            </attributes>
-            <style>
-              <class name="step-error-section-title"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="margin_top">6</property>
-            <property name="label" translatable="yes">If you are on a corporate or university network, you might need to configure a local proxy.</property>
-            <style>
-              <class name="step-error-section-description"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="step_error_btn_proxy">
-            <property name="label" translatable="yes">Configure a Local _Proxy</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="halign">end</property>
-            <property name="margin_top">6</property>
-            <property name="use_underline">True</property>
-            <signal name="activate" handler="cb_step_error_btn_proxy_clicked" swapped="no"/>
-            <signal name="clicked" handler="cb_step_error_btn_proxy_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <style>
-          <class name="step-error-section"/>
-        </style>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">3</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="valign">center</property>
-        <property name="vexpand">True</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="label" translatable="yes">• Bridge over email</property>
-            <attributes>
-              <attribute name="weight" value="semibold"/>
-            </attributes>
-            <style>
-              <class name="step-error-section-title"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="margin_top">6</property>
-            <property name="label" translatable="yes">To request new Tor bridges, you can also:
-
-1. Send an empty email to &lt;tt&gt;bridges@torproject.org&lt;/tt&gt; from a Gmail or Riseup email address.
-
-2. Type below one of the bridges that you received by email.</property>
-            <property name="use_markup">True</property>
-            <style>
-              <class name="step-error-section-description"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="step_error_box_bridges">
-            <property name="name">step_error_box_bridges</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
+            <property name="valign">center</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkEntry" id="step_error_text">
-                <property name="name">step_error_text</property>
+              <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
-                <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
-                <accessibility>
-                  <relation type="described-by" target="step_error_label_warning"/>
-                </accessibility>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">• Wrong clock</property>
+                <attributes>
+                  <attribute name="weight" value="semibold"/>
+                </attributes>
+                <style>
+                  <class name="step-error-section-title"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-top">6</property>
+                <property name="label" translatable="yes">Your clock and time zone need to be correct to connect to Tor.</property>
+                <style>
+                  <class name="step-error-section-description"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="step_error_btn_time">
+                <property name="label" translatable="yes">Fix _Clock</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="halign">end</property>
+                <property name="margin-top">6</property>
+                <property name="use-underline">True</property>
+                <signal name="clicked" handler="cb_step_error_btn_time_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <style>
+              <class name="step-error-section"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="valign">center</property>
+            <property name="vexpand">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">• Public network</property>
+                <attributes>
+                  <attribute name="weight" value="semibold"/>
+                </attributes>
+                <style>
+                  <class name="step-error-section-title"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -873,14 +690,185 @@ For example, you can send the email from your phone and type the bridge in Tails
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="step_error_box_warning">
+              <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-top">6</property>
+                <property name="label" translatable="yes">If you are in a shop, hotel, or airport, you might need to sign in to the local network using a captive portal.</property>
+                <style>
+                  <class name="step-error-section-description"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="step_error_btn_captive">
+                <property name="label" translatable="yes">Try _Signing in to the Network</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="halign">end</property>
+                <property name="margin-top">6</property>
+                <property name="use-underline">True</property>
+                <signal name="activate" handler="cb_step_error_btn_captive_clicked" swapped="no"/>
+                <signal name="clicked" handler="cb_step_error_btn_captive_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <style>
+              <class name="step-error-section"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="valign">center</property>
+            <property name="vexpand">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">• Local proxy</property>
+                <attributes>
+                  <attribute name="weight" value="semibold"/>
+                </attributes>
+                <style>
+                  <class name="step-error-section-title"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-top">6</property>
+                <property name="label" translatable="yes">If you are on a corporate or university network, you might need to configure a local proxy.</property>
+                <style>
+                  <class name="step-error-section-description"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="step_error_btn_proxy">
+                <property name="label" translatable="yes">Configure a Local _Proxy</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="halign">end</property>
+                <property name="margin-top">6</property>
+                <property name="use-underline">True</property>
+                <signal name="activate" handler="cb_step_error_btn_proxy_clicked" swapped="no"/>
+                <signal name="clicked" handler="cb_step_error_btn_proxy_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <style>
+              <class name="step-error-section"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="valign">center</property>
+            <property name="vexpand">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">• Bridge over email</property>
+                <attributes>
+                  <attribute name="weight" value="semibold"/>
+                </attributes>
+                <style>
+                  <class name="step-error-section-title"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-top">6</property>
+                <property name="label" translatable="yes">To request new Tor bridges, you can also:
+
+            1. Send an empty email to &lt;tt&gt;bridges@torproject.org&lt;/tt&gt; from a Gmail or Riseup email address.
+
+              2. Type below one of the bridges that you received by email.</property>
+                <property name="use-markup">True</property>
+                <style>
+                  <class name="step-error-section-description"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="step_error_box_bridges">
+                <property name="name">step_error_box_bridges</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkImage">
+                  <object class="GtkEntry" id="step_error_text">
+                    <property name="name">step_error_text</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">gtk-dialog-warning</property>
+                    <property name="can-focus">True</property>
+                    <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
+                    <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
+                    <accessibility>
+                      <relation type="described-by" target="step_error_label_warning"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -889,15 +877,38 @@ For example, you can send the email from your phone and type the bridge in Tails
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="step_error_label_warning">
+                  <object class="GtkBox" id="step_error_box_warning">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">Error</property>
-                    <accessibility>
-                      <relation type="description-for" target="step_error_text"/>
-                    </accessibility>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="icon-name">gtk-dialog-warning</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="step_error_label_warning">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="hexpand">True</property>
+                        <property name="label" translatable="yes">Error</property>
+                        <accessibility>
+                          <relation type="description-for" target="step_error_text"/>
+                        </accessibility>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -907,26 +918,44 @@ For example, you can send the email from your phone and type the bridge in Tails
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
+            <style>
+              <class name="step-error-section"/>
+            </style>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">4</property>
           </packing>
         </child>
-        <style>
-          <class name="step-error-section"/>
-        </style>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="step_error_link_troubleshooting">
+        <property name="name">step_error_link_troubleshooting</property>
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="halign">start</property>
+        <property name="margin-top">12</property>
+        <property name="label" translatable="yes">&lt;a href="doc/anonymous_internet/tor/troubleshoot"&gt;Troubleshooting connecting to Tor&lt;/a&gt;</property>
+        <property name="use-markup">True</property>
+        <property name="track-visited-links">False</property>
+        <signal name="activate-link" handler="on_link_help_clicked" swapped="no"/>
       </object>
       <packing>
         <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">4</property>
+        <property name="fill">False</property>
+        <property name="position">3</property>
       </packing>
     </child>
     <child>
@@ -934,13 +963,11 @@ For example, you can send the email from your phone and type the bridge in Tails
         <property name="label" translatable="yes">_Connect to Tor</property>
         <property name="name">step_error_btn_submit</property>
         <property name="visible">True</property>
-        <property name="sensitive">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">True</property>
         <property name="halign">end</property>
         <property name="valign">end</property>
-        <property name="vexpand">True</property>
-        <property name="use_underline">True</property>
+        <property name="use-underline">True</property>
         <signal name="clicked" handler="cb_step_error_btn_submit_clicked" swapped="no"/>
         <style>
           <class name="suggested-action"/>
@@ -950,7 +977,7 @@ For example, you can send the email from your phone and type the bridge in Tails
       <packing>
         <property name="expand">False</property>
         <property name="fill">False</property>
-        <property name="position">5</property>
+        <property name="position">4</property>
       </packing>
     </child>
   </object>
