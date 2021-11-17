@@ -31,13 +31,6 @@ def source_package(package)
   matches.first
 end
 
-def binary_packages(package)
-  $apt_sources.each do |repo|
-    return repo[package].binary if repo.member?(package)
-  end
-  nil
-end
-
 Options = Struct.new(:suite, :build_manifest, keyword_init: true)
 
 class Parser
