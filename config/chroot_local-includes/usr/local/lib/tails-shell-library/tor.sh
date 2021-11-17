@@ -1,36 +1,6 @@
 #!/bin/sh
 
-TOR_RC_DEFAULTS=/usr/share/tor/tor-service-defaults-torrc
 TOR_RC=/etc/tor/torrc
-# shellcheck disable=SC2034
-TOR_LOG=/var/log/tor/log
-# shellcheck disable=SC2034
-TOR_DIR=/var/lib/tor
-
-tor_rc_lookup() {
-    grep --no-filename "^${1}\s" "${TOR_RC_DEFAULTS}" "${TOR_RC}" | \
-	sed --regexp-extended "s/^${1}\s+(.+)$/\1/" | tail -n1
-}
-
-tor_control_port() {
-    tor_rc_lookup ControlPort | sed --regexp-extended 's/.*://'
-}
-
-tor_control_getinfo() {
-    /usr/local/lib/tor_variable get --type=info "$1"
-}
-
-tor_control_getconf() {
-    /usr/local/lib/tor_variable get --type=conf "$1"
-}
-
-tor_control_setconf() {
-    /usr/local/lib/tor_variable set --type=conf "$1" "$2"
-}
-
-tor_is_working() {
-    /usr/local/lib/tor_wait_until_bootstrapped --no-wait
-}
 
 tor_append_to_torrc () {
     echo "${@}" >> "${TOR_RC}"
