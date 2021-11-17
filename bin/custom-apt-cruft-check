@@ -89,7 +89,7 @@ apt_repo_hostnames = [
   end
   next if apt_repo_filename.nil?
   $apt_sources ||= []
-  $apt_sources << Debian::Sources.new(apt_repo_filename).freeze
+  $apt_sources << Debian::Sources.new(apt_repo_filename)
 end
 if $apt_sources.empty?
   raise "could not find Tails custom APT repo's sources, " \
