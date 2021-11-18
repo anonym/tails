@@ -155,7 +155,7 @@ def force_new_tor_circuit
     'import stem.connection',
     'try:',
     '    controller = stem.connection.connect(control_port=("127.0.0.1", 9051))',
-    '    if controller == None:',
+    '    if controller is None:',
     '        raise stem.SocketError("Cannot connect to Tor\'s control port")',
     '    controller.authenticate()',
     '    controller.signal(stem.Signal.NEWNYM)',
