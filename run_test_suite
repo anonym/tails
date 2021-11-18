@@ -83,6 +83,8 @@ Options for '@product' features:
   --keep-snapshots   Don't ever delete any snapshots (including ones marked as
                      temporary). This can be a big time saver when debugging new
                      features. Implies --keep-chutney.
+  --live-patch       Copies all files in a directory into the VM. This often can avoid a
+                     rebuild
   --tmpdir           Directory where various temporary files are written
                      during a test, e.g. VM snapshots and memory dumps,
                      failure screenshots, pcap files and disk images
@@ -220,7 +222,7 @@ KEEP_SNAPSHOTS=
 TAILS_ISO=
 OLD_TAILS_ISO=
 
-LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,iso:,old-iso:,interactive-debugging,image-bumping-mode"
+LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,live-patch,iso:,old-iso:,interactive-debugging,image-bumping-mode"
 OPTS=$(getopt -o "" --longoptions $LONGOPTS -n "${NAME}" -- "$@")
 eval set -- "$OPTS"
 while [ $# -gt 0 ]; do
@@ -270,6 +272,9 @@ while [ $# -gt 0 ]; do
         --keep-snapshots)
             export KEEP_CHUTNEY="yes"
             export KEEP_SNAPSHOTS="yes"
+            ;;
+        --live-patch)
+            export LIVE_PATCH="yes"
             ;;
         --tmpdir)
             shift

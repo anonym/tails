@@ -1,6 +1,12 @@
 require 'fileutils'
 
 def post_vm_start_hook
+  if $config['LIVE_PATCH'] == 'yes'
+    debug_log('started live patch')
+    $vm.file_copy_local_dir('config/chroot_local-includes/', '/')
+    debug_log('live patch ready')
+  end
+
   # Sometimes the first click is lost (presumably it's used to give
   # focus to virt-viewer or similar) so we do that now rather than
   # having an important click lost. The point we click should be

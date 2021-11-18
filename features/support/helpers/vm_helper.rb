@@ -594,8 +594,21 @@ class VM
 
   def file_copy_local(localpath, vm_path)
     buf = File.open(localpath)
-    content = buf.read()
+    content = buf.read
+    buf.close
     file_overwrite(vm_path, content)
+  end
+
+  def file_copy_local_dir(localdir, vm_dir)
+    localfiles = `(cd #{localdir}; find . -type f -print0)`
+    localfiles.split("\0").each do |fpath|
+      # fpath is, for example,"./etc/amnesia/version"
+      vm_path = fpath[1..-1]
+      dir = File.dirname(vm_path)
+
+      execute_successfully("mkdir -p '#{dir}'")
+      file_copy_local(File.join(localdir, fpath), vm_path)
+    end
   end
 
   def file_append(path, lines)
