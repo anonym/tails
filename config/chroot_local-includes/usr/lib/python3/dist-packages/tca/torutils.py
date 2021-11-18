@@ -228,7 +228,7 @@ class TorConnectionConfig:
         >>> TorConnectionConfig.parse_bridge_line("1.2.3.4")
         Traceback (most recent call last):
             ...
-        ValueError: Bridge address is malformed: '1.2.3.4'
+        torutils.MalformedBridgeException: Bridge address is malformed: '1.2.3.4'
         >>> TorConnectionConfig.parse_bridge_line("1.2.3.4:1000:1000")
         Traceback (most recent call last):
             ...
