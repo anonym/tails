@@ -592,6 +592,12 @@ class VM
     file_open(path) { |f| return f.write(lines) }
   end
 
+  def file_copy_local(localpath, vm_path)
+    buf = File.open(localpath)
+    content = buf.read()
+    file_overwrite(vm_path, content)
+  end
+
   def file_append(path, lines)
     lines = lines.join("\n") if lines.class == Array
     file_open(path) { |f| return f.append(lines) }
