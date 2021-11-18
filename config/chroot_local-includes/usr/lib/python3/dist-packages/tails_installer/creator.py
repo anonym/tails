@@ -1083,7 +1083,7 @@ class TailsInstallerCreator(object):
     def rescan_block_device(self, block):
         self._udisksclient.settle()
         self.flush_buffers(silent=True)
-        time.sleep(5)
+        time.sleep(30)
         block.call_rescan_sync(GLib.Variant('a{sv}', None))
 
     def connect_drive_monitor(self, callback, data=None):
