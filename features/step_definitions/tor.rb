@@ -743,12 +743,6 @@ Then /^Tor is configured to use the default bridges$/ do
                'Current bridges does not match the default ones')
 end
 
-When /^I set (.*)=(.*) over Tor's control port$/ do |key, val|
-  $vm.execute_successfully(
-    "/usr/local/lib/tor_variable set --type=conf '#{key}=#{val}'"
-  )
-end
-
 Then /^Tor is using the same configuration as before$/ do
   assert(@tor_success_configs.size >= 2,
          'We need at least two configs to compare but have only ' +
