@@ -546,7 +546,7 @@ Given /^Tor is ready$/ do
       units_status = $vm.execute('systemctl --all --state=failed').stdout
       # XXX: Bullseye blocker: we have temporarily made this check
       # non-fatal. The commit that added this comment should be
-      # reverted before Tails based on Bullseye is released.
+      # reverted before Tails based on Bullseye is released (#18694).
       puts "The system is not fully running yet:\n#{jobs}\n#{units_status}"
     end
   end

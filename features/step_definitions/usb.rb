@@ -541,14 +541,14 @@ Then /^the boot device has safe access rights$/ do
   end
 
   info = $vm.execute("udisksctl info --block-device '#{super_boot_dev}'").stdout
-  # XXX: Bullseye blocker: this is no longer true,
+  # XXX: Bullseye blocker: this is no longer true (#18685).
   begin
     assert_match(/^    HintSystem: +true$/, info,
                  "Boot device '#{super_boot_dev}' is not system internal " \
                  'for udisks')
   rescue Test::Unit::AssertionFailedError
     puts "XXX: Boot device '#{super_boot_dev}' is not system internal " \
-         "for udisks. Failing this check should be fatal, but it is " \
+         "for udisks (#18685). Failing this check should be fatal, but it is " \
          "temporarily disabled while working on the Bullseye migration."
   end
 end
