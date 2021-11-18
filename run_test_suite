@@ -90,6 +90,8 @@ Options for '@product' features:
                      /tmp/TailsToaster).
   --view             Shows the test session in a windows. Requires x11vnc
                      and tigervnc-viewer.
+  --view-interact    The test session can be \"touched\". For debugging purposes
+                     only.
   --vnc-server-only  Starts a VNC server for the test session. Requires x11vnc.
   --iso IMAGE        Test '@product' features using IMAGE.
   --old-iso IMAGE    For some '@product' features (e.g. usb_install) we need
@@ -184,9 +186,13 @@ start_vnc_server() {
 }
 
 start_vnc_viewer() {
+    opts=
+    if [[ "${VNC_VIEWER_VIEWONLY}" = yes ]]; then
+        opts=-viewonly
+    fi
     check_dependencies tigervnc-viewer
     xtigervncviewer \
-        -nojpeg -viewonly \
+        -nojpeg $opts \
         -RemoteResize=0 \
         -AcceptClipboard=0 \
         -SendClipboard=0 \
@@ -205,6 +211,7 @@ ARTIFACTS_BASE_URI=
 CAPTURE=
 CAPTURE_ALL=
 VNC_VIEWER=
+VNC_VIEWER_VIEWONLY=yes
 VNC_SERVER=
 INTERACTIVE_DEBUGGING=
 IMAGE_BUMPING_MODE=
@@ -213,7 +220,7 @@ KEEP_SNAPSHOTS=
 TAILS_ISO=
 OLD_TAILS_ISO=
 
-LONGOPTS="allow-non-root,artifacts-base-uri:,view,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,iso:,old-iso:,interactive-debugging,image-bumping-mode"
+LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,iso:,old-iso:,interactive-debugging,image-bumping-mode"
 OPTS=$(getopt -o "" --longoptions $LONGOPTS -n "${NAME}" -- "$@")
 eval set -- "$OPTS"
 while [ $# -gt 0 ]; do
@@ -230,6 +237,12 @@ while [ $# -gt 0 ]; do
             ;;
         --view)
             VNC_VIEWER=yes
+            VNC_VIEWER_VIEWONLY=yes
+            VNC_SERVER=yes
+            ;;
+        --view-interact)
+            VNC_VIEWER=yes
+            VNC_VIEWER_VIEWONLY=
             VNC_SERVER=yes
             ;;
         --vnc-server-only)
