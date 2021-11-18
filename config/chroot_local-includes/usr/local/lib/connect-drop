@@ -158,7 +158,11 @@ def main():
         user = pwd.getpwnam(args.user)
 
         if PRCTL:
+            # this will drop all capabilities
             prctl.capbset.limit()
+
+        # the order of this is critical!
+        # See "The Art of Software Security Assessment: Identifying and Preventing Software Vulnerabilities" 7.5.4
         os.setgroups(os.getgrouplist(user.pw_name, user.pw_gid))
         os.setgid(user.pw_gid)
         os.setuid(user.pw_uid)
