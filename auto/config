@@ -109,9 +109,8 @@ perl -pi \
     config/chroot_sources/*.chroot \
     || fatal "APT mirror substitution failed with exit code $?"
 
-# XXX: adjust live-build to handle the new security suite name
-# introduced in Debian Bullseye. This should be fixed in our
-# live-build packages instead.
+# Adjust live-build to handle the new security suite name
+# introduced in Debian Bullseye.
 sed -i 's@${LB_DISTRIBUTION}/updates@${LB_DISTRIBUTION}-security@' \
     /usr/share/live/build/scripts/build/lb_chroot_sources
 
