@@ -17,10 +17,6 @@ else
     exit 0
 fi
 
-# Import tor_control_getconf()
-# shellcheck source=../../../usr/local/lib/tails-shell-library/tor.sh
-. /usr/local/lib/tails-shell-library/tor.sh
-
 # We would like Tor to be started during init time, even before the
 # network is up, and then send it a SIGHUP here to make it start
 # bootstrapping swiftly, but it doesn't work because of a bug in
@@ -40,6 +36,6 @@ done
 /usr/local/lib/systemctl-user amnesia start tca.service
 
 # Wait until the user is done with configuring Tor.
-until [ "$(tor_control_getconf DisableNetwork)" = 0 ]; do
+until [ "$(/usr/local/lib/tor_variable get --type=conf DisableNetwork)" = 0 ]; do
     sleep 1
 done

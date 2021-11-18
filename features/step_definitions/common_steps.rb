@@ -474,9 +474,10 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
-  # First we wait for tor to be running so its control port is open...
+  # First we wait for tor's control port to be ready...
   try_for(60) do
-    $vm.execute('systemctl -q is-active tor@default.service').success?
+    $vm.execute_successfully('/usr/local/lib/tor_variable get --type=info version')
+    true
   end
   # ... so we can ask if the tor's networking is disabled, in which
   # case Tor Connection Assistant has not been dealt with yet. If
@@ -489,8 +490,11 @@ Given /^Tor is ready$/ do
   disable_network = nil
   # Gather debugging information for #18293
   try_for(10) do
+    $vm.execute('pidof tor')
+    $vm.execute('fuser --namespace tcp 9052')
+    $vm.execute('systemctl status tor@default.service')
     disable_network = $vm.execute_successfully(
-      'tor_control_getconf DisableNetwork', libs: 'tor'
+      '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
     ).stdout.chomp
     if disable_network == ''
       debug_log('Tor reported claims DisableNetwork is an empty string')
@@ -533,8 +537,8 @@ Given /^Tor is ready$/ do
   end
   @tor_success_configs ||= []
   @tor_success_configs << $vm.execute_successfully(
-    'tor_control_send "getinfo config-text"', libs: 'tor'
-  ).stdout.match(/^250\+config-text=\n(.*)^[.]/m)[1]
+    '/usr/local/lib/tor_variable get --type=info config-text', libs: 'tor'
+  ).stdout
   # When we test for ASP upgrade failure the following tests would fail,
   # so let's skip them in this case.
   unless $vm.file_exist?('/run/live-additional-software/doomed_to_fail')
