@@ -129,7 +129,7 @@ Then /^I connect to an SFTP server on the Internet$/ do
 
   retry_tor(recovery_proc) do
     step 'I start "Nautilus" via GNOME Activities Overview'
-    nautilus = Dogtail::Application.new('nautilus')
+    nautilus = Dogtail::Application.new('org.gnome.Nautilus')
     nautilus.child(roleName: 'frame')
     nautilus.child('Other Locations', roleName: 'label').click
     connect_bar = nautilus.child('Connect to Server', roleName: 'label').parent
@@ -153,7 +153,7 @@ end
 
 Then /^I successfully connect to the SFTP server$/ do
   try_for(60) do
-    Dogtail::Application.new('nautilus')
+    Dogtail::Application.new('org.gnome.Nautilus')
                         .child?("#{@sftp_username} on #{@sftp_host}")
   end
 end
