@@ -729,7 +729,7 @@ end
 
 Then /^Tor is configured to use the default bridges$/ do
   use_bridges = $vm.execute_successfully(
-    'tor_control_getconf UseBridges', libs: 'tor'
+    '/usr/local/lib/tor_variable get --type=conf UseBridges'
   ).stdout.chomp.to_i
   assert_equal(1, use_bridges, 'UseBridges is not set')
   default_bridges = $vm.execute_successfully(
@@ -737,16 +737,10 @@ Then /^Tor is configured to use the default bridges$/ do
   ).stdout.chomp
   assert(default_bridges.size.positive?, 'No default bridges were found')
   current_bridges = $vm.execute_successfully(
-    'tor_control_getconf Bridge | sort', libs: 'tor'
+    '/usr/local/lib/tor_variable get --type=conf Bridge | sort'
   ).stdout.chomp
   assert_equal(default_bridges, current_bridges,
                'Current bridges does not match the default ones')
-end
-
-When /^I set (.*)=(.*) over Tor's control port$/ do |key, val|
-  $vm.execute_successfully(
-    "tor_control_setconf '#{key}=#{val}'", libs: 'tor'
-  )
 end
 
 Then /^Tor is using the same configuration as before$/ do

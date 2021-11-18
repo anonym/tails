@@ -178,7 +178,7 @@ end
 Then /^Tor is (not )?confined with Seccomp$/ do |not_confined|
   expected_sandbox_status = not_confined.nil? ? 1 : 0
   sandbox_status = $vm.execute_successfully(
-    'tor_control_getconf Sandbox', libs: 'tor'
+    '/usr/local/lib/tor_variable get --type=conf Sandbox'
   ).stdout.to_i
   assert_equal(expected_sandbox_status, sandbox_status,
                'Tor says that the sandbox is ' +

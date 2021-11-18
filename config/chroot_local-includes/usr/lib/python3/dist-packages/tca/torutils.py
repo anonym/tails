@@ -566,21 +566,6 @@ class TorLauncherNetworkUtils:
         """
         raise NotImplementedError()
 
-    def is_tor_ready(self):
-        """
-        checks if tor is properly connected
-        """
-        args = [
-            "sh",
-            "-c",
-            ". /usr/local/lib/tails-shell-library/tor.sh; tor_is_working",
-        ]
-        try:
-            subprocess.check_call(args)
-            return True
-        except subprocess.CalledProcessError:
-            return False
-
 
 def backoff_wait(
     total_wait: float = 30.0, initial_sleep: float = 0.5, increment=lambda x: x + 0.5
