@@ -30,17 +30,17 @@ Feature: Using Evince
     And the file "/live/overlay/rw/home/amnesia/.gnupg/default-testpage.pdf" exists after at most 10 seconds
     Given I start monitoring the AppArmor log of "/usr/bin/evince"
     When I try to open "/home/amnesia/.gnupg/default-testpage.pdf" with Evince
-    Then I see "EvinceUnableToOpen.png" after at most 10 seconds
+    Then Evince tells me it cannot open "/home/amnesia/.gnupg/default-testpage.pdf"
     And AppArmor has denied "/usr/bin/evince" from opening "/home/amnesia/.gnupg/default-testpage.pdf"
     When I close Evince
     Given I restart monitoring the AppArmor log of "/usr/bin/evince"
     When I try to open "/lib/live/mount/overlay/rw/home/amnesia/.gnupg/default-testpage.pdf" with Evince
-    Then I see "EvinceUnableToOpen.png" after at most 10 seconds
+    Then Evince tells me it cannot open "/lib/live/mount/overlay/rw/home/amnesia/.gnupg/default-testpage.pdf"
     And AppArmor has denied "/usr/bin/evince" from opening "/lib/live/mount/overlay/rw/home/amnesia/.gnupg/default-testpage.pdf"
     When I close Evince
     Given I restart monitoring the AppArmor log of "/usr/bin/evince"
     When I try to open "/live/overlay/rw/home/amnesia/.gnupg/default-testpage.pdf" with Evince
-    Then I see "EvinceUnableToOpen.png" after at most 10 seconds
+    Then Evince tells me it cannot open "/live/overlay/rw/home/amnesia/.gnupg/default-testpage.pdf"
     # Due to our AppArmor aliases, /live/overlay will be treated
     # as /lib/live/mount/overlay.
     And AppArmor has denied "/usr/bin/evince" from opening "/lib/live/mount/overlay/rw/home/amnesia/.gnupg/default-testpage.pdf"
@@ -62,5 +62,5 @@ Feature: Using Evince
     Then the file "/home/amnesia/.gnupg/default-testpage.pdf" exists
     Given I start monitoring the AppArmor log of "/usr/bin/evince"
     And I try to open "/home/amnesia/.gnupg/default-testpage.pdf" with Evince
-    Then I see "EvinceUnableToOpen.png" after at most 10 seconds
+    Then Evince tells me it cannot open "/home/amnesia/.gnupg/default-testpage.pdf"
     And AppArmor has denied "/usr/bin/evince" from opening "/home/amnesia/.gnupg/default-testpage.pdf"
