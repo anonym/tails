@@ -959,12 +959,6 @@ def pulseaudio_sink_inputs
   sink_inputs_line.match(/^\d+/)[0].to_i
 end
 
-When /^(no|\d+) application(?:s?) (?:is|are) playing audio(?:| after (\d+) seconds)$/ do |nb, wait_time|
-  nb = 0 if nb == 'no'
-  sleep wait_time.to_i unless wait_time.nil?
-  assert_equal(nb.to_i, pulseaudio_sink_inputs)
-end
-
 When /^I double-click on the (Tails documentation|Report an Error) launcher on the desktop$/ do |launcher|
   image = 'Desktop' + launcher.split.map(&:capitalize) .join + '.png'
   info = xul_application_info('Tor Browser')
