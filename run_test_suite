@@ -83,8 +83,12 @@ Options for '@product' features:
   --keep-snapshots   Don't ever delete any snapshots (including ones marked as
                      temporary). This can be a big time saver when debugging new
                      features. Implies --keep-chutney.
-  --live-patch       Copies all files in a directory into the VM. This often can avoid a
-                     rebuild
+  --live-patch FILE  Copies files into the VM before running the test suite.
+                     This often can avoid a rebuild.
+                     FILE is a text file where each line contains tab-separated
+                     source and destination.
+                     lines without a tab are ignored.
+                     lines with a leading \"#\" are ignored.
   --tmpdir           Directory where various temporary files are written
                      during a test, e.g. VM snapshots and memory dumps,
                      failure screenshots, pcap files and disk images
@@ -222,7 +226,7 @@ KEEP_SNAPSHOTS=
 TAILS_ISO=
 OLD_TAILS_ISO=
 
-LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,live-patch,iso:,old-iso:,interactive-debugging,image-bumping-mode"
+LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,live-patch:,iso:,old-iso:,interactive-debugging,image-bumping-mode"
 OPTS=$(getopt -o "" --longoptions $LONGOPTS -n "${NAME}" -- "$@")
 eval set -- "$OPTS"
 while [ $# -gt 0 ]; do
@@ -274,7 +278,13 @@ while [ $# -gt 0 ]; do
             export KEEP_SNAPSHOTS="yes"
             ;;
         --live-patch)
-            export LIVE_PATCH="yes"
+            shift
+            LIVE_PATCH="$(realpath -s "$1")"
+            if ! [[ -f "$LIVE_PATCH" ]]; then
+                echo "--live-patch requires a valid FILE as argument"
+                exit 2
+            fi
+            export LIVE_PATCH
             ;;
         --tmpdir)
             shift

@@ -593,6 +593,7 @@ class VM
   end
 
   def file_copy_local(localpath, vm_path)
+    debug_log("copying #{localpath} to #{vm_path}")
     buf = File.open(localpath)
     content = buf.read
     buf.close
@@ -607,7 +608,7 @@ class VM
       dir = File.dirname(vm_path)
 
       execute_successfully("mkdir -p '#{dir}'")
-      file_copy_local(File.join(localdir, fpath), vm_path)
+      file_copy_local(File.join(localdir, fpath), File.join(vm_dir, vm_path))
     end
   end
 
