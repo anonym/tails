@@ -290,6 +290,8 @@ class ImageCreator(object):
         # returns a 0 exit code (#18664)
         with set_env("MTOOLS_SKIP_CHECK", "1"):
             try:
+                # This will succeed if, and only if, the syslinux/ldlinux.sys
+                # file exists inside self.partition.props.block.props.device:
                 execute(['mdir',
                          '-i', self.partition.props.block.props.device,
                          '-a',
