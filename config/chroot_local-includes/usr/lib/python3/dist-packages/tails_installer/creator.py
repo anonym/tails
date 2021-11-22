@@ -691,6 +691,26 @@ class TailsInstallerCreator(object):
         self.flush_buffers(silent=True)
         time.sleep(3)
 
+    def get_system_partition(self):
+        '''
+        Get a fresh system_partition object, otherwise _set_partition_flags sometimes fails with
+        'GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No
+        such interface 'org.freedesktop.UDisks2.Partition' on object
+        at path /org/freedesktop/UDisks2/block_devices/sda1'
+        '''
+        for attempt in range(1, 10):
+            try:
+                self.rescan_block_device(self._get_object().props.block)
+                time.sleep(5)
+                system_partition = self.first_partition(self.drive['udi'])
+            except IndexError:
+                if attempt > 5:
+                    raise
+                self.log.debug("Retrying %d" % attempt)
+            else:
+                return system_partition
+
+
     def partition_device(self):
         if not self.opts.partition:
             return
@@ -742,23 +762,14 @@ class TailsInstallerCreator(object):
             else:
                 raise
 
-        # Get a fresh system_partition object, otherwise
-        # _set_partition_flags sometimes fails with
-        # 'GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No
-        # such interface 'org.freedesktop.UDisks2.Partition' on object
-        # at path /org/freedesktop/UDisks2/block_devices/sda1'
-        self.rescan_block_device(self._get_object().props.block)
-        system_partition = self.first_partition(self.drive['udi'])
-
-        self._set_partition_flags(system_partition, SYSTEM_PARTITION_FLAGS)
+        self._set_partition_flags(self.get_system_partition(), SYSTEM_PARTITION_FLAGS)
 
         # Get a fresh system_partition object, otherwise
         # call_set_flags_sync sometimes fails with 'No such interface
         # 'org.freedesktop.UDisks2.Partition' on object at path
         # /org/freedesktop/UDisks2/block_devices/sdd1'
         # (https://gitlab.tails.boum.org/tails/tails/-/issues/15432)
-        self.rescan_block_device(self._get_object().props.block)
-        system_partition = self.first_partition(self.drive['udi'])
+        self.get_system_partition()
 
         # Give the system some more time to recognize the updated
         # partition, otherwise sometimes later on, when
