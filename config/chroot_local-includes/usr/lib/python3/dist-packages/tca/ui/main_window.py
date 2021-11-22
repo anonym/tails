@@ -1091,9 +1091,9 @@ class ConnectionProgress:
 
         >>> f = lambda x,y: '%.4f' % ConnectionProgress._get_value_after_tick(x,y)
         >>> f(0.1, False)
-        '0.1133'
+        '0.1400'
         >>> f(0.5, True)
-        '0.5033'
+        '0.5007'
 
         So in `n` steps we will arrive to the next progress.
         To test this, let's setup a helper function. this will just recurse "n" times
@@ -1103,9 +1103,9 @@ class ConnectionProgress:
 
         Let's test the helper itself:
         >>> '%.4f' % ftn(0.5, 1)
-        '0.5033'
+        '0.5007'
         >>> '%.4f' % ftn(0.5, 2)
-        '0.5067'
+        '0.5013'
         >>> ftn(0.5, TOR_BOOTSTRAP_TIMEOUT) - ConnectionProgress.PROGRESS_BOOTSTRAP_END < 0.001
         True
 
@@ -1113,12 +1113,12 @@ class ConnectionProgress:
 
         That's the same, but for "before sign_of_life"
         >>> '%.4f' % ffn(0.1, 1)
-        '0.1133'
-        >>> '%.4f' % ffn(0.1, 2)
-        '0.1267'
-        >>> '%.4f' % ffn(0.1, 3)
         '0.1400'
-        >>> '%.4f' % ffn(0.1, 30)
+        >>> '%.4f' % ffn(0.1, 2)
+        '0.1800'
+        >>> '%.4f' % ffn(0.1, 3)
+        '0.2200'
+        >>> '%.4f' % ffn(0.1, TOR_SIGNOFLIFE_TIMEOUT)
         '0.5000'
 
 
