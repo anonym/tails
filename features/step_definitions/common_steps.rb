@@ -1,6 +1,8 @@
 require 'fileutils'
 
 def post_vm_start_hook
+  $vm.live_patch if $config['LIVE_PATCH']
+
   # Sometimes the first click is lost (presumably it's used to give
   # focus to virt-viewer or similar) so we do that now rather than
   # having an important click lost. The point we click should be
