@@ -612,10 +612,16 @@ class VM
     end
   end
 
-  def live_patch
-    return if $config['LIVE_PATCH'].empty?
+  def live_patch(fname = nil)
+    if fname.nil?
+      fname = $config['LIVE_PATCH']
+    end
+    if fname.nil? || fname.empty?
+      debug_log('live_patch called but no filename found')
+      return
+    end
 
-    File.open($config['LIVE_PATCH']) do |buf|
+    File.open(fname) do |buf|
       buf.each_line do |line|
         next unless line.count("\t") == 1 && !line.start_with?('#')
 
