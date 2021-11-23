@@ -1,3 +1,4 @@
+require 'find'
 require 'ipaddr'
 require 'libvirt'
 require 'rexml/document'
@@ -601,8 +602,8 @@ class VM
   end
 
   def file_copy_local_dir(localdir, vm_dir)
-    localfiles = `(cd #{localdir}; find . -type f -print0)`
-    localfiles.split("\0").each do |fpath|
+    localfiles = Dir.chdir(localdir) { Find.find('.').select { |p| FileTest.file?(p) } }
+    localfiles.each do |fpath|
       # fpath is, for example,"./etc/amnesia/version"
       vm_path = fpath[1..-1]
       dir = File.dirname(vm_path)
