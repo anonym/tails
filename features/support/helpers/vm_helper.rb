@@ -612,9 +612,7 @@ class VM
   end
 
   def live_patch(fname = nil)
-    if fname.nil?
-      fname = $config['LIVE_PATCH']
-    end
+    fname = $config['LIVE_PATCH'] if fname.nil?
     if fname.nil? || fname.empty?
       debug_log('live_patch called but no filename found')
       return
