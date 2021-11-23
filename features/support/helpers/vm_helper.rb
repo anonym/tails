@@ -595,9 +595,7 @@ class VM
 
   def file_copy_local(localpath, vm_path)
     debug_log("copying #{localpath} to #{vm_path}")
-    buf = File.open(localpath)
-    content = buf.read
-    buf.close
+    content = File.read(localpath)
     file_overwrite(vm_path, content)
   end
 
@@ -622,22 +620,20 @@ class VM
       return
     end
 
-    File.open(fname) do |buf|
-      buf.each_line do |line|
-        next unless line.count("\t") == 1 && !line.start_with?('#')
+    File.open(fname).each_line do |line|
+      next unless line.count("\t") == 1 && !line.start_with?('#')
 
-        src, dest = line.strip.split("\t", 2)
-        unless File.exist?(src)
-          debug_log("Error in --live-patch: #{src} does not exist")
-          next
-        end
-        if File.file?(src)
-          $vm.file_copy_local(src, dest)
-        elsif File.directory?(src)
-          $vm.file_copy_local_dir(src, dest)
-        else
-          debug_log("Error in --live-patch: #{src} not a file or a dir")
-        end
+      src, dest = line.strip.split("\t", 2)
+      unless File.exist?(src)
+        debug_log("Error in --live-patch: #{src} does not exist")
+        next
+      end
+      if File.file?(src)
+        $vm.file_copy_local(src, dest)
+      elsif File.directory?(src)
+        $vm.file_copy_local_dir(src, dest)
+      else
+        debug_log("Error in --live-patch: #{src} not a file or a dir")
       end
     end
   end
