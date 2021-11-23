@@ -944,15 +944,6 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   @screen.press('Escape')
 end
 
-Then /^there is no GNOME bookmark for the persistent Tor Browser directory$/ do
-  try_for(65) do
-    @screen.wait('GnomePlaces.png', 10).click
-    @screen.wait('GnomePlacesWithoutTorBrowserPersistent.png', 10)
-    @screen.press('Escape')
-    true
-  end
-end
-
 def pulseaudio_sink_inputs
   pa_info = $vm.execute_successfully('pacmd info', user: LIVE_USER).stdout
   sink_inputs_line = pa_info.match(/^\d+ sink input\(s\) available\.$/)[0]
