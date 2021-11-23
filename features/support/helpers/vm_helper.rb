@@ -612,6 +612,29 @@ class VM
     end
   end
 
+  def live_patch
+    return if $config['LIVE_PATCH'].empty?
+
+    File.open($config['LIVE_PATCH']) do |buf|
+      buf.each_line do |line|
+        next unless line.count("\t") == 1 && !line.start_with?('#')
+
+        src, dest = line.strip.split("\t", 2)
+        unless File.exist?(src)
+          debug_log("Error in --live-patch: #{src} does not exist")
+          next
+        end
+        if File.file?(src)
+          $vm.file_copy_local(src, dest)
+        elsif File.directory?(src)
+          $vm.file_copy_local_dir(src, dest)
+        else
+          debug_log("Error in --live-patch: #{src} not a file or a dir")
+        end
+      end
+    end
+  end
+
   def file_append(path, lines)
     lines = lines.join("\n") if lines.class == Array
     file_open(path) { |f| return f.append(lines) }

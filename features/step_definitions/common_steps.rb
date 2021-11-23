@@ -1,26 +1,7 @@
 require 'fileutils'
 
 def post_vm_start_hook
-  unless $config['LIVE_PATCH'].empty?
-    File.open($config['LIVE_PATCH']) do |buf|
-      buf.each_line do |line|
-        next unless line.count("\t") == 1 && !line.start_with?('#')
-
-        src, dest = line.strip.split("\t", 2)
-        unless File.exist?(src)
-          debug_log("Error in --live-patch: #{src} does not exist")
-          next
-        end
-        if File.file?(src)
-          $vm.file_copy_local(src, dest)
-        elsif File.directory?(src)
-          $vm.file_copy_local_dir(src, dest)
-        else
-          debug_log("Error in --live-patch: #{src} not a file or a dir")
-        end
-      end
-    end
-  end
+  $vm.live_patch()
 
   # Sometimes the first click is lost (presumably it's used to give
   # focus to virt-viewer or similar) so we do that now rather than
