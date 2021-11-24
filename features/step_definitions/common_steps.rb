@@ -1,6 +1,8 @@
 require 'fileutils'
 
 def post_vm_start_hook
+  $vm.live_patch if $config['LIVE_PATCH']
+
   # Sometimes the first click is lost (presumably it's used to give
   # focus to virt-viewer or similar) so we do that now rather than
   # having an important click lost. The point we click should be
@@ -942,15 +944,6 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   @screen.wait('GnomePlaces.png', 10).click
   @screen.wait(bookmark_image, 40)
   @screen.press('Escape')
-end
-
-Then /^there is no GNOME bookmark for the persistent Tor Browser directory$/ do
-  try_for(65) do
-    @screen.wait('GnomePlaces.png', 10).click
-    @screen.wait('GnomePlacesWithoutTorBrowserPersistent.png', 10)
-    @screen.press('Escape')
-    true
-  end
 end
 
 def pulseaudio_sink_inputs
