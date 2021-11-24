@@ -496,7 +496,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
                               .click
     else
       btn = tor_connection_assistant.child(
-        '_Type in a bridge that I already know',
+        '_Enter a bridge that you already know',
         roleName: 'radio button'
       )
       btn.click
@@ -574,7 +574,7 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
   )
   click_connect_to_tor
   assert(
-    tor_connection_assistant.child('Use a bridge that I already know',
+    tor_connection_assistant.child('Use a bridge that you already know',
                                    roleName: 'radio button').checked
   )
   persistent_bridges_lines = [
@@ -604,7 +604,7 @@ Then /^the Tor Connection Assistant complains that normal bridges are not allowe
   )
 end
 
-def click_connect_to_tor()
+def click_connect_to_tor
   btn = tor_connection_assistant.child(
     '_Connect to Tor',
     roleName: 'push button'
@@ -629,9 +629,27 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   time_dialog = tor_connection_assistant.child('Tor Connection - Fix Clock',
                                                roleName:    'dialog',
                                                showingOnly: true)
-  select_tz = time_dialog.child('Time zone', roleName: 'panel')
-                         .child(roleName: 'combo box')
-  select_tz.combovalue = timezone
+  tz_label = time_dialog.child('UTC (Greenwich time)', roleName: 'label')
+  tz_label.click
+
+  def get_visible_results(dialog)
+    table = dialog.child(roleName: 'tree table')
+    results = table.children(roleName: 'table cell').select do |res|
+      # Let's skip continents, but keep special timezones: UTC and GMT
+      res.name.include? '/' or ["UTC", "GMT"].include?(res.name)
+    end
+    results
+  end
+
+  @screen.type(timezone)
+
+  try_for(10) do
+    # filtering could take some time, so let's wait until this has been properly done
+    results = get_visible_results(time_dialog)
+    results.length == 1
+  end
+
+  @screen.press('Return')
 
   try_for(5) do
     time_dialog.child('Apply', roleName: 'push button').click
@@ -711,7 +729,7 @@ end
 
 Then /^Tor is configured to use the default bridges$/ do
   use_bridges = $vm.execute_successfully(
-    'tor_control_getconf UseBridges', libs: 'tor'
+    '/usr/local/lib/tor_variable get --type=conf UseBridges'
   ).stdout.chomp.to_i
   assert_equal(1, use_bridges, 'UseBridges is not set')
   default_bridges = $vm.execute_successfully(
@@ -719,16 +737,10 @@ Then /^Tor is configured to use the default bridges$/ do
   ).stdout.chomp
   assert(default_bridges.size.positive?, 'No default bridges were found')
   current_bridges = $vm.execute_successfully(
-    'tor_control_getconf Bridge | sort', libs: 'tor'
+    '/usr/local/lib/tor_variable get --type=conf Bridge | sort'
   ).stdout.chomp
   assert_equal(default_bridges, current_bridges,
                'Current bridges does not match the default ones')
-end
-
-When /^I set (.*)=(.*) over Tor's control port$/ do |key, val|
-  $vm.execute_successfully(
-    "tor_control_setconf '#{key}=#{val}'", libs: 'tor'
-  )
 end
 
 Then /^Tor is using the same configuration as before$/ do

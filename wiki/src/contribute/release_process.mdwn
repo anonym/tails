@@ -56,8 +56,7 @@ To release Tails you'll need some packages installed:
     them from a more recent Debian release with APT pinning.
 * `perl5lib` [[dependencies|contribute/release_process/perl5lib#build-deps]]
 * `iuk` [[dependencies|contribute/release_process/tails-iuk#build-deps]]
-* [[!debpts squashfs-tools]] 1:4.4-1+0.tails1
-  from our custom `iukbuilder-stretch` APT suite.
+* `squashfs-tools-ng` and `libsquashfs1` from Bullseye
 * `po4a` 0.55:
    - Different versions extract Markdown headings in a different way, which
      makes tons of strings fuzzy.
@@ -840,11 +839,14 @@ Reference: [[design documentation|contribute/design/incremental_upgrades]]
 Sanity checks
 -------------
 
-Check that you have the correct version of `squashfs-tools` installed:
+Check that you have the correct version of `squashfs-tools-ng` and `libsquashfs1` installed:
 
-    [ "$(dpkg-query --showformat '${Version}\n' --show squashfs-tools)" \
-      = '1:4.4-1+0.tails1' \
-    ] || echo 'ERROR! Your squashfs-tools is not the required version, so any generated IUKs will *not* be reproducible!'
+    [ "$(dpkg-query --showformat '${Version}\n' --show squashfs-tools-ng)" \
+      = '1.0.4-1' \
+    ] || echo 'ERROR! Your squashfs-tools-ng is not the required version, so any generated IUKs will *not* be reproducible!'
+    [ "$(dpkg-query --showformat '${Version}\n' --show libsquashfs1)" \
+      = '1.0.4-1' \
+    ] || echo 'ERROR! Your libsquashfs1 is not the required version, so any generated IUKs will *not* be reproducible!'
 
 Check that you have the password for <https://iso-history.tails.boum.org> (it
 will be used by `wrap_tails_create_iuks` below, in order to download any ISO
@@ -945,15 +947,13 @@ Build the Incremental Upgrade Kits on Jenkins
 
 1. On <https://jenkins.tails.boum.org/job/build_IUKs/configure>,
    in the _Configuration Matrix_ section,
-   set the value of `label_exp` to an expression that matches the isobuilders
-   that use a CPU of the same brand as yours, and only those:
+   set the value of `label_exp` to our Bullseye isobuilders:
 
-     - Intel: `isobuilder1.lizard || isobuilder2.lizard || isobuilder3.lizard || isobuilder4.lizard`
-     - AMD: `isobuilder5.iguana`
+    `isobuilder3.lizard || isobuilder4.lizard || isobuilder6.iguana`
 
    Then save the updated configuration.
 
-   Rationale: workaround [[!tails_ticket 18536]]
+   Rationale: [[!tails_ticket 18577]]
 
 1. On <https://jenkins.tails.boum.org/job/build_IUKs/build?delay=0sec>,
    fill the form with these values:
@@ -1603,7 +1603,8 @@ Skip this part if preparing a release candidate.
 
 4. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to:
    close the just-released [[!tails_gitlab groups/tails/-/milestones
-   desc="milestone"]]
+   desc="milestone"]]. See this as an example:
+   [[!tails_gitlab tails/gitlab-config/-/merge_requests/18 desc="tails/gitlab-config!18"]]
 
    Assign the MR to the on-duty sysadmin (see link to "Semi-public
    calendar" in <https://gitlab.tails.boum.org/tails/summit/-/wikis/Teams#sysadmins>).

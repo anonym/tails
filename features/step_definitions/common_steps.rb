@@ -1,6 +1,8 @@
 require 'fileutils'
 
 def post_vm_start_hook
+  $vm.live_patch if $config['LIVE_PATCH']
+
   # Sometimes the first click is lost (presumably it's used to give
   # focus to virt-viewer or similar) so we do that now rather than
   # having an important click lost. The point we click should be
@@ -261,13 +263,11 @@ def start_up_spammer(domain_name)
   bus = ENV['USER'] == 'root' ? '--system' : '--user'
   systemctl = ['/bin/systemctl', bus]
   kill_up_spammer = proc do
-    begin
-      if system(*systemctl, '--quiet', 'is-active', up_spammer_unit_name)
-        system(*systemctl, 'stop', up_spammer_unit_name)
-      end
-    rescue StandardError
-      # noop
+    if system(*systemctl, '--quiet', 'is-active', up_spammer_unit_name)
+      system(*systemctl, 'stop', up_spammer_unit_name)
     end
+  rescue StandardError
+    # noop
   end
   kill_up_spammer.call
   up_spammer_job = fatal_system(
@@ -476,9 +476,10 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
-  # First we wait for tor to be running so its control port is open...
+  # First we wait for tor's control port to be ready...
   try_for(60) do
-    $vm.execute('systemctl -q is-active tor@default.service').success?
+    $vm.execute_successfully('/usr/local/lib/tor_variable get --type=info version')
+    true
   end
   # ... so we can ask if the tor's networking is disabled, in which
   # case Tor Connection Assistant has not been dealt with yet. If
@@ -491,8 +492,11 @@ Given /^Tor is ready$/ do
   disable_network = nil
   # Gather debugging information for #18293
   try_for(10) do
+    $vm.execute('pidof tor')
+    $vm.execute('fuser --namespace tcp 9052')
+    $vm.execute('systemctl status tor@default.service')
     disable_network = $vm.execute_successfully(
-      'tor_control_getconf DisableNetwork', libs: 'tor'
+      '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
     ).stdout.chomp
     if disable_network == ''
       debug_log('Tor reported claims DisableNetwork is an empty string')
@@ -535,8 +539,8 @@ Given /^Tor is ready$/ do
   end
   @tor_success_configs ||= []
   @tor_success_configs << $vm.execute_successfully(
-    'tor_control_send "getinfo config-text"', libs: 'tor'
-  ).stdout.match(/^250\+config-text=\n(.*)^[.]/m)[1]
+    '/usr/local/lib/tor_variable get --type=info config-text', libs: 'tor'
+  ).stdout
   # When we test for ASP upgrade failure the following tests would fail,
   # so let's skip them in this case.
   unless $vm.file_exist?('/run/live-additional-software/doomed_to_fail')
@@ -641,7 +645,7 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
   @screen.press('ctrl', 'd')
   @screen.wait('TorBrowserBookmarkPrompt.png', 10)
   @screen.type(url)
-  # The new default location for bookmarks is "Other Bookmarks", but our test
+  # The new default location for bookmarks is "Bookmarks Toolbar", but our test
   # expects the new entry is available in "Bookmark Menu", that's why we need
   # to select the location explicitly.
   @screen.wait('TorBrowserBookmarkLocation.png', 10).click
@@ -907,7 +911,7 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     sleep 2
     # Type the rest of the search query
     @screen.type(app_name[1..-1])
-    sleep 2
+    sleep 4
     @screen.press('ctrl', 'Return')
   end
 end
@@ -940,15 +944,6 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   @screen.wait('GnomePlaces.png', 10).click
   @screen.wait(bookmark_image, 40)
   @screen.press('Escape')
-end
-
-Then /^there is no GNOME bookmark for the persistent Tor Browser directory$/ do
-  try_for(65) do
-    @screen.wait('GnomePlaces.png', 10).click
-    @screen.wait('GnomePlacesWithoutTorBrowserPersistent.png', 10)
-    @screen.press('Escape')
-    true
-  end
 end
 
 def pulseaudio_sink_inputs
@@ -1015,22 +1010,13 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                  "/home/#{LIVE_USER}/Tor Browser"
                end
   @screen.press('ctrl', 'p')
-  print_dialog = @torbrowser.child('Print', roleName: 'dialog')
-  print_dialog.child('Print to File', roleName: 'table cell').click
-  print_dialog.child('~/Tor Browser/output.pdf', roleName: 'push button').click
-  # Yes, TorBrowserPrintFileDialog.png != Gtk3PrintFileDialog.png.
-  # If you try to unite them, make sure this does not break the tests
-  # that use either.
-  @screen.wait('TorBrowserPrintFileDialog.png', 10)
+  @torbrowser.child('Save', roleName: 'push button').click
+  @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it
   $vm.set_clipboard(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
   @screen.press('ctrl', 'v')
   @screen.press('Return')
-  # Yes, TorBrowserPrintButton.png != Gtk3PrintButton.png.
-  # If you try to unite them, make sure this does not break the tests
-  # that use either.
-  @screen.wait('TorBrowserPrintButton.png', 10).click
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do
     $vm.file_exist?("#{output_dir}/#{output_file}")

@@ -71,14 +71,15 @@ test-iuk:
        libmodule-build-perl
        sudo
        attr
-       bsdtar
+       libarchive-tools
        libdevice-cdio-perl
        faketime
        genisoimage
        gnutls-bin
        libdata-dumper-concise-perl
        libdatetime-perl
-       libfile-copy-recursive-perl'
+       libfile-copy-recursive-perl
+       libtest-lwp-useragent-perl'
   - apt-get update -qq # Take into account APT configuration added by apt-file
   # Otherwise, apt-get called by "dzil authordebs --install" asks confirmation
   - echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/yes
@@ -192,7 +193,9 @@ test-python-doctest:
 
 test-tca:
   script:
-    - apt-get -qy install python3 python3-stem python3-gi gir1.2-gtk-3.0 python3-dbus python3-prctl python3-tinyrpc
+    - 'cat config/chroot_local-packageslists/tor-connection-assistant.list
+       | grep -E -v "^#"
+       | xargs apt-get -qy install'
     - 'cd config/chroot_local-includes/usr/lib/python3/dist-packages ; find tca -name "*.py" -print0 | xargs -0 -L1 env PYTHONPATH=. python3 -m doctest'
 
 test-tailslib:

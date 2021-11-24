@@ -228,7 +228,7 @@ class TorConnectionConfig:
         >>> TorConnectionConfig.parse_bridge_line("1.2.3.4")
         Traceback (most recent call last):
             ...
-        ValueError: Bridge address is malformed: '1.2.3.4'
+        torutils.MalformedBridgeException: Bridge address is malformed: '1.2.3.4'
         >>> TorConnectionConfig.parse_bridge_line("1.2.3.4:1000:1000")
         Traceback (most recent call last):
             ...
@@ -545,12 +545,8 @@ class TorLauncherNetworkUtils:
         It does NOT care if we're really connected to the Internet
         """
 
-        # XXX: does it do the right thing? we should check!
-        try:
-            subprocess.check_call(["nm-online", "-xq"])
-            return True
-        except subprocess.CalledProcessError:
-            return False
+        # nm-online -xq could be what we need
+        raise NotImplementedError()
 
     def is_internet_up(self):
         """
@@ -569,21 +565,6 @@ class TorLauncherNetworkUtils:
         tries to connect to Tor without hiding, and with no custom configuration
         """
         raise NotImplementedError()
-
-    def is_tor_ready(self):
-        """
-        checks if tor is properly connected
-        """
-        args = [
-            "sh",
-            "-c",
-            ". /usr/local/lib/tails-shell-library/tor.sh; tor_is_working",
-        ]
-        try:
-            subprocess.check_call(args)
-            return True
-        except subprocess.CalledProcessError:
-            return False
 
 
 def backoff_wait(

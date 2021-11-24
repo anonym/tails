@@ -154,6 +154,8 @@ class StepChooseHideMixin:
 class StepChooseBridgeMixin:
     def before_show_bridge(self, coming_from):
         self.state["bridge"]: Dict[str, Any] = {}
+        self.persistence_config_failed = False
+
         self.builder.get_object("step_bridge_box").show()
         self.builder.get_object("step_bridge_radio_none").set_active(True)
         self.builder.get_object("step_bridge_radio_none").hide()
@@ -178,7 +180,6 @@ class StepChooseBridgeMixin:
         self.get_object("box_warning").hide()
         self._step_bridge_init_from_tor_config()
         self._step_bridge_set_actives()
-        self.persistence_config_failed = False
         self._step_bridge_update_persistence_ui()
 
     def _step_bridge_init_from_tor_config(self):
@@ -219,7 +220,7 @@ class StepChooseBridgeMixin:
 
             def cb_set_up_persistence_switch(gjsonrpcclient, res, error):
                 log.debug("Persistence enabled: %s", res)
-                active = res and res.get("returncode", 1) == 0
+                active = res is not None and res.get("returncode", 1) == 0
                 self.builder.get_object(
                     "step_bridge_persistence_switch"
                 ).set_active(active)
@@ -647,11 +648,9 @@ class StepErrorMixin:
             time_dialog.destroy()
 
     def cb_step_error_btn_captive_clicked(self, *args):
+        # we are not checking the result of this command, because nothing depends on it
         self.app.portal.call_async("open-unsafebrowser", None)
 
-        # XXX: for proper handling of the btn_submit, we'd better wait for the unsafe-browser to be closed
-        # XXX: this is considered a "fix attempt" even if the unsafe-browser was not enabled, which is clearly
-        #      not true
         self.state["error"]["fix_attempt"] = True
         self._step_error_submit_allowed()
 
@@ -817,7 +816,7 @@ class TCAMainWindow(
         )
         self.app = app
         self.set_role(tca.config.APPLICATION_WM_CLASS)
-        # XXX: set_wm_class is deprecated, but it's the only way I found to set taskbar title
+        # set_wm_class is deprecated, but it's the only way I found to set taskbar title; see #18610
         self.set_wmclass(
             tca.config.APPLICATION_WM_CLASS, tca.config.APPLICATION_WM_CLASS
         )
@@ -886,19 +885,6 @@ class TCAMainWindow(
         self.add(self.main_container)
         self.show()
         self.change_box(self.state["step"])
-
-    def todo_dialog(self, msg=""):
-        print("TODO:", msg)
-        dialog = Gtk.MessageDialog(
-            transient_for=self,
-            flags=0,
-            message_type=Gtk.MessageType.ERROR,
-            buttons=Gtk.ButtonsType.CANCEL,
-            text="This is still TODO",
-        )
-        dialog.format_secondary_text(msg)
-        dialog.run()
-        dialog.destroy()
 
     def save_conf(self, successful_connect=False):
         log.info("Saving configuration (success=%s)", successful_connect)
@@ -1036,7 +1022,6 @@ class TCAMainWindow(
                     return "progress"
                 elif self.state["progress"]["success"]:
                     log.warn("We are not connected to Tor anymore!")
-                    # TODO: what should we do? go to 0? go to consent question? go to error page?
                     return "error"
                 else:
                     log.debug("Tor not working and we're in progress: just wait some more")
@@ -1106,9 +1091,9 @@ class ConnectionProgress:
 
         >>> f = lambda x,y: '%.4f' % ConnectionProgress._get_value_after_tick(x,y)
         >>> f(0.1, False)
-        '0.1133'
+        '0.1400'
         >>> f(0.5, True)
-        '0.5033'
+        '0.5007'
 
         So in `n` steps we will arrive to the next progress.
         To test this, let's setup a helper function. this will just recurse "n" times
@@ -1118,9 +1103,9 @@ class ConnectionProgress:
 
         Let's test the helper itself:
         >>> '%.4f' % ftn(0.5, 1)
-        '0.5033'
+        '0.5007'
         >>> '%.4f' % ftn(0.5, 2)
-        '0.5067'
+        '0.5013'
         >>> ftn(0.5, TOR_BOOTSTRAP_TIMEOUT) - ConnectionProgress.PROGRESS_BOOTSTRAP_END < 0.001
         True
 
@@ -1128,12 +1113,12 @@ class ConnectionProgress:
 
         That's the same, but for "before sign_of_life"
         >>> '%.4f' % ffn(0.1, 1)
-        '0.1133'
-        >>> '%.4f' % ffn(0.1, 2)
-        '0.1267'
-        >>> '%.4f' % ffn(0.1, 3)
         '0.1400'
-        >>> '%.4f' % ffn(0.1, 30)
+        >>> '%.4f' % ffn(0.1, 2)
+        '0.1800'
+        >>> '%.4f' % ffn(0.1, 3)
+        '0.2200'
+        >>> '%.4f' % ffn(0.1, TOR_SIGNOFLIFE_TIMEOUT)
         '0.5000'
 
 

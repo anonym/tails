@@ -1,8 +1,257 @@
-tails (4.24) UNRELEASED; urgency=medium
+tails (4.25) UNRELEASED; urgency=medium
 
   * Dummy entry for next release.
 
- -- boyska <boyska@riseup.net>  Thu, 07 Oct 2021 09:38:13 +0200
+ -- anonym <anonym@riseup.net>  Fri, 05 Nov 2021 16:20:06 +0100
+
+tails (4.24) unstable; urgency=medium
+
+  * Upgrade to Tor Browser based on Firefox 91 ESR (tails/tails!639)
+
+    Closes issues:
+      - Upgrade to Tor Browser based on Firefox 91 ESR (tails/tails#18261)
+
+    Commits:
+      - Unsafe Browser: disable more "phone home" features
+      - Unsafe Browser: disable services.settings.server
+      - Test suite: search for element more widely.
+      - Test suite: Firefox' Print dialog is now a panel (refs #18261)
+      - Update the Tor Browser AppArmor policy for Tor Browser 11 (Firefox 91)
+      - Test suite: lint
+      - Test suite: make Gherkin test description more honest
+      - Rubocop: disable a pattern we use all over the place
+      - Test suite: update expected images and drop obsolete special-case for Chinese
+      - Test suite: account for different separator used in German
+      - Lint.
+      - Test suite: update comment
+      - Fix typo in comment
+      - Test suite: adjust to new Firefox print dialog
+      - Test suite: update expected windows titles
+      - Test suite: update expected images
+      - Upgrade Tor Browser to 11.0a9
+
+  * Test suite: make "Unsafe Browser has only Firefox's default bookmarks
+    configured" step more robust (tails/tails!646)
+
+    Closes issues:
+      - Fragile test since the upgrade to Tor Browser 11: "Unsafe Browser has only
+        Firefox's default bookmarks configured" (tails/tails#18658)
+
+    Commits:
+      - Test suite: wait for menu to really open before looking for menu entry
+      - Test suite: update expected picture
+
+  * APT sources: add Bullseye security (stable) (tails/tails!637)
+
+    Closes issues:
+      - APT sources: add Bullseye security (tails/tails#18492)
+
+    Commits:
+      - APT pinning: ensure we get security updates for the packages we pull from
+        Bullseye
+      - APT sources: add Bullseye security repo
+
+  * Move tca developer doc to more appropriate places (tails/tails!636)
+
+    Closes issues:
+      - Update "Tor network configuration" design doc (tails/tails#18360)
+
+    Commits:
+      - tips to develop Tor Connection are reachable
+      - tca doc behavior.md moved to Gherkin
+      - move tca/HACKING.md to website
+
+  * APT sources: add Bullseye security (tails/tails!626)
+
+    Commits:
+      - APT pinning: ensure we get security updates for the packages we pull from
+        Bullseye
+      - APT sources: add Bullseye security repo
+
+  * Upgrade kernel to 5.10.46-5 in stable (tails/tails!625)
+
+    Closes issues:
+      - Upgrade Linux to 5.10.46-5 (DSA 4978-1) (tails/tails#18613)
+      - Upgrade to Buster 10.11 (tails/tails#18608)
+
+    Commits:
+      - Pull libzstd1 from Bullseye: needed by updated squashfs-tools
+      - Install squashfs-tools from bullseye.
+      - FIX uBlock patch
+      - to get a new kernel in stable, bump debian/serial
+      - change pinning to get kernel from bullseye
+      - bump kernel to 5.10.46-5
+
+  * Upgrade kernel to 5.10.46-5 in devel (tails/tails!622)
+
+    Commits:
+      - Pull libzstd1 from Bullseye: needed by updated squashfs-tools
+      - change pinning to get kernel from bullseye
+      - bump kernel to 5.10.46-5
+
+  * update Tor network configuration design doc (tails/tails!606)
+
+    Commits:
+      - TCA is not a Tor Launcher wrapper.
+      - Apply intrigeri's proofreading suggestions.
+      - explain why tca-portal runs as root
+      - Document connect-drop security model
+      - update Tor network configuration design doc
+
+  * TCA: clean leftovers (tails/tails!604)
+
+    Closes issues:
+      - TCA clean leftovers (tails/tails#18273)
+
+    Commits:
+      - systemd-notify: move to better way
+      - we considered this implementation good enough
+      - remove dead code
+      - move XXX to #18610
+      - clarify comment after tails/tails!567
+      - remove code that was never used and never tested
+      - comment moved to #18609
+
+  * Upgrade Tor Browser to 11.0a10-build1 (tails/tails!655)
+
+    Commits:
+      - Upgrade Tor Browser to 11.0a10-build1
+
+  * Remove obsolete freeze exception (tails/tails!648)
+
+    Commits:
+      - Remove obsolete freeze exception
+
+  * Port the iuk test suite from squashfs-tools to squashfs-tools-ng
+    (tails/tails!644)
+
+    Closes issues:
+      - Port the iuk test suite from squashfs-tools to squashfs-tools-ng
+        (tails/tails#18653)
+
+    Commits:
+      - IUK test suite: support file names with spaces
+      - IUK test suite: take into account gensquashfs behavior wrt. SOURCE_DATE_EPOCH
+      - IUK test suite: add missing import
+      - IUK test suite: port from squashfs-tools to squashfs-tools-ng
+      - IUK generation: add assertion
+      - Upgrader: use apparent size to compute space needed to install an IUK
+
+  * Switch to zstd for SquashFS compression in development ISO/USB images
+    (tails/tails!643)
+
+    Commits:
+      - Switch to zstd for SquashFS compression in development ISO/USB images
+
+  * Switch to squashfs-tools-ng to build IUKs (tails/tails!640)
+
+    Closes issues:
+      - Switch to squashfs-tools-ng to fix IUKs build reproducibly (tails/tails#18577)
+      - Failure reproducing IUKs for 4.22~rc1 (tails/tails#18536)
+      - Failure reproducing IUKs for 4.23 (tails/tails#18627)
+
+    Commits:
+      - GitLab CI: avoid confusing error message
+      - Release process: use only the isobuilders that have squashfs-tools-ng
+      - Switch to squashfs-tools-ng to generate our IUKs
+      - Update release process requirements for building IUKs
+
+  * Resolve "Tor Connection bridge tests fail" (tails/tails!621)
+
+    Closes issues:
+      - Tor Connection bridge tests fail (tails/tails#18634)
+
+    Commits:
+      - FIX tests for 84e047ebd39e too
+      - fix tests after 68b0e77119e
+
+  * Upgrader: avoid high cpu usage when getting download progress info
+    (tails/tails!619)
+
+    Closes issues:
+      - tails-upgrade-frontend causes very high CPU load when downloading upgrade
+        (tails/tails#18632)
+
+    Commits:
+      - Upgrader: avoid high cpu usage when getting download progress info
+
+  * Explain better how to type a bridge (#18597) (tails/tails!617)
+
+    Closes issues:
+      - Explain better "type in a bridge" (tails/tails#18597)
+
+    Commits:
+      - Fix grammar
+      - Use singular as much as possible
+      - Use 'bridge' in singular as much as possible
+      - Fix broken link
+      - Explain better how to type a bridge (#18597)
+      - Style guide: not everybody types
+
+  * Don't mention local network in Unsafe Browser confirmation (tails/tails!615)
+
+    Closes issues:
+      - Don't mention local network in Unsafe Browser confirmation (tails/tails#18600)
+
+    Commits:
+      - Simplify
+
+  * Rephrase intro of Fix Clock dialog (tails/tails!614)
+
+    Closes issues:
+      - Rephrase intro of Fix Clock dialog (tails/tails#18572)
+
+    Commits:
+      - Be consistent with /doc/about/warnings/identity
+      - Simply
+      - Remove duplicate text
+      - Simplify and be more correct
+
+  * Improve time zone selection UX (tails/tails!595)
+
+    Closes issues:
+      - Improve time zone selection UX (tails/tails#18514)
+
+    Commits:
+      - the test suite correctly handles UTC/GMT
+      - UTC can be selected, too
+      - test suite enjoys better UX, too
+      - pressing enter selects topmost entry
+      - tca gtk errors are logged immediately
+      - test suite waits for filtering to be applied
+      - Test suite: replace usage of non-existing Screen.pressKey with Screen.press
+      - revamp the time selection dialog
+      - fix logging
+      - test suite updated for new timezone selection
+      - FIX matching (lets hope so)
+      - better UX for timezone selection
+      - proper logging in asyncutils
+
+  * Installer: make the confirmation dialog more scary (tails/tails!593)
+
+    Closes issues:
+      - Make the confirmation more scary when reinstalling a USB stick that has a
+        Persistent Storage (tails/tails#18301)
+
+    Commits:
+      - Test suite: adjust confirmation label when reinstalling over a usb with a
+        persistent volume
+      - Test suite: adjust confirmation dialog label in Installer (refs #18301)
+      - Installer: inform when there is no target available
+      - Installer: enforce Persistent Storage detection
+      - Installer: display if the target device has a Persistence Storage
+      - Make the confirmation more scary when reinstalling a USB stick that has a
+        Persistent Storage (refs: #18301)
+
+  * TCA: Fix "AttributeError: no attribute persistence_config_failed"
+    (tails/tails!590)
+
+    Commits:
+      - FIX condition
+      - make the diff smaller
+      - TCA: Fix "AttributeError: no attribute persistence_config_failed"
+
+ -- Tails developers <tails@boum.org>  Thu, 04 Nov 2021 14:25:18 +0100
 
 tails (4.23) unstable; urgency=medium
 
