@@ -46,6 +46,32 @@ $(gettext "The Unsafe Browser is not anonymous and the websites that you visit c
     fi
 }
 
+verify_is_enabled () {
+    # Check if the Unsafe Browser was disabled in the startup options
+    if ! unsafe_browser_is_enabled; then
+	local msg restart close
+	msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
+To <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and enable \
+the Unsafe Browser in the additional settings of the Welcome Screen.")"
+	# Only mention the Persistent Storage if there is one (see #18551)
+	if persistence_is_enabled; then
+	    msg="${msg}""$(gettext "\n\nTo always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
+	fi
+
+	restart="$(gettext "_Restart")"
+	close="$(gettext "_Close")"
+	if  sudo -u "${SUDO_USER}" \
+         zenity --question --ellipsize --title "" --text "${msg}" --icon-name="dialog-error" \
+                --ok-label "${restart}"  --cancel-label "${close}"; then
+            if ! /sbin/reboot; then
+		error "$(gettext "Failed to restart the system.")"
+	    fi
+	else
+	    exit 1
+	fi
+    fi
+}
+
 show_start_notification () {
     local title body
     title="$(gettext "Starting the Unsafe Browser...")"
@@ -73,21 +99,7 @@ HUMAN_READABLE_NAME="$(gettext "Unsafe Browser")"
 WARNING_PAGE='/usr/share/doc/tails/website/misc/unsafe_browser_warning'
 HOME_PAGE="$(localized_tails_doc_page "${WARNING_PAGE}")"
 
-# Check if the Unsafe Browser was disabled in the startup options
-if ! unsafe_browser_is_enabled; then
-    # Only mention the Persistent Storage if there is one (see #18551)
-    if persistence_is_enabled; then
-      msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
-To use the Unsafe Browser, restart Tails and enable \
-the Unsafe Browser in the additional settings of the Welcome Screen.\n
-To always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
-    else
-      msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
-To use the Unsafe Browser, restart Tails and enable \
-the Unsafe Browser in the additional settings of the Welcome Screen.")"
-    fi
-    error "${msg}"
-fi
+verify_is_enabled
 
 # Prevent multiple instances of the script.
 exec 9>"${LOCK}"
