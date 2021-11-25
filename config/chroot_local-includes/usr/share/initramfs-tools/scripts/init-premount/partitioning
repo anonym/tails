@@ -120,8 +120,10 @@ first_boot_repartition() {
 
 	# Grow the filesystem
 	# Note that fatresize resets partition attributes
-	# fatresize uses "Mi" for MiB, so we have to append an "i"
-	FS_SIZE="${SYSTEM_PARTITION_SIZE}"i
+	# fatresize uses "Mi" for MiB, so we have to append an "i".
+	# Also, due to bugs in fatresize (tails/tails#18699) we
+	# are limited to grow the filesystem to just below the limit.
+	FS_SIZE="$((${SYSTEM_PARTITION_SIZE%M} - 2))"Mi
 	fatresize --size="${FS_SIZE}" "${SYSTEM_PARTITION}"
 	settle
 
