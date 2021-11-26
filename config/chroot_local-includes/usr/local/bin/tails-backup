@@ -42,7 +42,7 @@ if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(
 fi
 
 # Run real backup command. This requires privileges.
-if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST" ; then
+if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST" | zenity --progress --pulsate --auto-close --no-cancel; then
         # Ensure RAM buffers are written out
         sync; sync; sync
         sleep 1
