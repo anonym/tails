@@ -46,8 +46,9 @@ if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST" ; then
         # Ensure RAM buffers are written out
         sync; sync; sync
         sleep 1
+        gio mount --eject "${DEST}"
         title="$(gettext -s 'Backup successful')"
-        msg="$(gettext -s "<b>Your backup was updated successfully!</b>\n\nYou can now eject your backup Tails USB stick.\n\nIf your backup Tails has an outdated version of Tails, we recommend you\nupdate it by cloning your current Tails using <i>Tails Installer</i>.\n\nSee <a href='file:///usr/share/doc/tails/website/upgrade/clone.en.html#upgrade'>manually upgrade from another Tails</a>.")"
+        msg="$(gettext -s "<b>Your backup was updated successfully!</b>\n\nYou can now safely remove your backup Tails USB stick.\n\nIf your backup Tails has an outdated version of Tails, we recommend you\nupdate it by cloning your current Tails using <i>Tails Installer</i>.\n\nSee <a href='file:///usr/share/doc/tails/website/upgrade/clone.en.html#upgrade'>manually upgrade from another Tails</a>.")"
         zenity --info --ellipsize --title "$title" --text "$msg"
 else
         title="$(gettext -s 'Backup failed')"
