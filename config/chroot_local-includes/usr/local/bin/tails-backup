@@ -16,10 +16,6 @@ DEST='/media/amnesia/TailsData/'
 # tails-os-disable-administration-password-after-booting-tails-with-adminpasw
 CAN_BE_ADMINISTRATOR='/etc/sudoers.d/tails-greeter'
 
-# Newline
-NL="$(printf '\nX')"
-NL="${NL%X}"
-
 backup_luks_device() {
     if ! /lib/bilibop/test /dev/disk/by-partlabel/TailsData; then
         readlink -f "/dev/disk/by-partlabel/TailsData"
