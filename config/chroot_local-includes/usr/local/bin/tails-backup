@@ -44,20 +44,20 @@ EOF
 
 title="$(gettext -s 'Update your backup Tails')"
 if [ ! -f "$CAN_BE_ADMINISTRATOR" ] || [ ! -d "$SOURCE" ]; then
-        msg="$(gettext -s 'This utility updates your backup Tails USB stick.\n\nTo create a backup Tails USB stick, see <a href="file:///usr/share/doc/tails/website/doc/first_steps/persistence/backup.en.html">making a backup of your Persistent Storage</a>.\n\n<b>Impossible to update your backup Tails.</b>\n\nTo update your backup Tails, you need to:')"
-        if [ ! -d "$SOURCE" ]; then
-                msg="${msg}""$(gettext -s '\n\n• Unlock your Persistent Storage when starting Tails.')"
-        fi
-        if [ ! -f "$CAN_BE_ADMINISTRATOR" ]; then
-                msg="${msg}""$(gettext -s '\n\n• Set up an <a href="file:///usr/share/doc/tails/website/doc/first_steps/welcome_screen/administration_password.en.html">administration password</a> when starting Tails.')"
-        fi
-        zenity --error --ellipsize --title "$title" --text "$msg"
-        exit 1
+    msg="$(gettext -s 'This utility updates your backup Tails USB stick.\n\nTo create a backup Tails USB stick, see <a href="file:///usr/share/doc/tails/website/doc/first_steps/persistence/backup.en.html">making a backup of your Persistent Storage</a>.\n\n<b>Impossible to update your backup Tails.</b>\n\nTo update your backup Tails, you need to:')"
+    if [ ! -d "$SOURCE" ]; then
+        msg="${msg}""$(gettext -s '\n\n• Unlock your Persistent Storage when starting Tails.')"
+    fi
+    if [ ! -f "$CAN_BE_ADMINISTRATOR" ]; then
+        msg="${msg}""$(gettext -s '\n\n• Set up an <a href="file:///usr/share/doc/tails/website/doc/first_steps/welcome_screen/administration_password.en.html">administration password</a> when starting Tails.')"
+    fi
+    zenity --error --ellipsize --title "$title" --text "$msg"
+    exit 1
 fi
 
 msg="$(gettext -s 'Do you want to update your backup Tails USB stick now?\n\nThis will replace all data in the Persistent Storage of your backup Tails.')"
 if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(gettext -s 'Update')" --cancel-label "$(gettext -s 'Cancel')" ; then
-        exit 1
+    exit 1
 fi
 
 while [ ! -d "$DEST" ]; do
@@ -72,16 +72,16 @@ done
 
 # Run real backup command. This requires privileges.
 if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST" | zenity --progress --pulsate --auto-close --no-cancel; then
-        # Ensure RAM buffers are written out
-        sync; sync; sync
-        sleep 1
-        gio mount --eject "${DEST}"
-        title="$(gettext -s 'Backup successful')"
-        msg="$(gettext -s "<b>Your backup was updated successfully!</b>\n\nYou can now safely remove your backup Tails USB stick.\n\nIf your backup Tails has an outdated version of Tails, we recommend you\nupdate it by cloning your current Tails using <i>Tails Installer</i>.\n\nSee <a href='file:///usr/share/doc/tails/website/upgrade/clone.en.html#upgrade'>manually upgrade from another Tails</a>.")"
-        zenity --info --ellipsize --title "$title" --text "$msg"
+    # Ensure RAM buffers are written out
+    sync; sync; sync
+    sleep 1
+    gio mount --eject "${DEST}"
+    title="$(gettext -s 'Backup successful')"
+    msg="$(gettext -s "<b>Your backup was updated successfully!</b>\n\nYou can now safely remove your backup Tails USB stick.\n\nIf your backup Tails has an outdated version of Tails, we recommend you\nupdate it by cloning your current Tails using <i>Tails Installer</i>.\n\nSee <a href='file:///usr/share/doc/tails/website/upgrade/clone.en.html#upgrade'>manually upgrade from another Tails</a>.")"
+    zenity --info --ellipsize --title "$title" --text "$msg"
 else
-        title="$(gettext -s 'Backup failed')"
-        msg="$(gettext -s '<b>Updating your backup Tails failed.</b>\n\nYou can:\n\n• Try to update your backup Tails again.\n\n• Make sure that there is enough free space on your backup Tails.\n\n• Analyze the log in the terminal.')"
-        zenity --error --ellipsize --title "$title" --text "$msg"
-        exit 1
+    title="$(gettext -s 'Backup failed')"
+    msg="$(gettext -s '<b>Updating your backup Tails failed.</b>\n\nYou can:\n\n• Try to update your backup Tails again.\n\n• Make sure that there is enough free space on your backup Tails.\n\n• Analyze the log in the terminal.')"
+    zenity --error --ellipsize --title "$title" --text "$msg"
+    exit 1
 fi
