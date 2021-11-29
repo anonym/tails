@@ -17,7 +17,6 @@ class ActiveBranches (Git):
     # These branches are always considered as worthy to be built.
     ALWAYS_ACTIVE_BRANCHES = [
         'devel',
-        'feature/tor-nightly-master',
         'stable',
     ]
 
