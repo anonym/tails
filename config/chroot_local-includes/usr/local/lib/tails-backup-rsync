@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Tails' directories for source and destination
+SOURCE='/live/persistence/TailsData_unlocked/'
+DEST='/media/amnesia/TailsData/'
+
+exec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST"
