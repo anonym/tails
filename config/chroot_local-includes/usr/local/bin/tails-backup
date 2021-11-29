@@ -59,7 +59,9 @@ if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(
     exit 1
 fi
 
-pinentry_auth | gio mount --device "$(backup_luks_device)"
+if [ ! -d "${DEST}" ]; then
+   pinentry_auth | gio mount --device "$(backup_luks_device)"
+fi
 
 # Run real backup command. This requires privileges.
 if sudo /usr/local/lib/tails-backup-rsync \
