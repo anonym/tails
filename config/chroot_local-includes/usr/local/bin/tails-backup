@@ -72,7 +72,10 @@ pinentry_auth "$(gettext -s '')" "$(gettext -s 'Enter the passphrase for your ba
     | gio mount --device "$(backup_luks_device)"
 
 # Run real backup command. This requires privileges.
-if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST"; then
+if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST" \
+        | tee /dev/stderr \
+        | zenity --progress --pulsate --auto-close --no-cancel
+then
     # Ensure RAM buffers are written out
     echo "Synchronizing data on USB stick..."
     sync; sync; sync
