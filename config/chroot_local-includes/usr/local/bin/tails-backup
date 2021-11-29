@@ -52,14 +52,9 @@ if [ ! -f "$CAN_BE_ADMINISTRATOR" ] || [ ! -d "$SOURCE" ] || [ ! -b "$(backup_lu
     fi
     # Ask to retry if only the backup Tails USB stick is missing
     if [ ! -b "$(backup_luks_device)" ] && [ -f "$CAN_BE_ADMINISTRATOR" ] && [ -d "$SOURCE" ]; then
-        while [ ! -d "$DEST" ]; do
-            if [ -b "$(backup_luks_device)" ]; then
-                pinentry_auth "$(gettext -s '')" "$(gettext -s 'Enter the passphrase for your backup Tails USB stick')" \
-                    | gio mount --device "$(backup_luks_device)"
-            else
-                if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(gettext -s 'Retry')" --cancel-label "$(gettext -s 'Cancel')"; then
-                    exit 1
-                fi
+        while [ ! -b "$(backup_luks_device)" ]; do
+            if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(gettext -s 'Retry')" --cancel-label "$(gettext -s 'Cancel')"; then
+                exit 1
             fi
         done
     else
@@ -72,6 +67,9 @@ msg="$(gettext -s 'Do you want to update your backup Tails USB stick now?\n\nThi
 if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(gettext -s 'Update')" --cancel-label "$(gettext -s 'Cancel')" ; then
     exit 1
 fi
+
+pinentry_auth "$(gettext -s '')" "$(gettext -s 'Enter the passphrase for your backup Tails USB stick')" \
+    | gio mount --device "$(backup_luks_device)"
 
 # Run real backup command. This requires privileges.
 if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST"; then
