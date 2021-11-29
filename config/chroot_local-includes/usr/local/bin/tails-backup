@@ -68,8 +68,7 @@ if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(
     exit 1
 fi
 
-pinentry_auth "$(gettext -s '')" "$(gettext -s 'Enter the passphrase for your backup Tails USB stick')" \
-    | gio mount --device "$(backup_luks_device)"
+pinentry_auth | gio mount --device "$(backup_luks_device)"
 
 # Run real backup command. This requires privileges.
 if pkexec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST" \
