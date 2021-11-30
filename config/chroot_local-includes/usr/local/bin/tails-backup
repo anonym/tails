@@ -75,7 +75,7 @@ if [ ! -d "${DEST}" ]; then
         for _ in 1 2 3; do
             res="$(
                 pinentry_auth | \
-                gio mount --device "$(backup_luks_device)" 2>&1 || :
+                LANG=C gio mount --device "$(backup_luks_device)" 2>&1 || :
             )"
             if [ -d "${DEST}" ]; then
                 break
