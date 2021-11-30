@@ -31,6 +31,7 @@ import systemd.daemon
 from tailslib.logutils import configure_logging
 from tailslib.gnome import gnome_env_vars
 from tailslib import (
+    CLEARNET_USERNAME,
     LIVE_USERNAME,
     PERSISTENCE_CONF_FILE,
     PERSISTENCE_SETUP_USERNAME,
@@ -138,6 +139,16 @@ class PersistenceSetupCommand(BaseCommand):
         return args
 
 
+class GetNetworkTimeCommand(BaseCommand):
+    def __init__(self):
+        super().__init__(['/usr/local/lib/tails-get-network-time'], False)
+
+    def full_command(self, request: RPCRequest) -> list:
+        drop = ["runuser", "-u", CLEARNET_USERNAME]
+        args = [*drop, "--", *(super().full_command(request))]
+        return args
+
+
 class SetTimeCommand(RootCommand):
     def __init__(self):
         super().__init__(['/usr/local/lib/tails-set-date'], True)
@@ -147,9 +158,9 @@ class SetTimeCommand(RootCommand):
     def validate_args(self, args: list) -> list:
         if len(args) != 1:
             raise InvalidArgsError("Invalid number of arguments")
-        # args[0] should be sth like 2021-08-06T17:38+00:00
+        # args[0] should be sth like 2021-08-06T17:38+00:00 or 2021-08-06T17:38:49+00:00
         datestring = args[0]
-        if len(datestring) > 22:
+        if len(datestring) > 25:
             raise InvalidArgsError("Datestring too long")
         if not self.re.fullmatch(datestring):
             raise InvalidArgsError("Datestring has invalid characters")
@@ -194,6 +205,7 @@ class Handler(socketserver.StreamRequestHandler):
         "disable-tor-configuration-persistence": PersistenceSetupCommand(
             ["/usr/local/lib/tails-tor-config-persistence", "disable"],
             False),
+        "get-network-time": GetNetworkTimeCommand(),
         "set-system-time": SetTimeCommand(),
     }
     valid_commands = set(spawn_commands.keys())

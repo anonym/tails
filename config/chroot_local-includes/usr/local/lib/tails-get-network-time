@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+
+# On success, prints the value of the date header in ISO 8601 format.
+
+# On supported failures, print the type of failure to stdout,
+# and exit with a well-defined return code.
+
+import email.utils
+import requests
+import sys
+
+URL = "http://fedoraproject.org/static/hotspot.txt"
+TIMEOUT = 10
+
+RETURN_CODE = {
+    "missing-date-header": 2,
+    "malformed-date-header": 3,
+    "http-failure": 4,
+    "captive-portal": 5,
+}
+
+
+def fail(error: str):
+    print(error)
+    sys.exit(RETURN_CODE[error])
+
+
+try:
+    # XXX: use the same User-Agent as NetworkManager
+    # (and maintain this) or is it futile?
+    r = requests.get(URL, timeout=TIMEOUT)
+except requests.exceptions.ConnectionError:
+    fail('http-failure')
+
+if r.status_code == requests.codes.ok:
+    if r.text == 'OK':
+        try:
+            date = r.headers['date']
+        except KeyError:
+            fail('missing-date-header')
+        try:
+            dt = email.utils.parsedate_to_datetime(date)
+        except Exception:
+            fail('malformed-date-header')
+        print(dt.isoformat())
+        sys.exit(0)
+
+    else:
+        fail('captive-portal')
+else:
+    fail('http-failure')
