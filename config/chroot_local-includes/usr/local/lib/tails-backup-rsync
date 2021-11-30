@@ -9,4 +9,13 @@ if ! mountpoint -q "$SOURCE" || ! mountpoint -q "$DEST"; then
     exit 1
 fi
 
-exec /usr/bin/rsync -PaSHAXv --del "$SOURCE" "$DEST"
+exec /usr/bin/rsync \
+     --progress \
+     --archive \
+     --sparse \
+     --hard-links \
+     --acls \
+     --xattrs \
+     --verbose \
+     --del \
+     "$SOURCE" "$DEST"
