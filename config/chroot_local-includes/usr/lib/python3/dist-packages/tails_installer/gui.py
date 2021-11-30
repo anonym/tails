@@ -30,6 +30,7 @@ import os
 import logging
 import threading
 import traceback
+import time
 
 from time import sleep
 from datetime import datetime
@@ -108,7 +109,7 @@ class TailsInstallerThread(threading.Thread):
         self.live.detect_partition(udi, callback=detection_done, force_partitions=True)
 
         while self._waiting_detection:
-            self.sleep(1)
+            time.sleep(1)
 
 
     def installation_complete(self):
