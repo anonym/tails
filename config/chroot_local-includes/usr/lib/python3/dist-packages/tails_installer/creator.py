@@ -34,6 +34,7 @@ import os
 import re
 import stat
 import sys
+from typing import Optional
 
 from io import StringIO
 from datetime import datetime
@@ -119,154 +120,182 @@ class TailsInstallerCreator(object):
         self.file_handler.setFormatter(formatter)
         self.log.addHandler(self.file_handler)
 
+    def detect_partition(self, udi: str, callback=None, force_partitions=False):
+        partition_obj = self._udisksclient.get_object(udi)
+        data = self._get_udisks_object_data(partition_obj,
+                force_partitions=force_partitions)
+        if data is None:
+            if callback is not None:
+                callback()
+            return
+        self.drives[data['device']] = data
+
+        # remove the parent
+        parent = data['parent']
+        if parent is not None and parent in self.drives:
+            self.drives[data['device']]['parent_data'] = self.drives[parent].copy()
+            del self.drives[parent]
+
+        if callback is not None:
+            callback()
+
+    def _get_udisks_object_data(self, obj: UDisks.Object,
+            force_partitions=False) -> Optional[dict]:
+        '''
+        Returns a dictionarty containing our own description of a udisk object
+        '''
+        block = obj.props.block
+        self.log.debug('looking at %s' % obj.get_object_path())
+        if not block:
+            self.log.debug('skip %s which is not a block device'
+                           % obj.get_object_path())
+            return
+        partition = obj.props.partition
+        filesystem = obj.props.filesystem
+        drive = self._udisksclient.get_drive_for_block(block)
+        if not drive:
+            self.log.debug('skip %s which has no associated drive'
+                           % obj.get_object_path())
+            return
+        data = {
+            'udi': obj.get_object_path(),
+            'is_optical': drive.props.optical,
+            'label': drive.props.id.replace(' ', '_'),
+            'vendor': drive.props.vendor,
+            'model': drive.props.model,
+            'fstype': block.props.id_type,
+            'fsversion': block.props.id_version,
+            'uuid': block.props.id_uuid,
+            'device': block.props.device,
+            'mount': filesystem.props.mount_points if filesystem else None,
+            'bootable': None,
+            'parent': None,
+            'parent_udi': None,
+            'parent_size': None,
+            'parent_data': None,
+            'size': block.props.size,
+            'mounted_partitions': set(),
+            'is_device_big_enough_for_installation': True,
+            'is_device_big_enough_for_upgrade': True,
+            'is_device_big_enough_for_reinstall': True,
+            'removable': drive.props.removable,
+        }
+
+        # Check non-removable drives
+        if not data['removable']:
+            self.log.debug('Skipping non-removable device: %s'
+                           % data['device'])
+
+        # Only pay attention to USB and SDIO devices, unless --force'd
+        iface = drive.props.connection_bus
+        if iface != 'usb' and iface != 'sdio' \
+           and self.opts.force != data['device']:
+            self.log.warning(
+                'Skipping device "%(device)s" connected to "%(interface)s" interface'
+                % {'device': data['udi'], 'interface': iface}
+            )
+            return
+
+        # Skip optical drives
+        if data['is_optical'] and self.opts.force != data['device']:
+            self.log.debug('Skipping optical device: %s' % data['device'])
+            return
+
+        # Skip things without a size
+        if not data['size'] and not self.opts.force:
+            self.log.debug('Skipping device without size: %s'
+                           % data['device'])
+            return
+
+        if partition:
+            partition_table = self._udisksclient.get_partition_table(
+                partition)
+            parent_block = partition_table.get_object().props.block
+            data['label'] = partition.props.name
+            data['parent'] = parent_block.props.device
+            data['parent_size'] = parent_block.props.size
+            data['parent_udi'] = parent_block.get_object_path()
+        else:
+            parent_block = None
+
+        # Check for devices that are too small. Note that we still
+        # allow devices that can be upgraded for supporting legacy
+        # installations.
+        if not self.is_device_big_enough_for_installation(
+                data['parent_size']
+                if data['parent_size']
+                else data['size']):
+            if not self.device_can_be_upgraded(data):
+                self.log.warning(
+                    'Device is too small for installation: %s'
+                    % data['device'])
+                data['is_device_big_enough_for_installation'] = False
+            # Since reinstalling is a special case where full overitting
+            # is done, the size of the device has to be bigger than
+            # min_installation_device_size in all cases.
+            data['is_device_big_enough_for_reinstall'] = False
+
+        # To be more accurate we would need to either mount the candidate
+        # device (which causes UX problems down the road) or to recursively
+        # parse the output of fatcat.
+        # We add a 5% margin to account for filesystem structures.
+        if partition \
+           and self.device_can_be_upgraded(data) \
+           and hasattr(self, 'source') \
+           and self.source is not None \
+           and data['size'] < self.source.size * 1.05:
+            self.log.warning(
+                'Device is too small for upgrade: %s'
+                % data['device'])
+            data['is_device_big_enough_for_upgrade'] = False
+
+        mount = data['mount']
+        if mount:
+            if len(mount) > 1:
+                self.log.warning('Multiple mount points for %s' %
+                                 data['device'])
+            mount = data['mount'] = data['mount'][0]
+        else:
+            mount = data['mount'] = None
+
+        if parent_block and mount:
+            if not data['parent'] in mounted_parts:
+                mounted_parts[data['parent']] = set()
+            mounted_parts[data['parent']].add(data['udi'])
+
+        data['free'] = mount \
+            and self.get_free_bytes(mount) / 1024**2 \
+            or None
+        data['free'] = None  # XXX ?
+
+        self.log.debug(pformat(data))
+
+        if not force_partitions and self.opts.partition:
+            if self.device_can_be_upgraded(data) or data['fstype'] == 'crypto_LUKS':
+                return data
+            # Add whole drive in partitioning mode
+            elif data['parent'] is None:
+                # Ensure the device is writable
+                if block.props.read_only:
+                    self.log.debug(_('Unable to write on %(device)s, skipping.')
+                                   % {'device': data['device']})
+                    return
+                return data
+        else:
+            if self.device_is_isohybrid(data):
+                if data['parent']:
+                    # We will target the parent instead
+                    return
+            return data
+
     def detect_supported_drives(self, callback=None, force_partitions=False):
         """ Detect all supported (USB and SDIO) storage devices using UDisks.
         """
         mounted_parts = {}
         self.drives = {}
         for obj in self._udisksclient.get_object_manager().get_objects():
-            block = obj.props.block
-            self.log.debug('looking at %s' % obj.get_object_path())
-            if not block:
-                self.log.debug('skip %s which is not a block device'
-                               % obj.get_object_path())
-                continue
-            partition = obj.props.partition
-            filesystem = obj.props.filesystem
-            drive = self._udisksclient.get_drive_for_block(block)
-            if not drive:
-                self.log.debug('skip %s which has no associated drive'
-                               % obj.get_object_path())
-                continue
-            data = {
-                'udi': obj.get_object_path(),
-                'is_optical': drive.props.optical,
-                'label': drive.props.id.replace(' ', '_'),
-                'vendor': drive.props.vendor,
-                'model': drive.props.model,
-                'fstype': block.props.id_type,
-                'fsversion': block.props.id_version,
-                'uuid': block.props.id_uuid,
-                'device': block.props.device,
-                'mount': filesystem.props.mount_points if filesystem else None,
-                'bootable': None,
-                'parent': None,
-                'parent_udi': None,
-                'parent_size': None,
-                'parent_data': None,
-                'size': block.props.size,
-                'mounted_partitions': set(),
-                'is_device_big_enough_for_installation': True,
-                'is_device_big_enough_for_upgrade': True,
-                'is_device_big_enough_for_reinstall': True,
-                'removable': drive.props.removable,
-            }
-
-            # Check non-removable drives
-            if not data['removable']:
-                self.log.debug('Skipping non-removable device: %s'
-                               % data['device'])
-
-            # Only pay attention to USB and SDIO devices, unless --force'd
-            iface = drive.props.connection_bus
-            if iface != 'usb' and iface != 'sdio' \
-               and self.opts.force != data['device']:
-                self.log.warning(
-                    'Skipping device "%(device)s" connected to "%(interface)s" interface'
-                    % {'device': data['udi'], 'interface': iface}
-                )
-                continue
-
-            # Skip optical drives
-            if data['is_optical'] and self.opts.force != data['device']:
-                self.log.debug('Skipping optical device: %s' % data['device'])
-                continue
-
-            # Skip things without a size
-            if not data['size'] and not self.opts.force:
-                self.log.debug('Skipping device without size: %s'
-                               % data['device'])
-                continue
-
-            if partition:
-                partition_table = self._udisksclient.get_partition_table(
-                    partition)
-                parent_block = partition_table.get_object().props.block
-                data['label'] = partition.props.name
-                data['parent'] = parent_block.props.device
-                data['parent_size'] = parent_block.props.size
-                data['parent_udi'] = parent_block.get_object_path()
-            else:
-                parent_block = None
-
-            # Check for devices that are too small. Note that we still
-            # allow devices that can be upgraded for supporting legacy
-            # installations.
-            if not self.is_device_big_enough_for_installation(
-                    data['parent_size']
-                    if data['parent_size']
-                    else data['size']):
-                if not self.device_can_be_upgraded(data):
-                    self.log.warning(
-                        'Device is too small for installation: %s'
-                        % data['device'])
-                    data['is_device_big_enough_for_installation'] = False
-                # Since reinstalling is a special case where full overitting
-                # is done, the size of the device has to be bigger than
-                # min_installation_device_size in all cases.
-                data['is_device_big_enough_for_reinstall'] = False
-
-            # To be more accurate we would need to either mount the candidate
-            # device (which causes UX problems down the road) or to recursively
-            # parse the output of fatcat.
-            # We add a 5% margin to account for filesystem structures.
-            if partition \
-               and self.device_can_be_upgraded(data) \
-               and hasattr(self, 'source') \
-               and self.source is not None \
-               and data['size'] < self.source.size * 1.05:
-                self.log.warning(
-                    'Device is too small for upgrade: %s'
-                    % data['device'])
-                data['is_device_big_enough_for_upgrade'] = False
-
-            mount = data['mount']
-            if mount:
-                if len(mount) > 1:
-                    self.log.warning('Multiple mount points for %s' %
-                                     data['device'])
-                mount = data['mount'] = data['mount'][0]
-            else:
-                mount = data['mount'] = None
-
-            if parent_block and mount:
-                if not data['parent'] in mounted_parts:
-                    mounted_parts[data['parent']] = set()
-                mounted_parts[data['parent']].add(data['udi'])
-
-            data['free'] = mount \
-                and self.get_free_bytes(mount) / 1024**2 \
-                or None
-            data['free'] = None  # XXX ?
-
-            self.log.debug(pformat(data))
-
-            if not force_partitions and self.opts.partition:
-                if self.device_can_be_upgraded(data) or data['fstype'] == 'crypto_LUKS':
-                    self.drives[data['device']] = data
-                # Add whole drive in partitioning mode
-                elif data['parent'] is None:
-                    # Ensure the device is writable
-                    if block.props.read_only:
-                        self.log.debug(_('Unable to write on %(device)s, skipping.')
-                                       % {'device': data['device']})
-                        continue
-                    self.drives[data['device']] = data
-            else:
-                if self.device_is_isohybrid(data):
-                    if data['parent']:
-                        # We will target the parent instead
-                        continue
+            data = self._get_udisks_object_data(obj, force_partitions=force_partitions)
+            if data is not None:
                 self.drives[data['device']] = data
 
         # Remove parent drives if a valid partition exists.
