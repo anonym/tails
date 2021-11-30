@@ -14,8 +14,6 @@ Feature: Backing up the persistent storage
     When I start Tails' custom backup tool
     Then the backup tool displays "Plug in your backup Tails USB stick"
     When I plug USB drive "backup"
-    # We need to give some time for the drive to settle for udisks etc.
-    And I wait 5 seconds
     And I click "Retry" in the backup tool
     Then the backup tool displays "Do you want to update your backup Tails USB stick now?"
     When I click "Update" in the backup tool
