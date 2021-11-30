@@ -160,7 +160,7 @@ reproducibility verification.
         reprepro --delete clearvanished && \
         reprepro export && \
         reprepro dumpreferences \
-          | grep -E '^s=(tor-nightly-master-)?jessie' \
+          | grep -E '^s=jessie' \
           | awk '{print $1}' \
           | sort -u \
           | xargs -n 1 reprepro _removereferences && \
