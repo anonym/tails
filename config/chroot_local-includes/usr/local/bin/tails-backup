@@ -72,7 +72,21 @@ if [ ! -d "${DEST}" ]; then
     if [ -b "$(unlocked_backup_TailsData_device)" ]; then
         udisksctl mount --block-device "$(unlocked_backup_TailsData_device)"
     else
-        pinentry_auth | gio mount --device "$(backup_luks_device)"
+        for _ in 1 2 3; do
+            res="$(
+                pinentry_auth | \
+                gio mount --device "$(backup_luks_device)" 2>&1 || :
+            )"
+            if [ -d "${DEST}" ]; then
+                break
+            elif echo "${res}" | grep -q 'Password dialog aborted'; then
+                exit 0
+            fi
+        done
+        if [ ! -d "${DEST}" ]; then
+            zenity --error --ellipsize --title "$title" --text "$(gettext -s 'Incorrect passphrase. Please restart the backup tool to try again!')"
+            exit 1
+        fi
     fi
 fi
 
