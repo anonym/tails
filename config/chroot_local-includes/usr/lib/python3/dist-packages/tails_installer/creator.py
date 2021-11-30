@@ -738,7 +738,7 @@ class TailsInstallerCreator(object):
         for attempt in range(1, 10):
             try:
                 self.rescan_block_device(self._get_object().props.block)
-                time.sleep(5)
+                time.sleep(1)
                 system_partition = self.first_partition(self.drive['udi'])
             except IndexError:
                 if attempt > 5:
