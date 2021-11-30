@@ -99,18 +99,17 @@ class TailsInstallerThread(threading.Thread):
     def status(self, text):
         GLib.idle_add(self.parent.status, text)
 
-    def rescan_devices(self, force_partitions=False):
+    def rescan_partition(self, udi):
         self._waiting_detection = True
 
         def detection_done():
             self._waiting_detection = False
 
-        self.live.detect_supported_drives(
-            callback=detection_done,
-            force_partitions=force_partitions)
+        self.live.detect_partition(udi, callback=detection_done, force_partitions=True)
 
         while self._waiting_detection:
             self.sleep(1)
+
 
     def installation_complete(self):
         GLib.idle_add(self.parent.on_installation_complete, None)
@@ -135,8 +134,8 @@ class TailsInstallerThread(threading.Thread):
                     self.live.drives[parent_data['device']] = parent_data
                     self.live.drive = parent_data['device']
                     self.live.save_full_drive()
-                self.live.partition_device()
-                self.rescan_devices(force_partitions=True)
+                partition_udi = self.live.partition_device()
+                self.rescan_partition(partition_udi)
                 self.live.switch_drive_to_system_partition()
                 self.live.format_device()
                 self.live.mount_device()
