@@ -20,10 +20,12 @@ pinentry_auth() {
     your_device="$(gettext -s 'your backup Tails USB stick')"
     # For consistency, let's use the same text in our prompt as GVFS
     # when unlocking volumes from e.g. nautilus.
+    # shellcheck disable=SC3037
     dialog="$(/bin/echo -en 'Enter a passphrase to unlock the volume\nThe passphrase is needed to access encrypted data on %s.\n')"
     gettext --domain gvfs -s "${dialog}" | (
-        read title
+        read -r title
         desc="$(cat)"
+        # shellcheck disable=SC2059
         ( pinentry-gnome3 | sed -n 's/^D //p' ) <<EOF
 SETPROMPT ${title}
 SETDESC $(printf "${desc}" "${your_device}")
