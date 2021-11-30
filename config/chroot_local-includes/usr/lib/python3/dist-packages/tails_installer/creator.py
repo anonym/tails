@@ -740,7 +740,11 @@ class TailsInstallerCreator(object):
                 return system_partition
 
 
-    def partition_device(self):
+
+    def partition_device(self) -> Optional[str]:
+        '''
+        returns a UDI representing the new partition
+        '''
         if not self.opts.partition:
             return
 
@@ -771,7 +775,7 @@ class TailsInstallerCreator(object):
         self.log.debug('Creating partition')
         partition_table = self._get_object().props.partition_table
         try:
-            partition_table.call_create_partition_sync(
+            partition_udi = partition_table.call_create_partition_sync(
                     arg_offset=0,
                     arg_size=self.system_partition_size(
                         self.drive['parent_size']
@@ -805,6 +809,8 @@ class TailsInstallerCreator(object):
         # switch_drive_to_system_partition is called, it calls
         # _set_drive, that fails with 'Cannot find device /dev/sda1'.
         self.rescan_block_device(self._get_object().props.block)
+
+        return partition_udi
 
     def is_partition_GPT(self, drive=None):
         # Check if the partition scheme is GPT
