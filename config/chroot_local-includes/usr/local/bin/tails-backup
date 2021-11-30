@@ -17,6 +17,12 @@ backup_luks_device() {
     fi
 }
 
+unlocked_backup_TailsData_device() {
+    if ! /lib/bilibop/test /dev/disk/by-label/TailsData >/dev/null; then
+        readlink -f "/dev/disk/by-label/TailsData"
+    fi
+}
+
 pinentry_auth() {
     your_device="$(gettext -s 'your backup Tails USB stick')"
     # For consistency, let's use the same text in our prompt as GVFS
@@ -63,7 +69,11 @@ if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(
 fi
 
 if [ ! -d "${DEST}" ]; then
-   pinentry_auth | gio mount --device "$(backup_luks_device)"
+    if [ -b "$(unlocked_backup_TailsData_device)" ]; then
+        udisksctl mount --block-device "$(unlocked_backup_TailsData_device)"
+    else
+        pinentry_auth | gio mount --device "$(backup_luks_device)"
+    fi
 fi
 
 # Run real backup command. This requires privileges.
