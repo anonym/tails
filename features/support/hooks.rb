@@ -386,6 +386,12 @@ After('@product', '@check_tor_leaks') do |scenario|
   @tor_leaks_sniffer.stop
   if scenario.passed?
     allowed_nodes = @bridge_hosts || allowed_hosts_under_tor_enforcement
+    allowed_nodes += EXTRA_ALLOWED_HOSTS
+    # Allow connections to the local DNS resolver, used by
+    # tails-get-network-time
+    # XXX: how do we detect DNS leaks then?
+    allowed_nodes << { address: $vmnet.bridge_ip_addr, port: 53 }
+    debug_log("Allowed hosts: #{allowed_nodes}")
     assert_all_connections(@tor_leaks_sniffer.pcap_file) do |c|
       allowed_nodes.include?({ address: c.daddr, port: c.dport })
     end

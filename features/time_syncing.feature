@@ -18,12 +18,12 @@ Feature: Time syncing
     And Tor is ready
     Then Tails clock is less than 5 minutes incorrect
 
-  Scenario: Clock is one day in the future while using bridges
+  Scenario: Clock is one day in the future while using obfs4 bridges
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+1 day"
     And the network is plugged
     And the Tor Connection Assistant autostarts
-    And I configure some normal bridges in the Tor Connection Assistant
+    And I configure some obfs4 bridges in the Tor Connection Assistant in easy mode
     And Tor is ready
     Then Tails clock is less than 5 minutes incorrect
 
@@ -51,7 +51,7 @@ Feature: Time syncing
     And the computer boots Tails
     Then the system clock is just past Tails' source date
 
-  Scenario: I can connect to obfs4 bridges having a clock East of UTC
+  Scenario: I can connect to obfs4 bridges having a clock East of UTC in hide mode
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+8 hours +15 minutes"
     And all notifications have disappeared
@@ -59,6 +59,7 @@ Feature: Time syncing
     And the network is plugged
     And the Tor Connection Assistant autostarts
     # Anti-test: Users east of UTC can't connect to obfs4 bridges
+    # This step will automatically select hide mode:
     When I unsuccessfully configure some obfs4 bridges in the Tor Connection Assistant
     Then the Tor Connection Assistant reports that it failed to connect
     # The "Fix Clock" button allows users to recover from this bug

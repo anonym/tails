@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'resolv'
 require 'yaml'
 require "#{Dir.pwd}/features/support/helpers/misc_helpers.rb"
 
@@ -95,3 +96,9 @@ WEBM_VIDEO_URL = 'https://tails.boum.org/lib/test_suite/test.webm'.freeze
 
 # EFI System Partition
 ESP_GUID = 'c12a7328-f81f-11d2-ba4b-00a0c93ec93b'.freeze
+
+EXTRA_ALLOWED_HOSTS = []
+# Fedora connectivity check server, used by tails-get-network-time
+Resolv.each_address('fedoraproject.org') do |ip|
+  EXTRA_ALLOWED_HOSTS << { address: ip, port: 80 }
+end
