@@ -378,6 +378,8 @@ class StepConnectProgressMixin:
             self.get_object(obj).hide()
         self.connection_progress.set_fraction(0.0, allow_going_back=True)
         if not self.state["progress"]["success"]:
+            if not self.state["hide"]["hide"]:
+                self.app.set_time_from_network()
             self.spawn_tor_connect()
         else:
             self._step_progress_success_screen()

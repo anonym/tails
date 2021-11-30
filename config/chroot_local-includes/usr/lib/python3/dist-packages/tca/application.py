@@ -195,6 +195,18 @@ class TCAApplication(Gtk.Application):
 
         return False
 
+    def set_time_from_network(self):
+        def on_get_network_time(portal, result, error):
+            if error:
+                if result.get("returncode", 1) == 5:
+                    self.log.info("Detected captive portal")
+            else:
+                self.portal.call_async(
+                    "set-system-time", None, result["stdout"].rstrip()
+                )
+
+        self.portal.call_async("get-network-time", on_get_network_time)
+
     def do_activate(self):
         # We only allow a single window and raise any existing ones
         if self.window is None:
