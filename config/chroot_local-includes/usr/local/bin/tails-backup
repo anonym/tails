@@ -12,7 +12,7 @@ SOURCE='/live/persistence/TailsData_unlocked/'
 DEST='/media/amnesia/TailsData/'
 
 backup_luks_device() {
-    if ! /lib/bilibop/test /dev/disk/by-partlabel/TailsData; then
+    if ! /lib/bilibop/test /dev/disk/by-partlabel/TailsData >/dev/null; then
         readlink -f "/dev/disk/by-partlabel/TailsData"
     fi
 }
