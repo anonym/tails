@@ -19,5 +19,7 @@ Feature: Backing up the persistent storage
     When I click "Update" in the backup tool
     And I enter my persistent storage passphrase into the polkit prompt
     Then the backup tool displays "Your backup was updated successfully!"
+    # The backup tool ejects the drive, so we have to replug it
     When I unplug USB drive "backup"
-    Then the USB drive "backup" has a file /new with contents "foo" on its persistent storage
+    And I plug USB drive "backup"
+    Then the USB drive "backup" contains the same files as my persistent storage

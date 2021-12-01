@@ -752,25 +752,6 @@ Then /^only the expected files are present on the persistence partition on USB d
   end
 end
 
-Then /^the USB drive "([^"]+)" has a file (\S+) with contents "([^"]*)" on its persistent storage$/ do |disk_name, path, expected_content|
-  $vm.storage.guestfs_disk_helper(disk_name) do |g|
-    luks_partition = g.list_partitions[1]
-    luks_mapping = File.basename(luks_partition) + '_unlocked'
-    luks_dev = "/dev/mapper/#{luks_mapping}"
-    begin
-      g.luks_open(luks_partition, @persistence_password, luks_mapping)
-      begin
-        g.mount(luks_dev, '/')
-        assert_equal(expected_content, g.read_file(path))
-      ensure
-        g.umount(luks_dev)
-      end
-    ensure
-      g.luks_close(luks_dev)
-    end
-  end
-end
-
 When /^I delete the persistent partition$/ do
   step 'I start "Delete persistent volume" via GNOME Activities Overview'
   @screen.wait('PersistenceWizardDeletionStart.png', 120)
