@@ -84,7 +84,7 @@ if [ ! -d "${DEST}" ]; then
             fi
         done
         if [ ! -d "${DEST}" ]; then
-            zenity --error --ellipsize --title "$title" --text "$(gettext -s 'Incorrect passphrase. Please restart the backup tool to try again!')"
+            zenity --error --ellipsize --title "$title" --text "$(gettext -s 'Incorrect passphrase.\n\nPlease restart the backup utility to try again.')"
             exit 1
         fi
     fi
