@@ -758,7 +758,7 @@ Then /^the USB drive "([^"]+)" has a file (\S+) with contents "([^"]*)" on its p
     luks_mapping = File.basename(luks_partition) + '_unlocked'
     luks_dev = "/dev/mapper/#{luks_mapping}"
     begin
-      g.cryptsetup_open(luks_partition, @persistence_password, luks_mapping)
+      g.luks_open(luks_partition, @persistence_password, luks_mapping)
       begin
         g.mount(luks_dev, '/')
         assert_equal(expected_content, g.read_file(path))
@@ -766,7 +766,7 @@ Then /^the USB drive "([^"]+)" has a file (\S+) with contents "([^"]*)" on its p
         g.umount(luks_dev)
       end
     ensure
-      g.cryptsetup_close(luks_dev)
+      g.luks_close(luks_dev)
     end
   end
 end
