@@ -5,7 +5,7 @@ end
 Then /^the backup tool displays "([^"]+)"$/ do |expected|
   message = Dogtail::Application.new('zenity')
               .child(roleName: 'label', retry: false).text
-  assert(message[expected])
+  assert(message.include?(expected))
 end
 
 When /^I click "([^"]+)" in the backup tool$/ do |node|
