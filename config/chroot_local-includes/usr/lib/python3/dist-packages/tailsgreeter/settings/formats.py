@@ -89,11 +89,11 @@ class FormatsSetting(LocalizationSetting):
         default_locale = 'C'
         local_locale = self.get_default_locale(country_code)
         native_name = GnomeDesktop.get_country_from_code(
-            country_code, local_locale)
+            country_code, add_encoding(local_locale))
         if not native_name:
             return ""
         localized_name = GnomeDesktop.get_country_from_code(
-            country_code, default_locale)
+            country_code, add_encoding(default_locale))
         if native_name == localized_name:
             return native_name
         else:
