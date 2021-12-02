@@ -126,7 +126,7 @@ class LanguageSetting(LocalizationSetting):
             native_name = GnomeDesktop.get_language_from_code(
                     lang_code, local_locale).capitalize()
         except AttributeError:
-            return ""
+            native_name = ""
         localized_name = GnomeDesktop.get_language_from_code(
                 lang_code, default_locale).capitalize()
 
@@ -136,11 +136,14 @@ class LanguageSetting(LocalizationSetting):
             else:
                 localized_name = "Chinese, traditional"
 
+        if not native_name:
+            return localized_name
         if native_name == localized_name:
             return native_name
-        else:
-            return "{native} ({localized})".format(
-                    native=native_name, localized=localized_name)
+
+        ret = "{native} ({localized})".format(
+                native=native_name, localized=localized_name)
+        return ret
 
     def _locale_name(self, locale_code: str) -> str:
         lang_code = self._language_from_locale(locale_code)
