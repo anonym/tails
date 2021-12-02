@@ -158,9 +158,13 @@ class LanguageSetting(LocalizationSetting):
         language_name_locale = GnomeDesktop.get_language_from_code(lang_code)
         language_name_native = GnomeDesktop.get_language_from_code(
                 lang_code, locale_code)
+        if language_name_native is None:
+            language_name_native = language_name_locale
         country_name_locale = GnomeDesktop.get_country_from_code(country_code)
         country_name_native = GnomeDesktop.get_country_from_code(
                 country_code, locale_code)
+        if country_name_native is None:
+            country_name_native = country_name_locale
 
         try:
             if (language_name_native == language_name_locale and
