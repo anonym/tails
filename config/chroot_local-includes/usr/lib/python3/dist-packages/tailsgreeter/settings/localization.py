@@ -84,3 +84,10 @@ def countries_from_locales(locales) -> [str]:
 
     example: [fr_FR, en_GB] -> [FR, GB]"""
     return list({country_from_locale(l) for l in locales})
+
+
+def add_encoding(locale_code: str) -> str:
+    '''
+    Given a locale_code with or without encoding, make sure the encoding is specified
+    '''
+    return locale_code if '.' in locale_code else locale_code + '.UTF-8'
