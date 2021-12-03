@@ -1357,3 +1357,7 @@ end
 Then(/^the layout of the screen keyboard is set to "([^"]+)"$/) do |layout|
   @screen.find("ScreenKeyboardLayout#{layout.upcase}.png")
 end
+
+Given /^I write a file (\S+) with contents "([^"]*)"$/ do |path, content|
+  $vm.file_overwrite(path, content)
+end

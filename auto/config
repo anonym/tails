@@ -26,7 +26,7 @@ GIT_BRANCH="$(git_current_branch)"
 if [ -n "${GIT_BRANCH}" ]; then
     CLEAN_GIT_BRANCH=$(echo "$GIT_BRANCH" | sed 's,/,_,g')
     if [ -n "${FEATURE_BRANCH_GIT_COMMIT:-}" ]; then
-        GIT_SHORT_ID="$(git rev-parse --short ${FEATURE_BRANCH_GIT_COMMIT})"
+        GIT_SHORT_ID="$(git rev-parse --short "${FEATURE_BRANCH_GIT_COMMIT}")"
     else
         GIT_SHORT_ID="$(git_current_commit --short)"
     fi
