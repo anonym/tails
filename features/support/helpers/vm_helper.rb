@@ -377,7 +377,7 @@ class VM
 
   def disk_detected?(name)
     (dev = disk_dev(name)) || (return false)
-    execute("test -b #{dev}").success?
+    execute("udisksctl info -b #{dev}").success?
   end
 
   def disk_plugged?(name)

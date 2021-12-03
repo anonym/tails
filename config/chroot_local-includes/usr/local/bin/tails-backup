@@ -1,0 +1,112 @@
+#!/bin/bash
+# tails-backup: Back up Tails' encrypted persistent storage
+# into the backup storage area.
+
+set -eu
+set -o pipefail
+
+export TEXTDOMAIN='tails'
+
+# Tails' directories for source and destination
+SOURCE='/live/persistence/TailsData_unlocked/'
+DEST='/media/amnesia/TailsData/'
+
+backup_luks_device() {
+    if ! /lib/bilibop/test /dev/disk/by-partlabel/TailsData >/dev/null; then
+        readlink -f "/dev/disk/by-partlabel/TailsData"
+    fi
+}
+
+unlocked_backup_TailsData_device() {
+    if ! /lib/bilibop/test /dev/disk/by-label/TailsData >/dev/null; then
+        readlink -f "/dev/disk/by-label/TailsData"
+    fi
+}
+
+pinentry_auth() {
+    your_device="$(gettext -s 'your backup Tails USB stick')"
+    # For consistency, let's use the same text in our prompt as GVFS
+    # when unlocking volumes from e.g. nautilus.
+    # shellcheck disable=SC3037
+    dialog="$(/bin/echo -en 'Enter a passphrase to unlock the volume\nThe passphrase is needed to access encrypted data on %s.\n')"
+    gettext --domain gvfs -s "${dialog}" | (
+        read -r title
+        desc="$(cat)"
+        # shellcheck disable=SC2059
+        ( pinentry-gnome3 | sed -n 's/^D //p' ) <<EOF
+SETPROMPT ${title}
+SETDESC $(printf "${desc}" "${your_device}")
+GETPIN
+EOF
+    )
+}
+
+title="$(gettext -s 'Update your backup Tails')"
+if [ ! -d "$SOURCE" ] || [ ! -b "$(backup_luks_device)" ]; then
+    msg="$(gettext -s 'This utility updates your backup Tails USB stick.\n\nTo create a backup Tails USB stick, see <a href="file:///usr/share/doc/tails/website/doc/first_steps/persistence/backup.en.html">making a backup of your Persistent Storage</a>.\n\n<b>Impossible to update your backup Tails.</b>\n\nTo update your backup Tails, you need to:')"
+    if [ ! -d "$SOURCE" ]; then
+        msg="${msg}""$(gettext -s '\n\n• Unlock your Persistent Storage when starting Tails.')"
+    fi
+    if [ ! -b "$(backup_luks_device)" ]; then
+        msg="${msg}""$(gettext -s '\n\n• Plug in your backup Tails USB stick.')"
+    fi
+    # Ask to retry if only the backup Tails USB stick is missing
+    if [ ! -b "$(backup_luks_device)" ] && [ -d "$SOURCE" ]; then
+        while [ ! -b "$(backup_luks_device)" ]; do
+            if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(gettext -s 'Retry')" --cancel-label "$(gettext -s 'Cancel')"; then
+                exit 1
+            fi
+        done
+    else
+        zenity --error --ellipsize --title "$title" --text "$msg"
+        exit 1
+    fi
+fi
+
+msg="$(gettext -s 'Do you want to update your backup Tails USB stick now?\n\nThis will replace all data in the Persistent Storage of your backup Tails.')"
+if ! zenity --question --ellipsize --title "$title" --text "$msg" --ok-label "$(gettext -s 'Update')" --cancel-label "$(gettext -s 'Cancel')" ; then
+    exit 1
+fi
+
+if [ ! -d "${DEST}" ]; then
+    if [ -b "$(unlocked_backup_TailsData_device)" ]; then
+        udisksctl mount --block-device "$(unlocked_backup_TailsData_device)"
+    else
+        for _ in 1 2 3; do
+            res="$(
+                pinentry_auth | \
+                LANG=C gio mount --device "$(backup_luks_device)" 2>&1 || :
+            )"
+            if [ -d "${DEST}" ]; then
+                break
+            elif echo "${res}" | grep -q 'Password dialog aborted'; then
+                exit 0
+            fi
+        done
+        if [ ! -d "${DEST}" ]; then
+            zenity --error --ellipsize --title "$title" --text "$(gettext -s 'Incorrect passphrase.\n\nPlease restart the backup utility to try again.')"
+            exit 1
+        fi
+    fi
+fi
+
+# Run real backup command. This requires privileges.
+if sudo /usr/local/lib/tails-backup-rsync \
+        | tee /dev/stderr \
+        | zenity --progress --pulsate --auto-close --no-cancel
+then
+    # Ensure RAM buffers are written out
+    echo "Synchronizing data on USB stick..."
+    sync; sync; sync
+    sleep 1
+    echo "Done!"
+    gio mount --eject "${DEST}"
+    title="$(gettext -s 'Backup successful')"
+    msg="$(gettext -s '<b>Your backup was updated successfully!</b>\n\nYou can now safely unplug your backup Tails USB stick.\n\nIf your backup Tails has an outdated version of Tails, we recommend you\nupdate it by cloning your current Tails using <i>Tails Installer</i>.\n\nSee <a href="file:///usr/share/doc/tails/website/upgrade/clone.en.html#upgrade">manually upgrade from another Tails</a>.')"
+    zenity --info --ellipsize --title "$title" --text "$msg"
+else
+    title="$(gettext -s 'Backup failed')"
+    msg="$(gettext -s '<b>Updating your backup Tails failed.</b>\n\nYou can:\n\n• Try to update your backup Tails again.\n\n• Make sure that there is enough free space on your backup Tails.\n\n• Analyze the log in the terminal.')"
+    zenity --error --ellipsize --title "$title" --text "$msg"
+    exit 1
+fi
