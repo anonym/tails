@@ -945,16 +945,6 @@ Build the Incremental Upgrade Kits on Jenkins
    the `SOURCE_VERSION` axis to list all versions in `$IUK_SOURCE_VERSIONS`,
    and save the updated configuration.
 
-1. On <https://jenkins.tails.boum.org/job/build_IUKs/configure>,
-   in the _Configuration Matrix_ section,
-   set the value of `label_exp` to our Bullseye isobuilders:
-
-    `isobuilder3.lizard || isobuilder4.lizard || isobuilder6.iguana`
-
-   Then save the updated configuration.
-
-   Rationale: [[!tails_ticket 18577]]
-
 1. On <https://jenkins.tails.boum.org/job/build_IUKs/build?delay=0sec>,
    fill the form with these values:
 
