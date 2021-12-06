@@ -52,3 +52,50 @@ its process:
 
 * The container image is distributed through [Docker
   Hub](https://hub.docker.com/r/weblate/weblate).
+
+Administrative commands
+=======================
+
+Please note that the `weblate` user in the host system (UID `2000000` in
+`translate.lizard`) corresponds to the `root` user inside the Weblate
+container (UID `0`).
+
+Also, some of the commands below have to be executed in a directory readable to
+the user `weblate` in the host system (eg. `/tmp` or `/var/lib/weblate`).
+
+To start, stop or restart the container, use Systemd with the `--user` flag:
+
+       sudo -u weblate XDG_RUNTIME_DIR=/run/user/2000000 systemctl --user stop podman-weblate
+
+To see the container logs:
+
+       sudo -u weblate podman logs -f --tail=1 weblate
+
+To get a shell as the `weblate` user in the running Weblate container:
+
+       sudo -u weblate podman exec -t -i weblate /bin/bash
+
+To get a shell as the `root` user in the running Weblate container:
+
+       sudo -u weblate podman exec -t -i --user=root weblate /bin/bash
+
+To see the logs of the integration script:
+
+       sudo -u weblate tail -f /var/log/weblate/update.log
+
+To run the integration script (note that this is run periodically by cron):
+
+       sudo -u weblate /var/lib/weblate/scripts/run_in_container.sh /scripts/cron.sh
+
+To run permissions enforcement (note that this is run periodically by cron):
+
+       sudo -u weblate /var/lib/weblate/scripts/run_in_container.sh /scripts/weblate_permissions.py --enforce
+
+To update the translation memory database (note that this is run periodically by cron):
+
+       sudo -u weblate /var/lib/weblate/scripts/update_tm.sh
+
+To see Apache logs (replace `access` with `error` on the line below to see the
+corresponding error logs):
+
+       sudo /usr/bin/tail -f /var/log/apache2/access.log
