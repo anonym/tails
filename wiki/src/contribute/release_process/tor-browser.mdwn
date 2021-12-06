@@ -79,8 +79,14 @@ is named `sha256sums-unsigned-build.txt.asc-${TBB_SIGNER}`:
 Fetch the version's hash file and its detached signature, and verify
 with GnuPG:
 
-    wget ${TBB_DIST_URL:?}/sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},} && \
-    gpg --verify sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},}
+    (
+        set -e
+        for f in sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},}; do
+            wget "${TBB_DIST_URL:?}/$f" -O "$f"
+        done
+        gpg --verify sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},}
+    )
+
 
 Build the list of tarballs we want and their hashes,
 so this information is available at build time,
