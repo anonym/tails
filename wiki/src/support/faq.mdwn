@@ -346,15 +346,11 @@ We might make this possible in the future. ([[!tails_ticket 5858]])
 
 <h2 id="torrc">Can I choose the country of my exit nodes or further edit the <span class="code">torrc</span>?</h2>
 
-It is possible to edit the Tor configuration file (`torrc`) with
-administration rights but you should not do so as it might break your
-anonymity.
-
-For example, as mentioned in the <span class="application">Tor Browser</span>
-[FAQ](https://2019.www.torproject.org/docs/torbutton/torbutton-faq.html.en#recommendedextensions),
-using `ExcludeExitNodes` is not recommended because "overriding the
-exit nodes can mess up your anonymity in ways we don't
-understand".
+Editing the Tor configuration file, also called `torrc`, to modify how Tor
+creates circuits can weaken your anonymity in ways that are hard to understand
+and explain. That is why we don't explain how to modify the Tor configuration
+file in Tails, for example, to choose the country of your exit nodes or exclude
+some entry guards.
 
 <h2 id="dns">How does the DNS resolution work in Tails?</h2>
 

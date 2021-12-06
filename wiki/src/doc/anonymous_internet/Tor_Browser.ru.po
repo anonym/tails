@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-11-03 18:08+0000\n"
-"PO-Revision-Date: 2021-11-05 10:51+0000\n"
+"PO-Revision-Date: 2021-11-06 00:03+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
@@ -510,6 +510,9 @@ msgid ""
 "your organization,\" which appears in the\n"
 "<span class=\"application\">Tor Browser</span> preferences.</p>\n"
 msgstr ""
+"<p>Вы можете смело игнорировать сообщение «Вашим браузером управляет\n"
+"ваша организация», которое появляется в настройках\n"
+"<span class= \"application\">Tor Browser</span>.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -520,16 +523,21 @@ msgid ""
 "gets broken by automatic updates of\n"
 "<span class=\"application\">Tor Browser</span>.</p>\n"
 msgstr ""
+"<p>Это сообщение значит, что функция автоматического обновления <span class ="
+"\"application\">Tor Browser</span> отключена. В Tails это сделано\n"
+"намеренно, для уверенности, что ни одна функция безопасности или настройка "
+"не пострадает из-за автоматических обновлений <span class = \"application\">"
+"Tor Browser</span>.</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"circuit-view\">Tor circuit</h1>\n"
-msgstr ""
+msgstr "<h1 id=\"circuit-view\">Цепочка Tor</h1>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!img circuit-view.png link=no]]\n"
-msgstr ""
+msgstr "[[!img circuit-view.png link=no]]\n"
 
 #. type: Plain text
 msgid ""
@@ -537,6 +545,9 @@ msgid ""
 "to connect to the website in the current tab, its 3 relays, their countries, "
 "and IP addresses."
 msgstr ""
+"Нажмите на значок замочка в адресной строке, чтобы увидеть цепочку Tor. Эта "
+"цепочка используется для подключения к сайту в текущей браузерной вкладке. "
+"Вы можете узнать, в каких странах находятся три узла, а также их IP-адреса."
 
 #. type: Plain text
 msgid ""
@@ -544,6 +555,8 @@ msgid ""
 "website, is the *exit relay*. Its country might influence how the website "
 "behaves."
 msgstr ""
+"Последний узел в цепочке, прямо перед сайтом назначения – *выходной  узел*. "
+"От его юрисдикции может зависеть доступ к сайту."
 
 #. type: Plain text
 #, no-wrap
@@ -552,6 +565,8 @@ msgid ""
 "<span class=\"guilabel\">[[New Circuit for this Site|Tor_Browser#circuit-view]]</span> button\n"
 "to use a different circuit.\n"
 msgstr ""
+"Чтобы изменить цепочку, нажмите на кнопку <span class=\"guilabel\">[[Новая "
+"цепочка для этого сайта|Tor_Browser#circuit-view]]</span>.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -560,11 +575,15 @@ msgid ""
 "<span class=\"application\">[[Onion Circuits|doc/anonymous_internet/tor/circuits]]</span>\n"
 "to get more detailed information about the circuits being used.\n"
 msgstr ""
+"Подробнее об используемых цепочках Tor можно узнать с помощью \n"
+"<span class=\"application\">[[Onion Circuits|doc/anonymous_internet/tor/"
+"circuits]]</span>.\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"new-identity\"><span class=\"guilabel\">New Identity</span> feature</h1>\n"
 msgstr ""
+"<h1 id=\"new-identity\"><span class=\"guilabel\">Новая личность</span></h1>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -574,6 +593,11 @@ msgid ""
 "  <span class=\"guimenu\">[[!img lib/open-menu.png alt=\"\" class=symbolic link=no]]</span>&nbsp;▸\n"
 "  <span class=\"guimenuitem\">New Identity</span></span>.\n"
 msgstr ""
+"Чтобы сменить личность, выберите\n"
+"<span class=\"menuchoice\">\n"
+"  <span class=\"guimenu\">[[!img lib/open-menu.png alt=\"\" class=symbolic "
+"link=no]]</span>&nbsp;▸\n"
+"  <span class=\"guimenuitem\">Новая личность</span></span>.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -581,22 +605,25 @@ msgid ""
 "The New Identity feature of\n"
 "<i>Tor Browser</i>:\n"
 msgstr ""
+"Опция смены личности в \n"
+"<i>Tor Browser</i>:\n"
 
 #. type: Bullet: '  - '
 msgid "Closes all open tabs."
-msgstr ""
+msgstr "закрывает все открытые вкладки;"
 
 #. type: Bullet: '  - '
 msgid "Clears the session state including cache, history, and cookies."
 msgstr ""
+"очищает данные после завершения сессии, включая кэш, историю и куки-файлы;"
 
 #. type: Bullet: '  - '
 msgid "Closes all existing web connections and creates new Tor circuits."
-msgstr ""
+msgstr "завершает все действующие веб-соединения и создает новые цепочки Tor;"
 
 #. type: Bullet: '  - '
 msgid "Erases the content of the clipboard."
-msgstr ""
+msgstr "очищает буфер обмена."
 
 #. type: Plain text
 #, no-wrap
@@ -610,27 +637,33 @@ msgid ""
 "as the Tor circuits used ouside of\n"
 "<i>Tor Browser</i> are not changed.</p>\n"
 msgstr ""
+"<p>Этой опции мало, чтобы однозначно [[разделить личности|about/warnings/"
+"identity#contextual]], так как используемые за пределами\n"
+"<i>Tor Browser</i> цепочки не меняются.</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<p>Restart Tails instead.</p>\n"
-msgstr ""
+msgstr "<p>Лучше перезапустите Tails.</p>\n"
 
 #. type: Plain text
 msgid ""
 "For more details, see the [design and implementation of the Tor Browser]"
 "(https://2019.www.torproject.org/projects/torbrowser/design/#new-identity)."
 msgstr ""
+"Подробнее см. [документацию по Tor Browser](https://2019.www.torproject.org/"
+"projects/torbrowser/design/#new-identity)."
 
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"noscript\">NoScript to have even more control over JavaScript</h1>\n"
 msgstr ""
+"<h1 id=\"noscript\">Расширение NoScript для контроля над JavaScript</h1>\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "[[!img noscript.png link=no alt=\"\"]]\n"
-msgstr "[[!img Tor_Browser/mozicon128.png link=no alt=\"\"]]\n"
+msgstr "[[!img noscript.png link=no alt=\"\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -638,32 +671,38 @@ msgid ""
 "<span class=\"application\">Tor Browser</span> includes the\n"
 "<span class=\"application\">NoScript</span> extension to:\n"
 msgstr ""
+"<span class=\"application\">Tor Browser</span> включает расширение\n"
+"<span class=\"application\">NoScript</span> для:\n"
 
 #. type: Bullet: '- '
 msgid ""
 "Protect from more JavaScript attacks. For example, cross-site scripting "
 "(XSS) attacks."
 msgstr ""
+"более эффективной защиты от атак с использованием JavaScript, например, от "
+"межсайтового скриптинга;"
 
 #. type: Bullet: '- '
 msgid "Allow you to disable JavaScript completely on some websites only."
-msgstr ""
+msgstr "возможности полного отключения JavaScript на избранных сайтах."
 
 #. type: Plain text
 msgid ""
 "For more information, you can refer to the NoScript [website](http://"
 "noscript.net/) and [features](http://noscript.net/features)."
 msgstr ""
+"Подробнее см. [сайт NoScript](https://noscript.net/) и его раздел "
+"[опций](https://noscript.net/features)."
 
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"letterboxing\">Letterboxing</h1>\n"
-msgstr ""
+msgstr "<h1 id=\"letterboxing\">Леттербоксинг (Letterboxing)</h1>\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "[[!img letter-boxing.png link=no alt=\"\"]]\n"
-msgstr "[[!img Tor_Browser/mozicon128.png link=no alt=\"\"]]\n"
+msgstr "[[!img letter-boxing.png link=no alt=\"\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -673,6 +712,9 @@ msgid ""
 "Without letterboxing, websites could use\n"
 "the size of the browser window to track visitors or weaken your anonymity.\n"
 msgstr ""
+"В <span class=\"application\">Tor Browser</span> есть функция, которая не "
+"позволяет сайтам идентифицировать ваш браузер по размеру окна. Эта функция "
+"называется «леттербоксинг» (англ. letterboxing).\n"
 
 #. type: Plain text
 #, no-wrap
@@ -682,6 +724,10 @@ msgid ""
 "webpage remains as close as possible to the desired size without revealing the\n"
 "actual size of the window.\n"
 msgstr ""
+"Опция леттербоксинга в <span class =\"application\">Tor Browser</span>\n"
+"добавляет серые поля в окно браузера при изменении его размера.\n"
+"Веб-страница максимально приближена к желаемым параметрам, но\n"
+"фактический размер окна при этом не раскрывается.\n"
 
 #, fuzzy
 #~ msgid "[[!img doc/about/warning/htw2-tails.png link=\"no\"]]\n"
