@@ -4,6 +4,319 @@ tails (4.27) UNRELEASED; urgency=medium
 
  -- anonym <anonym@riseup.net>  Fri, 05 Nov 2021 16:19:27 +0100
 
+tails (4.25) unstable; urgency=medium
+
+  * Upgrade Tor Browser to 11.0.2-build3 (tails/tails!684)
+
+    Closes issues:
+      - Upgrade to Tor Browser 11.0.2 based on Firefox 91.4esr (tails/tails#18726)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - FIX sha256sums for TorBrowser
+      - Upgrade Tor Browser to 11.0.2-build3
+
+  * Unsafe Browser: fix buggy GUI after upgrade to Tor Browser 11.0a10
+    (tails/tails!656)
+
+    Closes issues:
+      - Buggy GUI in Unsafe Browser after upgrade to Tor Browser 11.0a10
+        (tails/tails#18668)
+
+    Commits:
+      - Unsafe Browser: fix buggy GUI after upgrade to Tor Browser 11.0a10.
+
+  * IUK generation: stop using the "extreme" extra compression option
+    (tails/tails!663)
+
+    Closes issues:
+      - squashfs-tools-ng is slow (tails/tails#18675)
+
+    Commits:
+      - IUK generation: stop using the "extreme" extra compression option
+
+  * Fix devel FTBFS by dropping VirtualBox guest support for now (tails/tails!652)
+
+    Commits:
+      - Test suite: the live user is no longer a member of vboxsf.
+      - Fix FTBFS by dropping VirtualBox for now (Closes #18643)
+
+  * APT: trust the new signing key for our APT repositories (tails/tails!682)
+
+    Commits:
+      - APT: trust the new signing key for our APT repositories (tails/sysadmin#17810)
+
+  * Resolve ""I can listen to an Ogg audio track in Tor Browser" test suite step
+    sometimes fails" (tails/tails!680)
+
+    Closes issues:
+      - "I can listen to an Ogg audio track in Tor Browser" test suite step sometimes
+        fails (tails/tails#18716)
+
+    Commits:
+      - Test suite: make audio in browser test more robust
+      - Test suite: simplify
+
+  * Refresh uBlock origin patch to fix devel FTBFS (tails/tails!678)
+
+    Commits:
+      - Refresh uBlock Origin patch
+
+  * Fix shellcheck CI job (tails/tails!677)
+
+    Commits:
+      - Replace unsupported braces expansion with list
+      - Add missing quotes
+      - Update shellcheck exclusion for newer shellcheck
+
+  * Drop feature/tor-nightly-master branch (tails/tails!676)
+
+    Closes issues:
+      - APT time-based snapshots fail: tor-nightly-master-buster suite does not exist
+        anymore (tails/tails#17877)
+
+    Commits:
+      - Drop feature/tor-nightly-master branch
+
+  * Upgrade Tor Browser to 11.0.1-build1 (tails/tails!675)
+
+    Closes issues:
+      - Upgrade to Tor Browser 11.0.1 (based on Firefox 91.3esr) (tails/tails#18641)
+
+    Commits:
+      - Revert "Unsafe Browser: fix buggy GUI after upgrade to Tor Browser 11.0a10."
+      - Upgrade Tor Browser to 11.0.1-build1
+
+  * run_test_suite --live-patch (and more!) (tails/tails!674)
+
+    Commits:
+      - one-line if can be made more compact
+      - enjoy some File module goodness
+      - avoid using shell, let's Find.find with ruby
+      - Apply 1 suggestion(s) to 1 file(s)
+      - correctly handle invocations without --live-patch
+      - refactoring: live_patch is a VM method
+      - --live-patch is more powerful
+      - --live-patch (draft)
+      - run_test_suite --view-interact
+      - test suite debug: easier to copy files in the VM
+
+  * Test suite: remove unused step definition and the corresponding image
+    (tails/tails!673)
+
+    Commits:
+      - Test suite: remove unused step definition and the corresponding image
+
+  * Test suite: fix reporting of hostname leaks via DHCP (tails/tails!671)
+
+    Commits:
+      - Test suite: fix reporting of hostname leaks via DHCP
+
+  * Fix some GitLab CI tests (tails/tails!669)
+
+    Commits:
+      - Add missing dependencies
+      - Add missing dependency
+      - Maintain the list of Tor Connection dependencies in a single place
+
+  * Resolve "Compute years range dynamically in Tor Connection's time setting
+    dialog" (tails/tails!668)
+
+    Closes issues:
+      - Compute years range dynamically in Tor Connection's time setting dialog
+        (tails/tails#18512)
+
+    Commits:
+      - Tor Connection year range derives from build time
+
+  * add comments to connect-drop after security audit (tails/tails!666)
+
+    Commits:
+      - add comments to connect-drop after security audit
+
+  * Add a "Tails (External Hard Disk)" boot menu option (tails/tails!665)
+
+    Commits:
+      - Add a "Tails (External Hard Disk)" option that removes live-media=removable
+
+  * Vagrant build box: have hostname resolve to 127.0.0.1 (tails/tails!661)
+
+    Commits:
+      - Vagrant build box: have hostname resolve to 127.0.0.1
+
+  * Test suite: give GNOME Overview more time to process our search
+    (tails/tails!654)
+
+    Commits:
+      - Test suite: give GNOME Overview more time to process our search
+
+  * Upgrade Vagrant build box to Bullseye (tails/tails!653)
+
+    Closes issues:
+      - Upgrade Vagrant build box to Bullseye (tails/tails#18660)
+
+    Commits:
+      - Vagrant: add more debug output
+      - build-tails: fix submodule initialization
+      - Use long option name
+      - Vagrant build box provisioning: don't assume the "debian" and "debian-security"
+        snapshots have the same serial
+      - Document when we can drop a workaround
+      - Upgrade Vagrant build box to Bullseye
+      - Vagrant build box: bump all APT snapshots
+
+  * create-usb-image-from-iso: detect syslinux installation failure
+    (tails/tails!651)
+
+    Closes issues:
+      - Builds succeeds even if syslinux failed to install in create-usb-image-from-iso
+        (tails/tails#18664)
+
+    Commits:
+      - Add comment
+      - create-usb-image-from-iso: remove obsolete comments
+      - create-usb-image-from-iso: remove obsolete workaround
+      - create-usb-image-from-iso: detect syslinux installation failure
+
+  * Tor Connection: Add link to Troubleshooting doc (tails/tails!650)
+
+    Closes issues:
+      - Link to the Tor connection troubleshooting doc from the error screen
+        (tails/tails#18549)
+
+    Commits:
+      - apply UX tip: move link to bottom
+      - Tor Connection: Add link to Troubleshooting doc
+
+  * Trim down SquashFS exclusions: remove obsolete ones, move as much as possible
+    to chroot_local-hooks (tails/tails!649)
+
+    Commits:
+      - leading slashes are clearer
+      - Trim down SquashFS exclusions: remove obsolete ones, move as much as possible
+        to chroot_local-hooks
+
+  * Upgrade to tor 0.4.6.8 (tails/tails!647)
+
+    Closes issues:
+      - Upgrade tor to 0.4.6 (tails/tails#18310)
+
+    Commits:
+      - Upgrade to tor 0.4.6.8, by bumping the snapshot of the torproject APT
+        repository to 2021110301
+
+  * Improve dialog when Unsafe Browser is not enabled (tails/tails!628)
+
+    Closes issues:
+      - Improve dialog when Unsafe Browser is not enabled (tails/tails#18598)
+
+    Commits:
+      - Fix HTML
+      - Update anchor
+      - Apply 1 suggestion(s) to 1 file(s)
+      - Make the link for the Unsafe Browser documentation translatable
+      - Use a named anchor (refs: #18598)
+      - Include link for the Unsafe Browser documentation
+      - Associate text/html with tor-browser (refs: #18598)
+      - Apply 1 suggestion(s) to 1 file(s)
+      - Improve dialog when Unsafe Browser is not enabled
+
+  * Basic GUI to backup a Persistent Storage to another one (tails/tails!596)
+
+    Closes issues:
+      - Retry updating the backup if only mounting the backup Tails is missing
+        (tails/tails#18720)
+      - Basic GUI to backup a Persistent Storage to another one (tails/tails#18504)
+
+    Commits:
+      - Test suite: improve readability
+      - Test suite: test that the backup is identical to the source
+      - Adjust to a04204cba2
+      - Adjust to 6161e4f823
+      - Adjust to a77c2425f3
+      - Adjust to cb7b877fda
+      - Test suite: use deprecated GuestFS luks_* functions
+      - Nitpick on copy
+      - Avoid ampersand
+      - tails-backup: avoid issue in non-English locales
+      - Shellcheck: disable excessive rule
+      - Test suite: detect disks being plugged using udisks
+      - Test suite: add elementary scenario for tails-backup.
+      - tails-backup: implement pinentry retries and cancel
+      - tails-backup: handle unlocked but unmounted TailsData
+      - tails-backup: suppress bilibop's message
+      - tails-backup: detect if rsync fails through pipefail
+      - Expand rsync short options.
+      - tails-backup-rsync: defensively check that we copy between mountpoints
+      - tails-backup: make shellcheck happy
+      - tails-backup: don't try to unlock and already unlocked and mounted volume
+      - tails-backup: drop need for admin password
+      - tails-backup: drop unused parameters
+      - tails-backup: add back progress bar that doesn't hide rsync's output
+      - tails-backup: fix up on "Always display the 1st screen"
+      - Fix typo
+      - Improve feedback (for now)
+      - Be more specific
+      - Always display the 1st screen if there's any error (#18720)
+      - Use consistent quotes
+      - Put the most meaningful word first
+      - Move together with the other Persistent Storage utilities
+      - tails-backup: drop unused variables
+      - tails-backup: use consistent indentation
+      - tails-backup: unlock and mount the drive automatically
+      - tails-backup: show pulsating progress while copying
+      - tails-backup: try to eject automatically
+      - tails-backup: fix quoting.
+      - Make tails-backup executable.
+      - Fix launcher
+      - Advice to upgrade from the backup utility
+      - Update doc to Persistent Storage Backup utility
+      - Shorten
+      - Rework interactions and copy
+      - fix typo in .desktop file
+      - update to latest version of the script
+      - tails-backup
+
+  * Improve robustness of new TCA automated tests (tails/tails!525)
+
+    Commits:
+      - Test suite: drop unused step.
+      - Test suite: correctly use "is None" in python script.
+      - Remove usage of tor.sh's tor_is_working
+      - Drop most of the tor shell library.
+      - tor_is_working is stem-based, too
+      - refactor bash+py stem wrapper into py script
+      - python ♥ equality to None should use `is` keyword
+      - python ♥ let's PEP8 everything
+      - python ♥ remove useless imports
+      - python ♥ proper argument parser
+      - python ♥ main function
+      - Fix indentation.
+      - Drop unused variable.
+      - Catch correct exception.
+      - Extract script.
+      - Rewrite tor_wait_until_bootstrapped() to be more robust.
+      - Extreme Nitpicking™
+      - Make tor_wait_until_bootstrapped() handle tor restarts.
+      - Improve debugging.
+      - Avoid spamming new python interpreters while waiting for Tor to bootstrap.
+      - Allow multiline code blocks in tor_control_stem_wrapper().
+      - Target the 4.22 code base
+      - XXX debugging for test/18293-improve-tca-test-robustness
+      - Test suite: adapt to removal of tor_control_send().
+      - Test suite: test that tor's control port is open for real.
+      - Tor shell library: improve error handling when the Tor control port is
+        unavailable.
+      - Remove mention of unused import.
+      - Tor shell library: re-implement control interaction with Python and stem.
+      - Tor shell library: improve parsing and error handling of getinfo/getconf.
+      - Add missing shell quoting.
+      - Add forgotten local variables.
+      - Add proper error handling to the shell library's control port interaction.
+      - Test suite: wait for tor's ControlPort before using it (refs: #18293).
+
+ -- Tails developers <tails@boum.org>  Mon, 06 Dec 2021 16:03:22 +0100
+
 tails (4.24) unstable; urgency=medium
 
     Closes issues:

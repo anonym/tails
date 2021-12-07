@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-01-21 22:51+0000\n"
+"POT-Creation-Date: 2021-12-06 14:36+0100\n"
 "PO-Revision-Date: 2021-03-02 21:43+0000\n"
 "Last-Translator: cenere <cenere@insiberia.net>\n"
 "Language-Team: ita <transitails@inventati.org>\n"
@@ -29,12 +29,6 @@ msgid "<!-- XXX: These instructions should be kept in sync with doc/first_steps/
 msgstr ""
 
 #. type: Plain text
-msgid ""
-"These instructions explain how to back up your Persistent Storage to another "
-"Tails USB stick."
-msgstr ""
-
-#. type: Plain text
 #, no-wrap
 msgid "<div class=\"tip\">\n"
 msgstr "<div class=\"tip\">\n"
@@ -52,16 +46,16 @@ msgstr ""
 msgid "</div>\n"
 msgstr "</div>\n"
 
-#. type: Title =
+#. type: Plain text
 #, no-wrap
-msgid "Create a new Tails to store your backup"
+msgid "<h1 id=\"create\">Create a new Tails to store your backup</h1>\n"
 msgstr ""
 
 #. type: Plain text
 msgid ""
-"In these instructions, we recommend you to create another Tails to store "
-"your backup. This way, if your Tails is lost or damaged, you will be able to "
-"replace it immediately with your backup Tails."
+"We recommend you to create another Tails to store your backup. This way, if "
+"your Tails is lost or damaged, you can replace it immediately with your "
+"backup Tails."
 msgstr ""
 
 #. type: Plain text
@@ -95,7 +89,7 @@ msgstr ""
 #. type: Bullet: '1. '
 msgid ""
 "Restart on your backup Tails and create a Persistent Storage on it.  For "
-"detailed instructions, see how to [[create & configure the Persistent "
+"detailed instructions, see how to [[create and configure the Persistent "
 "Storage|doc/first_steps/persistence/configure]]."
 msgstr ""
 
@@ -126,88 +120,65 @@ msgstr ""
 msgid "Shutdown and unplug your backup Tails USB stick."
 msgstr ""
 
-#. type: Title =
+#. type: Plain text
 #, no-wrap
-msgid "Create or update your backup"
+msgid "<h1 id=\"update\">Create or update your backup</h1>\n"
 msgstr ""
 
 #. type: Bullet: '1. '
-msgid ""
-"Start on your current Tails, set up an [[administration password|doc/"
-"first_steps/welcome_screen/administration_password]], and unlock the "
-"Persistent Storage."
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"1. Choose\n"
-"   <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-"     <span class=\"guisubmenu\">Accessories</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Files</span></span>\n"
-"   to open the <span class=\"application\">Files</span> browser.\n"
+msgid "Start on your current Tails and unlock the Persistent Storage."
 msgstr ""
 
 #. type: Bullet: '1. '
 msgid "Plug in your backup Tails USB stick."
 msgstr ""
 
-#. type: Bullet: '1. '
-msgid ""
-"If your backup Tails is outdated, you should upgrade it by cloning your "
-"current Tails using <span class=\"application\">Tails Installer</span>.  For "
-"detailed instructions, see how to [[manually upgrade from another Tails|"
-"upgrade/clone#upgrade]]."
-msgstr ""
-
-#. type: Bullet: '1. '
-msgid ""
-"A new encrypted volume appears in the sidebar of the <span class="
-"\"application\">Files</span> browser. Click on it and enter the passphrase "
-"of your backup Tails to unlock the volume."
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"   Your backup shows up as\n"
-"   <span class=\"guilabel\">TailsData</span>.\n"
-msgstr ""
-
 #. type: Plain text
 #, no-wrap
 msgid ""
 "1. Choose\n"
 "   <span class=\"menuchoice\">\n"
 "     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-"     <span class=\"guisubmenu\">System Tools</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Root Terminal</span>\n"
-"   </span>\n"
-"   to open a terminal with administration rights.\n"
-msgstr ""
-
-#. type: Bullet: '1. '
-msgid "Execute the following command to backup your Persistent Storage:"
+"     <span class=\"guisubmenu\">Utilities</span>&nbsp;▸\n"
+"     <span class=\"guimenuitem\">Back Up Persistent Storage</span></span>.\n"
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
-msgid "<div class=\"caution\">\n"
-msgstr "<div class=\"caution\">\n"
+#, fuzzy, no-wrap
+#| msgid "<div class=\"note\">\n"
+msgid "   <div class=\"note\">\n"
+msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
 #, no-wrap
 msgid ""
-"<p>Make sure to execute this command <strong>from the Tails that you\n"
-"want to back up</strong>: your current Tails. If you run this command from your\n"
-"backup Tails instead, you will delete the Persistent Storage on your\n"
-"current Tails.</p>\n"
+"   <p>Each time you update your backup, only the files that have changed\n"
+"   are copied.</p>\n"
 msgstr ""
 
 #. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "</div>\n"
+msgid "   </div>\n"
+msgstr "</div>\n"
+
+#. type: Bullet: '1. '
+msgid ""
+"If your backup Tails has an outdated version of Tails, we recommend you "
+"upgrade it by cloning your current Tails using <span class=\"application"
+"\">Tails Installer</span>.  For detailed instructions, see how to [[manually "
+"upgrade from another Tails|upgrade/clone#upgrade]]."
+msgstr ""
+
+#. type: Title =
 #, no-wrap
-msgid "<!-- <li> are limited to 45em so I'm breaking the list here to prevent wrapping the long command line. -->\n"
+msgid "Updating your backup Tails from a terminal"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"If you prefer updating your backup Tails from a terminal, execute the "
+"following command from a *Root Terminal*:"
 msgstr ""
 
 #. type: Plain text
@@ -230,24 +201,9 @@ msgid ""
 "</pre>\n"
 msgstr ""
 
-#. type: Plain text
 #, no-wrap
-msgid "<div class=\"note\">\n"
-msgstr "<div class=\"note\">\n"
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<p>Each time you update your backup, only the files that have changed\n"
-"are copied.</p>\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"You can now eject the <span class=\"guilabel\">TailsData</span> volume in the\n"
-"<span class=\"application\">Files</span> browser and unplug your backup Tails USB stick.\n"
-msgstr ""
+#~ msgid "<div class=\"caution\">\n"
+#~ msgstr "<div class=\"caution\">\n"
 
 #~ msgid ""
 #~ "<style>\n"
