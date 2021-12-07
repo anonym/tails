@@ -5,7 +5,7 @@ set -u
 
 # Import try_for()
 . /usr/local/lib/tails-shell-library/common.sh
-# Import tor_control_getconf(), tor_set_in_torrc()
+# Import tor_set_in_torrc()
 . /usr/local/lib/tails-shell-library/tor.sh
 
 ENABLE_SANDBOX="${1}"
@@ -15,7 +15,7 @@ if [ "${ENABLE_SANDBOX}" != 0 ] && [ "${ENABLE_SANDBOX}" != 1 ]; then
     exit 1
 fi
 
-if [ "$(tor_control_getconf Sandbox)" = "${ENABLE_SANDBOX}" ]; then
+if [ "$(/usr/local/lib/tor_variable get --type=conf Sandbox)" = "${ENABLE_SANDBOX}" ]; then
     exit 0
 fi
 

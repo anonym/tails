@@ -8,10 +8,7 @@ BindsTo=tor@default.service
 Type=oneshot
 RemainAfterExit=yes
 User=debian-tor
-ExecStart=/bin/sh -c '. /usr/local/lib/tails-shell-library/tor.sh ; \
-                      while ! tor_is_working ; do                   \
-                         /bin/sleep 1                             ; \
-                      done'
+ExecStart=/usr/local/lib/tor_wait_until_bootstrapped
 TimeoutStartSec=0
 CapabilityBoundingSet=
 PrivateDevices=yes
