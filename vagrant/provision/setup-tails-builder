@@ -2,6 +2,7 @@
 # -*- mode: sh; sh-basic-offset: 4; indent-tabs-mode:nil; -*-
 
 set -e
+set -x
 
 export http_proxy="${TAILS_PROXY}"
 export DEBIAN_FRONTEND=noninteractive
@@ -19,6 +20,7 @@ fi
 latest_serial(){
     local archive="${1}"
     (
+        set -x
         cd /amnesia.git
 	auto/scripts/apt-snapshots-serials get-latest --print-serials-only "${archive}"
     )
@@ -75,11 +77,14 @@ if [ "$TAILS_WEBSITE_CACHE" = 1 ]; then
     fi
 fi
 
+echo "I: Current APT sources are:"
+cat /etc/apt/sources.list /etc/apt/sources.list.d/*
+
 echo "I: Updating debian-security APT source..."
 # Always set the latest serial for debian-security
-stable_serial="$(grep -Po '\d{10}' /etc/apt/sources.list)"
-security_serial="$(latest_serial debian-security)"
-sed -i -e "s/${stable_serial}/${security_serial}/g" /etc/apt/sources.list.d/buster-security.list
+current_security_serial="$(grep -Po '\d{10}' /etc/apt/sources.list.d/bullseye-security.list)"
+latest_security_serial="$(latest_serial debian-security)"
+sed -i -e "s/${current_security_serial}/${latest_security_serial}/g" /etc/apt/sources.list.d/bullseye-security.list
 
 echo "I: Current APT sources are:"
 cat /etc/apt/sources.list /etc/apt/sources.list.d/*
