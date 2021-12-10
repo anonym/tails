@@ -111,6 +111,7 @@ perl -pi \
 
 # Adjust live-build to handle the new security suite name
 # introduced in Debian Bullseye.
+# shellcheck disable=SC2016
 sed -i 's@${LB_DISTRIBUTION}/updates@${LB_DISTRIBUTION}-security@' \
     /usr/share/live/build/scripts/build/lb_chroot_sources
 
