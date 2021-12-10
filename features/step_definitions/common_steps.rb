@@ -1187,7 +1187,7 @@ def size_of_shared_disk_for(files)
   assert_equal(Array, files.class)
   disk_size = files.map { |f| File.new(f).size } .inject(0, :+)
   # Let's add some extra space for filesystem overhead etc.
-  disk_size += [convert_to_bytes(1, 'MiB'), (disk_size * 0.15).ceil].max
+  disk_size += [convert_to_bytes(16, 'MiB'), (disk_size * 0.15).ceil].max
   disk_size
 end
 
