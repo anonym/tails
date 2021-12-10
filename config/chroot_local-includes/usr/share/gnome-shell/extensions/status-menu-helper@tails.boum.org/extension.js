@@ -21,9 +21,8 @@
    Raphael Freudiger <laser_b@gmx.ch>.
 **/
 const Lang = imports.lang;
-const St = imports.gi.St;
 const Main = imports.ui.main;
-const BoxPointer = imports.ui.boxpointer;
+const PopupMenu = imports.ui.popupMenu;
 
 const Gettext = imports.gettext.domain('tails');
 const _ = Gettext.gettext;
@@ -49,13 +48,17 @@ const Extension = new Lang.Class({
         if (this._isEnabled) return;
         this._isEnabled = true;
 
-        this.statusMenu = Main.panel.statusArea['aggregateMenu']._system;
+        this.statusMenu = Main.panel.statusArea['aggregateMenu'].menu;
+
+        status_menu_items = this.statusMenu._getMenuItems();
+        this.system_menu = status_menu_items[status_menu_items.length - 1];
+        this.orig_menu_items = this.system_menu.box.get_children();
 
         this._createActions();
         this._removeOrigActions();
         this._addSeparateButtons();
 
-        this.statusMenu.menu.connect('open-state-changed', (menu, open) => {
+        this.statusMenu.connect('open-state-changed', (menu, open) => {
             if (!open)
                 return;
             this._update();
@@ -93,65 +96,58 @@ const Extension = new Lang.Class({
     },
 
     _createAction: function(label, icon, onClickedFunction) {
-        let button = this.statusMenu._createActionButton(icon, label);
-        let id = button.connect('clicked', Lang.bind(this, onClickedFunction));
-        return new Action(button, id);
+        item = new PopupMenu.PopupImageMenuItem(label, icon);
+        item.connect('activate', onClickedFunction);
+        return item;
     },
 
     _removeOrigActions: function() {
-        this.statusMenu._actionsItem.actor.remove_child(this.statusMenu._altSwitcher.actor);
-        this.statusMenu._actionsItem.actor.remove_child(this.statusMenu._lockScreenAction);
+        for (var item of this.orig_menu_items) {
+            this.system_menu.box.remove_child(item);
+        }
     },
 
     _restoreOrigActions: function() {
-        this.statusMenu._actionsItem.actor.add(this.statusMenu._altSwitcher.actor, { expand: true, x_fill: false });
-        this.statusMenu._actionsItem.actor.add(this.statusMenu._lockScreenAction, { expand: true, x_fill: false });
+        // XXX: also restores hidden items (like Lock Screen Rotation)
+        // but we don't really care since we don't support unloading
+        // this extension in Tails.
+        for (var item of this.orig_menu_items) {
+            this.system_menu.box.add_child(item);
+        }
     },
 
     _addSeparateButtons: function() {
         for (let i = 0; i < this._actions.length; i++) {
-            this.statusMenu._actionsItem.actor.add(this._actions[i].button, { expand: true, x_fill: false });
+            this.statusMenu.addMenuItem(this._actions[i]);
         }
     },
 
     _destroyActions: function() {
         for (let i = 0; i < this._actions.length; i++) {
             let action = this._actions[i];
-            if (action.id) {
-                action.button.disconnect(action.id);
-                action.id = 0;
-            }
-
-            if (action.button) {
-                action.button.destroy();
-                action.button = 0;
-            }
+            this.system_menu.box.remove_child(action);
+            action.destroy();
         }
     },
 
     _onLockClicked: function() {
-        this.statusMenu.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
-        Main.overview.hide();
         Util.spawn(['tails-screen-locker']);
     },
 
     _onSuspendClicked: function() {
-        this.statusMenu.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
         Util.spawn(['systemctl', 'suspend'])
     },
 
     _onRestartClicked: function() {
-        this.statusMenu.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
         Util.spawn(['sudo', '-n', 'reboot'])
     },
 
     _onPowerOffClicked: function() {
-        this.statusMenu.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
         Util.spawn(['sudo', '-n', 'poweroff'])
     },
 
     _update: function() {
-        this._lockScreenAction.button.visible = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        this._lockScreenAction.visible = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
     }
 
 });
