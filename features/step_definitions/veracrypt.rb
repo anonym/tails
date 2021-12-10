@@ -287,7 +287,7 @@ end
 
 When /^I open this VeraCrypt volume in GNOME Files$/ do
   $vm.spawn('nautilus /media/amnesia/*', user: LIVE_USER)
-  Dogtail::Application.new('nautilus').window(
+  Dogtail::Application.new('org.gnome.Nautilus').window(
     veracrypt_volume_size_in_nautilus(
       isHidden: @veracrypt_is_hidden,
       needsPim: @veracrypt_needs_pim
