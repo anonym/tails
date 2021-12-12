@@ -767,28 +767,28 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-When /^I request a shutdown using the system menu$/ do
-  @screen.hide_cursor
-  @screen.wait('TailsEmergencyShutdownButton.png', 10).click
-  # Sometimes the next button too fast, before the menu has settled
-  # down to its final size and the icon we want to click is in its
-  # final position. dogtail might allow us to fix that, but given how
-  # rare this problem is, it's not worth the effort.
-  step 'I wait 5 seconds'
-  @screen.wait('TailsEmergencyShutdownHalt.png', 10).click
+When /^I request a (shutdown|reboot) using the system menu$/ do |action|
+  if action == 'shutdown' then
+    image = 'TailsEmergencyShutdownHalt.png'
+  else
+    image = 'TailsEmergencyShutdownReboot.png'
+  end
+  # Since Bullseye the status menu is problematic: we generally have
+  # to click several times for it to open.
+  retry_action(10, delay: 2) do
+    @screen.hide_cursor
+    @screen.wait('TailsEmergencyShutdownButton.png', 10).click
+    # Sometimes the next button appears too fast, before the menu has
+    # settled down to its final size and the icon we want to click is
+    # in its final position. Dogtail might allow us to fix that, but
+    # given how rare this problem is, it's not worth the effort.
+    sleep 5
+    @screen.find(image).click
+  end
 end
 
 When /^I warm reboot the computer$/ do
   $vm.spawn('reboot')
-end
-
-When /^I request a reboot using the system menu$/ do
-  @screen.hide_cursor
-  @screen.wait('TailsEmergencyShutdownButton.png', 10).click
-  # See comment on /^I request a shutdown using the system menu$/
-  # that explains why we need to wait.
-  step 'I wait 5 seconds'
-  @screen.wait('TailsEmergencyShutdownReboot.png', 10).click
 end
 
 Given /^the package "([^"]+)" is( not)? installed( after Additional Software has been started)?$/ do |package, absent, asp|
