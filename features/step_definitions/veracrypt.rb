@@ -199,10 +199,8 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
          .find { |row| /^#{size} Drive/.match(row.name) }
          .grabFocus
   when 'file container'
-    gnome_shell = Dogtail::Application.new('gnome-shell')
-    menu = gnome_shell.menu('Disks')
-    menu.click
-    gnome_shell.child('Attach Disk Image…', roleName: 'label').click
+    @screen.wait('GnomeDisksApplicationsMenuButton.png', 10).click
+    disks.child('Attach Disk Image… (.iso, .img)', roleName: 'push button').click
     # Otherwise Disks is sometimes minimized, for some reason I don't understand
     sleep 2
     attach_dialog = disks.child('Select Disk Image to Attach',
@@ -287,7 +285,7 @@ end
 
 When /^I open this VeraCrypt volume in GNOME Files$/ do
   $vm.spawn('nautilus /media/amnesia/*', user: LIVE_USER)
-  Dogtail::Application.new('nautilus').window(
+  Dogtail::Application.new('org.gnome.Nautilus').window(
     veracrypt_volume_size_in_nautilus(
       isHidden: @veracrypt_is_hidden,
       needsPim: @veracrypt_needs_pim
