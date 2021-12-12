@@ -105,8 +105,7 @@ class Screen
   end
 
   def xdotool(*args)
-    out = cmd_helper(['xdotool'] + args.map(&:to_s))
-    assert(out.empty?, "xdotool reported an error:\n" + out)
+    cmd_helper(['xdotool'] + args.map(&:to_s))
   end
 
   def match_screen(image, sensitivity, show_image)
@@ -267,6 +266,10 @@ class Screen
     nil
   end
 
+  def mouse_location(**opts)
+    xdotool('getmouselocation').split[0..1].map { |s| s.split(':').last.to_i }
+  end
+
   def hover(*args, **opts)
     opts[:log] = true if opts[:log].nil?
     case args.size
@@ -280,7 +283,9 @@ class Screen
       raise "unsupported arguments: #{args}"
     end
     debug_log("Mouse: moving to (#{x}, #{y})") if opts[:log]
-    xdotool('mousemove', '--sync', x, y)
+    stdout = xdotool('mousemove', x, y)
+    assert(stdout.empty?, "xdotool reported an error:\n" + stdout)
+    try_for(10) { [x, y] == mouse_location }
     [x, y]
   end
 
@@ -306,7 +311,8 @@ class Screen
     end
     button = { 1 => 'left', 2 => 'middle', 3 => 'right' }[opts[:button]]
     debug_log("Mouse: #{action} #{button} button at (#{x}, #{y})") if opts[:log]
-    xdotool('click', '--repeat', opts[:repeat], opts[:button])
+    stdout = xdotool('click', '--repeat', opts[:repeat], opts[:button])
+    assert(stdout.empty?, "xdotool reported an error:\n" + stdout)
     [x, y]
   end
 end
