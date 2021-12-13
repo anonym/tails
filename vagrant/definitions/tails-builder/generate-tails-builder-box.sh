@@ -88,7 +88,9 @@ steps:
       iface eth0 inet6 auto
 
   - chroot: rootfs
-    shell: echo ${HOSTNAME} > /etc/hostname
+    shell: |
+      echo ${HOSTNAME} > /etc/hostname
+      echo 127.0.0.1 ${HOSTNAME} >> /etc/hosts
 
   - copy-file: /tmp/tails.binary.gpg
     src: config/chroot_sources/tails.binary.gpg
@@ -127,7 +129,7 @@ steps:
 
   - create-file: /etc/apt/sources.list.d/${DISTRIBUTION}-security.list
     contents: |
-      deb http://time-based.snapshots.deb.tails.boum.org/debian-security/${DEBIAN_SECURITY_SERIAL}/ ${DISTRIBUTION}/updates main
+      deb http://time-based.snapshots.deb.tails.boum.org/debian-security/${DEBIAN_SECURITY_SERIAL}/ ${DISTRIBUTION}-security main
 
   - create-file: /etc/apt/sources.list.d/tails.list
     contents: |
@@ -150,6 +152,22 @@ steps:
       Package: *
       Pin: release n=${DISTRIBUTION}-backports
       Pin-Priority: 100
+
+  - create-file: /etc/apt/sources.list.d/buster.list
+    contents: |
+      deb http://time-based.snapshots.deb.tails.boum.org/debian/${DEBIAN_SERIAL}/ buster main
+
+  - create-file: /etc/apt/preferences.d/buster
+    contents: |
+      Package: *
+      Pin: release o=Debian,n=buster
+      Pin-Priority: -1
+
+  - create-file: /etc/apt/preferences.d/po4a
+    contents: |
+      Package: po4a
+      Pin: release o=Debian,n=buster
+      Pin-Priority: 999
 
   - chroot: rootfs
     shell: apt update
@@ -191,6 +209,9 @@ steps:
     tag: rootfs
 
   # <Work around Debian#951257>
+  # XXX:bookworm: remove this workaround, because this was worked around upstream
+  # in udisks2 2.9.4-1:
+  # https://salsa.debian.org/utopia-team/udisks2/-/commit/050527c84bed6bc6c90d46d3eb612c48baf92e7d)
   - chroot: rootfs
     shell: mv /bin/udevadm /bin/udevadm.orig
 
@@ -295,7 +316,7 @@ EOF
 rm -f "${TARGET_NAME}"*
 # shellcheck disable=SC2154
 sudo ${http_proxy:+http_proxy=$http_proxy} vmdb2 "${SPECFILE}" \
-     --output "${TARGET_IMG}" -v --log "${LOG_VMDB2}" \
+     --output "${TARGET_IMG}" --verbose --log "${LOG_VMDB2}" \
      --rootfs-tarball "${TARGET_FS_TAR}"
 qemu-img convert -O qcow2 "${TARGET_IMG}" "${TARGET_QCOW2}"
 bash -e -x "${GIT_DIR}/vagrant/definitions/tails-builder/create_box.sh" \

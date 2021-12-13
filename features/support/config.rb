@@ -42,6 +42,7 @@ DISPLAY = ENV['DISPLAY']
 GIT_DIR = ENV['PWD']
 KEEP_CHUTNEY = !ENV['KEEP_CHUTNEY'].nil?
 KEEP_SNAPSHOTS = !ENV['KEEP_SNAPSHOTS'].nil?
+LIVE_PATCH = ENV['LIVE_PATCH']
 LIVE_USER = cmd_helper(
   '. config/chroot_local-includes/etc/live/config.d/username.conf; ' \
   'echo ${LIVE_USERNAME}'

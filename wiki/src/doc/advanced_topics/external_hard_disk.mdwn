@@ -6,13 +6,18 @@ Tails might return the following error message:
 
     Unable to find a medium containing a live file system
 
-In such cases, remove the <span class="code">live-media=removable</span>
+In such cases, choose the **External Hard Disk** entry if it appears in
+the Boot Loader.
+
+If the **External Hard Disk** entry does not appear in the Boot Loader,
+then remove the <span class="code">live-media=removable</span>
 boot option. To do so, see our instructions on [[modifying the boot options using
 the Boot Loader|doc/advanced_topics/boot_options]].
 
 <div class="caution">
 
-<p>Removing the <span class="code">live-media=removable</span> boot
+<p>Choosing the <b>External Hard Disk</b> entry in the Boot Loader or removing
+the <span class="code">live-media=removable</span> boot
 option might be dangerous. If an adversary had access to the computer
 and installed a malicious Tails on the internal hard disk, the computer
 might start on the malicious Tails instead of on the USB stick.</p>

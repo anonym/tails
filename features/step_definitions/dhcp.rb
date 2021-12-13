@@ -12,7 +12,7 @@ Then /^the hostname should not have been leaked on the network$/ do
        payload = type.parse(packet).payload
        hostnames.any? { |hostname| payload.match(hostname) }
      end
-    raise DhcpLeakError, "Hostname leak detected: #{hostname}" \
+    raise DhcpLeakError, 'Hostname leak detected'
   end
 rescue DhcpLeakError => e
   save_failure_artifact('Network capture', @sniffer.pcap_file)
