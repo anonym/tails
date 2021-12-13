@@ -148,6 +148,7 @@ module Dogtail
       if args_list.class == Array && args_list.last.class == Hash
         *args_list, args_hash = args_list
       end
+      args_hash[:showingOnly] = true unless args_hash.key?(:showingOnly)
       (
         (if args_list.nil?
            []
