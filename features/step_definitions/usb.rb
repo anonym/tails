@@ -1137,8 +1137,8 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   disks.children(roleName: 'table cell')
        .find { |row| destination_disk_label_regexp.match(row.name) }
        .grabFocus
-  disks.child('Menu', roleName: 'toggle button').click
-  disks.child('Restore Disk Image…', roleName: 'menu item').click
+  @screen.wait('GnomeDisksDriveMenuButton.png', 5).click
+  disks.child('Restore Disk Image…', roleName: 'push button').click
   restore_dialog = disks.child('Restore Disk Image',
                                roleName:    'dialog',
                                showingOnly: true)
