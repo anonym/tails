@@ -25,27 +25,32 @@ def fail(error: str):
     sys.exit(RETURN_CODE[error])
 
 
-try:
-    # XXX: use the same User-Agent as NetworkManager
-    # (and maintain this) or is it futile?
-    r = requests.get(URL, timeout=TIMEOUT)
-except requests.exceptions.ConnectionError:
-    fail('http-failure')
+def main():
+    try:
+        # XXX: use the same User-Agent as NetworkManager
+        # (and maintain this) or is it futile?
+        r = requests.get(URL, timeout=TIMEOUT)
+    except requests.exceptions.ConnectionError:
+        fail('http-failure')
 
-if r.status_code == requests.codes.ok:
-    if r.text == 'OK':
-        try:
-            date = r.headers['date']
-        except KeyError:
-            fail('missing-date-header')
-        try:
-            dt = email.utils.parsedate_to_datetime(date)
-        except Exception:
-            fail('malformed-date-header')
-        print(dt.isoformat())
-        sys.exit(0)
+    if r.status_code == requests.codes.ok:
+        if r.text == 'OK':
+            try:
+                date = r.headers['date']
+            except KeyError:
+                fail('missing-date-header')
+            try:
+                dt = email.utils.parsedate_to_datetime(date)
+            except Exception:
+                fail('malformed-date-header')
+            print(dt.isoformat())
+            sys.exit(0)
 
+        else:
+            fail('captive-portal')
     else:
-        fail('captive-portal')
-else:
-    fail('http-failure')
+        fail('http-failure')
+
+
+if __name__ == '__main__':
+    main()
