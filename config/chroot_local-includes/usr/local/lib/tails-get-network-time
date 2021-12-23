@@ -8,9 +8,8 @@
 import email.utils
 import pycurl
 import sys
-from io import BytesIO
 from pathlib import Path
-from typing import Optional
+from typing import Dict, Optional
 
 RETURN_CODE = {
     "missing-date-header": 2,
@@ -25,31 +24,49 @@ def fail(error: str):
     sys.exit(RETURN_CODE[error])
 
 
-headers = {}
+class NMishCurlClient(object):
+    """Wrapper around a curl client to emulate the fingerprintable
+    network behavior of NetworkManager's connectivity check"""
 
+    def __init__(self, url: str):
+        self.headers: Dict[str, str] = {}
+        self.body = ""
+        c = pycurl.Curl()
+        c.setopt(c.URL, url)
+        c.setopt(c.WRITEFUNCTION, self.write_cb)
+        c.setopt(c.HEADERFUNCTION, self.header_cb)
+        c.setopt(c.HTTPHEADER, ["Connection: close"])
+        c.setopt(c.IPRESOLVE, c.IPRESOLVE_V4)
+        self.client = c
 
-def header_cb(header_line) -> Optional[int]:
-    # HTTP standard specifies that headers are encoded in iso-8859-1.
-    header_line = header_line.decode('iso-8859-1')
+    def perform(self):
+        return self.client.perform()
 
-    if ':' not in header_line:
+    def header_cb(self, header_line) -> Optional[int]:
+        # HTTP standard specifies that headers are encoded in iso-8859-1.
+        header_line = header_line.decode('iso-8859-1')
+
+        if ':' not in header_line:
+            return None
+
+        name, value = header_line.split(':', 1)
+        name = name.strip()
+        value = value.strip()
+        name = name.lower()
+        self.headers[name] = value
+
         return None
 
-    name, value = header_line.split(':', 1)
-    name = name.strip()
-    value = value.strip()
-    name = name.lower()
-    headers[name] = value
+    def write_cb(self, data: bytes) -> Optional[int]:
+        self.body += data.decode()
 
+        return None
 
-def curl_client(url: str, buffer: BytesIO) -> pycurl.Curl:
-    c = pycurl.Curl()
-    c.setopt(c.URL, url)
-    c.setopt(c.WRITEDATA, buffer)
-    c.setopt(c.HEADERFUNCTION, header_cb)
-    c.setopt(c.HTTPHEADER, ["Connection: close"])
-    c.setopt(c.IPRESOLVE, c.IPRESOLVE_V4)
-    return c
+    def response_code(self):
+        return self.client.getinfo(self.client.RESPONSE_CODE)
+
+    def close(self):
+        return self.client.close()
 
 
 def main():
@@ -62,22 +79,20 @@ def main():
     args = parser.parse_args()
 
     url = Path(args.url_file).read_text().rstrip()
-    buffer = BytesIO()
-    c = curl_client(url, buffer)
+    c = NMishCurlClient(url=url)
 
     try:
         c.perform()
-        decoded_body = buffer.getvalue().decode('utf-8')
-        code = c.getinfo(c.RESPONSE_CODE)
+        code = c.response_code()
     except pycurl.error:
         fail('http-failure')
     finally:
         c.close()
 
     if code == 200:
-        if decoded_body == 'OK':
+        if c.body == 'OK':
             try:
-                date = headers['date']
+                date = c.headers['date']
             except KeyError:
                 fail('missing-date-header')
             try:
