@@ -8,8 +8,8 @@
 import email.utils
 import requests
 import sys
+from pathlib import Path
 
-URL = "http://fedoraproject.org/static/hotspot.txt"
 TIMEOUT = 10
 
 RETURN_CODE = {
@@ -26,10 +26,20 @@ def fail(error: str):
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--url-file",
+                        type=str,
+                        default="/etc/tails-get-network-time-url",
+                        action="store")
+    args = parser.parse_args()
+
+    url = Path(args.url_file).read_text().rstrip()
+
     try:
         # XXX: use the same User-Agent as NetworkManager
         # (and maintain this) or is it futile?
-        r = requests.get(URL, timeout=TIMEOUT)
+        r = requests.get(url, timeout=TIMEOUT)
     except requests.exceptions.ConnectionError:
         fail('http-failure')
 
