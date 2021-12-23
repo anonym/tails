@@ -10,6 +10,7 @@ import pycurl
 import sys
 from io import BytesIO
 from pathlib import Path
+from typing import Optional
 
 RETURN_CODE = {
     "missing-date-header": 2,
@@ -27,12 +28,12 @@ def fail(error: str):
 headers = {}
 
 
-def header_cb(header_line):
+def header_cb(header_line) -> Optional[int]:
     # HTTP standard specifies that headers are encoded in iso-8859-1.
     header_line = header_line.decode('iso-8859-1')
 
     if ':' not in header_line:
-        return
+        return None
 
     name, value = header_line.split(':', 1)
     name = name.strip()
