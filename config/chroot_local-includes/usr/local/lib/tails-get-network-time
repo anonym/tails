@@ -6,11 +6,10 @@
 # and exit with a well-defined return code.
 
 import email.utils
-import requests
+import pycurl
 import sys
+from io import BytesIO
 from pathlib import Path
-
-TIMEOUT = 10
 
 RETURN_CODE = {
     "missing-date-header": 2,
@@ -25,6 +24,33 @@ def fail(error: str):
     sys.exit(RETURN_CODE[error])
 
 
+headers = {}
+
+
+def header_cb(header_line):
+    # HTTP standard specifies that headers are encoded in iso-8859-1.
+    header_line = header_line.decode('iso-8859-1')
+
+    if ':' not in header_line:
+        return
+
+    name, value = header_line.split(':', 1)
+    name = name.strip()
+    value = value.strip()
+    name = name.lower()
+    headers[name] = value
+
+
+def curl_client(url: str, buffer: BytesIO) -> pycurl.Curl:
+    c = pycurl.Curl()
+    c.setopt(c.URL, url)
+    c.setopt(c.WRITEDATA, buffer)
+    c.setopt(c.HEADERFUNCTION, header_cb)
+    c.setopt(c.HTTPHEADER, ["Connection: close"])
+    c.setopt(c.IPRESOLVE, c.IPRESOLVE_V4)
+    return c
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser()
@@ -35,18 +61,22 @@ def main():
     args = parser.parse_args()
 
     url = Path(args.url_file).read_text().rstrip()
+    buffer = BytesIO()
+    c = curl_client(url, buffer)
 
     try:
-        # XXX: use the same User-Agent as NetworkManager
-        # (and maintain this) or is it futile?
-        r = requests.get(url, timeout=TIMEOUT)
-    except requests.exceptions.ConnectionError:
+        c.perform()
+        decoded_body = buffer.getvalue().decode('utf-8')
+        code = c.getinfo(c.RESPONSE_CODE)
+    except pycurl.error:
         fail('http-failure')
+    finally:
+        c.close()
 
-    if r.status_code == requests.codes.ok:
-        if r.text == 'OK':
+    if code == 200:
+        if decoded_body == 'OK':
             try:
-                date = r.headers['date']
+                date = headers['date']
             except KeyError:
                 fail('missing-date-header')
             try:
