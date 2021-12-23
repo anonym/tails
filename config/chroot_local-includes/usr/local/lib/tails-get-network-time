@@ -6,12 +6,20 @@
 # and exit with a well-defined return code.
 
 import email.utils
+import logging
 import pycurl
 import sys
 from pathlib import Path
 from typing import Dict, Optional
 
-# For https://fedoraproject.org/static/hotspot.txt
+LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
+log = logging.getLogger()
+
+# From nm-connectivity.c
+HEADER_STATUS_ONLINE = {"name": "X-NetworkManager-Status", "value": "online"}
+
+# From 20-connectivity-fedora.conf, valid for
+# https://fedoraproject.org/static/hotspot.txt
 EXPECTED_RESPONSE = "OK"
 
 RETURN_CODE = {
@@ -41,6 +49,8 @@ class NMishCurlClient(object):
         c.setopt(c.HTTPHEADER, ["Connection: close"])
         c.setopt(c.IPRESOLVE, c.IPRESOLVE_V4)
         self.client = c
+        self.connectivity: bool = False
+        self.detected_error: Optional[str] = None
 
     def perform(self):
         return self.client.perform()
@@ -58,12 +68,57 @@ class NMishCurlClient(object):
         name = name.lower()
         self.headers[name] = value
 
+        if (
+            name == HEADER_STATUS_ONLINE["name"].lower()
+            and value == HEADER_STATUS_ONLINE["value"]
+        ):
+            log.debug("Received status online header")
+            self.connectivity = True
+            # NetworkManager would abort the connection at this point.
+            # However, we have to wait until we've also received the date
+            # header.
+
+        # Abort the connection once we have the status and date headers,
+        # to mimick NetworkManager's behavior as closely as possible.
+        if self.connectivity and "date" in self.headers:
+            log.debug("Received both status online and date headers")
+            return 0
+
         return None
 
     def write_cb(self, data: bytes) -> Optional[int]:
+        """Like NetworkManager, we abort the connection as soon as
+        we have enough information to draw conclusions."""
         self.body += data.decode()
 
-        return None
+        if len(self.body) == len(EXPECTED_RESPONSE):
+            if self.body == EXPECTED_RESPONSE:
+                self.connectivity = True
+                log.info(
+                    "Received the expected body ⇒ assuming no captive portal"
+                )
+                return 0
+            else:
+                log.info("Received unexpected body ⇒ assuming captive portal")
+                self.detected_error = "captive-portal"
+                return 0
+
+        elif len(self.body) > len(EXPECTED_RESPONSE):
+            log.info("Received too much data ⇒ assuming captive portal")
+            self.detected_error = "captive-portal"
+            return 0
+
+        else:  # len(self.body) < len(EXPECTED_RESPONSE):
+            if EXPECTED_RESPONSE.startswith(self.body):
+                # Keep receiving data
+                return None
+            else:
+                log.info("Received unexpected body ⇒ assuming captive portal")
+                self.detected_error = "captive-portal"
+                return 0
+
+        # The if/elif/else above is supposed to cover all cases
+        raise NotImplementedError
 
     def response_code(self):
         return self.client.getinfo(self.client.RESPONSE_CODE)
@@ -82,21 +137,30 @@ def main():
         default="/etc/tails-get-network-time-url",
         action="store",
     )
+    parser.add_argument("--debug", action="store_true", help="debug output")
     args = parser.parse_args()
+
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
+    else:
+        logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 
     url = Path(args.url_file).read_text().rstrip()
     c = NMishCurlClient(url=url)
 
+    code = None
     try:
         c.perform()
-        code = c.response_code()
     except pycurl.error:
-        fail("http-failure")
-    finally:
-        c.close()
+        # curl can be in error condition when we aborted
+        # the connection ourselves from one of our callbacks
+        pass
 
-    if code == 200:
-        if c.body == EXPECTED_RESPONSE:
+    code = c.response_code()
+    log.debug("code: %s", code)
+
+    if c.connectivity:
+        if code in [200, 204]:
             try:
                 date = c.headers["date"]
             except KeyError:
@@ -107,11 +171,18 @@ def main():
                 fail("malformed-date-header")
             print(dt.isoformat())
             sys.exit(0)
-
         else:
+            log.error(
+                "Detected connectivity but unexpected response code %s ⇒ assuming captive portal",
+                code,
+            )
             fail("captive-portal")
     else:
-        fail("http-failure")
+        if c.detected_error is not None:
+            fail(c.detected_error)
+        else:
+            log.error("Unexpected HTTP failure")
+            fail("http-failure")
 
 
 if __name__ == "__main__":
