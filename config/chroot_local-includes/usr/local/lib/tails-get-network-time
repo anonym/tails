@@ -11,6 +11,9 @@ import sys
 from pathlib import Path
 from typing import Dict, Optional
 
+# For https://fedoraproject.org/static/hotspot.txt
+EXPECTED_RESPONSE = "OK"
+
 RETURN_CODE = {
     "missing-date-header": 2,
     "malformed-date-header": 3,
@@ -93,7 +96,7 @@ def main():
         c.close()
 
     if code == 200:
-        if c.body == 'OK':
+        if c.body == EXPECTED_RESPONSE:
             try:
                 date = c.headers["date"]
             except KeyError:
