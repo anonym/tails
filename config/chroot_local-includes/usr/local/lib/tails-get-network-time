@@ -44,12 +44,12 @@ class NMishCurlClient(object):
 
     def header_cb(self, header_line) -> Optional[int]:
         # HTTP standard specifies that headers are encoded in iso-8859-1.
-        header_line = header_line.decode('iso-8859-1')
+        header_line = header_line.decode("iso-8859-1")
 
-        if ':' not in header_line:
+        if ":" not in header_line:
             return None
 
-        name, value = header_line.split(':', 1)
+        name, value = header_line.split(":", 1)
         name = name.strip()
         value = value.strip()
         name = name.lower()
@@ -71,11 +71,14 @@ class NMishCurlClient(object):
 
 def main():
     import argparse
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("--url-file",
-                        type=str,
-                        default="/etc/tails-get-network-time-url",
-                        action="store")
+    parser.add_argument(
+        "--url-file",
+        type=str,
+        default="/etc/tails-get-network-time-url",
+        action="store",
+    )
     args = parser.parse_args()
 
     url = Path(args.url_file).read_text().rstrip()
@@ -85,28 +88,28 @@ def main():
         c.perform()
         code = c.response_code()
     except pycurl.error:
-        fail('http-failure')
+        fail("http-failure")
     finally:
         c.close()
 
     if code == 200:
         if c.body == 'OK':
             try:
-                date = c.headers['date']
+                date = c.headers["date"]
             except KeyError:
-                fail('missing-date-header')
+                fail("missing-date-header")
             try:
                 dt = email.utils.parsedate_to_datetime(date)
             except Exception:
-                fail('malformed-date-header')
+                fail("malformed-date-header")
             print(dt.isoformat())
             sys.exit(0)
 
         else:
-            fail('captive-portal')
+            fail("captive-portal")
     else:
-        fail('http-failure')
+        fail("http-failure")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
