@@ -120,6 +120,47 @@ is how your data is processed and stored.
   As an example, see our interview with [[Roberto in October
   2019|interviews/roberto]].
 
+<h1 id="log">Automatic connections to our website</h1>
+
+If you use Tails and connect to the Tor network, here is how the minimal and
+anonymous data that we collect about your use of Tails is stored and processed.
+
+After connecting to the Tor network, your Tails automatically downloads 2 pages
+from our website over Tor:
+
+1. A security check, to know if your Tails has known security vulnerabilities.
+
+   If you use Tails in one of the languages available on our website, your
+   Tails downloads the page in this language.
+
+1. A list of available updates, to know if your Tails needs to be updated.
+
+   Your Tails downloads the list of updates corresponding to your *base
+   version* of Tails—the version that you first installed or to which you last
+   did a manual upgrade.
+
+We count these downloads to know how many times Tails was started each month.
+
+Here is the information stored in our server logs about these downloads:
+
+    - [03/Dec/2020:06:25:24 +0000]  "GET /security/index.de.atom HTTP/2.0" 200 20871 "-" "-"
+    - [03/Dec/2020:06:25:25 +0000]  "GET /upgrade/v2/Tails/4.10/amd64/stable/upgrades.yml.pgp HTTP/2.0" 200 1081 "-" "-"
+
+They contain:
+
+- The date and time (without any time zone information)
+- The URL of the page
+- The language of your Tails session (here `de` for German)
+- The HTTP status code (here `200` for `OK`)
+- The *base version* of your Tails (here `4.10`)
+- The size of the download (here `20871` and `1081`, which is the
+same for all users)
+
+The pages are downloaded over Tor and we don't store any IP address.
+
+Our website is hosted on one of our dedicated servers and the logs are stored
+on encrypted disks.
+
 <h1 id="contact">Contact</h1>
 
 If you have any questions regarding our retention of user research data,
