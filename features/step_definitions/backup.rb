@@ -3,8 +3,13 @@ When /^I start Tails' custom backup tool$/ do
 end
 
 Then /^the backup tool displays "([^"]+)"$/ do |expected|
-  message = Dogtail::Application.new('zenity')
-              .child(roleName: 'label', retry: false).text
+  message = nil
+  try_for(30) do
+    message = Dogtail::Application.new('zenity')
+                                  .child(roleName: 'label')
+                                  .text
+    true
+  end
   assert(message.include?(expected))
 end
 
