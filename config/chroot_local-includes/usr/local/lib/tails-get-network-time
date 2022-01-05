@@ -20,7 +20,7 @@ HEADER_STATUS_ONLINE = {"name": "X-NetworkManager-Status", "value": "online"}
 
 # From 20-connectivity-fedora.conf, valid for
 # https://fedoraproject.org/static/hotspot.txt
-EXPECTED_RESPONSE = "OK"
+EXPECTED_RESPONSE = b"OK"
 
 RETURN_CODE = {
     "missing-date-header": 2,
@@ -41,7 +41,7 @@ class NMishCurlClient:
 
     def __init__(self, url: str):
         self.headers: Dict[str, str] = {}
-        self.body = ""
+        self.body = b''
         c = pycurl.Curl()
         c.setopt(c.URL, url)
         c.setopt(c.WRITEFUNCTION, self.write_cb)
@@ -89,7 +89,7 @@ class NMishCurlClient:
     def write_cb(self, data: bytes) -> Optional[int]:
         """Like NetworkManager, we abort the connection as soon as
         we have enough information to draw conclusions."""
-        self.body += data.decode()
+        self.body += data
 
         if len(self.body) == len(EXPECTED_RESPONSE):
             if self.body == EXPECTED_RESPONSE:
