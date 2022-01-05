@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-12-22 02:01+0000\n"
-"PO-Revision-Date: 2021-12-18 16:50+0000\n"
+"PO-Revision-Date: 2021-12-25 13:15+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.11.3\n"
 
 #. type: Plain text
@@ -177,8 +177,8 @@ msgid ""
 "Double-click on **localhost (QEMU)** to connect to the *QEMU* system of your "
 "host."
 msgstr ""
-"Дважды щелкните по **localhost (QEMU)**, чтобы подключиться к системе *QEMU* "
-"вашего хоста."
+"Дважды щелкните по **QEMU**, чтобы подключиться к системе *QEMU* вашего "
+"хоста."
 
 #. type: Bullet: '1. '
 msgid ""
@@ -196,43 +196,43 @@ msgstr "На первом шаге выберите **Локальный ISO и�
 
 #. type: Bullet: '1. '
 msgid "In *step 2*, choose:"
-msgstr "На втором шаге выберите:"
+msgstr "На втором шаге:"
 
 #. type: Bullet: '   - '
 msgid ""
 "**Use ISO image**, then **Browse...**, and **Browse Local** to browse for "
 "the ISO image that you want to start from"
 msgstr ""
-"Выберите **Choose ISO or CDROM install media**, затем **Обзор**. Выберите "
-"нужный ISO-образ"
+"В первой строке **Choose ISO or CDROM install media** через кнопку **Обзор** "
+"выберите файл с нужным ISO-образом"
 
 #. type: Bullet: '   - '
 msgid "**OS type**: **Linux**"
-msgstr ""
+msgstr "**Тип операционной системы**: укажите вручную **Debian 10**"
 
 #. type: Bullet: '   - '
 msgid "**Version**: **Debian Buster**"
-msgstr ""
+msgstr "Нажмите **Вперёд**"
 
 #. type: Bullet: '1. '
 msgid "In *step 3*, allocate at least 2048 MB of RAM."
-msgstr ""
+msgstr "На *шаге 3* выделите не менее 2048 Мб оперативной памяти."
 
 #. type: Bullet: '1. '
 msgid "In *step 4*, disable storage for this virtual machine."
-msgstr ""
+msgstr "На *шаге 4* отключите пространство хранения данных."
 
 #. type: Bullet: '1. '
 msgid "In *step 5*:"
-msgstr ""
+msgstr "На *шаге 5*:"
 
 #. type: Bullet: '   - '
 msgid "Type a name for the new virtual machine."
-msgstr ""
+msgstr "Введите название новой виртуальной машины."
 
 #. type: Bullet: '   - '
 msgid "Click **Finish** to start the virtual machine."
-msgstr ""
+msgstr "Нажмите **Готово** для запуска виртуальной машины."
 
 #. type: Plain text
 #, no-wrap
@@ -241,6 +241,9 @@ msgid ""
 "domain: Requested operation is not valid: network 'default' is not\n"
 "active</span>\", then try to start the default virtual network:\n"
 msgstr ""
+"Если увидите сообщение об ошибке \"<span class=\"guilabel\">Error starting\n"
+"domain: Requested operation is not valid: network 'default' is not\n"
+"active</span>\", попробуйте запустить виртуальную сеть по умолчанию:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -260,32 +263,51 @@ msgid ""
 "    start the default virtual network.</li>\n"
 "</ol>\n"
 msgstr ""
+"<ol>\n"
+"<li>Нажмите на <span class=\"guilabel\">QEMU</span>.</li>\n"
+"<<li>Выберите в меню <span class=\"menychoice\">\n"
+"<span class=\"guimenu\">Правка</span>&nbsp;▸\n"
+"<span class=\"guimenuitem\">Свойства подключения</span></span> для\n"
+"администрирования подключения к локальной системе\n"
+"<span class=\"application\">QEMU</span>.</li>\n"
+"<li>Перейдите на вкладку <span class=\"guilabel\">Виртуальные сети</span>. \n"
+"В левой панели выберите виртуальную сеть <span class=\"guilabel\""
+">default</span>.</li>\n"
+"<li>Нажмите на значок [[!img lib/media-playback-start.png alt=\"Запустить "
+"сеть\"\n"
+"link=no class=symbolic]] в нижней части левой панели для\n"
+"запуска виртуальной сети по умолчанию.</li>\n"
+"</ol>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<a id=\"usb_image\"></a>\n"
-msgstr ""
+msgstr "<a id=\"usb_image\"></a>\n"
 
 #. type: Title =
 #, no-wrap
 msgid "Running Tails from a USB image"
-msgstr ""
+msgstr "Запуск Tails из USB-образа"
 
 #. type: Plain text
 msgid ""
 "Running Tails from a USB image is the only virtualization solution that "
 "allows you to use a Persistent Storage in a virtual machine."
 msgstr ""
+"Запуск Tails из USB-образа — единственное решение для виртуализации, которое "
+"позволяет использовать Постоянное хранилище."
 
 #. type: Bullet: '1. '
 msgid "[[Download a USB image|install/download]] instead of an ISO image."
-msgstr ""
+msgstr "Вместо ISO-образа [[скачайте USB-образ|install/download]]."
 
 #. type: Bullet: '1. '
 msgid ""
 "Increase the size of the USB image to be at least 8 GB. This creates space "
 "for automatic upgrades and the Persistent Storage."
 msgstr ""
+"Увеличьте размер USB-образа как минимум до 8 Гб. Это создаст пространство "
+"для автоматического обновления и Постоянного хранилища."
 
 #. type: Plain text
 #, no-wrap
@@ -294,104 +316,116 @@ msgid ""
 "   <span class=\"command-placeholder\">size</span>\n"
 "   <span class=\"command-placeholder\">tails.img</span></p>\n"
 msgstr ""
+"   <p class=\"pre command\">truncate -s\n"
+"   <span class=\"command-placeholder\">size</span>\n"
+"   <span class=\"command-placeholder\">tails.img</span></p>\n"
 
 #. type: Bullet: '   - '
 msgid ""
 "<span class=\"command-placeholder\">size</span> has to be at least <span "
 "class=\"command\">7200M</span>."
 msgstr ""
+"<span class=\"command-placeholder\">Размер</span> должен быть не менее <span "
+"class=\"command\">7200M</span>."
 
 #. type: Bullet: '   - '
 msgid ""
 "<span class=\"command-placeholder\">tails.img</span> is the file name of the "
 "USB image that you want to resize."
 msgstr ""
+"<span class=\"command-placeholder\">tails.img</span> — имя файла, размер "
+"которого вы хотите изменить."
 
 #. type: Bullet: '1. '
 msgid "In *step 1*, choose **Import existing disk image**."
-msgstr ""
+msgstr "На *шаге 1* выберите **Импорт образа диска**."
 
 #. type: Bullet: '1. '
 msgid ""
 "In *step 2*, choose **Browse...**, and **Browse Local** to browse for the "
 "USB image that you want to start from."
 msgstr ""
+"На *шаге 2* выберите по кнопкам **Обзор...** и **Выбрать файл** нужный файл "
+"с USB-образом."
 
 #. type: Plain text
 #, no-wrap
 msgid "   As operating system, choose **Debian Buster**.\n"
-msgstr ""
+msgstr "   Выберите **Debian 10** в качестве операционной системы.\n"
 
 #. type: Bullet: '1. '
 msgid "In *step 4*:"
-msgstr ""
+msgstr "На *шаге 4*:"
 
 #. type: Bullet: '   - '
 msgid "Choose **Customize configuration before install**."
-msgstr ""
+msgstr "Отметьте галочкой **Проверить конфигурацию перед установкой**."
 
 #. type: Bullet: '   - '
 msgid "Click **Finish** to open the configuration view."
-msgstr ""
+msgstr "Нажмите **Готово**. Откроется окно настроек."
 
 #. type: Bullet: '1. '
 msgid ""
 "In the **configuration view**, choose **VirtIO Disk 1** or **IDE Disk 1**"
-msgstr ""
+msgstr "Выберите слева **VirtIO Disk 1** или **IDE Disk 1**."
 
 #. type: Bullet: '   - '
 msgid "Expand the **Advanced options** and set **Disk bus** to **USB**."
 msgstr ""
+"Разверните **Дополнительные параметры** и укажите в поле **Шина диска** "
+"значение **USB**."
 
 #. type: Bullet: '   - '
 msgid "Click **Apply**."
-msgstr ""
+msgstr "Нажмите **Применить**."
 
 #. type: Bullet: '   - '
 msgid "Check the **Removable** check box which should appear in the same view."
-msgstr ""
+msgstr "В том же окне установите галочку в поле **Съёмное**."
 
 #. type: Bullet: '   - '
 msgid "Click **Apply** again."
-msgstr ""
+msgstr "Снова нажмите **Применить**."
 
 #. type: Bullet: '   - '
 msgid ""
 "Click **Begin Installation** in the top left corner to start the virtual "
 "machine."
 msgstr ""
+"Нажмите **Начать установку** в левом верхнем углу, чтобы запустить "
+"виртуальную машину."
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "Once you started from the USB device you can [[create a persistent volume|"
-#| "first_steps/persistence/configure]] on it."
 msgid ""
 "After you start on the USB image, you can [[create a Persistent Storage|"
 "first_steps/persistence]] on it."
 msgstr ""
-"Sobald Sie von dem USB-Gerät gestartet haben, können Sie darauf einen "
-"[[beständigen Speicherbereich einrichten|first_steps/persistence/configure]]."
+"После того, как вы запустили Tails из USB-образа, можете [[создать "
+"Постоянное хранилище|first_steps/persistence]]."
 
 #. type: Plain text
 #, no-wrap
 msgid "<a id=\"usb\"></a>\n"
-msgstr ""
+msgstr "<a id=\"usb\"></a>\n"
 
 #. type: Title =
 #, no-wrap
 msgid "Running Tails from a USB stick"
-msgstr ""
+msgstr "Запуск Tails с USB-флешки"
 
 #. type: Plain text
 msgid ""
 "To run Tails from a USB stick using *virt-manager*, first create a virtual "
 "machine running from an ISO image as described [[above|virt-manager#iso]]."
 msgstr ""
+"Чтобы запустить Tails с USB-флешки с помощью *virt-manager*, сначала "
+"создайте виртуальную машину, работающую на основе ISO-образа, как описано "
+"[[выше|virt-manager#iso]]."
 
 #. type: Plain text
 msgid "Then do the following:"
-msgstr ""
+msgstr "Затем сделайте следующее:"
 
 #. type: Bullet: '  1. '
 msgid ""
@@ -400,10 +434,14 @@ msgid ""
 "\">Shut Down</span>&nbsp;▸ <span class=\"guimenuitem\">Force Off</span></"
 "span> to shut down the virtual machine."
 msgstr ""
+"В окне виртуальной машины выберите <span class=\"menuchoice\"> <span class=\""
+"guimenu\">Виртуальная машина</span>&nbsp;▸ <span class=\"guisubmenuitem\""
+">Выключить</span>&nbsp;▸ <span class=\"guimenuitem\">Выключить "
+"принудительно</span></span>, чтобы завершить работу виртуальной машины."
 
 #. type: Bullet: '  1. '
 msgid "Plug in the USB stick from which you want to run Tails."
-msgstr ""
+msgstr "Подключите USB-флешку, с которой хотите запустить Tails."
 
 #. type: Bullet: '  1. '
 msgid ""
@@ -411,41 +449,50 @@ msgid ""
 "▸ <span class=\"guimenuitem\">Details</span></span> to edit the "
 "configuration of the virtual machine."
 msgstr ""
+"Выберите <span class=\"menuchoice\"> <span class=\"guimenu\""
+">Вид</span>&nbsp;° <span class=\"guimenuitem\">Подробности</span></span>, "
+"чтобы изменить настройки виртуальной машины."
 
 #. type: Bullet: '  1. '
 msgid "Click on the **Add Hardware** button on the bottom of the left pane."
-msgstr ""
+msgstr "Нажмите кнопку **Добавить оборудование** слева внизу."
 
 #. type: Bullet: '  1. '
 msgid "Select **USB Host Device** in the left pane."
-msgstr ""
+msgstr "В левой панели выберите **USB-устройство узла**."
 
 #. type: Bullet: '  1. '
 msgid ""
 "In the right pane, click on the device from which you want to run Tails, and "
 "click **Finish**."
 msgstr ""
+"В правой панели выберите устройство, с которого хотите запустить Tails, и "
+"нажмите **Готово**."
 
 #. type: Plain text
 msgid ""
 "You can keep the original ISO image connected as a virtual DVD to install "
 "Tails onto the USB stick if needed."
 msgstr ""
+"Если хотите, можете сохранить исходный ISO-образ подключённым в виде "
+"виртуального DVD-диска, чтобы при необходимости установить Tails на флешку."
 
 #. type: Plain text
 #, no-wrap
 msgid "<a id=\"disconnect\"></a>\n"
-msgstr ""
+msgstr "<a id=\"disconnect\"></a>\n"
 
 #. type: Plain text
 msgid ""
 "You can also disconnect the original ISO image and start directly from the "
 "USB stick once Tails is already installed on it. To do so:"
 msgstr ""
+"Вы также можете отключить исходный ISO-образ и стартовать прямо с флешки, "
+"если на ней уже есть Tails. Для этого:"
 
 #. type: Bullet: '  1. '
 msgid "Shut down the virtual machine."
-msgstr ""
+msgstr "Выключите виртуальную машину."
 
 #. type: Plain text
 #, no-wrap
@@ -465,18 +512,29 @@ msgid ""
 "     <span class=\"guimenu\">Virtual Machine</span>&nbsp;▸\n"
 "     <span class=\"guimenuitem\">Run</span></span>.\n"
 msgstr ""
+"  1. В настройках виртуальной машины слева выберите **IDE CDROM 1** (SATA "
+"CDROM 1).\n"
+"  1. Нажмите кнопку **Отключить** в правой панели.\n"
+"  1. Чтобы включить флешку в качестве опции загрузки:\n"
+"     1. Нажмите **Параметры загрузки ** слева.\n"
+"     1. Выберите опцию загрузки **USB**, соответствующую вашему "
+"USB-устройству.\n"
+"     1. Нажмите **Применить**.\n"
+"  1. Чтобы запустить виртуальную машину, выберите\n"
+"     < <span class=\"menuchoice\">\n"
+"     <span class=\"guimenu\">Вид</span>&nbsp;▸\n"
+"     <span class=\"guimenuitem\">Консоль</span></span>, затем\n"
+"     <span class=\"menuchoice\">\n"
+"     <span class=\"guimenu\">Виртуальная машина</span>&nbsp;▸\n"
+"     <span class=\"guimenuitem\">Запустить</span></span>.\n"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "Once you started from the USB device you can [[create a persistent volume|"
-#| "first_steps/persistence/configure]] on it."
 msgid ""
 "After you start on the USB device, you can [[create a Persistent Storage|"
 "first_steps/persistence]] on it."
 msgstr ""
-"Sobald Sie von dem USB-Gerät gestartet haben, können Sie darauf einen "
-"[[beständigen Speicherbereich einrichten|first_steps/persistence/configure]]."
+"После того, как стартуете Tails с флешки, можете [[создать Постоянное "
+"хранилище|first_steps/persistence]]."
 
 #. type: Title #
 #, no-wrap
@@ -486,12 +544,12 @@ msgstr "Решение проблем"
 #. type: Plain text
 #, no-wrap
 msgid "<a id=\"graphics-issues\"></a>\n"
-msgstr ""
+msgstr "<a id=\"graphics-issues\"></a>\n"
 
 #. type: Title ##
 #, no-wrap
 msgid "Graphics issues"
-msgstr ""
+msgstr "Проблемы с графикой"
 
 #. type: Plain text
 msgid ""
@@ -500,31 +558,40 @@ msgid ""
 "version of the virtualization solution and on the virtual machine "
 "configuration. For example:"
 msgstr ""
+"Проблемы с графикой в Tails, запущенной с помощью *virt-manager*, довольно "
+"распространены. Выбор решения зависит от типа виртуализации и настроек "
+"виртуальной машины. Примеры проблем:"
 
 #. type: Bullet: ' - '
 msgid ""
 "The *Auto resize VM with window* feature does not work in all configurations."
 msgstr ""
+"Функция автоматического изменения размера окна виртуальной машины работает "
+"не во всех конфигурациях."
 
 #. type: Bullet: ' - '
 msgid ""
 "The video device that provides optimal graphics performance can be different "
 "depending on the version of the host operating system."
 msgstr ""
+"Видеоустройство, обеспечивающее оптимальную производительность графики, "
+"может зависеть от версии операционной системы хоста."
 
 #. type: Plain text
 msgid "To troubleshoot such issues:"
-msgstr ""
+msgstr "Для устранения таких неполадок:"
 
 #. type: Bullet: '1. '
 msgid ""
 "Ensure the virtual machine has a *Spice* display and a *Spice* channel "
 "configured, as opposed to *VNC* ones."
 msgstr ""
+"Убедитесь, что в виртуальной машине настроен дисплей *Spice* и канал *Spice*"
+", а не *VNC*."
 
 #. type: Bullet: '2. '
 msgid "Try various virtual video device models."
-msgstr ""
+msgstr "Попробуйте разные модели виртуальных видеоустройств."
 
 #. type: Plain text
 #, no-wrap
@@ -533,6 +600,9 @@ msgid ""
 "   the best results. If they don't perform well for you, try every\n"
 "   other video device model.\n"
 msgstr ""
+"   Начните с видеоустройств *Virtio* и *QXL*: они обычно дают\n"
+"наилучшие результаты. Если не получится, попробуйте\n"
+"другие варианты.\n"
 
 #~ msgid ""
 #~ "  1. Double-click on **localhost (QEMU)** to connect to the *QEMU*\n"
