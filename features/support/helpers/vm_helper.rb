@@ -1,3 +1,4 @@
+require 'find'
 require 'ipaddr'
 require 'libvirt'
 require 'rexml/document'
@@ -376,7 +377,7 @@ class VM
 
   def disk_detected?(name)
     (dev = disk_dev(name)) || (return false)
-    execute("test -b #{dev}").success?
+    execute("udisksctl info -b #{dev}").success?
   end
 
   def disk_plugged?(name)
@@ -590,6 +591,49 @@ class VM
   def file_overwrite(path, lines)
     lines = lines.join("\n") if lines.class == Array
     file_open(path) { |f| return f.write(lines) }
+  end
+
+  def file_copy_local(localpath, vm_path)
+    debug_log("copying #{localpath} to #{vm_path}")
+    content = File.read(localpath)
+    file_overwrite(vm_path, content)
+  end
+
+  def file_copy_local_dir(localdir, vm_dir)
+    localfiles = Dir.chdir(localdir) { Find.find('.').select { |p| FileTest.file?(p) } }
+    localfiles.each do |fpath|
+      # fpath is, for example,"./etc/amnesia/version"
+      vm_path = fpath[1..-1]
+      dir = File.dirname(vm_path)
+
+      execute_successfully("mkdir -p '#{dir}'")
+      file_copy_local(File.join(localdir, fpath), File.join(vm_dir, vm_path))
+    end
+  end
+
+  def live_patch(fname = nil)
+    fname = $config['LIVE_PATCH'] if fname.nil?
+    if fname.nil? || fname.empty?
+      debug_log('live_patch called but no filename found')
+      return
+    end
+
+    File.open(fname).each_line do |line|
+      next unless line.count("\t") == 1 && !line.start_with?('#')
+
+      src, dest = line.strip.split("\t", 2)
+      unless File.exist?(src)
+        debug_log("Error in --live-patch: #{src} does not exist")
+        next
+      end
+      if File.file?(src)
+        $vm.file_copy_local(src, dest)
+      elsif File.directory?(src)
+        $vm.file_copy_local_dir(src, dest)
+      else
+        debug_log("Error in --live-patch: #{src} not a file or a dir")
+      end
+    end
   end
 
   def file_append(path, lines)

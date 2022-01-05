@@ -1,9 +1,5 @@
 [[!meta robots="noindex"]]
 
-<!-- Deprecation of the extension -->
-<div id="activate-tails-verification"></div>
-<div id="extension-version">2.4</div>
-
 <div id="tails-version">[[!inline pages="inc/stable_amd64_version" raw="yes" sort="age"]]</div>
 
 <h1 class="step usb upgrade dvd vm">Download Tails [[!inline pages="inc/stable_amd64_version" raw="yes" sort="age"]]</h1>
@@ -46,31 +42,11 @@ were solved, and known issues that have already been identified.</p>
 <div id="step-verify">
   <h3><span class="step-number"><span class="usb upgrade">1.</span>2</span>Verify your download</h3>
   <div id="javascript-verification-tip" class="indent block">
-    <p>For your security, always verify your download.</p>
-    <p class="floating-toggleable-link why-verify-link">[[!toggle id="why-verify" text="Why?"]]</p>
-    <div id="why-verify" class="floating-toggleable">
-    [[!toggleable id="why-verify" text="""
-    [[!toggle id="why-verify" text="X"]]
-    <p>With an unverified download, you might:</p>
-    <ul>
-      <li>Lose time if your download is incomplete or broken due to an error during the download.
-          This is quite frequent.</li>
-      <li>Get hacked while using Tails if one of our download mirrors has been compromised and is serving malicious downloads.
-          <a href="http://blog.linuxmint.com/?p=2994">This already happened to other operating systems.</a></li>
-    </ul>
-    <p>[[How does the verification work?|contribute/design/download_verification]]</p>
-    """]]
-    </div>
+    <p>Verify your download to make sure that it is safe and was not corrupted during download.</p>
   </div>
   <div id="bittorrent-verification-tip" class="indent block">
     <p>Your BitTorrent client will automatically verify your download when it completes.</p>
     <p>The verification below is optional for a BitTorrent download.</p>
-  </div>
-  <div id="extension" class="indent block tip">
-    <p><strong>You have our <em>Tails Verification</em> extension installed.</strong></p>
-    <p>Since December 2020, you can do the verification directly on the page.
-    You don't need the <em>Tails Verification</em> anymore and can safely remove it.</p>
-    <p>See our [[statement about the deprecation of the <em>Tails Verification</em> extension|news/verification_extension_deprecation]].</p>
   </div>
   <div id="verification" class="indent block">
     <div id="no-js">
@@ -95,7 +71,7 @@ were solved, and known issues that have already been identified.</p>
     </div>
     <div id="verify-button" class="block">
       <label class="button">
-        Verify Tails <span class="remove-extra-space">&#8288;[[!inline pages="inc/stable_amd64_version" raw="yes" sort="age"]]</span>&hellip;
+        Select your download&hellip;
         <input id="verify-file" type="file"/>
       </label>
       <p>or download the [[!toggle id="openpgp-verification" text="OpenPGP signature"]]</p>
@@ -103,34 +79,18 @@ were solved, and known issues that have already been identified.</p>
       [[!toggleable id="openpgp-verification" text="""
       [[!toggle id="openpgp-verification" text="X"]]
 
-      <p>[[OpenPGP signing key|tails-signing.key]]</p>
-
       <p>
         <a class="usb upgrade download-only-img" href="[[!inline pages="inc/stable_amd64_img_sig_url" raw="yes" sort="age"]]">OpenPGP signature </a>
         <a class="dvd vm download-only-iso" href="[[!inline pages="inc/stable_amd64_iso_sig_url" raw="yes" sort="age"]]">OpenPGP signature</a>
       </p>
 
-      <p>We removed our instructions to verify downloads with OpenPGP.</p>
+      <p>If you don't know how to use the OpenPGP signature, click instead on
+      the button <b>Select your download&hellip;</b> to verify your download
+      with JavaScript.</p>
 
-      <p>Without advanced knowledge of OpenPGP, verifying with OpenPGP provides
-      the same level of security as the JavaScript verification on the page,
-      while being much more complicated and error-prone.</p>
+      <p>[[OpenPGP signing key|tails-signing.key]]</p>
 
-      <p>Both the JavaScript and the OpenPGP verification rely on the HTTPS
-      encryption of our website to provide either a correct OpenPGP signature
-      or a correct JavaScript verification. That is why both verification
-      techniques can protect you from a malicious download from one of our
-      mirrors but cannot protect you if our website gets compromised.</p>
-
-      <p>The only way to completely protect you in case our website gets
-      compromised would be for you to build a strong trust path to our OpenPGP
-      signing key using the OpenPGP Web of Trust.</p>
-
-      <p>Our [[installation instructions from Debian, Ubuntu, or Mint using the
-      command line and GnuPG|install/expert/usb]] still explain how to use the
-      OpenPGP Web of Trust. Our team thinks that it is not worth helping you do
-      so from other operating systems. You would have to learn these advanced
-      OpenPGP skills elsewhere.</p>
+      <p>[[Security analysis of the different verification techniques|contribute/design/download_verification]]</p>
 
       """]]
       </div>

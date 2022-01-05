@@ -1,6 +1,8 @@
 require 'fileutils'
 
 def post_vm_start_hook
+  $vm.live_patch if $config['LIVE_PATCH']
+
   # Sometimes the first click is lost (presumably it's used to give
   # focus to virt-viewer or similar) so we do that now rather than
   # having an important click lost. The point we click should be
@@ -474,9 +476,10 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
-  # First we wait for tor to be running so its control port is open...
+  # First we wait for tor's control port to be ready...
   try_for(60) do
-    $vm.execute('systemctl -q is-active tor@default.service').success?
+    $vm.execute_successfully('/usr/local/lib/tor_variable get --type=info version')
+    true
   end
   # ... so we can ask if the tor's networking is disabled, in which
   # case Tor Connection Assistant has not been dealt with yet. If
@@ -489,8 +492,11 @@ Given /^Tor is ready$/ do
   disable_network = nil
   # Gather debugging information for #18293
   try_for(10) do
+    $vm.execute('pidof tor')
+    $vm.execute('fuser --namespace tcp 9052')
+    $vm.execute('systemctl status tor@default.service')
     disable_network = $vm.execute_successfully(
-      'tor_control_getconf DisableNetwork', libs: 'tor'
+      '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
     ).stdout.chomp
     if disable_network == ''
       debug_log('Tor reported claims DisableNetwork is an empty string')
@@ -533,8 +539,8 @@ Given /^Tor is ready$/ do
   end
   @tor_success_configs ||= []
   @tor_success_configs << $vm.execute_successfully(
-    'tor_control_send "getinfo config-text"', libs: 'tor'
-  ).stdout.match(/^250\+config-text=\n(.*)^[.]/m)[1]
+    '/usr/local/lib/tor_variable get --type=info config-text', libs: 'tor'
+  ).stdout
   # When we test for ASP upgrade failure the following tests would fail,
   # so let's skip them in this case.
   unless $vm.file_exist?('/run/live-additional-software/doomed_to_fail')
@@ -905,7 +911,7 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     sleep 2
     # Type the rest of the search query
     @screen.type(app_name[1..-1])
-    sleep 2
+    sleep 4
     @screen.press('ctrl', 'Return')
   end
 end
@@ -940,25 +946,10 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   @screen.press('Escape')
 end
 
-Then /^there is no GNOME bookmark for the persistent Tor Browser directory$/ do
-  try_for(65) do
-    @screen.wait('GnomePlaces.png', 10).click
-    @screen.wait('GnomePlacesWithoutTorBrowserPersistent.png', 10)
-    @screen.press('Escape')
-    true
-  end
-end
-
 def pulseaudio_sink_inputs
   pa_info = $vm.execute_successfully('pacmd info', user: LIVE_USER).stdout
   sink_inputs_line = pa_info.match(/^\d+ sink input\(s\) available\.$/)[0]
   sink_inputs_line.match(/^\d+/)[0].to_i
-end
-
-When /^(no|\d+) application(?:s?) (?:is|are) playing audio(?:| after (\d+) seconds)$/ do |nb, wait_time|
-  nb = 0 if nb == 'no'
-  sleep wait_time.to_i unless wait_time.nil?
-  assert_equal(nb.to_i, pulseaudio_sink_inputs)
 end
 
 When /^I double-click on the (Tails documentation|Report an Error) launcher on the desktop$/ do |launcher|
@@ -1365,4 +1356,8 @@ end
 
 Then(/^the layout of the screen keyboard is set to "([^"]+)"$/) do |layout|
   @screen.find("ScreenKeyboardLayout#{layout.upcase}.png")
+end
+
+Given /^I write a file (\S+) with contents "([^"]*)"$/ do |path, content|
+  $vm.file_overwrite(path, content)
 end

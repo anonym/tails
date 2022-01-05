@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-06-18 13:05+0000\n"
-"PO-Revision-Date: 2021-07-16 16:05+0000\n"
-"Last-Translator: Ed Medvedev <edward.medvedev@gmail.com>\n"
+"POT-Creation-Date: 2021-12-22 02:01+0000\n"
+"PO-Revision-Date: 2021-12-24 19:19+0000\n"
+"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -22,14 +22,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Chatting with Pidgin and OTR\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Общение с помощью Pidgin и OTR\"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid ""
 "For chatting and instant messaging, Tails includes the <span class=\"application\">[Pidgin Instant\n"
 "Messenger](https://pidgin.im/)</span>.\n"
-msgstr ""
+msgstr "Для чатов и мгновенных сообщений в Tails есть <класс span=\"application\">[мессенджер Pidgin](https://pidgin.im /)</span>.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -42,14 +42,14 @@ msgid ""
 "<p><a href=\"https://dino.im/\"><i>Dino</i></a> is\n"
 "being considered as an option to replace <i>Pidgin</i>\n"
 "in Tails.</p>\n"
-msgstr ""
+msgstr "<p>Возможно, со временем <i>Pidgin</i> будет заменён на <a href=\"https://dino.im/\"><i>Dino</i></a>.</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid ""
 "<p>You can already try using <i>Dino</i> in Tails. See our\n"
 "documentation on [[chatting with <i>Dino</i> and OMEMO|doc/advanced_topics/dino]].</p>\n"
-msgstr ""
+msgstr "<p>Вы уже можете попробовать <i>Dino</i> в Tails. См. нашу [[документацию по <i>Dino</i> и OMEMO|doc/advanced_topics/dino]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -62,6 +62,9 @@ msgid ""
 "known as Jabber) servers, and have several accounts connected at the same "
 "time."
 msgstr ""
+"Вы можете использовать их для подключения к серверам [[!wikipedia IRC]] или "
+"[[!wikipedia XMPP]] (также известным как Jabber) и подключать несколько "
+"учётных записей одновременно."
 
 #. type: Plain text
 #, no-wrap
@@ -74,6 +77,13 @@ msgid ""
 "</span> or click on the <span class=\"application\">Pidgin</span> icon in\n"
 "the [[<span class=\"guilabel\">Favorites</span> submenu|doc/first_steps/introduction_to_gnome_and_the_tails_desktop#favorites]].\n"
 msgstr ""
+"Для запуска <span class=\"application\">Pidgin</span> выберите\n"
+"<span class=\"menuchoice\">\n"
+"  <span class=\"guimenu\">Приложения</span>&nbsp;▸\n"
+"  <span class=\"guisubmenu\">Интернет</span>&nbsp;▸\n"
+"  <span class=\"guimenuitem\">Клиент обмена мгновенными сообщениям Pidgin</span>\n"
+"</span> или щёлкните по значку <span class=\"application\">Pidgin</span> в\n"
+"[[меню <span class=\"guilabel\">Избранное</span>|doc/first_steps/introduction_to_gnome_and_the_tails_desktop#favorites]].\n"
 
 #. type: Plain text
 #, no-wrap
@@ -82,11 +92,13 @@ msgid ""
 "class=\"application\">Pidgin</span> user\n"
 "guide](https://developer.pidgin.im/wiki/Using%20Pidgin).\n"
 msgstr ""
+"Подробнее см. [официальное руководство пользователя <span\n"
+"class=\"application\">Pidgin</span>](https://developer.pidgin.im/wiki/Using%20Pidgin ).\n"
 
 #. type: Title =
 #, no-wrap
 msgid "<span class=\"application\">Off-the-record</span> (<span class=\"application\">OTR</span>) encryption"
-msgstr ""
+msgstr "<span class=\"application\">Шифрование off-the-record</span> (<span class=\"application\">OTR</span>)"
 
 #. type: Plain text
 #, no-wrap
@@ -95,6 +107,8 @@ msgid ""
 "<span class=\"application\">Off-the-Record</span> messaging allows you to\n"
 "have private conversations over instant messaging by providing:\n"
 msgstr ""
+"Как гласит [официальная страница программы](https://otr.cypherpunks.ca/),\n"
+"<span class=\"application\">Off-the-Record</span> помогает вести личные беседы через мгновенные сообщения и обеспечивает:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -112,6 +126,18 @@ msgid ""
 "- **Perfect forward secrecy**<br />\n"
 "    If you lose control of your private keys, no previous conversation is compromised.\n"
 msgstr ""
+"- **Шифрование**<br />\n"
+"Никто посторонний не сможет прочитать ваши мгновенные сообщения.\n"
+"- **Аутентификацию**<br />\n"
+"Вы уверены, что ваш собеседник — именно тот, за кого вы его принимаете.\n"
+"- **Отрицание**<br />\n"
+"Отправляемые вами сообщения не имеют цифровых подписей,\n"
+"которые могла бы проверить третья сторона. Любой может подделать сообщения после\n"
+"разговора, чтобы они выглядели так, будто пришли от вас.\n"
+"Однако во время разговора ваш собеседник уверен в том, что\n"
+"сообщения аутентичны и не подверглись изменениям.\n"
+"- **Идеальная секретность при переадресации**<br />\n"
+"Если вы потеряете контроль над своими секретными ключами, ни один предыдущий разговор не окажется под угрозой.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -124,11 +150,13 @@ msgid ""
 "<p><strong>OTR is deactivated by default</strong>, and your conversations are\n"
 "not private.</p>\n"
 msgstr ""
+"<p><strong>Технология OTR по умолчанию отключена.</strong> Ваши разговоры \n"
+"нельзя считать приватными.</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<p><strong>File transfers are not encrypted by OTR.</strong> OTR only encrypts conversations.</p>\n"
-msgstr ""
+msgstr "<p><strong>OTR не шифрует передачу файлов.</strong> OTR шифрует только текстовые чаты.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -138,9 +166,12 @@ msgstr "<div class=\"tip\">\n"
 #. type: Plain text
 msgid ""
 "To store your OTR keys and preferences across separate working sessions, you "
-"can turn on the [[Pidgin|doc/first_steps/persistence/configure#pidgin]] "
-"feature of the Persistent Storage."
+"can turn on the [[Pidgin|doc/first_steps/persistence#pidgin]] feature of the "
+"Persistent Storage."
 msgstr ""
+"Для сохранения ваших OTR-ключей и настроек в между рабочими сессиями Tails "
+"можно включить опцию [[Pidgin|doc/first_steps/persistence#pidgin]] в "
+"Постоянном хранилище."
 
 #. type: Plain text
 #, no-wrap
@@ -154,17 +185,21 @@ msgid ""
 "<code>/me</code> command is not encrypted</strong>. The person receiving\n"
 "the message is notified by a warning.\n"
 msgstr ""
+"В частном разговоре OTR по IRC <strong>сообщение, отправленное с помощью команды\n"
+"<код>/me</код>, не будет зашифровано</strong>. Адресат увидит предупреждение.\n"
 
 #. type: Title =
 #, no-wrap
 msgid "IRC servers blocking Tor"
-msgstr ""
+msgstr "Блокировка Tor IRC-серверами"
 
 #. type: Plain text
 msgid ""
 "Some IRC servers block connections from Tor because Tor is sometimes used to "
 "send spam."
 msgstr ""
+"Некоторые IRC-серверы блокируют соединения с Tor, потому что Tor иногда "
+"используется для рассылки спама."
 
 #. type: Plain text
 msgid ""
@@ -174,11 +209,14 @@ msgid ""
 "chat networks that block or support Tor](https://trac.torproject.org/"
 "projects/tor/wiki/doc/BlockingIrc)"
 msgstr ""
+"- [OFTC и Tor](https://www.oftc.net/Tor/) \n"
+"- [Список IRC/чат-сетей, которые блокируют или поддерживают Tor](https://"
+"trac.torproject.org/projects/tor/wiki/doc/BlockingIrc)"
 
 #. type: Title =
 #, no-wrap
 msgid "Adding support for another protocol"
-msgstr ""
+msgstr "Добавление поддержки другого протокола"
 
 #. type: Plain text
 #, no-wrap
@@ -188,30 +226,40 @@ msgid ""
 "prerequisites to enable another protocol that is supported by <span\n"
 "class=\"application\">Pidgin</span> otherwise:\n"
 msgstr ""
+"По соображениям безопасности в Tails можно использовать IRC и XMPP только с\n"
+"<span class=\"application\">Pidgin</span>. Вот необходимые\n"
+"условия для включения другого протокола, поддерживаемого <span\n"
+"class=\"application\">Pidgin</span>:\n"
 
 #. type: Bullet: '- '
 msgid ""
 "The support in <span class=\"application\">Pidgin</span> for this protocol "
 "has been successfully tested in Tails."
 msgstr ""
+"Поддержка этого протокола в <span class=\"application\">Pidgin</span> "
+"успешно протестирована в Tails."
 
 #. type: Bullet: '- '
 msgid ""
 "Someone volunteers to maintain the corresponding support in Tails on the "
 "long term."
-msgstr ""
+msgstr "Кто-то возьмёт на себя его поддержку в Tails на долгосрочной основе."
 
 #. type: Bullet: '- '
 msgid ""
 "Someone has verified that the security record of the desired plugin "
 "(including open bugs) is good enough."
 msgstr ""
+"Кто-то выполнил проверку безопасности соответствующего плагина (включая "
+"известные ошибки) и готов подтвердить, что этот уровень достаточно высок."
 
 #. type: Plain text
 msgid ""
 "If you want to work on this issue, see [[our contribute page|contribute/how/"
 "code]]."
 msgstr ""
+"Если хотите поработать над этой темой, [[добро пожаловать|contribute/how/"
+"code]]."
 
 #~ msgid "Predefined accounts\n"
 #~ msgstr "Voreingestelle Konten\n"

@@ -160,7 +160,7 @@ reproducibility verification.
         reprepro --delete clearvanished && \
         reprepro export && \
         reprepro dumpreferences \
-          | grep -E '^s=(tor-nightly-master-)?jessie' \
+          | grep -E '^s=jessie' \
           | awk '{print $1}' \
           | sort -u \
           | xargs -n 1 reprepro _removereferences && \
@@ -186,7 +186,7 @@ Freeze exception
 
    For example:
 
-           PBUILDER_OPTIONS='--basetgz /var/cache/pbuilder/base-jessie-i386.tgz' \
+           PBUILDER_OPTIONS='--basetgz /var/cache/pbuilder/base-buster-amd64.tgz' \
            TARGET_DIST='testing' \
            ./bin/import-package libgsecuredelete
 

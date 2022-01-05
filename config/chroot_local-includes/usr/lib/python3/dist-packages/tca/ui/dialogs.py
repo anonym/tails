@@ -19,6 +19,14 @@ from gi.repository import Gdk, GdkPixbuf, Gtk, GLib, Pango  # noqa: E402
 log = getLogger("dialogs")
 
 
+def get_build_year():
+    with open("/etc/amnesia/version") as buf:
+        firstline = buf.readline()
+        date = firstline.split(" - ")[1]
+        year = date[:4]
+        return int(year)
+
+
 def get_time_dialog(initial_tz: Optional[str] = None):
     """Create a TimeDialog."""
     builder = Gtk.Builder()
@@ -85,7 +93,9 @@ def get_time_dialog(initial_tz: Optional[str] = None):
     builder.get_object("minute").set_value(now.minute)
     builder.get_object("day").set_range(1, 31)
     builder.get_object("day").set_value(now.day)
-    builder.get_object("year").set_range(2021, 2030)
+    min_year = get_build_year()
+    max_year = max(now.year, min_year + 10)
+    builder.get_object("year").set_range(min_year, max_year)
     builder.get_object("year").set_value(now.year)
 
     builder.get_object("select_month").set_active_id(str(now.month))

@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-01-26 18:08+0000\n"
-"PO-Revision-Date: 2021-04-03 23:06+0000\n"
+"POT-Creation-Date: 2021-12-06 14:36+0100\n"
+"PO-Revision-Date: 2021-12-22 18:21+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
@@ -21,7 +21,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Starting Tails from an external hard disk\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Запуск Tails с внешнего жёсткого диска\"]]\n"
 
 #. type: Plain text
 msgid ""
@@ -29,19 +29,36 @@ msgid ""
 "support/known_issues#problematic-usb-sticks]], Tails might return the "
 "following error message:"
 msgstr ""
+"При запуске Tails с внешнего жёсткого диска или [[проблемной флешки|support/"
+"known_issues#problematic-usb-sticks]] Tails может сообщить об ошибке:"
 
 #. type: Plain text
 #, no-wrap
 msgid "    Unable to find a medium containing a live file system\n"
 msgstr ""
+"    Unable to find a medium containing a live file system (не найдено "
+"устройство с работающей файловой системой)\n"
+
+#. type: Plain text
+msgid ""
+"In such cases, choose the **External Hard Disk** entry if it appears in the "
+"Boot Loader."
+msgstr ""
+"В этом случае выбирайте в загрузчике **External Hard Disk** (внешний жёсткий "
+"диск)."
 
 #. type: Plain text
 #, no-wrap
 msgid ""
-"In such cases, remove the <span class=\"code\">live-media=removable</span>\n"
+"If the **External Hard Disk** entry does not appear in the Boot Loader,\n"
+"then remove the <span class=\"code\">live-media=removable</span>\n"
 "boot option. To do so, see our instructions on [[modifying the boot options using\n"
 "the Boot Loader|doc/advanced_topics/boot_options]].\n"
 msgstr ""
+"Если пункта **External Hard Disk** в загрузчике нет, удалите загрузочную "
+"запись <span class=\"code\">live-media=removable</span>.\n"
+"О том, как это сделать, рассказано [[здесь|doc/advanced_topics/"
+"boot_options]].\n"
 
 #. type: Plain text
 #, no-wrap
@@ -51,11 +68,17 @@ msgstr "<div class=\"caution\">\n"
 #. type: Plain text
 #, no-wrap
 msgid ""
-"<p>Removing the <span class=\"code\">live-media=removable</span> boot\n"
+"<p>Choosing the <b>External Hard Disk</b> entry in the Boot Loader or removing\n"
+"the <span class=\"code\">live-media=removable</span> boot\n"
 "option might be dangerous. If an adversary had access to the computer\n"
 "and installed a malicious Tails on the internal hard disk, the computer\n"
 "might start on the malicious Tails instead of on the USB stick.</p>\n"
 msgstr ""
+"<p>Выбор варианта <b>External Hard Disk</b> в загрузчике или удаление \n"
+"загрузочной опции <span class=\"code\">live-media=removable</span> \n"
+"могут повлечь неприятности. Если злоумышленник получит доступ к компьютеру\n"
+"и установит на внутренний жёсткий диск вредоносную копию Tails, компьютер\n"
+"может стартовать с этой версии, а  не с флешки.</p>\n"
 
 #. type: Plain text
 #, no-wrap
