@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", function() {
     case 'ru':
       placeholder = "Поиск DuckDuckGo…";
       break;
+    case 'de':
+      placeholder = "Verwende DuckDuckGo…";
+      break;
   }
   document.getElementById("searchbox").placeholder = placeholder;
 });
