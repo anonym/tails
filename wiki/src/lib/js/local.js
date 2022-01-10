@@ -15,11 +15,20 @@ document.addEventListener("DOMContentLoaded", function() {
   });
   var placeholder = document.getElementById("searchbox").placeholder;
   switch (lang) {
+    case 'es':
+      placeholder = "Con DuckDuckGo…";
+      break;
     case 'fr':
       placeholder = "Avec DuckDuckGo…";
       break;
-    case 'es':
-      placeholder = "Con DuckDuckGo…";
+    case 'it':
+      placeholder = "Usando DuckDuckGo…";
+      break;
+    case 'ru':
+      placeholder = "Поиск DuckDuckGo…";
+      break;
+    case 'de':
+      placeholder = "Verwende DuckDuckGo…";
       break;
   }
   document.getElementById("searchbox").placeholder = placeholder;
