@@ -46,7 +46,7 @@ ask_for_confirmation() {
     dialog_title=$(gettext "Tor is not ready")
     dialog_text=$(gettext "Tor is not ready. Start Tor Browser anyway?")
     dialog_start=$(gettext "Start Tor Browser")
-    dialog_cancel=$(gettext "Cancel")
+    dialog_cancel=$(gettext "Open Tor Connection")
     zenity --question --ellipsize --title "$dialog_title" --text="$dialog_text" \
            --default-cancel --ok-label "$dialog_start" --cancel-label "$dialog_cancel"
 }
@@ -79,4 +79,6 @@ if tor_has_bootstrapped || ask_for_confirmation; then
     export TOR_SOCKS_PORT='9050'
 
     start_browser "${@}"
+else
+    gtk-launch tca.desktop
 fi

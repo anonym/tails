@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-06-10 19:12-0500\n"
-"PO-Revision-Date: 2021-11-08 09:03+0000\n"
+"PO-Revision-Date: 2021-12-18 18:39+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
@@ -22,7 +22,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"OpenPGP passphrase encryption\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Шифрование c паролем OpenPGP\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -30,6 +30,9 @@ msgid ""
 "With <span class=\"application\">OpenPGP Applet</span> you can **encrypt text\n"
 "with a passphrase** using the passphrase encryption of OpenPGP.\n"
 msgstr ""
+"<span class=\"application\">Апплет OpenPGP</span> поможет **зашифровать "
+"текст\n"
+"с паролем**.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -49,6 +52,12 @@ msgid ""
 "cryptography to send confidential messages without having a shared passphrase.\n"
 "[[See the corresponding documentation.|gpgapplet/public-key_cryptography]]\n"
 msgstr ""
+"<strong>Этот метод подразумевает, что вы будете делиться паролем с тем,\n"
+"кто будет расшифровывать текст.</strong> OpenPGP также позволяет "
+"использовать\n"
+"шифрование с открытым ключом для отправки конфиденциальных сообщений без "
+"предварительного обмена паролем.\n"
+"[[См. здесь.|gpgapplet/public-key_cryptography]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -58,7 +67,7 @@ msgstr "</div>\n"
 #. type: Bullet: '1. '
 msgid ""
 "Write your text in a text editor. **Do not write it in the web browser!**"
-msgstr "Напишите желаемый текст в текстовом редакторе. **Не в браузере!**"
+msgstr "Напишите текст в текстовом редакторе. **Не в браузере!**"
 
 #. type: Plain text
 #, no-wrap
@@ -67,10 +76,9 @@ msgid ""
 "   choose <span class=\"guimenuitem\">Open Text Editor</span> to open\n"
 "   <span class=\"application\">gedit</span>.\n"
 msgstr ""
-"   Нажмите значок <span class=\"application\">Апплета OpenPGP</span> и\n"
-"выберите <span class=\"guimenuitem\">Открыть текстовый редактор</span>, "
-"чтобы открыть\n"
-"<класс span=\"application\">gedit</span>.\n"
+"   Нажмите значок <span class=\"application\">апплета OpenPGP</span> и\n"
+"выберите <span class=\"guimenuitem\">Открыть текстовый редактор</span>. "
+"Откроется редактор <span class=\"application\">gedit</span>.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -80,6 +88,13 @@ msgid ""
 "right-click (on Mac, click with two fingers) on the selected text and choose <span\n"
 "class=\"guimenuitem\">Copy</span> from the menu.\n"
 msgstr ""
+"2. Выберите текст, который хотите зашифровать. Чтобы скопировать его\n"
+"в [буфер обмена](https://ru.wikipedia.org/wiki/"
+"%D0%91%D1%83%D1%84%D0%B5%D1%80_%D0%BE%D0%B1%D0%BC%D0%B5%D0%BD%D0%B0), "
+"щёлкните\n"
+"правой кнопкой мыши (на компьютере Mac щёлкните двумя кнопками) по "
+"выделенному тексту и выберите в меню <span\n"
+"class=\"guimenuitem\">Копировать</span>.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -87,6 +102,10 @@ msgid ""
 "   <span class=\"application\">OpenPGP Applet</span> now shows\n"
 "   lines of text, meaning that the clipboard contains non-encrypted text:\n"
 msgstr ""
+"   Теперь на значке <span class=\"application\">апплета OpenPGP</span> "
+"видны\n"
+"строки текста. Это значит, что в буфере обмена находится незашифрованный "
+"текст:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -100,6 +119,9 @@ msgid ""
 "3. Click on <span class=\"application\">OpenPGP Applet</span> and select <span\n"
 "class=\"guimenuitem\">Encrypt Clipboard with Passphrase</span> from the menu.\n"
 msgstr ""
+"3. Щёлкните по значку <span class=\"application\">апплета OpenPGP</span> и "
+"выберите в меню <span\n"
+"class=\"guimenuitem\">Зашифровать буфер обмена с помощью пароля</span>.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -108,6 +130,9 @@ msgid ""
 "   not contain valid input data</span>”, try to copy your text again, starting\n"
 "   from step 2.\n"
 msgstr ""
+"   Если вы увидите сообщение о том, что в буфере нет допустимых данных, "
+"попробуйте скопировать текст ещё раз, начиная\n"
+"с шага 2.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -115,6 +140,8 @@ msgid ""
 "4. In the <span class=\"guilabel\">Passphrase</span> dialog box, enter a\n"
 "passphrase of your choice. Repeat the same passphrase in the second dialog box.\n"
 msgstr ""
+"4. В диалоговом окне <span class=\"guilabel\">Пароль</span> введите\n"
+"пароль по вашему выбору. Повторите пароль.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -122,11 +149,15 @@ msgid ""
 "5. <span class=\"application\">OpenPGP Applet</span> now shows a\n"
 "padlock, meaning that the clipboard contains encrypted text:\n"
 msgstr ""
+"5. Теперь у <span class =\"application\">апплета OpenPGP</span> появился "
+"значок \n"
+"замочка. Это значит, что в буфере обмена находится зашифрованный текст:\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "[[!img gpgapplet_with_padlock.png link=\"no\" class=\"symbolic\" alt=\"\"]]\n"
-msgstr "[[!img gpgapplet_with_padlock.png link=\"no\" class=\"symbolic-22\" alt=\"\"]]\n"
+msgstr ""
+"[[!img gpgapplet_with_padlock.png link=\"no\" class=\"symbolic\" alt=\"\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -135,11 +166,15 @@ msgid ""
 "application where you want to paste it and choose <span\n"
 "class=\"guimenuitem\">Paste</span> from the menu.\n"
 msgstr ""
+"6. Чтобы вставить зашифрованный текст в другое приложение, щёлкните правой "
+"кнопкой мыши (на компьютере Mac щёлкните двумя кнопками) в\n"
+"приложении, куда хотите вставить текст. Выберите в меню <span\n"
+"class=\"guimenuitem\">Вставить</span>.\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "   For example, you can paste it into the web browser to send it by email.\n"
-msgstr ""
+msgstr "   Например, можно вставить в браузер, чтобы отправить по email.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -147,6 +182,9 @@ msgid ""
 "   [[!img browser_paste.png link=\"no\" alt=\"Encrypted text starting with\n"
 "   -----BEGIN PGP MESSAGE-----\"]]\n"
 msgstr ""
+"   [[!img browser_paste.png link=\"no\" alt=\"Зашифрованный текст начинается "
+"с\n"
+"   -----BEGIN PGP MESSAGE-----\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -160,3 +198,6 @@ msgid ""
 "passphrase|decrypt_verify]] using <span class=\"application\">\n"
 "OpenPGP Applet</span>.\n"
 msgstr ""
+"<span class=\"application\">Апплет OpenPGP</span> также позволяет [["
+"расшифровать текст, зашифрованный\n"
+"паролем|decrypt_verify]].\n"

@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2020-04-12 16:10+0200\n"
-"PO-Revision-Date: 2019-07-14 22:18+0000\n"
-"Last-Translator: xin <xin@riseup.net>\n"
+"PO-Revision-Date: 2021-12-15 13:59+0000\n"
+"Last-Translator: nihei <nihei@disroot.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.20\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #. type: Plain text
 #, no-wrap
@@ -26,7 +26,9 @@ msgstr "[[!meta date=\"Thu, 07 May 2015 12:34:56 +0000\"]]\n"
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Claws Mail leaks plaintext of encrypted emails to IMAP server\"]]\n"
-msgstr "[[!meta title=\"Claws Mail laisse fuiter en clair les mails chiffrés sur le serveur IMAP\"]]\n"
+msgstr ""
+"[[!meta title=\"Claws Mail laisse fuiter en clair les courriers "
+"électroniques chiffrés sur le serveur IMAP\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -61,14 +63,19 @@ msgid ""
 "      Draft folder** option in the writing preferences. This option is\n"
 "      deselected by default in Tails.\n"
 msgstr ""
-"  - Lors de l'envoi d'un message, *Claws Mail* copie ce message en clair dans\n"
+"  - Lors de l'envoi d'un message, *Claws Mail* copie ce message en clair "
+"dans\n"
 "    la file d'envoi du serveur IMAP avant de chiffrer le message.\n"
 "    *Claws Mail* efface cette copie en clair après avoir envoyé le message.\n"
-"  - Les brouillons *Claws Mail* sont en clair sur le serveur. Un message peut\n"
-"    être enregistré comme brouillon soit : \n"
-"    - Manuellement en cliquant sur le bouton **Brouillon** pendant la rédaction d'un message.\n"
-"    - Automatiquement si vous avez sélectionné l'option **enregistrer automatiquement les messages dans le\n"
-"      dossier Brouillon** dans les préférences de composition. Cette option est\n"
+"  - Les brouillons *Claws Mail* sont en clair sur le serveur. Un message "
+"peut\n"
+"    être enregistré comme brouillon soit : \n"
+"    - Manuellement en cliquant sur le bouton **Brouillon** pendant la "
+"rédaction d'un message.\n"
+"    - Automatiquement si vous avez sélectionné l'option **enregistrer "
+"automatiquement les messages dans le\n"
+"      dossier Brouillon** dans les préférences de composition. Cette option "
+"est\n"
 "      désactivée par défaut dans Tails.\n"
 
 #. type: Plain text
@@ -113,10 +120,10 @@ msgid ""
 "problem in your setup and please warn others around you."
 msgstr ""
 "Malheureusement, nous ne sommes pas encore capables de corriger ce problème "
-"automatiquement et pour tout le monde. Cela nécessite que vous modifiez "
-"*Claws Mail* ou de migrer vers une autre application. Consultez la section "
-"*Contournements* ci-dessous pour corriger ce problème dans votre "
-"installation et veuillez avertir les autres autour de vous."
+"automatiquement et pour tout le monde. Cela nécessiterait soit de modifier *"
+"Claws Mail*, soit de migrer vers une autre application. Consultez la section "
+"*Solutions de contournement* ci-dessous pour corriger ce problème dans votre "
+"installation et veuillez avertir votre entourage."
 
 #. type: Plain text
 #, no-wrap
@@ -126,12 +133,12 @@ msgstr "[[!toc levels=2]]\n"
 #. type: Title =
 #, no-wrap
 msgid "Workarounds"
-msgstr "Contournements"
+msgstr "Solutions de contournement"
 
 #. type: Title -
 #, no-wrap
 msgid "Verify the content of your **Drafts** folder"
-msgstr "Vérifiez le contenu de votre dossier **Drafts**"
+msgstr "Vérifiez le contenu de votre dossier **Brouillons**"
 
 #. type: Plain text
 msgid ""
@@ -140,9 +147,9 @@ msgid ""
 "provider. Delete any plaintext email that might have been stored against "
 "your will in this folder until now."
 msgstr ""
-"Avant tout, vérifiez le contenu du dossier **Drafts** sur le serveur, soit "
-"en utilisant *Claws Mail* soit via l'interface web de votre fournisseur de "
-"messagerie. Supprimez tous les messages en clair qui pourraient y être "
+"Avant tout, vérifiez le contenu du dossier **Brouillons** sur le serveur, "
+"soit en utilisant *Claws Mail* soit via l'interface web de votre fournisseur "
+"de messagerie. Supprimez tous les messages en clair qui pourraient y être "
 "stockés à votre insu."
 
 #. type: Plain text
@@ -164,8 +171,9 @@ msgid ""
 "*Claws Mail* can connect to the email server using either the IMAP or POP\n"
 "protocol.\n"
 msgstr ""
-"*Claws Mail* peut se connecter au serveur de messagerie en utilisant soit le protocole\n"
-"IMAP ou POP.\n"
+"*Claws Mail* peut se connecter au serveur de messagerie en utilisant soit le "
+"protocole\n"
+"IMAP soit le protocole POP.\n"
 
 #. type: Bullet: '  - '
 msgid ""
@@ -186,8 +194,8 @@ msgid ""
 msgstr ""
 "Avec POP, *Claws Mail* télécharge les messages qui sont dans la boîte de "
 "réception sur le serveur, et peut éventuellement les supprimer du serveur. "
-"POP est plus approprié si vous accéder à vos messages avec Tails seulement "
-"et que vous les stockez dans le volume persistant."
+"POP est plus approprié si vous accéder à vos messages uniquement depuis "
+"Tails et que vous les stockez dans le volume persistant."
 
 #. type: Plain text
 msgid ""
@@ -207,9 +215,9 @@ msgid ""
 "have an email account dedicated to your activities on Tails.  To do so:"
 msgstr ""
 "POP n'est absolument pas affecté par ce problème de sécurité. En utilisant "
-"POP, seuls les messages chiffrés sont envoyés au serveur. Veuillez étudier "
-"la possibilité de basculer à POP si vous avez un compte de messagerie dédié "
-"à vos activités sur Tails. Pour faire cela :"
+"POP, seuls les messages chiffrés sont envoyés au serveur. Envisagez donc la "
+"possibilité de basculer vers POP si vous avez un compte de messagerie dédié "
+"à vos activités sur Tails. Pour ce faire :"
 
 #. type: Plain text
 #, no-wrap
@@ -264,7 +272,7 @@ msgid ""
 "**POP3**."
 msgstr ""
 "Dans l'onglet **Général**, soyez sûr que l'option **Protocole** est "
-"positionnée à **POP3**."
+"configurée avec la valeur **POP3**."
 
 #. type: Bullet: '   - '
 msgid ""
@@ -291,7 +299,7 @@ msgstr ""
 "Si vous voulez garder sur le serveur une copie des messages reçus, vérifiez "
 "les préférences dans l'onglet **Réception**. Nous vous recommandons de "
 "désactiver l'option **Suppression des messages du serveur après réception** "
-"à moins d'être certain que les messages soient stockés dans le volume "
+"à moins d'être certain que les messages ne soient stockés dans le volume "
 "persistant."
 
 #. type: Plain text
@@ -325,7 +333,7 @@ msgid ""
 msgstr ""
 "Si vous voulez continuer à utiliser IMAP, vous devez configurer votre compte "
 "IMAP en utilisant les dossiers **Drafts** et **Queue** stockés dans Tails au "
-"lieux de ceux du serveur. Pour faire cela :"
+"lieux de ceux du serveur. Pour cela :"
 
 #. type: Plain text
 #, no-wrap
@@ -383,7 +391,8 @@ msgstr "Solution à long terme"
 msgid ""
 "As for the possible long term solutions to this problem, we are considering:"
 msgstr ""
-"Comme solutions possibles à ce problème à long terme, nous envisageons de :"
+"Quant aux éventuelles solutions à long terme à ce problème, nous envisageons "
+"de :"
 
 #. type: Bullet: '- '
 msgid ""
@@ -394,8 +403,9 @@ msgid ""
 msgstr ""
 "Demander à l'équipe de développement de *Claws Mail* de [corriger le "
 "problème en amont](http://www.thewildbeast.co.uk/claws-mail/bugzilla/"
-"show_bug.cgi?id=2965). Nous les avons déjà contactés sur ce problème. Merci "
-"de les aider à trouver une solution technique si vous le pouvez."
+"show_bug.cgi?id=2965). Nous les avons déjà contactés à propos de ce "
+"problème. Merci de les aider à trouver une solution technique si vous le "
+"pouvez."
 
 #. type: Bullet: '- '
 msgid ""
@@ -404,8 +414,8 @@ msgid ""
 "us to move faster."
 msgstr ""
 "Remplacer *Claws Mail* par *Icedove* (le nom de *Mozilla Thunderbird* dans "
-"Debian). Nous avions prévu de faire cela depuis plusieurs années, et ce "
-"problème nous incite à faire ce changement plus rapidement."
+"Debian). Nous avons prévu de faire cela depuis plusieurs années, et ce "
+"problème nous incite à réaliser ce changement plus rapidement."
 
 #. type: Title =
 #, no-wrap
@@ -415,14 +425,14 @@ msgstr "Détails techniques"
 #. type: Title -
 #, no-wrap
 msgid "Leak through the sending queue"
-msgstr "Faille par la file d'attente d'envoi"
+msgstr "Fuite par la file d'attente d'envoi"
 
 #. type: Plain text
 msgid ""
 "When sending an email from an IMAP account, *Claws Mail* does the following:"
 msgstr ""
 "Lors de l'envoi d'un message depuis un compte IMAP, *Claws Mail* réalise les "
-"opérations suivantes :"
+"opérations suivantes :"
 
 #. type: Plain text
 #, no-wrap
