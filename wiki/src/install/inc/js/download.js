@@ -1,17 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  /* Deprecation of the extension */
-
-  window.addEventListener("message", receiveMessage);
-  function receiveMessage(event) {
-    if (event.source !== window || event.origin !== "https://tails.boum.org" || !event.data) {
-      return;
-    }
-    if (event.data.action === "extension-installed") {
-      show(document.getElementById("extension"));
-    }
-  }
-
   var URLofJsonFileContainingChecksums="https://tails.boum.org/install/v2/Tails/amd64/stable/latest.json";
   var sha256;
 
