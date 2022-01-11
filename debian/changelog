@@ -1,8 +1,57 @@
 tails (4.27) UNRELEASED; urgency=medium
 
-  * Dummy entry for next release.
+ * Dummy entry for next release.
 
- -- anonym <anonym@riseup.net>  Fri, 05 Nov 2021 16:19:27 +0100
+ -- boyska <boyska@riseup.net>  Tue, 11 Jan 2022 16:47:40 +0100
+
+tails (4.26) unstable; urgency=medium
+
+  * Resolve "All branches FTBFS since Thunderbird 91 was uploaded"
+    (tails/tails!707)
+
+    Closes issues:
+      - All branches FTBFS since Thunderbird 91 was uploaded (tails/tails#18789)
+
+    Commits:
+      - pin thunderbird l10n packages, too
+      - Add freeze exceptions for 4.26
+      - Enable the 18789-fix-ftbfs-thunderbird-91 APT overlay (refs: #18789).
+
+  * Upgrade Tor Browser to 11.0.4-build2 (tails/tails!710)
+
+    Closes issues:
+      - Upgrade to Tor Browser 11.0. … 4? (tails/tails#18795)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.0.4-build2
+
+  * Resolve "Change buttons to [Start Tor Browser Offline] [Open Tor Connection]
+    when starting Tor Browser while not connected to tor" (tails/tails!704)
+
+    Closes issues:
+      - Change buttons to [Start Tor Browser Offline] [Open Tor Connection] when
+        starting Tor Browser while not connected to tor (tails/tails#18584)
+
+    Commits:
+      - open TorBrowser when offline →opens Tor Connection
+
+  * Use DuckDuckGo for search queries on our website (tails/tails!498)
+
+    Commits:
+      - Don't search on staging.tails.boum.org
+      - Shorten
+      - Translate searchbox placeholder
+      - Factorize the CSS translation hack
+      - Remove useless template
+      - Improve search box
+      - Align better the heart and the label
+      - Use DuckDuckGo on news as well
+      - Prevent Search and Donate from touching on small screen
+      - Fix contrast to WCAG AA
+      - Use DuckDuckGo for search queries (#17652)
+
+ -- Tails developers <tails@boum.org>  Mon, 10 Jan 2022 13:15:16 +0100
 
 tails (4.25) unstable; urgency=medium
 
