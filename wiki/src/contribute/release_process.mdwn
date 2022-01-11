@@ -446,7 +446,7 @@ Included website
 
     ./bin/prepare-included-website-for-release
 
-Expect this to take 10-15 minutes.
+Expect this to take 5-15 minutes.
 While the website is building, if this is not a good time for taking a break,
 you can follow the "Enable OpenPGP signing" instructions.
 
@@ -490,6 +490,7 @@ Build the almost-final images
    - Set `defaultcomp`, so we can more accurately optimize our
      SquashFS file ordering.
    - Do _not_ set `keeprunning`, nor `ignorechanges`, nor `rescue`.
+   Expected time: ~15minutes
 
 2. Keep the resulting build artifacts until the end of this release process.
 
@@ -531,6 +532,8 @@ Known limitations:
 Prepare the versioned APT suites
 ================================
 
+Expected time: 15minutes
+
 Versioned APT suite in our custom APT repository
 ------------------------------------------------
 
@@ -571,6 +574,8 @@ Note:
 
 Build images
 ============
+
+Expected time: 30 minutes
 
 Sanity check
 ------------
@@ -666,7 +671,8 @@ suite should be ready, so it is time to:
    other builds from the _Build Queue_ or cancel other running builds.
 
 1. Make sure the Jenkins build is right: you can recognize this is the case,
-   when you see Jenkins starts building the website.
+   when you see Jenkins starts building the website. Jenkins will take a bit
+   less than 30minutes to complete the build.
 
 1. This could be a good time for break!
 
@@ -973,7 +979,7 @@ Build the Incremental Upgrade Kits on Jenkins
           . $(./bin/rm-config generate-environment --stage built-iuks)
 
 5. Wait until the `build_IUKs` build completes successfully.
-   It should take about 10-15 minutes for each member of
+   It should take about 20-25 minutes for each member of
    the `$IUK_SOURCE_VERSIONS` list, distributed across `isobuilderN` workers.
 
 6. Add the time it took for `build_IUKs` to the table of [[!tails_ticket 17750]].
