@@ -4,8 +4,8 @@
 
 <a id="camera"></a>
 
-Recording with a camera using <span class="application">VLC</span>
-==================================================================
+Recording with a camera using <span class="application">Cheese</span>
+=====================================================================
 
 Recording the screen with an external camera has the following
 advantages over recording with a screencast:
@@ -19,50 +19,18 @@ IPEVO](https://www.ipevo.com/) works fine from Tails.
 
 1. Move the <span class="guilabel">AF</span> switch of the camera to <span class="guilabel">C</span> to have continuous autofocus.
 
-1. Install <span class="application">VLC</span>:
+1. Install *Cheese*:
 
-   <p class="pre command">apt install vlc</p>
+   <p class="pre command">apt install cheese ffmpegthumbnailer</p>
 
-### Prepare the camera for recording
+1. In *Cheese*, choose **[[!img lib/open-menu.png alt="Menu" class=symbolic link=no]]</span>&nbsp;▸
+   Preferences** and adjust the video resolution to find a good trade-off
+   between resolution and fluidity.
 
-1. In <span class="application">VLC</span>, choose
-   <span class="menuchoice">
-     <span class="guimenu">Media</span>&nbsp;▸
-     <span class="guimenuitem">Open Capture Device...</span></span>.
-
-1. In the <span class="guilabel">Capture Device</span> tab, select:
-
-   - <span class="guilabel">Video device name</span>: /dev/video2
-   - <span class="guilabel">Audio device name</span>: hw:2,0
-
-1. Click the <strong>Play</strong> button.
-
-1. Make sure that the microphone of the camera is captured as well.
+   On my ThinkPad X250, I use 1280 × 720.
 
 1. Adjust the orientation of the camera to capture as much of the screen as
    possible while not obfuscating the light of sight of the participant.
-
-### Start recording
-
-1. In <span class="application">VLC</span>, choose
-   <span class="menuchoice">
-     <span class="guimenu">Media</span>&nbsp;▸
-     <span class="guimenuitem">Convert / Save...</span></span>.
-
-1. In the <span class="guilabel">Capture Device</span> tab, select:
-
-   - <span class="guilabel">Video device name</span>: /dev/video2
-   - <span class="guilabel">Audio device name</span>: hw:2,0
-
-1. Click the <strong>Convert / Save</strong> button.
-
-1. In the <span class="guilabel">Convert</span> dialog:
-
-   - Select the
-     <span class="guilabel">Video - H.264 + MP3 (MP4)</span> profile.
-
-   - Specify a destination file under
-     <span class="filename">~/Persistent/</span>.
 
 <a id="screencast"></a>
 

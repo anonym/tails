@@ -261,7 +261,7 @@ background, mouse and touchpad settings, etc.</em>
 
 By default Tails does not save anything from one session to another.
 Only the Persistent Storage allows you to reuse data across different Tails
-sessions. See the [[list of features of the Persistent Storage|doc/first_steps/persistence/configure#features]].
+sessions. See the [[list of features of the Persistent Storage|doc/first_steps/persistence#configure]].
 
 We are frequently requested to add new features to the Persistent Storage but we are usually
 busy working on other priorities. See the
@@ -423,7 +423,7 @@ proposal on [[tails-dev@boum.org|about/contact#tails-dev]].
 
 <p>If a software is not included in Tails, but is included in Debian, you can use
 the [[Additional
-Software|doc/first_steps/persistence/configure#additional_software]] feature of
+Software|doc/first_steps/persistence#additional_software]] feature of
 the Persistent Storage to install it automatically every time you start Tails.</p>
 
 </div>
@@ -559,24 +559,6 @@ In the same way as the <span class="guilabel">New Identity</span> button of
 restart Tails before using a different identity.
 
 See also our warning about [[using Tails sessions for only one purpose at a time|doc/about/warnings/identity#contextual]].
-
-<h2 id="boot-statistics">Does Tails collect information about its users?</h2>
-
-When Tails starts, two HTTPS requests are made automatically to our website
-through Tor:
-
-- A security check is performed to know if security issues have been announced
-  for this version of Tails. The language of the working session is passed along
-  with this request to display the notification in the preferred language of the
-  user.
-- [[<span class="application">Tails Upgrader</span>|doc/upgrade]]
-  checks for newer versions. The version of the running Tails is passed along
-  with this request.
-
-We believe it is important to notify the user of known security issues and newer
-versions. We calculate statistics based on the security check to know how many times
-Tails has been started and connected to Tor. Those statistics are published in
-our [[monthly reports|news]].
 
 <h2 id="antivirus">Does Tails need an antivirus?</h2>
 

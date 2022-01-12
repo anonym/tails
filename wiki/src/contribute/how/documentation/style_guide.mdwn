@@ -116,7 +116,7 @@ Style and usage
 
   Keep them as short as possible as they appear in the URL.
 
-  Use lowercase and hyphens instead of underscores to separate words.
+  Use lowercase and underscore to separate words.
 
   *For example*:
 
@@ -132,10 +132,10 @@ Style and usage
 
   - <pre>
     &#91;&#91;!toc&#93;&#93;
-    &lt;h1 id="my-section"&gt;My section&lt;/h1&gt;
+    &lt;h1 id="my_section"&gt;My section&lt;/h1&gt;
     </pre>
 
-    Creates a hyperlink to <span class="code">#my-section</span> in the
+    Creates a hyperlink to <span class="code">#my_section</span> in the
     table of content instead of a hyperlink to
     <span class="code">#index1h1</span> that might change with the
     structure of the page.
@@ -392,6 +392,17 @@ Style and usage
   The `\[[!tails_ticket ..]]` and `\[[!wikipedia ..]]` strings you can find in some files are ikiwiki [[shortcuts]].
   You might also need to understand [[ikiwiki directives|ikiwiki/directive]].
 
+<a id="link"></a>
+
+- **Link labels**
+
+  Write link labels that are both specific and short to help with the
+  findability and accessibility of content.
+
+  Links must be able to stand alone as people scan rather than read on the web.
+
+  See [NN/g: Better Link Labels: 4Ss for Encouraging Clicks](https://www.nngroup.com/articles/better-link-labels/).
+
 <a id="mac-address"></a>
 
 - **MAC address anonymization**
@@ -420,6 +431,20 @@ Style and usage
   - It is not possible to install Tails on a hard disk. Tails is
     designed to be a live system running from a removable media: USB
     stick or DVD.
+
+<a id="might"></a>
+
+- **might**, **may**, **can**
+
+  Use *might* to express possibility.
+
+  Only use *may* to express permission.
+
+  Use *can* to express ability.
+
+  Only use *could* to refer to the past.
+
+  See [Microsoft Style Guide: can, may](https://docs.microsoft.com/en-us/style-guide/a-z-word-list-term-collections/c/can-may).
 
 <a id="network-interface"></a>
 
@@ -485,13 +510,12 @@ Style and usage
   *Persistent Storage*.
 
   The construction *of the Persistent Storage* can be omitted if
-  redundant in the context, for example on
-  [[Create & configure the Persistent Storage|doc/first_steps/persistence/configure]].
+  redundant in the context.
 
   *For example*:
 
   - To install additional software automatically when starting Tails, turn on
-    the [[Additional Software|doc/first_steps/persistence/configure#additional_software]]
+    the [[Additional Software|doc/first_steps/persistence#additional_software]]
     feature of the Persistent Storage.
 
 <a id="persistent"></a>

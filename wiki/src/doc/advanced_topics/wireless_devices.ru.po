@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-10-26 18:12+0000\n"
-"PO-Revision-Date: 2021-10-30 13:03+0000\n"
-"Last-Translator: Weblate Admin <tails-weblate@boum.org>\n"
+"PO-Revision-Date: 2021-12-18 17:57+0000\n"
+"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -22,11 +22,11 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Enabling a wireless device\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Включение беспроводного устройства\"]]\n"
 
 #. type: Plain text
 msgid "When Tails starts, Wi-Fi, WWAN, and WiMAX devices are enabled."
-msgstr ""
+msgstr "При запуске Tails включаются устройства Wi-Fi, WWAN и WiMAX."
 
 #. type: Plain text
 msgid ""
@@ -34,6 +34,9 @@ msgid ""
 "devices are disabled by default. If you want to use such a device, you need "
 "to enable it first."
 msgstr ""
+"Прочие беспроводные устройства, в частности, Bluetooth, GPS и FM-устройства, "
+"по умолчанию отключены. Если вы хотите использовать такое устройство, "
+"сначала нужно его включить."
 
 #. type: Plain text
 #, no-wrap
@@ -46,6 +49,8 @@ msgid ""
 "<p>If Wi-Fi is not working, see our documentation on\n"
 "[[troubleshooting Wi-Fi that is not working|doc/anonymous_internet/no-wifi]].</p>\n"
 msgstr ""
+"<p>Если wifi не работает, см. [[соответствующие рекомендации|doc/"
+"anonymous_internet/no-wifi]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -55,17 +60,19 @@ msgstr "</div>\n"
 #. type: Title -
 #, no-wrap
 msgid "Enable a wireless device"
-msgstr ""
+msgstr "Включение беспроводного устройства"
 
 #. type: Plain text
 msgid "This technique uses the command line."
-msgstr ""
+msgstr "Будем использовать командную строку."
 
 #. type: Bullet: '1. '
 msgid ""
 "When starting Tails, [[set up an administration password|doc/first_steps/"
 "welcome_screen/administration_password]]."
 msgstr ""
+"При запуске Tails [[установите пароль администратора|doc/first_steps/"
+"welcome_screen/administration_password]]."
 
 #. type: Bullet: '2. '
 msgid ""
@@ -74,16 +81,19 @@ msgid ""
 "administration_password#open_root_terminal]], and execute the following "
 "command:"
 msgstr ""
+"Чтобы узнать номер беспроводного устройства, которое вы хотите включить, "
+"откройте [[корневой терминал|doc/first_steps/welcome_screen/"
+"administration_password#open_root_terminal]] и выполните следующую команду:"
 
 #. type: Plain text
 #, no-wrap
 msgid "       rfkill list\n"
-msgstr ""
+msgstr "       rfkill list\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "   For example, the command could return the following:\n"
-msgstr ""
+msgstr "   Пример:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -98,6 +108,15 @@ msgid ""
 "               Soft blocked: yes\n"
 "               Hard blocked: no\n"
 msgstr ""
+"       0: phy0: Wireless LAN\n"
+"               Soft blocked: no\n"
+"               Hard blocked: no\n"
+"       1: hci0: Bluetooth\n"
+"               Soft blocked: yes\n"
+"               Hard blocked: no\n"
+"       2: gps0: GPS\n"
+"               Soft blocked: yes\n"
+"               Hard blocked: no\n"
 
 #. type: Plain text
 #, no-wrap
@@ -107,35 +126,42 @@ msgid ""
 "   device is 1, while the index of the GPS device is 2. Yours are\n"
 "   probably different.\n"
 msgstr ""
+"   Номер устройства виден в начале строки, описывающей соответствующее "
+"устройство. Здесь номер Bluetooth-устройства — 1, GPS-устройства — 2. На "
+"вашем компьютере, вероятно, будет иначе.\n"
 
 #. type: Bullet: '3. '
 msgid ""
 "To enable the wireless device, execute the following command in the root "
 "terminal, replacing `[index]` with the index found at step 2:"
 msgstr ""
+"Чтобы включить беспроводное устройство, выполните следующую команду в "
+"корневом терминале, заменив `[index]` нужным номером:"
 
 #. type: Plain text
 #, no-wrap
 msgid "       rfkill unblock [index]\n"
-msgstr ""
+msgstr "       rfkill unblock [index]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid ""
 "   Here is an example of the command to execute. Yours is probably\n"
 "   different:\n"
-msgstr ""
+msgstr "   Вот что получится (у вас, вероятно, будет выглядеть иначе):\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "       rfkill unblock 2\n"
-msgstr ""
+msgstr "       rfkill unblock 2\n"
 
 #. type: Bullet: '4. '
 msgid ""
 "To verify that the wireless device is enabled, execute the following command "
 "in the root terminal again:"
 msgstr ""
+"Нужно убедиться, что беспроводное устройство включено. Снова выполните "
+"команду в корневом терминале:"
 
 #. type: Plain text
 #, no-wrap
@@ -144,6 +170,8 @@ msgid ""
 "   the device enabled at step 3 should not be soft\n"
 "   blocked anymore.\n"
 msgstr ""
+"   Результат будет весьма похож на результат шага 2, но\n"
+"устройство не должно быть заблокировано.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -158,6 +186,15 @@ msgid ""
 "               Soft blocked: no\n"
 "               Hard blocked: no\n"
 msgstr ""
+"       0: phy0: Wireless LAN\n"
+"               Soft blocked: no\n"
+"               Hard blocked: no\n"
+"       1: hci0: Bluetooth\n"
+"               Soft blocked: yes\n"
+"               Hard blocked: no\n"
+"       2: gps0: GPS\n"
+"               Soft blocked: no\n"
+"               Hard blocked: no\n"
 
 #. type: Plain text
 #, no-wrap
@@ -167,19 +204,23 @@ msgstr "<!--\n"
 #. type: Title -
 #, no-wrap
 msgid "Enable Bluetooth"
-msgstr ""
+msgstr "Включение Bluetooth"
 
 #. type: Plain text
 msgid ""
 "Bluetooth is not enabled by default in Tails because it is insecure when "
 "trying to protect from a local adversary."
 msgstr ""
+"Функция Bluetooth в Tails по умолчанию отключена. Bluetooth не считается "
+"безопасным от локальной атаки."
 
 #. type: Plain text
 msgid ""
 "XXX: one also needs to remove `sudo rm /etc/modprobe.d/no-bluetooth.conf && "
 "sudo udevadm trigger && sudo rfkill unblock bluetooth`."
 msgstr ""
+"XXX: также нужно удалить \"sudo rm /etc/modprobe.d/no-bluetooth.conf && sudo "
+"udevadm trigger && sudo rfkill unblock bluetooth`."
 
 #. type: Plain text
 msgid ""
@@ -187,6 +228,9 @@ msgid ""
 "administration password at boot time|doc/first_steps/welcome_screen/"
 "administration_password]] and install the `gnome-bluetooth` package."
 msgstr ""
+"Если вы всё-таки хотите использовать Bluetooth в Tails, нужно [[установить "
+"пароль администратора во время загрузки|doc/first_steps/welcome_screen/"
+"administration_password]] и установить пакет`gnome-bluetooth`."
 
 #. type: Plain text
 #, no-wrap

@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-06 13:32+0100\n"
-"PO-Revision-Date: 2021-11-11 00:08+0000\n"
+"POT-Creation-Date: 2022-01-10 09:34+0100\n"
+"PO-Revision-Date: 2021-12-12 12:24+0000\n"
 "Last-Translator: Zuhualime Akoochimoya\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/otf/torproject/"
 "language/es_AR/)\n"
@@ -579,7 +579,6 @@ msgstr "Configuraciones Adicionales"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:366
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
-#: config/chroot_local-includes/usr/bin/tor-browser:49
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -2086,6 +2085,11 @@ msgstr "Tor no está listo. ¿Iniciar el Navegador Tor de todos modos?"
 msgid "Start Tor Browser"
 msgstr "Iniciar el Navegador Tor"
 
+#: config/chroot_local-includes/usr/bin/tor-browser:49
+#, fuzzy
+msgid "Open Tor Connection"
+msgstr "Conexión a Tor"
+
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/torstatus@tails.boum.org/extension.js:35
 msgid "Tor Status"
 msgstr "Estado de Tor"
@@ -2283,36 +2287,37 @@ msgstr ""
 "sesión en una red usando un portal cautivo."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:53
-#, fuzzy
 msgid ""
 "The Unsafe Browser was not enabled in the Welcome Screen.\\n\\nTo <a "
 "href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
 "unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and "
 "enable the Unsafe Browser in the additional settings of the Welcome Screen."
 msgstr ""
-"El Navegador Inseguro no fue habilitado en la Pantalla de Bienvenida.\\n/"
-"nPara usar el Navegador Inseguro, reiniciá Tails y habilitá el Navegador "
-"Inseguro en la configuración adicional de la Pantalla de Bienvenida."
+"El Navegador Inseguro no fue habilitado en la Pantalla de Bienvenida.\\n"
+"\\nPara <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
+"unsafe_browser.en.html#use'>usar el Navegador Inseguro</a>, reiniciá Tails y "
+"habilitá el Navegador Inseguro en la configuración adicional de la Pantalla "
+"de Bienvenida."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
 msgid ""
 "\\n\\nTo always enable the Unsafe Browser, turn on the Welcome Screen "
 "feature of the Persistent Storage."
 msgstr ""
+"\\n\\nPara habilitar siempre el Navegador Inseguro, activá la característica "
+"Pantalla de Bienvenida del Almacenamiento Persistente."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
-#, fuzzy
 msgid "_Restart"
-msgstr "Reiniciar"
+msgstr "_Reiniciar"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:62
 msgid "_Close"
-msgstr ""
+msgstr "_Cerrar"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:67
-#, fuzzy
 msgid "Failed to restart the system."
-msgstr "Falla al reiniciar el sistema"
+msgstr "Fallo al reiniciar el sistema."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:77
 msgid "Starting the Unsafe Browser..."
@@ -3110,7 +3115,6 @@ msgid "• Bridge over email"
 msgstr "• Puente por correo electrónico"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:840
-#, fuzzy
 msgid ""
 "To request new Tor bridges, you can also:\n"
 "\n"
@@ -3121,19 +3125,19 @@ msgid ""
 msgstr ""
 "Para solicitar nuevos puentes Tor, también podés:\n"
 "\n"
-"1. Enviar un correo vacío a <tt>bridges@torproject.org</tt> desde una "
-"dirección electrónica de Gmail o Riseup.\n"
+"           1. Enviar un correo vacío a <tt>bridges@torproject.org</tt> desde "
+"una dirección electrónica de Gmail o Riseup.\n"
 "\n"
-"2. Escribir debajo uno de los puentes que recibiste por correo electrónico."
+"           2. Escribir debajo uno de los puentes que recibiste por correo "
+"electrónico."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:950
-#, fuzzy
 msgid ""
 "<a href=\"doc/anonymous_internet/tor/troubleshoot\">Troubleshooting "
 "connecting to Tor</a>"
 msgstr ""
-"<a href=\"doc/anonymous_internet/tor\">Aprendé más sobre cómo se conecta "
-"Tails con Tor</a>"
+"<a href=\"doc/anonymous_internet/tor/troubleshoot\">Solución de problemas de "
+"conexión a Tor</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:996
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1404
@@ -3433,16 +3437,3 @@ msgstr "Diciembre"
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:368
 msgid "Clock"
 msgstr "Reloj"
-
-#~ msgid ""
-#~ "The Unsafe Browser was not enabled in the Welcome Screen.\\n\\nTo use the "
-#~ "Unsafe Browser, restart Tails and enable the Unsafe Browser in the "
-#~ "additional settings of the Welcome Screen.\\n\n"
-#~ "To always enable the Unsafe Browser, turn on the Welcome Screen feature "
-#~ "of the Persistent Storage."
-#~ msgstr ""
-#~ "El Navegador Inseguro no fue habilitado en la Pantalla de Bienvenida.\\n"
-#~ "\\nPara usarlo, reiniciá Tails y habilitá el Navegador Inseguro en los "
-#~ "ajustes adicionales de la Pantalla de Bienvenida.\\n\n"
-#~ "Para habilitar siempre el Navegador Inseguro, activá la característica "
-#~ "Pantalla de Bienvenida del Almacenamiento Persistente."

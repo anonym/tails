@@ -3,34 +3,38 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2020-11-18 16:22+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2021-12-24 18:15+0000\n"
+"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Updating your OpenPGP keyserver configuration\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Обновление настроек сервера ключей OpenPGP\"]]\n"
 
 #. type: Title #
 #, no-wrap
 msgid "About keys.openpgp.org"
-msgstr ""
+msgstr "О сервере keys.openpgp.org"
 
 #. type: Plain text
 msgid ""
 "OpenPGP keyservers are public repositories of OpenPGP public keys that "
 "applications use to discover the public keys of contacts."
 msgstr ""
+"Серверы ключей OpenPGP — общедоступные хранилища открытых ключей OpenPGP. "
+"Разные приложения могут отыскивать на этих серверах открытые ключи адресатов."
 
 #. type: Plain text
 msgid ""
@@ -39,6 +43,10 @@ msgid ""
 "zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/>, as the "
 "default OpenPGP keyserver."
 msgstr ""
+"В Tails 4.1 (декабрь 2019 года) мы изменили настройки GnuPG. С этого времени "
+"по умолчанию используется сервер <https://keys.openpgp.org />. Он также "
+"доступен по адресу "
+"<http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/>."
 
 #. type: Bullet: '  - '
 msgid ""
@@ -46,6 +54,10 @@ msgid ""
 "because it only references an OpenPGP public key after sending a "
 "confirmation email to each email address listed in the key."
 msgstr ""
+"Сервер keys.openpgp.org отличается от других серверов открытых ключей "
+"OpenPGP большей надёжностью. Он включает ключ OpenPGP только после того, как "
+"отправит сообщение с просьбой о подтверждении на каждый адрес, связанный с "
+"ключом."
 
 #. type: Bullet: '  - '
 msgid ""
@@ -53,6 +65,9 @@ msgid ""
 "signatures on a key that were made by some other key.  Third-party "
 "signatures are the signatures used to create the OpenPGP Web of Trust."
 msgstr ""
+"Сервер keys.openpgp.org не распространяет подписи третьих лиц (когда разные "
+"люди подписывают ключ своими ключами). Подписи третьих сторон используются "
+"для сети доверия OpenPGP."
 
 #. type: Bullet: '  - '
 msgid ""
@@ -60,6 +75,11 @@ msgid ""
 "fifthhorseman.net/blog/openpgp-certificate-flooding.html), which can make "
 "your OpenPGP keyring unusable and crash your computer."
 msgstr ""
+"Сервер keys.openpgp.org предотвращает атаки с затоплением сертификатов "
+"OpenPGP, [certificate flooding attacks](https://dkg.fifthhorseman.net/blog/"
+"openpgp-certificate-flooding.html). Такая атака способна сделать вашу связку "
+"ключей OpenPGP непригодной для использования и привести к сбоям в работе "
+"вашего компьютера."
 
 #. type: Plain text
 #, no-wrap
@@ -68,23 +88,30 @@ msgid ""
 "  [About](https://keys.openpgp.org/about) and\n"
 "  [FAQ](https://keys.openpgp.org/about/faq) pages.\n"
 msgstr ""
+"  Подробнее о сервере keys.openpgp.org см.\n"
+"  [здесь](https://keys.openpgp.org/about) и\n"
+"  [здесь](https://keys.openpgp.org/about/faq).\n"
 
 #. type: Title #
 #, no-wrap
 msgid "Updating your Tails to use keys.openpgp.org"
-msgstr ""
+msgstr "Обновление Tails для использования keys.openpgp.org"
 
 #. type: Plain text
 msgid ""
 "If you have GnuPG keys stored in your Persistent Storage since before Tails "
 "4.1, you should update your keyserver configuration."
 msgstr ""
+"Если у вас есть ключи GnuPG, которые хранились в Постоянном хранилище на "
+"момент выхода Tails 4.1, вам следует обновить настройки сервера ключей."
 
 #. type: Plain text
 msgid ""
 "If you only use OpenPGP in *Thunderbird*, you don't need to follow these "
 "instructions. *Thunderbird* automatically uses keys.openpgp.org."
 msgstr ""
+"Если вы работаете с OpenPGP только в *Thunderbird*, эти инструкции вам ни к "
+"чему. *Thunderbird* автоматически использует keys.openpgp.org."
 
 #. type: Plain text
 msgid ""
@@ -92,6 +119,10 @@ msgid ""
 "been subject to [OpenPGP certificate flooding attacks](https://dkg."
 "fifthhorseman.net/blog/openpgp-certificate-flooding.html)  since June 2019."
 msgstr ""
+"Раньше мы настраивали Tails для использования сети серверов ключей SKS. С "
+"июня 2019 года эта сеть подвергалась [атакам с затоплением сертификатов "
+"OpenPGP] (https://dkg.fifthhorseman.net/blog/openpgp-certificate-"
+"flooding.html)."
 
 #. type: Plain text
 msgid ""
@@ -101,61 +132,75 @@ msgid ""
 "been flooded. Downloading a flooded public key does not compromise the "
 "security of your private keys."
 msgstr ""
+"Если скачать открытый ключ, который подвергся такой атаке, он может "
+"повредить вашу связку ключей GnuPG, сделать её чрезвычайно медленной, "
+"возможно, даже привести к сбоям и перегреву компьютера. Только несколько "
+"ключей в сети SKS подверглись такой атаке. Скачивание такого ключа не ставит "
+"под угрозу безопасность ваших секретных ключей."
 
 #. type: Plain text
 msgid "To update your keyserver configuration:"
-msgstr ""
+msgstr "Чтобы обновить конфигурацию сервера ключей:"
 
 #. type: Bullet: '1. '
 msgid "Open the *Text Editor*."
-msgstr ""
+msgstr "Откройте *Текстовый редактор*."
 
 #. type: Bullet: '1. '
 msgid "Click **Open** and choose **Other Documents...**."
-msgstr ""
+msgstr "Нажмите **Открыть** и выберите **Другие документы...**."
 
 #. type: Bullet: '1. '
 msgid "Navigate to the *Home* folder."
-msgstr ""
+msgstr "Перейдите в *Домашнюю папку*."
 
 #. type: Bullet: '1. '
 msgid ""
 "Right-click (on Mac, click with two fingers) on the list of files in the "
 "right pane and choose **Show Hidden Files**."
 msgstr ""
+"Щёлкните правой кнопкой мыши (на компьютере Mac щёлкните двумя кнопками) по "
+"правой панели и выберите **Показывать скрытые файлы**."
 
 #. type: Bullet: '1. '
 msgid "Open the *.gnupg* folder."
-msgstr ""
+msgstr "Откройте папку *.gnupg*."
 
 #. type: Bullet: '1. '
 msgid "Edit the *gpg.conf* file in the *.gnupg* folder."
-msgstr ""
+msgstr "Отредактируйте файл *gpg.conf* в папке *.gnupg*."
 
 #. type: Plain text
 #, no-wrap
 msgid "   Replace its content with the content of our default *gpg.conf* file:\n"
 msgstr ""
+"   Замените его содержимое тем, что в файле *gpg.conf* находится по "
+"умолчанию:\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "   [[!tails_gitweb config/chroot_local-includes/etc/skel/.gnupg/gpg.conf]]\n"
 msgstr ""
+"   [[!tails_gitweb config/chroot_local-includes/etc/skel/.gnupg/gpg.conf]]\n"
 
 #. type: Bullet: '1. '
 msgid "Edit the *dirmngr.conf* file in the *.gnupg* folder."
-msgstr ""
+msgstr "Отредактируйте файл *dirmngr.conf* в папке *.gnupg*."
 
 #. type: Plain text
 #, no-wrap
 msgid "   Replace its content with the content of our default *dirmngr.conf* file:\n"
 msgstr ""
+"   Замените его содержимое тем, что в файле *dirmngr.conf* находится по "
+"умолчанию:\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "   [[!tails_gitweb config/chroot_local-includes/etc/skel/.gnupg/dirmngr.conf]]\n"
 msgstr ""
+"   [[!tails_gitweb config/chroot_local-includes/etc/skel/.gnupg/"
+"dirmngr.conf]]\n"
 
 #. type: Bullet: '1. '
 msgid "Save both files and close the *Text Editor*."
-msgstr ""
+msgstr "Сохраните оба файла и закройте *Текстовый редактор*."
