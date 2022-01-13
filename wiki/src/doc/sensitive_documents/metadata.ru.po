@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-06-18 13:05+0000\n"
-"PO-Revision-Date: 2021-12-18 17:57+0000\n"
+"PO-Revision-Date: 2021-12-22 13:15+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
@@ -22,7 +22,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Removing metadata using mat2\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Удаление метаданных с помощью mat2\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -32,7 +32,7 @@ msgstr "[[!toc levels=1]]\n"
 #. type: Title =
 #, no-wrap
 msgid "What is metadata?"
-msgstr ""
+msgstr "Что такое метаданные?"
 
 #. type: Plain text
 msgid ""
@@ -40,16 +40,21 @@ msgid ""
 "embedded in computer files, usually automatically. Metadata is used to "
 "describe, identify, categorize, and sort files."
 msgstr ""
+"Метаданные — «данные о данных», которые обычно автоматически встраиваются в "
+"компьютерные файлы. Метаданные используются для описания, идентификации, "
+"классификации и сортировки файлов."
 
 #. type: Plain text
 msgid ""
 "However, metadata can also be used to deanonymize users and expose private "
 "information."
 msgstr ""
+"Увы, метаданные иногда также деанонимизируют пользователей и раскрывают "
+"приватную информацию."
 
 #. type: Plain text
 msgid "Examples of metadata include:"
-msgstr ""
+msgstr "Есть много примеров метаданных."
 
 #. type: Plain text
 #, no-wrap
@@ -62,6 +67,13 @@ msgid ""
 "  - the author of the document\n"
 "  - changes to the document\n"
 msgstr ""
+"- В файлах-изображениях:\n"
+"- место, где был сделан снимок;\n"
+"- дата и время снимка;\n"
+"- модель и серийный номер камеры.\n"
+"- В файлах текстовых документов:\n"
+"- автор документа;\n"
+"- изменения в документе.\n"
 
 #. type: Plain text
 msgid ""
@@ -69,6 +81,10 @@ msgid ""
 "information, see [Behind the Data: Investigating metadata](https://"
 "exposingtheinvisible.org/en/guides/behind-the-data-metadata-investigations/)."
 msgstr ""
+"О том, как метаданные могут использоваться для идентификации и раскрытия "
+"личной информации, см. [Что стоит за данными: исследование "
+"метаданных](https://exposingtheinvisible.org/en/guides/"
+"behind-the-data-metadata-investigations/)."
 
 #. type: Plain text
 #, no-wrap
@@ -76,6 +92,8 @@ msgid ""
 "Removing metadata from files\n"
 "==========================\n"
 msgstr ""
+"Удаление метаданных из файлов\n"
+"==========================\n"
 
 #. type: Plain text
 #, no-wrap
@@ -84,38 +102,48 @@ msgid ""
 "<a href=\"https://0xacab.org/jvoisin/mat2\"><span class=\"application\">mat2</span></a>\n"
 "so you can remove metadata from files before you publish or share them.\n"
 msgstr ""
+"Tails включает инструмент \n"
+"<a href=\"https://0xacab.org/jvoisin/mat2\"><span class=\"application\""
+">mat2</span></a>,\n"
+"который позволяет удалять метаданные из файлов перед публикацией или "
+"расшариванием.\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<span class=\"application\">mat2</span> works on many file formats, including:\n"
 msgstr ""
+"<span class=\"application\">mat2</span> работает с множеством файловых "
+"форматов. Вот некоторые:\n"
 
 #. type: Bullet: '- '
 msgid "image files, such as .jpeg, .png, and .gif"
-msgstr ""
+msgstr "изображения, например, .jpeg, .png, .gif;"
 
 #. type: Bullet: '- '
 msgid ""
 "<span class=\"application\">LibreOffice</span> files, such as .odt and .ods"
 msgstr ""
+"файлы <span class=\"application\">LibreOffice</span> (.odt, .ods и др.);"
 
 #. type: Bullet: '- '
 msgid ""
 "<span class=\"application\">Microsoft Office</span> documents, such as ."
 "docx, .xlsx, and .pptx"
 msgstr ""
+"документы <span class=\"application\">Microsoft Office</span> (.docx, .xlsx, "
+".pptx и др.);"
 
 #. type: Bullet: '- '
 msgid "audio files, such as .mp3, .flac, and .ogg"
-msgstr ""
+msgstr "аудиофайлы, такие как .mp3, .flac и .ogg;"
 
 #. type: Bullet: '- '
 msgid "video files, such as .mp4 and .avi"
-msgstr ""
+msgstr "видеофайлы, например, .mp4 и.avi;"
 
 #. type: Bullet: '- '
 msgid "archive files, such as .zip and .tar"
-msgstr ""
+msgstr "файлы архивов, в частности, .zip и .tar."
 
 #. type: Plain text
 #, no-wrap
@@ -123,6 +151,8 @@ msgid ""
 "To use <span class=\"application\">mat2</span> to remove metadata from your\n"
 "files:\n"
 msgstr ""
+"Ниже описано, как удалить метаданные с помощью <span class=\"application\""
+">mat2</span>.\n"
 
 #. type: Bullet: '1. '
 msgid "Open the <span class=\"application\">Files</span> browser."
@@ -132,17 +162,19 @@ msgstr "Откройте файловый менеджер <span class=\"applica
 msgid ""
 "Navigate to the folder containing the files that you want to remove metadata "
 "from."
-msgstr ""
+msgstr "Перейдите в папку с файлами, из которых хотите удалить метаданные."
 
 #. type: Bullet: '1. '
 msgid "Select the files that you want to remove metadata from."
-msgstr ""
+msgstr "Выберите файлы, из которых хотите удалить метаданные."
 
 #. type: Bullet: '1. '
 msgid ""
 "Right-click (on Mac, click with two fingers) on the files and choose <span "
 "class=\"guimenuitem\">Remove metadata</span>."
 msgstr ""
+"Щёлкните правой кнопкой мыши (на компьютере Mac двумя кнопками) по файлам и "
+"выберите <span class=\"guimenuitem\">Remove metadata</span>."
 
 #. type: Plain text
 #, no-wrap
@@ -157,6 +189,12 @@ msgid ""
 "audio, and other files containing their own metadata that <i>mat2</i> cannot\n"
 "remove.</p>\n"
 msgstr ""
+"<p> Нельзя быть совершенно уверенным в том, что вы найдёте и удалите все "
+"метаданные в файлах сложных\n"
+"форматов. Например, документы <i>Microsoft Office</i> могут содержать "
+"встроенные изображения,\n"
+"аудио и другие файлы, содержащие собственные метаданные, с которыми "
+"<i>mat2</i> не справится.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -164,6 +202,9 @@ msgid ""
 "<p>You should run <i>mat2</i> on any files before you embed them into another\n"
 "document.</p>\n"
 msgstr ""
+"<p>Есть смысл обрабатывать файл с помощью <i>mat2</i>, прежде чем вставлять "
+"его в другой\n"
+"документ.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -172,6 +213,8 @@ msgid ""
 "For example, instead of saving a text document as a .docx file,\n"
 "you can save the document as a plain .txt file.</p>\n"
 msgstr ""
+"<p>Чем проще формат сохранения файла, тем лучше. Например, простой текстовый "
+"документ можно сохранить не в .docx, а в .txt.</p>\n"
 
 #. type: Plain text
 #, no-wrap

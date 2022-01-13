@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-06 13:32+0100\n"
-"PO-Revision-Date: 2021-11-13 12:18+0000\n"
+"POT-Creation-Date: 2022-01-10 09:34+0100\n"
+"PO-Revision-Date: 2021-12-11 17:13+0000\n"
 "Last-Translator: Jonatan Nyberg <jonatan@autistici.org>\n"
 "Language-Team: Swedish (http://www.transifex.com/otf/torproject/language/"
 "sv/)\n"
@@ -578,7 +578,6 @@ msgstr "Ytterligare inställningar"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:366
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
-#: config/chroot_local-includes/usr/bin/tor-browser:49
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -2063,6 +2062,11 @@ msgstr "Tor är inte redo. Starta Tor Browser ändå?"
 msgid "Start Tor Browser"
 msgstr "Starta Tor Browser"
 
+#: config/chroot_local-includes/usr/bin/tor-browser:49
+#, fuzzy
+msgid "Open Tor Connection"
+msgstr "Tor-anslutning"
+
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/torstatus@tails.boum.org/extension.js:35
 msgid "Tor Status"
 msgstr "Tor-status"
@@ -2260,36 +2264,37 @@ msgstr ""
 "logga in på ett nätverk med en fångportal."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:53
-#, fuzzy
 msgid ""
 "The Unsafe Browser was not enabled in the Welcome Screen.\\n\\nTo <a "
 "href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
 "unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and "
 "enable the Unsafe Browser in the additional settings of the Welcome Screen."
 msgstr ""
-"Den osäkra webbläsaren var inte aktiverad på välkomstskärmen.\\n\\nOm du "
-"vill använda den osäkra webbläsaren startar du om Tails och aktiverar den "
-"osäkra webbläsaren i de ytterligare inställningarna på välkomstskärmen."
+"Den osäkra webbläsaren var inte aktiverad på välkomstskärmen.\\n\\nFör <a "
+"href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
+"unsafe_browser.en.html#use'>att använda den osäkra webbläsaren</a>, starta "
+"om Tails och aktivera den osäkra webbläsaren i de extra inställningarna på "
+"välkomstskärmen."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
 msgid ""
 "\\n\\nTo always enable the Unsafe Browser, turn on the Welcome Screen "
 "feature of the Persistent Storage."
 msgstr ""
+"\\n\\nFör att alltid aktivera den osäkra webbläsaren, aktivera "
+"välkomstskärmsfunktionen för den bestående lagringen."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
-#, fuzzy
 msgid "_Restart"
-msgstr "Starta om"
+msgstr "_Starta om"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:62
 msgid "_Close"
-msgstr ""
+msgstr "_Stäng"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:67
-#, fuzzy
 msgid "Failed to restart the system."
-msgstr "Det gick inte att starta om systemet"
+msgstr "Det gick inte att starta om systemet."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:77
 msgid "Starting the Unsafe Browser..."
@@ -3078,7 +3083,6 @@ msgid "• Bridge over email"
 msgstr "• Bro över e-post"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:840
-#, fuzzy
 msgid ""
 "To request new Tor bridges, you can also:\n"
 "\n"
@@ -3089,18 +3093,17 @@ msgid ""
 msgstr ""
 "För att begära nya Tor-broar kan du också:\n"
 "\n"
-"1. Skicka ett tomt e-postmeddelande till <tt>bridges@torproject.org</tt> "
-"från en Gmail- eller Riseup-e-postadress.\n"
+"            1. Skicka ett tomt e-postmeddelande till <tt>bridges@torproject."
+"org</tt> från en Gmail- eller Riseup-e-postadress.\n"
 "\n"
-"2. Skriv nedanför en av broarna som du fick via e-post."
+"              2. Skriv nedan en av broarna som du fått via e-post."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:950
-#, fuzzy
 msgid ""
 "<a href=\"doc/anonymous_internet/tor/troubleshoot\">Troubleshooting "
 "connecting to Tor</a>"
 msgstr ""
-"<a href=\"doc/anonymous_internet/tor\">Lär dig mer om hur Tails ansluter "
+"<a href=\"doc/anonymous_internet/tor/troubleshoot\">Felsökning av anslutning "
 "till Tor</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:996
@@ -3401,16 +3404,3 @@ msgstr "December"
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:368
 msgid "Clock"
 msgstr "Klocka"
-
-#~ msgid ""
-#~ "The Unsafe Browser was not enabled in the Welcome Screen.\\n\\nTo use the "
-#~ "Unsafe Browser, restart Tails and enable the Unsafe Browser in the "
-#~ "additional settings of the Welcome Screen.\\n\n"
-#~ "To always enable the Unsafe Browser, turn on the Welcome Screen feature "
-#~ "of the Persistent Storage."
-#~ msgstr ""
-#~ "Den osäkra webbläsaren var inte aktiverad på välkomstskärmen.\\n\\nAnvänd "
-#~ "den osäkra webbläsaren genom att starta om Tails och aktivera den osäkra "
-#~ "webbläsaren i de ytterligare inställningarna på välkomstskärmen.\\n\n"
-#~ "För att alltid aktivera den osäkra webbläsaren, aktivera "
-#~ "välkomstskärmsfunktionen i den beständiga lagringen."

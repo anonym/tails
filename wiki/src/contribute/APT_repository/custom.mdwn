@@ -23,7 +23,7 @@ We use one single APT repository hosting multiple *suites*:
   packaging work we might do, e.g. acting as upstream or
   Debian maintainers.
 * We also have a `builder-jessie` suite, used to provide additional
-  packages needed on a Jessie system to build Tails.
+  packages needed to build Tails.
 
 The suite(s) to use as sources for APT, during the build and inside
 the resulting system, are determined by the content of the
@@ -83,9 +83,6 @@ At release time, the release manager:
 3. merges the release branch into other base branches as needed, and
    ensures that all resulting `config/APT_overlays.d/`:s make sense.
 
-Note that a branch like `feature/jessie` needs to be a base branch: we want to be
-able to work on topic branches forked off `feature/jessie`.
-
 <a id="ssh-access"></a>
 
 SSH access
@@ -111,11 +108,9 @@ Importing a new package
 
 ### Creating a new branch
 
-Push your branch to Git and wait a few minutes for the new APT suite
-to appear on <https://deb.tails.boum.org/dists/>. You can look up the
-name of that suite there.
+Push your branch to Git.
 
-Then, you probably want to drop a new file in
+Then, drop a new file in
 `config/APT_overlays.d/`, named after the APT suite corresponding to
 your new branch:
 
@@ -125,6 +120,9 @@ Incidentally, this gives you the name of the APT suite you'll have
 to upload to later on.
 
 For details, see the *Build system* section above.
+
+Finally, wait a few minutes for the new APT suite
+to appear on <https://deb.tails.boum.org/dists/>.
 
 ### Building a package
 
