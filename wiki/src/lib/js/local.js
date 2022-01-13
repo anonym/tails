@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", function() {
     case 'it':
       placeholder = "Usando DuckDuckGo…";
       break;
+    case 'pt':
+      placeholder = "Usando DuckDuckGo…";
+      break;
     case 'ru':
       placeholder = "Поиск DuckDuckGo…";
       break;
