@@ -1683,7 +1683,7 @@ If you just released a final release
      (ISO and USB image, use comma-separated values)
      with:
 
-         ssh bittorrent.lizard transmission-remote --list | grep "tails-amd64-${PREVIOUS_VERSION:?}-i"
+         ssh bittorrent.lizard transmission-remote --list | grep --fixed-strings "tails-amd64-${PREVIOUS_VERSION:?}-i"
 
      Then delete them with:
 
