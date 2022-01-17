@@ -53,13 +53,9 @@ install_tor_browser() {
     destination="${2}"
 
     tmp="$(mktemp -d)"
-    tar -xf "${bundle}" -C "${tmp}"
-    if [ -d "${tmp}"/tor-browser_en-US ]; then
-        prep="${tmp}"/tor-browser_en-US/Browser
-    elif [ -d "${tmp}"/tor-browser ]; then
-        # TBB nightly builds
-        prep="${tmp}"/tor-browser/Browser
-    else
+    tar -xf "${bundle}" -C "${tmp}" --strip-components=1
+    prep="${tmp}"/Browser
+    if ! [ -d "$prep" ]; then
         echo "The main bundle's top level directory is wrong" >&2
         exit 1
     fi
