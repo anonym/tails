@@ -90,6 +90,22 @@ install_tor_browser() {
     rm -r "${tmp}"
 }
 
+install_pluggable_transports() {
+    local bundle destination
+    bundle="${1}"
+    destination="${2}"
+
+    tmp="$(mktemp -d)"
+    tar -xf "${bundle}" -C "${tmp}" --strip-components=1
+
+    for pt in "${tmp}"/Browser/TorBrowser/Tor/PluggableTransports/*; do
+        echo "I: installing $(basename "$pt") pluggable transport"
+        install --owner=root --group=root --mode=755 \
+                --target-directory="$destination" "$pt"
+    done
+
+    rm -r "${tmp}"
+}
 
 embed_extensions_in_omni_ja () {
     local tbb_install tbb_timestamp tmp
@@ -317,6 +333,8 @@ if [ "${NIGHTLY_BUILD}" != yes ]; then
     LANGPACKS_TARBALL="$(echo "${TBB_TARBALLS}" | grep -o "langpacks-tor-browser-linux64-.*\.tar\.xz")"
     install_langpacks "${TMP}/${LANGPACKS_TARBALL}" "${TBB_EXT}"
 fi
+
+install_pluggable_transports "${TMP}/${MAIN_TARBALL}" /usr/bin
 
 rm -r "${TMP}"
 
