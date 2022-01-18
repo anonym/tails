@@ -497,6 +497,13 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
     debug_log('user_wants_pluggable_transports = '\
               "#{@user_wants_pluggable_transports}")
     if config_mode == :easy
+      # Can connect to fedoraproject.org
+      CONNECTIVITY_CHECK_ALLOWED_NODES.each do |n|
+        add_extra_allowed_host(n[:address], n[:port])
+      end
+      # Allow connections to the local DNS resolver, used by
+      # tails-get-network-time
+      add_extra_allowed_host($vmnet.bridge_ip_addr, 53)
       tor_connection_assistant.child('Configure a Tor _bridge',
                                      roleName: 'check box')
                               .click
@@ -504,6 +511,10 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
     click_connect_to_tor
     if bridge_type == 'default'
       assert_equal(:easy, config_mode)
+      @bridge_hosts = chutney_bridges('obfs4', chutney_tag: 'defbr').map do |bridge|
+        { address: bridge[:address], port: bridge[:port] }
+      end
+
       tor_connection_assistant.child('Use a _default bridge',
                                      roleName: 'radio button')
                               .click
@@ -697,11 +708,18 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or co
   end
 
   if !time_sync.empty?
-    allowed_hosts += EXTRA_ALLOWED_HOSTS
+    allowed_hosts += CONNECTIVITY_CHECK_ALLOWED_NODES
+    # Allow connections to the local DNS resolver, used by
+    # tails-get-network-time
+    allowed_hosts << { address: $vmnet.bridge_ip_addr, port: 53 }
+    allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME + '.']
+  else
+    allowed_dns_queries = []
   end
 
   assert_all_connections(@sniffer.pcap_file) do |c|
-    allowed_hosts.include?({ address: c.daddr, port: c.dport })
+    allowed_hosts.include?({ address: c.daddr, port: c.dport }) &&
+      c.dns_question.all? { |q| allowed_dns_queries.include?(q) }
   end
 end
 

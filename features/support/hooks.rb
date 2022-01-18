@@ -385,16 +385,18 @@ end
 After('@product', '@check_tor_leaks') do |scenario|
   @tor_leaks_sniffer.stop
   if scenario.passed?
+    # XXX: DNS queries should _only_ be allowed when we are in "easy mode"
+    #      so this variable should be populated in the relevant steps
+    allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME + '.']
+
     allowed_nodes = @bridge_hosts || allowed_hosts_under_tor_enforcement
-    allowed_nodes += EXTRA_ALLOWED_HOSTS
-    # Allow connections to the local DNS resolver, used by
-    # tails-get-network-time
-    allowed_nodes << { address: $vmnet.bridge_ip_addr, port: 53 }
+    allowed_nodes += @extra_allowed_hosts
     debug_log("Allowed hosts: #{allowed_nodes}")
+    debug_log("Allowed DNS queries: #{allowed_dns_queries}")
     assert_all_connections(@tor_leaks_sniffer.pcap_file) do |c|
-      allowed_nodes.include?({ address: c.daddr, port: c.dport })
+      allowed_nodes.include?({ address: c.daddr, port: c.dport }) &&
+        c.dns_question.all? { |q| allowed_dns_queries.include?(q) }
     end
-    # XXX: we should inspect the DNS queries to check that only the intended queries are performed
   end
 end
 
