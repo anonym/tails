@@ -1,4 +1,5 @@
 require 'packetfu'
+require 'net/dns'
 
 def looks_like_dhcp_packet?(eth_packet, protocol, sport, dport, ip_packet)
   protocol == 'udp' && sport == 68 && dport == 67 &&
@@ -39,6 +40,7 @@ def pcap_connections_helper(pcap_file, **opts)
     end
     sport = nil
     dport = nil
+    dns_question = []
     if PacketFu::IPv6Packet.can_parse?(p)
       ip_packet = PacketFu::IPv6Packet.parse(p)
       protocol = 'ipv6'
@@ -72,12 +74,24 @@ def pcap_connections_helper(pcap_file, **opts)
     next if opts[:ignore_arp] && protocol == 'arp'
     next if opts[:ignore_sources].include?(eth_packet.eth_saddr)
 
+    if protocol == 'udp' && dport == 53
+      begin
+        dns_packet = Net::DNS::Packet.parse(PacketFu::Packet.parse(p).payload)
+      rescue ArgumentError
+        dns_packet = nil
+      end
+      unless dns_packet.nil? || dns_packet.question.empty?
+        dns_question += dns_packet.question.map(&:qName)
+      end
+    end
+
     packet_info = {
-      mac_saddr: eth_packet.eth_saddr,
-      mac_daddr: eth_packet.eth_daddr,
-      protocol:  protocol,
-      sport:     sport,
-      dport:     dport,
+      mac_saddr:    eth_packet.eth_saddr,
+      mac_daddr:    eth_packet.eth_daddr,
+      protocol:     protocol,
+      sport:        sport,
+      dport:        dport,
+      dns_question: dns_question,
     }
 
     begin
