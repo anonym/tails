@@ -43,6 +43,11 @@ When /^I bump the (hardware clock's|system) time with "([^"]+)"$/ do |clock_type
 end
 
 When /^I make sure time sync before Tor connects cannot work$/ do
+  CONNECTIVITY_CHECK_HOSTNAME = 'tails.boum.org'.freeze
+  CONNECTIVITY_CHECK_HOSTS = Resolv.getaddresses(CONNECTIVITY_CHECK_HOSTNAME)
+  CONNECTIVITY_CHECK_ALLOWED_NODES = (CONNECTIVITY_CHECK_HOSTS.map do |ip|
+    { address: ip, port: 80 }
+  end).freeze
   $vm.file_overwrite(
     '/etc/tails-get-network-time-url',
     'http://tails.boum.org/idontexist.txt'
