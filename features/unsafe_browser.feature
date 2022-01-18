@@ -70,7 +70,7 @@ Feature: Browsing the web using the Unsafe Browser
     Then the Unsafe Browser has started
     And I wait 120 seconds
     And the clearnet user has not sent packets out to the Internet
-    And all Internet traffic has only flowed through Tor
+    And all Internet traffic has only flowed through Tor or connectivity check service
 
   @not_release_blocker
   Scenario: The Unsafe Browser cannot be started when I am offline

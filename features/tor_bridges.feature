@@ -15,10 +15,10 @@ Feature: Using Tor bridges and pluggable transports
     Then Tor is ready
     And tca.conf includes the configured bridges
     And available upgrades have been checked
-    And all Internet traffic has only flowed through the configured bridges
+    And all Internet traffic has only flowed through the configured bridges or connectivity check service
 
   Scenario: Using obfs4 pluggable transports
-    When I configure some obfs4 bridges in the Tor Connection Assistant
+    When I configure some obfs4 bridges in the Tor Connection Assistant in hide mode
     Then Tor is ready
     And tca.conf includes the configured bridges
     And available upgrades have been checked
@@ -31,7 +31,7 @@ Feature: Using Tor bridges and pluggable transports
     And tca.conf includes no bridge
     And available upgrades have been checked
     And Tor is configured to use the default bridges
-    And all Internet traffic has only flowed through the default bridges
+    And all Internet traffic has only flowed through the default bridges or connectivity check service
 
   Scenario: Fall back to default bridges if failing to connect directly to the Tor network
     Given the Tor network is blocked
@@ -40,7 +40,7 @@ Feature: Using Tor bridges and pluggable transports
     And tca.conf includes no bridge
     And available upgrades have been checked
     And Tor is configured to use the default bridges
-    And all Internet traffic has only flowed through the default bridges
+    And all Internet traffic has only flowed through the default bridges or connectivity check service
 
   Scenario: TCA can reconnect after a connection failure
     Given the Tor network and default bridges are blocked
@@ -52,7 +52,7 @@ Feature: Using Tor bridges and pluggable transports
     Then Tor is ready
     And tca.conf includes no bridge
     And available upgrades have been checked
-    And all Internet traffic has only flowed through Tor
+    And all Internet traffic has only flowed through Tor or connectivity check service
 
   Scenario: Normal bridges are not allowed in "Hide" mode
     When I try to configure some normal bridges in the Tor Connection Assistant in hide mode
@@ -69,7 +69,7 @@ Feature: Using Tor bridges and pluggable transports
     And Tor is ready
     And Tor is using the same configuration as before
     And available upgrades have been checked
-    And all Internet traffic has only flowed through Tor
+    And all Internet traffic has only flowed through Tor or connectivity check service
 
   Scenario: Reconnecting from an unblocked network to a blocked network displays an error
     Given I configure a direct connection in the Tor Connection Assistant
@@ -87,4 +87,4 @@ Feature: Using Tor bridges and pluggable transports
     When I click "Connect to Tor"
     Then Tor is ready
     And Tor is configured to use the default bridges
-    And all Internet traffic has only flowed through the default bridges
+    And all Internet traffic has only flowed through the default bridges or connectivity check service
