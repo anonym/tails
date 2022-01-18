@@ -373,6 +373,18 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
   raise TCAConnectionFailure, 'TCA failed to connect to Tor' if failure_reported
 end
 
+Then /^the Tor Connection Assistant fails to connect to Tor$/ do
+  step 'the Tor Connection Assistant connects to Tor'
+rescue TCAConnectionFailure
+  # Expected!
+  next
+rescue StandardError => e
+  raise 'Expected TCAConnectionFailure to be raised but got ' \
+        "#{e.class.name}: #{e}"
+else
+  raise 'TCA managed to connect to Tor with normal bridges in hide mode'
+end
+
 def tca_configure(mode, connect: true, &block)
   step 'the Tor Connection Assistant is running'
   case mode
@@ -465,7 +477,7 @@ end
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 
-When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |persistent, bridge_type, mode|
+When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?( without connecting|)$/ do |persistent, bridge_type, mode, connect|
   # If the "mode" isn't specified we pick one that makes sense for
   # what is requested.
   config_mode = if mode.nil?
@@ -476,10 +488,11 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
   # Internally a "normal" bridge is called just "bridge" which we have
   # to respect below.
   bridge_type = 'bridge' if bridge_type == 'normal'
+  connect = (connect == '')
 
   # XXX: giving up on a few worst offenders for now
   # rubocop:disable Metrics/BlockLength
-  tca_configure(config_mode) do
+  tca_configure(config_mode, connect: connect) do
     @user_wants_pluggable_transports = bridge_type != 'bridge'
     debug_log('user_wants_pluggable_transports = '\
               "#{@user_wants_pluggable_transports}")

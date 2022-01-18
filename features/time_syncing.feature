@@ -59,8 +59,8 @@ Feature: Time syncing
     And the network is plugged
     And the Tor Connection Assistant autostarts
     # Anti-test: Users east of UTC can't connect to obfs4 bridges
-    # This step will automatically select hide mode:
-    When I unsuccessfully configure some obfs4 bridges in the Tor Connection Assistant
+    And I configure some obfs4 bridges in the Tor Connection Assistant in hide mode without connecting
+    And I click "Connect to Tor"
     Then the Tor Connection Assistant reports that it failed to connect
     # The "Fix Clock" button allows users to recover from this bug
     When I set the time zone in Tor Connection to "Asia/Shanghai"
