@@ -60,6 +60,7 @@ Feature: Time syncing
     And the Tor Connection Assistant autostarts
     When I configure the default bridges in the Tor Connection Assistant in easy mode
     Then Tor is ready
+    And Tor is configured to use the default bridges
     And all Internet traffic has only flowed through the default bridges or connectivity check service
     And Tails clock is less than 5 minutes incorrect
 
