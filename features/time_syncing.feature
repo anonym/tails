@@ -51,6 +51,38 @@ Feature: Time syncing
     And the computer boots Tails
     Then the system clock is just past Tails' source date
 
+  Scenario: I can connect to obfs4 bridges having a clock East of UTC in easy mode without needing to fix the clock
+    Given I have started Tails from DVD without network and logged in
+    When I bump the system time with "+8 hours +15 minutes"
+    And all notifications have disappeared
+    And I capture all network traffic
+    And the network is plugged
+    And the Tor Connection Assistant autostarts
+    When I unsuccessfully configure some obfs4 bridges in the Tor Connection Assistant
+    And I configure default obfs4 bridges in the Tor Connection Assistant in easy mode
+    Then Tor is ready
+    And Tails clock is less than 5 minutes incorrect
+
+  Scenario: I can connect to obfs4 bridges having a clock East of UTC in easy mode even when time sync fails
+    Given I have started Tails from DVD without network and logged in
+    When I bump the system time with "+8 hours +15 minutes"
+    And all notifications have disappeared
+    And I capture all network traffic
+    And I make sure time sync before Tor connects cannot work
+    And the network is plugged
+    And the Tor Connection Assistant autostarts
+    When I configure the default bridges in the Tor Connection Assistant in easy mode without connecting
+    And I click "Connect to Tor"
+    And the Tor Connection Assistant fails to connect to Tor
+    # The "Fix Clock" button allows users to recover from this bug
+    Then I set the time zone in Tor Connection to "Asia/Shanghai"
+    Then Tails clock is less than 20 minutes incorrect
+    When I click "Connect to Tor"
+    Then Tor is ready
+    And all Internet traffic has only flowed through the default bridges
+    # check that htpdate has done its job
+    And Tails clock is less than 5 minutes incorrect
+
   Scenario: I can connect to obfs4 bridges having a clock East of UTC in hide mode
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+8 hours +15 minutes"

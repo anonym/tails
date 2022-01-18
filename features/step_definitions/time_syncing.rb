@@ -42,6 +42,13 @@ When /^I bump the (hardware clock's|system) time with "([^"]+)"$/ do |clock_type
          "'#{expected_time_lower_bound}' but is '#{new_time}'")
 end
 
+When /^I make sure time sync before Tor connects cannot work$/ do
+  $vm.file_overwrite(
+    '/etc/tails-get-network-time-url',
+    'http://tails.boum.org/idontexist.txt'
+  )
+end
+
 Then /^Tails clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
   guest_time_str = $vm.execute('date --rfc-2822').stdout.chomp
   guest_time = Time.rfc2822(guest_time_str)
