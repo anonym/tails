@@ -575,7 +575,7 @@ rescue StandardError => e
   raise 'Expected TCAConnectionFailure to be raised but got ' \
         "#{e.class.name}: #{e}"
 else
-  raise 'TCA managed to connect to Tor with normal bridges in hide mode'
+  raise 'TCA managed to connect to Tor but was expected to fail'
 end
 
 When /^I try to configure some normal bridges in the Tor Connection Assistant in hide mode$/ do
