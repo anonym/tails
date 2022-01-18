@@ -679,7 +679,7 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   end
 end
 
-Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
+Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or connectivity check service|)$/ do |flow_target, time_sync|
   case flow_target
   when 'Tor'
     allowed_hosts = allowed_hosts_under_tor_enforcement
@@ -695,6 +695,11 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
   else
     raise "Unsupported flow target '#{flow_target}'"
   end
+
+  if !time_sync.empty?
+    allowed_hosts += EXTRA_ALLOWED_HOSTS
+  end
+
   assert_all_connections(@sniffer.pcap_file) do |c|
     allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
