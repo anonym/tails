@@ -717,6 +717,9 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or co
     allowed_dns_queries = []
   end
 
+  debug_log("Allowed hosts: #{allowed_hosts}")
+  debug_log("Allowed DNS queries: #{allowed_dns_queries}")
+
   assert_all_connections(@sniffer.pcap_file) do |c|
     allowed_hosts.include?({ address: c.daddr, port: c.dport }) &&
       c.dns_question.all? { |q| allowed_dns_queries.include?(q) }
