@@ -390,6 +390,13 @@ def tca_configure(mode, connect: true, &block)
   case mode
   when :easy
     radio_button_label = '<b>Connect to Tor _automatically (easier)</b>'
+    # Can connect to fedoraproject.org
+    CONNECTIVITY_CHECK_ALLOWED_NODES.each do |n|
+      add_extra_allowed_host(n[:address], n[:port])
+    end
+    # Allow connections to the local DNS resolver, used by
+    # tails-get-network-time
+    add_extra_allowed_host($vmnet.bridge_ip_addr, 53)
   when :hide
     @user_wants_pluggable_transports = true
     radio_button_label = '<b>Hide to my local network that I\'m connecting to Tor (safer)</b>'
@@ -497,13 +504,6 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
     debug_log('user_wants_pluggable_transports = '\
               "#{@user_wants_pluggable_transports}")
     if config_mode == :easy
-      # Can connect to fedoraproject.org
-      CONNECTIVITY_CHECK_ALLOWED_NODES.each do |n|
-        add_extra_allowed_host(n[:address], n[:port])
-      end
-      # Allow connections to the local DNS resolver, used by
-      # tails-get-network-time
-      add_extra_allowed_host($vmnet.bridge_ip_addr, 53)
       tor_connection_assistant.child('Configure a Tor _bridge',
                                      roleName: 'check box')
                               .click
