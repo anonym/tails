@@ -390,13 +390,16 @@ def tca_configure(mode, connect: true, &block)
   case mode
   when :easy
     radio_button_label = '<b>Connect to Tor _automatically (easier)</b>'
-    # Can connect to fedoraproject.org
-    CONNECTIVITY_CHECK_ALLOWED_NODES.each do |n|
-      add_extra_allowed_host(n[:address], n[:port])
+    # If we run the step "I make sure time sync before Tor connects cannot work",
+    # @allowed_dns_queries is already initialized, and the corresponding extra_allowed_hosts have already been
+    # called
+    unless @allowed_dns_queries
+      @allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME]
+      Resolv.getaddresses(CONNECTIVITY_CHECK_HOSTNAME).each do |ip|
+        add_extra_allowed_host(ip, 80)
+      end
     end
-    # Allow connections to the local DNS resolver, used by
-    # tails-get-network-time
-    add_extra_allowed_host($vmnet.bridge_ip_addr, 53)
+    add_dns_to_extra_allowed_host
   when :hide
     @user_wants_pluggable_transports = true
     radio_button_label = '<b>Hide to my local network that I\'m connecting to Tor (safer)</b>'
