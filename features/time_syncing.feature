@@ -15,7 +15,7 @@ Feature: Time syncing
     When the network is plugged
     And the Tor Connection Assistant autostarts
     And I configure some normal bridges in the Tor Connection Assistant
-    And Tor is ready
+    And I verify that Tor is ready
     Then Tails clock is less than 5 minutes incorrect
 
   Scenario: Clock is one day in the future while using obfs4 bridges
@@ -24,7 +24,7 @@ Feature: Time syncing
     And the network is plugged
     And the Tor Connection Assistant autostarts
     And I configure some obfs4 bridges in the Tor Connection Assistant in easy mode
-    And Tor is ready
+    And I verify that Tor is ready
     Then Tails clock is less than 5 minutes incorrect
 
   @not_release_blocker
@@ -59,7 +59,7 @@ Feature: Time syncing
     And the network is plugged
     And the Tor Connection Assistant autostarts
     When I configure the default bridges in the Tor Connection Assistant in easy mode
-    Then Tor is ready
+    Then I verify that Tor is ready
     And Tor is configured to use the default bridges
     And all Internet traffic has only flowed through the default bridges or connectivity check service
     And Tails clock is less than 5 minutes incorrect
@@ -79,7 +79,7 @@ Feature: Time syncing
     Then I set the time zone in Tor Connection to "Asia/Shanghai"
     Then Tails clock is less than 20 minutes incorrect
     When I click "Connect to Tor"
-    Then Tor is ready
+    Then I verify that Tor is ready
     And all Internet traffic has only flowed through the default bridges or connectivity check service
     # check that htpdate has done its job
     And Tails clock is less than 5 minutes incorrect
@@ -99,7 +99,7 @@ Feature: Time syncing
     When I set the time zone in Tor Connection to "Asia/Shanghai"
     Then Tails clock is less than 20 minutes incorrect
     When I click "Connect to Tor"
-    Then Tor is ready
+    Then I verify that Tor is ready
     And all Internet traffic has only flowed through the configured bridges
     # check that htpdate has done its job
     And Tails clock is less than 5 minutes incorrect

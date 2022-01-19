@@ -476,6 +476,11 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
+  # deprecated: please choose between "I successfully configure Tor" and "I verify that Tor is ready"
+  step 'I successfully configure Tor'
+end
+
+Given /^I successfully configure Tor$/ do
   # First we wait for tor's control port to be ready...
   try_for(60) do
     $vm.execute_successfully('/usr/local/lib/tor_variable get --type=info version')
@@ -517,6 +522,10 @@ Given /^Tor is ready$/ do
     step 'I configure a direct connection in the Tor Connection Assistant'
   end
 
+  step 'I verify that Tor is ready'
+end
+
+Then /^I verify that Tor is ready$/ do
   # Here we actually check that Tor is ready
   step 'Tor has built a circuit'
   step 'the time has synced'
