@@ -4,7 +4,7 @@ set -e
 set -u
 set -x
 
-VERSIONS="2.0~testoverlayfs 2.2~testoverlayfs 2.3~testoverlayfs"
+VERSIONS="2.0~testoverlayfsng 2.2~testoverlayfsng 2.3~testoverlayfsng"
 SOURCE_DATE_EPOCH=$(date --utc '+%s')
 export SOURCE_DATE_EPOCH
 
@@ -23,15 +23,15 @@ for version in $VERSIONS; do
 
    cp -a /usr/share/common-licenses "$SQUASHFS_SRC"/usr/share/
    mkdir -p "$SQUASHFS_SRC"/usr/share/doc
-   if [ "$version" = '2.0~testoverlayfs' ]; then
+   if [ "$version" = '2.0~testoverlayfsng' ]; then
       mkdir -p "$SQUASHFS_SRC"/usr/share/doc/tor
       echo "Some content" > "$SQUASHFS_SRC"/usr/share/doc/tor/README.Debian
    fi
-   if [ "$version" != '2.0~testoverlayfs' ]; then
+   if [ "$version" != '2.0~testoverlayfsng' ]; then
       echo "Some content" > "$SQUASHFS_SRC"/some_new_file
       rm "$SQUASHFS_SRC"/usr/share/common-licenses/BSD
    fi
-   if [ "$version" = '2.3~testoverlayfs' ]; then
+   if [ "$version" = '2.3~testoverlayfsng' ]; then
       echo "Some content 2.3" > "$SQUASHFS_SRC"/some_new_file_2.3
       rm "$SQUASHFS_SRC"/usr/share/common-licenses/MPL-1.1
    fi
@@ -57,10 +57,10 @@ EOF
    echo isolinux > "$ISO_SRC"/isolinux/isolinux.cfg
    echo 'filesystem.squashfs' > "$ISO_SRC"/live/Tails.module
    cp /usr/lib/syslinux/mbr/gptmbr.bin "$ISO_SRC"/utils/mbr/mbr.bin
-   if [ "$version" = '2.0~testoverlayfs' ]; then
+   if [ "$version" = '2.0~testoverlayfsng' ]; then
       cp /usr/bin/syslinux "$ISO_SRC"/utils/linux
    fi
-   if [ "$version" = '2.3~testoverlayfs' ]; then
+   if [ "$version" = '2.3~testoverlayfsng' ]; then
       rm "$ISO_SRC"/utils/mbr/mbr.bin
    fi
    xorriso \
@@ -69,8 +69,8 @@ EOF
       -o "$WORKDIR/$version.iso" "$ISO_SRC"
 done
 
-for dest_version in 2.2~testoverlayfs 2.3~testoverlayfs; do
-   echo "Generating IUK file from 2.0~testoverlayfs to $dest_version"
+for dest_version in 2.2~testoverlayfsng 2.3~testoverlayfsng; do
+   echo "Generating IUK file from 2.0~testoverlayfsng to $dest_version"
    sudo su -c \
          "SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH \
           LC_ALL=C \
@@ -78,9 +78,9 @@ for dest_version in 2.2~testoverlayfs 2.3~testoverlayfs; do
           PERL5LIB=\"${TAILS_CHECKOUT:?}/config/chroot_local-includes/usr/src/perl5lib/lib\" \
           ${TAILS_CHECKOUT:?}/config/chroot_local-includes/usr/src/iuk/bin/tails-create-iuk \
                --squashfs_diff_name \"${dest_version}.squashfs\"           \
-               --old_iso \"$WORKDIR/2.0~testoverlayfs.iso\" \
+               --old_iso \"$WORKDIR/2.0~testoverlayfsng.iso\" \
                --new_iso \"$WORKDIR/${dest_version}.iso\" \
-               --outfile \"$WORKDIR/Tails_amd64_2.0~testoverlayfs_to_${dest_version}.iuk\""
+               --outfile \"$WORKDIR/Tails_amd64_2.0~testoverlayfsng_to_${dest_version}.iuk\""
 done
 
 echo "Generated test IUKS:"

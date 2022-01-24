@@ -821,9 +821,9 @@ def iuk_changes(version) # rubocop:disable Metrics/MethodLength
   ]
 
   case version
-  when '2.2~testoverlayfs'
+  when '2.2~testoverlayfsng'
     changes
-  when '2.3~testoverlayfs'
+  when '2.3~testoverlayfsng'
     changes + [
       {
         filesystem:  :rootfs,
@@ -850,7 +850,7 @@ def iuk_changes(version) # rubocop:disable Metrics/MethodLength
 end
 
 Given /^the file system changes introduced in version (.+) are (not )?present(?: in the (\S+) Browser's chroot)?$/ do |version, not_present, chroot_browser|
-  assert(['2.2~testoverlayfs', '2.3~testoverlayfs'].include?(version))
+  assert(['2.2~testoverlayfsng', '2.3~testoverlayfsng'].include?(version))
   upgrade_applied = not_present.nil?
   chroot_browser = "#{chroot_browser.downcase}-browser" if chroot_browser
   changes = iuk_changes(version)
