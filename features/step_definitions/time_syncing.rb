@@ -44,7 +44,7 @@ end
 
 When /^I make sure time sync before Tor connects cannot work$/ do
   hostname = 'tails.boum.org'
-  add_extra_allowed_dns_query(hostname)
+  @allowed_dns_queries = [hostname + '.']
   ips = Resolv.getaddresses(hostname)
   ips.each do |ip|
     add_extra_allowed_host(ip, 80)

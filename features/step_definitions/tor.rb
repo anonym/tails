@@ -393,8 +393,8 @@ def tca_configure(mode, connect: true, &block)
     # If we run the step "I make sure time sync before Tor connects cannot work",
     # @allowed_dns_queries is already initialized, and the corresponding extra_allowed_hosts have already been
     # called
-    unless @allowed_dns_queries
-      add_extra_allowed_dns_query(CONNECTIVITY_CHECK_HOSTNAME)
+    unless @allowed_dns_queries && !@allowed_dns_queries.empty?
+      @allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME + '.']
       Resolv.getaddresses(CONNECTIVITY_CHECK_HOSTNAME).each do |ip|
         add_extra_allowed_host(ip, 80)
       end

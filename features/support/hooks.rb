@@ -165,12 +165,6 @@ def add_dns_to_extra_allowed_host
   add_extra_allowed_host($vmnet.bridge_ip_addr, 53)
 end
 
-def add_extra_allowed_dns_query(name)
-  name += '.' unless name.end_with?('.')
-  @extra_allowed_dns_query ||= []
-  @extra_allowed_dns_query << name
-end
-
 BeforeFeature('@product') do
   images = { 'ISO' => TAILS_ISO, 'IMG' => TAILS_IMG }
   images.each do |type, path|
