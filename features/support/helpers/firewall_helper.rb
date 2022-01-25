@@ -122,17 +122,46 @@ end
 
 # These assertions are made from the perspective of the system under
 # testing when it comes to the concepts of "source" and "destination".
-def assert_all_connections(pcap_file, **opts, &block)
+def assert_all_connections(pcap_file,
+                           message: 'Unexpected connections were made',
+                           **opts, &block)
   all = pcap_connections_helper(pcap_file, **opts)
   good = all.select(&block)
   bad = all - good
   return if bad.empty?
 
   raise FirewallAssertionFailedError,
-        "Unexpected connections were made:\n" +
+        "#{message}\n" +
         bad.map { |e| "  #{e}" } .join("\n")
 end
 
 def assert_no_connections(pcap_file, **opts, &block)
   assert_all_connections(pcap_file, **opts) { |*args| !block.call(*args) }
+end
+
+def assert_no_leaks(pcap_file, allowed_hosts, allowed_dns_queries, **opts)
+  assert_all_connections(pcap_file, **opts) do |c|
+    allowed_hosts.include?({ address: c.daddr, port: c.dport })
+  end
+
+  # yes, we could combine these two checks in a single one, and that would probably be more efficient.
+  # However, we're gaining something when it comes to debugging:
+  # the line number now tells you *which* check  has failed
+  dns_opts = opts.clone
+  dns_opts[:message] = 'Unexpected DNS queries were made'
+  assert_all_connections(pcap_file, **dns_opts) do |c|
+    c.dns_question.all? { |q| allowed_dns_queries.include?(q) }
+  end
+end
+
+def debug_useless_dns_queries(pcap_file, allowed_dns_queries)
+  queries_made = Set.new
+  pcap_connections_helper(pcap_file).each do |c|
+    queries_made += c.dns_question
+  end
+  queries_allowed = Set.new(allowed_dns_queries)
+  queries_not_needed = queries_allowed - queries_made
+  unless queries_not_needed.empty?
+    info_log("Warning: these queries were allowed but not needed: #{queries_not_needed.to_a}")
+  end
 end

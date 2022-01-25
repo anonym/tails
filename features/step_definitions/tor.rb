@@ -723,20 +723,8 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or co
   debug_log("Allowed hosts: #{allowed_hosts}")
   debug_log("Allowed DNS queries: #{allowed_dns_queries}")
 
-  assert_all_connections(@sniffer.pcap_file) do |c|
-    allowed_hosts.include?({ address: c.daddr, port: c.dport }) &&
-      c.dns_question.all? { |q| allowed_dns_queries.include?(q) }
-  end
-
-  queries_made = Set.new
-  pcap_connections_helper(@sniffer.pcap_file).each do |c|
-    queries_made += c.dns_question
-  end
-  queries_allowed = Set.new(allowed_dns_queries)
-  queries_not_needed = queries_allowed - queries_made
-  unless queries_not_needed.empty?
-    info_log("Warning: these queries were allowed but not needed: #{queries_not_needed.to_a}")
-  end
+  assert_no_leaks(@sniffer.pcap_file, allowed_hosts, allowed_dns_queries)
+  debug_useless_dns_queries(@sniffer.pcap_file, allowed_dns_queries)
 end
 
 Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |default_bridges, unblock|
