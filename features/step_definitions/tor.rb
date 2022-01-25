@@ -693,7 +693,7 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   end
 end
 
-Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or connectivity check service|)$/ do |flow_target, time_sync|
+Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?:fake )?connectivity check service|)$/ do |flow_target, connectivity_check|
   case flow_target
   when 'Tor'
     allowed_hosts = allowed_hosts_under_tor_enforcement
@@ -710,12 +710,22 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or co
     raise "Unsupported flow target '#{flow_target}'"
   end
 
-  if !time_sync.empty?
-    allowed_hosts += CONNECTIVITY_CHECK_ALLOWED_NODES
+  if !connectivity_check.empty?
     # Allow connections to the local DNS resolver, used by
     # tails-get-network-time
     allowed_hosts << { address: $vmnet.bridge_ip_addr, port: 53 }
-    allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME + '.']
+
+    conn_host, conn_nodes = if connectivity_check.include? 'fake'
+                              host = 'tails.boum.org'
+                              nodes = Resolv.getaddresses(host).map do |ip|
+                                { address: ip, port: 80 }
+                              end
+                              [host, nodes]
+                            else
+                              [CONNECTIVITY_CHECK_HOSTNAME, CONNECTIVITY_CHECK_ALLOWED_NODES]
+                            end
+    allowed_hosts += conn_nodes
+    allowed_dns_queries = [conn_host + '.']
   else
     allowed_dns_queries = []
   end

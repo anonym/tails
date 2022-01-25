@@ -80,7 +80,7 @@ Feature: Time syncing
     Then Tails clock is less than 20 minutes incorrect
     When I click "Connect to Tor"
     Then I verify that Tor is ready
-    And all Internet traffic has only flowed through the default bridges or connectivity check service
+    And all Internet traffic has only flowed through the default bridges or fake connectivity check service
     # check that htpdate has done its job
     And Tails clock is less than 5 minutes incorrect
 
