@@ -400,11 +400,15 @@ After('@product', '@check_tor_leaks') do |scenario|
 
     allowed_nodes = @bridge_hosts || allowed_hosts_under_tor_enforcement
     allowed_nodes += @extra_allowed_hosts
-    debug_log("Allowed hosts: #{allowed_nodes}")
-    debug_log("Allowed DNS queries: #{@allowed_dns_queries}")
+    debug_log("[check_tor_leaks] Allowed hosts: #{allowed_nodes}")
+    debug_log("[check_tor_leaks] Allowed DNS queries: #{@allowed_dns_queries}")
     assert_all_connections(@tor_leaks_sniffer.pcap_file) do |c|
-      allowed_nodes.include?({ address: c.daddr, port: c.dport }) &&
-        c.dns_question.all? { |q| @allowed_dns_queries.include?(q) }
+      allowed_nodes.include?({ address: c.daddr, port: c.dport })
+    end
+    # yes, we could combie these two checks in a single one, and that would probably be more efficient
+    # however, we're gaining something when it comes to debugging
+    assert_all_connections(@tor_leaks_sniffer.pcap_file) do |c|
+      c.dns_question.all? { |q| @allowed_dns_queries.include?(q) }
     end
   end
 end
