@@ -34,7 +34,7 @@ Feature: Using persistent Tor bridges and pluggable transports
     Then I verify that Tor is ready
     And tca.conf includes the configured bridges
     And /var/lib/tca is still configured to persist
-    And all Internet traffic has only flowed through the configured bridges
+    And all Internet traffic has only flowed through the configured bridges or connectivity check service
 
   Scenario: Disabling persistence of Tor bridges
     When I choose to connect to Tor automatically
@@ -44,4 +44,4 @@ Feature: Using persistent Tor bridges and pluggable transports
     Then I verify that Tor is ready
     And tca.conf includes the configured bridges
     And /var/lib/tca is not configured to persist
-    And all Internet traffic has only flowed through the configured bridges
+    And all Internet traffic has only flowed through the configured bridges or connectivity check service
