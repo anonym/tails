@@ -108,7 +108,7 @@ the Tails images build process.
            | perl -pE 's{^secure-account-creation/}{}' \
            > "${TAILS_GIT_PATCHES_DIR}/series" && \
         git add "$TAILS_GIT_PATCHES_DIR" && \
-        git commit -m "Update Thunderbird patches from tails/thunderbird.git at commit ${THUNDERBIRD_GIT_COMMIT}"
+        git commit -m "Update Thunderbird patches from tails/thunderbird@${THUNDERBIRD_GIT_COMMIT}"
 
 1. Ensure the Thunderbird account setup wizard works in an image built
    from your tails.git branch.
