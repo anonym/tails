@@ -71,29 +71,28 @@ div.trophy img {
 
 /* Recommendations */
 
-#recommendations {
-  padding: 20px;
+#recommendations div.warning, #recommendations div.help {
+  background-color: #9f73d2;
+  border: 1px solid #56347C;
+  border-radius: 4px;
+  padding: 1.5em 6px 0em;
+  background-position: 1em 50%;
+  background-repeat: no-repeat;
+  padding-left: 80px;
+  margin: 1.5em 0;
 }
 
-#recommendations p:first-child {
-  padding-left: 66px;
+#recommendations div.warning {
+  background-image: url(../../../lib/dialog-warning.png);
 }
 
-#recommendations .row p {
-  background: #9f73d2;
-  padding: 10px;
-  padding-left: 66px;
+#recommendations div.help {
+  background-image: url(../../../lib/apps/help-browser.png);
 }
 
-#recommendations .row p a {
+#recommendations div a {
   color: black;
-  text-decoration: underline;
-  border: none;
-}
-
-#recommendations img.float-left {
-  float: left;
-  margin-top: 0.75em;
+  border-bottom: 1px solid black;
 }
 
 /* Toggleable */
@@ -108,10 +107,6 @@ div.toggleable .hide {
   div.trophy {
     background-position: center 0.5em;
     padding: 60px 1em 1em;
-  }
-
-  #recommendations h3 {
-    font-size: 20px;
   }
 
 }
