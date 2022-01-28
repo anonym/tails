@@ -110,5 +110,16 @@ the Tails images build process.
         git add "$TAILS_GIT_PATCHES_DIR" && \
         git commit -m "Update Thunderbird patches from tails/thunderbird@${THUNDERBIRD_GIT_COMMIT}"
 
+1. In any patch that modifies `mailnews.js`, remove comments
+   from the surrounding context lines.
+
+   Rationale: this is necessary otherwise the patch won't apply
+   on the version of `mailnews.js` that's in `omni.ja`,
+   which has such comments stripped.
+
+1. Amend the last commit with these changes:
+
+        git commit --amend "$TAILS_GIT_PATCHES_DIR"
+
 1. Ensure the Thunderbird account setup wizard works in an image built
    from your tails.git branch.
