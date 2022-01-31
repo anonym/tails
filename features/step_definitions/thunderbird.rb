@@ -148,13 +148,11 @@ end
 
 def wait_for_thunderbird_progress_bar_to_vanish(thunderbird_frame)
   try_for(120) do
-    begin
-      thunderbird_frame.child(roleName: 'status bar', retry: false)
-                       .child(roleName: 'progress bar', retry: false)
-      false
-    rescue StandardError
-      true
-    end
+    thunderbird_frame.child(roleName: 'status bar', retry: false)
+                     .child(roleName: 'progress bar', retry: false)
+    false
+  rescue StandardError
+    true
   end
 end
 
@@ -175,14 +173,12 @@ When /^I accept the (?:autoconfiguration wizard's|manual) configuration$/ do
   # The password check can fail due to bad Tor circuits.
   retry_tor do
     try_for(120) do
-      begin
-        # Spam the button, even if it is disabled (while it is still
-        # testing the password).
-        thunderbird_wizard.button('Done').click
-        false
-      rescue StandardError
-        true
-      end
+      # Spam the button, even if it is disabled (while it is still
+      # testing the password).
+      thunderbird_wizard.button('Done').click
+      false
+    rescue StandardError
+      true
     end
     true
   end
