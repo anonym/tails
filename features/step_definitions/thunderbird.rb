@@ -16,11 +16,7 @@ def thunderbird_inbox
   folder_view.child(/^Inbox( .*)?$/, roleName: 'table row', recursive: false)
 end
 
-def thunderbird_install_host_snakeoil_ssl_cert
-  # Inspiration:
-  # * https://wiki.mozilla.org/CA:AddRootToFirefox
-  # * https://mike.kaply.com/2015/02/10/installing-certificates-into-firefox/
-  debug_log('Installing host snakeoil SSL certificate')
+def enable_thunderbird_mozilla_cfg
   $vm.file_overwrite(
     '/usr/share/thunderbird/defaults/pref/autoconfig.js',
     <<~PREFS
@@ -29,6 +25,14 @@ def thunderbird_install_host_snakeoil_ssl_cert
       pref("general.config.obscure_value", 0);
     PREFS
   )
+end
+
+def thunderbird_install_host_snakeoil_ssl_cert
+  # Inspiration:
+  # * https://wiki.mozilla.org/CA:AddRootToFirefox
+  # * https://mike.kaply.com/2015/02/10/installing-certificates-into-firefox/
+  debug_log('Installing host snakeoil SSL certificate')
+  enable_thunderbird_mozilla_cfg
   cert = File.read('/etc/ssl/certs/ssl-cert-snakeoil.pem')
              .split("\n")
              .reject { |line| /^-----(BEGIN|END) CERTIFICATE-----$/.match(line) }
