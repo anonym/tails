@@ -183,12 +183,6 @@ When /^I accept the (?:autoconfiguration wizard's|manual) configuration$/ do
     true
   end
 
-  # Workaround #17272
-  if @protocol == 'POP3'
-    thunderbird_app
-      .child("Error with account #{$config['Thunderbird']['address']}")
-      .button('OK').click
-  end
 
   # The account isn't fully created before we fetch our mail. For
   # instance, if we'd try to send an email before this, yet another
@@ -205,14 +199,8 @@ When /^I accept the (?:autoconfiguration wizard's|manual) configuration$/ do
   step 'I fetch my email'
 end
 
-When /^I select the autoconfiguration wizard's (IMAP|POP3) choice$/ do |protocol|
-  choice = if protocol == 'IMAP'
-             'IMAP (remote folders)'
-           else
-             'POP3 (keep mail on your computer)'
-           end
-  thunderbird_wizard.child(choice, roleName: 'radio button').click
-  @protocol = protocol
+When /^I select the autoconfiguration wizard's IMAP choice$/ do
+  thunderbird_wizard.child('IMAP (remote folders)', roleName: 'radio button').click
 end
 
 When /^I send an email to myself$/ do
