@@ -51,7 +51,7 @@ Feature: Time syncing
     And the computer boots Tails
     Then the system clock is just past Tails' source date
 
-  Scenario: I can connect to obfs4 bridges having a clock East of UTC in easy mode without needing to fix the clock
+  Scenario: I can automatically connect to obfs4 bridges with a clock East of UTC without needing to fix the clock
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+8 hours +15 minutes"
     And all notifications have disappeared
@@ -64,7 +64,7 @@ Feature: Time syncing
     And all Internet traffic has only flowed through the default bridges or connectivity check service
     And Tails clock is less than 5 minutes incorrect
 
-  Scenario: I can connect to obfs4 bridges having a clock East of UTC in easy mode even when time sync fails
+  Scenario: I can manually recover from time sync failure when connecting automatically to obfs4 bridges with a clock East of UTC
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+8 hours +15 minutes"
     And all notifications have disappeared
@@ -84,7 +84,7 @@ Feature: Time syncing
     # check that htpdate has done its job
     And Tails clock is less than 5 minutes incorrect
 
-  Scenario: I can connect to obfs4 bridges having a clock East of UTC in hide mode
+  Scenario: I can connect to obfs4 bridges having a clock East of UTC while hiding that I am using Tor
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+8 hours +15 minutes"
     And all notifications have disappeared

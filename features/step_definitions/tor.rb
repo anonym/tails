@@ -382,7 +382,7 @@ rescue StandardError => e
   raise 'Expected TCAConnectionFailure to be raised but got ' \
         "#{e.class.name}: #{e}"
 else
-  raise 'TCA managed to connect to Tor with normal bridges in hide mode'
+  raise 'TCA managed to connect to Tor but was expected to fail'
 end
 
 def tca_configure(mode, connect: true, &block)
@@ -391,7 +391,7 @@ def tca_configure(mode, connect: true, &block)
   when :easy
     radio_button_label = '<b>Connect to Tor _automatically (easier)</b>'
     # If we run the step "I make sure time sync before Tor connects cannot work",
-    # @allowed_dns_queries is already initialized, and the corresponding extra_allowed_hosts have already been
+    # @allowed_dns_queries is already initialized, and the corresponding add_extra_allowed_hosts have already been
     # called
     unless @allowed_dns_queries && !@allowed_dns_queries.empty?
       @allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME + '.']
