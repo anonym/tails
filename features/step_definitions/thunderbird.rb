@@ -7,7 +7,7 @@ def thunderbird_main
 end
 
 def thunderbird_wizard
-  thunderbird_app.child('Set Up Your Existing Email Address', roleName: 'frame')
+  thunderbird_app.child('Account Setup - Mozilla Thunderbird', roleName: 'frame')
 end
 
 def thunderbird_inbox
@@ -129,21 +129,21 @@ When /^I enter my email credentials into the autoconfiguration wizard$/ do
   address = $config['Thunderbird']['address']
   name = address.split('@').first
   password = $config['Thunderbird']['password']
-  thunderbird_wizard.child('Your name:', roleName: 'entry').typeText(name)
-  thunderbird_wizard.child('Email address:',
+  thunderbird_wizard.child('Your full name', roleName: 'entry').typeText(name)
+  thunderbird_wizard.child('Email address',
                            roleName: 'entry').typeText(address)
-  thunderbird_wizard.child('Password:', roleName: 'password text').typeText(password)
+  thunderbird_wizard.child('Password', roleName: 'password text').typeText(password)
   thunderbird_wizard.button('Continue').click
   # This button is shown if and only if a configuration has been found
   try_for(120) { thunderbird_wizard.button('Done') }
 end
 
 Then /^the autoconfiguration wizard's choice for the (incoming|outgoing) server is secure (.+)$/ do |type, protocol|
-  type = type.capitalize + ':'
-  section = thunderbird_wizard.child(type, roleName: 'unknown')
-  section.child(protocol, roleName: 'label')
-  assert(section.child?('SSL', roleName: 'label') ||
-         section.child?('STARTTLS', roleName: 'label'))
+  type = type.capitalize
+  section = thunderbird_wizard.child(type, roleName: 'heading').parent
+  subsections = section.children(roleName: 'section')
+  assert(subsections.any? { |s| s.text == protocol })
+  assert(subsections.any? { |s| s.text == 'SSL/TLS' || s.text == 'STARTTLS' })
 end
 
 def wait_for_thunderbird_progress_bar_to_vanish(thunderbird_frame)
@@ -170,19 +170,20 @@ When /^I fetch my email$/ do
 end
 
 When /^I accept the (?:autoconfiguration wizard's|manual) configuration$/ do
+  thunderbird_wizard.button('Done').click
+
   # The password check can fail due to bad Tor circuits.
   retry_tor do
     try_for(120) do
       # Spam the button, even if it is disabled (while it is still
       # testing the password).
-      thunderbird_wizard.button('Done').click
+      thunderbird_wizard.button('Finish').click
       false
     rescue StandardError
       true
     end
     true
   end
-
 
   # The account isn't fully created before we fetch our mail. For
   # instance, if we'd try to send an email before this, yet another
