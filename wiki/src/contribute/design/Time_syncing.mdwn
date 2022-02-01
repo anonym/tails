@@ -118,7 +118,7 @@ The pools are listed in [[!tails_gitweb config/chroot_local-includes/etc/default
 Basically, Tails `htpdate` pick three random servers (one from each
 pool), and then build the mediate of the three advertised dates.
 
-# Fingerprinting Tails users
+## Fingerprinting Tails users
 
 Tails runs HTP through Tor, so the fingerprintability should be
 limited to traffic flow only. It should be noted that HTP only fetches
@@ -130,10 +130,14 @@ Tails developers still need to think thoroughly of these questions:
 are such fingerprinting possibilities a serious problem? What kind of
 efforts and compromise should be made to prevent these?
 
-# Implementation
+## Implementation
 
 A Network Manager hook runs the whole thing:
-[[!tails_gitweb config/chroot_local-includes/etc/NetworkManager/dispatcher.d/20-time.sh]].
+
+ - [[!tails_gitweb config/chroot_local-includes/etc/NetworkManager/dispatcher.d/20-time.sh]]
+ - [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/htpdate.service]]
+
+# Other aspects
 
 The `hwclock.sh` initscript is disabled at reboot/shutdown time,
 otherwise it would set the hardware clock to the system time,
@@ -142,8 +146,3 @@ hardware being used" design goal:
 
 * [[!tails_gitweb config/chroot_local-patches/do-not-modify-hardware-clock.diff]]
 * [[!tails_gitweb config/chroot_local-hooks/52-update-rc.d]]
-
-See also:
-
-* [[!tails_gitweb config/chroot_local-hooks/46-configure-htpdate]]
-* [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/htpdate.service]]
