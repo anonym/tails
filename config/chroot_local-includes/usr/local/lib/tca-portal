@@ -257,7 +257,8 @@ class Handler(socketserver.StreamRequestHandler):
         this method is intended to be run in a dedicated Process
         """
         process = cmd.run(req)
-        process.communicate()
+        # stdout and stderr from the process
+        _, _ = process.communicate()
         if process.returncode == 0:
             response = req.respond(result={"returncode": process.returncode})
         else:
