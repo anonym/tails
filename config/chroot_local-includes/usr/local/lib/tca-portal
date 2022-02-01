@@ -142,7 +142,7 @@ class SetTimeCommand(RootCommand):
     def __init__(self):
         super().__init__(['/usr/local/lib/tails-set-date'], True)
         # we know our argument is an ISO8601 date whose separator is a T, and with no microseconds
-        self.re = re.compile(r'[0-9+:T-]*')
+        self.re = re.compile(r'^[0-9+:T-]*$')
 
     def validate_args(self, args: list) -> list:
         if len(args) != 1:
