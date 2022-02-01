@@ -122,8 +122,8 @@ class RootCommand(BaseCommand):
 
 class UserCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> list:
-        drop = ["runuser", "-u", LIVE_USERNAME]
-        env = ["env", *gnome_env_vars()]
+        drop = ["/sbin/runuser", "-u", LIVE_USERNAME]
+        env = ["/usr/bin/env", *gnome_env_vars()]
 
         args = [*drop, "--", *env, *(super().full_command(request))]
         return args
@@ -131,8 +131,8 @@ class UserCommand(BaseCommand):
 
 class PersistenceSetupCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> list:
-        drop = ["runuser", "-u", PERSISTENCE_SETUP_USERNAME]
-        env = ["env", *gnome_env_vars()]
+        drop = ["/sbin/runuser", "-u", PERSISTENCE_SETUP_USERNAME]
+        env = ["/usr/bin/env", *gnome_env_vars()]
 
         args = [*drop, "--", *env, *(super().full_command(request))]
         return args
@@ -171,14 +171,14 @@ class Handler(socketserver.StreamRequestHandler):
     MAX_LINESIZE = 1024
 
     spawn_commands = {  # some commands just mean "run this specified commands as LIVE_USERNAME, please"
-        "open-unsafebrowser": UserCommand(["gtk-launch", "unsafe-browser"], False),
-        "open-tbb": UserCommand(["gtk-launch", "tor-browser"], False),
+        "open-unsafebrowser": UserCommand(["/usr/bin/gtk-launch", "unsafe-browser"], False),
+        "open-tbb": UserCommand(["/usr/bin/gtk-launch", "tor-browser"], False),
         "open-networkmonitor": UserCommand(
-            ["gnome-system-monitor", "--show-resources-tab"], False
+            ["/usr/bin/gnome-system-monitor", "--show-resources-tab"], False
         ),
-        "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
-        "open-documentation": UserCommand(["tails-documentation"], True),
-        "open-wifi-config": UserCommand(['systemctl', '--user', 'start', 'gnome-wifi-panel'], False),
+        "open-onioncircuits": UserCommand(["/usr/bin/gtk-launch", "onioncircuits"], False),
+        "open-documentation": UserCommand(["/usr/local/bin/tails-documentation"], True),
+        "open-wifi-config": UserCommand(['/usr/bin/systemctl', '--user', 'start', 'gnome-wifi-panel'], False),
         "set-tor-sandbox": RootCommand(['/usr/local/lib/tor-pt-configuration-helper'], True),
         # It would be nicer to do this in Python without calling out
         # to external processes, but it would require either implementing
