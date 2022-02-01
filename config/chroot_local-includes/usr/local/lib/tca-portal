@@ -202,7 +202,10 @@ class Handler(socketserver.StreamRequestHandler):
 
     def handle_line(self, line: bytes) -> Optional[RPCResponse]:
         """
-        Parse the line and do what's appropriate.
+        This will handle a line, including parsing the bytes on the wire, associating this to a command,
+        validating it, and finally spawning a handler for that request.
+
+        So 99% of the code related to receiving a single request starts from here.
 
         Return an RPCResponse only if there is some error.
         Otherwise, will spawn a dedicated process. the outcome of it will be pushed to outgoing_q
