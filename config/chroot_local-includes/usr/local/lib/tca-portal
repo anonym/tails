@@ -94,7 +94,7 @@ class BaseCommand:
         '''
         self.full_command(request)
 
-    def validate_args(self, args: list) -> list:
+    def validate_args(self, args: tuple) -> tuple:
         '''
         Validate and update the command arguments.
 
@@ -106,8 +106,8 @@ class BaseCommand:
             raise InvalidArgsError("Arguments are not accepted for this command")
         return args
 
-    def full_command(self, request: RPCRequest) -> list:
-        cmd = self.cmd + self.validate_args(request.args)
+    def full_command(self, request: RPCRequest) -> tuple:
+        cmd = (*self.cmd, *self.validate_args(request.args))
         return cmd
 
     def run(self, request: RPCRequest):
@@ -121,30 +121,30 @@ class RootCommand(BaseCommand):
 
 
 class UserCommand(BaseCommand):
-    def full_command(self, request: RPCRequest) -> list:
-        drop = ["/sbin/runuser", "-u", LIVE_USERNAME]
-        env = ["/usr/bin/env", *gnome_env_vars()]
+    def full_command(self, request: RPCRequest) -> tuple:
+        drop = ("/sbin/runuser", "-u", LIVE_USERNAME)
+        env = ("/usr/bin/env", *gnome_env_vars())
 
-        args = [*drop, "--", *env, *(super().full_command(request))]
+        args = (*drop, "--", *env, *(super().full_command(request)))
         return args
 
 
 class PersistenceSetupCommand(BaseCommand):
-    def full_command(self, request: RPCRequest) -> list:
-        drop = ["/sbin/runuser", "-u", PERSISTENCE_SETUP_USERNAME]
-        env = ["/usr/bin/env", *gnome_env_vars()]
+    def full_command(self, request: RPCRequest) -> tuple:
+        drop = ("/sbin/runuser", "-u", PERSISTENCE_SETUP_USERNAME)
+        env = ("/usr/bin/env", *gnome_env_vars())
 
-        args = [*drop, "--", *env, *(super().full_command(request))]
+        args = (*drop, "--", *env, *(super().full_command(request)))
         return args
 
 
 class SetTimeCommand(RootCommand):
     def __init__(self):
-        super().__init__(['/usr/local/lib/tails-set-date'], True)
+        super().__init__(('/usr/local/lib/tails-set-date',), True)
         # we know our argument is an ISO8601 date whose separator is a T, and with no microseconds
         self.re = re.compile(r'^[0-9+:T-]*$')
 
-    def validate_args(self, args: list) -> list:
+    def validate_args(self, args: tuple) -> tuple:
         if len(args) != 1:
             raise InvalidArgsError("Invalid number of arguments")
         # args[0] should be sth like 2021-08-06T17:38+00:00
@@ -171,28 +171,28 @@ class Handler(socketserver.StreamRequestHandler):
     MAX_LINESIZE = 1024
 
     spawn_commands = {  # some commands just mean "run this specified commands as LIVE_USERNAME, please"
-        "open-unsafebrowser": UserCommand(["/usr/bin/gtk-launch", "unsafe-browser"], False),
-        "open-tbb": UserCommand(["/usr/bin/gtk-launch", "tor-browser"], False),
+        "open-unsafebrowser": UserCommand(("/usr/bin/gtk-launch", "unsafe-browser"), False),
+        "open-tbb": UserCommand(("/usr/bin/gtk-launch", "tor-browser"), False),
         "open-networkmonitor": UserCommand(
-            ["/usr/bin/gnome-system-monitor", "--show-resources-tab"], False
+            ("/usr/bin/gnome-system-monitor", "--show-resources-tab"), False
         ),
-        "open-onioncircuits": UserCommand(["/usr/bin/gtk-launch", "onioncircuits"], False),
-        "open-documentation": UserCommand(["/usr/local/bin/tails-documentation"], True),
-        "open-wifi-config": UserCommand(['/usr/bin/systemctl', '--user', 'start', 'gnome-wifi-panel'], False),
-        "set-tor-sandbox": RootCommand(['/usr/local/lib/tor-pt-configuration-helper'], True),
+        "open-onioncircuits": UserCommand(("/usr/bin/gtk-launch", "onioncircuits"), False),
+        "open-documentation": UserCommand(("/usr/local/bin/tails-documentation"), True),
+        "open-wifi-config": UserCommand(('/usr/bin/systemctl', '--user', 'start', 'gnome-wifi-panel'), False),
+        "set-tor-sandbox": RootCommand(('/usr/local/lib/tor-pt-configuration-helper', ), True),
         # It would be nicer to do this in Python without calling out
         # to external processes, but it would require either implementing
         # the Popen interface that the portal assumes, or refactoring
         # the Handler.run and Command.run code a fair bit:
         # https://gitlab.tails.boum.org/tails/tails/-/merge_requests/544#note_174919
         "is-tor-configuration-persistent?": PersistenceSetupCommand(
-            ["/usr/local/lib/tails-tor-config-persistence", "is-enabled"],
+            ("/usr/local/lib/tails-tor-config-persistence", "is-enabled"),
             False),
         "enable-tor-configuration-persistence": PersistenceSetupCommand(
-            ["/usr/local/lib/tails-tor-config-persistence", "enable"],
+            ("/usr/local/lib/tails-tor-config-persistence", "enable"),
             False),
         "disable-tor-configuration-persistence": PersistenceSetupCommand(
-            ["/usr/local/lib/tails-tor-config-persistence", "disable"],
+            ("/usr/local/lib/tails-tor-config-persistence", "disable"),
             False),
         "set-system-time": SetTimeCommand(),
     }
@@ -333,7 +333,7 @@ def main():
     p.add_argument(
         "--log-level",
         metavar="LEVEL",
-        choices=["DEBUG", "INFO", "WARNING", "CRITICAL"],
+        choices=("DEBUG", "INFO", "WARNING", "CRITICAL"),
         default="INFO",
     )
     args = p.parse_args()
