@@ -12,7 +12,18 @@ export_gnome_env() {
     # Get LIVE_USERNAME
     . /etc/live/config.d/username.conf
     local gnome_shell_pid
-    gnome_shell_pid="$(pgrep --newest --euid "${LIVE_USERNAME}" --exact gnome-shell)"
+
+    # since POSIX shell doesn't have arrays, let's use argv as a "pgrepOpts" array
+    set --
+    # --ns only works if we are root
+    [ "$(id -u)" = 0 ] && set -- --ns 1 --nslist mnt
+
+    #shellcheck disable=SC2086
+    gnome_shell_pid="$(pgrep --newest --euid "${LIVE_USERNAME}" \
+            --full --exact /usr/bin/gnome-shell \
+             "$@" )"
+    set --
+
     if [ -z "${gnome_shell_pid}" ]; then
         return
     fi
