@@ -321,7 +321,8 @@ def main():
         "--systemd-socket",
         action="store_true",
         default=False,
-        help="use systemd-activated socket",
+        help="use systemd-activated socket; "
+        "you **MUST** set it in production. Not doing so is considered insecure!",
     )
     socket_parser.add_argument(
         "--listen",
@@ -341,6 +342,11 @@ def main():
     configure_logging(hint='syslog', ident='tca-portal', **log_conf)
 
     if not args.systemd_socket:
+        # Yes, this is probably unsafe, because TOCTOU. However:
+        #  - this code path is just there for development. We always use --systemd-socket in practice
+        #  - the default path, /run/tca-portal.sock, is in a directory which is only writable by root
+        #  - even if an attacker manages to put a file they own in args.listen, this will lead to
+        #    ForkingUnixServer failing later, i.e.: a denial of service.
         if os.path.exists(args.listen) and stat.S_ISSOCK(os.stat(args.listen).st_mode):
             os.remove(args.listen)
     if args.systemd_socket:
