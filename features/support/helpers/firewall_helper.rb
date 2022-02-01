@@ -154,14 +154,14 @@ def assert_no_leaks(pcap_file, allowed_hosts, allowed_dns_queries, **opts)
   end
 end
 
-def debug_useless_dns_queries(pcap_file, allowed_dns_queries)
+def debug_useless_dns_exceptions(pcap_file, allowed_dns_queries)
   queries_made = Set.new
   pcap_connections_helper(pcap_file).each do |c|
     queries_made += c.dns_question
   end
   queries_allowed = Set.new(allowed_dns_queries)
-  queries_not_needed = queries_allowed - queries_made
-  unless queries_not_needed.empty?
-    info_log("Warning: these queries were allowed but not needed: #{queries_not_needed.to_a}")
+  useless_dns_exceptions = queries_allowed - queries_made
+  unless useless_dns_exceptions.empty?
+    info_log("Warning: these queries were allowed but not needed: #{useless_dns_exceptions.to_a}")
   end
 end

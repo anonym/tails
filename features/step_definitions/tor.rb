@@ -734,7 +734,7 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?
   debug_log("Allowed DNS queries: #{allowed_dns_queries}")
 
   assert_no_leaks(@sniffer.pcap_file, allowed_hosts, allowed_dns_queries)
-  debug_useless_dns_queries(@sniffer.pcap_file, allowed_dns_queries)
+  debug_useless_dns_exceptions(@sniffer.pcap_file, allowed_dns_queries)
 end
 
 Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |default_bridges, unblock|
