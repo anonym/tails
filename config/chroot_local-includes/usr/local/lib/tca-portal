@@ -141,12 +141,20 @@ class PersistenceSetupCommand(BaseCommand):
 class SetTimeCommand(RootCommand):
     """
     >>> c = SetTimeCommand()
-    >>> c.validate_args(('123',))
-    ('123',)
+    >>> c.validate_args(('12345678901234',))
+    ('12345678901234',)
 
-    Empty time is currently accepted:
+    Empty time is refused:
     >>> c.validate_args(('',))
-    ('',)
+    Traceback (most recent call last):
+        ...
+    InvalidArgsError: Datestring too short
+
+    Other characters are refused:
+    >>> c.validate_args(('-123456 days',))
+    Traceback (most recent call last):
+        ...
+    InvalidArgsError: Datestring has invalid characters
     """
     def __init__(self):
         super().__init__(('/usr/local/lib/tails-set-date',), True)
@@ -160,6 +168,8 @@ class SetTimeCommand(RootCommand):
         datestring = args[0]
         if len(datestring) > 22:
             raise InvalidArgsError("Datestring too long")
+        if len(datestring) < 10:
+            raise InvalidArgsError("Datestring too short")
         if not self.re.fullmatch(datestring):
             raise InvalidArgsError("Datestring has invalid characters")
         return args
