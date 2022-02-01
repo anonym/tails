@@ -2,13 +2,20 @@
 
 # Introduction
 
-Tor freaks out if the system clock is too incorrect:
+Tor will not bootstrap if the system clock is too incorrect,
+and then Tails is effectively useless for networking:
 
  - Direct connection or regular bridge: circa ±24 hours time skew is acceptable;
    beyond that, Tor won't bootstrap.
 
- - obfs4 bridge: very little time skew is acceptable (only a few hours
-   in the best case scenario)
+ - obfs4 bridge: the system clock just has to be off by a few hours for
+   `obfs4proxy` to become completely unable to connect to obfs4 bridges.
+
+   That problematic situation is quite common: certain operating systems
+   (including Windows up to Windows 8 at least) set the hardware (BIOS) clock to
+   the local time, and since Tails uses UTC (and assumes the BIOS clock is UTC),
+   this becomes a problem for every user but those living in the
+   GMT+0/UTC timezone.
 
 It is therefore important for us to ensure that Tails somehow
 automatically synchronizes the system time at start in a safe manner.
