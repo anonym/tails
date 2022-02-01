@@ -139,6 +139,15 @@ class PersistenceSetupCommand(BaseCommand):
 
 
 class SetTimeCommand(RootCommand):
+    """
+    >>> c = SetTimeCommand()
+    >>> c.validate_args(('123',))
+    ('123',)
+
+    Empty time is currently accepted:
+    >>> c.validate_args(('',))
+    ('',)
+    """
     def __init__(self):
         super().__init__(('/usr/local/lib/tails-set-date',), True)
         # we know our argument is an ISO8601 date whose separator is a T, and with no microseconds
@@ -336,10 +345,20 @@ def main():
         choices=("DEBUG", "INFO", "WARNING", "CRITICAL"),
         default="INFO",
     )
+    p.add_argument("--doctest-only",
+        action="store_true",
+        default=False,
+        )
+
     args = p.parse_args()
 
     log_conf = {'level': args.log_level}
     configure_logging(hint='syslog', ident='tca-portal', **log_conf)
+
+    if args.doctest_only:
+        import doctest
+        failures, tests = doctest.testmod(verbose=(args.log_level == 'DEBUG'))
+        sys.exit(1 if failures > 0 else 0)
 
     if not args.systemd_socket:
         # Yes, this is probably unsafe, because TOCTOU. However:
