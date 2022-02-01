@@ -316,13 +316,14 @@ def main():
         print("%s must be run as root" % sys.argv[0], file=sys.stderr)
         sys.exit(1)
     p = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
-    p.add_argument(
+    socket_parser = p.add_mutually_exclusive_group(required=False)
+    socket_parser.add_argument(
         "--systemd-socket",
         action="store_true",
         default=False,
         help="use systemd-activated socket",
     )
-    p.add_argument(
+    socket_parser.add_argument(
         "--listen",
         metavar="SOCKET-PATH",
         default="/run/tca-portal.sock",
