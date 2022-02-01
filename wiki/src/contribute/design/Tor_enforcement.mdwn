@@ -15,13 +15,10 @@ Network filter
 
 [[!inline pages="contribute/design/Tor_enforcement/Network_filter" raw=yes sort="age"]]
 
-<a id="non-tor-traffic"></a>
+<h1 id="non-tor-traffic">Other non-Tor traffic</h1>
 
-Other non-Tor traffic
-=====================
-
-When the user [allows Tails to connect to Tor
-automatically](https://gitlab.tails.boum.org/tails/blueprints/-/wikis/network_connection#consent-question),
+When the user [[chooses to connect to Tor
+automatically|doc/anonymous_internet/tor#automatic]],
 they consent to Tails initiating Internet activity without going through Tor, in
 order to help them connect to Tor.
 
@@ -117,9 +114,7 @@ for, that is our product strategy.
 Currently implemented
 ---------------------
 
-<a id="time-sync"></a>
-
-### Time synchronization
+<h3 id="time-sync">Time synchronization</h3>
 
 #### Current implementation
 
@@ -150,6 +145,8 @@ fails: [[!tails_ticket 18790]].
 
 #### Candidates
 
+Before deciding to use Fedora's captive portal detection, we considered other candidates:
+
 - Google captive portal detection: only fails the "aggregation" guideline
 
   ⇒ perfect except when Google is a relevant adversary in the user's threat model
@@ -173,8 +170,7 @@ fails: [[!tails_ticket 18790]].
 
 #### Dismissed options
 
-We determined that each of these candidate options are strictly worse than
-another one:
+Each of these dismissed options are strictly worse than any of our candidates:
 
 - Get the time from Riseup via a HTTPS request to https://riseup.net/canary (HTP)
   - fails the "connection pattern" guideline: short lived connection,
