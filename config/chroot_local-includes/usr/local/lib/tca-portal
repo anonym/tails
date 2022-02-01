@@ -202,13 +202,14 @@ class Handler(socketserver.StreamRequestHandler):
 
     def handle_line(self, line: bytes) -> Optional[RPCResponse]:
         """
-        This will handle a line, including parsing the bytes on the wire, associating this to a command,
-        validating it, and finally spawning a handler for that request.
+        This will handle bytes that we believe might form a valid request (i.e.: a not-too-long sequence of
+        bytes with no newline in between; see Handler.reader) and check if they actually do.
+        If the bytes do not form a syntactically valid request, an RPCResponse is returned.
 
-        So 99% of the code related to receiving a single request starts from here.
+        If `line` is indeed a syntactically valid request, job is passed to Handler.handle_request, which will
+        perform additional validation and spawn a dedicated process to handle the request.
 
-        Return an RPCResponse only if there is some error.
-        Otherwise, will spawn a dedicated process. the outcome of it will be pushed to outgoing_q
+        If every validation passes, None is returned.
         """
         try:
             req = self.protocol.parse_request(line)
@@ -229,6 +230,15 @@ class Handler(socketserver.StreamRequestHandler):
             return req.error_respond(error="Server error")
 
     def handle_request(self, req: RPCRequest) -> Optional[RPCResponse]:
+        """
+        This will handle a request from the client.
+
+        It will perform high-level validation: check that the request refers to a valid command, and validate
+        the arguments to that command.
+        If the validation fails, a RPCResponse will be returned.
+
+        After that, a process will be spawned; the outcome of it will be pushed to outgoing_q
+        """
         if req.method not in self.valid_commands:
             return req.error_respond(error="Invalid method")
         if req.method not in self.spawn_commands:
@@ -267,8 +277,8 @@ class Handler(socketserver.StreamRequestHandler):
         """
         Read from the socket. This method is intended to be run as a dedicated process.
 
-        It reads from the socket, process the data accordingly, and pass it to handle_line (which will spawn
-        dedicated processes for it).
+        It reads from the socket, process the data accordingly, and pass it to handle_line (which will deal
+        with parsing, validating, and spawning dedicated processes for it).
         """
         log = getLogger("traffic")
         while True:
