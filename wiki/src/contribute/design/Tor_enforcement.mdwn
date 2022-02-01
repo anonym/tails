@@ -107,14 +107,46 @@ such non-Tor Internet activity:
 Case studies
 ------------
 
-Here we evaluate a few candidate services that we might want to connect to,
+Here we can evaluate a few candidate services that we might want to connect to,
 to see how they perform regarding to the above guidelines.
 
 Spoiler alert: there's no solution that perfectly follows all of our guidelines
 so the decision will primarily depend on which threat models we want to optimize
 for, that is our product strategy.
 
+Currently implemented
+---------------------
+
+<a id="time-sync"></a>
+
 ### Time synchronization
+
+#### Current implementation
+
+To set the system clock to the current correct UTC date & time before trying to
+connect to Tor, Tails emulates Fedora's *NetworkManager* captive portal
+detection mechanism.
+
+The [[!tails_gitweb config/chroot_local-includes/usr/local/lib/tails-get-network-time
+desc="`tails-get-network-time` program"]] behaves as closely
+to *NetworkManager* as possible and returns the current time according to the
+web server used by Fedora:
+
+ - [[!tails_gitweb config/chroot_local-includes/etc/tails-get-network-time-url desc="configuration file"]]
+ - [[!tails_gitweb config/chroot_local-packageslists/tails-get-network-time.list desc="dependencies"]]
+
+Incidentally, this program also has heuristics to detect captive portals,
+but currently Tails merely logs the result of these checks ([[!tails_ticket 5785]]).
+
+`tails-get-network-time` is run by `tca-portal.service`, which accordingly
+is allowed to initiate network traffic without Tor:
+
+ - `tails-get-network-time` is run as the `clearnet` user
+ - `tca-portal.service` uses the DNS server from DHCP:
+   [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/tca-portal.service]]
+
+It is not clear at the moment what we should do when this time sync mechanism
+fails: [[!tails_ticket 18790]].
 
 #### Candidates
 
@@ -181,9 +213,3 @@ another one:
     HTP), and then there's no reason to do NTP on top. This could become
     a candidate again if we decided to implement time synchronization without
     captive portal detection.
-
-Currently implemented
----------------------
-
-At the time we're writing this, no such background non-torified
-Internet connection is implemented in current Tails.

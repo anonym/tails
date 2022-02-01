@@ -2,21 +2,35 @@
 
 # Introduction
 
-Tor sometimes freaks out if they detect too large clock
-skews. It is therefore important for us to ensure that Tails somehow
+Tor freaks out if the system clock is too incorrect:
+
+ - Direct connection or regular bridge: circa ±24 hours time skew is acceptable;
+   beyond that, Tor won't bootstrap.
+
+ - obfs4 bridge: very little time skew is acceptable (only a few hours
+   in the best case scenario)
+
+It is therefore important for us to ensure that Tails somehow
 automatically synchronizes the system time at start in a safe manner.
 
 However, our only automated time syncing mechanism (`htpdate`) runs on Tor
-itself, which makes this a catch 22. We tackle this problem providing a method
-for the user to set the clock manually, if connection to Tor fails.
+itself, which makes this a catch 22. We tackle this problem in 2 ways
+that we describe below.
 
 # Overview
 
 In short this is how time syncing is performed when Tails starts:
 
+0. If the user has consented to Tails initiating Internet activity without
+   going through Tor, in order to help them connect to Tor, then
+   Tails sets the clock from the network without going through Tor,
+   piggy-backing on captive portal detection.
+
 0. Start Tor.
+
 0. If Tor can't connect, provide the user an opportunity to set the correct
    time and retry.
+
 0. As soon as Tor works, run HTP (see below) through Tor to get a more correct
    system time.
 
@@ -27,6 +41,16 @@ services running Tor prior to version 0.2.3.7-alpha requires clients
 to have a time that is no more than 30 minutes incorrect).
 
 The hardware clock is not affected.
+
+# Piggy-backing on captive portal detection
+
+When the user consented to this, Tails piggy-backs on widespread captive portal
+detection mechanisms in order to set the system clock from the network without
+going through Tor.
+
+For details, see the corresponding [[design
+documentation|contribute/design/Tor_enforcement#time-sync]], which includes
+a discussion about security and fingerprinting aspects of this mechanism.
 
 # HTP
 
