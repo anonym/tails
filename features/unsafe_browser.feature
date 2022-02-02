@@ -60,17 +60,15 @@ Feature: Browsing the web using the Unsafe Browser
     Then I see "BrowserProxyRefused.png" after at most 60 seconds
 
   @not_release_blocker
-  Scenario: The Unsafe Browser only makes user-initiated connections to the Internet
+  Scenario: The Unsafe Browser only makes user-initiated non-Torified connections
     Given I have started Tails from DVD and logged in with the Unsafe Browser enabled and the network is connected
     And I capture all network traffic
-    And Tor is ready
     And I configure the Unsafe Browser to check for updates more frequently
     But checking for updates is disabled in the Unsafe Browser's configuration
     When I successfully start the Unsafe Browser
     Then the Unsafe Browser has started
     And I wait 120 seconds
     And the clearnet user has not sent packets out to the Internet
-    And all Internet traffic has only flowed through Tor or connectivity check service
 
   @not_release_blocker
   Scenario: The Unsafe Browser cannot be started when I am offline
