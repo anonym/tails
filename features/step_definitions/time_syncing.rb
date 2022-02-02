@@ -51,7 +51,8 @@ When /^I make sure time sync before Tor connects cannot work$/ do
   end
   $vm.file_overwrite(
     '/etc/tails-get-network-time-url',
-    'http://tails.boum.org/idontexist.txt'
+    # tails-get-network-time forbids redirects
+    'http://tails.boum.org/I_am_redirected_to_HTTPS'
   )
 end
 
