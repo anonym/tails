@@ -47,7 +47,11 @@ def post_snapshot_restore_hook(snapshot_name)
   # with the other relays, so we ensure that we have fresh circuits.
   # Time jumps and incorrect clocks also confuses Tor in many ways.
   if $vm.connected_to_network?
-    if $vm.execute('systemctl --quiet is-active tor@default.service').success?
+    # Since Tor Connection was introduced, tor@default.service is always active, so we need to check if Tor
+    # was required in the snapshot we are using. For example, the with-network-logged-in-unsafe-browser have
+    # network connected but no Tor configured. Checking DisableNetwork is useful
+    if $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
+       $vm.execute('/usr/local/lib/tor_variable get --type=conf DisableNetwork').stdout.chomp == '0'
       $vm.execute('systemctl stop tor@default.service')
       $vm.host_to_guest_time_sync
       $vm.execute('systemctl start tor@default.service')
