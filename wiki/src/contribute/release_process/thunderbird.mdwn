@@ -18,7 +18,7 @@ the Tails images build process.
 
    1. Add a remote for Debian:
 
-        git remote add debian-upstream https://salsa.debian.org/mozilla-team/thunderbird.git
+           git remote add debian-upstream https://salsa.debian.org/mozilla-team/thunderbird.git
 
 1. Set environment variables:
 
@@ -58,22 +58,38 @@ the Tails images build process.
 
    3. If our patches applied cleanly, move on. Otherwise:
 
-      XXX (undocumented as we prefer focusing our efforts on
-      upstreaming our patches than on documenting the current,
-      temporary state of things): after reverse-engineering the state
-      of our Git repository, it seems that one should create a new
-      `secure_account_creation-${VERSION:?}` branch forked of the
-      latest existing one, transplant our commits on top of `${TAG}`
-      with the appropriate `--onto` option, squash our commits into
-      a new `secure_account_creation-${VERSION:?}-squashed` branch,
-      extract updated patches from there into
-      `debian/patches/secure-account-creation/`.
+      1. Create or refresh an up-to-date `secure_account_creation-${VERSION:?}` branch:
+
+         - If that branch already exists: rebase our own commits onto the
+           `upstream/X.Y.Z` branch you are upgrading to. For example:
+
+                 git checkout secure_account_creation-91
+                 git pull
+                 git rebase -i --onto upstream/91.42.0 upstream/91.5.0
+
+         - Else, if that branch does not exist yet, that's probably because you're
+           upgrading to a major new Thunderbird release. In that case, fork the
+           branch off our most recent such branch, then rebase our own commits
+           onto the `upstream/X.Y.Z` branch you are upgrading to. For example:
+
+                 git checkout -b secure_account_creation-91 secure_account_creation-78
+                 git rebase -i --onto upstream/91.5.0 upstream/78.9.0
+
+         Either way, if a particular commit is not trivial to update,
+         see [[!tails_ticket 6156]]: it might be OK to drop that patch.
+
+      2. Use `git format-patch` to save our commits to files.
+
+         For example: `git format-patch upstream/91.5.0..secure_account_creation-91`
+
+      3. On the `tails/buster` branch, replace the contents of
+         `debian/patches/secure-account-creation/` with these updated patches.
+
+      4. Update `debian/patches/series`.
 
 1. Git push:
 
         git push --follow-tags origin tails/buster
-
-   Note: pushing some tags will fail due to [[!tails_ticket 11531]].
 
 1. Set variables according to your local environment:
 
@@ -92,7 +108,18 @@ the Tails images build process.
            | perl -pE 's{^secure-account-creation/}{}' \
            > "${TAILS_GIT_PATCHES_DIR}/series" && \
         git add "$TAILS_GIT_PATCHES_DIR" && \
-        git commit -m "Update Thunderbird patches from tails/thunderbird.git at commit ${THUNDERBIRD_GIT_COMMIT}"
+        git commit -m "Update Thunderbird patches from tails/thunderbird@${THUNDERBIRD_GIT_COMMIT}"
+
+1. In any patch that modifies `mailnews.js`, remove comments
+   from the surrounding context lines.
+
+   Rationale: this is necessary otherwise the patch won't apply
+   on the version of `mailnews.js` that's in `omni.ja`,
+   which has such comments stripped.
+
+1. Amend the last commit with these changes:
+
+        git commit --amend "$TAILS_GIT_PATCHES_DIR"
 
 1. Ensure the Thunderbird account setup wizard works in an image built
    from your tails.git branch.
