@@ -7,7 +7,7 @@ def thunderbird_main
 end
 
 def thunderbird_wizard
-  thunderbird_app.child('Set Up Your Existing Email Address', roleName: 'frame')
+  thunderbird_app.child('Account Setup - Mozilla Thunderbird', roleName: 'frame')
 end
 
 def thunderbird_inbox
@@ -16,11 +16,7 @@ def thunderbird_inbox
   folder_view.child(/^Inbox( .*)?$/, roleName: 'table row', recursive: false)
 end
 
-def thunderbird_install_host_snakeoil_ssl_cert
-  # Inspiration:
-  # * https://wiki.mozilla.org/CA:AddRootToFirefox
-  # * https://mike.kaply.com/2015/02/10/installing-certificates-into-firefox/
-  debug_log('Installing host snakeoil SSL certificate')
+def enable_thunderbird_mozilla_cfg
   $vm.file_overwrite(
     '/usr/share/thunderbird/defaults/pref/autoconfig.js',
     <<~PREFS
@@ -29,6 +25,14 @@ def thunderbird_install_host_snakeoil_ssl_cert
       pref("general.config.obscure_value", 0);
     PREFS
   )
+end
+
+def thunderbird_install_host_snakeoil_ssl_cert
+  # Inspiration:
+  # * https://wiki.mozilla.org/CA:AddRootToFirefox
+  # * https://mike.kaply.com/2015/02/10/installing-certificates-into-firefox/
+  debug_log('Installing host snakeoil SSL certificate')
+  enable_thunderbird_mozilla_cfg
   cert = File.read('/etc/ssl/certs/ssl-cert-snakeoil.pem')
              .split("\n")
              .reject { |line| /^-----(BEGIN|END) CERTIFICATE-----$/.match(line) }
@@ -125,32 +129,30 @@ When /^I enter my email credentials into the autoconfiguration wizard$/ do
   address = $config['Thunderbird']['address']
   name = address.split('@').first
   password = $config['Thunderbird']['password']
-  thunderbird_wizard.child('Your name:', roleName: 'entry').typeText(name)
-  thunderbird_wizard.child('Email address:',
+  thunderbird_wizard.child('Your full name', roleName: 'entry').typeText(name)
+  thunderbird_wizard.child('Email address',
                            roleName: 'entry').typeText(address)
-  thunderbird_wizard.child('Password:', roleName: 'password text').typeText(password)
+  thunderbird_wizard.child('Password', roleName: 'password text').typeText(password)
   thunderbird_wizard.button('Continue').click
   # This button is shown if and only if a configuration has been found
   try_for(120) { thunderbird_wizard.button('Done') }
 end
 
 Then /^the autoconfiguration wizard's choice for the (incoming|outgoing) server is secure (.+)$/ do |type, protocol|
-  type = type.capitalize + ':'
-  section = thunderbird_wizard.child(type, roleName: 'unknown')
-  section.child(protocol, roleName: 'label')
-  assert(section.child?('SSL', roleName: 'label') ||
-         section.child?('STARTTLS', roleName: 'label'))
+  type = type.capitalize
+  section = thunderbird_wizard.child(type, roleName: 'heading').parent
+  subsections = section.children(roleName: 'section')
+  assert(subsections.any? { |s| s.text == protocol })
+  assert(subsections.any? { |s| s.text == 'SSL/TLS' || s.text == 'STARTTLS' })
 end
 
 def wait_for_thunderbird_progress_bar_to_vanish(thunderbird_frame)
   try_for(120) do
-    begin
-      thunderbird_frame.child(roleName: 'status bar', retry: false)
-                       .child(roleName: 'progress bar', retry: false)
-      false
-    rescue StandardError
-      true
-    end
+    thunderbird_frame.child(roleName: 'status bar', retry: false)
+                     .child(roleName: 'progress bar', retry: false)
+    false
+  rescue StandardError
+    true
   end
 end
 
@@ -168,26 +170,19 @@ When /^I fetch my email$/ do
 end
 
 When /^I accept the (?:autoconfiguration wizard's|manual) configuration$/ do
+  thunderbird_wizard.button('Done').click
+
   # The password check can fail due to bad Tor circuits.
   retry_tor do
     try_for(120) do
-      begin
-        # Spam the button, even if it is disabled (while it is still
-        # testing the password).
-        thunderbird_wizard.button('Done').click
-        false
-      rescue StandardError
-        true
-      end
+      # Spam the button, even if it is disabled (while it is still
+      # testing the password).
+      thunderbird_wizard.button('Finish').click
+      false
+    rescue StandardError
+      true
     end
     true
-  end
-
-  # Workaround #17272
-  if @protocol == 'POP3'
-    thunderbird_app
-      .child("Error with account #{$config['Thunderbird']['address']}")
-      .button('OK').click
   end
 
   # The account isn't fully created before we fetch our mail. For
@@ -205,14 +200,8 @@ When /^I accept the (?:autoconfiguration wizard's|manual) configuration$/ do
   step 'I fetch my email'
 end
 
-When /^I select the autoconfiguration wizard's (IMAP|POP3) choice$/ do |protocol|
-  choice = if protocol == 'IMAP'
-             'IMAP (remote folders)'
-           else
-             'POP3 (keep mail on your computer)'
-           end
-  thunderbird_wizard.child(choice, roleName: 'radio button').click
-  @protocol = protocol
+When /^I select the autoconfiguration wizard's IMAP choice$/ do
+  thunderbird_wizard.child('IMAP (remote folders)', roleName: 'radio button').click
 end
 
 When /^I send an email to myself$/ do
