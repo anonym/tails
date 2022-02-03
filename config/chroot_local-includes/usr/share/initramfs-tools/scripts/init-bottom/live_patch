@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -eu
+set -x
+
+# shellcheck disable=SC2034
+#    right now $option is unused; in the future, this could be used to pass additional options to live_patch
+option="$(tr ' ' '\n' < /proc/cmdline | grep '^live_patch\b')"
+
+for mod in fscache 9pnet 9pnet_virtio 9p; do
+    modprobe -vvv -d /root/ $mod
+done
+
+mountpoint=/root/mnt
+mkdir -p "$mountpoint"
+mount -t 9p src "$mountpoint"
+if [ -x "${mountpoint}/hook" ]
+then
+    "${mountpoint}/hook" /root
+fi
