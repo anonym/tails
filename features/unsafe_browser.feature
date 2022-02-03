@@ -74,6 +74,8 @@ Feature: Browsing the web using the Unsafe Browser
   Scenario: The Unsafe Browser cannot be started when I am offline
     Given I have started Tails from DVD and logged in with the Unsafe Browser enabled and the network is connected
     And the network is unplugged
+    # NetworkManager apparently needs some time to notice that the connection is now off
+    And I wait 10 seconds
     When I start the Unsafe Browser
     And I see and accept the Unsafe Browser start verification
     Then I am told I cannot start the Unsafe Browser when I am offline

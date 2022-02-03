@@ -20,6 +20,9 @@ export TEXTDOMAIN
 # Import unsafe_browser_is_enabled and persistence_is_enabled
 . /usr/local/lib/tails-shell-library/tails-greeter.sh
 
+# Import nm_is_connected
+. /usr/local/lib/tails-shell-library/network.sh
+
 error () {
     local cli_text dialog_text
     cli_text="${CMD}: $(gettext "error:") ${*}"
@@ -124,7 +127,8 @@ configure_chroot_browser "${CHROOT}" "${BROWSER_USER}" "${BROWSER_NAME}" \
 # have no clearnet DNS server.
 if grep --quiet "^nameserver\s" /etc/resolv-over-clearnet.conf; then
     mount --bind /etc/resolv-over-clearnet.conf "${CHROOT}"/etc/resolv.conf
-else
+fi
+if ! nm_is_connected; then
     error "$(gettext "You are not connected to a local network yet.\n\nTo be able to start the Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile network.")"
 fi
 
