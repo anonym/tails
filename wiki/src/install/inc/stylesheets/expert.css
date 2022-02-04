@@ -8,9 +8,12 @@ div.expert, img.expert, p.expert, h1.expert {
   display: block;
 }
 
-
 li.expert {
   display: list-item;
+}
+
+h1.step:before {
+  content: counter(step)'/9';
 }
 
 pre, p.pre {
@@ -20,13 +23,4 @@ pre, p.pre {
 
 div.note p.pre {
   width: 32em;
-}
-
-h1.step:before {
-  content: counter(step)'/6';
-}
-
-h1 {
-  color: #56347C;
-  margin-left: 0px;
 }
