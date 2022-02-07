@@ -851,15 +851,6 @@ Check that you have the correct version of `squashfs-tools-ng` and `libsquashfs1
       = '1.0.4-1' \
     ] || echo 'ERROR! Your libsquashfs1 is not the required version, so any generated IUKs will *not* be reproducible!'
 
-Check that you have the password for <https://iso-history.tails.boum.org> (it
-will be used by `wrap_tails_create_iuks` below, in order to download any ISO
-that is not present locally yet):
-
-    if ! grep -F --line-regexp -qs 'machine iso-history.tails.boum.org' ~/.netrc; then
-        echo "ERROR! Add a section for iso-history.tails.boum.org' to your ~/.netrc"
-        echo "The corresponding login and password are in the RMs' keyringer."
-    fi
-
 Add to `$IGNORED_TAGS`, in `./bin/iuk-source-versions`, any recent alpha or beta
 release that gets no security support, and as such, shall not get automatic
 upgrades. Here is a useful heuristics: if we did not do our manual test suite on
