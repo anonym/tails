@@ -450,13 +450,6 @@ Given /^the Tails desktop is ready$/ do
     'gsettings set org.gnome.desktop.interface toolkit-accessibility true',
     user: LIVE_USER
   )
-  # Since we use a simulated Tor network (via Chutney) we have to
-  # switch to its default bridges.
-  default_bridges_path = '/usr/share/tails/tca/default_bridges.txt'
-  $vm.file_overwrite(default_bridges_path, '')
-  chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
-    $vm.file_append(default_bridges_path, bridge[:line])
-  end
   # Optimize upgrade check: avoid 30 second sleep
   $vm.execute_successfully(
     'sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service'

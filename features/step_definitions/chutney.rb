@@ -180,5 +180,14 @@ When /^I configure Tails to use a simulated Tor network$/ do
   end
   client_torrc_lines.concat(dir_auth_lines)
   $vm.file_append('/etc/tor/torrc', client_torrc_lines)
+
+  # Since we use a simulated Tor network (via Chutney) we have to
+  # switch to its default bridges.
+  default_bridges_path = '/usr/share/tails/tca/default_bridges.txt'
+  $vm.file_overwrite(default_bridges_path, '')
+  chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+    $vm.file_append(default_bridges_path, bridge[:line])
+  end
+
   $vm.execute_successfully('systemctl restart tor@default.service')
 end
