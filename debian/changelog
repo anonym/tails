@@ -1,9 +1,105 @@
-tails (4.27) UNRELEASED; urgency=medium
+tails (4.27) unstable; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade Tor Browser to 11.0.6-build1, based on Firefox 91.6 (tails!724)
 
- -- boyska <boyska@riseup.net>  Tue, 11 Jan 2022 16:55:08 +0100
+    Closes issues: tails#18799, tails#18800
+  
+    This upgrades obfs4proxy to 0.0.12.
 
+  * Upgrade to Linux 5.10.92 (tails/tails!721)
+
+    Closes issues:
+      - devel branch FTBFS with webext-ublock-origin-firefox 1.39.0+dfsg-2
+        (tails/tails#18722)
+      - Upgrade Linux to 5.10.92+ (DSA 5050-1) (tails/tails#18805)
+
+    Commits:
+      - Refresh uBlock Origin patch
+      - Dropping VirtualBox guest support for now
+      - Bump APT snapshot of the Debian archive to 2022012801
+      - Upgrade to Linux 5.10.0-11 (currently at version 5.10.92-1)
+
+  * Upgrade to Thunderbird 91 (tails/tails!720)
+
+    Closes issues:
+      - Upgrade to Thunderbird 91 (tails/tails#18069)
+
+    Commits:
+      - Test suite: update expected images for Thunderbird 91
+      - Test suite: adjust to Thunderbird 91 UI
+      - Test suite: drop dead code
+      - Test suite: lint (thanks Rubocop)
+      - Test suite: refactor (extract code to method) to solve Rubocop error
+      - Make patch apply
+      - Update path mangling in Thunderbird patches for v91
+      - Update Thunderbird patches from
+        tails/thunderbird@bef716a60762b743dce1f48c37a64a99a0707b21
+      - Upgrade to Thunderbird 91
+
+  * Insist on Tor Browser being offline (#18584) (tails/tails!711)
+
+    Closes issues:
+      - Change buttons to [Start Tor Browser Offline] [Open Tor Connection] when
+        starting Tor Browser while not connected to tor (tails/tails#18584)
+
+    Commits:
+      - Insist on Tor Browser being offline (#18584)
+
+  * Install obfs4proxy from the Tor Browser tarball (tails/tails!716)
+
+    Commits:
+      - Briefly document what config/equivs is for
+      - Install our dummy obfs4proxy package
+      - Enable the 18800-obfs4proxy-from-tor-browser-tarball APT overlay (refs:
+        #18800).
+      - Add equivs configuration for our new obfs4proxy dummy package
+      - AppArmor: allow access that obfs4proxy 0.0.11 needs
+      - Install obfs4proxy from the Tor Browser tarball
+      - Simplify
+
+  * Test suite: update expected button label (tails/tails!718)
+
+    Commits:
+      - Test suite: update expected button label
+
+  * Re-generate our test IUKs using gensquashfs (tails/tails!715)
+
+    Closes issues:
+      - Re-generate our test IUKs using gensquashfs (tails/tails#18654)
+
+    Commits:
+      - Test suite: use test IUKs generated with gensquashfs
+      - Release process: never delete test IUKs generated with gensquashfs
+      - Give new, unique names to test IUKs generated with gensquashfs
+
+  * Add generated tails-backup.desktop to .gitignore (tails/tails!714)
+
+    Commits:
+      - Add generated tails-backup.desktop to .gitignore
+
+  * simplify workflow when adding an APT overlay (tails/tails!708)
+
+    Commits:
+      - waiting now uses a proper tool
+      - add-APT-overlay can wait for suite creation
+
+  * Resolve "Tests for backup are fragile" (tails/tails!706)
+
+    Closes issues:
+      - Tests for backup are fragile (tails/tails#18727)
+
+    Commits:
+      - try to make backup tool test more resilient
+
+  * fix wi-fi settings from Tor Connection (tails/tails!692)
+
+    Closes issues:
+      - Fix Wi-Fi settings when open from Tor Connection (tails/tails#18587)
+
+    Commits:
+      - Fix Wi-Fi settings from Tor Connection
+
+ -- Tails developers <tails@boum.org>  Mon, 07 Feb 2022 09:16:57 +0000
 tails (4.26) unstable; urgency=medium
 
   * Resolve "All branches FTBFS since Thunderbird 91 was uploaded"
