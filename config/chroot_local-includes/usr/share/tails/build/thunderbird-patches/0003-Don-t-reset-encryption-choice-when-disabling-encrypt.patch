@@ -1,33 +1,32 @@
-From 27470b650c59ab70580a93c5a69f54e7761764c6 Mon Sep 17 00:00:00 2001
+From dd268cb370a2051c75c08192b9f190ea36eb05b4 Mon Sep 17 00:00:00 2001
 From: anonym <anonym@riseup.net>
 Date: Tue, 3 Nov 2020 12:13:10 +0100
-Subject: [PATCH] Don't reset encryption choice when disabling encryption
+Subject: [PATCH 3/3] Don't reset encryption choice when disabling encryption
  controls.
 
 Without this, the mail.identity.default.encryptionpolicy pref does not
-work: adding a key to an account always set its encryptionpolicy to 0
+work: adding a key to an account always sets its encryptionpolicy to 0,
 no matter the desired default.
 
-While we're at it, also kill two lines of code before a call to
-enableEncryptionControl() that exactly replicates it.
+https://bugzilla.mozilla.org/show_bug.cgi?id=1674995
 ---
  comm/mail/extensions/am-e2e/am-e2e.js | 3 ---
  1 file changed, 3 deletions(-)
 
 diff --git a/comm/mail/extensions/am-e2e/am-e2e.js b/comm/mail/extensions/am-e2e/am-e2e.js
-index d70bd5d415b..d01d05c9b96 100644
+index 4e350a1136e..56ba623770f 100644
 --- a/comm/mail/extensions/am-e2e/am-e2e.js
 +++ b/comm/mail/extensions/am-e2e/am-e2e.js
-@@ -442,9 +442,6 @@ function smimeSelectCert(smime_cert) {
+@@ -451,9 +451,6 @@ function smimeSelectCert(smime_cert) {
  function enableEncryptionControls(do_enable) {
    gRequireEncrypt.disabled = !do_enable;
    gDoNotEncrypt.disabled = !do_enable;
 -  if (!do_enable) {
 -    gEncryptionChoices.value = 0;
 -  }
- }
- 
- function enableSigningControls(do_enable) {
+   // If we have a certificate or key configured that allows encryption,
+   // then we are able to encrypt drafts, too.
+   gEncryptDrafts.disabled = !do_enable;
 -- 
-2.31.0
+2.34.1
 
