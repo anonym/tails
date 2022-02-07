@@ -41,8 +41,7 @@ To connect to the Tor network:
 
    The implications of both methods are detailed below.
 
-Tor relays and bridges
-======================
+<h1 id="bridges">Tor relays and bridges</h1>
 
 - **Public Tor relays**
 
@@ -73,8 +72,7 @@ Tor relays and bridges
 
   Tor bridges are often less reliable and slower than public Tor relays.
 
-Connecting to Tor automatically
-===============================
+<h1 id="automatic">Connecting to Tor automatically</h1>
 
 We recommend connecting to Tor automatically if you are on a public Wi-Fi
 network or if many people in your country use Tor to circumvent censorship.
@@ -104,8 +102,7 @@ coming from a Tails user.
 
 </div>
 
-Hiding to your local network that you are connecting to Tor
-===========================================================
+<h1 id="hiding">Hiding to your local network that you are connecting to Tor</h1>
 
 You might need to go unnoticed if using Tor could look suspicious to someone
 who monitors your Internet connection.
@@ -169,44 +166,7 @@ Storage|doc/first_steps/persistence#tor-bridge]].
 
 </div>
 
-Troubleshooting Tor bridges
-===========================
-
-If connecting to Tor using a custom bridge fails, the *Tor Connection* assistant
-helps you:
-
-- Set the clock of your computer to the correct time zone
-- [[Sign in to the network using a captive portal|unsafe_browser]]
-- Configure a local proxy
-- Enter a different bridge
-
-The computer clock is set to an incorrect time zone
----------------------------------------------------
-
-For a Tor bridge to work, the clock of your computer must be correct.
-
-Choose **Fix Clock** in the error screen of the *Tor Connection* assistant to
-set the time zone and time of your computer.
-
-You did not enter the bridge correctly
---------------------------------------
-
-An obfs4 bridge looks like:
-
-    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0
-
-You need to enter the entire line, not just the IP address and port
-combination.
-
-The bridge is no longer operational
------------------------------------
-
-It is possible that the bridge that you entered is no longer working.
-
-Try entering another bridge or requesting other bridges.
-
-Viewing the status of Tor
-=========================
+<h1 id="status">Viewing the status of Tor</h1>
 
 The status of Tor appears as an onion icon in the
 notification area:
@@ -219,8 +179,7 @@ notification area:
   - [[!img lib/symbolic/tor-disconnected.png alt="Onion icon that is crossed out" link=no class="symbolic"]]
     You are not connected to Tor.
 
-Troubleshooting connecting to Tor
-=================================
+<h1 id="troubleshoot-tor">Troubleshooting connecting to Tor</h1>
 
 <div class="next">
 

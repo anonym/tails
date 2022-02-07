@@ -410,20 +410,16 @@ version's `.packages` file and the one from the to-be-released images:
 
 1. Generate the diff.
 
-   If you're preparing a final release:
-
+   if [[ "${DIST:?}" = stable ]]; then
        NEW_BRANCH="$RELEASE_BRANCH"
-
-   Else, if you're preparing a release candidate:
-
+   else
        NEW_BRANCH=devel
-
-   Then, in any case:
-
-        diff --color=never -u \
-           "wiki/src/torrents/files/tails-amd64-${PREVIOUS_STABLE_VERSION}.packages" \
-           <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/latest.packages") \
-        | wdiff --diff-input  --terminal
+   fi
+   
+   diff --color=never -u \
+       "wiki/src/torrents/files/tails-amd64-${PREVIOUS_STABLE_VERSION}.packages" \
+       <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/latest.packages") \
+    | wdiff --diff-input  --terminal
 
 2. In the diff, look for:
 
@@ -450,7 +446,7 @@ Included website
 
     ./bin/prepare-included-website-for-release
 
-Expect this to take 10-15 minutes.
+Expect this to take 5-15 minutes.
 While the website is building, if this is not a good time for taking a break,
 you can follow the "Enable OpenPGP signing" instructions.
 
@@ -494,6 +490,7 @@ Build the almost-final images
    - Set `defaultcomp`, so we can more accurately optimize our
      SquashFS file ordering.
    - Do _not_ set `keeprunning`, nor `ignorechanges`, nor `rescue`.
+   Expected time: ~15minutes
 
 2. Keep the resulting build artifacts until the end of this release process.
 
@@ -535,6 +532,8 @@ Known limitations:
 Prepare the versioned APT suites
 ================================
 
+Expected time: 15minutes
+
 Versioned APT suite in our custom APT repository
 ------------------------------------------------
 
@@ -575,6 +574,8 @@ Note:
 
 Build images
 ============
+
+Expected time: 30 minutes
 
 Sanity check
 ------------
@@ -670,7 +671,8 @@ suite should be ready, so it is time to:
    other builds from the _Build Queue_ or cancel other running builds.
 
 1. Make sure the Jenkins build is right: you can recognize this is the case,
-   when you see Jenkins starts building the website.
+   when you see Jenkins starts building the website. Jenkins will take a bit
+   less than 30minutes to complete the build.
 
 1. This could be a good time for break!
 
@@ -823,11 +825,9 @@ may start:
 
    - make it clear that the Torrents don't work yet
 
-   - attach the Torrents
+   - attach Torrents, `.packages`, `.iso.sig` and `.img.sig`:
 
-   - attach the `.packages` file
-
-   - attach the `.iso.sig` and `.img.sig` files
+         ls -1 "$ISOS/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.packages" "$ISOS/tails-amd64-${VERSION:?}/"tails-amd64-${VERSION:?}.{iso,img}.sig "$ISOS/tails-amd64-${VERSION:?}".{iso,img}.torrent
 
 <a id="prepare-iuk"></a>
 
@@ -979,7 +979,7 @@ Build the Incremental Upgrade Kits on Jenkins
           . $(./bin/rm-config generate-environment --stage built-iuks)
 
 5. Wait until the `build_IUKs` build completes successfully.
-   It should take about 10-15 minutes for each member of
+   It should take about 20-25 minutes for each member of
    the `$IUK_SOURCE_VERSIONS` list, distributed across `isobuilderN` workers.
 
 6. Add the time it took for `build_IUKs` to the table of [[!tails_ticket 17750]].
@@ -1186,6 +1186,7 @@ are preparing:
                    -name "*_to_${VERSION:?}~*.iuk" \
                    -not -name '*~test_*~test.iuk' \
                    -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                   -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                    -ls \
             \"
 
@@ -1198,6 +1199,7 @@ are preparing:
                    -name "*_to_${VERSION:?}~*.iuk" \
                    -not -name '*~test_*~test.iuk' \
                    -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                   -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                    -print -delete \
             \"
 
@@ -1523,7 +1525,9 @@ To disable mirrors that are lagging behind:
 Sanity checks
 -------------
 
-* Check the outcome of the "Testing" section above.
+* Check the outcome of the "Public testing" section above.
+* Check for any feedback in the _Internal testing_ pad.
+* Check for any feedback in tails-testers@boum.org
 * Verify once more that the Tor Browser we ship is still the most recent (see
   above).
 
@@ -1562,7 +1566,19 @@ fully refreshed. To do so:
 
  - If you're publishing a final release: wait until our Weblate integration
    mechanisms have created `wiki/src/news/version_${VERSION:?}.*.po`, on the
-   `master` branch, for the languages enabled on Weblate but not on our website.
+   `master` branch, for the languages enabled on Weblate but not on our website:
+
+       while true; do
+           git fetch origin
+           log=$(git log --author=tails-l10n@boum.org -n 1 origin/master "wiki/src/news/version_${VERSION:?}.*.po")
+           if [[ -z "$log" ]]; then
+               sleep 30
+               continue
+           fi
+           echo "$log"
+           break
+       done
+
 
  - Else: wait until <https://tails.boum.org/news/test_$TAG/> is live.
 
@@ -1669,7 +1685,7 @@ If you just released a final release
      (ISO and USB image, use comma-separated values)
      with:
 
-         ssh bittorrent.lizard transmission-remote --list
+         ssh bittorrent.lizard transmission-remote --list | grep --fixed-strings "tails-amd64-${PREVIOUS_VERSION:?}-i"
 
      Then delete them with:
 
@@ -1695,6 +1711,7 @@ If you just released a final release
                     -not -name "*_to_${VERSION:?}.iuk" \
                     -not -name '*~test_*~test.iuk' \
                     -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                    -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                     -ls \
              \"
 
@@ -1707,6 +1724,7 @@ If you just released a final release
                     -not -name "*_to_${VERSION:?}.iuk" \
                     -not -name '*~test_*~test.iuk' \
                     -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                    -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                     -print -delete \
              \"
 

@@ -44,9 +44,10 @@ Package: live-boot live-boot-doc live-boot-initramfs-tools
 Pin: origin deb.tails.boum.org
 Pin-Priority: 999
 
+Explanation: Dummy package since we install obfs4proxy from the Tor Browser tarball (#18800)
 Package: obfs4proxy
-Pin: release o=TorProject,n=obfs4proxy
-Pin-Priority: 990
+Pin: origin deb.tails.boum.org
+Pin-Priority: 999
 
 Package: webext-ublock-origin-firefox
 Pin: release o=Debian,n=sid
@@ -61,11 +62,6 @@ Explanation: weirdness in chroot_apt install-binary
 Package: *
 Pin: release o=chroot_local-packages
 Pin-Priority: 1010
-
-Explanation: FTBFS with thunderbird 91, so we're keeping thunderbird 78:  #18789
-Package: thunderbird*
-Pin: origin deb.tails.boum.org
-Pin-Priority: 999
 
 Package: *
 Pin: origin deb.tails.boum.org
