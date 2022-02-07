@@ -490,7 +490,7 @@ Build the almost-final images
    - Set `defaultcomp`, so we can more accurately optimize our
      SquashFS file ordering.
    - Do _not_ set `keeprunning`, nor `ignorechanges`, nor `rescue`.
-   Expected time: ~15minutes
+   Expected time: 15-30 minutes depending on your computer.
 
 2. Keep the resulting build artifacts until the end of this release process.
 
@@ -532,7 +532,7 @@ Known limitations:
 Prepare the versioned APT suites
 ================================
 
-Expected time: 15minutes
+Expected time: 15 minutes
 
 Versioned APT suite in our custom APT repository
 ------------------------------------------------
@@ -575,7 +575,8 @@ Note:
 Build images
 ============
 
-Expected time: 30 minutes
+Expected time: 30-75 minutes depending on your computer and the available
+Jenkins workers.
 
 Sanity check
 ------------
@@ -668,11 +669,13 @@ suite should be ready, so it is time to:
    so don't bother setting it yourself.
 
 1. Make sure the Jenkins build starts as soon as possible. If needed, remove
-   other builds from the _Build Queue_ or cancel other running builds.
+   other builds from the _Build Queue_ or cancel other running builds,
+   ideally on iguana so the build goes faster.
 
 1. Make sure the Jenkins build is right: you can recognize this is the case,
-   when you see Jenkins starts building the website. Jenkins will take a bit
-   less than 30minutes to complete the build.
+   when you see Jenkins starts building the website. Jenkins will take
+   20-65 minutes to complete the build, depending on the isobuilder
+   that is used.
 
 1. This could be a good time for break!
 
