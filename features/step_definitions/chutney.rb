@@ -124,6 +124,8 @@ end
 # rubocop:enable Metrics/PerceivedComplexity
 
 When /^I configure Tails to use a simulated Tor network$/ do
+  return if $config['DISABLE_CHUTNEY']
+
   # At the moment this step essentially assumes that we boot with 'the
   # network is unplugged', run this step, and then 'the network is
   # plugged'. I believe we can make this pretty transparent without
