@@ -739,13 +739,15 @@ Then /^Tor is configured to use the default bridges$/ do
   assert_equal(1, use_bridges, 'UseBridges is not set')
   default_bridges = $vm.execute_successfully(
     'grep ^obfs4 /usr/share/tails/tca/default_bridges.txt | sort'
-  ).stdout.chomp
+  ).stdout.chomp.split("\n").to_set
   assert(default_bridges.size.positive?, 'No default bridges were found')
   current_bridges = $vm.execute_successfully(
     '/usr/local/lib/tor_variable get --type=conf Bridge | sort'
-  ).stdout.chomp
-  assert_equal(default_bridges, current_bridges,
-               'Current bridges does not match the default ones')
+  ).stdout.chomp.split("\n").to_set
+
+  not_default = current_bridges - default_bridges
+  not_default_text = not_default.to_a.join("\n")
+  assert(not_default.empty?, "Some current bridges are not default ones:\n#{not_default_text}")
 end
 
 Then /^Tor is using the same configuration as before$/ do
