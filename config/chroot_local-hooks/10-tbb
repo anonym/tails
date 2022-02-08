@@ -53,13 +53,9 @@ install_tor_browser() {
     destination="${2}"
 
     tmp="$(mktemp -d)"
-    tar -xf "${bundle}" -C "${tmp}"
-    if [ -d "${tmp}"/tor-browser_en-US ]; then
-        prep="${tmp}"/tor-browser_en-US/Browser
-    elif [ -d "${tmp}"/tor-browser ]; then
-        # TBB nightly builds
-        prep="${tmp}"/tor-browser/Browser
-    else
+    tar -xf "${bundle}" -C "${tmp}" --strip-components=1
+    prep="${tmp}"/Browser
+    if ! [ -d "$prep" ]; then
         echo "The main bundle's top level directory is wrong" >&2
         exit 1
     fi
@@ -94,6 +90,22 @@ install_tor_browser() {
     rm -r "${tmp}"
 }
 
+install_pluggable_transports() {
+    local bundle destination
+    bundle="${1}"
+    destination="${2}"
+
+    tmp="$(mktemp -d)"
+    tar -xf "${bundle}" -C "${tmp}" --strip-components=1
+
+    for pt in "${tmp}"/Browser/TorBrowser/Tor/PluggableTransports/*; do
+        echo "I: installing $(basename "$pt") pluggable transport"
+        install --owner=root --group=root --mode=755 \
+                --target-directory="$destination" "$pt"
+    done
+
+    rm -r "${tmp}"
+}
 
 embed_extensions_in_omni_ja () {
     local tbb_install tbb_timestamp tmp
@@ -321,6 +333,12 @@ if [ "${NIGHTLY_BUILD}" != yes ]; then
     LANGPACKS_TARBALL="$(echo "${TBB_TARBALLS}" | grep -o "langpacks-tor-browser-linux64-.*\.tar\.xz")"
     install_langpacks "${TMP}/${LANGPACKS_TARBALL}" "${TBB_EXT}"
 fi
+
+# FIXME: https://gitlab.tails.boum.org/tails/tails/-/merge_requests/724#note_183582
+# install_pluggable_transports "${TMP}/${MAIN_TARBALL}" /usr/bin
+echo "I: installing obfs4proxy pluggable transport"
+install --owner=root --group=root --mode=755 \
+        --target-directory=/usr/bin /tmp/submodules/tails-workarounds/obfs4proxy
 
 rm -r "${TMP}"
 

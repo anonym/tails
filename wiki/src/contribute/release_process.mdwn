@@ -851,15 +851,6 @@ Check that you have the correct version of `squashfs-tools-ng` and `libsquashfs1
       = '1.0.4-1' \
     ] || echo 'ERROR! Your libsquashfs1 is not the required version, so any generated IUKs will *not* be reproducible!'
 
-Check that you have the password for <https://iso-history.tails.boum.org> (it
-will be used by `wrap_tails_create_iuks` below, in order to download any ISO
-that is not present locally yet):
-
-    if ! grep -F --line-regexp -qs 'machine iso-history.tails.boum.org' ~/.netrc; then
-        echo "ERROR! Add a section for iso-history.tails.boum.org' to your ~/.netrc"
-        echo "The corresponding login and password are in the RMs' keyringer."
-    fi
-
 Add to `$IGNORED_TAGS`, in `./bin/iuk-source-versions`, any recent alpha or beta
 release that gets no security support, and as such, shall not get automatic
 upgrades. Here is a useful heuristics: if we did not do our manual test suite on
@@ -942,7 +933,7 @@ Build the Incremental Upgrade Kits on Jenkins
 
 1. Make sure the push to ISO history (started in the previous section)
    has finished, and that images have appeared on the web server:
-   <https://iso-history.tails.boum.org/>
+   <https://iso-history.tails.boum.org/?C=M&O=D>
 
 1. On <https://jenkins.tails.boum.org/job/build_IUKs/configure>, adjust
    the `SOURCE_VERSION` axis to list all versions in `$IUK_SOURCE_VERSIONS`,
@@ -1189,6 +1180,7 @@ are preparing:
                    -name "*_to_${VERSION:?}~*.iuk" \
                    -not -name '*~test_*~test.iuk' \
                    -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                   -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                    -ls \
             \"
 
@@ -1201,6 +1193,7 @@ are preparing:
                    -name "*_to_${VERSION:?}~*.iuk" \
                    -not -name '*~test_*~test.iuk' \
                    -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                   -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                    -print -delete \
             \"
 
@@ -1294,14 +1287,14 @@ Public testing
 
         (
             for mirror in mirrors.wikimedia.org mirrors.edge.kernel.org; do
-                if ./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
-                    --url-prefix https://$mirror/ \
-                    tails-amd64-${VERSION:?}; then
-                    echo "$mirror" is ok
-                    break
-                fi
+                ./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
+                    --url-prefix https://$mirror/tails/ \
+                    tails-amd64-${VERSION:?}
             done
         )
+
+   `check-mirrors` will only output errors. It remains silent for
+   mirrors that are already synchronized.
 
 1. Email <tails-testers@boum.org> to ask them to test the tentative images:
 
@@ -1337,8 +1330,7 @@ Lead the internal manual testing to conclusion
       upgrades" section on the pad.
 
 1. Fill the holes and make sure that the automated and manual test
-   suites are done in due time. Clock and report this work along with
-   the rest of your RM'ing work.
+   suites are done in due time.
 
 1. Triage test results, reproduce bugs as needed, decide what the next
    step is and make sure it happens: add to known issues? file an issue?
@@ -1526,9 +1518,8 @@ To disable mirrors that are lagging behind:
 Sanity checks
 -------------
 
-* Check the outcome of the "Public testing" section above.
 * Check for any feedback in the _Internal testing_ pad.
-* Check for any feedback in tails-testers@boum.org
+* Check for any feedback on tails-testers@boum.org.
 * Verify once more that the Tor Browser we ship is still the most recent (see
   above).
 
@@ -1547,12 +1538,13 @@ following state:
       git fetch && \
       git merge origin/master && \
       git merge --edit "origin/${WEBSITE_RELEASE_BRANCH:?}" && \
+      git submodule update --init && \
       echo "stable" > config/base_branch && \
       git commit config/base_branch \
           -m "Restore master's base branch." \
     )
 
-Close the "Write release notes" ticket **manually** since
+Close the "Write release notes" ticket manually since
 `Closes:` statements are not sufficient when updating `master`.
 
 Finally, push the `master` branch to make the changes go live on our
@@ -1572,7 +1564,7 @@ fully refreshed. To do so:
        while true; do
            git fetch origin
            log=$(git log --author=tails-l10n@boum.org -n 1 origin/master "wiki/src/news/version_${VERSION:?}.*.po")
-           if [[ -z "$log" ]]; then
+           if [ -z "$log" ]; then
                sleep 30
                continue
            fi
@@ -1608,7 +1600,7 @@ Skip this part if preparing a release candidate.
             --host-url "$(bin/gitlab-url TailsRM)" \
             --token "$(bin/gitlab-api-token TailsRM)"
 
-4. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to:
+4. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to
    close the just-released [[!tails_gitlab groups/tails/-/milestones
    desc="milestone"]]. See this as an example:
    [[!tails_gitlab tails/gitlab-config/-/merge_requests/18 desc="tails/gitlab-config!18"]]
@@ -1712,6 +1704,7 @@ If you just released a final release
                     -not -name "*_to_${VERSION:?}.iuk" \
                     -not -name '*~test_*~test.iuk' \
                     -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                    -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                     -ls \
              \"
 
@@ -1724,6 +1717,7 @@ If you just released a final release
                     -not -name "*_to_${VERSION:?}.iuk" \
                     -not -name '*~test_*~test.iuk' \
                     -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                    -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                     -print -delete \
              \"
 
