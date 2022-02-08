@@ -121,19 +121,28 @@ Miscellaneous functionality
 Security and fingerprinting
 ---------------------------
 
-* [Download](https://torbrowser-archive.tails.boum.org/?C=M&O=D) the same version of Tor
-  Browser and compare its fingerprint (running on Linux outside of Tails) with
-  Tor Browser in Tails, using at least <https://coveryourtracks.eff.org/>.
-  Click "Show full results for
-  fingerprinting" to see the details we're interested in.
-  - The exposed User-Agent should match the latest Tor Browser's one.
-  - Ignore the result of the "blocking tracking ads" and "blocking
-    invisible trackers" tests, which seem unreliable (we've seen
-    different results for the very same version of Tor Browser).
-  - Update the *Browser fingerprint* section of the
-    [[known issues|support/known_issues]] if needed.
-* In `about:config` check that `media.peerconnection.enabled` is set to
-  `false`.
+1. In Tails' Tor Browser, visit `about:config`. Check that
+   `media.peerconnection.enabled` is set to `false`.
+
+2. [Download](https://torbrowser-archive.tails.boum.org/?C=M&O=D) the version of Tor
+   Browser included in the Tails release you are testing.
+
+3. Start that Tor Browser on a non-Tails Linux.
+
+4. Compare the fingerprint of that Tor Browser with the one of
+   Tails' Tor Browser, using <https://coveryourtracks.eff.org/>.
+
+   Click "Show full results for fingerprinting" to see the details we're
+   interested in.
+
+   - The exposed User-Agent should match the latest Tor Browser's one.
+   - Ignore the result of the "blocking tracking ads" and "blocking
+     invisible trackers" tests, which seem unreliable (we've seen
+     different results for the very same version of Tor Browser).
+
+5. If the fingerprints differ, ask the Release Manager
+   to update the *Browser fingerprint* section of the
+   [[known issues|support/known_issues]] page.
 
 <a id="Thunderbird"></a>
 
