@@ -1286,7 +1286,7 @@ Public testing
         (
             for mirror in mirrors.wikimedia.org mirrors.edge.kernel.org; do
                 if ./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
-                    --url-prefix https://$mirror/ \
+                    --url-prefix https://$mirror/tails/ \
                     tails-amd64-${VERSION:?}; then
                     echo "$mirror" is ok
                     break
