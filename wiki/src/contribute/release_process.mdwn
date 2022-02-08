@@ -1564,7 +1564,7 @@ fully refreshed. To do so:
        while true; do
            git fetch origin
            log=$(git log --author=tails-l10n@boum.org -n 1 origin/master "wiki/src/news/version_${VERSION:?}.*.po")
-           if [[ -z "$log" ]]; then
+           if [ -z "$log" ]; then
                sleep 30
                continue
            fi
