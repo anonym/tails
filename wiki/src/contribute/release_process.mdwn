@@ -490,7 +490,7 @@ Build the almost-final images
    - Set `defaultcomp`, so we can more accurately optimize our
      SquashFS file ordering.
    - Do _not_ set `keeprunning`, nor `ignorechanges`, nor `rescue`.
-   Expected time: ~15minutes
+   Expected time: 15-30 minutes depending on your computer.
 
 2. Keep the resulting build artifacts until the end of this release process.
 
@@ -532,7 +532,7 @@ Known limitations:
 Prepare the versioned APT suites
 ================================
 
-Expected time: 15minutes
+Expected time: 15 minutes
 
 Versioned APT suite in our custom APT repository
 ------------------------------------------------
@@ -575,7 +575,8 @@ Note:
 Build images
 ============
 
-Expected time: 30 minutes
+Expected time: 30-75 minutes depending on your computer and the available
+Jenkins workers.
 
 Sanity check
 ------------
@@ -668,11 +669,13 @@ suite should be ready, so it is time to:
    so don't bother setting it yourself.
 
 1. Make sure the Jenkins build starts as soon as possible. If needed, remove
-   other builds from the _Build Queue_ or cancel other running builds.
+   other builds from the _Build Queue_ or cancel other running builds,
+   ideally on iguana so the build goes faster.
 
 1. Make sure the Jenkins build is right: you can recognize this is the case,
-   when you see Jenkins starts building the website. Jenkins will take a bit
-   less than 30minutes to complete the build.
+   when you see Jenkins starts building the website. Jenkins will take
+   20-65 minutes to complete the build, depending on the isobuilder
+   that is used.
 
 1. This could be a good time for break!
 
@@ -848,15 +851,6 @@ Check that you have the correct version of `squashfs-tools-ng` and `libsquashfs1
       = '1.0.4-1' \
     ] || echo 'ERROR! Your libsquashfs1 is not the required version, so any generated IUKs will *not* be reproducible!'
 
-Check that you have the password for <https://iso-history.tails.boum.org> (it
-will be used by `wrap_tails_create_iuks` below, in order to download any ISO
-that is not present locally yet):
-
-    if ! grep -F --line-regexp -qs 'machine iso-history.tails.boum.org' ~/.netrc; then
-        echo "ERROR! Add a section for iso-history.tails.boum.org' to your ~/.netrc"
-        echo "The corresponding login and password are in the RMs' keyringer."
-    fi
-
 Add to `$IGNORED_TAGS`, in `./bin/iuk-source-versions`, any recent alpha or beta
 release that gets no security support, and as such, shall not get automatic
 upgrades. Here is a useful heuristics: if we did not do our manual test suite on
@@ -939,7 +933,7 @@ Build the Incremental Upgrade Kits on Jenkins
 
 1. Make sure the push to ISO history (started in the previous section)
    has finished, and that images have appeared on the web server:
-   <https://iso-history.tails.boum.org/>
+   <https://iso-history.tails.boum.org/?C=M&O=D>
 
 1. On <https://jenkins.tails.boum.org/job/build_IUKs/configure>, adjust
    the `SOURCE_VERSION` axis to list all versions in `$IUK_SOURCE_VERSIONS`,
@@ -1293,14 +1287,14 @@ Public testing
 
         (
             for mirror in mirrors.wikimedia.org mirrors.edge.kernel.org; do
-                if ./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
-                    --url-prefix https://$mirror/ \
-                    tails-amd64-${VERSION:?}; then
-                    echo "$mirror" is ok
-                    break
-                fi
+                ./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
+                    --url-prefix https://$mirror/tails/ \
+                    tails-amd64-${VERSION:?}
             done
         )
+
+   `check-mirrors` will only output errors. It remains silent for
+   mirrors that are already synchronized.
 
 1. Email <tails-testers@boum.org> to ask them to test the tentative images:
 
@@ -1336,8 +1330,7 @@ Lead the internal manual testing to conclusion
       upgrades" section on the pad.
 
 1. Fill the holes and make sure that the automated and manual test
-   suites are done in due time. Clock and report this work along with
-   the rest of your RM'ing work.
+   suites are done in due time.
 
 1. Triage test results, reproduce bugs as needed, decide what the next
    step is and make sure it happens: add to known issues? file an issue?
