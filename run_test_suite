@@ -319,6 +319,9 @@ while [ $# -gt 0 ]; do
     shift
 done
 
+if [ -n "${JENKINS_URL:-}" ] && echo "${GIT_BRANCH}" | grep -q -E '[+-]real-Tor$'; then
+    export DISABLE_CHUTNEY="yes"
+fi
 trap "test_suite_cleanup" EXIT HUP INT QUIT TERM
 
 if [ "${EUID}" -ne 0 ] && [ -z "${ALLOW_NON_ROOT}" ]; then
