@@ -240,13 +240,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   hide(document.getElementById("no-js"));
 
-  // Display floating-toggleable-links to prevent people without JS to
-  // either always see the toggles or have broken toggle links.
-  var links = document.getElementsByClassName("floating-toggleable-link");
-  for (let i = 0; i < links.length; i++) {
-    show(links[i]);
-  }
-
   /* Internet Explorer */
 
   if ( navigator.userAgent.indexOf("MSIE") > -1 || navigator.userAgent.indexOf("Trident") > -1 ) {
