@@ -1180,6 +1180,7 @@ are preparing:
                    -name "*_to_${VERSION:?}~*.iuk" \
                    -not -name '*~test_*~test.iuk' \
                    -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                   -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                    -ls \
             \"
 
@@ -1192,6 +1193,7 @@ are preparing:
                    -name "*_to_${VERSION:?}~*.iuk" \
                    -not -name '*~test_*~test.iuk' \
                    -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                   -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                    -print -delete \
             \"
 
@@ -1701,6 +1703,7 @@ If you just released a final release
                     -not -name "*_to_${VERSION:?}.iuk" \
                     -not -name '*~test_*~test.iuk' \
                     -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                    -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                     -ls \
              \"
 
@@ -1713,6 +1716,7 @@ If you just released a final release
                     -not -name "*_to_${VERSION:?}.iuk" \
                     -not -name '*~test_*~test.iuk' \
                     -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                    -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                     -print -delete \
              \"
 
