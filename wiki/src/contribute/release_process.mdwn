@@ -1180,6 +1180,7 @@ are preparing:
                    -name "*_to_${VERSION:?}~*.iuk" \
                    -not -name '*~test_*~test.iuk' \
                    -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                   -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                    -ls \
             \"
 
@@ -1192,6 +1193,7 @@ are preparing:
                    -name "*_to_${VERSION:?}~*.iuk" \
                    -not -name '*~test_*~test.iuk' \
                    -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                   -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                    -print -delete \
             \"
 
@@ -1516,9 +1518,8 @@ To disable mirrors that are lagging behind:
 Sanity checks
 -------------
 
-* Check the outcome of the "Public testing" section above.
 * Check for any feedback in the _Internal testing_ pad.
-* Check for any feedback in tails-testers@boum.org
+* Check for any feedback on tails-testers@boum.org.
 * Verify once more that the Tor Browser we ship is still the most recent (see
   above).
 
@@ -1537,12 +1538,13 @@ following state:
       git fetch && \
       git merge origin/master && \
       git merge --edit "origin/${WEBSITE_RELEASE_BRANCH:?}" && \
+      git submodule update --init && \
       echo "stable" > config/base_branch && \
       git commit config/base_branch \
           -m "Restore master's base branch." \
     )
 
-Close the "Write release notes" ticket **manually** since
+Close the "Write release notes" ticket manually since
 `Closes:` statements are not sufficient when updating `master`.
 
 Finally, push the `master` branch to make the changes go live on our
@@ -1562,7 +1564,7 @@ fully refreshed. To do so:
        while true; do
            git fetch origin
            log=$(git log --author=tails-l10n@boum.org -n 1 origin/master "wiki/src/news/version_${VERSION:?}.*.po")
-           if [[ -z "$log" ]]; then
+           if [ -z "$log" ]; then
                sleep 30
                continue
            fi
@@ -1598,7 +1600,7 @@ Skip this part if preparing a release candidate.
             --host-url "$(bin/gitlab-url TailsRM)" \
             --token "$(bin/gitlab-api-token TailsRM)"
 
-4. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to:
+4. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to
    close the just-released [[!tails_gitlab groups/tails/-/milestones
    desc="milestone"]]. See this as an example:
    [[!tails_gitlab tails/gitlab-config/-/merge_requests/18 desc="tails/gitlab-config!18"]]
@@ -1702,6 +1704,7 @@ If you just released a final release
                     -not -name "*_to_${VERSION:?}.iuk" \
                     -not -name '*~test_*~test.iuk' \
                     -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                    -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                     -ls \
              \"
 
@@ -1714,6 +1717,7 @@ If you just released a final release
                     -not -name "*_to_${VERSION:?}.iuk" \
                     -not -name '*~test_*~test.iuk' \
                     -not -name '*~testoverlayfs_*~testoverlayfs.iuk' \
+                    -not -name '*~testoverlayfsng_*~testoverlayfsng.iuk' \
                     -print -delete \
              \"
 
