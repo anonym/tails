@@ -1538,6 +1538,7 @@ following state:
       git fetch && \
       git merge origin/master && \
       git merge --edit "origin/${WEBSITE_RELEASE_BRANCH:?}" && \
+      git submodule update --init && \
       echo "stable" > config/base_branch && \
       git commit config/base_branch \
           -m "Restore master's base branch." \
