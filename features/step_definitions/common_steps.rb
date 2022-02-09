@@ -106,12 +106,10 @@ Given /^the network is unplugged$/ do
 end
 
 Given /^I (dis)?connect the network through GNOME$/ do |disconnect|
-  current_state = disconnect ? 'Connected' : 'Off'
-  action = disconnect ? 'Turn Off' : 'Connect'
-  gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('System', roleName: 'menu').click
-  gnome_shell.child("Wired #{current_state}", roleName: 'label').click
-  gnome_shell.child(action, roleName: 'label').click
+  action_image = disconnect ? 'TurnOffNetworkInterface.png' : 'ConnectNetworkInterface.png'
+  open_gnome_system_menu
+  @screen.wait('WiredNetworkInterface.png', 5).click
+  @screen.wait(action_image, 5).click
 end
 
 Given /^the network connection is ready(?: within (\d+) seconds)?$/ do |timeout|
@@ -767,24 +765,30 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-When /^I request a (shutdown|reboot) using the system menu$/ do |action|
-  if action == 'shutdown' then
-    image = 'TailsEmergencyShutdownHalt.png'
-  else
-    image = 'TailsEmergencyShutdownReboot.png'
-  end
-  # Since Bullseye the status menu is problematic: we generally have
+def open_gnome_system_menu
+  # On Bullseye the system menu is problematic: we generally have
   # to click several times for it to open.
   retry_action(10, delay: 2) do
     @screen.hide_cursor
-    @screen.wait('TailsEmergencyShutdownButton.png', 10).click
-    # Sometimes the next button appears too fast, before the menu has
-    # settled down to its final size and the icon we want to click is
-    # in its final position. Dogtail might allow us to fix that, but
-    # given how rare this problem is, it's not worth the effort.
+    @screen.wait('GnomeSystemMenuButton.png', 10).click
+    # Wait for the menu to be open and to have settled: sometimes menu
+    # components appear too fast, before the menu has settled down to
+    # its final size and the button we want to click is in its final
+    # position. Dogtail might allow us to fix that, but given how rare
+    # this problem is, it's not worth the effort.
     sleep 5
-    @screen.find(image).click
+    @screen.find('TailsEmergencyShutdownHalt.png')
   end
+end
+
+When /^I request a (shutdown|reboot) using the system menu$/ do |action|
+  image = if action == 'shutdown' then
+            'TailsEmergencyShutdownHalt.png'
+          else
+            'TailsEmergencyShutdownReboot.png'
+          end
+  open_gnome_system_menu
+  @screen.wait(image, 5).click
 end
 
 When /^I warm reboot the computer$/ do
