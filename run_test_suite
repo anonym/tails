@@ -136,13 +136,16 @@ package_installed() {
 }
 
 check_dependencies() {
-    local tor_version
     while [ -n "${1:-}" ]; do
         if ! command -v "${1}" >/dev/null && ! package_installed "${1}" ; then
             error "'${1}' is missing, please install it and run again."
         fi
         shift
     done
+}
+
+check_tor_version() {
+    local tor_version
     tor_version=$(tor --version | grep -Po '^Tor version \K.*' | sed --regexp-extended 's,[.]$,,')
     echo "tor version: $tor_version"
     if dpkg --compare-versions "$tor_version" lt "$MINIMUM_TOR_VERSION"; then
@@ -321,6 +324,7 @@ fi
 
 # shellcheck disable=SC2086
 check_dependencies ${GENERAL_DEPENDENCIES}
+check_tor_version
 
 TARGET_DISPLAY=$(next_free_display)
 
