@@ -710,6 +710,9 @@ def deal_with_polkit_prompt(password, **opts)
     @screen.wait_vanish(image, 20)
   else
     @screen.wait('PolicyKitAuthFailure.png', 20)
+    # Ensure the dialog is ready to handle whatever else
+    # we want to do with it next, such as pressing Escape
+    sleep 0.5
   end
 end
 
