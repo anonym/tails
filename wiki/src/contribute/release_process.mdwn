@@ -1557,21 +1557,11 @@ website:
 Wait for the release to be fully published, that is for the website to have been
 fully refreshed. To do so:
 
- - If you're publishing a final release: wait until our Weblate integration
-   mechanisms have created `wiki/src/news/version_${VERSION:?}.*.po`, on the
-   `master` branch, for the languages enabled on Weblate but not on our website:
-
-       while true; do
-           git fetch origin
-           log=$(git log --author=tails-l10n@boum.org -n 1 origin/master "wiki/src/news/version_${VERSION:?}.*.po")
-           if [ -z "$log" ]; then
-               sleep 30
-               continue
-           fi
-           echo "$log"
-           break
-       done
-
+ - If you're publishing a final release, wait until all these conditions are met:
+   - <https://tails.boum.org/news/> includes the release notes
+   - <https://tails.boum.org/news/index.de.html> includes the release notes
+   - <https://tails.boum.org/torrents/files/> includes the files
+     for the new release
 
  - Else: wait until <https://tails.boum.org/news/test_$TAG/> is live.
 
