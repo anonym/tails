@@ -352,12 +352,17 @@ end
 class TCAConnectionFailure < TorBootstrapFailure
 end
 
+class TCAConnectionTimeOut < TorBootstrapFailure
+end
+
 class TCAForbiddenBridgeType < StandardError
 end
 
 Then /^the Tor Connection Assistant connects to Tor$/ do
   failure_reported = false
-  try_for(120, msg: 'Timed out while waiting for TCA to connect to Tor') do
+  try_for(120,
+          msg:       'Timed out while waiting for TCA to connect to Tor',
+          exception: TCAConnectionTimeOut) do
     if tor_connection_assistant.child?('Error connecting to Tor',
                                        roleName: 'label', retry: false)
       failure_reported = true
