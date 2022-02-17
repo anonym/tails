@@ -32,14 +32,15 @@ class AptSources
         File.exist?(filename)
       end
       next if apt_repo_filename.nil?
+
       @apt_sources << Debian::Sources.new(apt_repo_filename)
     end
-    if @apt_sources.empty?
-      raise "could not find Tails custom APT repo's sources, " \
-            "please add this to your APT sources:\n" \
-            "deb-src [arch=amd64] http://deb.tails.boum.org/ " \
-            "#{options.suite} main contrib non-free"
-    end
+    return unless @apt_sources.empty?
+
+    raise "could not find Tails custom APT repo's sources, " \
+          "please add this to your APT sources:\n" \
+          'deb-src [arch=amd64] http://deb.tails.boum.org/ ' \
+          "#{options.suite} main contrib non-free"
   end
 
   def source_package(package)
@@ -52,7 +53,9 @@ class AptSources
       end
     end
     raise NoSource, "found no source package for #{package}" if matches.size.zero?
+
     raise "found multiple source packages for #{package}: #{matches.join(', ')}" if matches.uniq.size > 1
+
     matches.first
   end
 end
