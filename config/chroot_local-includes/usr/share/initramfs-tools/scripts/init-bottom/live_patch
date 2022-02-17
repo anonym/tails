@@ -7,6 +7,8 @@ set -x
 #    right now $option is unused; in the future, this could be used to pass additional options to live_patch
 option="$(tr ' ' '\n' < /proc/cmdline | grep '^live_patch\b')"
 
+[ -n "$option" ] || exit 0
+
 for mod in fscache 9pnet 9pnet_virtio 9p; do
     modprobe -vvv -d /root/ $mod
 done
