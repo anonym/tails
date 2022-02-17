@@ -40,7 +40,7 @@ class AptSources
     raise "could not find Tails custom APT repo's sources, " \
           "please add this to your APT sources:\n" \
           'deb-src [arch=amd64] http://deb.tails.boum.org/ ' \
-          "#{options.suite} main contrib non-free"
+          "#{suite} main contrib non-free"
   end
 
   def source_package(package)
