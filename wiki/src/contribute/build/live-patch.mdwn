@@ -14,9 +14,9 @@ you can configure a program to run at initramfs-time.
 
 [[!toc levels=2]]
 
-## HowTo
+# HowTo
 
-### Configure libvirt
+## Configure libvirt
 
 Please add this to your domain definition, inside the `<devices>` tag:
 
@@ -30,7 +30,7 @@ Please add this to your domain definition, inside the `<devices>` tag:
 
 The word `src` is a magic constant. Do *not* change it.
 
-### Create an install script
+## Create an install script
 
 Let's say that you are iterating on improvements for
 `config/chroot_local-includes/etc/NetworkManager/dispatcher.d/`.
@@ -48,11 +48,11 @@ and make it executable.
 Remember: you are running at initramfs-time, which is why you have to take care of the `/root` prefix.  For
 the same reason, you should write in POSIX shell, not bash.
 
-### Run
+## Run
 
 Run your VM, and add `live_patch` to the kernel cmdline.
 
-## Implementation
+# Implementation
 
 Most important implementation bits are at
 [[!tails_gitweb config/chroot_local-includes/usr/share/initramfs-tools/scripts/init-bottom/live_patch]]
