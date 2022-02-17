@@ -151,9 +151,13 @@ binary_cruft_candidates.each do |p|
   binary_cruft << p
 end
 
+def put_list(list)
+  list.each_with_index { |item, i| puts " #{i + 1}. #{item}" }
+end
+
 unless binary_cruft.empty?
   puts '## Binary packages that are not used:'
-  binary_cruft.each { |p| puts " - #{p}" }
+  put_list(binary_cruft)
   puts
   puts "### Clean up command:\n\n" \
        '    ssh reprepro@incoming.deb.tails.boum.org ' \
@@ -163,7 +167,7 @@ end
 
 unless no_source_packages.empty?
   puts '## Binary packages that are used but lack source:'
-  no_source_packages.each { |p| puts " - #{p}" }
+  put_list(no_source_packages)
   puts
   puts '**Please investigate!** Most likely you want to just upload the ' \
        'missing source packages, or these binary packages are installed ' \
@@ -174,7 +178,7 @@ end
 
 unless source_cruft.empty?
   puts '## Source packages that are not used:'
-  source_cruft.each { |p| puts " - #{p}" }
+  put_list(source_cruft)
   puts
   puts "### Clean up command:\n\n" \
        '    ssh reprepro@incoming.deb.tails.boum.org ' \
