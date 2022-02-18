@@ -19,6 +19,13 @@ allow use of a Persistent Storage.
 
 </div>
 
+<!--
+
+XXX: VirtualBox Guest Additions has been removed since Tails 4.27. Without
+Guest Additions, the shared folders feature of VirtualBox is unavailable.
+Until Guest Additions is added back (#18728), the tip below shouldn't be
+displayed.
+
 <div class="tip">
 
 <p>With the <a href="https://www.virtualbox.org/manual/ch04.html#sharedfolders">
@@ -31,6 +38,8 @@ internal hard disks|internal_hard_disk]]
 from Tails before using this feature.</p>
 
 </div>
+
+-->
 
 Security considerations for Windows and macOS
 =============================================
@@ -105,3 +114,26 @@ To start the new virtual machine:
 
   1. Select the virtual machine in the left pane.
   1. Click **Start**.
+
+<div class="note">
+
+<p><i>VirtualBox Guest Additions</i> has been removed since Tails 4.27. As a
+result, the screen resolution of Tails can't be changed by resizing the
+virtual machine window in the host OS. The screen resolution must be changed
+from inside Tails.</p>
+
+<p>To change the screen resolution from inside Tails:</p>
+
+<ol>
+  <li>Open the [[system menu|doc/first_steps/introduction_to_gnome_and_the_tails_desktop#system]] in the top-right corner.</li>
+  <li>Click on the [[!img lib/preferences-system.png alt="System" class="symbolic" link="no"]] button to open the system settings.</li>
+  <li>Choose <b>Devices ▸ Displays ▸ Resolution</b>.</li>
+</ol>
+
+<p>You might also need to adjust the virtual machine window in the host OS to
+fit the new screen resolution.</p>
+
+<p>We plan to add back <i>VirtualBox Guest Additions</i> in a future version
+of Tails. See [[!tails_ticket 18728]].</p>
+
+</div>
