@@ -3,7 +3,7 @@
 - To learn what you can do with Tails, refer to our [[documentation|doc]].
 - For more general questions about Tails, refer to our [[FAQ|support/faq]].
 
-[[!toc levels=3]]
+[[!toc levels=2]]
 
 <h1 id="not-at-all">Tails not starting at all</h1>
 
@@ -26,11 +26,13 @@ Last updated:
 - MacBook Pro 4,1: 2014-08-15
 -->
 
-* MacBook Air 3,2 (A1369 EMC 2392) freezes when booting Tails in
-  UEFI mode.
+### MacBook Air 3,2 (A1369 EMC 2392)
 
-* Mac Pro Tower and MacBook Pro 4,1 (both from early 2008)
-  fail to start on Tails.
+  Freezes when booting Tails in UEFI mode.
+
+### Mac Pro Tower and MacBook Pro 4,1 (both from early 2008)
+
+  Fail to start on Tails.
 
 <h2 id="pc-not-at-all">PC</h2>
 
@@ -260,39 +262,39 @@ Last updated:
 - MacBook Pro 5,1: 2015-06-19
 -->
 
-* MacBook Air Retina 2018 and 2019
+### MacBook Air Retina 2018 and 2019
 
-  To start Tails successfully, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
+To start Tails successfully, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
 
-      modprobe.blacklist=thunderbolt
+    modprobe.blacklist=thunderbolt
 
-  Still, the trackpad and keyboard may not work. You may use an external
-  mouse and keyboard.
+Still, the trackpad and keyboard may not work. You may use an external
+mouse and keyboard.
 
-* MacBook Pro 8,3 17" (AMD Radeon HD6770M and Intel HD Graphics 3000)
+### MacBook Pro 8,3 17" (AMD Radeon HD6770M and Intel HD Graphics 3000)
 
-  If Tails fails to start, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
+If Tails fails to start, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
 
-      radeon.modeset=0
+    radeon.modeset=0
 
-* MacBook Pro 5,1 17" (Nvidia GeForce 9400M)
+### MacBook Pro 5,1 17" (Nvidia GeForce 9400M)
 
-  To make the display work properly, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
+To make the display work properly, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
 
-      nouveau.noaccel=1
+    nouveau.noaccel=1
 
-* MacBook Pro 16,1 (A2141)
+### MacBook Pro 16,1 (A2141)
 
-  The computer freezes then automatically restarts. An error message
-  appears saying that the computer was restarted because of a problem.
+The computer freezes then automatically restarts. An error message
+appears saying that the computer was restarted because of a problem.
 
-  To prevent this from occurring, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
+To prevent this from occurring, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
 
-      amdgpu.dpm=0
+    amdgpu.dpm=0
 
 <h2 id="pc-not-entirely">PC</h2>
 
@@ -404,13 +406,15 @@ not work.
 * Check in the following sections
   if there is a workaround to get your Wi-Fi interface work in Tails.
 
-<h2 id="wi-fi-workarounds">Knowing the model of your Wi-Fi interface</h2>
+<h2 id="problematic-wifi">Problematic Wi-Fi interfaces</h2>
+
+To know the model of your Wi-Fi interface:
 
 1. Open <span class="application">Terminal</span> and execute the following command:
 
        lspci -v | grep "Network controller"
 
-<h2 id="88w8897">88W8897 [AVASTAR] 802.11ac Wireless</h2>
+<h3 id="88w8897">88W8897 [AVASTAR] 802.11ac Wireless</h3>
 
 <!--
 Last updated: 2018-09-19
@@ -424,7 +428,7 @@ If you experience this problem, you can try to [[disable MAC address
 anonymization|doc/first_steps/welcome_screen/mac_spoofing]] that sometimes
 fixes it.
 
-<h2 id="rtl8723be">RTL8723BE PCIe Wireless Network Adapter</h2>
+<h3 id="rtl8723be">RTL8723BE PCIe Wireless Network Adapter</h3>
 
 <!--
 Last updated: 2017-12-24
@@ -449,7 +453,7 @@ depends on the computer:
 
 - <span class="command">rtl8723be.ant_sel=2 rtl8723be.fwlps=0 rtl8723be.ips=0</span>
 
-<h2 id="broadcom-sta-dkms">Broadcom Wi-Fi network interface needing <code>broadcom-sta-dkms</code></h2>
+<h3 id="broadcom-sta-dkms">Broadcom Wi-Fi network interface needing <code>broadcom-sta-dkms</code></h3>
 
 <!--
 Last updated: 2019-01-29
@@ -467,7 +471,7 @@ supported by the `broadcom-sta-dkms` package on the corresponding
 in the list of supported devices, then it is impossible to use your
 Wi-Fi card in Tails.
 
-<h2 id="lenovo-legion-y530">Lenovo Legion Y530</h2>
+<h3 id="lenovo-legion-y530">Lenovo Legion Y530</h3>
 
 <!--
 Last updated: 2019-05-10
@@ -480,7 +484,7 @@ starting Tails|doc/advanced_topics/boot_options]]:
 
     modprobe.blacklist=ideapad_laptop
 
-<h2 id="rtl8821ce">RTL8821CE</h2>
+<h3 id="rtl8821ce">RTL8821CE</h3>
 
 <!--
 Last updated: 2020-02-21
