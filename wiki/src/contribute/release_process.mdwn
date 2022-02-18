@@ -410,16 +410,16 @@ version's `.packages` file and the one from the to-be-released images:
 
 1. Generate the diff.
 
-   if [[ "${DIST:?}" = stable ]]; then
-       NEW_BRANCH="$RELEASE_BRANCH"
-   else
-       NEW_BRANCH=devel
-   fi
+       if [[ "${DIST:?}" = stable ]]; then
+           NEW_BRANCH="$RELEASE_BRANCH"
+       else
+           NEW_BRANCH=devel
+       fi
    
-   diff --color=never -u \
-       "wiki/src/torrents/files/tails-amd64-${PREVIOUS_STABLE_VERSION}.packages" \
-       <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/latest.packages") \
-    | wdiff --diff-input  --terminal
+       diff --color=never -u \
+           "wiki/src/torrents/files/tails-amd64-${PREVIOUS_STABLE_VERSION}.packages" \
+           <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/latest.packages") \
+        | wdiff --diff-input  --terminal
 
 2. In the diff, look for:
 
