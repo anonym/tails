@@ -6,7 +6,7 @@
 
 [[!toc levels=3]]
 
-<h1 id="problems-starting-tails">Problems starting Tails</h1>
+<h1 id="not-at-all">Tails not starting at all</h1>
 
 This section lists known problems with specific hardware. To report a problem
 with different hardware see our [[report guidelines when Tails does not
@@ -61,61 +61,13 @@ Success report received on 2020-01-04
 Starting Tails from a Kingston DataTraveler 2000 or DataTraveler 100G3 may
 not work.
 
-<h2 id="mac">Mac</h2>
+<h2 id="mac-not-at-all">Mac</h2>
 
 <!--
 Last updated:
 - MacBook Air 3,2: 2014-06-27
-- MacBook Pro 5,1: 2015-06-19
 - MacBook Pro 4,1: 2014-08-15
-- MacBook Air Retina 2019: 2019-11-01
-- MacBook Pro 8,3: 2019-11-01
 -->
-
-* Any Mac with 32-bit EFI might not start on Tails.
-  You can check if a given Mac is 32-bit
-  or 64-bit EFI on that list:
-  <https://www.everymac.com/mac-answers/snow-leopard-mac-os-x-faq/mac-os-x-snow-leopard-64-bit-macs-64-bit-efi-boot-in-64-bit-mode.html>
-
-* MacBook Air Retina 2018 and 2019
-
-  To start Tails successfully, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
-
-      modprobe.blacklist=thunderbolt
-
-  Still, the trackpad and keyboard may not work. You may use an external
-  mouse and keyboard.
-
-* MacBook Pro (recent models): the keyboard, trackpad, and Touch Bar might
-  not work. But, you can use an external keyboard and mouse.
-
-  If the keyboard, trackpad, and Touch Bar do work on your recent MacBook Pro
-  model, please let us know so that we can update this page accordingly.
-
-* MacBook Pro 8,3 17" (AMD Radeon HD6770M and Intel HD Graphics 3000)
-
-  If Tails fails to start, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
-
-      radeon.modeset=0
-
-* MacBook Pro 5,1 17" (Nvidia GeForce 9400M)
-
-  To make the display work properly, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
-
-      nouveau.noaccel=1
-
-* MacBook Pro 16,1 (A2141)
-
-  The computer freezes then automatically restarts. An error message
-  appears saying that the computer was restarted because of a problem.
-
-  To prevent this from occurring, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
-
-      amdgpu.dpm=0
 
 * MacBook Air 3,2 (A1369 EMC 2392) freezes when booting Tails in
   UEFI mode.
@@ -123,22 +75,7 @@ Last updated:
 * Mac Pro Tower and MacBook Pro 4,1 (both from early 2008)
   fail to start on Tails.
 
-<h2 id="pc">PC</h2>
-
-<h3 id="lockup">"Soft lockup" error</h3>
-
-<!--
-Last updated: 2019-05-20
--->
-
-On some laptops, Tails starts with the following error:
-
-<p class="pre">soft lockup - CPU#<span class="command-placeholder">N</span> stuck for <span class="command-placeholder">N</span>s</p>
-
-To start Tails successfully, [[add the following boot option when starting
-Tails|doc/advanced_topics/boot_options]]:
-
-    acpi_rev_override=1 nouveau.modeset=0
+<h2 id="pc-not-at-all">PC</h2>
 
 <h3 id="sg-black-screen">Acer Travelmate 8573T-254G50M</h3>
 
@@ -163,10 +100,6 @@ Does not start on USB sticks.
 
 Does not start Tails 4.13.
 
-<h3 id="amd-ryzen-vega-graphics">AMD Ryzen with Vega graphics cards</h3>
-
-See [[support/known_issues/graphics#amd-vega]].
-
 <h3 id="asus-vivobook-x202e">ASUS VivoBook X202E</h3>
 
 <!--
@@ -178,17 +111,6 @@ legacy boot support, enable 'Launch CSM' under boot (menu).
 
 This problem might be corrected in Tails 1.1 and newer: please report
 your test results back to us.
-
-<h3 id="dell-chromebook-lulu">Dell Chromebook LULU</h3>
-
-<!--
-Last updated: 2018-01-10
--->
-
-To start Tails successfully, [[add the following boot option when starting
-Tails|doc/advanced_topics/boot_options]]:
-
-    nomodeset
 
 <h3 id="dell-latitude-e5250">Dell Latitude E5250</h3>
 
@@ -310,15 +232,6 @@ Specs: https://www.cnet.com/products/lenovo-ideapad-z585-15-6-a8-4500m-6-gb-ram-
 
 Goes back continuously to Boot Loader on Tails installed on DVD.
 
-<h3 id="microsoft-surface-laptop-3">Microsoft Surface Laptop 3</h3>
-
-<!--
-Last updated: 2020-07-03
--->
-
-The keyboard and mouse do not work on this laptop.
-If you find a workaround, please let us know.
-
 <h3 id="clevo-w258cu">Clevo W258CU, ThinkPad X121e, T420i, T410, T520, W520, W540, T530, T60, E325, and E530</h3>
 
 <!--
@@ -356,6 +269,92 @@ Specs: https://system76.com/laptops/oryx
 This machine does not start from a Tails USB stick: the Linux kernel
 included in at least Tails 3.11 to 3.13.1, inclusive, does not support
 the hardware USB controller.
+
+<h1 id="not-entirely">Tails not starting entirely</h1>
+
+<h2 id="mac-not-entirely">Mac</h2>
+
+<!--
+Last updated:
+- MacBook Air Retina 2019: 2019-11-01
+- MacBook Pro 8,3: 2019-11-01
+- MacBook Pro 5,1: 2015-06-19
+-->
+
+* MacBook Air Retina 2018 and 2019
+
+  To start Tails successfully, [[add the following boot option when
+  starting Tails|doc/advanced_topics/boot_options]]:
+
+      modprobe.blacklist=thunderbolt
+
+  Still, the trackpad and keyboard may not work. You may use an external
+  mouse and keyboard.
+
+* MacBook Pro 8,3 17" (AMD Radeon HD6770M and Intel HD Graphics 3000)
+
+  If Tails fails to start, [[add the following boot option when
+  starting Tails|doc/advanced_topics/boot_options]]:
+
+      radeon.modeset=0
+
+* MacBook Pro 5,1 17" (Nvidia GeForce 9400M)
+
+  To make the display work properly, [[add the following boot option when
+  starting Tails|doc/advanced_topics/boot_options]]:
+
+      nouveau.noaccel=1
+
+* MacBook Pro 16,1 (A2141)
+
+  The computer freezes then automatically restarts. An error message
+  appears saying that the computer was restarted because of a problem.
+
+  To prevent this from occurring, [[add the following boot option when
+  starting Tails|doc/advanced_topics/boot_options]]:
+
+      amdgpu.dpm=0
+
+<h2 id="pc-not-entirely">PC</h2>
+
+<h3 id="lockup">"Soft lockup" error</h3>
+
+<!--
+Last updated: 2019-05-20
+-->
+
+On some laptops, Tails starts with the following error:
+
+<p class="pre">soft lockup - CPU#<span class="command-placeholder">N</span> stuck for <span class="command-placeholder">N</span>s</p>
+
+To start Tails successfully, [[add the following boot option when starting
+Tails|doc/advanced_topics/boot_options]]:
+
+    acpi_rev_override=1 nouveau.modeset=0
+
+<h3 id="amd-ryzen-vega-graphics">AMD Ryzen with Vega graphics cards</h3>
+
+See [[support/known_issues/graphics#amd-vega]].
+
+<h3 id="dell-chromebook-lulu">Dell Chromebook LULU</h3>
+
+<!--
+Last updated: 2018-01-10
+-->
+
+To start Tails successfully, [[add the following boot option when starting
+Tails|doc/advanced_topics/boot_options]]:
+
+    nomodeset
+
+<h3 id="microsoft-surface-laptop-3">Microsoft Surface Laptop 3</h3>
+
+<!--
+Last updated: 2020-07-03
+-->
+
+The keyboard and mouse do not work on this laptop.
+If you find a workaround, please let us know.
 
 <h1 id="wi-fi">Wi-Fi issues</h1>
 
