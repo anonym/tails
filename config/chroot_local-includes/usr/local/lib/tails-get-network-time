@@ -11,6 +11,9 @@ import pycurl
 import sys
 from pathlib import Path
 from typing import Dict, Optional
+import datetime
+
+from tailslib.release import get_release_date
 
 LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
@@ -127,6 +130,18 @@ class NMishCurlClient:
         return self.client.close()
 
 
+
+def on_date_found(dt: datetime.datetime):
+    '''
+    Called when our NMishCurlClient has found a possible date.
+
+    It deals with additional sanity checks, sending to stdout in the appropriate format
+    '''
+    if (get_release_date() - datetime.timedelta(days=1)) > dt:
+        fail("Received a date too far in the past, which is impossible")
+    print(dt.isoformat())
+
+
 def main():
     import argparse
 
@@ -169,7 +184,7 @@ def main():
                 dt = email.utils.parsedate_to_datetime(date)
             except Exception:
                 fail("malformed-date-header")
-            print(dt.isoformat())
+            on_date_found(dt)
             sys.exit(0)
         else:
             log.error(
