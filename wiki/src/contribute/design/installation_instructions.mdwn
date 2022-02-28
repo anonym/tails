@@ -1,0 +1,153 @@
+[[!meta title="Installation instructions"]]
+
+[[!toc levels=2]]
+
+Our installation instructions are optimizing for first time and less technical users, while still
+being usable by expert users.
+
+The following scenarios are proposed:
+
+  - [[Install from Windows|install/windows]]
+  - [[Install from macOS|install/mac]]
+  - [[Install from Linux (all distributions)|install/linux]]
+  - [[Install from Debian, Ubuntu, or Mint using the command line and GnuPG|install/expert]]
+  - [[Clone from another Tails (for PC)|install/clone/pc]]
+  - [[Clone from another Tails (for Mac)|install/clone/mac]]
+  - [[Burn a DVD|install/dvd]]
+  - [[Run in a virtual machine|install/vm]]
+  - [[Download only for USB sticks|install/download]]
+  - [[Download only for DVDs and virtual machines|install/download-iso]]
+
+The installation instructions are also adapted to cover 5 [[manual upgrade
+scenarios|doc/upgrade#manual]]:
+
+  - [[Upgrade by cloning from another Tails|upgrade/clone]]
+  - [[Upgrade from Tails|upgrade/tails]]
+  - [[Upgrade from Windows|upgrade/windows]]
+  - [[Upgrade from macOS|upgrade/mac]]
+  - [[Upgrade from Linux|upgrade/linux]]
+
+Related documents
+=================
+
+- [[Design document of *Tails Installer*|installation]]
+- [[Design document of the download verification|download_verification]]
+- [Archive of our design artifacts](https://gitlab.tails.boum.org/tails/ux/-/tree/master/installation%20assistant)
+- [[!tails_ticket 18074 desc="Usability tests from December 2021"]]
+
+Implementation tricks
+=====================
+
+The installation instructions are presenting very similar content in many
+different scenarios with small variations: slightly different steps, slightly
+different terminology, etc.
+
+To reuse as much content as possible and reduce the quantity of text and
+translations, our implementation relies heavily on 2 tricks. Both are
+quite hackish but were the only solution we found to avoid duplicating
+massive amount of content in ikiwiki.
+
+### Ikiwiki inlines
+
+The [inline directive](https://ikiwiki.info/ikiwiki/directive/inline/) of
+ikiwiki allows embedding a file into another file to avoid duplicating content.
+It is quite limited and brittle, especially when used together with the PO
+plugin. See [[!tails_ticket 6907]].
+
+### Conditional CSS content
+
+To adapt a piece of content reused using ikiwiki inlines to the context
+where it appears we are using CSS classes. For example, to introduce the
+program used to install an intermediary Tails on Windows and Linux we
+wrote:
+
+<pre>
+&lt;span class="windows"&gt;a program called Etcher.&lt;/span&gt;
+&lt;span class="linux"&gt;a program called GNOME Disks.&lt;/span&gt;
+</pre>
+
+Elements with the `windows` class being only displayed in the Windows
+scenario and elements with the
+`linux` class being only displayed in the Linux scenario.
+
+- Classes for elements displayed only on one scenario:
+  - `windows` for [[/install/windows|/install/windows]]
+  - `mac` for [[/install/mac|/install/mac]]
+  - `linux` for [[/install/linux|/install/linux]]
+  - `expert` for [[/install/expert|/install/expert]]
+  - `dvd` for [[/install/dvd|/install/dvd]]
+  - `vm` for [[/install/vm|/install/vm]]
+  - `download-only-img` for [[/install/download|/install/download]]
+  - `download-only-iso` for [[/install/download|/install/download-iso]]
+  - `pc-clone` for [[/install/clone|/install/clone/pc]]
+  - `mac-clone` for [[/install/mac/clone|/install/clone/mac]]
+  - `upgrade-clone` for [[/upgrade/clone|/upgrade/clone]]
+  - `upgrade-tails` for [[/upgrade/tails|/upgrade/tails]]
+  - `upgrade-windows` for [[/upgrade/win|/upgrade/windows]]
+  - `upgrade-mac` for [[/upgrade/mac|/upgrade/mac]]
+  - `upgrade-linux` for [[/upgrade/linux|/upgrade/linux]]
+
+- Classes for elements potentially displayed on different pages:
+  - `clone` for content involving cloning:
+     - `pc-clone`, `upgrade-clone`, `mac-clone`
+  - `usb` for content with a USB stick as destination device (only for installation):
+     - `windows`, `mac`, `linux`, `expert`
+  - `upgrade` for content for manual upgrade:
+     - `upgrade-clone`, `upgrade-tails`, `upgrade-os`
+  - `upgrade-os` for content for manual upgrade from another OS
+     - `upgrade-windows`, `upgrade-mac`, `upgrade-linux`
+
+- Other classes:
+  - `standalone` for content that should only be displayed outside of
+    the installation instructions. For example on
+    [[Starting Tails on PC|doc/first_steps/start/pc]].
+
+<a id="overview"></a>
+
+Overview
+========
+
+The *overview* is the first part of an installation scenario and summarizes graphically:
+
+  - The requirements of the installation scenario in terms of hardware
+    and time. This is important so that people get ready and make sure
+    beforehand that they have everything needed to complete the
+    scenario.
+  - The different steps. This give a rough idea of what will happen
+    next and how complex it is, with links to each step to ease navigation.
+
+<a id="download"></a>
+
+Download
+========
+
+The download of the ISO image is the 1st step of the most common installation scenarios.
+It is also available as a [[standalone page|install/download]].
+
+We propose 2 download techniques displayed in equal weight:
+
+a. Direct download.
+
+b. BitTorrent download.
+
+See our [[design document on download
+verification|download_verification]] for a security analysis of the
+different verification techniques that we provide.
+
+<a id="steps"></a>
+
+Steps
+=====
+
+The detailed installation *steps* are given on the same page as the overview
+and download.
+
+- Everything is on a single page so that people can get a feeling of what is left
+  to be done and don't get lost between download and installation for example. During the tests, many people were scrolling up and down
+  the page, for example while waiting for an operation to complete or
+  when feeling that they missed something earlier.
+
+- The content of each step is written in an inline stored in
+  `install/inc/steps/*.inline.mdwn` which is inlined from the scenarios
+  themselves (for example `install/debian/usb.mdwn`) and adapted to each
+  scenario using CSS classes.
