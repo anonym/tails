@@ -309,6 +309,14 @@ After('@product') do |scenario|
         'Chutney logs',
         "#{ARTIFACTS_DIR}/#{chutney_logs}"
       )
+
+      if $vm.file_exist?('/var/lib/tor/pt_state/obfs4proxy.log')
+        File.open("#{$config['TMPDIR']}/log.obfs4proxy", 'w') do |f|
+          f.write($vm.file_content('/var/lib/tor/pt_state/obfs4proxy.log'))
+        end
+        save_failure_artifact('obfs4proxy logs', "#{$config['TMPDIR']}/log.obfs4proxy")
+      end
+
       if scenario.exception.instance_of?(HtpdateError)
         File.open("#{$config['TMPDIR']}/log.htpdate", 'w') do |f|
           if $vm.file_exist?('/var/log/htpdate.log')
