@@ -700,7 +700,6 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
                         { address: b[:address], port: b[:port] }
                       end
                     end
-    debug_log("set to #{allowed_hosts}")
   when 'the configured bridges'
     assert_not_nil(@bridge_hosts, 'No bridges has been configured via the ' \
                                   "'I configure some ... bridges in the " \
@@ -709,6 +708,11 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
   else
     raise "Unsupported flow target '#{flow_target}'"
   end
+  flow_target_s = flow_target.delete_prefix('the ')
+  allowed_hosts_s = allowed_hosts
+                    .map { |address| "#{address[:address]}:#{address[:port]}" }
+                    .join(', ')
+  debug_log("These hosts (#{flow_target_s}) are allowed: #{allowed_hosts_s}")
   assert_all_connections(@sniffer.pcap_file) do |c|
     allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
