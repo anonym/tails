@@ -319,11 +319,6 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-TAGS_ARGS=''
-if [ -n "${JENKINS_URL:-}" ] && echo "${GIT_BRANCH}" | grep -q -E '[+-]real-Tor$'; then
-    export DISABLE_CHUTNEY="yes"
-    TAGS_ARGS="--tag @supports_real_tor"
-fi
 trap "test_suite_cleanup" EXIT HUP INT QUIT TERM
 
 if [ "${EUID}" -ne 0 ] && [ -z "${ALLOW_NON_ROOT}" ]; then
@@ -345,13 +340,18 @@ if [ -n "${VNC_VIEWER:-}" ]; then
     start_vnc_viewer
 fi
 
+TAGS_ARGS=""
 if [ -n "${JENKINS_URL:-}" ]; then
+    . auto/scripts/utils.sh
+
+    if echo "${GIT_BRANCH}" | grep -q -E '[+-]real-Tor$'; then
+        export DISABLE_CHUTNEY="yes"
+        TAGS_ARGS="--tag @supports_real_tor"
     # The current Git state may not reflect the state at the time the
     # upstream job was started (e.g. since then we git fetch + git
     # reset --hard) so we trust the Git state described in Jenkins'
     # environment variables instead.
-    . auto/scripts/utils.sh
-    if echo "${GIT_BRANCH}" | grep -q -E '[+-]force-all-tests$' \
+    elif echo "${GIT_BRANCH}" | grep -q -E '[+-]force-all-tests$' \
        || git_on_a_tag \
        || [ "${GIT_BRANCH#origin/}" = testing ] \
        || [ "${GIT_BRANCH#origin/}" = devel ] ; then
