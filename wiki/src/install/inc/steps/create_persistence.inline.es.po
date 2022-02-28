@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-07-01 12:11+0200\n"
+"POT-Creation-Date: 2022-02-25 17:10-0600\n"
 "PO-Revision-Date: 2021-12-28 05:02+0000\n"
 "Last-Translator: Joaquín Serna <bubuanabelas@cryptolab.net>\n"
 "Language-Team: Spanish <http://translate.tails.boum.org/projects/tails/"
@@ -22,6 +22,17 @@ msgstr ""
 #, no-wrap
 msgid "[[!meta robots=\"noindex\"]]\n"
 msgstr "[[!meta robots=\"noindex\"]]\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"new\" class=\"pc-clone mac-clone\">Welcome to your new Tails!</h1>\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "   <div class=\"step-image\">[[!img install/inc/infography/restart-on-tails.png link=\"no\" alt=\"\"]]</div>\n"
+msgid "<div class=\"step-image pc-clone mac-clone\">[[!img install/inc/infography/tails.png link=\"no\" alt=\"\"]]</div>\n"
+msgstr "   <div class=\"step-image\">[[!img install/inc/infography/restart-on-tails.png link=\"no\" alt=\"\"]]</div>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -56,8 +67,7 @@ msgstr ""
 #. type: Bullet: '1. '
 msgid ""
 "After establishing a connection to a local network, the *Tor Connection* "
-"assistant appears to help you [[connect to the Tor network|doc/"
-"anonymous_internet/tor]]."
+"assistant appears to help you connect to the Tor network."
 msgstr ""
 
 #. type: Plain text
@@ -68,9 +78,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!inline pages=\"doc/anonymous_internet/no-wifi.inline\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr ""
-"[[!inline pages=\"doc/anonymous_internet/no-wifi.inline.es\" raw=\"yes\" "
-"sort=\"age\"]]\n"
+msgstr "[[!inline pages=\"doc/anonymous_internet/no-wifi.inline.es\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -79,21 +87,32 @@ msgstr "<div class=\"trophy\">\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<p>Yay, you managed to start <span class=\"install-clone mac-clone\">your new</span> Tails on your computer!</p>\n"
+msgid "<p>Yay, you managed to start <span class=\"pc-clone mac-clone\">your new</span> Tails on your computer!</p>\n"
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<p>If you want to save some of your documents\n"
+#| "and configuration in an encrypted storage on your <span class=\"clone\">new</span> Tails USB stick, follow\n"
+#| "our instructions until the end. Otherwise, have a look at our\n"
+#| "<span class=\"install-clone\">[[final recommendations|clone#recommendations]].</span>\n"
+#| "<span class=\"expert\">[[final recommendations|expert/usb#recommendations]].</span>\n"
+#| "<span class=\"windows\">[[final recommendations|win/usb#recommendations]].</span>\n"
+#| "<span class=\"mac\">[[final recommendations|mac/usb#recommendations]].</span>\n"
+#| "<span class=\"mac-clone\">[[final recommendations|mac/clone#recommendations]].</span>\n"
+#| "<span class=\"linux\">[[final recommendations|linux/usb#recommendations]].</span>\n"
+#| "</p>\n"
 msgid ""
 "<p>If you want to save some of your documents\n"
 "and configuration in an encrypted storage on your <span class=\"clone\">new</span> Tails USB stick, follow\n"
 "our instructions until the end. Otherwise, have a look at our\n"
-"<span class=\"install-clone\">[[final recommendations|clone#recommendations]].</span>\n"
-"<span class=\"expert\">[[final recommendations|expert/usb#recommendations]].</span>\n"
-"<span class=\"windows\">[[final recommendations|win/usb#recommendations]].</span>\n"
-"<span class=\"mac\">[[final recommendations|mac/usb#recommendations]].</span>\n"
-"<span class=\"mac-clone\">[[final recommendations|mac/clone#recommendations]].</span>\n"
-"<span class=\"linux\">[[final recommendations|linux/usb#recommendations]].</span>\n"
+"<span class=\"windows\">[[final recommendations|windows#recommendations]].</span>\n"
+"<span class=\"mac\">[[final recommendations|mac#recommendations]].</span>\n"
+"<span class=\"linux\">[[final recommendations|linux#recommendations]].</span>\n"
+"<span class=\"expert\">[[final recommendations|expert#recommendations]].</span>\n"
+"<span class=\"pc-clone\">[[final recommendations|clone#recommendations]].</span>\n"
+"<span class=\"mac-clone\">[[final recommendations|clone/mac#recommendations]].</span>\n"
 "</p>\n"
 msgstr ""
 "<p>Si quieres guardar algunos de tus documentos\n"
@@ -164,8 +183,9 @@ msgid "Is encrypted using a passphrase of your choice."
 msgstr "Esta cifrado usando una contraseña de tu elección."
 
 #. type: Plain text
-#, no-wrap
-msgid "<div class=\"caution\">\n"
+#, fuzzy, no-wrap
+#| msgid "<div class=\"caution\">\n"
+msgid "<div class=\"attack\">\n"
 msgstr "<div class=\"caution\">\n"
 
 #. type: Plain text
@@ -182,6 +202,11 @@ msgstr ""
 "<p>El almacenamiento persistente cifrado no está escondido. Un atacante en posesión de\n"
 "la memoria USB puede saber si contiene un almacenamiento persistente cifrado. Ten en cuenta\n"
 "que puedes ser forzado o engañado a revelar la contraseña.</p>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<div class=\"caution\">\n"
+msgstr "<div class=\"caution\">\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
@@ -225,12 +250,18 @@ msgid "Create the Persistent Storage"
 msgstr "Crea el almacenamiento persistente\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "1. Choose\n"
+#| "   <span class=\"menuchoice\">\n"
+#| "     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
+#| "     <span class=\"guisubmenu\">Tails</span>&nbsp;▸\n"
+#| "     <span class=\"guimenuitem\">Configure persistent volume</span></span>.\n"
 msgid ""
 "1. Choose\n"
 "   <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-"     <span class=\"guisubmenu\">Tails</span>&nbsp;▸\n"
+"     <span class=\"guimenu\">Applications</span>&nbsp;â¸\n"
+"     <span class=\"guisubmenu\">Tails</span>&nbsp;â¸\n"
 "     <span class=\"guimenuitem\">Configure persistent volume</span></span>.\n"
 msgstr ""
 "1. Selecciona\n"
@@ -251,11 +282,16 @@ msgstr ""
 "y en <span class=\"guilabel\">Verificar Contraseña</span>.\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "   <div class=\"tip\">\n"
+#| "   <p>We recommend choosing a long passphrase made of five to seven random words.\n"
+#| "   <a href=\"https://theintercept.com/2015/03/26/passphrases-can-memorize-attackers-cant-guess/\">Learn more.</a></p>\n"
+#| "   </div>\n"
 msgid ""
 "   <div class=\"tip\">\n"
 "   <p>We recommend choosing a long passphrase made of five to seven random words.\n"
-"   <a href=\"https://theintercept.com/2015/03/26/passphrases-can-memorize-attackers-cant-guess/\">Learn more.</a></p>\n"
+"   <a href=\"https://theintercept.com/2015/03/26/passphrases-can-memorize-attackers-cant-guess/\">See this article about memorizable and secure passphrases.</a></p>\n"
 "   </div>\n"
 msgstr ""
 "   <div class=\"tip\">\n"
@@ -304,11 +340,6 @@ msgstr ""
 #. type: Bullet: '4. '
 msgid "Click <span class=\"bold\">Save</span>."
 msgstr "Haz click <span class=\"bold\">Guardar</span>."
-
-#. type: Plain text
-#, no-wrap
-msgid "   <div class=\"step-image\">[[!img install/inc/infography/restart-on-tails.png link=\"no\" alt=\"\"]]</div>\n"
-msgstr "   <div class=\"step-image\">[[!img install/inc/infography/restart-on-tails.png link=\"no\" alt=\"\"]]</div>\n"
 
 #. type: Title -
 #, fuzzy, no-wrap
@@ -368,13 +399,20 @@ msgid "After 15&ndash;30 seconds, the Tails desktop appears."
 msgstr "Luego de 15&ndash;30 segundos, el escritorio de Tails aparecerá."
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "1. You can now save your personal files and working documents in the\n"
+#| "<span class=\"guilabel\">Persistent</span> folder. To open the\n"
+#| "<span class=\"guilabel\">Persistent</span> folder choose\n"
+#| "<span class=\"menuchoice\">\n"
+#| "  <span class=\"guimenu\">Places</span>&nbsp;▸\n"
+#| "  <span class=\"guimenuitem\">Persistent</span></span>.\n"
 msgid ""
 "1. You can now save your personal files and working documents in the\n"
 "<span class=\"guilabel\">Persistent</span> folder. To open the\n"
 "<span class=\"guilabel\">Persistent</span> folder choose\n"
 "<span class=\"menuchoice\">\n"
-"  <span class=\"guimenu\">Places</span>&nbsp;▸\n"
+"  <span class=\"guimenu\">Places</span>&nbsp;â¸\n"
 "  <span class=\"guimenuitem\">Persistent</span></span>.\n"
 msgstr ""
 "1. Ahora puedes guardar tus archivos personales y documentos de trabajo en la\n"
@@ -392,10 +430,7 @@ msgstr "<div class=\"trophy\" id=\"recommendations\">\n"
 #. type: Plain text
 #, no-wrap
 msgid "<div class=\"state-image\">[[!img install/inc/infography/tails-usb-with-persistence.png link=\"no\" alt=\"Tails USB stick with Persistent Storage\"]]</div>\n"
-msgstr ""
-"<div class=\"state-image\">[[!img install/inc/infography/tails-usb-with-"
-"persistence.png link=\"no\" alt=\"Memoria USB de Tails con Almacenamiento "
-"Persistente\"]]</div>\n"
+msgstr "<div class=\"state-image\">[[!img install/inc/infography/tails-usb-with-persistence.png link=\"no\" alt=\"Memoria USB de Tails con Almacenamiento Persistente\"]]</div>\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
@@ -408,56 +443,55 @@ msgid "<h3>Final recommendations</h3>\n"
 msgstr "<h3>Recomendaciones finales</h3>\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "<div class=\"row\">\n"
+#, fuzzy, no-wrap
+#| msgid "<div class=\"row\">\n"
+msgid "<div class=\"help\">\n"
 msgstr "<div class=\"row\">\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "  <div class=\"col-md-6\">\n"
-msgstr "  <div class=\"col-md-6\">\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "    [[!img lib/dialog-warning.png link=\"no\" alt=\"\" class=\"float-left\"]]\n"
-msgstr "    [[!img lib/dialog-warning.png link=\"no\" alt=\"\" class=\"float-left\"]]\n"
-
-#. type: Plain text
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    <p>Tails does not protect you from everything! Have a look at our\n"
-#| "    [[warnings|doc/about/warning]].</p>\n"
 msgid ""
-"    <p>Tails does not protect you from everything! Have a look at our\n"
-"    [[warnings|doc/about/warnings]].</p>\n"
-msgstr ""
-"    <p>¡Tails no te protege de todo! Échale un vistazo a nuestras\n"
-"    [[advertencias|doc/about/warning]].</p>\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "  </div>\n"
-msgstr "  </div>\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "    [[!img lib/apps/help-browser.png link=\"no\" alt=\"\" class=\"float-left\"]]\n"
-msgstr ""
-"    [[!img lib/apps/help-browser.png link=\"no\" alt=\"\" class=\"float-"
-"left\"]]\n"
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"    <p>You should regularly\n"
-"    [[make a backup of your Persistent Storage|doc/first_steps/persistence/backup]]\n"
-"    in case your Tails USB stick becomes lost or damaged.</p>\n"
+"<p>You should regularly\n"
+"[[make a backup of your Persistent Storage|doc/first_steps/persistence/backup]]\n"
+"in case your Tails USB stick becomes lost or damaged.</p>\n"
 msgstr ""
 
 #. type: Plain text
 #, no-wrap
 msgid "<p>We hope you enjoy using Tails :)</p>\n"
 msgstr "<p>Esperamos que disfrutes usando Tails :)</p>\n"
+
+#, fuzzy, no-wrap
+#~| msgid "<div class=\"caution\">\n"
+#~ msgid "<div class=\"warning\">\n"
+#~ msgstr "<div class=\"caution\">\n"
+
+#, fuzzy, no-wrap
+#~| msgid ""
+#~| "    <p>Tails does not protect you from everything! Have a look at our\n"
+#~| "    [[warnings|doc/about/warning]].</p>\n"
+#~ msgid ""
+#~ "<p>Tails does not protect you from everything! Have a look at our\n"
+#~ "[[warnings|doc/about/warnings]].</p>\n"
+#~ msgstr ""
+#~ "    <p>¡Tails no te protege de todo! Échale un vistazo a nuestras\n"
+#~ "    [[advertencias|doc/about/warning]].</p>\n"
+
+#, no-wrap
+#~ msgid "  <div class=\"col-md-6\">\n"
+#~ msgstr "  <div class=\"col-md-6\">\n"
+
+#, no-wrap
+#~ msgid "    [[!img lib/dialog-warning.png link=\"no\" alt=\"\" class=\"float-left\"]]\n"
+#~ msgstr "    [[!img lib/dialog-warning.png link=\"no\" alt=\"\" class=\"float-left\"]]\n"
+
+#, no-wrap
+#~ msgid "  </div>\n"
+#~ msgstr "  </div>\n"
+
+#, no-wrap
+#~ msgid "    [[!img lib/apps/help-browser.png link=\"no\" alt=\"\" class=\"float-left\"]]\n"
+#~ msgstr "    [[!img lib/apps/help-browser.png link=\"no\" alt=\"\" class=\"float-left\"]]\n"
 
 #~ msgid "After establishing a connection to a network:"
 #~ msgstr "Luego de establecer una conexión a la red:"
