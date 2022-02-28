@@ -671,19 +671,30 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   end
 end
 
+def bridges_to_ipport(file_content)
+  # given the content of a default_bridges.txt, extract all IPs:Port, returning an array of hashes
+  # only IPv4 are considered
+  file_content
+    .chomp
+    .split("\n")
+    .filter { |l| l.start_with?('obfs4') }
+    .map { |l| / [0-9.]+:\d+ /.match(l) }
+    .reject(&:nil?)
+    .map { |m| m[0].chomp.strip }
+    .reject(&:empty?)
+    .map { |l| l.split(':') }
+    .map { |ip, port| { address: ip, port: port.to_i } }
+end
+
 Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
   case flow_target
   when 'Tor'
     allowed_hosts = allowed_hosts_under_tor_enforcement
   when 'the default bridges'
     allowed_hosts = if $config['DISABLE_CHUTNEY']
-                      $vm.execute_successfully(
-                        'grep ^obfs4 /usr/share/tails/tca/default_bridges.txt | grep -owP \'[0-9.]+:\d+\''
-                      ).stdout.chomp.split("\n").reject { |l| l.chomp.empty? }.map do |line|
-                        debug_log("lets look at default_bridges.txt... #{line}")
-                        ip, port = line.split(':')
-                        { address: ip, port: port.to_i }
-                      end
+                      bridges_to_ipport(
+                        $vm.file_content('/usr/share/tails/tca/default_bridges.txt')
+                      )
                     else
                       chutney_bridges('obfs4', chutney_tag: 'defbr').map do |b|
                         { address: b[:address], port: b[:port] }
