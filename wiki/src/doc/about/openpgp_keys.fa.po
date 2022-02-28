@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-02-25 15:40-0600\n"
+"POT-Creation-Date: 2022-02-28 20:53+0000\n"
 "PO-Revision-Date: 2015-10-21 11:00+0000\n"
 "Last-Translator: sprint5 <translation5@451f.org>\n"
 "Language-Team: Persian <http://weblate.451f.org:8889/projects/tails/"
@@ -84,9 +84,8 @@ msgstr "رمزگذاری"
 #. type: Plain text
 #, fuzzy
 msgid ""
-"This key has an encryption subkey. Please use it to encrypt email sent to "
-"the core developers encrypted mailing list: [[tails@boum.org|about/"
-"contact#tails]]."
+"This key has an encryption subkey. Please use it to send encrypted emails to "
+"our contact address: [[tails@boum.org|about/contact#tails]]."
 msgstr ""
 "این کلید دارای یک زیرکلید رمزگذاری‌شده است. از آن برای رمزگذاری رایانامه به "
 "فهرست رایانامهٔ توسعه‌دهندگان مرکزی که رمزگذاری شده‌است استفاده کنید: "
@@ -206,48 +205,34 @@ msgstr ""
 msgid "Primary key"
 msgstr "کلید اصلی"
 
-#. type: Bullet: '* '
+#. type: Plain text
+#, fuzzy, no-wrap
 msgid ""
-"Is not owned in a usable format by any single individual. It is split "
-"cryptographically using [gfshare](https://git.gitano.org.uk/libgfshare.git/)."
+"* Is not owned in a usable format by any single individual. It is\n"
+"  split cryptographically using\n"
+"  [gfshare](https://git.gitano.org.uk/libgfshare.git/).\n"
+"* Is only used offline, in an air-gapped Tails only communicating with\n"
+"  the outside world through:\n"
+"  - Plugging the Tails flash media in another operating system to install Tails\n"
+"    in the first place.\n"
+"  - Plugging other removable media in the air-gapped Tails to send the\n"
+"    public key, secret key stubs, parts of the secret master key, and so on\n"
+"    to the outside world.\n"
+"  - Plugging other removable media in the air-gapped Tails to receive Debian\n"
+"    packages, public keys, and so on from the outside world.\n"
+"* Expires in less than one year. We will extend its validity as many\n"
+"  times as we find reasonable.\n"
+"* Has a revocation certificate split amongst different people.\n"
+"  See the [[details of the mechanism|signing_key_revocation]].\n"
 msgstr ""
-
-#. type: Bullet: '* '
-msgid ""
-"Is only used offline, in an air-gapped Tails only communicating with the "
-"outside world through:"
-msgstr ""
-
-#. type: Bullet: '  - '
-msgid ""
-"Plugging the Tails flash media in another operating system to install Tails "
-"in the first place."
-msgstr ""
-
-#. type: Bullet: '  - '
-msgid ""
-"Plugging other removable media in the air-gapped Tails to send the public "
-"key, secret key stubs, parts of the secret master key, and so on to the "
-"outside world."
-msgstr ""
-
-#. type: Bullet: '  - '
-msgid ""
-"Plugging other removable media in the air-gapped Tails to receive Debian "
-"packages, public keys, and so on from the outside world."
-msgstr ""
-
-#. type: Bullet: '* '
-msgid ""
-"Expires in less than one year. We will extend its validity as many times as "
-"we find reasonable."
-msgstr ""
-
-#. type: Bullet: '* '
-msgid ""
-"Has a revocation certificate split amongst different people.  See the "
-"[[details of the mechanism|signing_key_revocation]]."
-msgstr ""
+"* در قالبی قابل‌استفاده متعلق به هیچ فردی نیست.\n"
+"  به طرز رمزنگاری‌شده با استفاده از\n"
+"  [gfshare](http://www.digital-scurf.org/software/libgfshare) جداسازی شده‌است.\n"
+"*تنها به صورت آفلاین و در تیلز ایزوله استفاده می‌شود و به روش زیر با دنیای بیرون ارتباط برقرار می‌کند:\n"
+"  -نصب تیلز روی یک سیستم عامل دیگر از طریق  وارد کردن فلش تیلز.\n"
+"  -وصل کردن رسانه‌های قابل حمل دیگر به تیلز ایزوله، برای فرستادن کلید عمومی، قسمت‌هایی از شاه‌کلید خصوصی و غیره به دنیای خارج. \n"
+"  -وصل کردن رسانه‌های قابل حمل دیگر به تیلز ایزوله برای دریافت بسته‌های دبیان، کلید عمومی و غیره از دنیای خارج.\n"
+"*در کمتر از یک سال منقضی می‌شود. اعتبار آن‌ را تا آن‌جا که فکر کنیم منطقی است تمدید خواهیم کرد.\n"
 
 #. type: Title ###
 #, no-wrap
@@ -400,6 +385,47 @@ msgstr ""
 #. type: Bullet: '  - '
 msgid "download it from this website: [[!tails_website tails-press.key]]"
 msgstr "آن را از این تارنما دانلود کنید: [[!tails_website tails-press.key]]"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "<a id=\"board\"></a>\n"
+msgstr "<a id=\"support\"></a>\n"
+
+#. type: Title =
+#, fuzzy, no-wrap
+msgid "Board key"
+msgstr "کلید اصلی"
+
+#. type: Bullet: '  - '
+#, fuzzy
+msgid ""
+"Use this key to encrypt private emails sent to the [[Board|about/"
+"contact#board]]."
+msgstr ""
+"از این کلید برای رمزگذاری رایانامه‌های خصوصی که به  <tails-press@boum.org> "
+"فرستاده شده‌اند استفاده کنید."
+
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid ""
+"    pub   rsa4096/0x08344AF2248F2BE0 2022-02-14 [SC]\n"
+"          Key fingerprint = B5C0 0222 D25F F139 28B2  CB93 0834 4AF2 248F 2BE0\n"
+"    uid                   [ unknown] tails-board@boum.org <tails-board@boum.org>\n"
+"    uid                   [ unknown] tails-board@boum.org <tails-board-owner@boum.org>\n"
+"    uid                   [ unknown] tails-board@boum.org <tails-board-request@boum.org>\n"
+"    sub   rsa4096/0x1817A67B76A21A00 2022-02-14 [E]\n"
+msgstr ""
+"\tpub   rsa4096/0xD2EDA621B572DD73 2016-04-29 [SCEA]\n"
+"\t      Key fingerprint = 0B08 8E31 D4F8 E59A 3D39  9137 D2ED A621 B572 DD73\n"
+"\tuid                   [ unknown] Tails mirror pool managers (schleuder list) <tails-mirrors@boum.org>\n"
+"\tuid                   [ unknown] Tails mirror pool managers (schleuder list) <tails-mirrors-request@boum.org>\n"
+"\tuid                   [ unknown] Tails mirror pool managers (schleuder list) <tails-mirrors-owner@boum.org>\n"
+"\tsub   rsa4096/0x3DCFC1EB1C62C73C 2016-04-29 [SEA]\n"
+
+#. type: Bullet: '  - '
+#, fuzzy
+msgid "download it from this website: [[!tails_website tails-board.key]]"
+msgstr "آن را از این تارنما دانلود کنید: [[!tails_website tails-bugs.key]]"
 
 #. type: Plain text
 #, no-wrap
@@ -651,70 +677,6 @@ msgstr ""
 #, fuzzy
 msgid "download it from this website: [[!tails_website tails-weblate.key]]"
 msgstr "آن را از این تارنما دانلود کنید:[[!tails_website tails-email.key]]"
-
-#, fuzzy, no-wrap
-#~ msgid ""
-#~ "* Is not owned in a usable format by any single individual. It is\n"
-#~ "  split cryptographically using\n"
-#~ "  [gfshare](https://git.gitano.org.uk/libgfshare.git/).\n"
-#~ "* Is only used offline, in an air-gapped Tails only communicating with\n"
-#~ "  the outside world through:\n"
-#~ "  - Plugging the Tails flash media in another operating system to install Tails\n"
-#~ "    in the first place.\n"
-#~ "  - Plugging other removable media in the air-gapped Tails to send the\n"
-#~ "    public key, secret key stubs, parts of the secret master key, and so on\n"
-#~ "    to the outside world.\n"
-#~ "  - Plugging other removable media in the air-gapped Tails to receive Debian\n"
-#~ "    packages, public keys, and so on from the outside world.\n"
-#~ "* Expires in less than one year. We will extend its validity as many\n"
-#~ "  times as we find reasonable.\n"
-#~ "* Has a revocation certificate split amongst different people.\n"
-#~ "  See the [[details of the mechanism|signing_key_revocation]].\n"
-#~ msgstr ""
-#~ "* در قالبی قابل‌استفاده متعلق به هیچ فردی نیست.\n"
-#~ "  به طرز رمزنگاری‌شده با استفاده از\n"
-#~ "  [gfshare](http://www.digital-scurf.org/software/libgfshare) جداسازی شده‌است.\n"
-#~ "*تنها به صورت آفلاین و در تیلز ایزوله استفاده می‌شود و به روش زیر با دنیای بیرون ارتباط برقرار می‌کند:\n"
-#~ "  -نصب تیلز روی یک سیستم عامل دیگر از طریق  وارد کردن فلش تیلز.\n"
-#~ "  -وصل کردن رسانه‌های قابل حمل دیگر به تیلز ایزوله، برای فرستادن کلید عمومی، قسمت‌هایی از شاه‌کلید خصوصی و غیره به دنیای خارج. \n"
-#~ "  -وصل کردن رسانه‌های قابل حمل دیگر به تیلز ایزوله برای دریافت بسته‌های دبیان، کلید عمومی و غیره از دنیای خارج.\n"
-#~ "*در کمتر از یک سال منقضی می‌شود. اعتبار آن‌ را تا آن‌جا که فکر کنیم منطقی است تمدید خواهیم کرد.\n"
-
-#, fuzzy, no-wrap
-#~ msgid "<a id=\"board\"></a>\n"
-#~ msgstr "<a id=\"support\"></a>\n"
-
-#, fuzzy, no-wrap
-#~ msgid "Board key"
-#~ msgstr "کلید اصلی"
-
-#, fuzzy
-#~ msgid ""
-#~ "Use this key to encrypt private emails sent to the [[Board|about/"
-#~ "contact#board]]."
-#~ msgstr ""
-#~ "از این کلید برای رمزگذاری رایانامه‌های خصوصی که به  <tails-press@boum.org> "
-#~ "فرستاده شده‌اند استفاده کنید."
-
-#, fuzzy, no-wrap
-#~ msgid ""
-#~ "    pub   rsa4096/0x08344AF2248F2BE0 2022-02-14 [SC]\n"
-#~ "          Key fingerprint = B5C0 0222 D25F F139 28B2  CB93 0834 4AF2 248F 2BE0\n"
-#~ "    uid                   [ unknown] tails-board@boum.org <tails-board@boum.org>\n"
-#~ "    uid                   [ unknown] tails-board@boum.org <tails-board-owner@boum.org>\n"
-#~ "    uid                   [ unknown] tails-board@boum.org <tails-board-request@boum.org>\n"
-#~ "    sub   rsa4096/0x1817A67B76A21A00 2022-02-14 [E]\n"
-#~ msgstr ""
-#~ "\tpub   rsa4096/0xD2EDA621B572DD73 2016-04-29 [SCEA]\n"
-#~ "\t      Key fingerprint = 0B08 8E31 D4F8 E59A 3D39  9137 D2ED A621 B572 DD73\n"
-#~ "\tuid                   [ unknown] Tails mirror pool managers (schleuder list) <tails-mirrors@boum.org>\n"
-#~ "\tuid                   [ unknown] Tails mirror pool managers (schleuder list) <tails-mirrors-request@boum.org>\n"
-#~ "\tuid                   [ unknown] Tails mirror pool managers (schleuder list) <tails-mirrors-owner@boum.org>\n"
-#~ "\tsub   rsa4096/0x3DCFC1EB1C62C73C 2016-04-29 [SEA]\n"
-
-#, fuzzy
-#~ msgid "download it from this website: [[!tails_website tails-board.key]]"
-#~ msgstr "آن را از این تارنما دانلود کنید: [[!tails_website tails-bugs.key]]"
 
 #, fuzzy
 #~| msgid "<a id=\"accounting\"></a>\n"
