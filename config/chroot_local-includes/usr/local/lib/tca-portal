@@ -132,9 +132,7 @@ class UserCommand(BaseCommand):
 class PersistenceSetupCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> tuple:
         drop = ("/sbin/runuser", "-u", PERSISTENCE_SETUP_USERNAME)
-        env = ("/usr/bin/env", *gnome_env_vars())
-
-        args = (*drop, "--", *env, *(super().full_command(request)))
+        args = (*drop, "--", *(super().full_command(request)))
         return args
 
 
