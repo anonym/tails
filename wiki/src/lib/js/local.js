@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function() {
    */
   var lang;
   var languages = ['en', 'de', 'es', 'fr', 'it', 'pt', 'ru'];
-  console.log(document.body.classList);
   languages.forEach(function(l) {
     if (document.body.classList.contains(l)) {
       lang = l;
