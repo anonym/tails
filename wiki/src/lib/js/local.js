@@ -35,4 +35,29 @@ document.addEventListener("DOMContentLoaded", function() {
       break;
   }
   document.getElementById("searchbox").placeholder = placeholder;
+
+  /* Toggle warnings
+   */
+  let warnings = ["identity", "tor", "computer"];
+
+  function hideWarnings(keep = null) {
+    warnings.forEach(function(element) {
+      if (element != keep) {
+        document.getElementById("detailed-" + element).style.display = "none";
+      }
+    });
+  }
+
+  function toggleWarnings(warning) {
+    hideWarnings(warning);
+    let style = document.getElementById("detailed-" + warning).style;
+    if (style.display == "block") {
+      style.display = "none";
+    } else {
+      style.display = "block";
+    }
+  }
+
+  warnings.forEach(warning => document.getElementById("toggle-" + warning).onclick = function(e) { toggleWarnings(warning); });
+  warnings.forEach(warning => document.getElementById("hide-" + warning).onclick = function(e) { hideWarnings(); });
 });
