@@ -784,6 +784,10 @@ def open_gnome_menu(menu_button, menu_item)
   end
 end
 
+def open_gnome_places_menu
+  open_gnome_menu('GnomePlaces.png', 'GnomePlacesHome.png')
+end
+
 def open_gnome_system_menu
   open_gnome_menu('GnomeSystemMenuButton.png', 'TailsEmergencyShutdownHalt.png')
 end
@@ -952,7 +956,7 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   when 'persistent'
     bookmark_image = 'TorBrowserPersistentFilesBookmark.png'
   end
-  @screen.wait('GnomePlaces.png', 10).click
+  open_gnome_places_menu
   @screen.wait(bookmark_image, 40)
   @screen.press('Escape')
 end
