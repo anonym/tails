@@ -768,20 +768,24 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-def open_gnome_system_menu
-  # On Bullseye the system menu is problematic: we generally have
-  # to click several times for it to open.
+def open_gnome_menu(menu_button, menu_item)
+  # On Bullseye the top bar menus are problematic: we generally have
+  # to click several times for them to open.
   retry_action(10, delay: 2) do
     @screen.hide_cursor
-    @screen.wait('GnomeSystemMenuButton.png', 10).click
+    @screen.wait(menu_button, 10).click
     # Wait for the menu to be open and to have settled: sometimes menu
     # components appear too fast, before the menu has settled down to
     # its final size and the button we want to click is in its final
     # position. Dogtail might allow us to fix that, but given how rare
     # this problem is, it's not worth the effort.
     sleep 5
-    @screen.find('TailsEmergencyShutdownHalt.png')
+    @screen.find(menu_item)
   end
+end
+
+def open_gnome_system_menu
+  open_gnome_menu('GnomeSystemMenuButton.png', 'TailsEmergencyShutdownHalt.png')
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|
