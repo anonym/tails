@@ -57,6 +57,7 @@ Then /^I cannot run a command as root with pkexec and the standard passwords$/ d
   ['live', 'amnesia'].each do |password|
     deal_with_polkit_prompt(password, expect_success: false)
   end
+  sleep 2
   @screen.press('Escape')
   @screen.wait('PolicyKitAuthCompleteFailure.png', 20)
   # Ensure we don't taint the next tests
