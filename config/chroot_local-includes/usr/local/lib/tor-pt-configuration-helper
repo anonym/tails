@@ -24,7 +24,9 @@ systemctl stop tor@default.service
 tor_set_in_torrc Sandbox "${ENABLE_SANDBOX}"
 sed -i '/^ClientTransportPlugin /d' /etc/tor/torrc
 if [ "${ENABLE_SANDBOX}" = 0 ]; then
-    tor_set_in_torrc ClientTransportPlugin 'obfs2,obfs3,obfs4,meek_lite exec /usr/bin/obfs4proxy managed'
+    tor_set_in_torrc \
+        ClientTransportPlugin \
+        'obfs2,obfs3,obfs4,meek_lite exec /usr/bin/obfs4proxy -enableLogging -unsafeLogging -logLevel DEBUG'
 fi
 
 systemctl start tor@default.service
