@@ -106,6 +106,7 @@ Change_uid hplip             1110
 Change_uid Debian-gdm        1120
 Change_uid usbmux            1500
 Change_uid tcpdump           1510
+Change_uid avahi             1520
 Change_gid lpadmin           1150
 Change_gid scanner           1160
 Change_gid pulse             1170
@@ -118,6 +119,7 @@ Change_gid systemd-journal   1240
 Change_gid systemd-timesync  1250
 Change_gid ssl-cert          1260
 Change_gid ssh               1270
+Change_gid avahi             1520
 
 # Finally, give these users and groups the desired UID/GID
 Change_uid pulse             107
@@ -128,6 +130,7 @@ Change_uid hplip             111
 Change_uid Debian-gdm        112
 Change_uid usbmux            150
 Change_uid tcpdump           151
+Change_uid avahi             152
 Change_gid Debian-gdm        200
 Change_gid systemd-journal   101
 Change_gid systemd-timesync  102
@@ -141,3 +144,4 @@ Change_gid saned             120
 Change_gid colord            121
 # GIDs 122-128 are assigned to groups created by later hooks
 Change_gid tcpdump           129
+Change_gid avahi             152
