@@ -367,7 +367,6 @@ task :validate_http_proxy do
     if proxy_host.nil?
       ENV['TAILS_PROXY'] = nil
       abort "Invalid HTTP proxy: #{ENV['TAILS_PROXY']}"
-      return
     end
 
     if ENV['TAILS_PROXY_TYPE'] == 'vmproxy'
