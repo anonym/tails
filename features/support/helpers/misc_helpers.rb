@@ -71,6 +71,7 @@ def try_for(timeout, **options)
         # sometimes it does not, most likely due to nested usage of
         # it, possibly due to some Ruby bug.
         raise unique_timeout_exception if timeout < elapsed
+
         debug_log("try_for: attempt #{attempts} (#{elapsed}s elapsed " \
                   "of #{timeout}s)...") if options[:log]
         if yield
@@ -473,6 +474,7 @@ end
 def drop_markup(str)
   done, first_tag, rest = str.partition(%r{<([^/>]+)>})
   return str if first_tag.empty?
+
   closer = "</#{Regexp.last_match[1]}>"
   if rest.include?(closer)
     rest.sub!(closer, '')
@@ -484,11 +486,11 @@ end
 
 # We discard unused keyword parameters by adding `**_` to the definition
 def translate(str, translation_domain: nil, drop_accelerator: true, drop_markup: true, **_)
-  if $language.empty? || translation_domain.nil? || translation_domain.empty?
-    rv = str
-  else
-    rv = $vm.execute_successfully("gettext '#{translation_domain}' '#{str}'").stdout
-  end
+  rv = if $language.empty? || translation_domain.nil? || translation_domain.empty?
+         str
+       else
+         $vm.execute_successfully("gettext '#{translation_domain}' '#{str}'").stdout
+       end
   if drop_accelerator
     assert(str.count('_') <= 1, 'translate() are supposed to drop the ' \
                                 'accelerator, but there are multiple ' \
