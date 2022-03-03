@@ -793,7 +793,7 @@ def open_gnome_system_menu
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|
-  image = if action == 'shutdown' then
+  image = if action == 'shutdown'
             'TailsEmergencyShutdownHalt.png'
           else
             'TailsEmergencyShutdownReboot.png'

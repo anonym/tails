@@ -53,7 +53,7 @@ ENV['EXPORTED_VARIABLES'] = EXPORTED_VARIABLES.join(' ')
 EXTERNAL_HTTP_PROXY = ENV['http_proxy']
 
 # In-VM proxy URL
-INTERNAL_HTTP_PROXY = "http://127.0.0.1:3142".freeze
+INTERNAL_HTTP_PROXY = 'http://127.0.0.1:3142'.freeze
 
 ENV['ARTIFACTS'] ||= '.'
 
