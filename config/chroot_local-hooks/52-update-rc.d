@@ -77,3 +77,8 @@ systemctl mask live-tools.service
 
 # "Daily man-db regeneration" is not needed in Tails (#16631)
 systemctl mask man-db.timer
+
+# Blocked by our firewall so cannot work; would need some security analysis
+# before we enable it
+systemctl mask avahi-daemon.socket
+systemctl mask avahi-daemon.service
