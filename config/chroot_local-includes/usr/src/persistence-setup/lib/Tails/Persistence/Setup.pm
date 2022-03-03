@@ -717,7 +717,13 @@ method goto_next_step () {
         $self->main_window->resize($width, 280);
         $self->current_step->go_button->signal_connect(
             'clicked',
-            sub { systemx(qw{sudo -n /sbin/reboot }); }
+            sub {
+                systemx(
+                    qw{sudo -n},
+                    '/usr/local/lib/tails-synchronize-data-to-new-persistent-volume',
+                );
+                systemx(qw{sudo -n /sbin/reboot });
+            }
         );
         $self->current_step->go_button->set_label(__(q{Restart Now}));
         $self->current_step->go_button->set_sensitive(TRUE);
