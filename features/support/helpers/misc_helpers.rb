@@ -235,13 +235,6 @@ def save_tor_journal
     file.write("Tor Journal\n")
     file.write("===========\n")
     file.write($vm.file_content('/tmp/tor.journal') + "\n")
-    file.write("Tor logs (/var/log/tor/log)\n")
-    file.write("===========================\n")
-    if $vm.file_exist?('/var/log/tor/log')
-      file.write($vm.file_content('/var/log/tor/log'))
-    else
-      file.write("The Tor logs did not exist\n")
-    end
   end
 end
 

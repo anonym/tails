@@ -30,10 +30,8 @@ AvoidDiskWrites 1
 ## users to click through security warnings.
 WarnPlaintextPorts 23,109
 
-## Tor 0.3.x logs to syslog by default, which we redirect to the Journal;
-## but we have some code that reads Tor's logs and only supports plaintext
-## log files at the moment, so let's keep logging to a file.
-Log notice file /var/log/tor/log
+## Log to the systemd Journal
+Log notice syslog
 
 ## Tor Launcher will enable the network access for Tor once the user
 ## has provided the configuration they desire.
