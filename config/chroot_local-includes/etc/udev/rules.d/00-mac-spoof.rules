@@ -4,6 +4,8 @@
 # Disable MAC spoofing for the following devices
 # iPhone tethering ethernet over USB
 SUBSYSTEM=="net", ACTION=="add", ATTR{type}=="1", DRIVERS=="ipheth", GOTO="mac_spoof_ignore"
+# veth interfaces used by network namespaces
+ENV{INTERFACE}=="veth*", ACTION=="add", GOTO="mac_spoof_ignore"
 
 # Perform MAC spoofing otherwise
 SUBSYSTEM=="net", ACTION=="add", ATTR{type}=="1", RUN+="/usr/local/lib/tails-spoof-mac $name"

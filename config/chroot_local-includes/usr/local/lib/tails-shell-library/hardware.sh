@@ -28,11 +28,6 @@ get_all_veth_nics() {
         cut -d '@' -f 1
 }
 
-is_veth_nic() {
-    # checks if argument is a veth nic
-    get_all_veth_nics | grep -F --line-regexp -q "${1}"
-}
-
 nic_exists() {
     [ -e /sys/class/net/"${1}" ]
 }
