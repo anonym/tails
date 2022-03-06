@@ -141,12 +141,6 @@ steps:
       Pin: release o=Tails,n=builder-jessie
       Pin-Priority: 99
 
-  - create-file: /etc/apt/preferences.d/live-build
-    contents: |
-      Package: live-build
-      Pin: release o=Tails,n=builder-jessie
-      Pin-Priority: 999
-
   - create-file: /etc/apt/preferences.d/${DISTRIBUTION}-backports
     contents: |
       Package: *
@@ -194,8 +188,8 @@ steps:
       - libtimedate-perl
       - libyaml-syck-perl
       - linux-image-amd64
-      - live-build
       - lsof
+      - make
       - mtools
       - openssh-server
       - po4a
