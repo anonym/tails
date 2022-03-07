@@ -313,11 +313,14 @@ Pull updated translations for languages translated in Transifex,
 refresh the code PO files,
 and commit the result, including new PO files:
 
-	cd "${RELEASE_CHECKOUT:?}" && \
-	./import-translations  && \
-	./refresh-translations && \
-	./submodules/jenkins-tools/slaves/lint_po && \
-	git add po && git commit -m 'Update PO files.'
+    (cd "${RELEASE_CHECKOUT:?}"
+     set -x
+     err() { echo "Error $*"; exit 1 }
+     ./import-translations || err "importing translations"
+     ./refresh-translations || err "refreshing translations"
+     ./submodules/jenkins-tools/slaves/lint_po || err "in lint"
+     git add po && git commit -m 'Update PO files.'
+    )
 
 If `lint_po` complains:
 
