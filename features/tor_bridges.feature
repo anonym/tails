@@ -24,6 +24,7 @@ Feature: Using Tor bridges and pluggable transports
     And available upgrades have been checked
     And all Internet traffic has only flowed through the configured bridges
 
+  @supports_real_tor
   Scenario: Default Tor bridges
     When I configure the default bridges in the Tor Connection Assistant
     Then Tor is ready
