@@ -137,6 +137,16 @@ you need to set a bunch of environment variables.
 3. Ensure there's a `iuks/v2` directory under the directory you specified for
    `isos` in `~/.config/tails/release_management/local.yml`.
 
+
+        python3 <<EOF
+        import yaml,os
+        from pathlib import Path
+        fpath = Path(os.path.expanduser("~/.config/tails/release_management/local.yml"))
+        isos = Path(yaml.safe_load(fpath.open())["isos"])
+        iuks = isos / "iuks/v2"
+        if not iuks.exists(): raise Exception("IUKS dir not found")
+        EOF
+
 4. Generate the resulting environment variables and export them into your
    environment:
 
