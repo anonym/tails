@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-10-26 20:45+0000\n"
+"POT-Creation-Date: 2022-03-01 11:23+0000\n"
 "PO-Revision-Date: 2021-07-22 06:05+0000\n"
 "Last-Translator: Ed Medvedev <edward.medvedev@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,14 +26,43 @@ msgstr "[[!meta title=\"Обновление флешки Tails\"]]\n"
 
 #. type: Plain text
 msgid ""
-"Tails includes an automatic mechanism to upgrade a USB stick to a newer "
-"version. In some cases, it is impossible to do an **automatic upgrade** and "
-"you might have to do a **manual upgrade**. This page describes both "
-"techniques."
+"Tails includes an automatic mechanism to upgrade a USB stick to the latest "
+"version of Tails. When an automatic upgrade is performed, only an *upgrade "
+"package* is downloaded. The upgrade package contains all the changes made to "
+"Tails since Tails was first installed or was last manually upgraded."
+msgstr ""
+
+#. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "Tails includes an automatic mechanism to upgrade a USB stick to a newer "
+#| "version. In some cases, it is impossible to do an **automatic upgrade** "
+#| "and you might have to do a **manual upgrade**. This page describes both "
+#| "techniques."
+msgid ""
+"In some cases, it is impossible to do an **automatic upgrade** and you might "
+"have to do a **manual upgrade**. This page describes both techniques."
 msgstr ""
 "Существует механизм автоматического обновления флешки Tails до самой свежей "
 "версии. Если даже не получается **автоматически**, всегда можно сделать "
 "обновление **вручную**. Здесь мы покажем оба способа."
+
+#. type: Plain text
+#, no-wrap
+msgid "<div class=\"tip\">\n"
+msgstr "<div class=\"tip\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>To learn how Tails implements automatic upgrades, see our\n"
+"[[design documentation about automatic upgrades|contribute/design/upgrades]].</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "</div>\n"
+msgstr "</div>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -46,11 +75,6 @@ msgid ""
 "<p>Your Persistent Storage will be preserved by both automatic and\n"
 "manual upgrades.</p>\n"
 msgstr "<p>Ваше Постоянное хранилище не пострадает в результате хоть автоматического, хоть ручного обновления.</p>\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "</div>\n"
-msgstr "</div>\n"
 
 #. type: Plain text
 msgid ""
@@ -71,7 +95,13 @@ msgid "<h1 id=\"check-version\">Checking which version of Tails you are currentl
 msgstr "<h1 name=\"check-version\">Проверка версии запущенной копии Tails</h1>\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "To check which version of Tails you are currently running, choose\n"
+#| "<span class=\"menuchoice\">\n"
+#| "  <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
+#| "  <span class=\"guisubmenu\">Tails</span>&nbsp;▸\n"
+#| "  <span class=\"guimenuitem\">About Tails</span></span>.\n"
 msgid ""
 "To check which version of Tails you are currently running, choose\n"
 "<span class=\"menuchoice\">\n"
@@ -158,11 +188,6 @@ msgid ""
 "class=\"guilabel\">Upgrade now</span>,\n"
 "and follow the assistant through the upgrade process.\n"
 msgstr "Если захотите обновить флешку, нажмите <span class=\"guilabel\">Upgrade now</span> и следуйте указаниям мастера.\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "<div class=\"tip\">\n"
-msgstr "<div class=\"tip\">\n"
 
 #. type: Plain text
 #, no-wrap
@@ -378,11 +403,16 @@ msgid "To do a manual upgrade, you can either:"
 msgstr "Для обновления вручную вы можете:"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "- [[Download and upgrade|doc/upgrade/#download]] (below)  - [[Upgrade by "
+#| "cloning from another Tails|doc/upgrade/#clone]] (below)  - [[Burn a new "
+#| "Tails DVD|install/dvd-download]] - [[Upgrade your virtual machine|install/"
+#| "vm-download]]"
 msgid ""
 "- [[Download and upgrade|doc/upgrade/#download]] (below)  - [[Upgrade by "
 "cloning from another Tails|doc/upgrade/#clone]] (below)  - [[Burn a new "
-"Tails DVD|install/dvd-download]] - [[Upgrade your virtual machine|install/vm-"
-"download]]"
+"Tails DVD|install/dvd]] - [[Upgrade your virtual machine|install/vm]]"
 msgstr ""
 "- [[скачать и установить обновление|doc/upgrade/#download]] (см. ниже);  - "
 "[[обновить путём клонирования другой флешки Tails|doc/upgrade/#clone]] (см. "
@@ -420,6 +450,8 @@ msgstr ""
 "small>);"
 
 #. type: Bullet: '- '
+#, fuzzy
+#| msgid "½ hour to upgrade"
 msgid "½ hour to upgrade"
 msgstr "полчаса для обновления."
 
@@ -443,12 +475,19 @@ msgid "See our instructions on how to do a manual upgrade by:"
 msgstr "См. наши инструкции о том, как установить обновление вручную:"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "- [[Downloading and upgrading from your Tails|upgrade/tails-overview]] "
+#| "(more secure)  - [[Downloading and upgrading from Windows|upgrade/win-"
+#| "overview]] (more convenient)  - [[Downloading and upgrading from macOS|"
+#| "upgrade/mac-overview]] (more convenient)  - [[Downloading and upgrading "
+#| "from Linux|upgrade/linux-overview]] (more convenient)"
 msgid ""
-"- [[Downloading and upgrading from your Tails|upgrade/tails-overview]] (more "
-"secure)  - [[Downloading and upgrading from Windows|upgrade/win-overview]] "
-"(more convenient)  - [[Downloading and upgrading from macOS|upgrade/mac-"
-"overview]] (more convenient)  - [[Downloading and upgrading from Linux|"
-"upgrade/linux-overview]] (more convenient)"
+"- [[Downloading and upgrading from your Tails|upgrade/tails]] (more secure)  "
+"- [[Downloading and upgrading from Windows|upgrade/windows]] (more "
+"convenient)  - [[Downloading and upgrading from macOS|upgrade/mac]] (more "
+"convenient)  - [[Downloading and upgrading from Linux|upgrade/linux]] (more "
+"convenient)"
 msgstr ""
 "- [[скачать и установить обновление из Tails|upgrade/tails-overview]] "
 "(безопаснее);  - [[скачать и установить обновление из Windows|upgrade/win-"
@@ -484,6 +523,10 @@ msgstr ""
 "использовать для обновления его копию Tails."
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "- Your Tails USB stick - Another up-to-date Tails (USB stick or DVD)  - ¼ "
+#| "hour to upgrade"
 msgid ""
 "- Your Tails USB stick - Another up-to-date Tails (USB stick or DVD)  - ¼ "
 "hour to upgrade"
@@ -492,7 +535,9 @@ msgstr ""
 "DVD);  - четверть часа времени на обновление."
 
 #. type: Plain text
-msgid "- [[Cloning from another Tails|upgrade/clone-overview]]"
+#, fuzzy
+#| msgid "- [[Cloning from another Tails|upgrade/clone-overview]]"
+msgid "- [[Cloning from another Tails|upgrade/clone]]"
 msgstr "- [[Клонирование из другой копии Tails|upgrade/clone-overview]]"
 
 #~ msgid "<a name=\"check-version\"></a>\n"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2020-04-23 16:49+0000\n"
+"POT-Creation-Date: 2022-02-28 20:13+0000\n"
 "PO-Revision-Date: 2018-07-02 06:22+0000\n"
 "Last-Translator: emmapeel <emma.peel@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,15 +21,15 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!meta title=\"Encrypted Persistent Storage\"]]\n"
+msgid "[[!meta title=\"Persistent Storage\"]]\n"
 msgstr ""
 
 #. type: Plain text
 msgid ""
-"If you start Tails from a USB stick, you can create a Persistent Storage in "
-"the free space left on the USB stick.  The files and settings stored in the "
-"Persistent Storage are saved encrypted and remain available across different "
-"working sessions."
+"If you start Tails from a USB stick, you can create an encrypted Persistent "
+"Storage in the free space left on the USB stick.  The files and settings "
+"stored in the Persistent Storage are saved encrypted and remain available "
+"across different working sessions."
 msgstr ""
 
 #. type: Plain text
@@ -69,43 +69,18 @@ msgstr ""
 msgid "[[!inline pages=\"doc/first_steps/persistence.caution\" raw=\"yes\" sort=\"age\"]]\n"
 msgstr "[[!inline pages=\"doc/first_steps/persistence.caution.zh\" raw=\"yes\" sort=\"age\"]]\n"
 
-#. type: Title =
-#, no-wrap
-msgid "How to use the Persistent Storage"
-msgstr ""
-
-#. type: Bullet: '  - '
-msgid ""
-"[[Warnings about the Persistent Storage|first_steps/persistence/warnings]]"
-msgstr ""
-
-#. type: Bullet: '  - '
-msgid ""
-"[[Creating and configuring the Persistent Storage|first_steps/persistence/"
-"configure]]"
-msgstr ""
-
-#. type: Bullet: '  - '
-msgid ""
-"[[Unlocking and using the Persistent Storage|first_steps/persistence/use]]"
-msgstr ""
-
-#. type: Bullet: '  - '
-msgid ""
-"[[Making a backup of your Persistent Storage|first_steps/persistence/backup]]"
-msgstr ""
-
-#. type: Bullet: '  - '
-msgid "[[Deleting the Persistent Storage|first_steps/persistence/delete]]"
-msgstr ""
-
-#. #-#-#-#-#  configure.zh.po (PACKAGE VERSION)  #-#-#-#-#
 #. type: Plain text
-#, no-wrap
-msgid "<div class=\"note\">\n"
+#, fuzzy, no-wrap
+msgid "<div class=\"tip\">\n"
 msgstr "<div class=\"note\">\n"
 
-#. #-#-#-#-#  configure.zh.po (PACKAGE VERSION)  #-#-#-#-#
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>To learn how Tails implements Persistent Storage, see our\n"
+"[[design documentation about persistence|contribute/design/persistence]].</p>\n"
+msgstr ""
+
 #. type: Plain text
 #, no-wrap
 msgid "</div>\n"
@@ -113,19 +88,29 @@ msgstr "</div>\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!meta title=\"Creating and configuring the Persistent Storage\"]]\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
 msgid "[[!toc levels=3]]\n"
 msgstr "[[!toc levels=3]]\n"
 
 #. type: Plain text
-msgid ""
-"To create or configure the Persistent Storage, choose **Applications**&nbsp;"
-"▸ **Tails**&nbsp;▸ **Configure persistent volume**."
+#, no-wrap
+msgid "<h1 id=\"create\">Creating the Persistent Storage</h1>\n"
 msgstr ""
+
+#. type: Plain text
+msgid ""
+"To create the Persistent Storage, choose **Applications**&nbsp;▸ "
+"**Tails**&nbsp;▸ **Configure persistent volume**."
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "[[!img creation.png link=\"no\" alt=\"\"]]\n"
+msgstr "[[!img welcome_screen/persistence.png link=\"no\" alt=\"\"]]\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<div class=\"note\">\n"
+msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
 #, no-wrap
@@ -139,7 +124,7 @@ msgstr ""
 msgid ""
 "<ul>\n"
 "  <li>Installing using our [[USB image|install/download]] instead of our ISO image</li>\n"
-"  <li>[[Installing from another Tails|install/linux/clone-overview]]</li>\n"
+"  <li>[[Installing from another Tails|install/clone]]</li>\n"
 "</ul>\n"
 msgstr ""
 
@@ -204,9 +189,15 @@ msgid ""
 "Persistent Storage."
 msgstr ""
 
-#. type: Title =
+#. type: Plain text
 #, no-wrap
-msgid "Features of the Persistent Storage"
+msgid "<h1 id=\"configure\">Configuring the Persistent Storage</h1>\n"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"To configure the Persistent Storage, choose **Applications**&nbsp;▸ "
+"**Tails**&nbsp;▸ **Configure persistent volume**."
 msgstr ""
 
 #. type: Plain text
@@ -337,13 +328,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
 msgid ""
 "To open the <span class=\"filename\">Persistent</span> folder, choose\n"
 "<span class=\"menuchoice\">\n"
 "  <span class=\"guimenu\">Places</span>&nbsp;▸\n"
 "  <span class=\"guimenuitem\">Persistent</span></span>.\n"
 msgstr ""
+"Um den Ordner <span class=\"filename\">Persistent</span> zu öffnen und um auf Ihre\n"
+"persönlichen Dateien und Arbeitsdokumente zuzugreifen, wählen Sie \n"
+"<span class=\"menuchoice\">\n"
+"  <span class=\"guimenu\">Orte</span>&nbsp;▸\n"
+"  <span class=\"guimenuitem\">Persistent</span></span>.\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
@@ -693,11 +689,11 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid ""
-"If you manually edit the <span class=\"filename\">~/.ssh/config</span>\n"
+"<p>If you manually edit the <i>~/.ssh/config</i>\n"
 "configuration file, make sure not to overwrite the\n"
 "default configuration from the\n"
-"<span class=\"filename\">/etc/ssh/ssh_config</span> file. Otherwise, you may weaken the\n"
-"encryption defaults or render SSH unusable.\n"
+"<i>/etc/ssh/ssh_config</i> file. Otherwise, you might weaken the\n"
+"encryption defaults or render SSH unusable.</p>\n"
 msgstr ""
 
 #. type: Plain text
@@ -817,10 +813,17 @@ msgid "Open the <span class=\"application\">Settings</span> utility."
 msgstr ""
 
 #. type: Bullet: '1. '
+#, fuzzy
 msgid ""
 "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Devices</"
 "span>&nbsp;▸ <span class=\"guisubmenu\">Displays</span></span>."
 msgstr ""
+"Um den Assistenten für den beständigen Speicherbereich zu starten, wählen "
+"Sie\n"
+"<span class=\"menuchoice\">\n"
+"  <span class=\"guimenu\">Anwendungen</span>&nbsp;▸\n"
+"  <span class=\"guisubmenu\">Tails</span>&nbsp;▸\n"
+"  <span class=\"guimenuitem\">Configure persistent volume</span></span>.\n"
 
 #. type: Bullet: '1. '
 msgid "Configure your displays."
@@ -855,17 +858,7 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!meta title=\"Unlocking and using the Persistent Storage\"]]\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "[[!toc levels=1]]\n"
-msgstr "[[!toc levels=1]]\n"
-
-#. type: Title =
-#, no-wrap
-msgid "Unlocking the Persistent Storage"
+msgid "<h1 id=\"use\">Using the Persistent Storage</h1>\n"
 msgstr ""
 
 #. type: Plain text
@@ -881,11 +874,6 @@ msgstr ""
 #, no-wrap
 msgid "[[!img welcome_screen/persistence.png link=\"no\" alt=\"\"]]\n"
 msgstr "[[!img welcome_screen/persistence.png link=\"no\" alt=\"\"]]\n"
-
-#. type: Title =
-#, no-wrap
-msgid "Using the Persistent Storage"
-msgstr ""
 
 #. type: Plain text
 msgid ""
@@ -909,46 +897,29 @@ msgstr ""
 msgid "- Additional software is automatically installed when starting Tails."
 msgstr ""
 
-msgid ""
-"For advanced users to access the internal content of the Persistent Storage, "
-"choose **Places**&nbsp;▸ **Computer** and open the folders *live*&nbsp;▸ "
-"*persistence*&nbsp;▸ *TailsData_unlocked*."
-msgstr ""
+#, no-wrap
+#~ msgid "[[!toc levels=1]]\n"
+#~ msgstr "[[!toc levels=1]]\n"
 
-msgid ""
-"To open the <span class=\"filename\">Persistent</span> folder and access "
-"your\n"
-"personal files and working documents, choose \n"
-"<span class=\"menuchoice\">\n"
-"  <span class=\"guimenu\">Places</span>&nbsp;▸\n"
-"  <span class=\"guimenuitem\">Persistent</span></span>.\n"
-msgstr ""
-"Um den Ordner <span class=\"filename\">Persistent</span> zu öffnen und um "
-"auf Ihre\n"
-"persönlichen Dateien und Arbeitsdokumente zuzugreifen, wählen Sie \n"
-"<span class=\"menuchoice\">\n"
-"  <span class=\"guimenu\">Orte</span>&nbsp;▸\n"
-"  <span class=\"guimenuitem\">Persistent</span></span>.\n"
+#~ msgid ""
+#~ "2. Enter the passphrase of the persistent volume in the\n"
+#~ "<span class=\"guilabel\">Passphrase</span> text box.\n"
+#~ msgstr ""
+#~ "2. Geben Sie das Kennwort für den beständigen Speicherbereich in das\n"
+#~ "<span class=\"guilabel\">Passphrase</span>-Textfeld ein.\n"
 
-msgid ""
-"2. Enter the passphrase of the persistent volume in the\n"
-"<span class=\"guilabel\">Passphrase</span> text box.\n"
-msgstr ""
-"2. Geben Sie das Kennwort für den beständigen Speicherbereich in das\n"
-"<span class=\"guilabel\">Passphrase</span>-Textfeld ein.\n"
-
-msgid ""
-"3. If you select the <span class=\"guilabel\">Read-Only</span> check box, "
-"the\n"
-"content of persistent volume will be available and you will be able to "
-"modify\n"
-"it but the changes will not be saved.\n"
-msgstr ""
-"3. Wenn Sie die <span class=\"guilabel\">Schreibgeschützt</span>-Auswahlbox "
-"markieren,\n"
-"wird der Inhalt des beständigen Speicherbereichs verfügbar sein und Sie "
-"werden in der Lage sein\n"
-"ihn zu modifizieren, die Änderungen werden jedoch nicht gespeichert.\n"
+#~ msgid ""
+#~ "3. If you select the <span class=\"guilabel\">Read-Only</span> check box, "
+#~ "the\n"
+#~ "content of persistent volume will be available and you will be able to "
+#~ "modify\n"
+#~ "it but the changes will not be saved.\n"
+#~ msgstr ""
+#~ "3. Wenn Sie die <span class=\"guilabel\">Schreibgeschützt</span>-"
+#~ "Auswahlbox markieren,\n"
+#~ "wird der Inhalt des beständigen Speicherbereichs verfügbar sein und Sie "
+#~ "werden in der Lage sein\n"
+#~ "ihn zu modifizieren, die Änderungen werden jedoch nicht gespeichert.\n"
 
 #, fuzzy
 #~ msgid ""
@@ -970,20 +941,6 @@ msgstr ""
 #~ "Touchpad Einstellungen\"]], etc. Lesen Sie für mehr Details die "
 #~ "[[dazugehörigen Tickets|https://redmine.tails.boum.org/code/projects/"
 #~ "tails/issues?query_id=122]]."
-
-#~ msgid ""
-#~ "To start the persistent volume assistant, choose\n"
-#~ "<span class=\"menuchoice\">\n"
-#~ "  <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-#~ "  <span class=\"guisubmenu\">Tails</span>&nbsp;▸\n"
-#~ "  <span class=\"guimenuitem\">Configure persistent volume</span></span>.\n"
-#~ msgstr ""
-#~ "Um den Assistenten für den beständigen Speicherbereich zu starten, wählen "
-#~ "Sie\n"
-#~ "<span class=\"menuchoice\">\n"
-#~ "  <span class=\"guimenu\">Anwendungen</span>&nbsp;▸\n"
-#~ "  <span class=\"guisubmenu\">Tails</span>&nbsp;▸\n"
-#~ "  <span class=\"guimenuitem\">Configure persistent volume</span></span>.\n"
 
 #~ msgid "Persistence features\n"
 #~ msgstr "Funktionen des beständigen Speicherbereichs\n"

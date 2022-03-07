@@ -410,16 +410,16 @@ version's `.packages` file and the one from the to-be-released images:
 
 1. Generate the diff.
 
-   if [[ "${DIST:?}" = stable ]]; then
-       NEW_BRANCH="$RELEASE_BRANCH"
-   else
-       NEW_BRANCH=devel
-   fi
+       if [[ "${DIST:?}" = stable ]]; then
+           NEW_BRANCH="$RELEASE_BRANCH"
+       else
+           NEW_BRANCH=devel
+       fi
    
-   diff --color=never -u \
-       "wiki/src/torrents/files/tails-amd64-${PREVIOUS_STABLE_VERSION}.packages" \
-       <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/latest.packages") \
-    | wdiff --diff-input  --terminal
+       diff --color=never -u \
+           "wiki/src/torrents/files/tails-amd64-${PREVIOUS_STABLE_VERSION}.packages" \
+           <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/latest.packages") \
+        | wdiff --diff-input  --terminal
 
 2. In the diff, look for:
 
@@ -751,7 +751,7 @@ To verify that Jenkins reproduced your images:
 
        - If you cannot rule out that the difference is harmful: let's take
          a step back; we might be compromised, so we are in no position to
-         release. Halt the release, involve the rest of <tails@boum.org>, and then
+         release. Halt the release, involve the rest of the Board, and then
          try to re-establish trust in all build machines and infra
          involved, etc. Have fun!
 
@@ -812,7 +812,7 @@ files metadata:
 Get the internal manual testing started
 =======================================
 
-Email <tails@boum.org> and <tails-manual-testers@boum.org> that tests
+Email <tails-board@boum.org> and <tails-manual-testers@boum.org> that tests
 may start:
 
  - reply to the email you've sent them earlier
@@ -837,7 +837,7 @@ may start:
 Prepare incremental upgrades
 ============================
 
-Reference: [[design documentation|contribute/design/incremental_upgrades]]
+Reference: [[design documentation|contribute/design/upgrades]]
 
 Sanity checks
 -------------
@@ -1042,7 +1042,7 @@ Prepare upgrade-description files
 
 1. Prepare upgrade-description files (see the [[upgrade-description
    files
-   specification|contribute/design/incremental_upgrades#upgrade-description-files]]
+   specification|contribute/design/upgrades#upgrade-description-files]]
    for details).
 
    <div class="caution">
@@ -1557,21 +1557,11 @@ website:
 Wait for the release to be fully published, that is for the website to have been
 fully refreshed. To do so:
 
- - If you're publishing a final release: wait until our Weblate integration
-   mechanisms have created `wiki/src/news/version_${VERSION:?}.*.po`, on the
-   `master` branch, for the languages enabled on Weblate but not on our website:
-
-       while true; do
-           git fetch origin
-           log=$(git log --author=tails-l10n@boum.org -n 1 origin/master "wiki/src/news/version_${VERSION:?}.*.po")
-           if [ -z "$log" ]; then
-               sleep 30
-               continue
-           fi
-           echo "$log"
-           break
-       done
-
+ - If you're publishing a final release, wait until all these conditions are met:
+   - <https://tails.boum.org/news/> includes the release notes
+   - <https://tails.boum.org/news/index.de.html> includes the release notes
+   - <https://tails.boum.org/torrents/files/> includes the files
+     for the new release
 
  - Else: wait until <https://tails.boum.org/news/test_$TAG/> is live.
 
