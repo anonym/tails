@@ -219,7 +219,7 @@ Given(/^I plug and mount a USB drive containing a Tails USB image$/) do
   @usb_image_path = "#{usb_image_dir}/#{File.basename(TAILS_IMG)}"
 end
 
-Given /^I enable all persistence presets$/ do
+def enable_all_persistence_presets
   @screen.wait('PersistenceWizardPresets.png', 20)
   presets = persistent_presets_ui_settings
   presets[0]['is_first'] = true
@@ -271,7 +271,7 @@ Given /^I create a persistent partition( with the default settings| for Addition
   @screen.press('Tab')
   @screen.type(@persistence_password, ['Return'])
   @screen.wait('PersistenceWizardPresets.png', 300)
-  step 'I enable all persistence presets' unless default_settings
+  enable_all_persistence_presets unless default_settings
 end
 
 def check_disk_integrity(name, dev, scheme)
