@@ -1239,3 +1239,7 @@ end
 Then /^(.*) is not configured to persist$/ do |dir|
   assert(!configured_persistent_mountpoints.include?(dir))
 end
+
+Then /^I accept the persistence wizard's offer to restart Tails$/ do
+  @screen.wait('PersistenceWizardRestartButton.png', 5).click
+end
