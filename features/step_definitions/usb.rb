@@ -243,13 +243,11 @@ def enable_all_persistence_presets
       debug_log('setting already enabled, skipping')
     end
   end
-  save_and_exit_the_persistence_wizard
 end
 
-def save_and_exit_the_persistence_wizard
+def save_persistence_settings
   @screen.press('Return') # Press the Save button
   @screen.wait('PersistenceWizardDone.png', 60)
-  @screen.press('alt', 'F4')
 end
 
 When /^I disable the first persistence preset$/ do
@@ -272,6 +270,7 @@ Given /^I create a persistent partition( with the default settings| for Addition
   @screen.type(@persistence_password, ['Return'])
   @screen.wait('PersistenceWizardPresets.png', 300)
   enable_all_persistence_presets unless default_settings
+  save_persistence_settings unless asp
 end
 
 def check_disk_integrity(name, dev, scheme)
