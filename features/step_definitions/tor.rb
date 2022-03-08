@@ -352,12 +352,17 @@ end
 class TCAConnectionFailure < TorBootstrapFailure
 end
 
+class TCAConnectionTimeout < TorBootstrapFailure
+end
+
 class TCAForbiddenBridgeType < StandardError
 end
 
 Then /^the Tor Connection Assistant connects to Tor$/ do
   failure_reported = false
-  try_for(120, msg: 'Timed out while waiting for TCA to connect to Tor') do
+  try_for(120,
+          msg:       'Timed out while waiting for TCA to connect to Tor',
+          exception: TCAConnectionTimeout) do
     if tor_connection_assistant.child?('Error connecting to Tor',
                                        roleName: 'label', retry: false)
       failure_reported = true
@@ -666,14 +671,35 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   end
 end
 
+def bridges_to_ipport(file_content)
+  # given the content of a default_bridges.txt, extract all IPs:Port, returning an array of hashes
+  # only IPv4 are considered
+  file_content
+    .chomp
+    .split("\n")
+    .filter { |l| l.start_with?('obfs4') }
+    .map { |l| / [0-9.]+:\d+ /.match(l) }
+    .reject(&:nil?)
+    .map { |m| m[0].chomp.strip }
+    .reject(&:empty?)
+    .map { |l| l.split(':') }
+    .map { |ip, port| { address: ip, port: port.to_i } }
+end
+
 Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
   case flow_target
   when 'Tor'
     allowed_hosts = allowed_hosts_under_tor_enforcement
   when 'the default bridges'
-    allowed_hosts = chutney_bridges('obfs4', chutney_tag: 'defbr').map do |b|
-      { address: b[:address], port: b[:port] }
-    end
+    allowed_hosts = if $config['DISABLE_CHUTNEY']
+                      bridges_to_ipport(
+                        $vm.file_content('/usr/share/tails/tca/default_bridges.txt')
+                      )
+                    else
+                      chutney_bridges('obfs4', chutney_tag: 'defbr').map do |b|
+                        { address: b[:address], port: b[:port] }
+                      end
+                    end
   when 'the configured bridges'
     assert_not_nil(@bridge_hosts, 'No bridges has been configured via the ' \
                                   "'I configure some ... bridges in the " \
@@ -682,6 +708,11 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
   else
     raise "Unsupported flow target '#{flow_target}'"
   end
+  flow_target_s = flow_target.delete_prefix('the ')
+  allowed_hosts_s = allowed_hosts
+                    .map { |address| "#{address[:address]}:#{address[:port]}" }
+                    .join(', ')
+  debug_log("These hosts (#{flow_target_s}) are allowed: #{allowed_hosts_s}")
   assert_all_connections(@sniffer.pcap_file) do |c|
     allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
@@ -734,13 +765,15 @@ Then /^Tor is configured to use the default bridges$/ do
   assert_equal(1, use_bridges, 'UseBridges is not set')
   default_bridges = $vm.execute_successfully(
     'grep ^obfs4 /usr/share/tails/tca/default_bridges.txt | sort'
-  ).stdout.chomp
+  ).stdout.chomp.split("\n").to_set
   assert(default_bridges.size.positive?, 'No default bridges were found')
   current_bridges = $vm.execute_successfully(
     '/usr/local/lib/tor_variable get --type=conf Bridge | sort'
-  ).stdout.chomp
-  assert_equal(default_bridges, current_bridges,
-               'Current bridges does not match the default ones')
+  ).stdout.chomp.split("\n").to_set
+
+  not_default = current_bridges - default_bridges
+  not_default_text = not_default.to_a.join("\n")
+  assert(not_default.empty?, "Some current bridges are not default ones:\n#{not_default_text}")
 end
 
 Then /^Tor is using the same configuration as before$/ do
