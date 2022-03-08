@@ -429,7 +429,7 @@ version's `.packages` file and the one from the to-be-released images:
 
    And mention those changes in `debian/changelog`
 
-Finally, sanity check the version, commit, and push:
+3. Sanity check the version, commit, and push:
 
 	if [ "$(dpkg-parsechangelog -SVersion)" = "${VERSION:?}" ]; then
 	    git commit debian/changelog -m "Update changelog for ${VERSION:?}."
@@ -438,8 +438,8 @@ Finally, sanity check the version, commit, and push:
 	fi && \
     git push origin "${RELEASE_BRANCH:?}"
 
-Notify `@technical-writers` on the GitLab issue about the release notes
-that the changelog is ready.
+4. Notify `@technical-writers` on the GitLab issue about the release notes
+   that the changelog is ready.
 
 Included website
 ----------------
