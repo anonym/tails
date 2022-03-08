@@ -1718,7 +1718,13 @@ If you just released a final release
          ssh bittorrent.lizard transmission-remote --list
 
 1. Remove any remaining RC for the just-published release from
-   `rsync.lizard:/srv/rsync/tails/tails/alpha/`
+   `rsync.lizard:/srv/rsync/tails/tails/alpha/`.
+
+    1. Check if there is anything:
+
+        ssh rsync.lizard find /srv/rsync/tails/tails/alpha/ -type f
+
+    2. Decide what to do!
 
 1. If you've published a final release, remove IUKs that upgrade to an
    older version as they were superseded by this release:
