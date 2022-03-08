@@ -277,6 +277,11 @@ steps:
   - chroot: rootfs
     shell: systemctl disable apt-cacher-ng.service
 
+  # We use loop devices to extract build artifacts.  Make sure the
+  # module is loaded.
+  - create-file: /etc/modules-load.d/loop.conf
+    contents: loop
+
   - create-file: /etc/default/grub.d/cmdline.cfg
     contents: |
       GRUB_CMDLINE_LINUX_DEFAULT="\$GRUB_CMDLINE_LINUX_DEFAULT mitigations=off"
