@@ -471,8 +471,16 @@ version's `.packages` file and the one from the to-be-released images:
 	fi && \
     git push origin "${RELEASE_BRANCH:?}"
 
-4. Notify `@technical-writers` that the changelog is ready [on the GitLab issue
-   about the release notes](https://gitlab.tails.boum.org/groups/tails/-/issues?scope=all&search=release+notes&sort=milestone&state=opened).
+4. Let Technical Writers know that the changelog is ready
+
+   - Open the [GitLab issue about the release notes](https://gitlab.tails.boum.org/groups/tails/-/issues?scope=all&search=release+notes&sort=milestone&state=opened)
+
+   - Notify `@technical-writers` that the changelog is ready:
+
+         echo "Dear @technical-writers, you can find the changelog on ${RELEASE_BRANCH:?}"
+
+   - Provide them a link to latest relevant Jenkins built image, so they can use that to make screenshots or write
+documentation.
 
 Included website
 ----------------
