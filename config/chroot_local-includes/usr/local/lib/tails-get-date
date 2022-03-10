@@ -26,13 +26,17 @@ def main():
     else:
         tzname = tca_state.get('ui', {}).get('time', {}).get('tz', None)
 
+    # This is the default date format used bu GNOME's clock. Note that
+    # there are dconf settings for making it show seconds etc that we
+    # don't support.
+    date_format = '%a %b %-e  %R'
     if tzname:
         env = {'TZ': tzname}
         env.update(os.environ)
-        os.execve('/bin/date', ['date'], env=env)
+        os.execve('/bin/date', ['date', f"+{date_format}"], env=env)
     else:
         now = datetime.datetime.now()
-        print(now.strftime('%c'), 'GMT')
+        print(now.strftime(date_format), 'GMT')
 
     
 
