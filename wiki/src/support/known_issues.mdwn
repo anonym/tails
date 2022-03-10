@@ -1,134 +1,51 @@
 [[!meta title="Known issues"]]
 
-- For issues with graphics cards, see our [[known issues with graphics cards|known_issues/graphics]].
 - To learn what you can do with Tails, refer to our [[documentation|doc]].
 - For more general questions about Tails, refer to our [[FAQ|support/faq]].
 
-[[!toc levels=3]]
+[[!toc levels=2]]
 
-<h1 id="problems-starting-tails">Problems starting Tails</h1>
+<h1 id="not-at-all">Tails not starting at all</h1>
 
-This section lists known problems with specific hardware. To report a problem
-with different hardware see our [[report guidelines when Tails does not
-start|doc/first_steps/bug_reporting#does_not_start]].
+<h2 id="mac-not-at-all">Mac</h2>
 
-<h2 id="problematic-usb-sticks">Problematic USB sticks</h2>
+This section lists known problems with specific hardware.
 
-<h3 id="pny">PNY</h3>
+<div class="tip">
 
-<!--
-Last updated: 2014-08-02
+<p>See our instructions on [[starting Tails on Mac|doc/first_steps/start/mac]]
+for general troubleshooting tips.</p>
 
-I asked help desk about it.
+<p>[[Let us know|support/talk]] if you discover a new issue or workaround.</p>
 
-PNY is quite popular among WB reporters:
-
-    436 SanDisk
-    187 Kingston
-    119 USB
-     88 Generic
-     82 Lexar
-     79 Intenso
-     57 Verbatim
-     56 TOSHIBA
-     50 PNY
-
-If it was still problematic on all PNY USB sticks, this issue would
-still be loud on help desk. Is it?
--->
-
-When installing Tails, PNY USB sticks have problems with the constant write load
-and are prone to failure.
-
-<h3 id="aegis">Aegis Secure Key 3.0</h3>
-
-<!--
-Last updated: 2020-03-27 (wb://561831720a7ca31f4c07700a12b80d1d)
--->
-
-To start Tails, remove the
-<span class="command">live-media=removable</span> boot option.
-See our instructions on [[modifying the boot options using
-the Boot Loader|doc/advanced_topics/boot_options]].
-
-<h3 id="datatraveler-2000">Kingston DataTraveler 2000, Kingston DataTraveler 100 G3</h3>
-
-<!--
-Last updated: 2018-09-18
-Success report received on 2020-01-04
--->
-
-Starting Tails from a Kingston DataTraveler 2000 or DataTraveler 100G3 may
-not work.
-
-<h2 id="mac">Mac</h2>
+</div>
 
 <!--
 Last updated:
 - MacBook Air 3,2: 2014-06-27
-- MacBook Pro 5,1: 2015-06-19
 - MacBook Pro 4,1: 2014-08-15
-- MacBook Air Retina 2019: 2019-11-01
-- MacBook Pro 8,3: 2019-11-01
 -->
 
-* Any Mac with 32-bit EFI might not start on Tails.
-  You can check if a given Mac is 32-bit
-  or 64-bit EFI on that list:
-  <https://www.everymac.com/mac-answers/snow-leopard-mac-os-x-faq/mac-os-x-snow-leopard-64-bit-macs-64-bit-efi-boot-in-64-bit-mode.html>
+### MacBook Air 3,2 (A1369 EMC 2392)
 
-* MacBook Air Retina 2018 and 2019
+  Freezes when booting Tails in UEFI mode.
 
-  To start Tails successfully, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
+### Mac Pro Tower and MacBook Pro 4,1 (both from early 2008)
 
-      modprobe.blacklist=thunderbolt
+  Fail to start on Tails.
 
-  Still, the trackpad and keyboard may not work. You may use an external
-  mouse and keyboard.
+<h2 id="pc-not-at-all">PC</h2>
 
-* MacBook Pro (recent models): the keyboard, trackpad, and Touch Bar might
-  not work. But, you can use an external keyboard and mouse.
+This section lists known problems with specific hardware.
 
-  If the keyboard, trackpad, and Touch Bar do work on your recent MacBook Pro
-  model, please let us know so that we can update this page accordingly.
+<div class="tip">
 
-* MacBook Pro 8,3 17" (AMD Radeon HD6770M and Intel HD Graphics 3000)
+<p>See our instructions on [[starting Tails on PC|doc/first_steps/start/pc]]
+for general troubleshooting tips.</p>
 
-  If Tails fails to start, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
+<p>[[Let us know|support/talk]] if you discover a new issue or workaround.</p>
 
-      radeon.modeset=0
-
-* MacBook Pro 5,1 17" (Nvidia GeForce 9400M)
-
-  To make the display work properly, [[add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
-
-      nouveau.noaccel=1
-
-* MacBook Air 3,2 (A1369 EMC 2392) freezes when booting Tails in
-  UEFI mode.
-
-* Mac Pro Tower and MacBook Pro 4,1 (both from early 2008)
-  fail to start on Tails.
-
-<h2 id="pc">PC</h2>
-
-<h3 id="lockup">"Soft lockup" error</h3>
-
-<!--
-Last updated: 2019-05-20
--->
-
-On some laptops, Tails starts with the following error:
-
-<p class="pre">soft lockup - CPU#<span class="command-placeholder">N</span> stuck for <span class="command-placeholder">N</span>s</p>
-
-To start Tails successfully, [[add the following boot option when starting
-Tails|doc/advanced_topics/boot_options]]:
-
-    acpi_rev_override=1 nouveau.modeset=0
+</div>
 
 <h3 id="sg-black-screen">Acer Travelmate 8573T-254G50M</h3>
 
@@ -153,10 +70,6 @@ Does not start on USB sticks.
 
 Does not start Tails 4.13.
 
-<h3 id="amd-ryzen-vega-graphics">AMD Ryzen with Vega graphics cards</h3>
-
-See [[support/known_issues/graphics#amd-vega]].
-
 <h3 id="asus-vivobook-x202e">ASUS VivoBook X202E</h3>
 
 <!--
@@ -168,17 +81,6 @@ legacy boot support, enable 'Launch CSM' under boot (menu).
 
 This problem might be corrected in Tails 1.1 and newer: please report
 your test results back to us.
-
-<h3 id="dell-chromebook-lulu">Dell Chromebook LULU</h3>
-
-<!--
-Last updated: 2018-01-10
--->
-
-To start Tails successfully, [[add the following boot option when starting
-Tails|doc/advanced_topics/boot_options]]:
-
-    nomodeset
 
 <h3 id="dell-latitude-e5250">Dell Latitude E5250</h3>
 
@@ -300,15 +202,6 @@ Specs: https://www.cnet.com/products/lenovo-ideapad-z585-15-6-a8-4500m-6-gb-ram-
 
 Goes back continuously to Boot Loader on Tails installed on DVD.
 
-<h3 id="microsoft-surface-laptop-3">Microsoft Surface Laptop 3</h3>
-
-<!--
-Last updated: 2020-07-03
--->
-
-The keyboard and mouse do not work on this laptop.
-If you find a workaround, please let us know.
-
 <h3 id="clevo-w258cu">Clevo W258CU, ThinkPad X121e, T420i, T410, T520, W520, W540, T530, T60, E325, and E530</h3>
 
 <!--
@@ -347,6 +240,163 @@ This machine does not start from a Tails USB stick: the Linux kernel
 included in at least Tails 3.11 to 3.13.1, inclusive, does not support
 the hardware USB controller.
 
+<h1 id="not-entirely">Tails not starting entirely</h1>
+
+<h2 id="mac-not-entirely">Mac</h2>
+
+This section lists known problems with specific hardware.
+
+<div class="tip">
+
+<p>See our instructions on [[starting Tails on Mac|doc/first_steps/start/mac#not-entirely]]
+for general troubleshooting tips.</p>
+
+<p>[[Let us know|support/talk]] if you discover a new issue or workaround.</p>
+
+</div>
+
+<!--
+Last updated:
+- MacBook Air Retina 2019: 2019-11-01
+- MacBook Pro 8,3: 2019-11-01
+- MacBook Pro 5,1: 2015-06-19
+-->
+
+### MacBook Air Retina 2018 and 2019
+
+To start Tails successfully, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
+
+    modprobe.blacklist=thunderbolt
+
+Still, the trackpad and keyboard may not work. You may use an external
+mouse and keyboard.
+
+### MacBook Pro 8,3 17" (AMD Radeon HD6770M and Intel HD Graphics 3000)
+
+If Tails fails to start, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
+
+    radeon.modeset=0
+
+### MacBook Pro 5,1 17" (Nvidia GeForce 9400M)
+
+To make the display work properly, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
+
+    nouveau.noaccel=1
+
+### MacBook Pro 16,1 (A2141)
+
+The computer freezes then automatically restarts. An error message
+appears saying that the computer was restarted because of a problem.
+
+To prevent this from occurring, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
+
+    amdgpu.dpm=0
+
+<h2 id="pc-not-entirely">PC</h2>
+
+This section lists known problems with specific hardware.
+
+<div class="tip">
+
+<p>See our instructions on [[starting Tails on PC|doc/first_steps/start/pc#not-entirely]]
+for general troubleshooting tips.</p>
+
+<p>[[Let us know|support/talk]] if you discover a new issue or workaround.</p>
+
+</div>
+
+<h3 id="lockup">"Soft lockup" error</h3>
+
+<!--
+Last updated: 2019-05-20
+-->
+
+On some laptops, Tails starts with the following error:
+
+<p class="pre">soft lockup - CPU#<span class="command-placeholder">N</span> stuck for <span class="command-placeholder">N</span>s</p>
+
+To start Tails successfully, [[add the following boot option when starting
+Tails|doc/advanced_topics/boot_options]]:
+
+    acpi_rev_override=1 nouveau.modeset=0
+
+<h3 id="amd-ryzen-vega-graphics">AMD Ryzen with Vega graphics cards</h3>
+
+See [[support/known_issues/graphics#amd-vega]].
+
+<h3 id="dell-chromebook-lulu">Dell Chromebook LULU</h3>
+
+<!--
+Last updated: 2018-01-10
+-->
+
+To start Tails successfully, [[add the following boot option when starting
+Tails|doc/advanced_topics/boot_options]]:
+
+    nomodeset
+
+<h3 id="microsoft-surface-laptop-3">Microsoft Surface Laptop 3</h3>
+
+<!--
+Last updated: 2020-07-03
+-->
+
+The keyboard and mouse do not work on this laptop.
+If you find a workaround, please let us know.
+
+<h1 id="problematic-usb-sticks">Problematic USB sticks</h1>
+
+<h3 id="pny">PNY</h3>
+
+<!--
+Last updated: 2014-08-02
+
+I asked help desk about it.
+
+PNY is quite popular among WB reporters:
+
+    436 SanDisk
+    187 Kingston
+    119 USB
+     88 Generic
+     82 Lexar
+     79 Intenso
+     57 Verbatim
+     56 TOSHIBA
+     50 PNY
+
+If it was still problematic on all PNY USB sticks, this issue would
+still be loud on help desk. Is it?
+-->
+
+When installing Tails, PNY USB sticks have problems with the constant write load
+and are prone to failure.
+
+<h3 id="aegis">Aegis Secure Key 3.0</h3>
+
+<!--
+Last updated: 2020-03-27 (wb://561831720a7ca31f4c07700a12b80d1d)
+-->
+
+To start Tails, remove the
+<span class="command">live-media=removable</span> boot option.
+See our instructions on [[modifying the boot options using
+the Boot Loader|doc/advanced_topics/boot_options]].
+
+<h3 id="datatraveler-2000">Kingston DataTraveler 2000, Kingston DataTraveler 100 G3</h3>
+
+<!--
+Last updated: 2018-09-18
+Success report received on 2020-01-04
+-->
+
+Starting Tails from a Kingston DataTraveler 2000 or DataTraveler 100G3 may
+not work.
+
 <h1 id="wi-fi">Wi-Fi issues</h1>
 
 <h2 id="no-wifi">Wi-Fi not working</h2>
@@ -356,13 +406,15 @@ the hardware USB controller.
 * Check in the following sections
   if there is a workaround to get your Wi-Fi interface work in Tails.
 
-<h2 id="wi-fi-workarounds">Knowing the model of your Wi-Fi interface</h2>
+<h2 id="problematic-wifi">Problematic Wi-Fi interfaces</h2>
+
+To know the model of your Wi-Fi interface:
 
 1. Open <span class="application">Terminal</span> and execute the following command:
 
        lspci -v | grep "Network controller"
 
-<h2 id="88w8897">88W8897 [AVASTAR] 802.11ac Wireless</h2>
+<h3 id="88w8897">88W8897 [AVASTAR] 802.11ac Wireless</h3>
 
 <!--
 Last updated: 2018-09-19
@@ -376,7 +428,7 @@ If you experience this problem, you can try to [[disable MAC address
 anonymization|doc/first_steps/welcome_screen/mac_spoofing]] that sometimes
 fixes it.
 
-<h2 id="rtl8723be">RTL8723BE PCIe Wireless Network Adapter</h2>
+<h3 id="rtl8723be">RTL8723BE PCIe Wireless Network Adapter</h3>
 
 <!--
 Last updated: 2017-12-24
@@ -401,7 +453,7 @@ depends on the computer:
 
 - <span class="command">rtl8723be.ant_sel=2 rtl8723be.fwlps=0 rtl8723be.ips=0</span>
 
-<h2 id="broadcom-sta-dkms">Broadcom Wi-Fi network interface needing <code>broadcom-sta-dkms</code></h2>
+<h3 id="broadcom-sta-dkms">Broadcom Wi-Fi network interface needing <code>broadcom-sta-dkms</code></h3>
 
 <!--
 Last updated: 2019-01-29
@@ -419,7 +471,7 @@ supported by the `broadcom-sta-dkms` package on the corresponding
 in the list of supported devices, then it is impossible to use your
 Wi-Fi card in Tails.
 
-<h2 id="lenovo-legion-y530">Lenovo Legion Y530</h2>
+<h3 id="lenovo-legion-y530">Lenovo Legion Y530</h3>
 
 <!--
 Last updated: 2019-05-10
@@ -432,7 +484,7 @@ starting Tails|doc/advanced_topics/boot_options]]:
 
     modprobe.blacklist=ideapad_laptop
 
-<h2 id="rtl8821ce">RTL8821CE</h2>
+<h3 id="rtl8821ce">RTL8821CE</h3>
 
 <!--
 Last updated: 2020-02-21
@@ -481,6 +533,8 @@ in Tails|doc/anonymous_internet/Tor_Browser#fingerprint]].
 [[!inline pages="support/known_issues/import_broken_in_seahorse.inline" raw="yes" sort="age"]]
 
 <h2 id="boot-loader-display-issues">Boot Loader has display issues</h2>
+
+- For issues with graphics cards, see our [[known issues with graphics cards|known_issues/graphics]].
 
 <!--
 Last updated: 2014-06-27

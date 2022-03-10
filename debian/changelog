@@ -1,8 +1,90 @@
-tails (4.29) UNRELEASED; urgency=medium
+tails (4.31) UNRELEASED; urgency=medium
 
+  [ Tails developers ]
   * Dummy entry for next major release.
 
- -- Tails developers <tails@boum.org>  Tue, 11 Jan 2022 16:53:04 +0100
+ -- boyska <boyska@riseup.net>  Tue, 08 Mar 2022 17:38:32 +0100
+
+tails (4.28) unstable; urgency=medium
+
+  * Upgrade to Tor Browser 11.0.7-build2 based on Firefox 91.7 (tails/tails!741)
+
+    Closes issues:
+      - Upgrade to Tor Browser 11.0.7 based on Firefox 91.7 (tails/tails#18853)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.0.7-build2
+
+  * Upgrade to Thunderbird 91.6.1
+
+  * Upgrade to tor 0.4.6.10 (tails/tails!737)
+
+    Closes issues:
+      - Upgrade to tor 0.4.6.10 (tails/tails#18835)
+
+    Commits:
+      - Upgrade to tor 0.4.6.10 (Closes #18835)
+
+  * Enable obfs4proxy logging (tails/tails!734)
+
+    Commits:
+      - save obfs4proxy logs into artifacts
+      - enable obfs4proxy debug logging
+      - "obfs4proxy managed" is an option from the past
+
+  * minor fixes to custom-apt-cruft-check (tails/tails!733)
+
+    Commits:
+      - custom-apt-cruft-check: output nicer Markdown
+      - Give method a name closer to what it wraps
+      - ordered list
+      - fix wrong variable name
+      - markdown-ish
+      - we obey rubocop
+
+  * Test suite: collect logs of tor & friends when we timed out waiting for TCA to
+    connect (tails/tails!732)
+
+    Closes issues:
+      - Test suite does not save tor log on "Timed out while waiting for TCA to connect
+        to Tor (Timeout::Error)" (tails/tails#18850)
+
+    Commits:
+      - Apply 2 suggestion(s) to 1 file(s)
+      - Test suite: collect logs of tor & friends when we timed out waiting for TCA to
+        connect
+
+  * Test suite: ignore old APT repository signing key (tails/tails!731)
+
+    Closes issues:
+      - Test suite: ignore expiration date of 221F9A3C6FA3E09E182E060BC7988EA7A358D82E
+        (tails/tails#18836)
+
+    Commits:
+      - Test suite: ignore old APT repository signing key
+
+  * Test suite can test on the real Tor network (tails/tails!725)
+
+    Closes issues:
+      - Test behavior on the real Tor network (tails/tails#18847)
+
+    Commits:
+      - move Jenkins-only code in the appropriate section
+      - better debug message
+      - shell oneliner converted to ruby
+      - Configure simulated Tor network: step -> function
+      - rubocop is happier
+      - Test suite: don't try to save chutney data when it does not exist
+      - add at least one relevant scenario
+      - if +real-Tor, select relevant scenarios
+      - test suite runs with real Tor, if +real-Tor
+      - "default bridges" honors --disable-chutney
+      - Check adapted to --disable-chutney
+      - run_test_suite --disable-chutney
+      - chutney-specific conf  moved into appropriate step
+
+ -- Tails developers <tails@boum.org>  Mon, 07 Mar 2022 18:16:01 +0100
 
 tails (4.27) unstable; urgency=medium
 
