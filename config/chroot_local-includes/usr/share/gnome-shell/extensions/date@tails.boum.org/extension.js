@@ -18,7 +18,7 @@ function overrider(lbl) {
     // var desired = Math.random().toString()
     let [res, out] = GLib.spawn_sync(null, ['sudo', '-n', '/usr/local/lib/tails-get-date'], null, GLib.SpawnFlags.SEARCH_PATH, null);
     if(out==null) {
-        var desired = now.toLocaleString('en-US') + ' UTC'
+        var desired = now.toLocaleString('en-US') + ' GMT'
     } else {
         desired = out.toString()
     }
