@@ -1,62 +1,59 @@
-[[!meta title="Can I trust Tails?"]]
+[[!meta title="How can I trust Tails?"]]
 
-For Tails to work for you, you have to know whether you can trust it and us, its developers.
-We do not and we would never try to harm to you or our other users,
-as a core principle of [[our social contract|about/social_contract]].
-As part of that commitment, however, we've written this page to help you make an informed decision
-about whether you should trust our software.
+[[!meta stylesheet="donate/testimonials.inline" rel="stylesheet" title=""]]
 
-In short, we think the scrutiny of the free software community and
-the reliability of the software we use makes Tails a trustworthy project.
-We encourage you to do your own research into Tails, our affiliations, and who uses Tails,
-before trusting us.
+Tails will never try harm to you or any of our users, as a core principle of
+[[our social contract|about/social_contract]]. As part of that commitment, we
+have written this page to help you make an informed decision about whether you
+can trust Tails.
 
-<a id="free_software"></a>
+We think that Tails is a trustworthy project because:
 
-Free software supports public scrutiny
-======================================
+- **Our source code is public**
 
-We release and [[license|about/license]] Tails as free software, and
-our source code is available for everyone to examine.
-That way, users can check whether the Tails images we provide
-are actually built with our published source code and don't include any malicious changes.
-The free software community has a long tradition of auditing each other's work
-and publicly reporting serious software issues. Thanks to public scrutiny,
-anyone can have some trust in free software, as long as it is
-popular enough that other developers test its source code.
+  Tails is [[Free Software|about/license]] and security researchers worldwide
+  can examine our [[!tails_gitlab desc="source code"]].
 
-While Tails doesn't get the same attention as projects such as Debian or Tor,
-we do have eyes on us, especially from the Tor and general security communities
-(also, see our [[audits page|security/audits]]).
-[[Our list of sponsors|sponsors]] can give you an idea of
-who supports and reviews Tails software,
-and [[our user interviews|contribute/how/user_experience/interviews/]]
-can tell you what kind of people use Tails and what they like and dislike about our software.
+  The most sensitive parts of Tails are explained in our [[design
+  documents|contribute/design]].
 
-Tails uses secure software
-=============================
+- **Tails is based on Tor and Debian**
 
-Tails is the union of Debian and Tor. What we do is glue the two together:
-Tails code mainly specifies which Debian software packages to install and how to configure them.
-If you trust Debian and Tor, all that is left is whether you trust our "glue".
-Our [[design document|contribute/design]] explains exactly how Tails works,
-and our [[warnings|doc/about/warnings]] explain what Tails can't protect you from.
+  Most of the software included in Tails has not been written by us, but is
+  inherited from Tor and Debian:
 
-Tails anonymity is based on Tor, which is developed by [[The Tor
-Project|https://www.torproject.org/]]. [[We trust The Tor Project|doc/about/tor]].
-Tor is extensively studied by both academics and engineers, and many independent developers
-read through its source code. The Tor code has gone through several external audits.
-Security issues have been reported, but nothing malicious like a backdoor—we think
-that only conspiracy theorists speculate about deliberate backdoors in Tor these days.
-Tor's distributed trust model also makes it hard for a single entity to capture
-an individual's traffic and effectively identify them.
+  * [Debian](https://debian.org/) is one of the oldest Linux distribution and
+    the one with most derivatives, including Ubuntu. Debian and its derivatives
+    are [the most popular Linux distributions on web
+    servers](https://w3techs.com/technologies/details/os-linux) across the
+    Internet. The project is coordinated over the Internet by a team of
+    volunteers whose work is entirely public. All this makes Debian one of the
+    Free Software projects under the most scrutiny by security researchers.
 
-The majority of the software shipped in Tails comes from the
-[[Debian GNU/Linux distribution|https://www.debian.org/]]. We have changed Tails as little
-as possible from Debian and [[we've documented when we do|contribute/relationship_with_upstream/]].
-Debian is one of the largest Linux distros, so countless people use Debian's software
-packages and countless developers inspect their integrity.
-Serious security issues have been discovered (like the infamous
-[[Debian SSH PRNG vulnerability|https://lists.debian.org/debian-security-announce/2008/msg00152.html]]),
-but backdoors or other intentionally placed security holes
-have never been found, to our knowledge.
+  * [Tor](https://torproject.org/) is the best anonymity network available. Tor
+    has partnered with leading research institutions and has been subjected to
+    intensive academic research. Tor has been received awards by institutions
+    such as the [EFF](https://www.eff.org/awards/pioneer/2012) and the [Free
+    Software
+    Foundation](https://www.fsf.org/news/2010-free-software-awards-announced).
+    Even the NSA qualified Tor as [*the king of high secure Internet
+    anonymity*](https://www.theguardian.com/world/interactive/2013/oct/04/tor-high-secure-internet-anonymity).
+
+- **Our downloads are verifiable**
+
+  Making sure that our users are really downloading an unmodified version of
+  our work is also critical to trust and security:
+
+  * Our downloads are [[reproducible|contribute/build/reproducible]] to make
+    sure that the process of building the downloads from our source code was
+    not altered by our own infrastructure.
+
+  * We provide [[strong and easy-to-use verification
+    mechanisms|contribute/design/download_verification]] to make sure that our
+    users are downloading a genuine copy of Tails.
+
+- **Tails is recommended by renown and diverse people and organizations**
+
+  See also our list of [[sponsors]].
+
+[[!inline pages="donate/testimonials.inline" raw="yes" sort="age"]]
