@@ -9,18 +9,12 @@ function init() {
 }
 
 function overrider(lbl) {
-    // var FORMAT = settings.get_string("override-string");
-    // var now = GLib.DateTime.new_now_local();
-
-    // var desired = Format.format(FORMAT, now);
-    var now = new Date()
-
-    // var desired = Math.random().toString()
+    var now = new Date();
     let [res, out] = GLib.spawn_sync(null, ['sudo', '-n', '/usr/local/lib/tails-get-date'], null, GLib.SpawnFlags.SEARCH_PATH, null);
-    if(out==null) {
-        var desired = now.toLocaleString('en-US') + ' GMT'
+    if(out == null) {
+        var desired = now.toLocaleString('en-US') + ' GMT';
     } else {
-        desired = out.toString()
+        desired = out.toString();
     }
 
     var t = lbl.get_text();
@@ -46,7 +40,9 @@ function enable() {
         // This is dodgy behaviour but there's no reliable way to
         // work out which it is.
         w.set_style("text-align: center;");
-        if (w.get_text && !lbl) { lbl = w; }
+        if (w.get_text && !lbl) {
+            lbl = w;
+        }
     });
     if (!lbl) {
         print("Looks like Shell has changed where things live again; aborting.");
