@@ -23,6 +23,10 @@ When(/^I kill the ((?:Tor|Unsafe) Browser)$/) do |browser|
   try_for(10) do
     $vm.execute("pgrep --full --exact '#{info[:cmd_regex]}'").failure?
   end
+
+  # ugly fix to #18568; in my local testing, 3 seconds are always needed. Let's add some more.
+  # a better solution would be to wait until gnome "received" the fact that TorBrowser has gone away.
+  sleep 5
 end
 
 def tor_browser_application_info(defaults)
@@ -123,9 +127,11 @@ def page_has_loaded_in_the_tor_browser(page_titles)
   if $language == 'German'
     browser_name = 'Tor-Browser'
     reload_action = 'Neu laden'
+    separator = '-'
   else
     browser_name = 'Tor Browser'
     reload_action = 'Reload'
+    separator = '—'
   end
   try_for(180) do
     # The 'Reload' button (graphically shown as a looping arrow)
@@ -134,7 +140,7 @@ def page_has_loaded_in_the_tor_browser(page_titles)
     # that the page has fully loaded.
     @torbrowser.children(roleName: 'frame', showingOnly: true).any? do |frame|
       page_titles
-        .map  { |page_title| "#{page_title} - #{browser_name}" }
+        .map  { |page_title| "#{page_title} #{separator} #{browser_name}" }
         .any? { |page_title| page_title == frame.name }
     end &&
       @torbrowser.child(reload_action, roleName:    'push button',
@@ -247,19 +253,19 @@ end
 
 Then /^the Tor Browser shows the "([^"]+)" error$/ do |error|
   try_for(60) do
-    page_has_heading('Problem loading page - Tor Browser', error)
+    page_has_heading('Problem loading page — Tor Browser', error)
   end
 end
 
 Then /^Tor Browser displays a "([^"]+)" heading on the "([^"]+)" page$/ do |heading, page_title|
   try_for(60) do
-    page_has_heading("#{page_title} - Tor Browser", heading)
+    page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
 
 Then /^Tor Browser displays a '([^']+)' heading on the "([^"]+)" page$/ do |heading, page_title|
   try_for(60) do
-    page_has_heading("#{page_title} - Tor Browser", heading)
+    page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
 
@@ -274,10 +280,11 @@ Then /^I can listen to an Ogg audio track in Tor Browser$/ do
     @screen.wait_vanish(info[:browser_stop_button_image], 3)
     open_test_url.call
   end
-  step 'no application is playing audio'
+  try_for(20) { pulseaudio_sink_inputs.zero? }
   open_test_url.call
   retry_tor(recovery_on_failure) do
-    step '1 application is playing audio after 30 seconds'
+    sleep 30
+    assert_equal(1, pulseaudio_sink_inputs)
   end
 end
 
@@ -302,8 +309,8 @@ Then /^DuckDuckGo is the default search engine$/ do
   ddg_search_prompt = 'DuckDuckGoSearchPrompt.png'
   case $language
   when 'Arabic', 'Persian'
-    ddg_search_prompt = "DuckDuckGoSearchPromptRTL.png"
-  when 'Chinese', 'Hindi'
+    ddg_search_prompt = 'DuckDuckGoSearchPromptRTL.png'
+  when 'Hindi'
     ddg_search_prompt = "DuckDuckGoSearchPrompt#{$language}.png"
   end
   step 'I start the Tor Browser'
@@ -322,7 +329,7 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   case $language
   when 'Arabic'
     browser_bar_x = 'BrowserAddressBarXRTL.png'
-  when 'Chinese', 'Hindi'
+  when 'Hindi'
     browser_bar_x = "BrowserAddressBarX#{$language}.png"
   when 'Persian'
     osk_key = 'ScreenKeyboardKeyPersian.png'

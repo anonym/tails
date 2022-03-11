@@ -76,7 +76,7 @@ Feature: create an IUK
     Given an old ISO image whose filesystem.squashfs contains file "A" modified at 1333333333
     And a new ISO image whose filesystem.squashfs contains file "A" modified at 1336666666
     When I create an IUK
-    Then the saved IUK contains a SquashFS that contains file "A" modified at 1336666666
+    Then the saved IUK contains a SquashFS that contains file "A" modified at SOURCE_DATE_EPOCH
 
   Scenario: create an IUK when the bootloader configuration was not upgraded
     Given two ISO images that contain the same bootloader configuration

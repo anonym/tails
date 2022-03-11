@@ -4,6 +4,7 @@ import argparse
 import os
 import logging
 from contextlib import contextmanager
+from pathlib import Path
 import tempfile
 import time
 import subprocess
@@ -103,12 +104,7 @@ class ImageCreator(object):
         with self.setup_loop_device():
             self.create_gpt()
             self.create_partition()
-            # udisks' create_partition function seems to ignore arg_type
-            # in Stretch, so we set it via sgdisk.
-            # XXX: Remove set_partition_type once our Vagrant box runs Buster (#16868)
-            self.set_partition_type()
             self.set_partition_flags()
-            # XXX: Rescan?
             self.format_partition()
             with self.mount_iso():
                 self.extract_iso()
@@ -201,7 +197,7 @@ class ImageCreator(object):
             arg_name=PARTITION_LABEL,
             arg_options=GLib.Variant('a{sv}', None)
         )
-        # XXX: Tails Installer ignores GLib errors here
+        # Note: Tails Installer ignores GLib errors here
 
         logger.info("Partition: %r", partition)
         self._partition = partition
@@ -212,9 +208,6 @@ class ImageCreator(object):
         # before Buster's udisks2 + libblockdev 2.15-1
         # (https://github.com/storaged-project/udisks/issues/418)
         execute(["/sbin/sgdisk", "--attributes=1:=:%x" % SYSTEM_PARTITION_FLAGS, self.image])
-
-    def set_partition_type(self):
-        execute(["/sbin/sgdisk", "--typecode=1:%s" % ESP_GUID, self.image])
 
     def format_partition(self):
         logger.info("Formatting partition")
@@ -293,6 +286,18 @@ class ImageCreator(object):
                 '--directory', '/syslinux/',
                 '--install', self.image
             ])
+        # Detect a class of syslinux installation failure in which syslinux
+        # returns a 0 exit code (#18664)
+        with set_env("MTOOLS_SKIP_CHECK", "1"):
+            try:
+                # This will succeed if, and only if, the syslinux/ldlinux.sys
+                # file exists inside self.partition.props.block.props.device:
+                execute(['mdir',
+                         '-i', self.partition.props.block.props.device,
+                         '-a',
+                         '::syslinux/ldlinux.sys'])
+            except subprocess.CalledProcessError:
+                raise ImageCreationError("syslinux installation failed")
 
     def set_guids(self):
         logger.info("Setting disk and partition GUID")

@@ -33,7 +33,7 @@ export TOR_CONTROL_PORT='9051'
 export TOR_CONTROL_PASSWD='passwd'
 # Hide Torbutton's "Tor Network Settings..." context menu entry since
 # it doesn't work in Tails, and we deal with those configurations
-# strictly through Tor Launcher.
+# externally through TCA.
 export TOR_NO_DISPLAY_NETWORK_SETTINGS='yes'
 
 ask_for_confirmation() {
@@ -45,8 +45,8 @@ ask_for_confirmation() {
     local dialog_title dialog_text dialog_start dialog_cancel
     dialog_title=$(gettext "Tor is not ready")
     dialog_text=$(gettext "Tor is not ready. Start Tor Browser anyway?")
-    dialog_start=$(gettext "Start Tor Browser")
-    dialog_cancel=$(gettext "Cancel")
+    dialog_start=$(gettext "Start Tor Browser Offline")
+    dialog_cancel=$(gettext "Open Tor Connection")
     zenity --question --ellipsize --title "$dialog_title" --text="$dialog_text" \
            --default-cancel --ok-label "$dialog_start" --cancel-label "$dialog_cancel"
 }
@@ -79,4 +79,6 @@ if tor_has_bootstrapped || ask_for_confirmation; then
     export TOR_SOCKS_PORT='9050'
 
     start_browser "${@}"
+else
+    gtk-launch tca.desktop
 fi

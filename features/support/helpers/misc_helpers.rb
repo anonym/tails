@@ -150,7 +150,20 @@ def force_new_tor_circuit
     # We sleep an extra second to avoid tight timings.
     sleep interval - elapsed + 1 if elapsed.positive? && elapsed < interval
   end
-  $vm.execute_successfully('tor_control_send "signal NEWNYM"', libs: 'tor')
+  script = [
+    'import stem',
+    'import stem.connection',
+    'try:',
+    '    controller = stem.connection.connect(control_port=("127.0.0.1", 9051))',
+    '    if controller is None:',
+    '        raise stem.SocketError("Cannot connect to Tor\'s control port")',
+    '    controller.authenticate()',
+    '    controller.signal(stem.Signal.NEWNYM)',
+    'except Exception as e:',
+    '    exit(1)',
+  ]
+  c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
+  assert(c.success?, 'NEWNYM failed')
   $__last_newnym = Time.now
 end
 
@@ -274,7 +287,7 @@ def convert_from_bytes(size, unit)
   size.to_f / convert_bytes_mod(unit)
 end
 
-def cmd_helper(cmd, env = {})
+def cmd_helper(cmd, env: {})
   if cmd.instance_of?(Array)
     cmd << { err: [:child, :out] }
   elsif cmd.instance_of?(String)

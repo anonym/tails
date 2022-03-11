@@ -16,12 +16,12 @@ VM_MEMORY_FOR_RAM_BUILDS = VM_MEMORY_BASE + BUILD_SPACE_REQUIREMENT
 
 # The builder VM's platform
 ARCHITECTURE = 'amd64'.freeze
-DISTRIBUTION = 'buster'.freeze
+DISTRIBUTION = 'bullseye'.freeze
 
 # The name of the Vagrant box
 def box_name
   git_root = `git rev-parse --show-toplevel`.chomp
-  shortid, date = `git log -1 --date="format:%Y%m%d" --pretty="%h %ad" -- \
+  shortid, date = `git log -1 --date="format:%Y%m%d" --no-show-signature --pretty="%h %ad" -- \
                    #{git_root}/vagrant/`.chomp.split
   "tails-builder-#{ARCHITECTURE}-#{DISTRIBUTION}-#{date}-#{shortid}"
 end

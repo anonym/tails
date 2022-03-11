@@ -1,9 +1,4 @@
-/* Deprecation of the extension */
-
-#extension,
-#extension-version {
-  display: none;
-}
+@import url("hide.css");
 
 /* Display no JS version by default */
 
@@ -11,7 +6,6 @@
   display: initial;
 }
 
-#skip-verification,
 #ie,
 #verify-button,
 #verifying-download,
@@ -20,35 +14,12 @@
 #verification-error-file,
 #verification-error-json,
 #verification-error-image,
-#skip-download,
 #tails-version,
 #try-another-mirror,
 #download-img-retry,
-#download-iso-retry {
+#download-iso-retry,
+#bittorrent-verification-tip {
   display: none;
-}
-
-/* Layout */
-
-#content {
-  padding-left: 0 !important;
-}
-
-span.step-number {
-  display: inline-block;
-  width: 35px;
-}
-
-.indent {
-  margin-left: 35px !important;
-}
-
-#step-download {
-  min-height: 7em;
-}
-
-#step-verify, #step-continue {
-  margin-top: 4em;
 }
 
 /* Buttons */
@@ -57,67 +28,15 @@ span.step-number {
   display: none;
 }
 
-#verify-button p {
-  margin-top: 1.5em;
-}
-
-/* Download */
-
-#download-minor {
-  margin-top: 1.5em;
-}
-
-/* FLOATING TOGGLEABLE FOR 'WHY?' CONTEXTUAL HELP */
-
-/* Hide toggleable by default so they don't appear when there is no JavaScript. */
-.floating-toggleable-link {
-  display: none;
-  margin: 0;
-}
-
-.floating-toggleable div.toggleable {
-  display: none;
-  background: white !important;
-  border: 1px solid #53b351 !important;
-  -webkit-box-shadow: 5px 5px #53b351;
-  box-shadow: 5px 5px #53b351;
-  padding: 15px 30px !important;
-  margin: -1em auto !important;
-  position: absolute !important;
-  text-align: left;
-  font-size: 13px;
-  z-index: 1;
-  width: 37em;
-}
-
-/* X for closing the toggle */
-.floating-toggleable a.toggle {
-  border: none !important;
-  cursor: pointer;
-  position: absolute;
-  right: 7px;
-  top: 5px;
-}
-
 #javascript-verification-tip, #verification-failed {
   position: relative;
 }
 
-.why-verify-link, .why-failed-link {
+.why-failed-link {
   position: absolute;
   top: 0;
   left: 35em;
-}
-
-#bittorrent-verification-tip {
-  display: none;
-}
-
-/* Skip verification */
-
-#skip-verification a {
-  color: #e8112d;
-  border-color: #e8112f;
+  margin: 0;
 }
 
 /* Progress bar */
@@ -145,29 +64,4 @@ img.icon {
 
 #retry-json, #retry-image {
   cursor: pointer;
-}
-
-#continue-link li {
-  margin-left: 1em;
-}
-
-/* OpenPGP */
-
-#openpgp {
-  margin-top: 5em;
-}
-
-#openpgp h3 {
-  margin-top: 3em;
-}
-
-#openpgp pre, #openpgp p.pre {
-  min-width: 60em;
-  width: 60em;
-}
-
-/* Override steps.css */
-
-h1 {
-  margin-left: 0 !important;
 }

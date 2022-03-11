@@ -80,7 +80,7 @@ Feature: Browsing the web using the Tor Browser
     And AppArmor has denied "torbrowser_firefox" from opening "/lib/live/mount/overlay/rw/home/amnesia/.gnupg/synaptic.html"
     # We do not get any AppArmor log for when access to files in /tmp is denied
     # since we explictly override (commit 51c0060) the rules (from the user-tmp
-    # abstration) that would otherwise allow it, and we do so with "deny", which
+    # abstraction) that would otherwise allow it, and we do so with "deny", which
     # also specifies "noaudit". We could explicitly specify "audit deny" and
     # then have logs, but it could be a problem when we set up desktop
     # notifications for AppArmor denials (#9337).

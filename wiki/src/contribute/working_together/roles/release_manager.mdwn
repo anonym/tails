@@ -45,7 +45,7 @@ the Foundations Team's duties.
 ## In the beginning of your shift
 
 - Check the [Tor Browser release
-  schedule](https://gitlab.torproject.org/tpo/applications/tor-browser/-/wikis/Release_Schedule). `[skip-if-emergency-release]`
+  schedule](https://gitlab.torproject.org/tpo/applications/tor-browser/-/wikis/Release-Schedule). `[skip-if-emergency-release]`
 - Check the Mozilla release calendars: `[skip-if-emergency-release]`
   * [Google calendar](https://www.google.com/calendar/embed?src=mozilla.com_2d37383433353432352d3939%40resource.calendar.google.com)
   * [Release schedule](https://wiki.mozilla.org/Release_Management/Calendar)
@@ -64,8 +64,10 @@ the Foundations Team's duties.
   [[!tails_gitlab groups/tails/-/milestones desc="GitLab milestone"]]
   with the correct due date. If it is not, create a merge request against
   [[!tails_gitlab tails/gitlab-config]] to fix it.
-- Ensure there's an issue with the `Core Work: Technical Writing` label, about
-  writing the release notes. This also applies to betas and release
+- Create an issue with the `Core Work: Foundations Team` label,
+  about upgrading Tor Browser in the release your shift is about.
+- Ensure there's [an issue about
+  writing the release notes](https://gitlab.tails.boum.org/tails/tails/-/issues?scope=all&state=opened&label_name[]=Core%20Work%3ATechnical%20writing&search=release+notes). This also applies to betas and release
   candidates, so you might create multiple such issues during one
   shift.
 - The ISO images for *every* previous beta, RC, and final release
@@ -79,6 +81,13 @@ the Foundations Team's duties.
   For example, if you're preparing 4.4, you need the ISO images
   for 4.0~beta1, 4.0~beta2, 4.0~rc1, 4.0, 4.1, 4.1.1, 4.2, 4.2.2, and 4.3.
 
+  ie, you can run this inside isos.git:
+
+        git annex sync
+        (cd ${TAILS_GIT_REPO:?}; ./bin/iuk-source-versions "${VERSION:?}" | tr ' ' '\n' | sed -e 's/^/tails-amd64-/') | xargs -r git annex get
+
+
+
 - Ensure the next steps are tracked in your preferred personal
   organization tool.
 
@@ -86,8 +95,6 @@ the Foundations Team's duties.
 
 - Ensure you have found a _Trusted Reproducer_ and write who this is
   in the [[contribute/calendar]].
-- Create an issue with the `Core Work: Foundations Team` label,
-  about upgrading Tor Browser in the release your shift is about.
 - Check if you have enough manual testers registered.
   If not, ping the usual testers.
 
@@ -151,6 +158,12 @@ release, we have to make 2 decisions:
     - developers i.e. Foundations Team: assess the risk that the emergency
       release would cancel or mitigate; propose mitigation measures that
       we could recommend to users
+
+      Rules of thumb:
+
+       - We usually do not prepare emergency releases for local privilege
+         escalation (even to root) if they cannot be exploited from the
+         execution context of Tor Browser.
 
     - UX: evaluate the acceptability of mitigation measures proposed by
       developers; remind everyone else that any extra upgrade has a UX cost

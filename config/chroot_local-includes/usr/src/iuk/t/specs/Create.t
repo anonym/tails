@@ -43,7 +43,7 @@ describe 'An IUK object' => sub {
             # an empty SquashFS is invalid
             path($old_squashfs_tempdir, '.placeholder')->touch;
             path($old_iso_tempdir, 'live')->mkpath;
-            `mksquashfs $old_squashfs_tempdir $old_iso_tempdir/live/filesystem.squashfs -no-progress 2>/dev/null`;
+            `gensquashfs --quiet --pack-dir $old_squashfs_tempdir $old_iso_tempdir/live/filesystem.squashfs 2>/dev/null`;
             system(@genisoimage, "-o", $old_iso, $old_iso_tempdir);
 
             my $new_iso = path($tempdir, 'new.iso');
@@ -56,7 +56,7 @@ describe 'An IUK object' => sub {
             path($new_iso_tempdir, 'EFI')->mkpath;
             path($new_iso_tempdir, 'utils')->mkpath;
             path($new_iso_tempdir, 'live')->mkpath;
-            `mksquashfs $new_squashfs_tempdir $new_iso_tempdir/live/filesystem.squashfs -no-progress 2>/dev/null`;
+            `gensquashfs --quiet --pack-dir $new_squashfs_tempdir $new_iso_tempdir/live/filesystem.squashfs 2>/dev/null`;
             system(@genisoimage, "-o", $new_iso, $new_iso_tempdir);
 
             $iuk = Tails::IUK->new(
@@ -68,6 +68,7 @@ describe 'An IUK object' => sub {
         it 'can be written out' => $ENV{SKIP_SUDO} ? () : sub {
             # XXX:
             my ($out_fh, $out_filename) = tempfile();
+            unlink($out_filename);
             $iuk->saveas($out_filename);
             ok(-e $out_filename);
         };

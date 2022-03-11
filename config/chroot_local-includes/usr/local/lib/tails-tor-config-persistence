@@ -1,0 +1,46 @@
+#!/bin/sh
+
+set -eu
+
+CONF_FILE=/live/persistence/TailsData_unlocked/persistence.conf
+
+[ $# = 1 ] || exit 2
+
+SUBCOMMAND="$1"
+
+enable_persistence_setting() {
+    [ -w "$CONF_FILE" ] || return 1
+    if ! grep -E --line-regexp -q '/var/lib/tca\s+source=tca' "$CONF_FILE"; then
+	echo '/var/lib/tca source=tca' >> "$CONF_FILE"
+    fi
+}
+
+persistence_setting_is_enabled() {
+    [ -r "$CONF_FILE" ] || return 1
+    grep -E --line-regexp -qs \
+	 '/var/lib/tca\s+source=tca' \
+	 "$CONF_FILE"
+}
+
+disable_persistence_setting() {
+    [ -w "$CONF_FILE" ] || return 1
+    perl -ni -E \
+         'print unless m{\A/var/lib/tca\s+source=tca[\n]?\z}' \
+	 "$CONF_FILE"
+}
+
+case "$SUBCOMMAND" in
+    enable)
+	enable_persistence_setting
+	;;
+    disable)
+	disable_persistence_setting
+	;;
+    is-enabled)
+	persistence_setting_is_enabled
+	;;
+    *)
+	echo "Sub-command ${SUBCOMMAND} is not supported" >&2
+	exit 4
+	;;
+esac

@@ -6,7 +6,7 @@ set -e
 set -u
 set -o pipefail
 
-LANGUAGES=${@:-de es fa fr it pt}
+LANGUAGES=${@:-de es fr it pt ru}
 
 GIT_TOPLEVEL_DIR=$(git rev-parse --show-toplevel)
 

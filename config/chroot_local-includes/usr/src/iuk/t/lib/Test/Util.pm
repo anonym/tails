@@ -177,11 +177,11 @@ fun make_iuk (AbsPath    $iuk_filename,
         path($src)->copy($overlay_dir->child($dst));
     }
 
-    my $mksquashfs_output = capture(
+    my $gensquashfs_output = capture(
         EXIT_ANY,
-        "mksquashfs '$tempdir' '$iuk_filename' -no-progress -noappend 2>&1"
+        "gensquashfs --quiet --force --pack-dir '$tempdir' '$iuk_filename' 2>&1"
     );
-    $EXITVAL == 0 or croak "mksquashfs failed: $mksquashfs_output";
+    $EXITVAL == 0 or croak "gensquashfs failed: $gensquashfs_output";
 }
 
 1;

@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 set -e
 set -u
@@ -250,6 +250,7 @@ done
 # Schedule clean up
 # shellcheck disable=SC2064
 trap "rm -fr po/*.new po/*.orig ; [ '$KEEP_TMP_POT' = yes ] || rm -fr tmp/pot" EXIT
+trap "echo refresh-translations: failed" ERR
 
 # Update POT files
 mkdir -p tmp/pot

@@ -1,17 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  /* Deprecation of the extension */
-
-  window.addEventListener("message", receiveMessage);
-  function receiveMessage(event) {
-    if (event.source !== window || event.origin !== "https://tails.boum.org" || !event.data) {
-      return;
-    }
-    if (event.data.action === "extension-installed") {
-      show(document.getElementById("extension"));
-    }
-  }
-
   var URLofJsonFileContainingChecksums="https://tails.boum.org/install/v2/Tails/amd64/stable/latest.json";
   var sha256;
 
@@ -90,7 +78,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
     show(document.getElementById("verifying-download"));
-    toggleContinueLink("skip-verification");
   }
 
   function showVerificationProgress(percentage) {
@@ -104,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function() {
     hitCounter(result);
     if (result === "successful") {
       show(document.getElementById("verification-successful"));
-      toggleContinueLink("next");
     }
     else if (result === "failed") {
       show(document.getElementById("verification-failed"));
@@ -134,14 +120,6 @@ document.addEventListener("DOMContentLoaded", function() {
     hide(document.getElementById("verification-error-json"));
     hide(document.getElementById("verification-error-image"));
     show(document.getElementById("verification"));
-    toggleContinueLink("skip-verification");
-  }
-
-  function toggleContinueLink(state) {
-    hide(document.getElementById("skip-download"));
-    hide(document.getElementById("skip-verification"));
-    hide(document.getElementById("next"));
-    show(document.getElementById(state));
   }
 
   /* Verification logic functions */
@@ -239,7 +217,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function downloadTorrent(e, elm) {
     toggleJavaScriptBitTorrent("bittorrent");
-    toggleContinueLink("next");
   }
 
   // Download again after failure
@@ -262,15 +239,6 @@ document.addEventListener("DOMContentLoaded", function() {
   /* No JavaScript */
 
   hide(document.getElementById("no-js"));
-
-  // Display floating-toggleable-links to prevent people without JS to
-  // either always see the toggles or have broken toggle links.
-  var links = document.getElementsByClassName("floating-toggleable-link");
-  for (let i = 0; i < links.length; i++) {
-    show(links[i]);
-  }
-
-  toggleContinueLink("skip-download");
 
   /* Internet Explorer */
 

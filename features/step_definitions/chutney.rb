@@ -24,7 +24,9 @@ end
 
 # XXX: giving up on a few worst offenders for now
 # rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/PerceivedComplexity
 def ensure_chutney_is_running
   # Ensure that a fresh chutney instance is running, and that it will
   # be cleaned upon exit. We only do it once, though, since the same
@@ -56,7 +58,7 @@ def ensure_chutney_is_running
     chutney_status_log(cmd)
     cmd = 'stop' if cmd == 'stop_old'
     Dir.chdir(chutney_src_dir) do
-      cmd_helper([chutney_script, cmd, network_definition], env)
+      cmd_helper([chutney_script, cmd, network_definition], env: env)
     end
   end
 
@@ -117,11 +119,13 @@ def ensure_chutney_is_running
   chutney_status_log('done')
 end
 # rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/PerceivedComplexity
 
-When /^I configure Tails to use a simulated Tor network$/ do
-  # At the moment this step essentially assumes that we boot with 'the
-  # network is unplugged', run this step, and then 'the network is
+def configure_simulated_Tor_network # rubocop:disable Naming/MethodName
+  # At the moment this function essentially assumes that we boot with 'the
+  # network is unplugged', run this function, and then 'the network is
   # plugged'. I believe we can make this pretty transparent without
   # the need of a dedicated step by using tags (e.g. @fake_tor or
   # whatever -- possibly we want the opposite, @real_tor,
@@ -145,8 +149,6 @@ When /^I configure Tails to use a simulated Tor network$/ do
   # abstraction impractical and it's better that we avoid it an go
   # with the more explicit, step-based approach.
 
-  assert($vm.execute('service tor status').failure?,
-         'Running this step when Tor is running is probably not intentional')
   ensure_chutney_is_running
   # Most of these lines are taken from chutney's client template.
   client_torrc_lines = [
@@ -178,4 +180,14 @@ When /^I configure Tails to use a simulated Tor network$/ do
   end
   client_torrc_lines.concat(dir_auth_lines)
   $vm.file_append('/etc/tor/torrc', client_torrc_lines)
+
+  # Since we use a simulated Tor network (via Chutney) we have to
+  # switch to its default bridges.
+  default_bridges_path = '/usr/share/tails/tca/default_bridges.txt'
+  $vm.file_overwrite(default_bridges_path, '')
+  chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+    $vm.file_append(default_bridges_path, bridge[:line])
+  end
+
+  $vm.execute_successfully('systemctl restart tor@default.service')
 end

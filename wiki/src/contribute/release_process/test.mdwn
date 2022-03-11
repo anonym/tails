@@ -6,15 +6,15 @@
 Read this document from the branch used to prepare the release.
 </div>
 
-# Changes
+Changes
+=======
 
-Keeping an eye on the changes between released versions is one of the
-many safeguards against releasing crap.
-
-## Packages
+Packages
+--------
 
 Compare the list of bundled packages and versions with the one shipped last
-time. `.packages` are usually attached to the email announcing the image is ready.
+time. The new `.packages` file should have been attached to the
+call for testing email sent by the Release Manager.
 
 	/usr/bin/diff -u \
 	    wiki/src/torrents/files/tails-amd64-3.1.packages \
@@ -25,12 +25,11 @@ Check the output for:
 
 - new packages that may cause harm or make the images unnecessarily
   big
-- packages that could be erroneously removed
-- new versions of software we might not have audited yet (including:
-  does the combination of our configuration with software X version
-  Y+1 achieve the same wished results as with software X version Y?)
+- packages that were erroneously removed
+- new versions of software we might not have audited yet
 
-## Image size
+Image size
+----------
 
 Check the images size has not changed much since the last release.
 
@@ -41,7 +40,8 @@ In a directory with many Tails ISO and USB images:
 
 <a id="reproducibility-final-check"></a>
 
-# Reproducibility
+Reproducibility
+===============
 
 ⚠ Wait until the Release Manager removes this warning.
 
@@ -79,27 +79,22 @@ This section can **not** be done by the RM.
     - if they could check the inline signature of the attachment once decompressed
     - if the signed text contains all the information they need
 
-# Automated test suite
+Automated test suite
+====================
 
-See the [[automated test suite documentation|test/automated_tests]].
+Point `--old-iso` to the ISO image of the previous stable release.
 
-## Running the automated test suite
+See:
 
-See [[test/setup]] and [[test/usage]].
+ - [[automated test suite documentation|test/automated_tests]]
+ - [[test/setup]]
+ - [[test/usage]]
 
-Do point `--old-iso` to the ISO image of the previous stable release.
+Tor Browser
+===========
 
-## Automated test suite migration progress
-
-The manual test suite below either contains tests that cannot be
-automated, has no automated test implemented yet, or has a test
-implemented, but it either hasn't been reviewed, had a confirmed pass
-by someone other than the test author, or has issues. The latter is
-tracked by subtasks of [[!tails_ticket 10250]].
-
-# Tor Browser
-
-## Miscellaneous functionality
+Miscellaneous functionality
+---------------------------
 
 * Test if _uBlock_ works:
   - The _uBlock_ icon must be visible.
@@ -108,27 +103,37 @@ tracked by subtasks of [[!tails_ticket 10250]].
     the uBlock icon should display a strictly positive number of
     blocked elements.
 
-## Security and fingerprinting
+Security and fingerprinting
+---------------------------
 
-* [Download](https://torbrowser-archive.tails.boum.org/) the same version of Tor
-  Browser and compare its fingerprint (running on Linux outside of Tails) with
-  Tor Browser in Tails, using at least <https://coveryourtracks.eff.org/>.
-  Click "Show full results for
-  fingerprinting" to see the details we're interested in.
-  - The exposed User-Agent should match the latest Tor Browser's one.
-  - Ignore the result of the "blocking tracking ads" and "blocking
-    invisible trackers" tests, which seem unreliable (we've seen
-    different results for the very same version of Tor Browser).
-  - Update the *Browser fingerprint* section of the
-    [[known issues|support/known_issues]] if needed.
-* In `about:config` check that `media.peerconnection.enabled` is set to
-  `false`.
+1. In Tails' Tor Browser, visit `about:config`. Check that
+   `media.peerconnection.enabled` is set to `false`.
+
+2. [Download](https://torbrowser-archive.tails.boum.org/?C=M&O=D) the version of Tor
+   Browser included in the Tails release you are testing.
+
+3. Start that Tor Browser on a non-Tails Linux.
+
+4. Compare the fingerprint of that Tor Browser with the one of
+   Tails' Tor Browser, using *Test your browser*
+   on <https://coveryourtracks.eff.org/>.
+
+   To see the details we're interested in, scroll down to check *Detailed results*
+   and click on *Detailed view*.
+
+   - The exposed User-Agent should match the latest Tor Browser's one.
+   - Ignore the result of the "blocking tracking ads" and "blocking
+     invisible trackers" tests, which seem unreliable (we've seen
+     different results for the very same version of Tor Browser).
+
+5. If the fingerprints differ, ask the Release Manager
+   to update the *Browser fingerprint* section of the
+   [[known issues|support/known_issues]] page.
 
 <a id="Thunderbird"></a>
 
-# Thunderbird
-
-## EHLO/HELO
+Thunderbird
+===========
 
 Only perform this test if one of these conditions is met:
 
@@ -155,19 +160,22 @@ at the application level:
    verify that it only contains `127.0.0.1`:
    `sudo tcpdump -A -r dump | grep EHLO`
 
-# WhisperBack
+WhisperBack
+===========
 
 * I should be able to send a bug report with WhisperBack.
 * When we receive this bug report on the tails-bugs mailing list,
   Schleuder tells us that it was sent encrypted.
 
-# Virtualization support
+Virtualization support
+======================
 
 * Test that Tails starts and the browser launches in VirtualBox.
 
 <a id="incremental-upgrades"></a>
 
-# Incremental upgrades
+Incremental upgrades
+====================
 
 ⚠ Wait until the Release Manager removes this warning.
 
@@ -187,12 +195,14 @@ at the application level:
                     echo TAILS_CHANNEL=\"test\" >> /etc/os-release' && \
         systemctl --user restart tails-upgrade-frontend.service
 
-5. Once the upgrade has been applied and you're suggested to restart Tails,
+5. Connect to Local Network and to Tor
+
+6. Once the upgrade has been applied and you're suggested to restart Tails,
    do that.
 
-6. In the Welcome Screen, enable the Unsafe Browser.
+7. In the Welcome Screen, enable the Unsafe Browser.
 
-7. Verify that the resulting, upgraded system "works fine":
+8. Verify that the resulting, upgraded system "works fine":
 
    * it boots
    * it pretends to be the correct version
@@ -200,7 +210,8 @@ at the application level:
    * Tor Browser works fine
    * the Unsafe Browser starts
 
-# Torrents
+Torrents
+========
 
 Make sure that the .torrent files we advertise for this release can be
 used to download the *full* images:
@@ -209,11 +220,11 @@ used to download the *full* images:
 
 * USB image
 
-# Real (non-VM) hardware
+Real (non-VM) hardware
+======================
 
-`[can't-automate]`
 
-Note that for release candidates, we do not always optimize the ordering
+Note that for emergency releases, we do not always optimize the ordering
 of files in the SquashFS, which might make them boot somewhat slower.
 
 On a 64-bit computer that has Secure Boot enabled and that is configured to
@@ -221,7 +232,8 @@ prefer UEFI:
 
 1. Freshly install the version of Tails being tested to a USB stick.
 2. Boot this USB stick on bare-metal a first time to trigger re-partitioning.
-   You should the "GNU GRUB" title, as opposed to a syslinux menu.
+   - You should see the "GNU GRUB" title, as opposed to a syslinux menu.
+   - Wait until you see the Welcome Screen.
 3. Boot this USB stick a second time, measuring the boot time (from the
    GRUB menu until the GNOME desktop is ready -- quickly press
    ENTER in the Welcome Screen).
@@ -236,8 +248,8 @@ On a computer configured to prefer legacy BIOS boot:
 3. Boot this USB stick a second time.
 4. You should see the Welcome Screen appear.
 
-# Misc
+Misc
+====
 
 * Check that the output of `sudo journalctl` looks OK.
   For a quick overview, something like `sudo journalctl -p 0..3` can be helpful.
-  `[can't-automate]`

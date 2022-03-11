@@ -3,10 +3,16 @@ disable=SC1090
 disable=SC1091
 
 # dash supports 'local'
-disable=SC2039
+disable=SC3043
+
+# dash supports 'echo -n'
+disable=SC3037
 
 # Let's accept we are doing weird things with arrays & strings, for now
 disable=SC2124
 
 # We use "set -e" about everywhere
 disable=SC2164
+
+# We know that > is IO redirection, not a comparison
+disable=SC2065

@@ -213,27 +213,23 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
                                  roleName: 'combo box')
     filter.click
     try_for(5) do
-      begin
-        filter.child('All Files', roleName: 'menu item').click
-        true
-      rescue Dogtail::Failure
-        # we probably clicked too early, which triggered an "Attempting
-        # to generate a mouse event at negative coordinates" Dogtail error
-        false
-      end
+      filter.child('All Files', roleName: 'menu item').click
+      true
+    rescue Dogtail::Failure
+      # we probably clicked too early, which triggered an "Attempting
+      # to generate a mouse event at negative coordinates" Dogtail error
+      false
     end
     @screen.type(@veracrypt_shared_dir_in_guest + '/' + $veracrypt_volume_name)
     sleep 2 # avoid ENTER being eaten by the auto-completion system
     @screen.press('Return')
     try_for(15) do
-      begin
-        disks.children(roleName: 'table cell')
-             .find { |row| /^#{size} Loop Device/.match(row.name) }
-             .grabFocus
-        true
-      rescue NoMethodError
-        false
-      end
+      disks.children(roleName: 'table cell')
+           .find { |row| /^#{size} Loop Device/.match(row.name) }
+           .grabFocus
+      true
+    rescue NoMethodError
+      false
     end
   end
   disks.child('', roleName:    'panel',
@@ -267,24 +263,22 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
   @screen.wait('Gtk3UnlockButton.png', 10)
   @screen.press('alt', 'u') # "Unlock" button
   try_for(10, msg: 'Failed to mount the unlocked volume') do
-    begin
-      unlocked_volume = disks.child("#{size} VeraCrypt/TrueCrypt",
-                                    roleName: 'panel', showingOnly: true)
-      unlocked_volume.click
-      # Move the focus down to the "Filesystem\n107 MB FAT" item (that Dogtail
-      # is not able to find) using the 'Down' arrow, in order to display
-      # the "Mount selected partition" button.
-      unlocked_volume.grabFocus
-      sleep 0.5 # otherwise the following key press is sometimes lost
-      disks.pressKey('Down')
-      disks.child('', roleName: 'panel',
-description: 'Mount selected partition', showingOnly: true).click
-      true
-    rescue Dogtail::Failure
-      # we probably did something too early, which triggered a Dogtail error
-      # such as "Attempting to generate a mouse event at negative coordinates"
-      false
-    end
+    unlocked_volume = disks.child("#{size} VeraCrypt/TrueCrypt",
+                                  roleName: 'panel', showingOnly: true)
+    unlocked_volume.click
+    # Move the focus down to the "Filesystem\n107 MB FAT" item (that Dogtail
+    # is not able to find) using the 'Down' arrow, in order to display
+    # the "Mount selected partition" button.
+    unlocked_volume.grabFocus
+    sleep 0.5 # otherwise the following key press is sometimes lost
+    disks.pressKey('Down')
+    disks.child('', roleName: 'panel',
+                description: 'Mount selected partition', showingOnly: true).click
+    true
+  rescue Dogtail::Failure
+    # we probably did something too early, which triggered a Dogtail error
+    # such as "Attempting to generate a mouse event at negative coordinates"
+    false
   end
   try_for(10, msg: '/media/amnesia/*/GPL-3 does not exist') do
     !$vm.file_glob('/media/amnesia/*/GPL-3').empty?

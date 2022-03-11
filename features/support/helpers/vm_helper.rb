@@ -1,3 +1,4 @@
+require 'find'
 require 'ipaddr'
 require 'libvirt'
 require 'rexml/document'
@@ -84,6 +85,16 @@ class VM
     rexml.elements['domain/name'].text = @domain_name
     rexml.elements['domain'].add_element('uuid')
     rexml.elements['domain/uuid'].text = LIBVIRT_DOMAIN_UUID
+
+    if $config['LIBVIRT_CPUMODEL']
+      rexml.elements['domain/cpu'].add_attribute('mode', 'custom')
+      rexml.elements['domain/cpu'].add_attribute('match', 'exact')
+      rexml.elements['domain/cpu'].add_attribute('check', 'partial')
+      rexml.elements['domain/cpu'].add_element('model')
+      rexml.elements['domain/cpu/model'].text = $config['LIBVIRT_CPUMODEL']
+      rexml.elements['domain/cpu/model'].add_attribute('fallback', 'allow')
+    end
+
     update(xml: rexml.to_s)
     set_vcpu($config['VCPUS']) if $config['VCPUS']
     @display = Display.new(@domain_name, x_display)
@@ -316,14 +327,12 @@ class VM
 
   def disk_xml_desc(name)
     domain_xml.elements.each('domain/devices/disk') do |e|
-      begin
-        if e.elements['source'].attribute('file').to_s \
-           == @storage.disk_path(name)
-          return e.to_s
-        end
-      rescue StandardError
-        next
+      if e.elements['source'].attribute('file').to_s \
+         == @storage.disk_path(name)
+        return e.to_s
       end
+    rescue StandardError
+      next
     end
     nil
   end
@@ -368,7 +377,7 @@ class VM
 
   def disk_detected?(name)
     (dev = disk_dev(name)) || (return false)
-    execute("test -b #{dev}").success?
+    execute("udisksctl info -b #{dev}").success?
   end
 
   def disk_plugged?(name)
@@ -474,7 +483,7 @@ class VM
       execute_successfully("echo '#{msg}'").stdout.chomp == msg
     end
   rescue StandardError
-    debug_log("The remote shell failed to respond within 3 seconds")
+    debug_log('The remote shell failed to respond within 3 seconds')
     false
   end
 
@@ -582,6 +591,49 @@ class VM
   def file_overwrite(path, lines)
     lines = lines.join("\n") if lines.class == Array
     file_open(path) { |f| return f.write(lines) }
+  end
+
+  def file_copy_local(localpath, vm_path)
+    debug_log("copying #{localpath} to #{vm_path}")
+    content = File.read(localpath)
+    file_overwrite(vm_path, content)
+  end
+
+  def file_copy_local_dir(localdir, vm_dir)
+    localfiles = Dir.chdir(localdir) { Find.find('.').select { |p| FileTest.file?(p) } }
+    localfiles.each do |fpath|
+      # fpath is, for example,"./etc/amnesia/version"
+      vm_path = fpath[1..-1]
+      dir = File.dirname(vm_path)
+
+      execute_successfully("mkdir -p '#{dir}'")
+      file_copy_local(File.join(localdir, fpath), File.join(vm_dir, vm_path))
+    end
+  end
+
+  def live_patch(fname = nil)
+    fname = $config['LIVE_PATCH'] if fname.nil?
+    if fname.nil? || fname.empty?
+      debug_log('live_patch called but no filename found')
+      return
+    end
+
+    File.open(fname).each_line do |line|
+      next unless line.count("\t") == 1 && !line.start_with?('#')
+
+      src, dest = line.strip.split("\t", 2)
+      unless File.exist?(src)
+        debug_log("Error in --live-patch: #{src} does not exist")
+        next
+      end
+      if File.file?(src)
+        $vm.file_copy_local(src, dest)
+      elsif File.directory?(src)
+        $vm.file_copy_local_dir(src, dest)
+      else
+        debug_log("Error in --live-patch: #{src} not a file or a dir")
+      end
+    end
   end
 
   def file_append(path, lines)

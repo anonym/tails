@@ -79,28 +79,28 @@ has "$_" =>
     isa => AbsDir
 for (qw{tempdir overlay_dir squashfs_src_dir});
 
-has 'mksquashfs_options' =>
+has 'gensquashfs_options' =>
     is          => 'lazy',
     isa         => ArrayRef,
     handles_via => 'Array',
     handles     => {
-        list_mksquashfs_options => 'elements',
+        list_gensquashfs_options => 'elements',
     };
 
-option 'mksquashfs_lock_file' =>
+option 'gensquashfs_lock_file' =>
     is            => 'lazy',
     isa           => AbsPath,
     coerce        => AbsPath->coercion,
     format        => 's',
     predicate     => 1,
-    documentation => q{Location of the mksquashfs lock file};
+    documentation => q{Location of the gensquashfs lock file};
 
-has 'mksquashfs_prefix_cmd' =>
+has 'gensquashfs_prefix_cmd' =>
     is          => 'lazy',
     isa         => ArrayRef,
     handles_via => 'Array',
     handles     => {
-        list_mksquashfs_prefix_cmd => 'elements',
+        list_gensquashfs_prefix_cmd => 'elements',
     };
 
 option 'ignore_if_same_content' =>
@@ -253,16 +253,15 @@ method _build_overlay_dir () {
     return $overlay_dir;
 }
 method _build_format_version () { "2"; }
-method _build_mksquashfs_options () { [
-    qw{-no-progress -noappend},
-    qw{-comp xz},
+method _build_gensquashfs_options () { [
+    qw{--keep-xattr --quiet},
 ]}
 
-method _build_mksquashfs_prefix_cmd () { [
+method _build_gensquashfs_prefix_cmd () { [
     ("SOURCE_DATE_EPOCH=$ENV{SOURCE_DATE_EPOCH}"),
     (
-        $self->has_mksquashfs_lock_file
-            ? ('flock', '--verbose', $self->mksquashfs_lock_file)
+        $self->has_gensquashfs_lock_file
+            ? ('flock', '--verbose', $self->gensquashfs_lock_file)
             : (),
     )
 ]}
@@ -412,14 +411,16 @@ method create_squashfs_diff () {
 
     $t1 = time;
     run_as_root(
-        $self->list_mksquashfs_prefix_cmd,
-        qw{mksquashfs},
-        $union_upperdir,
+        $self->list_gensquashfs_prefix_cmd,
+        qw{gensquashfs},
+        $self->list_gensquashfs_options,
+        '--comp-extra', 'x86,dictsize=1024K',
+        '--block-size', '1048576',
+        '--pack-dir', $union_upperdir,
         $self->overlay_dir->child('live', $self->squashfs_diff_name),
-        $self->list_mksquashfs_options,
-        qw{-Xbcj x86 -b 1024K -Xdict-size 1024K},
     );
-    printf "TIME (main mksquashfs for %s): %d seconds\n",
+    assert(-e $self->overlay_dir->child('live', $self->squashfs_diff_name));
+    printf "TIME (main gensquashfs for %s): %d seconds\n",
         $self->squashfs_diff_name,
         (time - $t1);
 
@@ -467,14 +468,14 @@ method saveas ($outfile_name) {
 
     my $t1 = time;
     run_as_root(
-        $self->list_mksquashfs_prefix_cmd,
-        qw{mksquashfs},
-        $self->squashfs_src_dir,
+        $self->list_gensquashfs_prefix_cmd,
+        qw{gensquashfs},
+        $self->list_gensquashfs_options,
+        '--all-root',
+        '--pack-dir', $self->squashfs_src_dir,
         $outfile_name,
-        $self->list_mksquashfs_options,
-        '-all-root',
     );
-    printf "TIME (final mksquashfs for %s): %d seconds\n",
+    printf "TIME (final gensquashfs for %s): %d seconds\n",
         path($outfile_name)->basename,
         (time - $t1);
 

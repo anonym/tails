@@ -1,0 +1,147 @@
+[[!meta title="Tor Connection assistant and Persistent Storage redesign"]]
+[[!pagetemplate template="newsletter.tmpl"]]
+
+<style>#unsubscribe { display: none; }</style>
+
+Welcome to the very first edition of this newsletter!
+
+We'll let you know what your donations from last year made possible in 2021,
+share information for you to make the most out of Tails, and let you know about
+our plans for the coming months.
+
+Please let us know if this newsletter doesn't display correctly, so we can
+improve next time.
+
+Tor Connection assistant
+========================
+
+From the feedback that we receive from users around the world, we knew, that
+connecting to Tor from Tails was problematic for our most vulnerable users:
+whistleblowers surveilled at work, domestic violence survivors surveilled at
+home, and people who use Tails to circumvent nationwide censorship, especially
+in Asia.
+
+That's why we added a *Tor Connection* assistant to make it easier for them to
+connect to the Tor network in Tails 4.20 (July 13).
+
+<img src="https://tails.boum.org/doc/anonymous_internet/tor/tor-connection.png" alt=""/>
+
+Despite all the work done on this feature since February, we received several
+reports from people who are not able to connect to Tor anymore. Unfortunately,
+the 3 beta versions that we published since April were not enough to detect
+these problems before the release. We are making it our top priority to fix as
+many of these bugs as possible in time for 4.21 (August 10).
+
+This first release of the *Tor Connection* assistant is only a first step. We
+will add more improvements to it in Tails 4.22 (September 7):
+
+- Save Tor bridges to the Persistent Storage ([[!tails_ticket 5461]])
+
+- Help detect when Wi-Fi is not working ([[!tails_ticket 14534]])
+
+- Synchronize the clock to make it easier to use Tor bridges in Asia
+  ([[!tails_ticket 15548]])
+
+Persistent Storage redesign
+===========================
+
+The next big change in Tails will be a redesign of the Persistent Storage.
+This ongoing work is entirely funded by the donations that we received last
+year from all of you.
+
+<img src="https://gitlab.tails.boum.org/tails/blueprints/-/wikis/Persistent-Storage-redesign/creation_-_discovery.png">
+
+The Persistent Storage hasn't changed much since we released it first in 2012
+because the current code is hard to modify and improve. But, we learned from a
+survey with users, that it could do a lot more for you if it had more features.
+It could also be much easier to use for newcomers.
+
+We started working on a complete redesign and rewrite of the Persistent Storage
+that will make it easier to persist more settings in the future.
+
+You can see how the new Persistent Storage will look like from the [mockups in our
+blueprint](https://gitlab.tails.boum.org/tails/blueprints/-/wikis/Persistent-Storage-redesign).
+
+For this work, like for all major features in Tails, we practiced user-centered
+design and tested our prototype with users to make sure that our prototype was
+as easy to use as possible. You can read more about our design methodology in
+our [interview with Simply Secure about formative
+testing](https://simplysecure.org/blog/formative-testing).
+
+Get more out of your Tails
+==========================
+
+- When doing automatic upgrades, the size of the download increases over time.
+
+  You can [reduce the size of the download](https://tails.boum.org/doc/upgrade#reduce) of future
+  automatic upgrades by doing a manual upgrade to the latest version.
+
+<img src="https://tails.boum.org/doc/upgrade/manual.svg" alt=""/>
+
+- Our [new warnings page](https://tails.boum.org/doc/about/warnings/) is
+  shorter, easier to understand by less technical people, less scary, more
+  helpful, and visually attractive. We also integrated it into our download
+  page so that you can learn more about Tails while waiting for your download.
+
+<img src="https://tails.boum.org/news/report_2021_06/warnings.png" alt=""/>
+
+- With the major update of *OnionShare* included in Tails 4.20, you can now
+  [host your own onion website](https://docs.onionshare.org/2.3.2/en/features.html#host-a-website)
+  directly from Tails.
+
+<img src="https://tails.boum.org/news/version_4.20/onionshare.png" alt=""/>
+
+- You can start Tails from an [external hard disk](https://tails.boum.org/doc/advanced_topics/external_hard_disk)
+  if you need more space or more speed for your Persistent Storage. To do so,
+  remove the `live-media=removable` boot options when starting Tails. 
+
+They are using Tails
+====================
+
+<img src="https://pbs.twimg.com/ext_tw_video_thumb/1398318292226301954/pu/img/lJQDGLpr4kYpTHlc.jpg">
+
+[Sean Vegezzi](http://www.seanvegezzi.com/), an artist from New York, uses
+Tails to investigates abuses of state power. He told our team:
+
+> When I'm thinking about researching anything to do with the abuse of
+> state power, the first thing that comes to mind is that we are living in an
+> epoch where even visiting a URL could be used against you as circumstantial
+> evidence in a court case stemming from a journalism / research / art
+> project. Autonomy is a vague concept at best, but Tails offers me the
+> closest thing to autonomy when doing sensitive research.
+
+Sean used Tails to investigate, together with Laura Poitras, obscured nodes of
+New York City's violent carceral and policing infrastructure, like this
+[191-meter prison ship](https://twitter.com/ava/status/1398318458383728642) in
+the South Bronx where 600 people are being held in terrifying conditions.
+
+Laura and Sean, together with Forensics Architecture, are exposing more of
+their investigations on the abuse of state power in their Berlin expo
+[Circles](https://www.nbk.org/en/ausstellungen/aktuell.html).
+
+Please get in touch with us if you have other exciting stories about your use
+of Tails!
+
+Internet freedom links
+======================
+
+- Download the [Tails sticker pack for
+  Signal](https://signalstickers.com/pack/d9ccac26c7c4b0f99cb8502aea2f5d36)!
+
+- [Behind the Data: Investigating
+  metadata](https://exposingtheinvisible.org/en/guides/behind-the-data-metadata-investigations/),
+  looks at how metadata has been used to expose, protect, and verify abuses and
+  excesses of power.
+
+- Pen America's [Online Harassment Field
+  Manual](https://onlineharassmentfieldmanual.pen.org/) is now available in
+  [Spanish](https://onlineharassmentfieldmanual.pen.org/es/).
+
+- [Inside the Industry That Unmasks People at
+  Scale](https://www.vice.com/en/article/epnmvz/industry-unmasks-at-scale-maid-to-pii)
+  puts the light on the overlooked industry that exploits the trackers used to
+  follow smartphone users through apps.
+
+- Edward Snowden, NSA whistleblower and long-term advocate of Tails, [calls for
+  spyware trade ban amid Pegasus
+  revelations](https://www.theguardian.com/news/2021/jul/19/edward-snowden-calls-spyware-trade-ban-pegasus-revelations). 

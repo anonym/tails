@@ -1,0 +1,147 @@
+From 4bc07f7e02aa199168f814cee72ee4ecef1e4f84 Mon Sep 17 00:00:00 2001
+From: anonym <anonym@riseup.net>
+Date: Wed, 7 Oct 2020 15:50:23 +0200
+Subject: [PATCH 2/3] Add pref for whether we accept OAuth2 during
+ autoconfiguration.
+
+For many providers JavaScript is required for OAuth2 to work; with it
+disabled autoconfiguration then result in a terrible UX (e.g. the web
+login fails, has to manually alter the authentication method). Let's
+provide a pref that discards OAuth2 configurations so organizations
+that disable JavaScript can provide a workaround.
+---
+ .../accountcreation/content/accountSetup.js   | 60 ++++++++++---------
+ .../accountcreation/readFromXML.jsm           | 13 ++++
+ comm/mailnews/mailnews.js                     |  2 +
+ 3 files changed, 47 insertions(+), 28 deletions(-)
+
+diff --git a/comm/mail/components/accountcreation/content/accountSetup.js b/comm/mail/components/accountcreation/content/accountSetup.js
+index 301d079b6c8..d5e1b4d1280 100644
+--- a/comm/mail/components/accountcreation/content/accountSetup.js
++++ b/comm/mail/components/accountcreation/content/accountSetup.js
+@@ -1565,20 +1565,22 @@ var gAccountSetup = {
+       this.adjustIncomingPortToSSLAndProtocol(config);
+     }
+ 
+-    // If the incoming server hostname supports OAuth2, enable it.
+-    let iDetails = OAuth2Providers.getHostnameDetails(config.incoming.hostname);
+-    document.getElementById("in-authMethod-oauth2").hidden = !iDetails;
+-    if (iDetails) {
+-      gAccountSetupLogger.debug(
+-        `OAuth2 details for incoming server ${config.incoming.hostname} is ${iDetails}`
+-      );
+-      config.incoming.oauthSettings = {};
+-      [
+-        config.incoming.oauthSettings.issuer,
+-        config.incoming.oauthSettings.scope,
+-      ] = iDetails;
+-      this._currentConfig.incoming.oauthSettings =
+-        config.incoming.oauthSettings;
++    if (Services.prefs.getBoolPref("mailnews.auto_config.account_constraints.allow_oauth2")) {
++      // If the incoming server hostname supports OAuth2, enable it.
++      let iDetails = OAuth2Providers.getHostnameDetails(config.incoming.hostname);
++      document.getElementById("in-authMethod-oauth2").hidden = !iDetails;
++      if (iDetails) {
++        gAccountSetupLogger.debug(
++          `OAuth2 details for incoming server ${config.incoming.hostname} is ${iDetails}`
++        );
++        config.incoming.oauthSettings = {};
++        [
++          config.incoming.oauthSettings.issuer,
++          config.incoming.oauthSettings.scope,
++        ] = iDetails;
++        this._currentConfig.incoming.oauthSettings =
++          config.incoming.oauthSettings;
++      }
+     }
+ 
+     // Outgoing server.
+@@ -1609,20 +1611,22 @@ var gAccountSetup = {
+       this.adjustOutgoingPortToSSLAndProtocol(config);
+     }
+ 
+-    // If the smtp hostname supports OAuth2, enable it.
+-    let oDetails = OAuth2Providers.getHostnameDetails(config.outgoing.hostname);
+-    document.getElementById("out-authMethod-oauth2").hidden = !oDetails;
+-    if (oDetails) {
+-      gAccountSetupLogger.debug(
+-        `OAuth2 details for outgoing server ${config.outgoing.hostname} is ${oDetails}`
+-      );
+-      config.outgoing.oauthSettings = {};
+-      [
+-        config.outgoing.oauthSettings.issuer,
+-        config.outgoing.oauthSettings.scope,
+-      ] = oDetails;
+-      this._currentConfig.outgoing.oauthSettings =
+-        config.outgoing.oauthSettings;
++    if (Services.prefs.getBoolPref("mailnews.auto_config.account_constraints.allow_oauth2")) {
++      // If the smtp hostname supports OAuth2, enable it.
++      let oDetails = OAuth2Providers.getHostnameDetails(config.outgoing.hostname);
++      document.getElementById("out-authMethod-oauth2").hidden = !oDetails;
++      if (oDetails) {
++        gAccountSetupLogger.debug(
++          `OAuth2 details for outgoing server ${config.outgoing.hostname} is ${oDetails}`
++        );
++        config.outgoing.oauthSettings = {};
++        [
++          config.outgoing.oauthSettings.issuer,
++          config.outgoing.oauthSettings.scope,
++        ] = oDetails;
++        this._currentConfig.outgoing.oauthSettings =
++          config.outgoing.oauthSettings;
++      }
+     }
+   },
+ 
+diff --git a/comm/mail/components/accountcreation/readFromXML.jsm b/comm/mail/components/accountcreation/readFromXML.jsm
+index 061a5b64842..057e8cb3453 100644
+--- a/comm/mail/components/accountcreation/readFromXML.jsm
++++ b/comm/mail/components/accountcreation/readFromXML.jsm
+@@ -41,6 +41,8 @@ function readFromXML(clientConfigXML, subSource) {
+   function array_or_undef(value) {
+     return value === undefined ? [] : value;
+   }
++  var allow_oauth2 =
++    Services.prefs.getBoolPref("mailnews.auto_config.account_constraints.allow_oauth2");
+   var exception;
+   if (
+     typeof clientConfigXML != "object" ||
+@@ -136,6 +138,12 @@ function readFromXML(clientConfigXML, subSource) {
+             NTLM: Ci.nsMsgAuthMethod.NTLM,
+             OAuth2: Ci.nsMsgAuthMethod.OAuth2,
+           });
++
++          if (!allow_oauth2 && iO.auth == Ci.nsMsgAuthMethod.OAuth2) {
++            iO.auth = null;
++            continue;
++          }
++
+           break; // take first that we support
+         } catch (e) {
+           exception = e;
+@@ -279,6 +287,11 @@ function readFromXML(clientConfigXML, subSource) {
+             OAuth2: Ci.nsMsgAuthMethod.OAuth2,
+           });
+ 
++          if (!allow_oauth2 && oO.auth == Ci.nsMsgAuthMethod.OAuth2) {
++            oO.auth = null;
++            continue;
++          }
++
+           break; // take first that we support
+         } catch (e) {
+           exception = e;
+diff --git a/comm/mailnews/mailnews.js b/comm/mailnews/mailnews.js
+index c47a97f7fee..f6ca8ce46f4 100644
+--- a/comm/mailnews/mailnews.js
++++ b/comm/mailnews/mailnews.js
+@@ -1079,4 +1079,6 @@ pref("mailnews.auto_config.guess.enabled", true);
+ pref("mailnews.auto_config.guess.sslOnly", false);
+ pref("mailnews.auto_config.guess.timeout", 10);
++// Whether we allow fetched configurations using OAuth2.
++pref("mailnews.auto_config.account_constraints.allow_oauth2", true);
+ pref("dom.xhr.standard_content_type_normalization", false);
+ 
+-- 
+2.34.1
+

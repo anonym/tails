@@ -1,6 +1,6 @@
 [[!meta title="GitLab source code and bug tracker"]]
 
-Tails issues and code are managed in [[!tails_gitlab "" desc="GitLab"]].
+Tails issues and code are managed in [[!tails_gitlab groups/tails/-/issues desc="GitLab"]].
 
 This page focuses on aspects of GitLab usage that are specific to Tails.
 
@@ -12,13 +12,18 @@ For general GitLab usage information, see the
 
 [[!toc levels=2]]
 
+<a id="getting-started"></a>
 # Getting started
 
 If you were using Redmine previously, read [[how to transition to
 GitLab|GitLab/transition]]. Else, to create your GitLab account, visit the
 [[!tails_gitlab users/sign_in desc="registration page"]] in a web browser.
+If you want, you can
+[[!tails_gitlab help/user/profile/index.md#add-your-gender-pronouns desc="add your pronouns"]]
+to your GitLab account so that your pronouns appear next to your name in your profile.
+Also, your pronouns will appear when someone hovers over your GitLab username.
 
-Then you will be allowed to open new issues, create merge requests, and fork
+Once you have created your GitLab account, you will be allowed to open new issues, create merge requests, and fork
 your own copy of our repositories.
 
 Later on, you will probably need to:
@@ -330,7 +335,7 @@ being the issue number. Then, GitLab will automatically reference this
 commit on the corresponding issue, once the branch is pushed to our
 [[Git repository|contribute/Git]]. For example:
 
-    Remove tails@boum.org duty from frontdesk (#8420)
+    Write release notes for 4.27 (#18214)
 
 ## Report progress or failure
 
@@ -560,7 +565,7 @@ If you need to do something in GitLab and you appear to lack the
 needed credentials, please ask the Tails
 [[system administrators|working_together/roles/sysadmins#communication]]
 to grant you more power. Except if you're asking "Maintainer"
-or "Developer" access, in which case please ask <tails@boum.org> first.
+or "Developer" access, in which case please ask the [[Board|about/contact#board]] first.
 
 For example, you will need "Reporter" access on the [[!tails_gitlab
 tails/tails]] project in order to add labels or assign issues.
@@ -597,7 +602,7 @@ desc="Protected branch flow"]]:
  - Committers get "Maintainer" access.
 
    This is done via the `.committers` variable in our gitlabracadabra
-   configuration. This is subject to approval by <tails@boum.org>.
+   configuration. This is subject to approval by the [[Board|about/contact#board]].
 
  - Regular, particularly trusted contributors, who are not granted full commit
    access but have access to our CI, get "Developer" access. They can push
@@ -606,7 +611,7 @@ desc="Protected branch flow"]]:
 
 
    This is done via the `.developers` variable in our gitlabracadabra
-   configuration. This is subject to approval by <tails@boum.org>.
+   configuration. This is subject to approval by the [[Board|about/contact#board]].
 
  - Other contributors get access strictly lower than "Developer".
    They push topic branches to their own fork of the repository and

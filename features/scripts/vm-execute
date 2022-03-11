@@ -17,13 +17,13 @@ def debug_log(*args); end
 class FakeVM
   def initialize
     domain = nil
-    @domain_xml = ""
+    @domain_xml = ''
     begin
       virt = Libvirt::open("qemu:///system")
       domain = virt.lookup_domain_by_name("TailsToaster")
       @domain_xml = domain.xml_desc
     rescue
-      raise "There was a problem with the TailsToaster VM (is it running?)"
+      raise 'There was a problem with the TailsToaster VM (is it running?)'
     ensure
       virt.close
     end
@@ -37,7 +37,7 @@ class FakeVM
         return e.elements['source'].attribute('path').to_s
       end
     end
-    raise "The running TailsToaster has no remote shell channel!"
+    raise 'The running TailsToaster has no remote shell channel!'
   end
 end
 

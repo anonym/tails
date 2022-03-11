@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-14 17:40+0000\n"
-"PO-Revision-Date: 2020-12-25 17:46+0000\n"
-"Last-Translator: emmapeel <emma.peel@riseup.net>\n"
+"POT-Creation-Date: 2022-02-25 15:40-0600\n"
+"PO-Revision-Date: 2021-12-25 15:09+0000\n"
+"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -21,12 +21,22 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Starting Tails on Mac\"]]\n"
+msgstr "[[!meta title=\"Запуск Tails на Mac\"]]\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!meta stylesheet=\"install/inc/stylesheets/hide\" rel=\"stylesheet\" title=\"\"]]\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!meta stylesheet=\"install/inc/stylesheets/standalone\" rel=\"stylesheet\" title=\"\"]]\n"
 msgstr ""
 
 #. type: Plain text
 msgid ""
 "This page describes the technique to start Tails from a USB stick on Mac."
-msgstr ""
+msgstr "На этой странице описывается метод запуска Tails с флешки на Mac."
 
 #. type: Plain text
 #, no-wrap
@@ -36,7 +46,7 @@ msgstr "[[!toc levels=2]]\n"
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"mac-start\">Starting on Mac</h1>\n"
-msgstr ""
+msgstr "<h1 id=\"mac-start\">Запуск на Mac</h1>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -44,25 +54,36 @@ msgid "[[!inline pages=\"install/inc/steps/mac_startup_disks.inline\" raw=\"yes\
 msgstr "[[!inline pages=\"install/inc/steps/mac_startup_disks.inline.ru\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<div class=\"next\">\n"
+#| "<p>If the Boot Loader appears, you can continue reading our [[instructions\n"
+#| "on the Welcome Screen and configuring the Persistent\n"
+#| "Storage|install/mac/usb#welcome-screen]].</p>\n"
+#| "</div>\n"
 msgid ""
 "<div class=\"next\">\n"
 "<p>If the Boot Loader appears, you can continue reading our [[instructions\n"
 "on the Welcome Screen and configuring the Persistent\n"
-"Storage|install/mac/usb#welcome-screen]].</p>\n"
+"Storage|install/mac#tails]].</p>\n"
 "</div>\n"
 msgstr ""
+"<div class=\"next\">\n"
+"<p>Если появился загрузчик, вы можете продолжить читать наши [[инструкции для Приветственного экрана и настройки Постоянного хранилища|install/mac/usb#welcome-screen]].</p>\n"
+"</div>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"not-at-all\">Troubleshooting Tails not starting at all</h1>\n"
-msgstr ""
+msgstr "<h1 id=\"not-at-all\">Tails не запускается: разбираемся с проблемой</h1>\n"
 
 #. type: Plain text
 msgid ""
 "Use this section if the computer does not start from the USB stick and the "
 "Boot Loader does not display:"
 msgstr ""
+"Этот раздел пригодится вам, если компьютер не запускается с флешки, а "
+"загрузчик не показывает подобную картинку:"
 
 #. type: Plain text
 #, no-wrap
@@ -71,11 +92,14 @@ msgid ""
 "('GNU GRUB') with Tails logo and 2 options: 'Tails' and 'Tails\n"
 "(Troubleshooting Mode)'.\"]]\n"
 msgstr ""
+"[[!img install/inc/screenshots/grub.png link=\"no\" alt=\"Чёрный экран\n"
+"('GNU GRUB') с логотипом Tails и двумя опциями: 'Tails' и 'Tails\n"
+"(Troubleshooting Mode)'.\"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<h2 id=\"verify\">Verify your Tails USB stick</h2>\n"
-msgstr ""
+msgstr "<h2 id=\"verify\">Проверьте вашу флешку Tails</h2>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -84,24 +108,63 @@ msgstr "[[!inline pages=\"install/inc/steps/basic_troubleshooting.inline.ru\" ra
 
 #. type: Plain text
 #, no-wrap
-msgid "<h2 id=\"known-issues\">Check our list of known issues</h2>\n"
-msgstr ""
+msgid "<div class=\"note\">\n"
+msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
-msgid ""
-"Similar problems might have been reported already for your model of computer "
-"in our [[list of known issues|support/known_issues]]."
+#, no-wrap
+msgid "<p>If you get the following error message in macOS:</p>\n"
 msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "<h1 id=\"not-entirely\">Troubleshooting Tails not starting after the Boot Loader</h1>\n"
+msgid ""
+"<p class=\"pre\">There may be a problem with this disk image. Are you sure you\n"
+"want to open it?</p>\n"
 msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<p>Then, you have to [[install Tails using <i>balenaEtcher</i>|install/mac#etcher]].</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "</div>\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "<h2 id=\"known-issues\">Check our list of known issues</h2>\n"
+msgid "<h2 id=\"known-issues-not-at-all\">Check our list of known issues</h2>\n"
+msgstr "<h2 id=\"known-issues\">Посмотрите наш список известных проблем</h2>\n"
+
+#. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "Similar problems might have been reported already for your model of "
+#| "computer in our [[list of known issues|support/known_issues]]."
+msgid ""
+"Similar problems might have been reported already for your Mac model in our "
+"[[list of known issues about Tails not starting at all|support/"
+"known_issues#mac-not-at-all]]."
+msgstr ""
+"О подобных проблемах с вашей моделью компьютера, возможно, уже сообщалось в "
+"нашем [[списке известных проблем|support/known_issues]]."
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"not-entirely\">Troubleshooting Tails not starting after the Boot Loader</h1>\n"
+msgstr "<h1 id=\"not-entirely\">Проблема: Tails не стартует из меню загрузки</h1>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!inline pages=\"doc/first_steps/start/not_entirely.inline\" raw=\"yes\" sort=\"age\"]]\n"
 msgstr "[[!inline pages=\"doc/first_steps/start/not_entirely.inline.ru\" raw=\"yes\" sort=\"age\"]]\n"
 
-#~ msgid "[[!inline pages=\"doc/first_steps/start/reporting.inline\" raw=\"yes\" sort=\"age\"]]\n"
-#~ msgstr "[[!inline pages=\"doc/first_steps/start/reporting.inline.ru\" raw=\"yes\" sort=\"age\"]]\n"
+#~ msgid ""
+#~ "[[!inline pages=\"doc/first_steps/start/reporting.inline\" raw=\"yes\" "
+#~ "sort=\"age\"]]\n"
+#~ msgstr ""
+#~ "[[!inline pages=\"doc/first_steps/start/reporting.inline.ru\" raw=\"yes\" "
+#~ "sort=\"age\"]]\n"

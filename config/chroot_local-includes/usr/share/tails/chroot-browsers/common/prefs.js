@@ -11,6 +11,9 @@ user_pref("browser.newtabpage.directory.ping", "");
 // ... and disable the explanation shown the first time
 user_pref("browser.newtabpage.introShown", true);
 
+// Disable another "phone home" feature that generates automatic traffic
+user_pref("services.settings.server", "");
+
 /* Prevent File -> Print or CTRL+P from causing the browser to hang
    for several minutes while trying to communicate with CUPS, since
    access to port 631 isn't allowed through. */

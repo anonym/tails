@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-01-21 22:51+0000\n"
-"PO-Revision-Date: 2021-05-10 13:23+0000\n"
+"POT-Creation-Date: 2021-12-22 02:01+0000\n"
+"PO-Revision-Date: 2021-12-24 19:20+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
@@ -22,18 +22,12 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Making a backup of your Persistent Storage\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Создание резервной копии Постоянного хранилища\"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<!-- XXX: These instructions should be kept in sync with doc/first_steps/persistence/rescue.mdwn -->\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"These instructions explain how to back up your Persistent Storage to another "
-"Tails USB stick."
-msgstr ""
+msgstr "<!-- XXX: Эти инструкции должны быть синхронизированы с doc/first_steps/persistence/rescue.mdwn -->\n"
 
 #. type: Plain text
 #, no-wrap
@@ -47,23 +41,27 @@ msgid ""
 "see our [[instructions on rescuing your Persistent\n"
 "Storage from a broken Tails|doc/first_steps/persistence/rescue]].</p>\n"
 msgstr ""
+"<p>Если с вашей копией Tails возникли проблемы и нужно спасти Постоянное хранилище,\n"
+"см. наши [[инструкции на этот счёт|doc/first_steps/persistence/rescue]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "</div>\n"
 msgstr "</div>\n"
 
-#. type: Title =
+#. type: Plain text
 #, no-wrap
-msgid "Create a new Tails to store your backup"
-msgstr ""
+msgid "<h1 id=\"create\">Create a new Tails to store your backup</h1>\n"
+msgstr "<h1 id=\"create\">Создание новой копии Tails для резервной копии</h1>\n"
 
 #. type: Plain text
 msgid ""
-"In these instructions, we recommend you to create another Tails to store "
-"your backup. This way, if your Tails is lost or damaged, you will be able to "
-"replace it immediately with your backup Tails."
+"We recommend you to create another Tails to store your backup. This way, if "
+"your Tails is lost or damaged, you can replace it immediately with your "
+"backup Tails."
 msgstr ""
+"Советуем сделать копию Tails для хранения резервной копии. Если ваша копия "
+"Tails окажется повреждена, можно будет сразу заменить её резервной копией."
 
 #. type: Plain text
 #, no-wrap
@@ -73,7 +71,7 @@ msgstr "<div class=\"bug\">\n"
 #. type: Plain text
 #, no-wrap
 msgid "<p>Your backup Tails must be version 4.14 or newer.</p>\n"
-msgstr ""
+msgstr "<p>Ваша резервная копия Tails должна быть версии 4.14 или новее.</p>\n"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -82,23 +80,30 @@ msgid ""
 "Tails|install/clone#install-tails]].  Make sure that this new USB stick is "
 "at least as large as your current Tails USB stick."
 msgstr ""
+"Установите Tails на новую флешку, где хотите создать резервную копию. "
+"Подробные инструкции см. [[здесь|install/clone#install-tails]]. Убедитесь, "
+"что новая флешка по объёму не меньше действующей."
 
 #. type: Bullet: '1. '
 msgid ""
 "We recommend making your backup Tails USB stick look different than your "
 "current Tails USB stick to avoid using your backup Tails by mistake."
 msgstr ""
+"Во избежание путаницы лучше, если ваша флешка с резервной копией Tails будет "
+"отличаться от действующей флешки Tails."
 
 #. type: Bullet: '1. '
 msgid "Shutdown and unplug your current Tails USB stick."
-msgstr ""
+msgstr "Выключите компьютер и отсоедините вашу действующую флешку Tails."
 
 #. type: Bullet: '1. '
 msgid ""
 "Restart on your backup Tails and create a Persistent Storage on it.  For "
-"detailed instructions, see how to [[create & configure the Persistent "
-"Storage|doc/first_steps/persistence/configure]]."
+"detailed instructions, see how to [[create and configure the Persistent "
+"Storage|doc/first_steps/persistence]]."
 msgstr ""
+"Запустите Tails с резервной флешки. Создайте на ней Постоянное хранилище. "
+"Подробнее об этом см. [[здесь|doc/first_steps/persistence]]."
 
 #. type: Plain text
 #, no-wrap
@@ -108,12 +113,18 @@ msgid ""
 "   so that the passphrase is easier to remember.</p>\n"
 "   </div>\n"
 msgstr ""
+"   <div class=\"tip\">\n"
+"<p>Рекомендуем использовать тот же пароль, что и у текущей копии Tails. Так\n"
+"пароль будет легче запомнить.</p>\n"
+"</div>\n"
 
 #. type: Bullet: '1. '
 msgid ""
 "When the Persistent Storage settings shows the list of possible features, "
 "click **Save** and exit."
 msgstr ""
+"Когда в настройках Постоянного хранилища отобразится список возможных "
+"функций, нажмите **Save** и выйдите."
 
 #. type: Plain text
 #, no-wrap
@@ -122,65 +133,26 @@ msgid ""
 "   Persistent Storage. So, it does not matter which features you turn on\n"
 "   when creating the Persistent Storage.\n"
 msgstr ""
+"   Описанный ниже процесс резервного копирования переопределяет настройки\n"
+"Постоянного хранилища. Поэтому не имеет значения, какие функции вы включаете\n"
+"при создании Постоянного хранилища.\n"
 
 #. type: Bullet: '1. '
 msgid "Shutdown and unplug your backup Tails USB stick."
-msgstr ""
-
-#. type: Title =
-#, no-wrap
-msgid "Create or update your backup"
-msgstr ""
-
-#. type: Bullet: '1. '
-msgid ""
-"Start on your current Tails, set up an [[administration password|doc/"
-"first_steps/welcome_screen/administration_password]], and unlock the "
-"Persistent Storage."
-msgstr ""
+msgstr "Выключите компьютер и отсоедините флешку с резервной копией Tails."
 
 #. type: Plain text
-#, fuzzy, no-wrap
-msgid ""
-"1. Choose\n"
-"   <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-"     <span class=\"guisubmenu\">Accessories</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Files</span></span>\n"
-"   to open the <span class=\"application\">Files</span> browser.\n"
-msgstr ""
-"1. Wählen Sie in der Titelleiste\n"
-"   <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">[[!img lib/open-menu.png alt=\"Menü\" class=\"symbolic\" link=\"no\"]]</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">[[!img lib/tab-new.png alt=\"Neuer Tab\" class=\"symbolic\" link=\"no\"]]</span>\n"
-"   </span>\n"
-"   um einen neuen Reiter zu öffnen.\n"
+#, no-wrap
+msgid "<h1 id=\"update\">Create or update your backup</h1>\n"
+msgstr "<h1 id=\"update\">Создание или обновление резервной копии</h1>\n"
+
+#. type: Bullet: '1. '
+msgid "Start on your current Tails and unlock the Persistent Storage."
+msgstr "Запустите текущую копию Tails и разблокируйте Постоянное хранилище."
 
 #. type: Bullet: '1. '
 msgid "Plug in your backup Tails USB stick."
-msgstr ""
-
-#. type: Bullet: '1. '
-msgid ""
-"If your backup Tails is outdated, you should upgrade it by cloning your "
-"current Tails using <span class=\"application\">Tails Installer</span>.  For "
-"detailed instructions, see how to [[manually upgrade from another Tails|"
-"upgrade/clone#upgrade]]."
-msgstr ""
-
-#. type: Bullet: '1. '
-msgid ""
-"A new encrypted volume appears in the sidebar of the <span class="
-"\"application\">Files</span> browser. Click on it and enter the passphrase "
-"of your backup Tails to unlock the volume."
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"   Your backup shows up as\n"
-"   <span class=\"guilabel\">TailsData</span>.\n"
-msgstr ""
+msgstr "Подключите флешку для резервной копии Tails."
 
 #. type: Plain text
 #, no-wrap
@@ -189,44 +161,66 @@ msgid ""
 "   <span class=\"menuchoice\">\n"
 "     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
 "     <span class=\"guisubmenu\">System Tools</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Root Terminal</span>\n"
-"   </span>\n"
-"   to open a terminal with administration rights.\n"
+"     <span class=\"guimenuitem\">Back Up Persistent Storage</span></span>.\n"
 msgstr ""
-
-#. type: Bullet: '1. '
-msgid "Execute the following command to backup your Persistent Storage:"
-msgstr ""
+"1. Выберите\n"
+"   <span class=\"menuchoice\">\n"
+"     <span class=\"guimenu\">Приложения</span>&nbsp;▸\n"
+"     <span class=\"guisubmenu\">Системные</span>&nbsp;▸\n"
+"     <span class=\"guimenuitem\">Back Up Persistent Storage</span></span>.\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<div class=\"caution\">\n"
-msgstr "<div class=\"caution\">\n"
+msgid "   <div class=\"note\">\n"
+msgstr "   <div class=\"note\">\n"
 
 #. type: Plain text
 #, no-wrap
 msgid ""
-"<p>Make sure to execute this command <strong>from the Tails that you\n"
-"want to back up</strong>: your current Tails. If you run this command from your\n"
-"backup Tails instead, you will delete the Persistent Storage on your\n"
-"current Tails.</p>\n"
-msgstr ""
+"   <p>Each time you update your backup, only the files that have changed\n"
+"   are copied.</p>\n"
+msgstr "   <p>При каждом обновлении резервной копии обновляются только изменённые файлы.</p>\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<!-- <li> are limited to 45em so I'm breaking the list here to prevent wrapping the long command line. -->\n"
+msgid "   </div>\n"
+msgstr "   </div>\n"
+
+#. type: Bullet: '1. '
+msgid ""
+"If your backup Tails has an outdated version of Tails, we recommend you "
+"upgrade it by cloning your current Tails using <span class=\"application"
+"\">Tails Installer</span>.  For detailed instructions, see how to [[manually "
+"upgrade from another Tails|upgrade/clone#upgrade]]."
 msgstr ""
+"Если ваша резервная копия Tails устарела, советуем обновиться. Клонируйте "
+"действующую копию Tails с помощью <span class=\"application\">Tails "
+"Installer</span>. Подробнее см. [[здесь|upgrade/clone#upgrade]]."
+
+#. type: Title =
+#, no-wrap
+msgid "Updating your backup Tails from a terminal"
+msgstr "Обновление резервной копии Tails из терминала"
+
+#. type: Plain text
+msgid ""
+"If you prefer updating your backup Tails from a terminal, execute the "
+"following command from a *Root Terminal*:"
+msgstr ""
+"Если вы предпочитаете пользоваться терминалом для обновления резервной копии "
+"Tails, выполните следующую команду из *Root Terminal*:"
 
 #. type: Plain text
 #, no-wrap
 msgid "<p class=\"pre command root\">rsync -PaSHAXv --del /live/persistence/TailsData_unlocked/ /media/amnesia/TailsData</p>\n"
-msgstr ""
+msgstr "<p class=\"pre command root\">rsync -PaSHAXv --del /live/persistence/TailsData_unlocked/ /media/amnesia/TailsData</p>\n"
 
 #. type: Plain text
 msgid ""
 "When the command finishes, it displays a summary of the data that was "
 "copied. For example:"
 msgstr ""
+"После завершения процесса появится сводка скопированных данных. Пример:"
 
 #. type: Plain text
 #, no-wrap
@@ -241,34 +235,14 @@ msgstr ""
 "total size is 32.30M  speedup is 1.00\n"
 "</pre>\n"
 
-#. type: Plain text
-#, no-wrap
-msgid "<div class=\"note\">\n"
-msgstr "<div class=\"note\">\n"
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<p>Each time you update your backup, only the files that have changed\n"
-"are copied.</p>\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"You can now eject the <span class=\"guilabel\">TailsData</span> volume in the\n"
-"<span class=\"application\">Files</span> browser and unplug your backup Tails USB stick.\n"
-msgstr ""
+#~ msgid "<div class=\"caution\">\n"
+#~ msgstr "<div class=\"caution\">\n"
 
 #, fuzzy
 #~ msgid "[[!meta title=\"Make a backup of your persistent volume\"]]\n"
 #~ msgstr ""
 #~ "[[!meta title=\"Beständige Daten händisch auf einen neuen USB-Stick "
 #~ "kopieren\"]]\n"
-
-#, fuzzy
-#~ msgid "Create a new Tails to store your backup\n"
-#~ msgstr "Erstellen Sie einen neuen USB-Stick\n"
 
 #, fuzzy
 #~ msgid ""
@@ -408,25 +382,6 @@ msgstr ""
 #~ "\">Computer</span>&nbsp;▸ <span class=\"guilabel\">media</span>&nbsp;▸ "
 #~ "<span class=\"guilabel\">amnesia</span>&nbsp;▸ <span class=\"guilabel"
 #~ "\">TailsData</span>, um den alten beständigen Speicherbereich zu öffnen."
-
-#~ msgid ""
-#~ "1. In the titlebar, choose\n"
-#~ "   <span class=\"menuchoice\">\n"
-#~ "     <span class=\"guimenu\">[[!img lib/open-menu.png alt=\"Menu\" class="
-#~ "\"symbolic\" link=\"no\"]]</span>&nbsp;▸\n"
-#~ "     <span class=\"guimenuitem\">[[!img lib/tab-new.png alt=\"New tab\" "
-#~ "class=\"symbolic\" link=\"no\"]]</span>\n"
-#~ "   </span>\n"
-#~ "   to open a new tab.\n"
-#~ msgstr ""
-#~ "1. Wählen Sie in der Titelleiste\n"
-#~ "   <span class=\"menuchoice\">\n"
-#~ "     <span class=\"guimenu\">[[!img lib/open-menu.png alt=\"Menü\" class="
-#~ "\"symbolic\" link=\"no\"]]</span>&nbsp;▸\n"
-#~ "     <span class=\"guimenuitem\">[[!img lib/tab-new.png alt=\"Neuer Tab\" "
-#~ "class=\"symbolic\" link=\"no\"]]</span>\n"
-#~ "   </span>\n"
-#~ "   um einen neuen Reiter zu öffnen.\n"
 
 #~ msgid ""
 #~ "In the right pane, navigate to <span class=\"guilabel\">Computer</"

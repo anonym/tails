@@ -13,6 +13,7 @@ systemctl enable initramfs-shutdown.service
 systemctl enable onion-grater.service
 systemctl enable tails-allow-external-TailsData-access.service
 systemctl enable tails-synchronize-data-to-new-persistent-volume-on-shutdown.service
+systemctl enable tails-synchronize-tor-configuration-to-persistent-storage-on-shutdown.service
 systemctl enable tails-autotest-broken-Xorg.service
 systemctl enable tails-autotest-remote-shell.service
 systemctl enable tails-create-netns.service
@@ -52,10 +53,6 @@ systemctl disable cups.service
 systemctl enable  cups.socket
 
 # We're starting NetworkManager and Tor ourselves.
-# We disable tor.service (as opposed to tor@default.service) so that if some
-# other package enables tor@whatever.service someday, disabling tor.service
-# will disable it as well, while disabling tor@default.service would not.
-systemctl disable tor.service
 systemctl disable NetworkManager.service
 systemctl disable NetworkManager-wait-online.service
 

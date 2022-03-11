@@ -252,7 +252,7 @@ class TailsInstallerCreator(object):
             self.log.debug(pformat(data))
 
             if not force_partitions and self.opts.partition:
-                if self.device_can_be_upgraded(data):
+                if self.device_can_be_upgraded(data) or data['fstype'] == 'crypto_LUKS':
                     self.drives[data['device']] = data
                 # Add whole drive in partitioning mode
                 elif data['parent'] is None:

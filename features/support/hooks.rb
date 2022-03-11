@@ -205,7 +205,7 @@ BeforeFeature('@product') do
     $vmstorage = VMStorage.new($virt, VM_XML_PATH)
     $started_first_product_feature = true
   end
-  ensure_chutney_is_running
+  ensure_chutney_is_running unless $config['DISABLE_CHUTNEY']
 end
 
 AfterFeature('@product') do
@@ -255,6 +255,9 @@ Before('@product') do |scenario|
   @has_been_reset = false
   # See comment for add_extra_allowed_host() above.
   @extra_allowed_hosts ||= []
+
+  @user_wants_pluggable_transports = false
+  @tor_network_is_blocked = false
 end
 
 # Cucumber After hooks are executed in the *reverse* order they are
@@ -292,28 +295,39 @@ After('@product') do |scenario|
     elsif [TorBootstrapFailure, TimeSyncingError].any? { |c| scenario.exception.is_a?(c) }
       save_tor_journal
       save_failure_artifact('Tor logs', "#{$config['TMPDIR']}/log.tor")
-      chutney_logs = sanitize_filename(
-        "#{elapsed}_#{scenario.name}_chutney-data"
-      )
-      FileUtils.mkdir("#{ARTIFACTS_DIR}/#{chutney_logs}")
-      FileUtils.rm(Dir.glob("#{$config['TMPDIR']}/chutney-data/**/control"))
-      FileUtils.copy_entry(
-        "#{$config['TMPDIR']}/chutney-data",
-        "#{ARTIFACTS_DIR}/#{chutney_logs}"
-      )
-      info_log
-      info_log_artifact_location(
-        'Chutney logs',
-        "#{ARTIFACTS_DIR}/#{chutney_logs}"
-      )
-      if scenario.exception.instance_of?(HtpdateError)
-        File.open("#{$config['TMPDIR']}/log.htpdate", 'w') do |f|
-          if $vm.file_exist?('/var/log/htpdate.log')
-            f.write($vm.file_content('/var/log/htpdate.log'))
-          else
-            f.write("The htpdate logs did not exist\n")
-          end
+      if File.exist?("#{$config['TMPDIR']}/chutney-data")
+        chutney_logs = sanitize_filename(
+          "#{elapsed}_#{scenario.name}_chutney-data"
+        )
+        FileUtils.mkdir("#{ARTIFACTS_DIR}/#{chutney_logs}")
+        FileUtils.rm(Dir.glob("#{$config['TMPDIR']}/chutney-data/**/control"))
+        FileUtils.copy_entry(
+          "#{$config['TMPDIR']}/chutney-data",
+          "#{ARTIFACTS_DIR}/#{chutney_logs}"
+        )
+        info_log
+        info_log_artifact_location(
+          'Chutney logs',
+          "#{ARTIFACTS_DIR}/#{chutney_logs}"
+        )
+      else
+        info_log('Found no Chutney data')
+      end
+
+      if $vm.file_exist?('/var/lib/tor/pt_state/obfs4proxy.log')
+        File.open("#{$config['TMPDIR']}/log.obfs4proxy", 'w') do |f|
+          f.write($vm.file_content('/var/lib/tor/pt_state/obfs4proxy.log'))
         end
+        save_failure_artifact('obfs4proxy logs', "#{$config['TMPDIR']}/log.obfs4proxy")
+      end
+
+      if scenario.exception.instance_of?(HtpdateError)
+        content = if $vm.file_exist?('/var/log/htpdate.log')
+                    $vm.file_content('/var/log/htpdate.log')
+                  else
+                    "The htpdate logs did not exist\n"
+                  end
+        File.write("#{$config['TMPDIR']}/log.htpdate", content)
         save_failure_artifact('Htpdate logs', "#{$config['TMPDIR']}/log.htpdate")
       end
     end

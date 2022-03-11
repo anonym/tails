@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2018-09-18 06:11+0200\n"
-"PO-Revision-Date: 2020-08-22 10:30+0000\n"
-"Last-Translator: xin <xin@riseup.net>\n"
+"PO-Revision-Date: 2021-11-14 11:50+0000\n"
+"Last-Translator: nihei <nihei@disroot.org>\n"
 "Language-Team: French <http://translate.tails.boum.org/projects/tails/"
 "ip_address_leak_with_icedove/fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.5.1\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #. type: Plain text
 #, no-wrap
@@ -27,7 +27,7 @@ msgstr "[[!meta date=\"Mon, 07 Dec 2009 11:20:24 +0000\"]]\n"
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Icedove (Thunderbird) leaks the real IP address\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Icedove (Thunderbird) révèle l'adresse IP réelle\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -45,6 +45,9 @@ msgid ""
 "(Thunderbird), the real IP address of the computer is disclosed to the SMTP "
 "relay that is used to send email."
 msgstr ""
+"L'extension « Torbutton » installée dans amnesia est devenue incompatible "
+"avec Icedove (Thunderbird), l'adresse IP réelle de l'ordinateur est révélée "
+"au relai SMTP qui est utilisé pour l'envoi d'un courrier électronique."
 
 #. type: Title #
 #, no-wrap
@@ -58,16 +61,23 @@ msgid ""
 "header inside outgoing email. This private information is therefore "
 "disclosed to:"
 msgstr ""
+"Lorsque vous utilisez Icedove pour envoyer un courrier électronique, "
+"l'adresse IP réelle de l'ordinateur est transmise au relais SMTP, qui la "
+"retranscrit habituellement dans l'en-tête `Received:` du courrier "
+"électronique sortant. Cette information personnelle est alors révélée :"
 
 #. type: Bullet: '* '
 msgid "the SMTP relay's administrators;"
-msgstr ""
+msgstr "aux personnes qui administrent les relais SMTP ;"
 
 #. type: Bullet: '* '
 msgid ""
 "anyone who is able to read such a sent email, including: anyone the email is "
 "sent to, various network and email servers administrators."
 msgstr ""
+"toute personne capable de lire un tel courrier électronique envoyé, y "
+"compris toutes personnes destinataires de ce message, diverses personnes "
+"administrant des réseau et des serveurs de courriers électroniques."
 
 #. type: Plain text
 msgid ""
@@ -77,6 +87,12 @@ msgid ""
 "DSL modem and no router, the disclosed IP truly reveals the location of the "
 "amnesia user."
 msgstr ""
+"Lors de l'utilisation d'une connexion Internet avec un NAT, l'adresse IP "
+"révélée est celle du réseau local (i.e. 192.168.1.42), qui ne révèle "
+"habituellement pas grand chose. D'un autre côté, lorsque vous êtes connectés "
+"directement à Internet, i.e. en utilisant PPP ou un modem DSL et pas de "
+"routeur, l'adresse IP révélée donne l'emplacement réel de la personne qui "
+"utilise amnesia."
 
 #. type: Title #
 #, no-wrap
@@ -89,6 +105,9 @@ msgid ""
 "instead of Icedove, **and** set the following preferences in `~/.claws-mail/"
 "accountrc` for every account:"
 msgstr ""
+"Mettre à jour vers [[amnesia 0.4.1|news/version_0.4.1]], qui est fourni avec "
+"Claws Mail au lieu de Icedove, **et** faire le réglage suivant des "
+"préférences dans `~/.claws-mail/accountrc` pour tous les comptes :"
 
 #. type: Plain text
 #, no-wrap
@@ -101,36 +120,46 @@ msgstr ""
 
 #. type: Plain text
 msgid "See [[!tails_ticket 6119]] for details."
-msgstr ""
+msgstr "Voir [[!tails_ticket 6119]] pour les détails."
 
 #. type: Title #
 #, no-wrap
 msgid "Mitigation"
-msgstr ""
+msgstr "Mesures de limitation"
 
 #. type: Plain text
 msgid ""
 "Best is to avoid using Icedove (Thunderbird) in amnesia until fixed images "
 "are released. If not possible:"
 msgstr ""
+"Le mieux est d'éviter d'utiliser Icedove (Thunderbird) dans amnesia jusqu'à "
+"ce que l'image corrigée soit publiée. Si ce n'est pas possible :"
 
 #. type: Bullet: '* '
 msgid ""
 "Use amnesia behind a NAT-ed Internet connection, inside a LAN that uses "
 "widespread IP addresses."
 msgstr ""
+"Utiliser amnesia derrière une connexion Internet avec un NAT, depuis un LAN "
+"qui utilise des adresses IP répandues."
 
 #. type: Bullet: '* '
 msgid ""
 "Use a trustworthy, privacy-friendly SMTP relay that does not write down the "
 "client's IP address anywhere, especially in email headers."
 msgstr ""
+"Utiliser un relai SMTP de confiance, attentif à la vie privée, qui n'écrit "
+"pas l'adresse IP du client où que ce soit, en particulier pas dans les en-"
+"têtes de courrier électronique."
 
 #. type: Plain text
 msgid ""
 "Note that using GnuPG does not fix this problem at all: GnuPG only encrypts "
 "the email body, the email headers being always kept in clear."
 msgstr ""
+"Notez qu'utiliser GnuPG ne corrige pas du tout ce problème : GnuPG chiffre "
+"seulement le contenu du courrier électronique, les en-têtes sont toujours "
+"laissés en clair."
 
 #. type: Title #
 #, no-wrap
@@ -141,3 +170,5 @@ msgstr "Versions affectées"
 msgid ""
 "Any amnesia release until, and including, 0.3.  amnesia 0.4 is not affected."
 msgstr ""
+"Toutes les versions d'amnesia publiées, y compris la version 0.3. amnesia "
+"0.4 n'est pas concernée."

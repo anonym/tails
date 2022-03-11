@@ -7,9 +7,6 @@ set -u
 TEXTDOMAIN="tails"
 export TEXTDOMAIN
 
-# Import tor_has_bootstrapped()
-. /usr/local/lib/tails-shell-library/systemd.sh
-
 # Import the TBB_EXT variable.
 . /usr/local/lib/tails-shell-library/tor-browser.sh
 
@@ -20,7 +17,7 @@ export TEXTDOMAIN
 # and run_browser_in_chroot().
 . /usr/local/lib/tails-shell-library/chroot-browser.sh
 
-# Import unsafe_browser_is_enabled
+# Import unsafe_browser_is_enabled and persistence_is_enabled
 . /usr/local/lib/tails-shell-library/tails-greeter.sh
 
 error () {
@@ -39,13 +36,39 @@ verify_start () {
     local dialog_msg launch exit
     dialog_msg="<b><big>$(gettext "Launch the Unsafe Browser?")</big></b>
 
-$(gettext "The Unsafe Browser is not anonymous and the websites that you visit can see your real IP address.\n\nOnly use the Unsafe Browser to sign in to a network using a captive portal or browse trusted web pages on the local network.")"
+$(gettext "The Unsafe Browser is not anonymous and the websites that you visit can see your real IP address.\n\nOnly use the Unsafe Browser to sign in to a network using a captive portal.")"
     launch="$(gettext "_Launch")"
     exit="$(gettext "_Exit")"
     if ! sudo -u "${SUDO_USER}" \
          zenity --question --ellipsize --title "" --text "${dialog_msg}" --default-cancel \
          --ok-label "${launch}"  --cancel-label "${exit}"; then
         exit 0
+    fi
+}
+
+verify_is_enabled () {
+    # Check if the Unsafe Browser was disabled in the startup options
+    if ! unsafe_browser_is_enabled; then
+	local msg restart close
+	msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
+To <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and enable \
+the Unsafe Browser in the additional settings of the Welcome Screen.")"
+	# Only mention the Persistent Storage if there is one (see #18551)
+	if persistence_is_enabled; then
+	    msg="${msg}""$(gettext "\n\nTo always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
+	fi
+
+	restart="$(gettext "_Restart")"
+	close="$(gettext "_Close")"
+	if  sudo -u "${SUDO_USER}" \
+         zenity --question --ellipsize --title "" --text "${msg}" --icon-name="dialog-error" \
+                --ok-label "${restart}"  --cancel-label "${close}"; then
+            if ! /sbin/reboot; then
+		error "$(gettext "Failed to restart the system.")"
+	    fi
+	else
+	    exit 1
+	fi
     fi
 }
 
@@ -63,19 +86,6 @@ show_shutdown_notification () {
     tails-notify-user "${title}" "${body}" 10000
 }
 
-maybe_restart_tor () {
-    # Restart Tor if it's not working (a captive portal may have prevented
-    # Tor from bootstrapping, and a restart is the fastest way to get
-    # wheels turning)
-    if ! tor_has_bootstrapped; then
-        echo "* Restarting Tor"
-        systemctl restart tor@default.service
-        if ! systemctl --quiet is-active tor@default.service; then
-            error "$(gettext "Failed to restart Tor.")"
-        fi
-    fi
-}
-
 # Main script:
 
 CMD="$(basename "${0}")"
@@ -89,13 +99,7 @@ HUMAN_READABLE_NAME="$(gettext "Unsafe Browser")"
 WARNING_PAGE='/usr/share/doc/tails/website/misc/unsafe_browser_warning'
 HOME_PAGE="$(localized_tails_doc_page "${WARNING_PAGE}")"
 
-# Check if the Unsafe Browser was disabled in the startup options
-if ! unsafe_browser_is_enabled; then
-    error "$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
-To use the Unsafe Browser, restart Tails and enable \
-the Unsafe Browser in the additional settings of the Welcome Screen.\n
-To always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
-fi
+verify_is_enabled
 
 # Prevent multiple instances of the script.
 exec 9>"${LOCK}"
@@ -124,6 +128,11 @@ else
     error "$(gettext "You are not connected to a local network yet.\n\nTo be able to start the Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile network.")"
 fi
 
+# Disable some Firefox "phone home" features
+# (https://bugzilla.mozilla.org/show_bug.cgi?id=1598562)
+echo '127.0.0.42 firefox.settings.services.mozilla.com' \
+     >> "${CHROOT}"/etc/hosts
+
 echo "* Starting Unsafe Browser"
 # Do not localize the 5th argument: it becomes WM_CLASS and then GNOME
 # displays the localized app name found in the matching .desktop file;
@@ -136,6 +145,5 @@ run_browser_in_chroot "${CHROOT}" "${BROWSER_NAME}" "${BROWSER_USER}" \
 
 echo "* Exiting the Unsafe Browser"
 show_shutdown_notification
-maybe_restart_tor
 
 exit 0

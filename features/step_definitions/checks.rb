@@ -10,14 +10,22 @@ def assert_all_keys_are_valid_for_n_months(type, months)
   assert([:OpenPGP, :APT].include?(type))
   assert(months.is_a?(Integer))
 
+  ignored_keys = [
+    # We're in the process of rotating that key (sysadmin#17810)
+    '221F9A3C6FA3E09E182E060BC7988EA7A358D82E',
+  ]
+
   cmd  = type == :OpenPGP ? 'gpg'     : 'apt-key adv'
   user = type == :OpenPGP ? LIVE_USER : 'root'
-  all_keys = $vm.execute_successfully(
+  keys = $vm.execute_successfully(
     "#{cmd} --batch --with-colons --fingerprint --list-key", user: user
-  ).stdout.scan(/^fpr:::::::::([A-Z0-9]+):$/).flatten
+  ).stdout
+                .scan(/^fpr:::::::::([A-Z0-9]+):$/)
+                .flatten
+                .reject { |key| ignored_keys.include?(key) }
 
   invalid = []
-  all_keys.each do |key|
+  keys.each do |key|
     assert_key_is_valid_for_n_months(type, key, months)
   rescue Test::Unit::AssertionFailedError
     invalid << key
@@ -112,9 +120,10 @@ Then /^the support documentation page opens in Tor Browser$/ do
   end
   step "\"#{expected_title}\" has loaded in the Tor Browser"
   browser_name = $language == 'German' ? 'Tor-Browser' : 'Tor Browser'
+  separator = $language == 'German' ? '-' : '—'
   try_for(60) do
     @torbrowser
-      .child(expected_title + " - #{browser_name}", roleName: 'frame')
+      .child("#{expected_title} #{separator} #{browser_name}", roleName: 'frame')
       .children(roleName: 'heading')
       .any? { |heading| heading.text == expected_heading }
   end
@@ -177,7 +186,7 @@ end
 Then /^Tor is (not )?confined with Seccomp$/ do |not_confined|
   expected_sandbox_status = not_confined.nil? ? 1 : 0
   sandbox_status = $vm.execute_successfully(
-    'tor_control_getconf Sandbox', libs: 'tor'
+    '/usr/local/lib/tor_variable get --type=conf Sandbox'
   ).stdout.to_i
   assert_equal(expected_sandbox_status, sandbox_status,
                'Tor says that the sandbox is ' +
@@ -186,7 +195,7 @@ Then /^Tor is (not )?confined with Seccomp$/ do |not_confined|
   # "Sandbox 0", but let's still make sure that is the case.
   seccomp_status = get_seccomp_status('tor')
   assert_equal(2, seccomp_status,
-               "Tor is not confined with Seccomp in filter mode")
+               'Tor is not confined with Seccomp in filter mode')
 end
 
 Then /^the running process "(.+)" is confined with AppArmor in (complain|enforce) mode$/ do |process, mode|

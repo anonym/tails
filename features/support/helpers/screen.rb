@@ -182,15 +182,13 @@ class Screen
       debug_log("Screen: trying to find any of #{patterns.join(', ')}")
     end
     patterns.each do |pattern|
-      begin
-        return {
-          found_pattern: pattern,
-          match:         real_find(pattern, **opts.clone.update(log: false)),
-        }
-      rescue FindFailed
-        # Ignore. We'll throw an appropriate exception after having
-        # looped through all patterns and found none of them.
-      end
+      return {
+        found_pattern: pattern,
+        match:         real_find(pattern, **opts.clone.update(log: false)),
+      }
+    rescue FindFailed
+      # Ignore. We'll throw an appropriate exception after having
+      # looped through all patterns and found none of them.
     end
     # If we've reached this point, none of the patterns could be found.
     raise FindFailed,
@@ -230,14 +228,14 @@ class Screen
     debug_log("Keyboard: pressing: #{sequence.join('+')}") if opts[:log]
     codes = []
     sequence.each do |key|
-      case $language
-      when ''
-        keymap = Keymaps::US_KEYMAP
-      when 'German'
-        keymap = Keymaps::DE_KEYMAP
-      else
-        keymap = Keymaps::COMMON_KEYMAP
-      end
+      keymap = case $language
+               when ''
+                 Keymaps::US_KEYMAP
+               when 'German'
+                 Keymaps::DE_KEYMAP
+               else
+                 Keymaps::COMMON_KEYMAP
+               end
       # We use lower-case to make it easier to get the keycodes right.
       code = keymap[('A'..'Z').include?(key) ? key : key.downcase]
       if code.nil?
@@ -297,6 +295,7 @@ class Screen
     opts[:button] = 3 if opts[:button] == 'right'
     opts[:repeat] ||= 1
     opts[:repeat] = 2 if opts[:double]
+    opts[:repeat] = 3 if opts[:triple]
     opts[:log] = true if opts[:log].nil?
     x, y = hover(*args, **opts.clone.update(log: false))
     action = 'clicking'
@@ -404,15 +403,13 @@ class ImageBumpingScreen
   screen_methods.each do |m|
     if overrides.include?(m)
       define_method(m) do |*args, **opts|
+        return @screen.method(m).call(*args, **opts)
+      rescue FindFailed => e
         begin
-          return @screen.method(m).call(*args, **opts)
-        rescue FindFailed => e
-          begin
-            image = args.first
-            return interactive_image_bump(image, **opts)
-          rescue ImageBumpFailed
-            raise e
-          end
+          image = args.first
+          return interactive_image_bump(image, **opts)
+        rescue ImageBumpFailed
+          raise e
         end
       end
     else

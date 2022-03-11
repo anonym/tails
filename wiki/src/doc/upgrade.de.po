@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-06-25 16:51+0000\n"
+"POT-Creation-Date: 2022-03-01 11:23+0000\n"
 "PO-Revision-Date: 2019-10-23 08:55+0000\n"
 "Last-Translator: emmapeel <emma.peel@riseup.net>\n"
 "Language-Team: Tails localization discussion <tails-l10n@boum.org>\n"
@@ -25,15 +25,44 @@ msgstr "[[!meta title=\"Einen USB-Stick mit Tails aktualisieren\"]]\n"
 
 #. type: Plain text
 msgid ""
-"Tails includes an automatic mechanism to upgrade a USB stick to a newer "
-"version. In some cases, it is impossible to do an **automatic upgrade** and "
-"you might have to do a **manual upgrade**. This page describes both "
-"techniques."
+"Tails includes an automatic mechanism to upgrade a USB stick to the latest "
+"version of Tails. When an automatic upgrade is performed, only an *upgrade "
+"package* is downloaded. The upgrade package contains all the changes made to "
+"Tails since Tails was first installed or was last manually upgraded."
+msgstr ""
+
+#. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "Tails includes an automatic mechanism to upgrade a USB stick to a newer "
+#| "version. In some cases, it is impossible to do an **automatic upgrade** "
+#| "and you might have to do a **manual upgrade**. This page describes both "
+#| "techniques."
+msgid ""
+"In some cases, it is impossible to do an **automatic upgrade** and you might "
+"have to do a **manual upgrade**. This page describes both techniques."
 msgstr ""
 "Tails enthält ein automatisches Verfahren, um einen USB-Stick auf neuere "
 "Versionen zu aktualisieren. Falls diese **automatische Aktualisierung** "
 "nicht möglich ist, ist es möglich eine **manuelle Aktualisierung** "
 "durchzuführen. Diese Seite beschreibt beide Vorgehensweisen."
+
+#. type: Plain text
+#, no-wrap
+msgid "<div class=\"tip\">\n"
+msgstr "<div class=\"tip\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>To learn how Tails implements automatic upgrades, see our\n"
+"[[design documentation about automatic upgrades|contribute/design/upgrades]].</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "</div>\n"
+msgstr "</div>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -46,11 +75,6 @@ msgid ""
 "<p>Your Persistent Storage will be preserved by both automatic and\n"
 "manual upgrades.</p>\n"
 msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "</div>\n"
-msgstr "</div>\n"
 
 #. type: Plain text
 #, fuzzy
@@ -70,7 +94,7 @@ msgstr "[[!toc levels=2]]\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<h1 name=\"check-version\">Checking which version of Tails you are currently running</h1>\n"
+msgid "<h1 id=\"check-version\">Checking which version of Tails you are currently running</h1>\n"
 msgstr ""
 
 #. type: Plain text
@@ -99,7 +123,7 @@ msgstr ""
 #. type: Plain text
 #, fuzzy, no-wrap
 #| msgid "Automatic upgrade using <span class=\"application\">Tails Upgrader</span>\n"
-msgid "<h1 name=\"automatic\">Automatic upgrade using <i>Tails Upgrader</i></h1>\n"
+msgid "<h1 id=\"automatic\">Automatic upgrade using <i>Tails Upgrader</i></h1>\n"
 msgstr "Automatische Aktualisierung mithilfe des <span class=\"application\">Tails Upgraders</span>\n"
 
 #. type: Plain text
@@ -186,11 +210,6 @@ msgstr ""
 "Wenn Sie sich zum Aktualisieren entscheiden, drücken Sie\n"
 "die <span class=\"guilabel\">Jetzt aktualisieren</span> Schaltfläche\n"
 "und folgen Sie dem Assistenten durch den Aktualisierungsvorgang.\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "<div class=\"tip\">\n"
-msgstr "<div class=\"tip\">\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
@@ -341,7 +360,7 @@ msgstr "[[!img upgrader_manual.png link=no]]\n"
 #. type: Plain text
 #, fuzzy, no-wrap
 #| msgid "Manual upgrade using <span class=\"application\">Tails Installer</span>\n"
-msgid "<h1 name=\"manual\">Manual upgrade using <i>Tails Installer</i></h1>\n"
+msgid "<h1 id=\"manual\">Manual upgrade using <i>Tails Installer</i></h1>\n"
 msgstr "Manuelles Aktualisieren mithilfe des <span class=\"application\">Tails Installers</span>\n"
 
 #. type: Plain text
@@ -417,7 +436,7 @@ msgstr "[[!img upgrader_manual.png link=no]]\n"
 #, no-wrap
 msgid ""
 "<p>You can also do a manual upgrade to reduce the size of future automatic\n"
-"upgrades, as described [[above|upgrade#download]].</p>\n"
+"upgrades, as described [[above|upgrade#reduce]].</p>\n"
 msgstr ""
 
 #. type: Plain text
@@ -428,8 +447,7 @@ msgstr ""
 msgid ""
 "- [[Download and upgrade|doc/upgrade/#download]] (below)  - [[Upgrade by "
 "cloning from another Tails|doc/upgrade/#clone]] (below)  - [[Burn a new "
-"Tails DVD|install/dvd-download]] - [[Upgrade your virtual machine|install/vm-"
-"download]]"
+"Tails DVD|install/dvd]] - [[Upgrade your virtual machine|install/vm]]"
 msgstr ""
 
 #. type: Plain text
@@ -487,11 +505,11 @@ msgstr ""
 
 #. type: Plain text
 msgid ""
-"- [[Downloading and upgrading from your Tails|upgrade/tails-overview]] (more "
-"secure)  - [[Downloading and upgrading from Windows|upgrade/win-overview]] "
-"(more convenient)  - [[Downloading and upgrading from macOS|upgrade/mac-"
-"overview]] (more convenient)  - [[Downloading and upgrading from Linux|"
-"upgrade/linux-overview]] (more convenient)"
+"- [[Downloading and upgrading from your Tails|upgrade/tails]] (more secure)  "
+"- [[Downloading and upgrading from Windows|upgrade/windows]] (more "
+"convenient)  - [[Downloading and upgrading from macOS|upgrade/mac]] (more "
+"convenient)  - [[Downloading and upgrading from Linux|upgrade/linux]] (more "
+"convenient)"
 msgstr ""
 
 #. type: Plain text
@@ -524,7 +542,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-msgid "- [[Cloning from another Tails|upgrade/clone-overview]]"
+msgid "- [[Cloning from another Tails|upgrade/clone]]"
 msgstr ""
 
 #, fuzzy

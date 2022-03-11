@@ -1,6 +1,8 @@
 require 'fileutils'
 
 def post_vm_start_hook
+  $vm.live_patch if $config['LIVE_PATCH']
+
   # Sometimes the first click is lost (presumably it's used to give
   # focus to virt-viewer or similar) so we do that now rather than
   # having an important click lost. The point we click should be
@@ -103,13 +105,30 @@ Given /^the network is unplugged$/ do
   $vm.unplug_network
 end
 
+Given /^I (dis)?connect the network through GNOME$/ do |disconnect|
+  current_state = disconnect ? 'Connected' : 'Off'
+  action = disconnect ? 'Turn Off' : 'Connect'
+  gnome_shell = Dogtail::Application.new('gnome-shell')
+  gnome_shell.child('System', roleName: 'menu').click
+  gnome_shell.child("Wired #{current_state}", roleName: 'label').click
+  gnome_shell.child(action, roleName: 'label').click
+end
+
 Given /^the network connection is ready(?: within (\d+) seconds)?$/ do |timeout|
   timeout ||= 30
   try_for(timeout.to_i) { $vm.connected_to_network? }
 end
 
 Given /^the hardware clock is set to "([^"]*)"$/ do |time|
-  $vm.set_hardware_clock(DateTime.parse(time).to_time)
+  dt = if time.start_with?('+') || time.start_with?('-')
+         DateTime.parse(
+           cmd_helper(['date', '-d', time], env: { 'TZ' => 'UTC' })
+         )
+       else
+         DateTime.parse(time)
+       end
+  debug_log("Set hw clock to #{dt}")
+  $vm.set_hardware_clock(dt.to_time)
 end
 
 Given /^I capture all network traffic$/ do
@@ -244,13 +263,11 @@ def start_up_spammer(domain_name)
   bus = ENV['USER'] == 'root' ? '--system' : '--user'
   systemctl = ['/bin/systemctl', bus]
   kill_up_spammer = proc do
-    begin
-      if system(*systemctl, '--quiet', 'is-active', up_spammer_unit_name)
-        system(*systemctl, 'stop', up_spammer_unit_name)
-      end
-    rescue StandardError
-      # noop
+    if system(*systemctl, '--quiet', 'is-active', up_spammer_unit_name)
+      system(*systemctl, 'stop', up_spammer_unit_name)
     end
+  rescue StandardError
+    # noop
   end
   kill_up_spammer.call
   up_spammer_job = fatal_system(
@@ -330,7 +347,7 @@ Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_a
   end
   $vm.wait_until_remote_shell_is_up
   post_vm_start_hook
-  step 'I configure Tails to use a simulated Tor network'
+  configure_simulated_Tor_network unless $config['DISABLE_CHUTNEY']
   # This is required to use APT in the test suite as explained in
   # commit e2510fae79870ff724d190677ff3b228b2bf7eac
   step 'I configure APT to use non-onion sources' unless keep_apt_sources
@@ -349,13 +366,14 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
-  if RTL_LANGUAGES.include?(lang)
-    # If we select a RTL language below, the login and shutdown
-    # buttons will swap place.
-    login_button_region = @screen.find('TailsGreeterShutdownButton.png')
-  else
-    login_button_region = @screen.find('TailsGreeterLoginButton.png')
-  end
+  login_button_region = if RTL_LANGUAGES.include?(lang)
+                          # If we select a RTL language below, the
+                          # login and shutdown buttons will
+                          # swap place.
+                          @screen.find('TailsGreeterShutdownButton.png')
+                        else
+                          @screen.find('TailsGreeterLoginButton.png')
+                        end
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -432,20 +450,10 @@ Given /^the Tails desktop is ready$/ do
     'gsettings set org.gnome.desktop.interface toolkit-accessibility true',
     user: LIVE_USER
   )
-  # Since we use a simulated Tor network (via Chutney) we have to
-  # switch to its default bridges.
-  default_bridges_path = '/usr/share/tails/tca/default_bridges.txt'
-  # XXX: We can drop the if-statement and keep just its body once
-  # tails!375 (17215-tor-launcher-replacement) is merged in a stable
-  # release.
-  if $vm.file_exist?(default_bridges_path)
-    $vm.file_overwrite(default_bridges_path, '')
-    chutney_bridge_lines('obfs4', chutney_tag: 'defbr').each do |bridge_line|
-      $vm.file_append(default_bridges_path, bridge_line)
-    end
-  end
   # Optimize upgrade check: avoid 30 second sleep
-  $vm.execute_successfully('sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service')
+  $vm.execute_successfully(
+    'sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service'
+  )
   $vm.execute_successfully('systemctl --user daemon-reload', user: LIVE_USER)
 end
 
@@ -461,9 +469,10 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
-  # First we wait for tor to be running so its control port is open...
+  # First we wait for tor's control port to be ready...
   try_for(60) do
-    $vm.execute("systemctl -q is-active tor@default.service").success?
+    $vm.execute_successfully('/usr/local/lib/tor_variable get --type=info version')
+    true
   end
   # ... so we can ask if the tor's networking is disabled, in which
   # case Tor Connection Assistant has not been dealt with yet. If
@@ -473,12 +482,30 @@ Given /^Tor is ready$/ do
   # case, where it is not important for the test scenario that we go
   # through the extra hassle and use bridges, so we simply attempt a
   # direct connection.
-  if $vm.execute_successfully('tor_control_getconf DisableNetwork', libs: 'tor').stdout.chomp == '1'
-    # This variable is initialized to nil in each scenario, and only
+  disable_network = nil
+  # Gather debugging information for #18293
+  try_for(10) do
+    $vm.execute('pidof tor')
+    $vm.execute('fuser --namespace tcp 9052')
+    $vm.execute('systemctl status tor@default.service')
+    disable_network = $vm.execute_successfully(
+      '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
+    ).stdout.chomp
+    if disable_network == ''
+      debug_log('Tor reported claims DisableNetwork is an empty string')
+      false
+    else
+      true
+    end
+  end
+  if disable_network == '1'
+    # This variable is initialized to false in each scenario, and only
     # ever set to true in some previously run step that configures tor
-    # to use PTs.
-    assert(!@tor_is_using_pluggable_transports, 'This is a test suite bug!')
-    @tor_is_using_pluggable_transports = false
+    # to explicitly use PTs; please note that when it is false, it still
+    # means that Tor _might_ be using bridges
+    debug_log('DisableNetwork=1, so we autoconnect')
+    assert(!@user_wants_pluggable_transports, 'This is a test suite bug!')
+    @user_wants_pluggable_transports = false
     step 'the Tor Connection Assistant autostarts'
     step 'I configure a direct connection in the Tor Connection Assistant'
   end
@@ -486,11 +513,27 @@ Given /^Tor is ready$/ do
   # Here we actually check that Tor is ready
   step 'Tor has built a circuit'
   step 'the time has synced'
-  if @tor_is_using_pluggable_transports
+  debug_log('user_wants_pluggable_transports = ' \
+           "#{@user_wants_pluggable_transports} " \
+           'tor_network_is_blocked = ' \
+           "#{@tor_network_is_blocked}")
+  must_use_pluggable_transports = \
+    if !@user_wants_pluggable_transports
+      # In this case, tca is allowing both methods,
+      # and will use PTs depending on network conditions
+      defined?(@tor_network_is_blocked) && @tor_network_is_blocked
+    else
+      true
+    end
+  if must_use_pluggable_transports
     step 'Tor is not confined with Seccomp'
-  #else
-  #  step 'Tor is confined with Seccomp'
+  else
+    step 'Tor is confined with Seccomp'
   end
+  @tor_success_configs ||= []
+  @tor_success_configs << $vm.execute_successfully(
+    '/usr/local/lib/tor_variable get --type=info config-text', libs: 'tor'
+  ).stdout
   # When we test for ASP upgrade failure the following tests would fail,
   # so let's skip them in this case.
   unless $vm.file_exist?('/run/live-additional-software/doomed_to_fail')
@@ -512,30 +555,17 @@ end
 class TimeSyncingError < StandardError
 end
 
-class TordateError < TimeSyncingError
-end
-
 class HtpdateError < TimeSyncingError
 end
 
 Given /^the time has synced$/ do
-  ['/run/tordate/done', '/run/htpdate/success'].each do |file|
-    begin
-      try_for(300) { $vm.execute("test -e #{file}").success? }
-    rescue Timeout::Error
-      if file == '/run/htpdate/success'
-        raise HtpdateError, 'Time syncing failed'
-      else
-        raise TordateError, 'Time syncing failed'
-      end
-    end
-  end
+  try_for(300) { $vm.file_exist?('/run/htpdate/success') }
+rescue Timeout::Error
+  raise HtpdateError, 'Time syncing failed'
 end
 
 Given /^available upgrades have been checked$/ do
-  try_for(300) do
-    $vm.execute("test -e '/run/tails-upgrader/checked_upgrades'").success?
-  end
+  try_for(300) { $vm.file_exist?('/run/tails-upgrader/checked_upgrades') }
 end
 
 def tor_browser_is_alpha
@@ -555,7 +585,7 @@ When /^I start the Tor Browser( in offline mode)?$/ do |offline|
     start_button = Dogtail::Application
                    .new('zenity')
                    .dialog('Tor is not ready', showingOnly: true)
-                   .button('Start Tor Browser', showingOnly: true)
+                   .button('Start Tor Browser Offline', showingOnly: true)
     # Sometimes this click is lost. Maybe the dialog is not fully setup yet?
     sleep 2
     start_button.click
@@ -608,7 +638,7 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
   @screen.press('ctrl', 'd')
   @screen.wait('TorBrowserBookmarkPrompt.png', 10)
   @screen.type(url)
-  # The new default location for bookmarks is "Other Bookmarks", but our test
+  # The new default location for bookmarks is "Bookmarks Toolbar", but our test
   # expects the new entry is available in "Bookmark Menu", that's why we need
   # to select the location explicitly.
   @screen.wait('TorBrowserBookmarkLocation.png', 10).click
@@ -659,13 +689,6 @@ Then /^I (do not )?see "([^"]*)" after at most (\d+) seconds$/ do |negation, ima
     @screen.wait_vanish(image, time.to_i)
   else
     @screen.wait(image, time.to_i)
-  end
-end
-
-Then /^all Internet traffic has only flowed through Tor$/ do
-  allowed_hosts = allowed_hosts_under_tor_enforcement
-  assert_all_connections(@sniffer.pcap_file) do |c|
-    allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
 end
 
@@ -881,7 +904,7 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     sleep 2
     # Type the rest of the search query
     @screen.type(app_name[1..-1])
-    sleep 2
+    sleep 4
     @screen.press('ctrl', 'Return')
   end
 end
@@ -916,25 +939,10 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   @screen.press('Escape')
 end
 
-Then /^there is no GNOME bookmark for the persistent Tor Browser directory$/ do
-  try_for(65) do
-    @screen.wait('GnomePlaces.png', 10).click
-    @screen.wait('GnomePlacesWithoutTorBrowserPersistent.png', 10)
-    @screen.press('Escape')
-    true
-  end
-end
-
 def pulseaudio_sink_inputs
   pa_info = $vm.execute_successfully('pacmd info', user: LIVE_USER).stdout
   sink_inputs_line = pa_info.match(/^\d+ sink input\(s\) available\.$/)[0]
   sink_inputs_line.match(/^\d+/)[0].to_i
-end
-
-When /^(no|\d+) application(?:s?) (?:is|are) playing audio(?:| after (\d+) seconds)$/ do |nb, wait_time|
-  nb = 0 if nb == 'no'
-  sleep wait_time.to_i unless wait_time.nil?
-  assert_equal(nb.to_i, pulseaudio_sink_inputs)
 end
 
 When /^I double-click on the (Tails documentation|Report an Error) launcher on the desktop$/ do |launcher|
@@ -989,22 +997,13 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                  "/home/#{LIVE_USER}/Tor Browser"
                end
   @screen.press('ctrl', 'p')
-  print_dialog = @torbrowser.child('Print', roleName: 'dialog')
-  print_dialog.child('Print to File', roleName: 'table cell').click
-  print_dialog.child('~/Tor Browser/output.pdf', roleName: 'push button').click
-  # Yes, TorBrowserPrintFileDialog.png != Gtk3PrintFileDialog.png.
-  # If you try to unite them, make sure this does not break the tests
-  # that use either.
-  @screen.wait('TorBrowserPrintFileDialog.png', 10)
+  @torbrowser.child('Save', roleName: 'push button').click
+  @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it
   $vm.set_clipboard(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
   @screen.press('ctrl', 'v')
   @screen.press('Return')
-  # Yes, TorBrowserPrintButton.png != Gtk3PrintButton.png.
-  # If you try to unite them, make sure this does not break the tests
-  # that use either.
-  @screen.wait('TorBrowserPrintButton.png', 10).click
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do
     $vm.file_exist?("#{output_dir}/#{output_file}")
@@ -1350,4 +1349,8 @@ end
 
 Then(/^the layout of the screen keyboard is set to "([^"]+)"$/) do |layout|
   @screen.find("ScreenKeyboardLayout#{layout.upcase}.png")
+end
+
+Given /^I write a file (\S+) with contents "([^"]*)"$/ do |path, content|
+  $vm.file_overwrite(path, content)
 end

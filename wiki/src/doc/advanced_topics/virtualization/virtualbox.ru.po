@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2020-09-04 13:14+0000\n"
-"PO-Revision-Date: 2018-07-02 07:32+0000\n"
-"Last-Translator: emmapeel <emma.peel@riseup.net>\n"
+"POT-Creation-Date: 2022-02-28 20:53+0000\n"
+"PO-Revision-Date: 2021-12-25 06:33+0000\n"
+"Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 2.10.1\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"VirtualBox\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"VirtualBox\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -30,7 +30,7 @@ msgid ""
 "It is possible to run Tails in a virtual machine using [<span\n"
 "class=\"application\">VirtualBox</span>](https://www.virtualbox.org/) from a\n"
 "Windows, Linux, or macOS host operating system.\n"
-msgstr ""
+msgstr "Tails можно запускать из Windows, Linux или macOS в виртуальной машине с помощью [<span class=\"application\">VirtualBox</span>](https://www.virtualbox.org/).\n"
 
 #. type: Plain text
 #, no-wrap
@@ -45,6 +45,9 @@ msgid ""
 "and some proprietary components, for example to add support for USB\n"
 "devices.\n"
 msgstr ""
+"У <span class =\"application\">VirtualBox</span> есть бесплатная версия под\n"
+"названием <span class=\"application\">VirtualBox Open Source Edition</span>.\n"
+"Есть и проприетарные компоненты, например, для поддержки USB-устройств.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -58,11 +61,26 @@ msgid ""
 "class=\"application\">Open Source Edition</span>, though it does not\n"
 "allow use of a Persistent Storage.\n"
 msgstr ""
+"По соображениям безопасности мы рекомендуем использовать только <span class=\"application\">Open Source Edition</span> (хотя \n"
+"при этом не получится работать с Постоянным хранилищем).\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "</div>\n"
 msgstr "</div>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<!--\n"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"XXX: VirtualBox Guest Additions has been removed since Tails 4.27. Without "
+"Guest Additions, the shared folders feature of VirtualBox is unavailable.  "
+"Until Guest Additions is added back (#18728), the tip below shouldn't be "
+"displayed."
+msgstr ""
 
 #. type: Plain text
 #, no-wrap
@@ -77,6 +95,10 @@ msgid ""
 "<span class=\"application\">VirtualBox</span> you can access files of your\n"
 "host system from within the guest system.</p>\n"
 msgstr ""
+"<p>С опцией <a href=\"https://www.virtualbox.org/manual/ch04.html#sharedfolders\">\n"
+"<span class=\"guilabel\">Поделиться папками</span></a>, доступной в\n"
+"<span class=\"application\">VirtualBox</span>, вы можете получить доступ к файлам операционной системы хоста \n"
+"из вашей гостевой системы.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -85,11 +107,18 @@ msgid ""
 "internal hard disks|internal_hard_disk]]\n"
 "from Tails before using this feature.</p>\n"
 msgstr ""
+"<p>Перед использованием этой опции убедитесь, что понимаете последствия для безопасности [[доступа к\n"
+"внутренним жёстким дискам|internal_hard_disk]] из Tails.</p>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "-->\n"
+msgstr ""
 
 #. type: Title =
 #, no-wrap
 msgid "Security considerations for Windows and macOS"
-msgstr ""
+msgstr "Требования безопасности для Windows и macOS"
 
 #. type: Plain text
 msgid ""
@@ -97,6 +126,9 @@ msgid ""
 "recommend to run Tails in a virtual machine only if the host operating "
 "system is trustworthy."
 msgstr ""
+"В нашем [[оповещении о безопасности|виртуализация#безопасность]] мы советуем "
+"запускать Tails в виртуальной машине только в том случае, если операционная "
+"система хоста заслуживает доверия."
 
 #. type: Plain text
 msgid ""
@@ -104,21 +136,25 @@ msgid ""
 "considered trustworthy. Only run Tails in a virtual machine on Windows or "
 "macOS for testing purposes and do not rely on it for security."
 msgstr ""
+"Microsoft Windows и macOS — проприетарные операционные системы, мы бы не "
+"советовали им доверять. Запускайте Tails в виртуальной машине в Windows или "
+"macOS только для тестирования, не считайте этот подход полностью безопасным."
 
 #. type: Title =
 #, no-wrap
 msgid "Installation"
-msgstr ""
+msgstr "Установка"
 
 #. type: Plain text
 msgid ""
 "To install *VirtualBox* in Debian or Ubuntu, execute the following command:"
 msgstr ""
+"Для установки *VirtualBox* в Debian или Ubuntu выполните следующую команду:"
 
 #. type: Plain text
 #, no-wrap
 msgid "    sudo apt install virtualbox\n"
-msgstr ""
+msgstr "    sudo apt install virtualbox\n"
 
 #. type: Plain text
 msgid ""
@@ -126,19 +162,22 @@ msgid ""
 "refer to the [VirtualBox documentation](https://www.virtualbox.org/wiki/End-"
 "user_documentation)."
 msgstr ""
+"Инструкции по установке *VirtualBox* в других операционных системах см. "
+"[документацию по VirtualBox](https://www.virtualbox.org/wiki/End-"
+"user_documentation)."
 
 #. type: Title =
 #, no-wrap
 msgid "Running Tails from an ISO image"
-msgstr ""
+msgstr "Запуск Tails из ISO-образа"
 
 #. type: Plain text
 msgid "First, start *VirtualBox*."
-msgstr ""
+msgstr "Сначала запустите *VirtualBox*."
 
 #. type: Plain text
 msgid "To create a new virtual machine:"
-msgstr ""
+msgstr "Для создания новой виртуальной машины:"
 
 #. type: Plain text
 #, no-wrap
@@ -161,40 +200,65 @@ msgid ""
 "     - Click **Continue** in the warning dialog about creating a virtual\n"
 "       machine without a hard drive.\n"
 msgstr ""
+"  1. Выберите\n"
+"     <span class=\"menuchoice\">\n"
+"     <span class=\"guimenu\">Машина</span>&nbsp;▸\n"
+"     <span class=\"guimenuitem\">Создать...</span></span>.\n"
+"  2. В экране **Укажите имя и тип ОС** укажите:\n"
+"     - Выбранное вами название\n"
+"     - **Тип**: **Linux**\n"
+"     - **Версия**: **Other Linux (64-bit)**\n"
+"     - Нажмите **Далее**\n"
+"  3. В экране **Укажите объём памяти**:\n"
+"     - Выделите не менее 2048 Мб оперативной памяти\n"
+"     - Нажмите **Далее**\n"
+"  4. На экране **Жёсткий диск**:\n"
+"  - Выберите **Не подключать виртуальный жесткий диск**\n"
+"  - Нажмите **Создать**\n"
+"  - Нажмите **Продолжить** в диалоговом окне предупреждения о создании виртуальной\n"
+"   машины без жёсткого диска.\n"
 
 #. type: Plain text
 msgid "To configure the virtual machine to start from an ISO image:"
-msgstr ""
+msgstr "Настройка виртуальной машины для запуска с ISO-образа:"
 
 #. type: Bullet: '  1. '
 msgid "Select the new virtual machine in the left pane."
-msgstr ""
+msgstr "Выберите новую виртуальную машину в левой панели."
 
 #. type: Bullet: '  1. '
+#, fuzzy
+#| msgid ""
+#| "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
+#| "span>&nbsp;▸ <span class=\"guimenuitem\">Settings...</span></span>."
 msgid ""
 "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
 "span>&nbsp;▸ <span class=\"guimenuitem\">Settings...</span></span>."
 msgstr ""
+"Выберите в меню <span class=\"menuchoice\"> <span class=\"guimenu\">Машина</"
+"span>&nbsp;▸ <span class=\"guimenuitem\">Настроить...</span></span>."
 
 #. type: Bullet: '  1. '
 msgid "Select **System** in the left pane."
-msgstr ""
+msgstr "В левой панели выберите **Система**."
 
 #. type: Bullet: '  1. '
 msgid ""
 "In the **Extended Features** section of the **Motherboard** tab, make sure "
 "that **Enable I/O APIC** is enabled."
 msgstr ""
+"Выберите вкладку **Материнская плата**. В разделе **Дополнительные "
+"возможности**  убедитесь, что активна опция **Включить I/O APIC**."
 
 #. type: Bullet: '  1. '
 msgid "Select **Storage** in the left pane."
-msgstr ""
+msgstr "В левой панели выберите **Носители**."
 
 #. type: Bullet: '  1. '
 msgid ""
 "Select **Empty** below **Contoller IDE** in the **Storage Tree** selection "
 "list in the right pane."
-msgstr ""
+msgstr "Под **Контроллер IDE** выберите **Пусто**."
 
 #. type: Plain text
 #, no-wrap
@@ -205,67 +269,139 @@ msgid ""
 "  1. Check the **Live CD/DVD** option.\n"
 "  1. Click **OK**.\n"
 msgstr ""
+"  1. Нажмите на значок компакт-диска в правой части окна и выберите в меню\n"
+"**Выбрать файл диска...**, чтобы найти ISO-образ, с которого\n"
+"вы хотите запустить Tails.\n"
+"1. Отметьте опцию **Живой CD/DVD**.\n"
+"1. Нажмите **ОК**.\n"
 
 #. type: Plain text
 msgid "To start the new virtual machine:"
-msgstr ""
+msgstr "Для запуска новой виртуальной машины:"
 
 #. type: Bullet: '  1. '
 msgid "Select the virtual machine in the left pane."
-msgstr ""
+msgstr "Выберите виртуальную машину в левой панели."
 
 #. type: Bullet: '  1. '
 msgid "Click **Start**."
+msgstr "Нажмите **Запустить**."
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "<div class=\"tip\">\n"
+msgid "<div class=\"note\">\n"
+msgstr "<div class=\"tip\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p><i>VirtualBox Guest Additions</i> has been removed since Tails 4.27. As a\n"
+"result, the screen resolution of Tails can't be changed by resizing the\n"
+"virtual machine window in the host OS. The screen resolution must be changed\n"
+"from inside Tails.</p>\n"
 msgstr ""
 
-msgid ""
-"     <div class=\"bug\"><p><span class=\"application\">VirtualBox</span> "
-"guest\n"
-"     modules allow for additional features when using Tails in a virtual\n"
-"     machine: shared folders, resizable display, shared clipboard, etc.</p>\n"
+#. type: Plain text
+#, no-wrap
+msgid "<p>To change the screen resolution from inside Tails:</p>\n"
 msgstr ""
-"     <div class=\"bug\"><p><span class=\"application\">VirtualBox</span>\n"
-"     Gastmodule erlauben Ihnen weitere Funktionen, wenn Sie Tails in einer "
-"virtuellen Maschine\n"
-"     verwenden: verteilte Ordner, größenveränderbarer Bildschirm, gemeinsame "
-"Zwischenablage, usw.</p>\n"
 
+#. type: Plain text
+#, no-wrap
 msgid ""
-"     <p>But due to <a href=\"https://www.virtualbox.org/ticket/11037\">a bug "
-"in\n"
-"     <span class=\"application\">VirtualBox</span></a>, the resizable "
-"display\n"
-"     and shared clipboard only work in Tails if the virtual machine is "
-"configured to\n"
-"     have a 32-bit processor. The shared folders work both on 32-bit and\n"
-"     64-bit guests.</p></div>\n"
+"<ol>\n"
+"  <li>Open the [[system menu|doc/first_steps/introduction_to_gnome_and_the_tails_desktop#system]] in the top-right corner.</li>\n"
+"  <li>Click on the [[!img lib/preferences-system.png alt=\"System\" class=\"symbolic\" link=\"no\"]] button to open the system settings.</li>\n"
+"  <li>Choose <b>Devices ▸ Displays ▸ Resolution</b>.</li>\n"
+"</ol>\n"
 msgstr ""
-"     <p>Aber aufgrund <a href=\"https://www.virtualbox.org/"
-"ticket/11037\">eines Bugs in\n"
-"     <span class=\"application\">VirtualBox</span></a> funktionieren die "
-"größenveränderbare\n"
-"     Anzeige und gemeinsame Zwischenablage in Tails nur, wenn die virtuelle "
-"Maschine so konfiguriert\n"
-"     wurde, dass sie einen 32-Bit Prozessor hat. Die Gemeinsamen Ordner "
-"funktionieren sowohl mit 32-Bit\n"
-"     als auch 64-Bit Gästen.</p></div>\n"
 
+#. type: Plain text
+#, no-wrap
 msgid ""
-"  1. In the **Memory size** screen:\n"
-"     - Allocate at least 2048 MB of RAM.\n"
-"     - Click **Next**.\n"
-"  1. In the **Hard drive** screen:\n"
-"     - Choose **Do not add a virtual hard drive**.\n"
-"     - Click **Create**.\n"
-"     - Click **Continue** in the warning dialog about creating a virtual\n"
-"       machine without a hard drive.\n"
+"<p>You might also need to adjust the virtual machine window in the host OS to\n"
+"fit the new screen resolution.</p>\n"
 msgstr ""
-"  1. In dem Fenster **Speichergröße**:\n"
-"     - Weisen Sie mindestens 2048 MB Hauptspeicher (RAM) zu.\n"
-"     - Klicken Sie auf **Weiter**.\n"
-"  1. In dem Fenster **Platte**:\n"
-"     - Wählen Sie **Keine Festplatte**.\n"
-"     - Klicken Sie auf **Erzeugen**.\n"
-"     - Klicken Sie in dem Warnfenster zum Erstellen einer virtuellen "
-"Maschine ohne\n"
-"       Festplatte auf **Fortfahren**.\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>We plan to add back <i>VirtualBox Guest Additions</i> in a future version\n"
+"of Tails. See [[!tails_ticket 18728]].</p>\n"
+msgstr ""
+
+#, fuzzy
+#~| msgid ""
+#~| "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
+#~| "span>&nbsp;▸ <span class=\"guimenuitem\">Settings...</span></span>."
+#~ msgid ""
+#~ "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
+#~ "span>&nbsp;â¸ <span class=\"guimenuitem\">New...</span></span>."
+#~ msgstr ""
+#~ "Выберите в меню <span class=\"menuchoice\"> <span class=\"guimenu"
+#~ "\">Машина</span>&nbsp;▸ <span class=\"guimenuitem\">Настроить...</span></"
+#~ "span>."
+
+#, fuzzy
+#~| msgid "Click **Start**."
+#~ msgid "Click **Next**."
+#~ msgstr "Нажмите **Запустить**."
+
+#, fuzzy
+#~| msgid "Click **Start**."
+#~ msgid "Click **Create**."
+#~ msgstr "Нажмите **Запустить**."
+
+#~ msgid ""
+#~ "     <div class=\"bug\"><p><span class=\"application\">VirtualBox</span> "
+#~ "guest\n"
+#~ "     modules allow for additional features when using Tails in a virtual\n"
+#~ "     machine: shared folders, resizable display, shared clipboard, etc.</"
+#~ "p>\n"
+#~ msgstr ""
+#~ "     <div class=\"bug\"><p><span class=\"application\">VirtualBox</span>\n"
+#~ "     Gastmodule erlauben Ihnen weitere Funktionen, wenn Sie Tails in "
+#~ "einer virtuellen Maschine\n"
+#~ "     verwenden: verteilte Ordner, größenveränderbarer Bildschirm, "
+#~ "gemeinsame Zwischenablage, usw.</p>\n"
+
+#~ msgid ""
+#~ "     <p>But due to <a href=\"https://www.virtualbox.org/ticket/11037\">a "
+#~ "bug in\n"
+#~ "     <span class=\"application\">VirtualBox</span></a>, the resizable "
+#~ "display\n"
+#~ "     and shared clipboard only work in Tails if the virtual machine is "
+#~ "configured to\n"
+#~ "     have a 32-bit processor. The shared folders work both on 32-bit and\n"
+#~ "     64-bit guests.</p></div>\n"
+#~ msgstr ""
+#~ "     <p>Aber aufgrund <a href=\"https://www.virtualbox.org/"
+#~ "ticket/11037\">eines Bugs in\n"
+#~ "     <span class=\"application\">VirtualBox</span></a> funktionieren die "
+#~ "größenveränderbare\n"
+#~ "     Anzeige und gemeinsame Zwischenablage in Tails nur, wenn die "
+#~ "virtuelle Maschine so konfiguriert\n"
+#~ "     wurde, dass sie einen 32-Bit Prozessor hat. Die Gemeinsamen Ordner "
+#~ "funktionieren sowohl mit 32-Bit\n"
+#~ "     als auch 64-Bit Gästen.</p></div>\n"
+
+#~ msgid ""
+#~ "  1. In the **Memory size** screen:\n"
+#~ "     - Allocate at least 2048 MB of RAM.\n"
+#~ "     - Click **Next**.\n"
+#~ "  1. In the **Hard drive** screen:\n"
+#~ "     - Choose **Do not add a virtual hard drive**.\n"
+#~ "     - Click **Create**.\n"
+#~ "     - Click **Continue** in the warning dialog about creating a virtual\n"
+#~ "       machine without a hard drive.\n"
+#~ msgstr ""
+#~ "  1. In dem Fenster **Speichergröße**:\n"
+#~ "     - Weisen Sie mindestens 2048 MB Hauptspeicher (RAM) zu.\n"
+#~ "     - Klicken Sie auf **Weiter**.\n"
+#~ "  1. In dem Fenster **Platte**:\n"
+#~ "     - Wählen Sie **Keine Festplatte**.\n"
+#~ "     - Klicken Sie auf **Erzeugen**.\n"
+#~ "     - Klicken Sie in dem Warnfenster zum Erstellen einer virtuellen "
+#~ "Maschine ohne\n"
+#~ "       Festplatte auf **Fortfahren**.\n"

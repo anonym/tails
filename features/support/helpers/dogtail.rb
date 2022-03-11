@@ -124,7 +124,7 @@ module Dogtail
       elsif [Integer, Float].include?(value.class)
         v.to_s
       else
-        raise "#{self.name} does not know how to handle argument type " \
+        raise "#{name} does not know how to handle argument type " \
               "'#{value.class}'"
       end
     end
@@ -198,6 +198,14 @@ module Dogtail
       run("#{@var}.#{key} = #{self.class.value_to_s(value)}")
     end
 
+    def combovalue
+      get_field('combovalue')
+    end
+
+    def combovalue=(value)
+      set_field('combovalue', value)
+    end
+
     def checked
       get_field('checked') == 'True'
     end
@@ -258,7 +266,7 @@ module Dogtail
       # Ruby < 2.7 handles arguments vs option hash differently, so we
       # need a workaround.
       # XXX:Bullseye: drop this workaround once we run on Ruby >=2.7.
-      if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.7")
+      if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.7')
         if pattern.class == Hash
           opts.merge!(pattern)
           pattern = nil
@@ -272,14 +280,14 @@ module Dogtail
         end
         child = nil
         retry_action(retries, delay: 1, exception: Failure, msg: "Found no child matching /#{pattern.source}/") do
-          child = self.children(**opts).find do |c|
+          child = children(**opts).find do |c|
             pattern.match(c.name)
           end
           assert_not_nil(child)
         end
         child
       else
-        self.original_child_method(pattern, **opts)
+        original_child_method(pattern, **opts)
       end
     end
 
