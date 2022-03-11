@@ -31,8 +31,8 @@ def main():
     # don't support.
     date_format = '%a %b %-e  %R'
     if tzname:
-        env = {'TZ': tzname}
-        env.update(os.environ)
+        env = os.environ.copy()
+        env['TZ'] = tzname
         os.execve('/bin/date', ['date', f"+{date_format}"], env=env)
     else:
         now = datetime.datetime.now()
