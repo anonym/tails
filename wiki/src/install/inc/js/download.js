@@ -238,7 +238,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
   /* No JavaScript */
 
-  hide(document.getElementById("no-js"));
+  toggleDisplay(document.getElementsByClassName("no-js"), "hide");
+  show(document.getElementById("download-img"));
+  show(document.getElementById("download-iso"));
 
   /* Internet Explorer */
 
