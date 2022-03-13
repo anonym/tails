@@ -4,15 +4,17 @@ import argparse
 import logging
 import os
 from pathlib import Path
-from gi.repository import GLib, Gio, GObject
+from gi.repository import GLib, Gio
 
 from tps import DBUS_SERVICE_NAME
 from tps.service import Service
 
+from typing import Optional
+
 logger = logging.getLogger(__name__)
 
 mainloop = GLib.MainLoop()
-service = None
+service = None  # type: Optional[Service]
 
 
 def on_bus_acquired(connection: Gio.DBusConnection, name: str) -> None:

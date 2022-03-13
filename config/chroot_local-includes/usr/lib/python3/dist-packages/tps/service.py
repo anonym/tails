@@ -14,7 +14,8 @@ from tps.job import ServiceUsingJobs
 from tps.udisks_monitor import UDisksCreationMonitor
 from tps import State, IN_PROGRESS_STATES, DBUS_ROOT_OBJECT_PATH, \
     DBUS_SERVICE_INTERFACE, TPS_MOUNT_POINT, \
-    ON_ACTIVATED_HOOKS_DIR, ON_DEACTIVATED_HOOKS_DIR
+    ON_ACTIVATED_HOOKS_DIR, ON_DEACTIVATED_HOOKS_DIR, \
+    DBUS_FEATURES_PATH
 
 if TYPE_CHECKING:
     from tps.job import Job
@@ -67,6 +68,7 @@ class Service(DBusObject, ServiceUsingJobs):
         super().__init__(connection=connection)
         self.connection = connection
         self.mainloop = loop
+        self.object_manager = None  # type: Optional[Gio.DBusObjectManagerServer]
         self.config_file = ConfigFile(TPS_MOUNT_POINT)
         self.bus_id = None
         self.features = list()  # type: List[Feature]
@@ -369,10 +371,22 @@ class Service(DBusObject, ServiceUsingJobs):
         try:
             self.register(self.connection)
 
+            # Create the object manager
+            object_manager_path = DBUS_FEATURES_PATH
+            self.object_manager = Gio.DBusObjectManagerServer(
+                object_path=object_manager_path,
+            )
+
             for FeatureClass in features.get_classes():
                 feature = FeatureClass(self)
                 feature.register(self.connection)
+                self.object_manager.export(Gio.DBusObjectSkeleton.new(feature.dbus_path))
                 self.features.append(feature)
+
+            # Export the object manager on the connection. We do this
+            # after exporting the features above to avoid
+            # InterfacesAdded signals being emitted.
+            self.object_manager.set_connection(self.connection)
 
             self.refresh_features()
 
@@ -400,6 +414,33 @@ class Service(DBusObject, ServiceUsingJobs):
         self.config_file.save(active_features)
 
     def refresh_features(self):
+        # Refresh custom features
+        mounts = list()
+        if self.config_file.exists():
+            mounts = self.config_file.parse()
+            known_mounts = [mount for feature in self.features
+                            for mount in feature.Mounts]
+            unknown_mounts = [mount for mount in mounts
+                              if mount not in known_mounts]
+            for i, mount in enumerate(unknown_mounts):
+                class CustomFeature(Feature):
+                    Id = f"CustomFeature{i}"
+                    Description = str(mount.dest_orig)
+                    Mounts = [mount]
+                feature = CustomFeature(self, is_custom=True)
+                feature.register(self.connection)
+                self.object_manager.export(Gio.DBusObjectSkeleton.new(feature.dbus_path))
+                self.features.append(feature)
+
+        # Remove the ones whose mount entry was removed from the config
+        # file
+        custom_features = [f for f in self.features if f.is_custom]
+        for feature in custom_features:
+            if feature.Mounts[0] not in mounts:
+                feature.unregister(self.connection)
+                self.object_manager.unexport(feature.dbus_path)
+                self.features.remove(feature)
+
         # Refresh IsActive of all features
         for feature in self.features:
             feature.refresh_is_active()

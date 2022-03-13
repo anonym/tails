@@ -78,8 +78,8 @@ class Mount(object):
         self.is_file = is_file
         self.uses_symlinks = uses_symlinks
 
-        self._dest_orig = self.dest
-        self._src_orig = self.src
+        self.dest_orig = self.dest
+        self.src_orig = self.src
         if os.getenv("NOSYMFOLLOW_MOUNTPOINT"):
             # We allow specifying the mount point for the nosymfollow
             # bind mount via an environment variable to allow tests to
@@ -117,7 +117,7 @@ class Mount(object):
         """The string representation of a mount. This is in the format
         of a persistence.conf line."""
         options = ','.join(shlex.quote(option) for option in self.options)
-        return shlex.quote(str(self._dest_orig)) + '\t' + options
+        return shlex.quote(str(self.dest_orig)) + '\t' + options
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
@@ -139,7 +139,7 @@ class Mount(object):
             # separated elements
             return False
 
-        if elements[0] != str(self._dest_orig):
+        if elements[0] != str(self.dest_orig):
             # The destination doesn't match
             return False
 
@@ -178,12 +178,12 @@ class Mount(object):
             if not self.src.exists():
                 # XXX: This is an expected error which we display to the
                 #      user, we might want to translate it.
-                error_msg = f"Source directory {self._src_orig} does not exist. " \
+                error_msg = f"Source directory {self.src_orig} does not exist. " \
                             f"You have to create it and copy files into it " \
                             f"before you can activate this feature."
                 raise SymlinkSourceDirectoryError(error_msg)
             if not any(self.src.iterdir()):
-                error_msg = f"Source directory {self._src_orig} is empty. " \
+                error_msg = f"Source directory {self.src_orig} is empty. " \
                             f"You have to copy files into it before you " \
                             f"can activate this feature."
                 raise SymlinkSourceDirectoryError(error_msg)

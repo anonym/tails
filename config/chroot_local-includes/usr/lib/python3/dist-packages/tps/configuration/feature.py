@@ -37,6 +37,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             <method name='Activate'/>
             <method name='Deactivate'/>
             <property name="Id" type="s" access="read"/>
+            <property name="Description" type="s" access="read"/>
             <property name="IsActive" type="b" access="read"/>
             <property name="Job" type="o" access="read"/>
         </interface>
@@ -47,10 +48,11 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
     def dbus_path(self):
         return os.path.join(DBUS_FEATURES_PATH, self.Id)
 
-    def __init__(self, service: "Service"):
+    def __init__(self, service: "Service", is_custom: bool = False):
         logger.debug("Initializing feature %r", self.Id)
         super().__init__(connection=service.connection)
         self.service = service
+        self.is_custom = is_custom
 
         # Check if the feature is active
         config_file = self.service.config_file
@@ -215,6 +217,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
     def Id(self) -> str:
         """The name of the feature. It must only contain the ASCII
         characters "[A-Z][a-z][0-9]_"."""
+        return str()
+
+    @property
+    def Description(self) -> str:
+        """The name of the feature that will be shown to the user.
+        Only used for custom features for now."""
         return str()
 
     @property

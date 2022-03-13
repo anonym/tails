@@ -1,14 +1,18 @@
+import os.path
+
 from gi.repository import Gdk, Gio, Gtk
 import inspect
 from logging import getLogger
 import subprocess
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
-from tps_frontend import FEATURES_VIEW_UI_FILE
+from tps_frontend import FEATURES_VIEW_UI_FILE, DBUS_FEATURES_PATH, \
+    DBUS_SERVICE_NAME, DBUS_FEATURE_INTERFACE
 from tps_frontend.view import View
 from tps_frontend.feature import Feature
 
 if TYPE_CHECKING:
+    from gi.repository import Handy
     from tps_frontend.window import Window
 
 logger = getLogger(__name__)
@@ -63,7 +67,16 @@ class FeaturesView(View):
     def __init__(self, window: "Window", bus: Gio.DBusConnection):
         super().__init__(window)
         self.bus = bus
-        self.features = None
+        self.object_manager = Gio.DBusObjectManagerClient.new_sync(
+            bus,
+            Gio.DBusObjectManagerClientFlags.NONE,
+            DBUS_SERVICE_NAME,
+            DBUS_FEATURES_PATH,
+            None,
+            None,
+            None
+        )  # type: Gio.DBusObjectManagerClient
+        self.features = list()
 
         # Append all non-default paths that contain icons to the search
         # paths
@@ -81,6 +94,25 @@ class FeaturesView(View):
                              "advanced_settings_list_box"]:
             listbox = self.builder.get_object(listbox_name)  # type: Gtk.ListBox
             listbox.set_header_func(self.add_separator)
+
+        # Show custom features
+        self.custom_features_box = self.builder.get_object("custom_features_box")  # type: Gtk.Box
+        self.custom_features_list_box = self.builder.get_object("custom_features_list_box")  # type: Gtk.ListBox
+        dbus_objects = self.object_manager.get_objects()  # type: List[Gio.DBusObjectProxy]
+        for obj in dbus_objects:
+            path = obj.get_object_path()
+            if os.path.basename(path).startswith("CustomFeature"):
+                # It should be possible to get the proxy from the
+                # DBusObject instead via get_interface() but for some
+                # reason that only returns None.
+                proxy = Gio.DBusProxy.new_sync(
+                    bus, Gio.DBusProxyFlags.NONE, None,
+                    DBUS_SERVICE_NAME,
+                    path,
+                    DBUS_FEATURE_INTERFACE,
+                    None,
+                )  # type: Gio.DBusProxy
+                self.add_custom_feature(proxy)
 
     def show(self):
         super().show()
@@ -117,3 +149,9 @@ class FeaturesView(View):
         logger.debug("Opening documentation: %s", uri)
         subprocess.run(["tails-documentation", uri])
         return True
+
+    def add_custom_feature(self, proxy: Gio.DBusObject):
+        row = self.builder.get_object("custom_feature_row")  # type: Handy.ActionRow
+        row.set_title(proxy.get_cached_property("Description").get_string())
+        self.custom_features_list_box.add(row)
+        self.custom_features_box.show_all()

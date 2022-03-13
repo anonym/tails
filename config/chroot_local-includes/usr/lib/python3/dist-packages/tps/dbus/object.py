@@ -54,7 +54,7 @@ class DBusObject(object, metaclass=ABCMeta):
                     'interface': interface.name, 'args': args}
 
     def register(self, connection: Gio.DBusConnection):
-        logger.debug("Registering %r", self.dbus_path)
+        logger.debug("Registering %s", self.dbus_path)
 
         for interface in self.node_info.interfaces:
             reg_id = connection.register_object(self.dbus_path,
