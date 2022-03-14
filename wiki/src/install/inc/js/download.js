@@ -236,14 +236,12 @@ document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("retry-json").onclick = function(e) { resetVerificationResult(); showVerifyButton(); }
   document.getElementById("retry-image").onclick = function(e) { resetVerificationResult(); showVerifyButton(); }
 
-  /* No JavaScript */
-
+  // Display elements of the JavaScript version
   toggleDisplay(document.getElementsByClassName("no-js"), "hide");
   show(document.getElementById("download-img"));
   show(document.getElementById("download-iso"));
 
-  /* Internet Explorer */
-
+  // Internet Explorer
   if ( navigator.userAgent.indexOf("MSIE") > -1 || navigator.userAgent.indexOf("Trident") > -1 ) {
     show(document.getElementById("ie"));
   } else {
