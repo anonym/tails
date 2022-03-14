@@ -42,18 +42,22 @@ document.addEventListener("DOMContentLoaded", function() {
   function hideAllWarnings(evt) {
     warnings.forEach(function(element) {
       document.getElementById("detailed-" + element).style.display = "none";
+      document.getElementById("toggle-" + element).classList.remove("button-revealed");
     });
 
   }
 
   function toggleWarnings(warning, evt) {
-    hideAllWarnings(evt);
     let elem = document.getElementById("detailed-" + warning);
     let style = elem.style;
     if (style.display == "block") {
-      style.display = "none";
+      hideAllWarnings(evt);
+      return
     } else {
+      hideAllWarnings(evt);
       style.display = "block";
+      let btn = document.getElementById("toggle-" + warning);
+      btn.classList.add("button-revealed")
     }
   }
 
