@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function() {
    */
   var lang;
   var languages = ['en', 'de', 'es', 'fr', 'it', 'pt', 'ru'];
-  console.log(document.body.classList);
   languages.forEach(function(l) {
     if (document.body.classList.contains(l)) {
       lang = l;
@@ -35,4 +34,33 @@ document.addEventListener("DOMContentLoaded", function() {
       break;
   }
   document.getElementById("searchbox").placeholder = placeholder;
+
+  /* Toggle warnings
+   */
+  let warnings = ["identity", "tor", "computer"];
+
+  function hideAllWarnings(evt) {
+    warnings.forEach(function(element) {
+      document.getElementById("detailed-" + element).style.display = "none";
+      document.getElementById("toggle-" + element).classList.remove("button-revealed");
+    });
+
+  }
+
+  function toggleWarnings(warning, evt) {
+    let elem = document.getElementById("detailed-" + warning);
+    let style = elem.style;
+    if (style.display == "block") {
+      hideAllWarnings(evt);
+      return
+    } else {
+      hideAllWarnings(evt);
+      style.display = "block";
+      let btn = document.getElementById("toggle-" + warning);
+      btn.classList.add("button-revealed")
+    }
+  }
+
+  warnings.forEach(warning => document.getElementById("toggle-" + warning).onclick = function(e) { toggleWarnings(warning, e); });
+  warnings.forEach(warning => document.getElementById("hide-" + warning).onclick = function(e) { hideAllWarnings(e); });
 });
