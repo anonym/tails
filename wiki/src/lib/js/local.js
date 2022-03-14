@@ -39,17 +39,17 @@ document.addEventListener("DOMContentLoaded", function() {
    */
   let warnings = ["identity", "tor", "computer"];
 
-  function hideWarnings(keep = null) {
+  function hideAllWarnings(evt) {
     warnings.forEach(function(element) {
-      if (element != keep) {
-        document.getElementById("detailed-" + element).style.display = "none";
-      }
+      document.getElementById("detailed-" + element).style.display = "none";
     });
+
   }
 
-  function toggleWarnings(warning) {
-    hideWarnings(warning);
-    let style = document.getElementById("detailed-" + warning).style;
+  function toggleWarnings(warning, evt) {
+    hideAllWarnings(evt);
+    let elem = document.getElementById("detailed-" + warning);
+    let style = elem.style;
     if (style.display == "block") {
       style.display = "none";
     } else {
@@ -57,6 +57,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
 
-  warnings.forEach(warning => document.getElementById("toggle-" + warning).onclick = function(e) { toggleWarnings(warning); });
-  warnings.forEach(warning => document.getElementById("hide-" + warning).onclick = function(e) { hideWarnings(); });
+  warnings.forEach(warning => document.getElementById("toggle-" + warning).onclick = function(e) { toggleWarnings(warning, e); });
+  warnings.forEach(warning => document.getElementById("hide-" + warning).onclick = function(e) { hideAllWarnings(e); });
 });
