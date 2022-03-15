@@ -303,7 +303,7 @@ input[type="checkbox"], input[type="radio"] {
 
 .page {
   margin: 0 auto;
-  padding: 0 2em 2em 2em;
+  padding: 0 30px 30px 30px;
   max-width: 986px;
   position: relative;
   border: 0px solid black;
@@ -502,13 +502,15 @@ body.ru .lang.ru.block {
   background: white;
   max-width: 986px;
   margin: 0 auto;
-  padding-left: 15px;
+  padding-left: 30px;
   border-bottom: 1px solid #eee;
 }
 
 .topbar ul {
   margin: 0;
   max-width: 100%;
+  display: flex;
+  gap: 20px;
 }
 
 .topbar ul li {
@@ -517,7 +519,6 @@ body.ru .lang.ru.block {
 
 .topbar a, .topbar .selflink {
   display: block;
-  margin: 0 8px;
   padding: 4px 0;
   font-family: "Source Sans Pro Regular", "DejaVu Sans", "Verdana", sans-serif;
   font-weight: bold;
@@ -541,8 +542,10 @@ body.ru .lang.ru.block {
 @media (min-width: 810px) {
   .topbar a, .topbar .selflink {
     padding-top: 8px;
-    margin: 0 12px;
     font-size: 16px;
+  }
+  .topbar ul {
+    gap: 30px;
   }
 }
 
