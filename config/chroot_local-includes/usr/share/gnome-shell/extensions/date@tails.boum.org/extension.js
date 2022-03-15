@@ -14,7 +14,7 @@ function overrider(lbl) {
     if(out == null) {
         var desired = now.toLocaleString('en-US') + ' GMT';
     } else {
-        desired = out.toString();
+        desired = out.toString().trim();
     }
 
     var t = lbl.get_text();
