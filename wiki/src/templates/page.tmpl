@@ -177,42 +177,13 @@
 
 </div>
 
-<TMPL_IF HTML5><footer<TMPL_ELSE><div</TMPL_IF> id="footer" class="pagefooter" role="contentinfo">
-<TMPL_UNLESS DYNAMIC>
-<TMPL_IF HTML5><nav id="pageinfo"><TMPL_ELSE><div id="pageinfo"></TMPL_IF>
-
-<TMPL_VAR TRAILS>
-
-<TMPL_IF TAGS>
-<TMPL_IF HTML5><nav class="tags"><TMPL_ELSE><div class="tags"></TMPL_IF>
-Tags:
-<TMPL_LOOP TAGS>
-<TMPL_VAR LINK>
-</TMPL_LOOP>
-<TMPL_IF HTML5></nav><TMPL_ELSE></div></TMPL_IF>
-</TMPL_IF>
-
-<TMPL_IF COPYRIGHT>
-<div class="pagecopyright">
-<a name="pagecopyright"></a>
-<TMPL_VAR COPYRIGHT>
-</div>
-</TMPL_IF>
-
-<TMPL_IF LICENSE>
-<div class="pagelicense">
-<a name="pagelicense"></a>
-License: <TMPL_VAR LICENSE>
-</div>
-</TMPL_IF>
-
-<TMPL_IF HTML5></nav><TMPL_ELSE></div></TMPL_IF>
-<TMPL_IF EXTRAFOOTER><TMPL_VAR EXTRAFOOTER></TMPL_IF>
-</TMPL_UNLESS>
-<!-- from <TMPL_VAR WIKINAME> -->
-<TMPL_IF HTML5></footer><TMPL_ELSE></div></TMPL_IF>
-
 <TMPL_IF HTML5></article><TMPL_ELSE></div></TMPL_IF>
+
+<TMPL_IF HTML5><footer<TMPL_ELSE><div</TMPL_IF> id="footer" class="pagefooter" role="contentinfo">
+
+<TMPL_VAR FOOTER>
+
+<TMPL_IF HTML5></footer><TMPL_ELSE></div></TMPL_IF>
 
 <script type="text/javascript">
   var linkelements = document.querySelectorAll('.use-mirror-pool');
