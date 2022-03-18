@@ -151,3 +151,34 @@ and download.
   `install/inc/steps/*.inline.mdwn` which is inlined from the scenarios
   themselves (for example `install/debian/usb.mdwn`) and adapted to each
   scenario using CSS classes.
+
+<a id="etcher"></a>
+
+*balenaEtcher*
+==============
+
+For Windows and macOS, we instruct people to use
+*[balenaEtcher](https://www.balena.io/etcher/)* to copy the USB image onto
+their USB stick. On top of this, we self-host the downloads of *balenaEtcher*
+on our own infrastructure. The
+<https://gitlab.tails.boum.org/tails/etcher-binary> repository is added as an
+[ikiwiki underlay](https://ikiwiki.info/plugins/underlay/) on our website.
+
+We self-host a copy of *balenaEtcher* because:
+
+- It gives us more predictability on what users end up doing. This is useful in
+  terms of Help Desk.
+
+- It prevents 3rd parties from learning a bit more about who uses Tails.
+  Pointing to GitHub from our website would provide direct referrers to GitHub
+  (and maybe Balena too) about who is using *balenaEtcher* to install Tails.
+
+- It prevents GitHub from serving rogue downloads (targeted or not). We might
+  still get a rogue download ourselves but:
+
+  * We download *balenaEtcher* several times from different locations to
+    prevent targeted attacks.
+
+  * We download *balenaEtcher* once, which might save our users some supply
+    chain issues. If our users were to download *balenaEtcher* every time, a
+    short-time supply chain attack would definitely affect some of them.
