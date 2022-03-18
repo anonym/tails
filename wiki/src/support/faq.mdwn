@@ -472,6 +472,33 @@ Tails currently does not include a Monero wallet. However, we are interested
 in making it easier to use Monero in Tails in the future. See [[!tails_ticket
 17823]] for a list of unofficial guides on how to use Monero in Tails.
 
+<h2 id="voip">Can I do voice or video calls from Tails?</h2>
+
+Not yet.
+
+- Videoconferencing tools that work in web browsers, like *Jitsi*, *Google
+  Meet* or *BigBlueButton*, don't work in *Tor Browser* yet.
+
+  They rely on the [[!wikipedia WebRTC]] technology, which is itself
+  transported over [[!wikipedia UDP]] connections, but the Tor network only
+  transports TCP connections, like the ones used for HTTP and email.
+
+  Tor is working on [sending UDP traffic over
+  Tor](https://gitlab.torproject.org/tpo/core/torspec/-/issues/73), which
+  should remove this limitation.
+
+- Proprietary applications like *Skype* or *Zoom* will never be available in
+  Tails because they are not Free Software.
+
+- [*Mumble*](https://www.mumble.com/) is the only voice chat application that
+  we know works from Tails. You can use the [[Additional
+  Software|doc/first_steps/persistence#additional_software]] feature to add
+  *Mumble* to your Tails.
+
+  [*Wahay*](https://wahay.org/) is a decentalized voice chat application based
+  on *Mumble*. Please, help us [[!tails_ticket 17617 desc="get *Wahay* in
+  Debian"]] if you are a Debian developper.
+
 <h1 id="desktop">Desktop environment</h1>
 
 <h2 id="timezone">Why is the time set wrong?</h2>
