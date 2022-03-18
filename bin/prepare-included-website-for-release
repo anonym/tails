@@ -25,6 +25,8 @@ if [ "$DIST" = stable ]; then  # preparing a final release
 	    > wiki/src/inc/stable_amd64_${type:?}_gpg_verify.html
        echo "http://dl.amnesia.boum.org/tails/stable/${basename:?}/${filename:?}" \
 	    > wiki/src/inc/stable_amd64_${type:?}_url.html
+       echo "https://mirrors.wikimedia.org/tails/stable/${basename:?}/${filename:?}" \
+	    > wiki/src/inc/stable_amd64_${type:?}_url_https.html
        echo "https://tails.boum.org/torrents/files/${filename:?}.sig" \
 	    > wiki/src/inc/stable_amd64_${type:?}_sig_url.html
        echo "https://tails.boum.org/torrents/files/${filename:?}.torrent" \
