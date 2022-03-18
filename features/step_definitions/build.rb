@@ -40,7 +40,7 @@ Given %r{^the last version mentioned in debian/changelog is ([[:alnum:]~.]+)$} d
   raise StandardError, 'dpkg-parsechangelog failed.' if $CHILD_STATUS != 0
 
   if last != version
-    fatal_system "debchange -v '#{version}' 'New upstream release'"
+    fatal_system "DEBEMAIL=tails@boum.org debchange -v '#{version}' 'New upstream release'"
   end
 end
 
