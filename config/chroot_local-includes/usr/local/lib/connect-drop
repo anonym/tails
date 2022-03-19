@@ -62,12 +62,6 @@ def get_parser():
     p = ArgumentParser()
     connection = p.add_argument_group('Connection')
     connection.add_argument(
-            "--dbus",
-            action="append_const",
-            const=DbusSocketSpec(),
-            dest='connections',
-            )
-    connection.add_argument(
         "--connect",
         "-c",
         action="append",
@@ -77,6 +71,13 @@ def get_parser():
         help="This can be something like TCP:example.com:80 or "
         "UNIX:/path/to/my.sock or TCP6:example.org:25",
     )
+    connection.add_argument(
+            "--dbus",
+            action="append_const",
+            const=DbusSocketSpec(),
+            dest='connections',
+            help='like --connect, but connect to dbus'
+            )
 
     child = p.add_argument_group('Child')
     child.add_argument("--env-keep", action='store_true', default=False, dest='env_keep',
