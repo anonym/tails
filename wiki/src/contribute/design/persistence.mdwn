@@ -2,7 +2,7 @@ Data persistence is a somewhat tricky topic in a Live system context,
 especially one explicitly designed to avoid leaving any trace of
 its use.
 
-Some real-life usecases however require to set up some kind of data
+Some real-life use cases however require to set up some kind of data
 persistence, which were then carefully introduced and supported.
 
 [[!toc levels=4]]
@@ -13,25 +13,22 @@ Usecases
 What can be made persistent?
 ----------------------------
 
-Here are the usecases that are of interest for our users and we want
+Here are the use cases that are of interest for our users and we want
 to support.
 
 ### Application-specific configurations
 
 This is relevant for the following applications:
 
-- GnuPG, SSH and OTR key pairs
-- GnuPG configuration
-- SSH client configuration
-- Tor Browser certificate trust
-- Tor Browser bookmarks
-- Pidgin configuration
-- MUA configuration
-- printers configuration
-- Tor's data/cache for faster bootstrap with slow connections and
-  better protections through more stable entry guards
-  (`/var/lib/tor/`)
-- NoScript global behaviour (whitelist / blacklist) and exceptions
+- Tor Browser bookmarks (`/home/amnesia/.mozilla/firefox/bookmarks`)
+- Printer configuration (`/etc/cups`)
+- Network configuration (`/etc/NetworkManager/system-connections`)
+- Tor bridge configuration (`/var/lib/tca`)
+- Electrum configuration and data (`/home/amnesia/.electrum`)
+- Thunderbird configuration and data (`/home/amnesia/.thunderbird`)
+- GnuPG configuration and keys (`/home/amnesia/.gnupg`)
+- Pidgin configuration and OTR keys (`/home/amnesia/.purple`)
+- SSH client configuration and key (`/home/amnesia/.ssh`)
 
 A tool (`tails-persistence-setup`) helps the user to choose exactly
 what files/directories should be persistent. With such a general
