@@ -60,13 +60,14 @@ else:
 
 def get_parser():
     p = ArgumentParser()
-    p.add_argument(
+    connection = p.add_argument_group('Connection')
+    connection.add_argument(
             "--dbus",
             action="append_const",
             const=DbusSocketSpec(),
             dest='connections',
             )
-    p.add_argument(
+    connection.add_argument(
         "--connect",
         "-c",
         action="append",
@@ -76,11 +77,13 @@ def get_parser():
         help="This can be something like TCP:example.com:80 or "
         "UNIX:/path/to/my.sock or TCP6:example.org:25",
     )
-    p.add_argument("--env-keep", action='store_true', default=False, dest='env_keep',
+
+    child = p.add_argument_group('Child')
+    child.add_argument("--env-keep", action='store_true', default=False, dest='env_keep',
             help="Run the process keeping the previous environment"
             )
 
-    p.add_argument("-u", "--user")
+    child.add_argument("-u", "--user")
     p.add_argument("cmd")
 
     return p
