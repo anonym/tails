@@ -219,7 +219,7 @@ Given(/^I plug and mount a USB drive containing a Tails USB image$/) do
   @usb_image_path = "#{usb_image_dir}/#{File.basename(TAILS_IMG)}"
 end
 
-Given /^I enable all persistence presets$/ do
+def enable_all_persistence_presets
   @screen.wait('PersistenceWizardPresets.png', 20)
   presets = persistent_presets_ui_settings
   presets[0]['is_first'] = true
@@ -243,13 +243,11 @@ Given /^I enable all persistence presets$/ do
       debug_log('setting already enabled, skipping')
     end
   end
-  save_and_exit_the_persistence_wizard
 end
 
-def save_and_exit_the_persistence_wizard
+def save_persistence_settings
   @screen.press('Return') # Press the Save button
   @screen.wait('PersistenceWizardDone.png', 60)
-  @screen.press('alt', 'F4')
 end
 
 When /^I disable the first persistence preset$/ do
@@ -271,7 +269,8 @@ Given /^I create a persistent partition( with the default settings| for Addition
   @screen.press('Tab')
   @screen.type(@persistence_password, ['Return'])
   @screen.wait('PersistenceWizardPresets.png', 300)
-  step 'I enable all persistence presets' unless default_settings
+  enable_all_persistence_presets unless default_settings
+  save_persistence_settings unless asp
 end
 
 def check_disk_integrity(name, dev, scheme)
@@ -1239,4 +1238,8 @@ end
 
 Then /^(.*) is not configured to persist$/ do |dir|
   assert(!configured_persistent_mountpoints.include?(dir))
+end
+
+Then /^I accept the persistence wizard's offer to restart Tails$/ do
+  @screen.wait('PersistenceWizardRestartButton.png', 5).click
 end

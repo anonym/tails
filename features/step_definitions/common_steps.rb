@@ -744,8 +744,7 @@ end
 
 Then /^Tails eventually (shuts down|restarts)$/ do |mode|
   # In the Additional Software feature, we need to wait enough for
-  # tails-synchronize-data-to-new-persistent-volume-on-shutdown.service
-  # to complete: see its custom, higher-than-default, TimeoutStopSec=.
+  # tails-synchronize-data-to-new-persistent-volume to complete.
   try_for(6 * 60) do
     if mode == 'restarts'
       @screen.find('TailsGreeter.png')
