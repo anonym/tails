@@ -76,6 +76,10 @@ def get_parser():
         help="This can be something like TCP:example.com:80 or "
         "UNIX:/path/to/my.sock or TCP6:example.org:25",
     )
+    p.add_argument("--env-keep", action='store_true', default=False, dest='env_keep',
+            help="Run the process keeping the previous environment"
+            )
+
     p.add_argument("-u", "--user")
     p.add_argument("cmd")
 
@@ -208,15 +212,18 @@ def main():
     else:
         home = str(Path.home())
 
-    os.execvpe(
-        args.cmd,
-        [args.cmd] + args.cmd_args,
-        env=dict(
+    proc_environ = dict(os.environ) if args.env_keep else {}
+    proc_environ.update(dict(
             # Yes, the child process could enumerate the open fd, but this is probably clearer
             # especially, we don't want to rely on the fact that FD always start from 3 and are incremental
             INHERIT_FD=",".join(str(s.fileno()) for s in sockets),
             HOME=home,
-        ),
+            ))
+
+    os.execvpe(
+        args.cmd,
+        [args.cmd] + args.cmd_args,
+        env=proc_environ,
     )
 
 
