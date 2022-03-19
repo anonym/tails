@@ -4,17 +4,15 @@
 def get_persistence_presets_config(skip_links = false)
   # Python script that prints all persistence configuration lines (one per
   # line) in the form: <mount_point>\t<comma-separated-list-of-options>
-  script = <<-SCRIPT
-from tps.configuration import features
-for feature in features.get_classes():
-  for mount in feature.Mounts:
-    print(mount)
-SCRIPT
-  # VMCommand:s cannot handle newlines, so we replace them with
-  # semicolons.
-  script.sub!("\n", ";")
-  presets_configs = $vm.execute_successfully("python3 -c '#{script}'")
-                       .stdout.chomp.split("\n")
+  script = [
+    'from tps.configuration import features',
+    'for feature in features.get_classes():',
+    '    for mount in feature.Mounts:',
+    '        print(mount)',
+  ]
+  c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
+  assert(c.success?, 'Python script for get_persistence_presets_config failed')
+  presets_configs = c.stdout.chomp.split("\n")
   assert presets_configs.size >= 10,
          "Got #{presets_configs.size} persistence preset configuration " \
          'lines, which is too few'
@@ -50,45 +48,6 @@ def persistent_volumes_mountpoints
   $vm.execute('ls -1 -d /live/persistence/*_unlocked/').stdout.chomp.split
 end
 
-# Returns an array that for each persistence preset the running Tails is aware
-# of, contains a hash with the following keys:
-# id, enabled, has_configuration_button.
-def persistent_presets_ui_settings
-  # Perl script that prints all persistence presets
-  # in the form: <id>:<enabled>:<has_configuration_button>
-  script = <<-SCRIPT
-  use strict;
-  use warnings FATAL => "all";
-  use Tails::Persistence::Configuration::Presets;
-  foreach my $preset (Tails::Persistence::Configuration::Presets->new()->all) {
-    say(sprintf(
-      "%s:%s:%s",
-      $preset->{id},
-      ($preset->{enabled} ? 1 : 0),
-      (exists($preset->{configuration_app_desktop_id}) && defined($preset->{configuration_app_desktop_id})
-         ? 1
-         : 0
-      ),
-    ));
-  }
-  SCRIPT
-  # VMCommand:s cannot handle newlines, and they're irrelevant in the
-  # above perl script any way
-  script.delete!("\n")
-  presets = $vm.execute_successfully("perl -E '#{script}'")
-               .stdout.chomp.split("\n")
-  assert presets.size >= 10,
-         "Got #{presets.size} persistence presets, which is too few"
-  presets.map do |line|
-    id, enabled, has_configuration_button = line.split(':')
-    {
-      'id'                       => id,
-      'enabled'                  => (enabled == '1'),
-      'has_configuration_button' => (has_configuration_button == '1'),
-    }
-  end
-end
-
 # Returns the list of mountpoints which are configured in persistence.conf
 def configured_persistent_mountpoints
   $vm.file_content(
@@ -96,6 +55,14 @@ def configured_persistent_mountpoints
   ).split("\n").map do |line|
     line.split[0]
   end
+end
+
+def persistent_storage_frontend
+  Dogtail::Application.new('tps-frontend')
+end
+
+def persistent_storage_main_frame
+  persistent_storage_frontend.child('Persistent Storage', roleName: 'frame')
 end
 
 def recover_from_upgrader_failure
@@ -217,41 +184,29 @@ Given(/^I plug and mount a USB drive containing a Tails USB image$/) do
 end
 
 def enable_all_persistence_presets
-  @screen.wait('PersistenceWizardPresets.png', 20)
-  presets = persistent_presets_ui_settings
-  presets[0]['is_first'] = true
-  debug_log("presets: #{presets}")
-  presets.each do |setting|
-    debug_log("on preset: #{setting}")
-    tabs_to_select_switch  = 3 # previous switch -> separator -> row -> switch
-    tabs_to_select_switch -= 1 if setting['is_first']
-    tabs_to_select_switch += 1 if setting['has_configuration_button']
-    # Select the switch
-    debug_log("typing TAB #{tabs_to_select_switch} times to select the switch")
-    tabs_to_select_switch.times do
-      debug_log('typing TAB')
-      @screen.press('Tab')
-    end
-    # Activate the switch
-    if !setting['enabled']
-      debug_log('pressing space')
-      @screen.press('space')
+  assert persistent_storage_main_frame.child('Personal Data', roleName: 'label')
+  switches = persistent_storage_main_frame.children(roleName: 'toggle button')
+  switches.each do |switch|
+    if switch.checked
+      debug_log("#{switch.name} is already enabled, skipping")
     else
-      debug_log('setting already enabled, skipping')
+      debug_log("enabling #{switch.name}")
+      switch.click
+      try_for(10) { switch.checked }
     end
   end
 end
 
-def save_persistence_settings
-  @screen.press('Return') # Press the Save button
-  @screen.wait('PersistenceWizardDone.png', 60)
-end
-
 When /^I disable the first persistence preset$/ do
-  step 'I start "Configure persistent volume" via GNOME Activities Overview'
-  @screen.wait('PersistenceWizardPresets.png', 300)
-  @screen.type(['Tab'], ['space'], ['Return'])
-  @screen.wait('PersistenceWizardDone.png', 30)
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+  assert persistent_storage_main_frame.child('Personal Data', roleName: 'label')
+  persistent_folder_switch = persistent_storage_main_frame.child(
+    'Activate Persistent Folder',
+    roleName: 'toggle button'
+  )
+  assert persistent_folder_switch.checked
+  persistent_folder_switch.click
+  try_for(10) { !persistent_folder_switch.checked }
   @screen.press('alt', 'F4')
 end
 
@@ -260,15 +215,22 @@ Given /^I create a persistent partition( with the default settings| for Addition
   default_settings = mode
   asp = mode == ' for Additional Software'
   unless asp
-    step 'I start "Configure persistent volume" via GNOME Activities Overview'
+    step 'I start "Persistent Storage" via GNOME Activities Overview'
   end
-  @screen.wait('PersistenceWizardStart.png', 60)
-  @screen.type(@persistence_password)
-  @screen.press('Tab')
-  @screen.type(@persistence_password, ['Return'])
-  @screen.wait('PersistenceWizardPresets.png', 300)
+  persistent_storage_main_frame.button('Co_ntinue').click
+  persistent_storage_main_frame
+    .child('Passphrase:', roleName: 'label')
+    .labelee
+    .typeText(@persistence_password)
+  persistent_storage_main_frame
+    .child('Confirm:', roleName: 'label')
+    .labelee
+    .typeText(@persistence_password)
+  persistent_storage_main_frame.button('_Create Persistent Storage').click
+  try_for(300) do
+    persistent_storage_main_frame.child('Personal Data', roleName: 'label')
+  end
   enable_all_persistence_presets unless default_settings
-  save_persistence_settings unless asp
 end
 
 def check_disk_integrity(name, dev, scheme)
@@ -750,10 +712,16 @@ Then /^only the expected files are present on the persistence partition on USB d
 end
 
 When /^I delete the persistent partition$/ do
-  step 'I start "Delete persistent volume" via GNOME Activities Overview'
-  @screen.wait('PersistenceWizardDeletionStart.png', 120)
-  @screen.press('space')
-  @screen.wait('PersistenceWizardDone.png', 120)
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+  try_for(120) do
+    persistent_storage_main_frame.button('Delete Persistent Storage')
+  end
+  persistent_storage_frontend
+    .child('Warning', roleName: 'alert')
+    .button('Delete Persistent Storage').click
+  assert persistent_storage_main_frame.label(
+    'The Persistent Storage was successfully deleted.'
+  )
 end
 
 Then /^Tails has started in UEFI mode$/ do

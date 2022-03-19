@@ -945,6 +945,10 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     # "Terminal" and "Root Terminal" search results, so let's use a
     # keyword only found in the former's .desktop file.
     app_name = 'commandline'
+  when 'Persistent Storage'
+    # "Persistent Storage" also matches "Back Up Persistent Storage"
+    # (tails-backup.desktop).
+    app_name = 'Configure which files'
   end
   @screen.wait("GnomeApplicationsMenu#{$language}.png", 10)
   @screen.press('super')
