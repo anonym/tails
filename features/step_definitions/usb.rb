@@ -259,6 +259,7 @@ When /^I disable the first persistence preset$/ do
 end
 
 Given /^I create a persistent partition( with the default settings| for Additional Software)?$/ do |mode|
+  # XXX: the wording here could be misleading. Pay attention when reading it! (or, please improve it)
   default_settings = mode
   asp = mode == ' for Additional Software'
   unless asp
