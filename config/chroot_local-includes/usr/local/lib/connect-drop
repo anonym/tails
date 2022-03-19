@@ -163,7 +163,13 @@ class SocketSpec:
 
 class DbusSocketSpec(SocketSpec):
     def __init__(self):
-        address = Gio.dbus_address_get_for_bus_sync(Gio.BusType.SYSTEM)
+        # We get the address of the D-Bus system bus the same way
+        # systemd and Gio.dbus_address_get_for_bus do, which is to
+        # use the value of the DBUS_SYSTEM_BUS_ADDRESS env var if its
+        # set, else unix:path=/var/run/dbus/system_bus_socket.
+        address = os.getenv("DBUS_SYSTEM_BUS_ADDRESS")
+        if not address:
+            address = "unix:path=/var/run/dbus/system_bus_socket"
         if not address.startswith("unix:path="):
             raise RuntimeError("Unexpected D-Bus path %s" % address)
         address = address.replace("unix:path=", "UNIX:")
