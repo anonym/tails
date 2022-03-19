@@ -47,6 +47,9 @@ import socket
 import sys
 import time
 
+import gi  # noqa:F401
+from gi.repository import Gio
+
 try:
     import prctl
 except ImportError:
@@ -57,6 +60,12 @@ else:
 
 def get_parser():
     p = ArgumentParser()
+    p.add_argument(
+            "--dbus",
+            action="append_const",
+            const=DbusSocketSpec(),
+            dest='connections',
+            )
     p.add_argument(
         "--connect",
         "-c",
@@ -132,6 +141,30 @@ class SocketSpec:
     def is_file(self):
         return self.family == "FILE"
 
+
+class DbusSocketSpec(SocketSpec):
+    def __init__(self):
+        address = Gio.dbus_address_get_for_bus_sync(Gio.BusType.SYSTEM)
+        if not address.startswith("unix:path="):
+            raise RuntimeError("Unexpected D-Bus path %s" % address)
+        address = address.replace("unix:path=", "UNIX:")
+        logging.debug("DBus address: %s", address)
+        super().__init__(address)
+
+    def connect(self):
+        s = super().connect()
+        # even if we don't use self.dbus, we'll still keep it to avoid GC
+        socket = Gio.Socket.new_from_fd(fd=self.fd)
+        socket_connection = socket.connection_factory_create_connection()
+        self.dbus = Gio.DBusConnection.new_sync(
+         socket_connection,
+        None,
+         Gio.DBusConnectionFlags.AUTHENTICATION_CLIENT,
+        None,
+        None,
+        ) # type: Gio.DBusConnection
+
+        return s
 
 def main():
     # Parsing arguments require a little hack to work around argparse annoying issue:
