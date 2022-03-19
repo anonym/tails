@@ -157,6 +157,9 @@ class SocketSpec:
     def is_file(self):
         return self.family == "FILE"
 
+    def initialize(self):
+        return
+
 
 class DbusSocketSpec(SocketSpec):
     def __init__(self):
@@ -167,8 +170,8 @@ class DbusSocketSpec(SocketSpec):
         logging.debug("DBus address: %s", address)
         super().__init__(address)
 
-    def connect(self):
-        s = super().connect()
+    def initialize(self):
+        logging.debug("Authenticating to DBus")
         # even if we don't use self.dbus, we'll still keep it to avoid GC
         socket = Gio.Socket.new_from_fd(fd=self.fd)
         socket_connection = socket.connection_factory_create_connection()
@@ -179,8 +182,6 @@ class DbusSocketSpec(SocketSpec):
             None,
             None,
         )  # type: Gio.DBusConnection
-
-        return s
 
 
 def main():
@@ -200,6 +201,7 @@ def main():
         s = addr.create()
         if not addr.is_file():
             s.connect(addr.address)
+        addr.initialize()
         os.set_inheritable(s.fileno(), True)
         logging.debug("fd=%d [%s]", s.fileno(), addr)
         sockets.append(s)
