@@ -5,28 +5,17 @@
 # Licensed under GPLv2 by the GNOME Music developers
 
 import argparse
-import os
-from pathlib import Path
-from gi.repository import Gio
-
-AMNESIA_UID = 1000
-
-# Connect to the system bus as the tails-persistent-storage user
-bus = Gio.bus_get_sync(Gio.BusType.SYSTEM, None)  # type: Gio.DBusConnection
-
-# Drop privileges
-os.setgid(AMNESIA_UID)
-os.setuid(AMNESIA_UID)
-
-# Import other packages
 import locale
 import logging
 import gettext
 import gi
+import os
+from pathlib import Path
 import signal
 import sys
 
 gi.require_version("Gtk", "3.0")
+from gi.repository import Gio
 from gi.repository import Gtk
 
 from tps_frontend.application import Application
@@ -79,6 +68,22 @@ def main():
 
     set_exception_hook()
     set_internationalization()
+
+    # Connect to D-Bus via the open file descriptor we inherited from
+    # connect-drop which is connected to the system bus and already
+    # authenticated as user tails-persistent-storage.
+    authenticated_dbus_fd = os.getenv("INHERIT_FD")
+    socket = Gio.Socket.new_from_fd(fd=int(authenticated_dbus_fd))
+    socket_connection = socket.connection_factory_create_connection()
+    bus = Gio.DBusConnection.new_sync(
+        socket_connection,
+        None,
+        Gio.DBusConnectionFlags.NONE |
+        Gio.DBusConnectionFlags.MESSAGE_BUS_CONNECTION,
+        None,
+        None,
+        )  # type: Gio.DBusConnection
+
     app = Application(bus)
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 

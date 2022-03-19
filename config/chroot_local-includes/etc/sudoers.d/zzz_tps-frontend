@@ -1,8 +1,22 @@
-Cmnd_Alias TPS_FRONTEND = /sbin/capsh \
-    --caps=cap_setpcap\,cap_setuid\,cap_setgid+eip --keep=1 \
-    --user=tails-persistent-storage --addamb=cap_setuid\,cap_setgid \
-    -- -c python3 /usr/local/lib/tps-frontend
+Cmnd_Alias TPS_CONNECT_DROP = /usr/local/lib/connect-drop-tps
 
+Defaults!TPS_CONNECT_DROP env_keep+="DESKTOP_STARTUP_ID"
+Defaults!TPS_CONNECT_DROP env_keep+="NOTIFY_SOCKET"
+
+# tps-frontend-wrapper, which is run as amnesia, must be able to
+# execute connect-drop-tps as the privileged tails-persistent-storage
+# user so that connect-drop is able to authenticate to D-Bus as that user.
+amnesia   ALL = (tails-persistent-storage)    NOPASSWD: TPS_CONNECT_DROP
+
+Cmnd_Alias TPS_FRONTEND = /usr/local/lib/tps-frontend
+
+Defaults!TPS_FRONTEND env_keep+="INHERIT_FD"
 Defaults!TPS_FRONTEND env_keep+="DESKTOP_STARTUP_ID"
 Defaults!TPS_FRONTEND env_keep+="NOTIFY_SOCKET"
-amnesia   ALL = NOPASSWD: TPS_FRONTEND
+
+# We need to keep file descriptor 3 (the D-Bus socket opened by
+# connect-drop) open when executing tps-frontend, which is only
+# allowed when closefrom_override is enabled.
+Defaults!TPS_FRONTEND closefrom_override
+
+tails-persistent-storage   ALL = (amnesia)    NOPASSWD: TPS_FRONTEND
