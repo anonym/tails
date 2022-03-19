@@ -74,10 +74,18 @@
                     <property name="row-spacing">5</property>
                     <property name="column-spacing">15</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="passphrase_entry_label">
                         <property name="visible">True</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Passphrase:</property>
+                        <accessibility>
+                          <relation type="label-for" target="passphrase_entry"/>
+                        </accessibility>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="passphrase_entry_label-atkobject">
+                            <property name="AtkObject::accessible-role" translatable="yes">label</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -85,10 +93,18 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="verify_entry_label">
                         <property name="visible">True</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Confirm:</property>
+                        <accessibility>
+                          <relation type="label-for" target="verify_entry"/>
+                        </accessibility>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="verify_entry_label-atkobject">
+                            <property name="AtkObject::accessible-role" translatable="yes">label</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -105,6 +121,14 @@
                         <property name="activates-default">True</property>
                         <property name="input-purpose">password</property>
                         <signal name="changed" handler="on_passphrase_entry_changed" swapped="no"/>
+                        <accessibility>
+                          <relation type="labelled-by" target="passphrase_entry_label"/>
+                        </accessibility>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="passphrase_entry-atkobject">
+                            <property name="AtkObject::accessible-role" translatable="yes">password-text</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -120,6 +144,14 @@
                         <property name="activates-default">True</property>
                         <property name="input-purpose">password</property>
                         <signal name="changed" handler="on_verify_entry_changed" swapped="no"/>
+                        <accessibility>
+                          <relation type="labelled-by" target="verify_entry_label"/>
+                        </accessibility>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="verify_entry-atkobject">
+                            <property name="AtkObject::accessible-role" translatable="yes">password-text</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
