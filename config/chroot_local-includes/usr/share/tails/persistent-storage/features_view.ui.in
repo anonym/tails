@@ -125,15 +125,15 @@ Its content will be available until you shut down Tails.
                                     <property name="halign">end</property>
                                     <property name="valign">center</property>
                                     <signal name="clicked" handler="on_persistent_directory_open_button_clicked" swapped="no"/>
-                                    <child internal-child="accessible">
-                                      <object class="AtkObject">
-                                        <property name="AtkObject::accessible-name" translatable="yes">Open Persistent Folder</property>
-                                      </object>
-                                    </child>
                                     <child>
                                       <object class="GtkImage">
                                         <property name="visible">True</property>
                                         <property name="icon-name">folder-open-symbolic</property>
+                                      </object>
+                                    </child>
+                                    <child internal-child="accessible">
+                                      <object class="AtkObject">
+                                        <property name="AtkObject::accessible-name" translatable="yes">Open Persistent Folder</property>
                                       </object>
                                     </child>
                                   </object>
@@ -487,21 +487,24 @@ Its content will be available until you shut down Tails.
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">12</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="halign">start</property>
-                            <property name="margin-top">0</property>
-                            <property name="selectable">True</property>
                             <property name="label" translatable="yes">To add or remove custom features, modify /live/persistence/TailsData_unlocked/persistence.conf.</property>
+                            <property name="selectable">True</property>
                           </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                         <child>
                           <object class="GtkFrame" id="custom_features_frame">
-                            <property name="visible">False</property>
                             <child>
                               <object class="GtkListBox" id="custom_features_list_box">
                                 <property name="visible">True</property>
@@ -512,10 +515,15 @@ Its content will be available until you shut down Tails.
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">13</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                       </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">12</property>
+                      </packing>
                     </child>
                   </object>
                 </child>
@@ -533,17 +541,14 @@ Its content will be available until you shut down Tails.
   </object>
   <object class="HdyActionRow" id="custom_feature_row">
     <property name="visible">True</property>
-    <property name="title"/>
     <property name="icon-name">dialog-question</property>
     <child>
       <object class="GtkSwitch" id="custom_feature_switch">
         <property name="visible">True</property>
         <property name="sensitive">False</property>
-        <property name="can-focus">False</property>
         <property name="halign">end</property>
         <property name="valign">center</property>
         <property name="active">True</property>
-        <property name="state">True</property>
       </object>
     </child>
   </object>
