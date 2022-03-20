@@ -6,7 +6,6 @@ import (
 	"crypto/x509"
     "flag"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -60,6 +59,7 @@ func main() {
     var err error
     // currentTimeS := flag.String("current-time", "", "simulate a different current-time")
     flag.BoolVar(&rejectExpired, "reject-expired", false, "If set, only future certificates are accepted")
+	output_headers := flag.String("output", "", "Write headers to FILE")
     flag.Parse()
     currentTimeS := os.Getenv("FAKETIME")
     if len(currentTimeS) > 0 {
@@ -93,7 +93,7 @@ func main() {
     }
 	client := &http.Client{Transport: transCfg}
 
-	response, err := client.Get(urlString)
+	response, err := client.Head(urlString)
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error in Get")
@@ -101,14 +101,31 @@ func main() {
 		os.Exit(1)
 	}
 
-	defer response.Body.Close()
+	if *output_headers != "" {
 
-    body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+		// don't output headers we don't care about
+		exclude_headers := make(map[string]bool)
+		for key, _ := range(response.Header) {
+			if strings.ToLower(key) != "date" {
+				exclude_headers[key] = true
+			}
+		}
+
+		buf, err := os.OpenFile(*output_headers, os.O_WRONLY | os.O_CREATE, 0600)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+		err = response.Header.WriteSubset(buf, exclude_headers)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		os.Exit(0)
+	} else {
+		fmt.Println(response.Header.Get("date"))
 	}
 
-    fmt.Println(strings.ReplaceAll(string(body[:32]), "\n", " "))
     os.Exit(0)
 }
