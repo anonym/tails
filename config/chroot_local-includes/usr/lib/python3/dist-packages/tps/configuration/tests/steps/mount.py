@@ -82,7 +82,7 @@ def step_impl(context: TestContext):
     shutil.rmtree(context.tmpdir)
     # Create a new tmpdir (this will be cleaned up by after_scenario()
     # in environment.py
-    home = Path("/home/amnesia")
+    home = Path(context.mount.nosymfollow_mountpoint, "home/amnesia")
     home.mkdir(mode=0o700, parents=True, exist_ok=True)
     context.tmpdir = Path(mkdtemp(prefix="dest-TailsData", dir=home))
     context.mount.dest = Path(context.tmpdir,
