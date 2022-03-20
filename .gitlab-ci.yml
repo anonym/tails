@@ -225,3 +225,8 @@ apt-snapshots-expiry:
     - changes:
         - config/APT_snapshots.d/*/serial
         - vagrant/definitions/tails-builder/config/APT_snapshots.d/*/serial
+
+build-https-get-expired:
+  script:
+    - apt-get -qy install golang-go
+    - go build config/chroot_local-includes/usr/src/https-get-expired.go
