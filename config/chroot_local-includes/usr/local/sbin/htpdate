@@ -222,18 +222,17 @@ sub getUrlDateDiff {
     my $tmpdir = tempdir("XXXXXXXXXX", TMPDIR => 1);
 
     my @curl_options = (
-        '--user-agent', $useragent, '--silent', '--show-error',
-        '--proto', '=https', '--tlsv1',
-        '--max-time', '30',
-        '--head', '--output', catfile($tmpdir, 'headers'),
+        '-user-agent', $useragent,
+        '-reject-expired',
+        '-output', catfile($tmpdir, 'headers'),
     );
     # Resolve the host name "locally" rather than via the SOCKS proxy,
     # in order to get a "curl: (6) Could not resolve host" error upon
     # name resolution, instead of the unhelpful "curl: (7) Can't
     # complete SOCKS5 connection".
-    push @curl_options, ('--proxy', "socks5://$proxy") if defined $proxy;
+    push @curl_options, ('-proxy', "socks5://$proxy") if defined $proxy;
 
-    my @cmdline = ('curl', @curl_options, $url);
+    my @cmdline = ('/usr/local/lib/https-get-expired', @curl_options, $url);
 
     my $before = DateTime->now->epoch();
     my ($stdout, $stderr, $exit_code);
