@@ -51,19 +51,6 @@ class PersistentStorageSettings(object):
         device_variant = self.service_proxy.get_cached_property("Device")  # type: GLib.Variant
         self.device = device_variant.get_string() if device_variant else "/"
 
-        # Terminate the Persistent Storage service on exit to save
-        # resources. It will be automatically started again when
-        # another application connects to its socket.
-        atexit.register(self.terminate_persistent_storage_service)
-
-    def terminate_persistent_storage_service(self):
-        self.service_proxy.call_sync(
-            method_name="Quit",
-            parameters=None,
-            flags=Gio.DBusCallFlags.NONE,
-            timeout_msec=-1,
-        )
-
     def has_persistence(self):
         return self.service_proxy.\
             get_cached_property("IsCreated")

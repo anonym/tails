@@ -49,19 +49,6 @@ class Application(Gtk.Application):
             )
             raise
 
-        # Terminate the Persistent Storage service on exit to save
-        # resources. It will be automatically started again when
-        # another application connects to its socket.
-        atexit.register(self.terminate_persistent_storage_service)
-
-    def terminate_persistent_storage_service(self):
-        self.service_proxy.call_sync(
-            method_name="Quit",
-            parameters=None,
-            flags=Gio.DBusCallFlags.NONE,
-            timeout_msec=-1,
-        )
-
     def do_activate(self):
         if not self.window:
             self.window = Window(self, self.bus)
