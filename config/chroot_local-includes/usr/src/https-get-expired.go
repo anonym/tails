@@ -62,6 +62,8 @@ func main() {
     flag.BoolVar(&rejectExpired, "reject-expired", false, "If set, only future certificates are accepted.")
 	user_agent := flag.String("user-agent", "", "Set user-agent header.")
 	timeout := flag.Duration("timeout", 30 * time.Second, "Request timeout.")
+    proxy := flag.String("proxy", "", "Set a proxy for the request. socks5:// syntax supported")
+
 	output_headers := flag.String("output", "", "Write date header to FILE. If omitted, date is printed on stdout.")
 
     currentTimeS := flag.String("current-time", "", "simulate a different current-time. Debug only!")
@@ -89,6 +91,12 @@ func main() {
     config := tls.Config{VerifyPeerCertificate: verifyButAcceptExpired, InsecureSkipVerify: true, MinVersion: tls.VersionTLS10}
 	transCfg := &http.Transport{
 		TLSClientConfig: &config,
+        Proxy: func(req *http.Request) (*url.URL, error) {
+            if *proxy == "" {
+                return nil, nil
+            }
+            return url.Parse(*proxy)
+        },
 	}
     verifyOpts = x509.VerifyOptions{
         Roots:         config.RootCAs,
