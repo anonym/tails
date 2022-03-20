@@ -145,6 +145,15 @@ class FeaturesView(View):
             context=launch_context,
         )
 
+    def on_additional_software_button_clicked(self, button: Gtk.Button):
+        # noinspection PyArgumentList
+        display = Gdk.Display.get_default()  # type: Gdk.Display
+        launch_context = display.get_app_launch_context()  # type: Gdk.AppLaunchContext
+        launch_context.set_timestamp(Gtk.get_current_event_time())
+        # noinspection PyArgumentList
+        app = Gio.DesktopAppInfo.new("org.boum.tails.additional-software-config.desktop")
+        app.launch(context=launch_context)
+
     def on_activate_link(self, label: Gtk.Label, uri: str):
         logger.debug("Opening documentation: %s", uri)
         subprocess.run(["tails-documentation", uri])

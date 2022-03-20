@@ -514,6 +514,27 @@ Its content will be available until you shut down Tails.
                                 <property name="title" translatable="yes">Additional Software</property>
                                 <property name="icon-name">package-x-generic</property>
                                 <child>
+                                  <object class="GtkButton">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <property name="halign">end</property>
+                                    <property name="valign">center</property>
+                                    <signal name="clicked" handler="on_additional_software_button_clicked" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="visible">True</property>
+                                        <property name="icon-name">emblem-system-symbolic</property>
+                                      </object>
+                                    </child>
+                                    <child internal-child="accessible">
+                                      <object class="AtkObject">
+                                        <property name="AtkObject::accessible-name" translatable="yes">Configure Additional Software</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
                                   <object class="GtkSwitch" id="additional_software_switch">
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
