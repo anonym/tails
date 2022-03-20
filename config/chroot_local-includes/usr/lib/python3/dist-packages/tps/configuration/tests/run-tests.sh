@@ -10,7 +10,7 @@ fi
 SCRIPT_DIR=$(readlink -f "$(dirname "$0")")
 
 if [ -n "${BEHAVE_DEBUG_ON_ERROR:-}" ]; then
-    BEHAVE_CMD="behave -D BEHAVE_DEBUG_ON_ERROR --stop --verbose --no-capture"
+    BEHAVE_CMD="behave -D BEHAVE_DEBUG_ON_ERROR --stop --verbose --no-capture --logging-level DEBUG"
 else
     BEHAVE_CMD="behave --verbose --no-capture"
 fi

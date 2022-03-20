@@ -17,6 +17,7 @@ from tps.configuration.mount import Mount
 from tps.mountutil import mount, MOUNTFLAG_NOSYMFOLLOW, MOUNTFLAG_NOATIME, \
     MOUNTFLAG_BIND, MOUNTFLAG_REMOUNT
 
+logging.basicConfig(level=logging.DEBUG)
 
 # Create a temporary directory for the nosymfollow bind mount
 NOSYMFOLLOW_MOUNTPOINT = mkdtemp(prefix="tails-nosymfollow-")
