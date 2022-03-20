@@ -30,6 +30,7 @@ RETURN_CODE = {
     "malformed-date-header": 3,
     "http-failure": 4,
     "captive-portal": 5,
+    "date-in-past": 6,
 }
 
 
@@ -138,7 +139,7 @@ def on_date_found(dt: datetime.datetime):
     It deals with additional sanity checks, sending to stdout in the appropriate format
     '''
     if (get_release_date() - datetime.timedelta(days=1)) > dt:
-        fail("Received a date too far in the past, which is impossible")
+        fail("date-in-past")
     print(dt.isoformat())
 
 
