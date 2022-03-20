@@ -123,9 +123,9 @@ end
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/PerceivedComplexity
 
-When /^I configure Tails to use a simulated Tor network$/ do
-  # At the moment this step essentially assumes that we boot with 'the
-  # network is unplugged', run this step, and then 'the network is
+def configure_simulated_Tor_network # rubocop:disable Naming/MethodName
+  # At the moment this function essentially assumes that we boot with 'the
+  # network is unplugged', run this function, and then 'the network is
   # plugged'. I believe we can make this pretty transparent without
   # the need of a dedicated step by using tags (e.g. @fake_tor or
   # whatever -- possibly we want the opposite, @real_tor,
@@ -180,5 +180,14 @@ When /^I configure Tails to use a simulated Tor network$/ do
   end
   client_torrc_lines.concat(dir_auth_lines)
   $vm.file_append('/etc/tor/torrc', client_torrc_lines)
+
+  # Since we use a simulated Tor network (via Chutney) we have to
+  # switch to its default bridges.
+  default_bridges_path = '/usr/share/tails/tca/default_bridges.txt'
+  $vm.file_overwrite(default_bridges_path, '')
+  chutney_bridges('obfs4', chutney_tag: 'defbr').each do |bridge|
+    $vm.file_append(default_bridges_path, bridge[:line])
+  end
+
   $vm.execute_successfully('systemctl restart tor@default.service')
 end

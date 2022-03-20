@@ -1,8 +1,193 @@
-tails (4.27) UNRELEASED; urgency=medium
+tails (4.29) UNRELEASED; urgency=medium
 
   * Dummy entry for next release.
 
- -- boyska <boyska@riseup.net>  Tue, 11 Jan 2022 16:55:08 +0100
+ -- boyska <boyska@riseup.net>  Tue, 08 Mar 2022 17:38:49 +0100
+
+tails (4.28) unstable; urgency=medium
+
+  * Upgrade to Tor Browser 11.0.7-build2 based on Firefox 91.7 (tails/tails!741)
+
+    Closes issues:
+      - Upgrade to Tor Browser 11.0.7 based on Firefox 91.7 (tails/tails#18853)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.0.7-build2
+
+  * Upgrade to Thunderbird 91.6.1
+
+  * Upgrade to tor 0.4.6.10 (tails/tails!737)
+
+    Closes issues:
+      - Upgrade to tor 0.4.6.10 (tails/tails#18835)
+
+    Commits:
+      - Upgrade to tor 0.4.6.10 (Closes #18835)
+
+  * Enable obfs4proxy logging (tails/tails!734)
+
+    Commits:
+      - save obfs4proxy logs into artifacts
+      - enable obfs4proxy debug logging
+      - "obfs4proxy managed" is an option from the past
+
+  * minor fixes to custom-apt-cruft-check (tails/tails!733)
+
+    Commits:
+      - custom-apt-cruft-check: output nicer Markdown
+      - Give method a name closer to what it wraps
+      - ordered list
+      - fix wrong variable name
+      - markdown-ish
+      - we obey rubocop
+
+  * Test suite: collect logs of tor & friends when we timed out waiting for TCA to
+    connect (tails/tails!732)
+
+    Closes issues:
+      - Test suite does not save tor log on "Timed out while waiting for TCA to connect
+        to Tor (Timeout::Error)" (tails/tails#18850)
+
+    Commits:
+      - Apply 2 suggestion(s) to 1 file(s)
+      - Test suite: collect logs of tor & friends when we timed out waiting for TCA to
+        connect
+
+  * Test suite: ignore old APT repository signing key (tails/tails!731)
+
+    Closes issues:
+      - Test suite: ignore expiration date of 221F9A3C6FA3E09E182E060BC7988EA7A358D82E
+        (tails/tails#18836)
+
+    Commits:
+      - Test suite: ignore old APT repository signing key
+
+  * Test suite can test on the real Tor network (tails/tails!725)
+
+    Closes issues:
+      - Test behavior on the real Tor network (tails/tails#18847)
+
+    Commits:
+      - move Jenkins-only code in the appropriate section
+      - better debug message
+      - shell oneliner converted to ruby
+      - Configure simulated Tor network: step -> function
+      - rubocop is happier
+      - Test suite: don't try to save chutney data when it does not exist
+      - add at least one relevant scenario
+      - if +real-Tor, select relevant scenarios
+      - test suite runs with real Tor, if +real-Tor
+      - "default bridges" honors --disable-chutney
+      - Check adapted to --disable-chutney
+      - run_test_suite --disable-chutney
+      - chutney-specific conf  moved into appropriate step
+
+ -- Tails developers <tails@boum.org>  Mon, 07 Mar 2022 18:16:01 +0100
+
+tails (4.27) unstable; urgency=medium
+
+  * Upgrade Tor Browser to 11.0.6-build1, based on Firefox 91.6 (tails!724)
+
+    Closes issues: tails#18799
+  
+    This upgrades obfs4proxy to the version shipped with Tor Browser 11.0.4
+    (0.0.11 + a few commits).
+
+  * Upgrade to Linux 5.10.92 (tails/tails!721)
+
+    Closes issues:
+      - devel branch FTBFS with webext-ublock-origin-firefox 1.39.0+dfsg-2
+        (tails/tails#18722)
+      - Upgrade Linux to 5.10.92+ (DSA 5050-1) (tails/tails#18805)
+
+    Commits:
+      - Refresh uBlock Origin patch
+      - Dropping VirtualBox guest support for now
+      - Bump APT snapshot of the Debian archive to 2022012801
+      - Upgrade to Linux 5.10.0-11 (currently at version 5.10.92-1)
+
+  * Upgrade to Thunderbird 91 (tails/tails!720)
+
+    Closes issues:
+      - Upgrade to Thunderbird 91 (tails/tails#18069)
+
+    Commits:
+      - Test suite: update expected images for Thunderbird 91
+      - Test suite: adjust to Thunderbird 91 UI
+      - Test suite: drop dead code
+      - Test suite: lint (thanks Rubocop)
+      - Test suite: refactor (extract code to method) to solve Rubocop error
+      - Make patch apply
+      - Update path mangling in Thunderbird patches for v91
+      - Update Thunderbird patches from
+        tails/thunderbird@bef716a60762b743dce1f48c37a64a99a0707b21
+      - Upgrade to Thunderbird 91
+
+  * Insist on Tor Browser being offline (#18584) (tails/tails!711)
+
+    Closes issues:
+      - Change buttons to [Start Tor Browser Offline] [Open Tor Connection] when
+        starting Tor Browser while not connected to tor (tails/tails#18584)
+
+    Commits:
+      - Insist on Tor Browser being offline (#18584)
+
+  * Install obfs4proxy from the Tor Browser tarball (tails/tails!716)
+
+    Commits:
+      - Briefly document what config/equivs is for
+      - Install our dummy obfs4proxy package
+      - Enable the 18800-obfs4proxy-from-tor-browser-tarball APT overlay (refs:
+        #18800).
+      - Add equivs configuration for our new obfs4proxy dummy package
+      - AppArmor: allow access that obfs4proxy 0.0.11 needs
+      - Install obfs4proxy from the Tor Browser tarball
+      - Simplify
+
+  * Test suite: update expected button label (tails/tails!718)
+
+    Commits:
+      - Test suite: update expected button label
+
+  * Re-generate our test IUKs using gensquashfs (tails/tails!715)
+
+    Closes issues:
+      - Re-generate our test IUKs using gensquashfs (tails/tails#18654)
+
+    Commits:
+      - Test suite: use test IUKs generated with gensquashfs
+      - Release process: never delete test IUKs generated with gensquashfs
+      - Give new, unique names to test IUKs generated with gensquashfs
+
+  * Add generated tails-backup.desktop to .gitignore (tails/tails!714)
+
+    Commits:
+      - Add generated tails-backup.desktop to .gitignore
+
+  * simplify workflow when adding an APT overlay (tails/tails!708)
+
+    Commits:
+      - waiting now uses a proper tool
+      - add-APT-overlay can wait for suite creation
+
+  * Resolve "Tests for backup are fragile" (tails/tails!706)
+
+    Closes issues:
+      - Tests for backup are fragile (tails/tails#18727)
+
+    Commits:
+      - try to make backup tool test more resilient
+
+  * fix wi-fi settings from Tor Connection (tails/tails!692)
+
+    Closes issues:
+      - Fix Wi-Fi settings when open from Tor Connection (tails/tails#18587)
+
+    Commits:
+      - Fix Wi-Fi settings from Tor Connection
+
+ -- Tails developers <tails@boum.org>  Mon, 07 Feb 2022 13:50:41 +0000
 
 tails (4.26) unstable; urgency=medium
 

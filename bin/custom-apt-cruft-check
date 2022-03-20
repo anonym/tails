@@ -32,14 +32,15 @@ class AptSources
         File.exist?(filename)
       end
       next if apt_repo_filename.nil?
+
       @apt_sources << Debian::Sources.new(apt_repo_filename)
     end
-    if @apt_sources.empty?
-      raise "could not find Tails custom APT repo's sources, " \
-            "please add this to your APT sources:\n" \
-            "deb-src [arch=amd64] http://deb.tails.boum.org/ " \
-            "#{options.suite} main contrib non-free"
-    end
+    return unless @apt_sources.empty?
+
+    raise "could not find Tails custom APT repo's sources, " \
+          "please add this to your APT sources:\n" \
+          'deb-src [arch=amd64] http://deb.tails.boum.org/ ' \
+          "#{suite} main contrib non-free"
   end
 
   def source_package(package)
@@ -52,7 +53,9 @@ class AptSources
       end
     end
     raise NoSource, "found no source package for #{package}" if matches.size.zero?
+
     raise "found multiple source packages for #{package}: #{matches.join(', ')}" if matches.uniq.size > 1
+
     matches.first
   end
 end
@@ -148,32 +151,38 @@ binary_cruft_candidates.each do |p|
   binary_cruft << p
 end
 
+def puts_list(list)
+  list.each_with_index { |item, i| puts " #{i + 1}. `#{item}`" }
+end
+
 unless binary_cruft.empty?
-  puts 'Binary packages that are not used:'
-  binary_cruft.each { |p| puts " - #{p}" }
+  puts "## Binary packages that are not used\n\n"
+  puts_list(binary_cruft)
   puts
-  puts "  Clean up command:\n" \
-       '  ssh reprepro@incoming.deb.tails.boum.org ' \
+  puts "### Clean up command\n\n" \
+       '    ssh reprepro@incoming.deb.tails.boum.org ' \
        "reprepro remove #{options.suite} #{binary_cruft.join(' ')}"
   puts
 end
 
 unless no_source_packages.empty?
-  puts 'Binary packages that are used but lack source:'
-  no_source_packages.each { |p| puts " - #{p}" }
+  puts "## Binary packages that are used but lack source\n\n"
+  puts_list(no_source_packages)
   puts
-  puts '  Please investigate! Most likely you want to just upload the ' \
+  puts '**Please investigate!** Most likely you want to just upload the ' \
        'missing source packages, or these binary packages are installed ' \
-       "by mistake and should be considered as cruft and removed with:\n" \
-       '  ssh reprepro@incoming.deb.tails.boum.org ' \
+       "by mistake and should be considered as cruft and removed with:\n\n" \
+       '    ssh reprepro@incoming.deb.tails.boum.org ' \
        "reprepro remove #{options.suite} #{no_source_packages.join(' ')}"
+  puts
 end
 
 unless source_cruft.empty?
-  puts 'Source packages that are not used:'
-  source_cruft.each { |p| puts " - #{p}" }
+  puts "## Source packages that are not used\n\n"
+  puts_list(source_cruft)
   puts
-  puts "  Clean up command:\n" \
-       '  ssh reprepro@incoming.deb.tails.boum.org ' \
+  puts "### Clean up command\n\n" \
+       '    ssh reprepro@incoming.deb.tails.boum.org ' \
        "reprepro removesrcs #{options.suite} #{source_cruft.join(' ')}"
+  puts
 end

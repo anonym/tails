@@ -45,7 +45,7 @@ the Foundations Team's duties.
 ## In the beginning of your shift
 
 - Check the [Tor Browser release
-  schedule](https://gitlab.torproject.org/tpo/applications/tor-browser/-/wikis/Release_Schedule). `[skip-if-emergency-release]`
+  schedule](https://gitlab.torproject.org/tpo/applications/tor-browser/-/wikis/Release-Schedule). `[skip-if-emergency-release]`
 - Check the Mozilla release calendars: `[skip-if-emergency-release]`
   * [Google calendar](https://www.google.com/calendar/embed?src=mozilla.com_2d37383433353432352d3939%40resource.calendar.google.com)
   * [Release schedule](https://wiki.mozilla.org/Release_Management/Calendar)
@@ -158,6 +158,12 @@ release, we have to make 2 decisions:
     - developers i.e. Foundations Team: assess the risk that the emergency
       release would cancel or mitigate; propose mitigation measures that
       we could recommend to users
+
+      Rules of thumb:
+
+       - We usually do not prepare emergency releases for local privilege
+         escalation (even to root) if they cannot be exploited from the
+         execution context of Tor Browser.
 
     - UX: evaluate the acceptability of mitigation measures proposed by
       developers; remind everyone else that any extra upgrade has a UX cost

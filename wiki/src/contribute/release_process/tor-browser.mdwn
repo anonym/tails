@@ -76,6 +76,9 @@ is named `sha256sums-unsigned-build.txt.asc-${TBB_SIGNER}`:
 
     TBB_SIGNER=XXX
 
+XXX: The detached signature may be called `sha256sums-unsigned-build.txt.asc`
+instead. If that's the case, adapt the instructions below accordingly.
+
 Fetch the version's hash file and its detached signature, and verify
 with GnuPG:
 
@@ -258,6 +261,11 @@ Adjust the URL in the main Git repository
            -m "Fetch Tor Browser from our own archive" && \
        git show
     done
+
+Once happy, push:
+
+	git push -o merge_request.create --set-upstream \
+	   origin "${TBB_IMPORT_BRANCH:?}"
 
 Clean up
 --------

@@ -192,24 +192,6 @@ Tags:
 <TMPL_IF HTML5></nav><TMPL_ELSE></div></TMPL_IF>
 </TMPL_IF>
 
-<TMPL_IF BACKLINKS>
-<TMPL_IF HTML5><nav id="backlinks"><TMPL_ELSE><div id="backlinks"></TMPL_IF>
-Pages linking to this one:
-<TMPL_LOOP BACKLINKS>
-<a href="<TMPL_VAR URL>"><TMPL_VAR PAGE></a>
-</TMPL_LOOP>
-<TMPL_IF MORE_BACKLINKS>
-<span class="popup">...
-<span class="balloon">
-<TMPL_LOOP MORE_BACKLINKS>
-<a href="<TMPL_VAR URL>"><TMPL_VAR PAGE></a>
-</TMPL_LOOP>
-</span>
-</span>
-</TMPL_IF>
-<TMPL_IF HTML5></nav><TMPL_ELSE></div></TMPL_IF>
-</TMPL_IF>
-
 <TMPL_IF COPYRIGHT>
 <div class="pagecopyright">
 <a name="pagecopyright"></a>

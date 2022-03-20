@@ -10,14 +10,22 @@ def assert_all_keys_are_valid_for_n_months(type, months)
   assert([:OpenPGP, :APT].include?(type))
   assert(months.is_a?(Integer))
 
+  ignored_keys = [
+    # We're in the process of rotating that key (sysadmin#17810)
+    '221F9A3C6FA3E09E182E060BC7988EA7A358D82E',
+  ]
+
   cmd  = type == :OpenPGP ? 'gpg'     : 'apt-key adv'
   user = type == :OpenPGP ? LIVE_USER : 'root'
-  all_keys = $vm.execute_successfully(
+  keys = $vm.execute_successfully(
     "#{cmd} --batch --with-colons --fingerprint --list-key", user: user
-  ).stdout.scan(/^fpr:::::::::([A-Z0-9]+):$/).flatten
+  ).stdout
+                .scan(/^fpr:::::::::([A-Z0-9]+):$/)
+                .flatten
+                .reject { |key| ignored_keys.include?(key) }
 
   invalid = []
-  all_keys.each do |key|
+  keys.each do |key|
     assert_key_is_valid_for_n_months(type, key, months)
   rescue Test::Unit::AssertionFailedError
     invalid << key

@@ -10,18 +10,18 @@ Covered by the current proposal:
 
 - Prevent any single individual from revoking our signing key.
 
-- Allow a coalition of people from tails@boum.org to revoke our signing key
-  in case most of the people from tails@boum.org become unavailable.
+- Allow a coalition of people from the Board to revoke our signing key
+  in case most of the people from the Board become unavailable.
 
-- Allow a coalition of people, not necessarily from tails@boum.org, to
+- Allow a coalition of people, not necessarily from the Board, to
   revoke our signing key in case everybody or almost everybody from
-  tails@boum.org becomes unavailable.
+  the Board becomes unavailable.
 
-- Make it hard for a coalition of people not from tails@boum.org to revoke
-  our signing key unless everybody or almost everybody from tails@boum.org
+- Make it hard for a coalition of people not from the Board to revoke
+  our signing key unless everybody or almost everybody from the Board
   becomes unavailable.
 
-- People not from tails@boum.org shouldn't know how the shares are spread
+- People not from the Board shouldn't know how the shares are spread
   and who has them.
 
 - People in possession of a share of the revocation certificate
@@ -32,7 +32,7 @@ Groups
 
 We define four complementary groups of trusted people:
 
-  - Group A: people from tails@boum.org themselves
+  - Group A: people from the Board themselves
   - Group B
   - Group C
   - Group D
@@ -50,14 +50,14 @@ sharing scheme implemented by `gfshare`.
 The following combinations of people could get together and reassemble their
 shares to reconstruct a complete revocation certificate:
 
-  - Three people from tails@boum.org: A{3}
-  - Two people from tails@boum.org and one person not from tails@boum.org: A{2}+(B|C|D)
-  - One person from tails@boum.org, and two people not from tails@boum.org but from two different groups: A+(B|C|D){2}
-  - Three people not from tails@boum.org but from three different groups: (B+C+D){3}
+  - Three people from the Board: A{3}
+  - Two people from the Board and one person not from the Board: A{2}+(B|C|D)
+  - One person from the Board, and two people not from the Board but from two different groups: A+(B|C|D){2}
+  - Three people not from the Board but from three different groups: (B+C+D){3}
 
 We generate these shares:
 
-  - N shares, one for each person from tails@boum.org
+  - N shares, one for each person from the Board
   - 1 share for people in group B
   - 1 share for people in group C
   - 1 share for people in group D
@@ -65,8 +65,8 @@ We generate these shares:
 Who knows what
 ==============
 
-  - People from tails@boum.org know the composition of each group
-  - People not from tails@boum.org:
+  - People from the Board know the composition of each group
+  - People not from the Board:
     - Are explained in which circumstances they should revoke the signing key
     - Are told to write to a certain contact email address if they decide to revoke the signing key
     - Are told that they need three different shares to reassemble the revocation certificate
@@ -126,8 +126,7 @@ put together to reassemble the revocation certificate and revoke the
 Tails signing key. This may be needed in case something really bad
 happens to us and we are not able to do the revocation ourselves.
 
-Note: In all this document, 'us' refers to the set of people subscribed
-to tails@boum.org which is a Schleuder mailing list.
+Note: In all this document, 'us' refers to the Board.
 
 You can read a complete description of the distribution mechanism on:
 
@@ -155,7 +154,7 @@ publish a new signing key and build trust in it.
 Distribution of the shares
 ==========================
 
-Each person from tails@boum.org, group A, has a *different* share, A1,
+Each person from the Board, group A, has a *different* share, A1,
 A2, ..., An.
 
 On top of this, we defined three complementary groups, B, C, and D of
@@ -284,7 +283,7 @@ Today, we are asking you to:
 
 1. Verify the authenticity of this email, either by verifying that it is
    signed by the tails@boum.org mailing or by talking directly to
-   someone from tails@boum.org.
+   someone from the Board.
 
    The tails@boum.org mailing list has its own OpenPGP key, which is
    signed by the Tails signing key itself:

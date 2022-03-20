@@ -46,7 +46,8 @@ Feature: Chatting anonymously using Pidgin
     And I click on the Tails GitLab URL
     Then the Tor Browser loads the Tails GitLab
 
-  @check_tor_leaks
+  #18866
+  @check_tor_leaks @fragile
   Scenario: Chatting with some friend over XMPP and with OTR
     Given I have started Tails from DVD and logged in and the network is connected
     When I start "Pidgin Internet Messenger" via GNOME Activities Overview
