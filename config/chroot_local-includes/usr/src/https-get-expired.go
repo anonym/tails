@@ -55,15 +55,19 @@ func verifyButAcceptExpired(rawCerts [][]byte, verifiedChains [][]*x509.Certific
 	return nil
 }
 
+// XXX: emulate htpdate --proxy, that is curl --socks5-hostname
+
 func main() {
     var err error
-    // currentTimeS := flag.String("current-time", "", "simulate a different current-time")
-    flag.BoolVar(&rejectExpired, "reject-expired", false, "If set, only future certificates are accepted")
-	output_headers := flag.String("output", "", "Write headers to FILE")
+    flag.BoolVar(&rejectExpired, "reject-expired", false, "If set, only future certificates are accepted.")
+	user_agent := flag.String("user-agent", "", "Set user-agent header.")
+	timeout := flag.Duration("timeout", 30 * time.Second, "Request timeout.")
+	output_headers := flag.String("output", "", "Write date header to FILE. If omitted, date is printed on stdout.")
+
+    currentTimeS := flag.String("current-time", "", "simulate a different current-time. Debug only!")
     flag.Parse()
-    currentTimeS := os.Getenv("FAKETIME")
-    if len(currentTimeS) > 0 {
-        currentTime, err = time.Parse("2006-01-02", currentTimeS)
+    if len(*currentTimeS) > 0 {
+        currentTime, err = time.Parse("2006-01-02", *currentTimeS)
         if err != nil {
             fmt.Fprintln(os.Stderr, "Invalid format for current-time:", err.Error())
             os.Exit(2)
@@ -82,7 +86,7 @@ func main() {
 	}
     hostname := urlRequest.Hostname()
 
-    config := tls.Config{VerifyPeerCertificate: verifyButAcceptExpired, InsecureSkipVerify: true}
+    config := tls.Config{VerifyPeerCertificate: verifyButAcceptExpired, InsecureSkipVerify: true, MinVersion: tls.VersionTLS10}
 	transCfg := &http.Transport{
 		TLSClientConfig: &config,
 	}
@@ -91,13 +95,20 @@ func main() {
         DNSName:       hostname,
         Intermediates: x509.NewCertPool(),
     }
-	client := &http.Client{Transport: transCfg}
+	client := &http.Client{Transport: transCfg, Timeout: *timeout}
 
-	response, err := client.Head(urlString)
+	request, err := http.NewRequest("HEAD", urlString, nil)
+	if *user_agent != "" {
+		request.Header.Set("User-Agent", *user_agent)
+	}
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error preparing the request")
+		os.Exit(1)
+	}
+	response, err := client.Do(request)
 
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error in Get")
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprintln(os.Stderr, "Error while performing HTTP request:", err)
 		os.Exit(1)
 	}
 
