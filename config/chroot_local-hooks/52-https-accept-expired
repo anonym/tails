@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+
+# Compile and install a custom https-get-expired program
+# It will be used during time sync, to accept certificates that are not valid yet
+
+echo "Compiling and installing a custom https-get-expired program"
+
+# Import ensure_hook_dependency_is_installed()
+. /usr/local/lib/tails-shell-library/build.sh
+
+ensure_hook_dependency_is_installed golang-go
+
+SRC="/usr/src/https-get-expired.go"
+DST="/usr/local/lib/https-get-expired"
+
+go build "$SRC" -o "$DST"
+strip --strip-all "$DST"
+
