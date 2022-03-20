@@ -90,7 +90,7 @@ Its content will be available until you shut down Tails.
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="personal_data_label">
                         <property name="visible">True</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
@@ -176,6 +176,9 @@ Its content will be available until you shut down Tails.
                                 </child>
                               </object>
                             </child>
+                            <accessibility>
+                              <relation type="labelled-by" target="personal_data_label"/>
+                            </accessibility>
                           </object>
                         </child>
                       </object>
@@ -186,7 +189,7 @@ Its content will be available until you shut down Tails.
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="system_settings_label">
                         <property name="visible">True</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
@@ -251,6 +254,9 @@ Its content will be available until you shut down Tails.
                                 </child>
                               </object>
                             </child>
+                            <accessibility>
+                              <relation type="labelled-by" target="system_settings_label"/>
+                            </accessibility>
                           </object>
                         </child>
                       </object>
@@ -261,7 +267,7 @@ Its content will be available until you shut down Tails.
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="network_label">
                         <property name="visible">True</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
@@ -326,6 +332,9 @@ Its content will be available until you shut down Tails.
                                 </child>
                               </object>
                             </child>
+                            <accessibility>
+                              <relation type="labelled-by" target="network_label"/>
+                            </accessibility>
                           </object>
                         </child>
                       </object>
@@ -336,7 +345,7 @@ Its content will be available until you shut down Tails.
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="applications_label">
                         <property name="visible">True</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
@@ -461,6 +470,9 @@ Its content will be available until you shut down Tails.
                                 </child>
                               </object>
                             </child>
+                            <accessibility>
+                              <relation type="labelled-by" target="applications_label"/>
+                            </accessibility>
                           </object>
                         </child>
                       </object>
@@ -471,7 +483,7 @@ Its content will be available until you shut down Tails.
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="advanced_settings_label">
                         <property name="visible">True</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
@@ -531,6 +543,9 @@ Its content will be available until you shut down Tails.
                                 </child>
                               </object>
                             </child>
+                            <accessibility>
+                              <relation type="labelled-by" target="advanced_settings_label"/>
+                            </accessibility>
                           </object>
                         </child>
                       </object>
@@ -545,7 +560,7 @@ Its content will be available until you shut down Tails.
                         <property name="orientation">vertical</property>
                         <property name="spacing">10</property>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="custom_features_label">
                             <property name="visible">True</property>
                             <property name="halign">start</property>
                             <property name="margin-top">18</property>
@@ -554,7 +569,7 @@ Its content will be available until you shut down Tails.
                               <attribute name="weight" value="bold"/>
                             </attributes>
                             <accessibility>
-                              <relation type="label-for" target="custom_features_box"/>
+                              <relation type="label-for" target="custom_features_list_box"/>
                             </accessibility>
                           </object>
                           <packing>
@@ -582,6 +597,9 @@ Its content will be available until you shut down Tails.
                               <object class="GtkListBox" id="custom_features_list_box">
                                 <property name="visible">True</property>
                                 <property name="selection-mode">none</property>
+                                <accessibility>
+                                  <relation type="labelled-by" target="custom_features_label"/>
+                                </accessibility>
                               </object>
                             </child>
                           </object>
