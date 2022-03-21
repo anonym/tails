@@ -182,7 +182,7 @@ class TailsInstallerCreator(object):
             'parent_size': None,
             'parent_data': None,
             'size': block.props.size,
-            'mounted_partitions': set(),
+            'mounted_partitions': {},
             'is_device_big_enough_for_installation': True,
             'is_device_big_enough_for_upgrade': True,
             'is_device_big_enough_for_reinstall': True,
@@ -267,9 +267,9 @@ class TailsInstallerCreator(object):
             mount = data['mount'] = None
 
         if parent_block and mount:
-            if not data['parent'] in mounted_parts:
-                mounted_parts[data['parent']] = set()
-            mounted_parts[data['parent']].add(data['udi'])
+            if not data['parent'] in data['mounted_partitions']:
+                data['mounted_partitions'][data['parent']] = set()
+            data['mounted_partitions'][data['parent']].add(data['udi'])
 
         data['free'] = mount \
             and self.get_free_bytes(mount) / 1024**2 \
@@ -299,12 +299,13 @@ class TailsInstallerCreator(object):
     def detect_supported_drives(self, callback=None, force_partitions=False):
         """ Detect all supported (USB and SDIO) storage devices using UDisks.
         """
-        mounted_parts = {}
+        mounted_parts = {}  # type: dict[str, set]
         self.drives = {}
         for obj in self._udisksclient.get_object_manager().get_objects():
             data = self._get_udisks_object_data(obj, force_partitions=force_partitions)
             if data is not None:
                 self.drives[data['device']] = data
+                mounted_parts.update(data['mounted_partitions'])
 
         # Remove parent drives if a valid partition exists.
         # This is always made to avoid listing both the devices
