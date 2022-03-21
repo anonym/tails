@@ -162,20 +162,7 @@ class TestDisableAndCreateEmpty(ConfigFileTestCase):
         self.assertTrue(self.config_file.path.exists())
         self.assertEqual("", self.config_file.path.read_text())
 
-    def test_nonexistent(self):
-        # Ensure that no config file exists
-        try:
-            self.path.unlink()
-        except FileNotFoundError:
-            pass
-
-        # Call disable_and_create_empty
-        self.config_file.disable_and_create_empty()
-
-        # Check if an empty file was created
-        self.assert_empty_file()
-
-    def test_existing(self):
+    def test(self):
         # Create a config file
         self.create_valid_config_file()
         old_path = self.path
