@@ -332,7 +332,15 @@ class CleartextDevice(object):
         # Unmount the filesystem until no mount points are left
         while filesystem.props.mount_points:
             filesystem.call_unmount_sync(arg_options=GLib.Variant('a{sv}', {
-                "force": GLib.Variant('b', True),
+                # We do not unmount with force, because if force is
+                # necessary, locking the encrypted device will fail with
+                # "device is still in use", which would leave the
+                # device unlocked and unmounted, which is an
+                # inconsistent state. Instead, if the device is still
+                # in use, we let the unmount call fail already, which
+                # will leave the device in a "good" state (unlocked and
+                # mounted).
+                "force": GLib.Variant('b', False),
             }))
 
     def get_dm_name(self) -> Optional[str]:
