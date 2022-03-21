@@ -125,6 +125,8 @@ class Window(Gtk.ApplicationWindow):
         # state changes to NOT_CREATED
         if self.state == State.DELETING:
             self.was_deleting = True
+        elif self.state != State.NOT_CREATED:
+            self.was_deleting = False
 
         # The Persistent Storage state changed, so we check if we have
         # switch to another view
