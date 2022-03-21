@@ -4,19 +4,7 @@ Description=Synchronize data to newly created persistent volume on shutdown
 [Service]
 RemainAfterExit=yes
 Type=oneshot
-ExecStop=/bin/sh -c '                                                        \
-    if mountpoint -q /media/tails-persistence-setup/TailsData                \
-            && test ! -d /media/tails-persistence-setup/TailsData/apt; then  \
-        echo "Copy APT data to newly created persistent volume";             \
-        touch /media/tails-persistence-setup/TailsData/apt_sync_started &&   \
-        mkdir /media/tails-persistence-setup/TailsData/apt/ &&               \
-        cp -a /var/cache/apt/archives                                        \
-                   /media/tails-persistence-setup/TailsData/apt/cache &&     \
-        cp -a /var/lib/apt/lists                                             \
-                   /media/tails-persistence-setup/TailsData/apt/ &&          \
-        touch /media/tails-persistence-setup/TailsData/apt_sync_completed && \
-        sync --file-system /media/tails-persistence-setup/TailsData/apt;     \
-    fi'
+ExecStop=/usr/local/lib/tails-synchronize-data-to-new-persistent-volume
 # Tails sets a very small DefaultTimeoutStopSec= value, that this service
 # inherits. In many cases, that value is too short for our ExecStop=
 # step to complete successfully (#17278) so we need to bump this timeout here.

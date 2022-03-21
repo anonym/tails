@@ -20,9 +20,9 @@ def assert_all_keys_are_valid_for_n_months(type, months)
   keys = $vm.execute_successfully(
     "#{cmd} --batch --with-colons --fingerprint --list-key", user: user
   ).stdout
-                .scan(/^fpr:::::::::([A-Z0-9]+):$/)
-                .flatten
-                .reject { |key| ignored_keys.include?(key) }
+            .scan(/^fpr:::::::::([A-Z0-9]+):$/)
+            .flatten
+            .reject { |key| ignored_keys.include?(key) }
 
   invalid = []
   keys.each do |key|
