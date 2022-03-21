@@ -364,13 +364,13 @@ Update other base branches
    It's fine if that results in a no-op (it depends on how exactly previous
    operations were performed).
 
-3. Try to merge the `devel` Git branch into `feature/bullseye` (if it exists),
-   *without* merging the corresponding APT suite (for now `feature/bullseye` is
+3. Try to merge the `devel` Git branch into `feature/bookworm` (if it exists),
+   *without* merging the corresponding APT suite (for now `feature/bookworm` is
    handled as any other topic branch forked off `devel`: its base branch is set
    to `devel`):
 
-        if git describe feature/bullseye >/dev/null 2>&1; then
-           git checkout feature/bullseye && \
+        if git describe feature/bookworm >/dev/null 2>&1; then
+           git checkout feature/bookworm && \
            git pull && \
            git merge devel
         fi
@@ -379,7 +379,7 @@ Update other base branches
    resolving properly, abort this merge and let the Foundations
    Team know.
 
-4. Ensure that the `$RELEASE_BRANCH`, `devel` and `feature/bullseye` (if it exists) branches
+4. Ensure that the `$RELEASE_BRANCH`, `devel` and `feature/bookworm` (if it exists) branches
    have the expected content in `config/APT_overlays.d/`: e.g. it must
    not list any overlay APT suite that has been merged already.
 
@@ -387,7 +387,7 @@ Update other base branches
 
         git push origin                          \
            "${RELEASE_BRANCH:?}:${RELEASE_BRANCH:?}" \
-           $(if git describe feature/bullseye >/dev/null 2>&1; then echo feature/bullseye:feature/bullseye ; fi) \
+           $(if git describe feature/bookworm >/dev/null 2>&1; then echo feature/bookworm:feature/bookworm ; fi) \
            devel:devel
 
 Update more included files
