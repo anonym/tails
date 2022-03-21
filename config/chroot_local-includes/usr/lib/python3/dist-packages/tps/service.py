@@ -86,8 +86,9 @@ class Service(DBusObject, ServiceUsingJobs):
         try:
             self._boot_device = BootDevice.get_tails_boot_device()
         except InvalidBootDeviceError as e:
+            logger.warning("Invalid boot device: %s", e)
             self._boot_device = None
-            self.State = State.ERROR
+            self.State = State.NOT_CREATED
             self.Error = str(e)
             return
 
@@ -452,10 +453,8 @@ class Service(DBusObject, ServiceUsingJobs):
 
     def refresh_state(self, overwrite_in_progress: bool = False):
         if not self._boot_device:
-            self.State = State.ERROR
-            self.Device = ""
-            self.IsCreated = False
-            self.IsUnlocked = False
+            # The boot device doesn't exist, which is already handled
+            # in the __init__ method, so we don't change the state here
             return
 
         # Don't overwrite the state if we're in the middle of something.
