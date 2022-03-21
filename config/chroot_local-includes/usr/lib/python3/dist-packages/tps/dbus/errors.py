@@ -46,9 +46,6 @@ class JobCancelledError(DBusError):
 class TargetIsBusyError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.TargetIsBusyError"
 
-class IncorrectOwnerError(DBusError):
-    name = "org.boum.tails.PersistentStorage.Error.IncorrectOwnerError"
-
 class IncorrectPassphraseError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.IncorrectPassphraseError"
 

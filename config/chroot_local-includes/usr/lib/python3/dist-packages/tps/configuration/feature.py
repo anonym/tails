@@ -4,7 +4,6 @@ from logging import getLogger
 import os
 from pathlib import Path
 import psutil
-import subprocess
 import time
 from typing import TYPE_CHECKING, Dict, List, Optional
 
@@ -12,10 +11,10 @@ from tps import executil
 from tps import State, DBUS_FEATURE_INTERFACE, DBUS_FEATURES_PATH, \
     ON_ACTIVATED_HOOKS_DIR, ON_DEACTIVATED_HOOKS_DIR
 from tps.configuration.mount import Mount, IsActiveException, \
-    IsInactiveException, IncorrectOwnerException
+    IsInactiveException
 from tps.dbus.errors import ActivationFailedError, \
     AlreadyActivatedError, NotActivatedError, JobCancelledError, \
-    FailedPreconditionError, IncorrectOwnerError
+    FailedPreconditionError
 from tps.dbus.object import DBusObject
 from tps.job import ServiceUsingJobs
 
@@ -95,9 +94,6 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         try:
             with self.new_job() as job:
                 self.do_activate(job)
-        except IncorrectOwnerException as e:
-            # Convert the internal exception into a D-Bus error
-            raise IncorrectOwnerError(e) from e
         finally:
             self.service.save_config_file()
 
@@ -152,9 +148,6 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         try:
             with self.new_job() as job:
                 self.do_deactivate(job)
-        except IncorrectOwnerException as e:
-            # Convert the internal exception into a D-Bus error
-            raise IncorrectOwnerError(e) from e
         finally:
             self.service.save_config_file()
 

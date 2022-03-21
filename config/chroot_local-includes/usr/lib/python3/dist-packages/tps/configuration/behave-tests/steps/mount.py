@@ -1,4 +1,4 @@
-import errno
+import errno  # noqa: F401
 import shutil
 from behave import given, when, then
 from pathlib import Path
@@ -12,10 +12,9 @@ from tempfile import mkdtemp
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", "..", "..", ".."))
 
-from tps.configuration.mount import Mount, FailedPrecondition, \
-    IncorrectOwnerException, InvalidMountError, IsActiveException, \
-    IsInactiveException, SymlinkSourceDirectoryError
-from tps.mountutil import MountException
+from tps.configuration.mount import Mount, \
+    SymlinkSourceDirectoryError  # noqa: F401
+from tps.mountutil import MountException  # noqa: F401
 
 # Import testutils
 sys.path.insert(0, SCRIPT_DIR)

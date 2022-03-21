@@ -5,8 +5,7 @@ import re
 import psutil
 from typing import TYPE_CHECKING, Dict, List, Union
 
-from tps.dbus.errors import TargetIsBusyError, IncorrectOwnerError, \
-    SymlinkSourceDirectoryError
+from tps.dbus.errors import TargetIsBusyError, SymlinkSourceDirectoryError
 
 from tps_frontend import _, DBUS_SERVICE_NAME, DBUS_FEATURES_PATH, \
     DBUS_FEATURE_INTERFACE, DBUS_JOB_INTERFACE
@@ -142,14 +141,6 @@ class Feature(object):
                                            flags=Gio.DBusCallFlags.NONE,
                                            timeout_msec=-1,
                                            cancellable=None)
-            elif IncorrectOwnerError.is_instance(e):
-                # Some file created by the user has an invalid owner.
-                # This is an expected error which we don't want error
-                # reports for.
-                IncorrectOwnerError.strip_remote_error(e)
-                self.window.display_error(_("Error activating feature"),
-                                          e.message,
-                                          with_send_report_button=False)
             elif SymlinkSourceDirectoryError.is_instance(e):
                 # The user did not create the source directory of a
                 # feature that uses symlinks.
@@ -188,14 +179,6 @@ class Feature(object):
                                            flags=Gio.DBusCallFlags.NONE,
                                            timeout_msec=-1,
                                            cancellable=None)
-            elif IncorrectOwnerError.is_instance(e):
-                # Some file created by the user has an invalid owner.
-                # This is an expected error which we don't want error
-                # reports for.
-                IncorrectOwnerError.strip_remote_error(e)
-                self.window.display_error(_("Error deactivating feature"),
-                                          e.message,
-                                          with_send_report_button=False)
             elif TargetIsBusyError.is_instance(e):
                 # Some process is still accessing the target. This is
                 # an expected error which we don't want error reports

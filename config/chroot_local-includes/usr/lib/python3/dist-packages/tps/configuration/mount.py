@@ -21,9 +21,6 @@ NOSYMFOLLOW_MOUNTPOINT = "/var/lib/tails-persistent-storage/nosymfollow"
 class FailedPrecondition(Exception):
     pass
 
-class IncorrectOwnerException(Exception):
-    pass
-
 class InvalidMountError(Exception):
     pass
 
