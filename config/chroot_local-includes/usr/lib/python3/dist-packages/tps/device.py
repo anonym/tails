@@ -9,8 +9,8 @@ from gi.repository import GLib, UDisks
 
 from tailslib import LIVE_USER_UID, LIVE_USERNAME
 from tps import executil
-from tps import TPS_MOUNT_POINT, udisks
-from tps.dbus.errors import IncorrectPassphraseError
+from tps import _, TPS_MOUNT_POINT, udisks
+from tps.dbus.errors import IncorrectPassphraseError, TargetIsBusyError
 from tps.job import Job
 
 logger = logging.getLogger(__name__)
@@ -189,6 +189,7 @@ class Partition(object):
         """Delete the Persistent Storage encrypted partition"""
         # Ensure that the partition is unmounted
         self._ensure_unmounted()
+
         # Delete the partition. By setting tear-down to true, udisks
         # automatically locks the encrypted device if it is currently
         # unlocked.
@@ -235,6 +236,15 @@ class Partition(object):
         try:
             cleartext_device.force_unmount()
         except GLib.Error as err:
+            if err.matches(UDisks.error_quark(), UDisks.Error.DEVICE_BUSY):
+                msg = _(
+                    "Can't unmount Persistent Storage, some process is still"
+                    " using it. Please close all applications that could"
+                    " be accessing it and try again. If that doesn't work,"
+                    " restart Tails and try deleting the Persistent Storage"
+                    " without unlocking it."
+                )
+                raise TargetIsBusyError(msg) from err
             # Ignore errors caused by the device not being mounted.
             if not err.matches(UDisks.error_quark(), UDisks.Error.NOT_MOUNTED):
                 raise
