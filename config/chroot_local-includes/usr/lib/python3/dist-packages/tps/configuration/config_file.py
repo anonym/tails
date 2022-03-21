@@ -1,3 +1,4 @@
+import tempfile
 from contextlib import contextmanager
 from io import TextIOBase
 import logging
@@ -100,7 +101,7 @@ class ConfigFile(object):
         """Parse the config file into mounts"""
         self.lock.acquire()
         try:
-            with self._open() as f:
+            with self._open(self.path) as f:
                 config_lines = f.readlines()
         finally:
             self.lock.release()
@@ -136,9 +137,20 @@ class ConfigFile(object):
             # Sort and remove duplicate lines
             lines = sorted(set(lines))
 
-            # Write the result back to file
-            with self._open("w") as f:
+            # Create a temporary file in the same directory which we
+            # will write to and then rename to make saving the config
+            # file an atomic operation (so we can't end up with a
+            # partially written config file if e.g. the user unplugs the
+            # Tails device in the wrong moment).
+            dir_ = os.path.dirname(self.path)
+            tmpfile = tempfile.NamedTemporaryFile(dir=dir_)
+
+            # Write the result list of features to the temporary file
+            with self._open(tmpfile.name, "w") as f:
                 f.writelines(lines)
+
+            # Rename the temporary file to the config file name
+            os.rename(tmpfile.name, self.path)
         finally:
             self.lock.release()
 
@@ -173,8 +185,8 @@ class ConfigFile(object):
         return fd
 
     @contextmanager
-    def _open(self, *args, **kwargs) -> TextIOBase:
-        with open(self.path, *args, **kwargs, opener=self._opener) as f:
+    def _open(self, path, *args, **kwargs) -> TextIOBase:
+        with open(path, *args, **kwargs, opener=self._opener) as f:
             yield f
 
     @contextmanager
