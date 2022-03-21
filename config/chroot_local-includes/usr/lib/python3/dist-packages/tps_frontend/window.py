@@ -8,7 +8,8 @@ from gi.repository import Handy
 Handy.init()
 
 from tps import State, IN_PROGRESS_STATES
-from tps.dbus.errors import InvalidConfigFileError, IncorrectPassphraseError
+from tps.dbus.errors import InvalidConfigFileError, IncorrectPassphraseError, \
+    TargetIsBusyError
 
 from tps_frontend import _, WINDOW_UI_FILE
 from tps_frontend.change_passphrase_dialog import ChangePassphraseDialog
@@ -189,11 +190,19 @@ class Window(Gtk.ApplicationWindow):
             proxy.call_finish(res)
         except GLib.Error as e:
             logger.error(f"failed to delete Persistent Storage: {e.message}")
-            self.display_error(_("Error deleting Persistent Storage"),
-                               e.message)
-            if self.active_view == self.spinner_view:
-                self.close()
-            return
+
+            if TargetIsBusyError.is_instance(e):
+                # Some process is still accessing the target. This is
+                # an expected error which we don't want error reports
+                # for.
+                TargetIsBusyError.strip_remote_error(e)
+                self.display_error(_("Error deleting Persistent Storage"),
+                                   e.message,
+                                   with_send_report_button=False)
+            else:
+                self.display_error(_("Error deleting Persistent Storage"),
+                                   e.message)
+        self.refresh_view()
 
     def on_unlock_call_finished(self, proxy: GObject.Object,
                                 res: Gio.AsyncResult):

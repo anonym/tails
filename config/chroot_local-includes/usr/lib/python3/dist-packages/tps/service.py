@@ -157,6 +157,11 @@ class Service(DBusObject, ServiceUsingJobs):
             raise FailedPreconditionError(msg)
 
         try:
+            # Disable all features first to ensure that no process is
+            # accessing any of the mounts
+            for feature in self.features:
+                if feature.IsActive:
+                    feature.Deactivate()
             self.do_delete()
         finally:
             self.refresh_state(overwrite_in_progress=True)
