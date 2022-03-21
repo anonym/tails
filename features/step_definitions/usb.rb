@@ -191,14 +191,14 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
               action.capitalize
             end
     @installer.button(label).click
-   unless action ==  'upgrade'
-     confirmation_label = if persistence_exists?(name)
-                            'Delete Persistent Storage and Reinstall'
-                          else
-                            'Delete All Data and Install'
-                          end
-     @installer.child('Question',
-                      roleName: 'alert').button(confirmation_label).click
+    unless action == 'upgrade'
+      confirmation_label = if persistence_exists?(name)
+                             'Delete Persistent Storage and Reinstall'
+                           else
+                             'Delete All Data and Install'
+                           end
+      @installer.child('Question',
+                       roleName: 'alert').button(confirmation_label).click
     end
     try_for(15 * 60, delay: 10) do
       @installer
