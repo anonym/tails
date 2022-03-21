@@ -48,7 +48,6 @@ class ConfigFile(object):
         deactivation.
         """
         self.path = Path(mount_point, CONFIG_FILE_NAME)
-        self.backup_path = Path(str(self.path) + ".bak")
         # A lock for ensuring that the config file is not read or
         # written while another method writes to it.
         self.lock = Lock()
@@ -92,11 +91,6 @@ class ConfigFile(object):
             raise InvalidStatError(f"File {self.path} has unexpected ACL "
                                    f"{acl}, expected no ACLs.")
 
-    def backup(self):
-        with self._open() as source:
-           with self._open_backup("w") as dest:
-               dest.write(source.read())
-
     def parse(self) -> List["Mount"]:
         """Parse the config file into mounts"""
         self.lock.acquire()
@@ -119,16 +113,6 @@ class ConfigFile(object):
         self.lock.acquire()
         logger.debug(f"Saving config file with features: {features}")
         try:
-            # Create a backup if the config file exists
-            # XXX: This backup doesn't make much sense now that we
-            # write to the config file each time a feature is
-            # activated / deactivated, because if the user enables at
-            # least two features, the backup from their previous session
-            # will be gone. We might want to rethink the use cases of
-            # the backup and when it makes sense to create it.
-            if os.path.exists(self.path):
-                self.backup()
-
             # Get the lines we have to set for the features
             lines = list()
             for feature in features:
@@ -187,11 +171,6 @@ class ConfigFile(object):
     @contextmanager
     def _open(self, path, *args, **kwargs) -> TextIOBase:
         with open(path, *args, **kwargs, opener=self._opener) as f:
-            yield f
-
-    @contextmanager
-    def _open_backup(self, *args, **kwargs):
-        with open(self.backup_path, *args, **kwargs, opener=self._opener) as f:
             yield f
 
     @staticmethod
