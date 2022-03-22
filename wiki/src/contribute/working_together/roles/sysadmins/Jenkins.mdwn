@@ -62,6 +62,29 @@ and the plugins we have installed:
    → We should stay on top of security advisories and react more quickly than
    "in less than 3 months".
 
+Upgrade steps
+=============
+
+- Preparation:
+  - [ ] Go through the [changelog](https://www.jenkins.io/changelog/), paying attention to changes on how agents connect to controller, config changes that may need update, important changes in plugins, etc.
+- Deployment:
+  - [ ] Take note of currently running builds before starting the upgrades.
+  - [ ] Deploy Jenkins upgrade to latest version available using Puppet.
+  - [ ] Generate a list of up-to-date plugins by running [[this Groovy script|contribute/working_together/roles/sysadmins/Jenkins/1.generate-plugins-list.groovy]] in [[the Jenkins Script Console|https://jenkins.tails.boum.org/script]]. Make sure to update the initial list containing actively used plugins if there were changes.
+  - [ ] Generate updated Puppet code for `tails::jenkins::master` using [[this Python3 script|contribute/working_together/roles/sysadmins/Jenkins/2.generate-puppet-code.py]] and the output of the above script.
+  - [ ] Deploy plugin upgrades using the code generated above.
+  - [ ] Restart all agents.
+  - [ ] Manually run the Update jobs script (may be needed so XML is valid with current Jenkins):
+    ```
+    sudo -u jenkins /usr/local/sbin/deploy_jenkins_jobs update
+    ```
+- Wrap up:
+  - [ ] Go through warnings in Jenkins interface.
+  - [ ] Manually remove uneeded plugins from /var/lib/jenkins/plugins.
+  - [ ] Restart builds that were interrupted by Jenkins restart.
+  - [ ] Update the [[Jenkins upgrade steps documentation|https://tails.boum.org/contribute/working_together/roles/sysadmins/Jenkins#upgrade-steps]] in case there were changes.
+  - [ ] Schedule next update.
+
 Generating jobs
 ===============
 
