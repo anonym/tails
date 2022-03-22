@@ -85,6 +85,34 @@ Upgrade steps
   - [ ] Update the [[Jenkins upgrade steps documentation|https://tails.boum.org/contribute/working_together/roles/sysadmins/Jenkins#upgrade-steps]] in case there were changes.
   - [ ] Schedule next update.
 
+Agent to controller connections
+===============================
+
+These are the steps a Jenkins agent does when connecting to the controller:
+
+1. Fetch connection info from `http://jenkins.lizard:8080` (see the `tails::jenkins::slave` Puppet class).
+2. Receive the connection URL `https://jenkins.tails.boum.org` ("Jenkins URL", manually configured in [Configure System](https://jenkins.tails.boum.org/configure)).
+3. Resolve `jenkins.tails.boum.org` to `192.168.122.1` (because of libvirt config).
+4. Connect using HTTPS to `jenkins.tails.boum.org:443`.
+5. Learn about port `42585` (fixed "TCP port for inbound agents", manually configured in [Configure Global Security](https://jenkins.tails.boum.org/configureSecurity/)).
+6. Finally, connect using HTTP to `jenkins.tails.boum.org:42585`.
+
+For those steps to work, the following configuration exists outside of Jenkins VMs:
+
+- Firewall rules in Lizard to forward agents traffic to `www.lizard`:
+  - `192.168.122.1:80` → `www.lizard:1180`
+  - `192.168.122.1:443` → `www.lizard:11443`
+  - `192.168.122.1:42585` → `www.lizard:42585`
+- Nginx configs in `www.lizard` to reverse proxy traffic to `jenkins.lizard`:
+  - `www.lizard:1180` → `jenkins.lizard:80`
+  - `www.lizard:11443` → `jenkins.lizard:443`
+  - `www.lizard:42585` → `jenkins.lizard:42585`
+
+What could be improved:
+
+- Ports 1180/80 are probably not needed in the configs above.
+- Port 42585 could be directly forwarded to `jenkins.lizard` as it's not TLS protected.
+
 Generating jobs
 ===============
 
