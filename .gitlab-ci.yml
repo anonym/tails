@@ -226,7 +226,13 @@ apt-snapshots-expiry:
         - config/APT_snapshots.d/*/serial
         - vagrant/definitions/tails-builder/config/APT_snapshots.d/*/serial
 
-build-https-get-expired:
+https-get-expired:
   script:
-    - apt-get -qy install golang-go
-    - go build config/chroot_local-includes/usr/src/https-get-expired.go
+    - apt-get -qy install --no-install-recommends golang-go ca-certificates
+    - go build -o ./https-get-expired config/chroot_local-includes/usr/src/https-get-expired.go
+    - echo "Basic check:"
+    - ./https-get-expired -reject-expired https://tails.boum.org/
+    - echo "Let's pretend we are in the past. Then, this certificate is still good."
+    - ./https-get-expired -current-time 2000-01-01 -reject-expired https://tails.boum.org/
+    - echo "Let's pretend we are in the future. Then, this certificate is expired"
+    - "! ./https-get-expired -current-time 2090-01-01 -reject-expired https://tails.boum.org/"
