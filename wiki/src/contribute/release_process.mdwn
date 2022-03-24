@@ -42,6 +42,24 @@ Prepare your checklist
    This ensures you won't mistakenly skip a step, without relying on memory, so
    "oops, I forgot X" cannot happen.
 
+TRAP: whenever you go AFK for long times
+===========================================
+
+Keep this section at the top of your pad, so you don't forget
+
+When you clock off, or take any other kind of long break, please comunicate this on XMPP. Clarify:
+
+ - when do you expect to come back
+
+ - what's the status right now
+
+ - try to give an ETA (or clarify that you cannot) for reaching this steps:
+
+   - When will the final image be available?
+
+   - When will manual testers be able to start their work?
+
+
 Requirements
 ============
 
@@ -137,6 +155,16 @@ you need to set a bunch of environment variables.
 3. Ensure there's a `iuks/v2` directory under the directory you specified for
    `isos` in `~/.config/tails/release_management/local.yml`.
 
+
+        python3 <<EOF
+        import yaml,os
+        from pathlib import Path
+        fpath = Path(os.path.expanduser("~/.config/tails/release_management/local.yml"))
+        isos = Path(yaml.safe_load(fpath.open())["isos"])
+        iuks = isos / "iuks/v2"
+        if not iuks.exists(): raise Exception("IUKS dir not found")
+        EOF
+
 4. Generate the resulting environment variables and export them into your
    environment:
 
@@ -174,8 +202,10 @@ Coordinate with Debian security updates
 ---------------------------------------
 
 Look at the [list of upcoming Debian Security Advisories (DSA)][DSA needed]
-found in the Debian [security tracker][web]'s [Git repository][git].
+found in the Debian [security tracker][web]'s [Git repository][git] and in
+the [debian-security-announce mailing list][ml].
 
+[ml]: https://lists.debian.org/debian-security-announce/recent
 [web]: http://security-tracker.debian.org/tracker/
 [git]: https://salsa.debian.org/security-tracker-team/security-tracker
 [DSA needed]: https://salsa.debian.org/security-tracker-team/security-tracker/blob/master/data/dsa-needed.txt
@@ -303,11 +333,14 @@ Pull updated translations for languages translated in Transifex,
 refresh the code PO files,
 and commit the result, including new PO files:
 
-	cd "${RELEASE_CHECKOUT:?}" && \
-	./import-translations  && \
-	./refresh-translations && \
-	./submodules/jenkins-tools/slaves/lint_po && \
-	git add po && git commit -m 'Update PO files.'
+    (cd "${RELEASE_CHECKOUT:?}"
+     set -x
+     err() { echo "Error $*"; exit 1 }
+     ./import-translations || err "importing translations"
+     ./refresh-translations || err "refreshing translations"
+     ./submodules/jenkins-tools/slaves/lint_po || err "in lint"
+     git add po && git commit -m 'Update PO files.'
+    )
 
 If `lint_po` complains:
 
@@ -438,8 +471,16 @@ version's `.packages` file and the one from the to-be-released images:
 	fi && \
     git push origin "${RELEASE_BRANCH:?}"
 
-4. Notify `@technical-writers` that the changelog is ready [on the GitLab issue
-   about the release notes](https://gitlab.tails.boum.org/groups/tails/-/issues?scope=all&search=release+notes&sort=milestone&state=opened).
+4. Let Technical Writers know that the changelog is ready
+
+   - Open the [GitLab issue about the release notes](https://gitlab.tails.boum.org/groups/tails/-/issues?scope=all&search=release+notes&sort=milestone&state=opened)
+
+   - Notify `@technical-writers` that the changelog is ready:
+
+         echo "Dear @technical-writers, you can find the changelog on ${RELEASE_BRANCH:?}"
+
+   - Provide them a link to latest relevant Jenkins built image, so they can use that to make screenshots or write
+documentation.
 
 Included website
 ----------------
@@ -902,6 +943,8 @@ you can follow the next steps:
 
  - ISO history
  - Build the Incremental Upgrade Kits on Jenkins
+ - If you expect the need to run some manual tests and you have one spare computer, you can prepare a USB
+   stick and do so.
 
 ISO history
 -----------
@@ -1519,7 +1562,7 @@ Sanity checks
 -------------
 
 * Check for any feedback in the _Internal testing_ pad.
-* Check for any feedback on tails-testers@boum.org.
+* Check for any feedback on [tails-testers@boum.org](https://lists.autistici.org/list/tails-testers.html).
 * Verify once more that the Tor Browser we ship is still the most recent (see
   above).
 
@@ -1594,6 +1637,9 @@ Skip this part if preparing a release candidate.
    close the just-released [[!tails_gitlab groups/tails/-/milestones
    desc="milestone"]]. See this as an example:
    [[!tails_gitlab tails/gitlab-config/-/merge_requests/18 desc="tails/gitlab-config!18"]]
+   
+   A cheap way to do this, could be to use [Gitlab web interface to create the
+MR](https://gitlab.tails.boum.org/tails/gitlab-config/-/edit/master/main.yml)
 
    Assign the MR to the on-duty sysadmin (see link to "Semi-public
    calendar" in <https://gitlab.tails.boum.org/tails/summit/-/wikis/Teams#sysadmins>).
@@ -1630,7 +1676,7 @@ Check in the comments of the issue for the release notes if the
 technical writers have prepared a tweet. Otherwise tweet a simple link
 to the release notes:
 
-    Tails x.y is out: https://tails.boum.org/news/version_x.y/
+    echo "Tails ${VERSION:?} is out: https://tails.boum.org/news/version_${TAG:?}/"
 
 The credentials are in keyringer in `rm.git`.
 
@@ -1680,7 +1726,13 @@ If you just released a final release
          ssh bittorrent.lizard transmission-remote --list
 
 1. Remove any remaining RC for the just-published release from
-   `rsync.lizard:/srv/rsync/tails/tails/alpha/`
+   `rsync.lizard:/srv/rsync/tails/tails/alpha/`.
+
+    1. Check if there is anything:
+
+        ssh rsync.lizard find /srv/rsync/tails/tails/alpha/ -type f
+
+    2. Decide what to do!
 
 1. If you've published a final release, remove IUKs that upgrade to an
    older version as they were superseded by this release:
