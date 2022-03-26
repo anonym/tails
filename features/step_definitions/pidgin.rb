@@ -171,23 +171,6 @@ Then /^I receive a response from my friend( in the multi-user chat)?$/ do |multi
   end
 end
 
-When /^I start an OTR session with my friend$/ do
-  $vm.focus_window(@friend_name)
-  @screen.click('PidginConversationOTRMenu.png')
-  @screen.hide_cursor
-  @screen.click('PidginOTRMenuStartSession.png')
-end
-
-Then /^Pidgin automatically generates an OTR key$/ do
-  @screen.wait('PidginOTRKeyGenPrompt.png', 30)
-  @screen.wait('PidginOTRKeyGenPromptDoneButton.png', 30).click
-end
-
-Then /^an OTR session was successfully started with my friend$/ do
-  $vm.focus_window(@friend_name)
-  @screen.wait('PidginConversationOTRUnverifiedSessionStarted.png', 10)
-end
-
 # The reason the chat must be empty is to guarantee that we don't mix
 # up messages/events from other users with the ones we expect from the
 # bot.
