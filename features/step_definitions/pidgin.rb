@@ -1,8 +1,8 @@
 # Extracts the secrets for the XMPP account `account_name`.
-def xmpp_account(account_name, required_options = [])
+def xmpp_account(account_name)
   begin
     account = $config['Pidgin']['Accounts']['XMPP'][account_name]
-    check_keys = ['username', 'domain', 'password'] + required_options
+    check_keys = ['username', 'domain', 'password']
     check_keys.each do |key|
       assert(account.key?(key))
       assert_not_nil(account[key])
@@ -115,14 +115,13 @@ Then /^Pidgin automatically enables my XMPP account$/ do
 end
 
 Given /^my XMPP friend goes online( and joins the multi-user chat)?$/ do |join_chat|
-  account = xmpp_account('Friend_account', ['otr_key'])
+  account = xmpp_account('Friend_account')
   bot_opts = account.select { |k, _| ['connect_server'].include?(k) }
   bot_opts['auto_join'] = [@chat_room_jid] if join_chat
   @friend_name = account['username']
   @chatbot = ChatBot.new(
     account['username'] + '@' + account['domain'],
     account['password'],
-    account['otr_key'],
     **(bot_opts.transform_keys(&:to_sym))
   )
   @chatbot.start

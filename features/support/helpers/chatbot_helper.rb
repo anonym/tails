@@ -1,28 +1,18 @@
 require 'tempfile'
 
 class ChatBot
-  def initialize(account, password, otr_key, **opts)
+  def initialize(account, password, **opts)
     @account = account
     @password = password
-    @otr_key = otr_key
     @opts = opts
     @pid = nil
-    @otr_key_file = nil
   end
 
   def start
-    @otr_key_file = Tempfile.new('otr_key.', $config['TMPDIR'])
-    @otr_key_file << @otr_key
-    @otr_key_file.close
-
-    cmd_helper(['/usr/bin/convertkey', @otr_key_file.path])
-    cmd_helper(['mv', "#{@otr_key_file.path}3", @otr_key_file.path])
-
     cmd = [
       "#{GIT_DIR}/features/scripts/otr-bot.py",
       @account,
       @password,
-      @otr_key_file.path,
     ]
     if @opts[:connect_server]
       cmd += ['--connect-server', @opts[:connect_server]]
@@ -35,13 +25,10 @@ class ChatBot
   end
 
   def stop
-    @otr_key_file.delete
-    begin
-      Process.kill('TERM', @pid)
-      Process.wait(@pid)
-    rescue StandardError
-      # noop
-    end
+    Process.kill('TERM', @pid)
+    Process.wait(@pid)
+  rescue StandardError
+    # noop
   end
 
   def active?
