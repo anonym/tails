@@ -10,7 +10,7 @@ class ChatBot
 
   def start
     cmd = [
-      "#{GIT_DIR}/features/scripts/otr-bot.py",
+      "#{GIT_DIR}/features/scripts/xmpp-bot",
       @account,
       @password,
     ]

@@ -4,7 +4,7 @@ import logging
 from argparse import ArgumentParser
 
 
-class OtrBot(slixmpp.ClientXMPP):
+class XmppBot(slixmpp.ClientXMPP):
 
     def __init__(self, account, password,
                  rooms=[], connect_server=None, log_file=None):
@@ -84,11 +84,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
     logging.basicConfig(level=args.loglevel,
                         format='%(levelname)-8s %(message)s')
-    otr_bot = OtrBot(args.account,
-                     args.password,
-                     rooms=args.auto_join,
-                     connect_server=args.connect_server,
-                     log_file=args.log_file)
+    otr_bot = XmppBot(args.account,
+                      args.password,
+                      rooms=args.auto_join,
+                      connect_server=args.connect_server,
+                      log_file=args.log_file)
     try:
         otr_bot.connect()
         otr_bot.process()
