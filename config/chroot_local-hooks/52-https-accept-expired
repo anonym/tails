@@ -15,6 +15,9 @@ ensure_hook_dependency_is_installed golang-go
 SRC="/usr/src/https-get-expired.go"
 DST="/usr/local/lib/https-get-expired"
 
-go build -o "$DST" "$SRC"
+echo "go env: will give us some details about why this is not reproducible, maybe?"
+go env
+
+go build -v -ldflags=-buildid= -trimpath  -o "$DST" "$SRC"
 strip --strip-all "$DST"
 
