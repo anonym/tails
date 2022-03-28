@@ -423,13 +423,13 @@ version's `.packages` file and the one from the to-be-released images:
 
 2. In the diff, look for:
 
-  - new upstream releases of applications mentioned in [[doc/about/features]]
-  - new upstream releases of other important components such as the
-    Linux kernel
+   - new upstream releases of applications mentioned in [[doc/about/features]]
+   - new upstream releases of other important components such as the
+     Linux kernel
 
-  And mention those changes in `debian/changelog`
+   And mention those changes in `debian/changelog`
 
-Finally, sanity check the version, commit, and push:
+3. Sanity check the version, commit, and push:
 
 	if [ "$(dpkg-parsechangelog -SVersion)" = "${VERSION:?}" ]; then
 	    git commit debian/changelog -m "Update changelog for ${VERSION:?}."
@@ -438,8 +438,8 @@ Finally, sanity check the version, commit, and push:
 	fi && \
     git push origin "${RELEASE_BRANCH:?}"
 
-Notify `@technical-writers` on the GitLab issue about the release notes
-that the changelog is ready.
+4. Notify `@technical-writers` that the changelog is ready [on the GitLab issue
+   about the release notes](https://gitlab.tails.boum.org/groups/tails/-/issues?scope=all&search=release+notes&sort=milestone&state=opened).
 
 Included website
 ----------------
