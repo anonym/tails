@@ -25,6 +25,7 @@ initialList = [
   'parameterized-trigger',
   'postbuildscript',
   'PrioritySorter',
+  'scoring-load-balancer',
   'scm-api',
   'timestamper',
   'ws-cleanup',
