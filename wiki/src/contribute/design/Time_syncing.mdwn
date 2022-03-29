@@ -85,19 +85,37 @@ custom version of the Perl HTP client into
 [[!tails_gitweb config/chroot_local-includes/usr/local/sbin/htpdate]].
 This script is maintained in [[!tails_gitweb_repo htp]].
 
-For reasons detailed below, this version of htpdate uses curl for all
-of its HTTP operations.
+For reasons detailed below, this version of htpdate uses
+[[!tails_gitweb config/chroot_local-includes/usr/local/bin/https-get-expired]],
+its own implementation of an HTTPS client for all of its HTTP operations.
 
 ## Authentication of servers
 
 The custom `/usr/local/sbin/htpdate` we use only connects to HTTPS servers,
-and delegates TLS X.509 certificate
-verification to curl. It also uses several different pools of time
-sources, and if there are too many that fail for any given pool,
-e.g. because of failed certificate checking or being unreachable, the
-pool is considered to be potentially compromised and htpdate aborts.
+and delegates certificate verification to `/usr/local/bin/https-get-expired`.
 
-curl is also directed to only use TLSv1 as a "secure" protocol.
+It also uses several different pools of time sources, and if there are too
+many that fail for any given pool, e.g. because of failed certificate checking
+or being unreachable, the pool is considered to be potentially compromised and
+htpdate aborts.
+
+`https-get-expired` is a simple HTTP client which performs the "typical" TLS
+certificate verification, with an important difference: certificates that are
+starting in the future are considered to be valid. This is an important
+detail. In fact, our clock might well be in the past! Not only due to hardware
+problems (ie: the user's hardware clock is broken) but also because, if the
+user is performing time sync before Tor is ready, an attacker could easily
+modify this and set the user's clock in the past.
+When this happens, htpdate could fail if it was performing the typical TLS
+verification, because the "NotBefore" field could indicate that the
+certificate validity starts in the future. This would leave the clock
+unsynced, and allow an attacker to replay an old Tor consensus.
+
+If, instead, we accept certificates regardless of their "NotBefore" field, we
+are protected against this kind of attacks.
+We don't need to ignore the "NotAfter" field: an attacker has no incentive in
+setting our clock in the future.
+
 
 ## HTP source pools
 
