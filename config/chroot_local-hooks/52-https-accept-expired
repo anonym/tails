@@ -20,4 +20,4 @@ go env
 
 go build -v -ldflags=-buildid= -trimpath  -o "$DST" "$SRC"
 strip --strip-all "$DST"
-
+rm -rf /root/.cache/go-build/
