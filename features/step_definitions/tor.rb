@@ -736,6 +736,11 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?
     raise "Unsupported flow target '#{flow_target}'"
   end
 
+  # Note: many scenarios that use the network do not explicitly allow
+  # using the connectivity check service. They pass because we're
+  # restoring a snapshot where time sync has already happened (most
+  # often "I have started Tails from DVD and logged in and the network
+  # is connected").
   if !connectivity_check.empty?
     # Allow connections to the local DNS resolver, used by
     # tails-get-network-time
