@@ -107,8 +107,8 @@ user is performing time sync before Tor is ready, an attacker could easily
 modify this and set the user's clock in the past.
 When this happens, htpdate could fail if it was performing the typical TLS
 verification, because the "NotBefore" field could indicate that the
-certificate validity starts in the future. This would leave the clock
-unsynced, and allow an attacker to replay an old Tor consensus.
+certificate validity starts in the future. This would leave the system clock
+in the past, and allow an attacker to replay an old Tor consensus.
 
 That's why, instead, we accept certificates regardless of their "NotBefore"
 field, we are protected against this kind of attacks: tor will notice that its
