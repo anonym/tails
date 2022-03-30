@@ -15,12 +15,11 @@ Tails also forbids DNS queries to RFC1918 addresses; those might
 indeed allow the system to learn the local network's public IP
 address.
 
-`resolv.conf` is configured to point to the Tor DNS resolver, and <span
-class="application">NetworkManager<span> and `dhclient` are configured
+`resolv.conf` is configured to point to the Tor DNS resolver, and
+we configure <span class="application">NetworkManager<span>
 not to manage `resolv.conf` at all:
 
 * [[!tails_gitweb config/chroot_local-includes/etc/NetworkManager/conf.d/dns.conf]]
-* [[!tails_gitweb config/chroot_local-includes/etc/dhcp/dhclient-enter-hooks.d/disable_make_resolv_conf]]
 * [[!tails_gitweb config/chroot_local-includes/etc/resolv.conf]]
 * [[!tails_gitweb config/chroot_local-includes/etc/tor/torrc]]
 

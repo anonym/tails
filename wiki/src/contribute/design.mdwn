@@ -1168,18 +1168,7 @@ Tails prevents dhclient from sending the hostname over the network.
 We patch NetworkManager to make it never instruct dhclient to send the
 hostname in DHCP requests, until [[!gnomebug 768076]] is fixed.
 
-Also, dhclient itself is told not to send the hostname. This is
-needed because on Jessie, NetworkManager runs dhclient with the `-cf
-/var/lib/NetworkManager/dhclient-$UUID-eth0.conf` option, and generates that file by
-concatenating `/etc/dhcp/dhclient.conf` with its own settings.
-
-dhclient is told to override any hostname provided by the DHCP
-server with `amnesia`. This is meant to prevent dhclient hooks,
-NetworkManager and others from setting the hostname to a value
-controlled by the DHCP server.
-
 * [[!tails_gitweb_repo network-manager]]
-* [[!tails_gitweb config/chroot_local-patches/dhcp-dont-send-hostname.diff]]
 
 ### 3.6.25 Application isolation
 
