@@ -4,6 +4,7 @@ import (
 	// "log"
 	"crypto/tls"
 	"crypto/x509"
+	"errors"
 	"flag"
 	"fmt"
 	"net/http"
@@ -27,30 +28,48 @@ func init() {
 	}
 }
 
+// This function is a modified version of verifyServerCertificate, which can be found at
+// https://github.com/golang/go/blob/go1.15/src/crypto/tls/handshake_client.go#L824
+// (from here on, this will be called "upstream")
 func verifyButAcceptExpired(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
+	// Just like upstream, parse and collect certificates
 	certs := make([]*x509.Certificate, len(rawCerts))
 	for i, asn1Data := range rawCerts {
-		cert, _ := x509.ParseCertificate(asn1Data)
+		cert, err := x509.ParseCertificate(asn1Data)
+		if err != nil {
+			return errors.New("tls: failed to parse certificate from server: " + err.Error())
+		}
 		certs[i] = cert
 	}
+
+	// In upstream, we're creating the x509.VerifyOptions object right now.
+	// here, we're using a global which is created in main. That's because we wouldn't have access to Conn
+	// data otherwise.
+	// Still, the object ends up having the same values
 	for _, cert := range certs[1:] {
 		verifyOpts.Intermediates.AddCert(cert)
 	}
 
+	// Before going on, let's check that the leaf certificate is for the valid hostname
+	// XXX: does this really add anything, that the subsequent certs[0].Verify() wouldn't have noticed?
 	if err := certs[0].VerifyHostname(verifyOpts.DNSName); err != nil {
 		return err
 	}
 
-	// log.Println("shall we reject?", rejectExpired, "is future?", certs[0].NotBefore.After(currentTime))
 	if !rejectExpired || certs[0].NotBefore.After(currentTime) {
+		// that's the real change: we're pretending that the time of verification is after the
+		// not-before field of the leaf certificate.
 		verifyOpts.CurrentTime = certs[0].NotBefore.Add(onesecond_more)
 	} else {
 		verifyOpts.CurrentTime = currentTime
 	}
 
+	// Just like upstream: perform verification
 	if _, err := certs[0].Verify(verifyOpts); err != nil {
 		return err
 	}
+
+	// upstream has other if statements after this. however, none of this applies to us
 
 	return nil
 }
