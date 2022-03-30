@@ -236,3 +236,9 @@ https-get-expired:
     - ./https-get-expired -current-time 2000-01-01 -reject-expired https://tails.boum.org/
     - echo "Let's pretend we are in the future. Then, this certificate is expired"
     - "! ./https-get-expired -current-time 2090-01-01 -reject-expired https://tails.boum.org/"
+    - "! ./https-get-expired -reject-expired https://wrong.host.badssl.com/"
+    - "! ./https-get-expired -reject-expired https://self-signed.badssl.com/"
+    - "! ./https-get-expired -reject-expired https://untrusted-root.badssl.com/"
+    - "! ./https-get-expired -reject-expired https://expired.badssl.com/"
+    - echo "Invalid host"
+    - "! ./https-get-expired -reject-expired https://nxdomain.tails.boum.org/"
