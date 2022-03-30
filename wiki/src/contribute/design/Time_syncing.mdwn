@@ -110,12 +110,13 @@ verification, because the "NotBefore" field could indicate that the
 certificate validity starts in the future. This would leave the clock
 unsynced, and allow an attacker to replay an old Tor consensus.
 
-If, instead, we accept certificates regardless of their "NotBefore" field, we
-are protected against this kind of attacks: tor will notice that its consensus
-is outdated and will attempt to retrieve a newer consensus. Then, the best the
-attacker can do is block that consensus retrieval, or replay an old consensus
-again, that this time tor will reject as outdated. This is a denial of service
-that such an attacker could do by merely blocking network traffic anyway.
+That's why, instead, we accept certificates regardless of their "NotBefore"
+field, we are protected against this kind of attacks: tor will notice that its
+consensus is outdated and will attempt to retrieve a newer consensus. Then, the
+best the attacker can do is block that consensus retrieval, or replay an old
+consensus again, that this time tor will reject as outdated. This is a denial of
+service that such an attacker could do by merely blocking network
+traffic anyway.
 
 We don't need to ignore the "NotAfter" field: an attacker has no incentive in
 setting our clock in the future.
