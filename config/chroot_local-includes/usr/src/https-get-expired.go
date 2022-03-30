@@ -121,7 +121,9 @@ func main() {
 		DNSName:       hostname,
 		Intermediates: x509.NewCertPool(),
 	}
-	client := &http.Client{Transport: transCfg, Timeout: *timeout}
+	client := &http.Client{Transport: transCfg, Timeout: *timeout, CheckRedirect: func(req *http.Request, via []*http.Request) error {
+		return http.ErrUseLastResponse
+	}}
 
 	request, err := http.NewRequest("HEAD", urlString, nil)
 	if *user_agent != "" {
