@@ -77,7 +77,7 @@ end
 opt_parser.parse!(ARGV)
 
 if cmd_opts[:upload]
-  content = File.read(cmd_opts[:src]) 
+  content = File.read(cmd_opts[:src])
   f = RemoteShell::File.new(FakeVM.new, cmd_opts[:dst])
   f.write(content)
 else
@@ -85,4 +85,3 @@ else
   File.write(cmd_opts[:dst], f.read)
 end
 exit 0
-
