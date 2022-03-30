@@ -14,13 +14,13 @@ $config = {}
 
 def debug_log(*args); end
 
+# Implements the subset of the VM class that we need here
 class FakeVM
   def initialize
-    domain = nil
     @domain_xml = ''
     begin
-      virt = Libvirt::open("qemu:///system")
-      domain = virt.lookup_domain_by_name("TailsToaster")
+      virt = Libvirt.open('qemu:///system')
+      domain = virt.lookup_domain_by_name('TailsToaster')
       @domain_xml = domain.xml_desc
     rescue
       raise 'There was a problem with the TailsToaster VM (is it running?)'
