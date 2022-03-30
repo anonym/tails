@@ -99,8 +99,8 @@ or being unreachable, the pool is considered to be potentially compromised and
 htpdate aborts.
 
 `https-get-expired` is a simple HTTP client which performs the "typical" TLS
-certificate verification, with an important difference: certificates that are
-starting in the future are considered to be valid. This is an important
+certificate verification, with an important difference: certificates whose
+validity dates are in the future are considered to be valid. This is an important
 detail. In fact, our clock might well be in the past! Not only due to hardware
 problems (ie: the user's hardware clock is broken) but also because, if the
 user is performing time sync before Tor is ready, an attacker could easily
