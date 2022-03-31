@@ -2,6 +2,9 @@ package main
 
 import (
 	// "log"
+	"crypto/ecdsa"
+	"crypto/ed25519"
+	"crypto/rsa"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
@@ -67,6 +70,14 @@ func verifyButAcceptExpired(rawCerts [][]byte, verifiedChains [][]*x509.Certific
 	// Just like upstream: perform verification
 	if _, err := certs[0].Verify(verifyOpts); err != nil {
 		return err
+	}
+
+	// Just like upstream: check that the public key type is modern enough
+	switch certs[0].PublicKey.(type) {
+	case *rsa.PublicKey, *ecdsa.PublicKey, ed25519.PublicKey:
+		break
+	default:
+		return fmt.Errorf("tls: server's certificate contains an unsupported type of public key: %T", certs[0].PublicKey)
 	}
 
 	// upstream has other if statements after this. They don't apply to us
