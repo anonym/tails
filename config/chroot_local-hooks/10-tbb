@@ -334,11 +334,7 @@ if [ "${NIGHTLY_BUILD}" != yes ]; then
     install_langpacks "${TMP}/${LANGPACKS_TARBALL}" "${TBB_EXT}"
 fi
 
-# FIXME: https://gitlab.tails.boum.org/tails/tails/-/merge_requests/724#note_183582
-# install_pluggable_transports "${TMP}/${MAIN_TARBALL}" /usr/bin
-echo "I: installing obfs4proxy pluggable transport"
-install --owner=root --group=root --mode=755 \
-        --target-directory=/usr/bin /tmp/submodules/tails-workarounds/obfs4proxy
+install_pluggable_transports "${TMP}/${MAIN_TARBALL}" /usr/bin
 
 rm -r "${TMP}"
 
