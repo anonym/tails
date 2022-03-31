@@ -228,7 +228,10 @@ apt-snapshots-expiry:
 
 https-get-expired:
   script:
-    - apt-get -qy install --no-install-recommends golang-go ca-certificates
+    - 'echo "deb http://deb.debian.org/debian buster-backports main"
+         > /etc/apt/sources.list.d/buster-backports.list'
+    - apt-get update -qq
+    - apt-get -qy install --no-install-recommends -t buster-backports golang-go golang-1.15-go ca-certificates
     - go build -o ./https-get-expired config/chroot_local-includes/usr/src/https-get-expired.go
     - echo "Basic check:"
     - ./https-get-expired -reject-expired https://tails.boum.org/
