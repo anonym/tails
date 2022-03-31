@@ -69,7 +69,8 @@ func verifyButAcceptExpired(rawCerts [][]byte, verifiedChains [][]*x509.Certific
 		return err
 	}
 
-	// upstream has other if statements after this. however, none of this applies to us
+	// upstream has other if statements after this. They don't apply to us
+	// because they run code for opt-in features that we don't enable.
 
 	return nil
 }
