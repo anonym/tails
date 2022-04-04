@@ -1338,16 +1338,25 @@ Public testing
    <https://mirrors.wikimedia.org/tails/> are reliable and have plenty
    of bandwidth:
 
+        
         (
-            for mirror in mirrors.wikimedia.org mirrors.edge.kernel.org; do
-                ./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
-                    --url-prefix https://$mirror/tails/ \
-                    tails-amd64-${VERSION:?}
+            success=false
+            while true; do
+                for mirror in mirrors.wikimedia.org mirrors.edge.kernel.org; do
+                    url="https://$mirror/tails/"
+                    if [[ -z "$(./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
+                        --url-prefix "$url" \
+                        tails-amd64-${VERSION:?} )" ]]
+                    then
+                        echo "WORKING: $url"
+                        success=true
+                    fi
+                done
+                $success && exit 0
+                sleep 1m
             done
         )
 
-   `check-mirrors` will only output errors. It remains silent for
-   mirrors that are already synchronized.
 
 1. Email <tails-testers@boum.org> to ask them to test the tentative images:
 
