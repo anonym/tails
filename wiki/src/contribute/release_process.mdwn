@@ -773,54 +773,57 @@ To verify that Jenkins reproduced your images:
             . $(./bin/rm-config generate-environment --stage reproduced-images)
 
    - Else, if there is a hash mismatch for one of the images: ouch!
+     see next section
 
-     Now we are in a
-     tricky situation: on the one hand it seems like a poor idea to
-     block users from benefiting from this release's security updates,
-     but on the other hand the failure might imply that something
-     nefarious is going on. At this stage, no matter what, immediately
-     fetch Jenkins' image, compare it with your, and try to rule out
-     build system compromise:
+### If there is a hash mismatch
 
-          sudo diffoscope \
-              --text diffoscope.txt \
-              --html diffoscope.html \
-              --max-report-size 262144000 \
-              --max-diff-block-lines 10000 \
-              --max-diff-input-lines 10000000 \
-                  path/to/your/tails-amd64-${VERSION:?}.iso \
-                  path/to/jenkins/tails-amd64-${VERSION:?}.iso
+ Now we are in a
+ tricky situation: on the one hand it seems like a poor idea to
+ block users from benefiting from this release's security updates,
+ but on the other hand the failure might imply that something
+ nefarious is going on. At this stage, no matter what, immediately
+ fetch Jenkins' image, compare it with your, and try to rule out
+ build system compromise:
 
-     Do the same for the USB image as well.
+      sudo diffoscope \
+          --text diffoscope.txt \
+          --html diffoscope.html \
+          --max-report-size 262144000 \
+          --max-diff-block-lines 10000 \
+          --max-diff-input-lines 10000000 \
+              path/to/your/tails-amd64-${VERSION:?}.iso \
+              path/to/jenkins/tails-amd64-${VERSION:?}.iso
 
-     Then carefully investigate the `diffoscope` report:
+ Do the same for the USB image as well.
 
-       - If you cannot rule out that the difference is harmful: let's take
-         a step back; we might be compromised, so we are in no position to
-         release. Halt the release, involve the rest of the Board, and then
-         try to re-establish trust in all build machines and infra
-         involved, etc. Have fun!
+ Then carefully investigate the `diffoscope` report:
 
-       - Otherwise, if the change is definitely harmless:
+   - If you cannot rule out that the difference is harmful: let's take
+     a step back; we might be compromised, so we are in no position to
+     release. Halt the release, involve the rest of the Board, and then
+     try to re-establish trust in all build machines and infra
+     involved, etc. Have fun!
 
-         * If the source of non-determinism is identified quickly and
-           is easy and fast to fix, *and* the QA of the current images
-           has not gone very far (so at least that time is not wasted),
-           then you should consider abandoning the current version, and
-           immediately start preparing an emergency release with:
+   - Otherwise, if the change is definitely harmless:
 
-           - the reproducibility fix,
-           - a new changelog entry,
-           - adjustments to the release notes so they are re-purposed for
-             this emergency release (the abandoned release gets none, since
-             it effectively never will be released publicly).
+     * If the source of non-determinism is identified quickly and
+       is easy and fast to fix, *and* the QA of the current images
+       has not gone very far (so at least that time is not wasted),
+       then you should consider abandoning the current version, and
+       immediately start preparing an emergency release with:
 
-         * Otherwise, if the fix looks time-consuming or difficult,
-           let's release anyway. But let's add a known issue about
-           "This Tails release does not build reproducibility" to the
-           release notes, linking to the issue where
-           the nature of the reproducibility failure is clearly
-           described.
+       - the reproducibility fix,
+       - a new changelog entry,
+       - adjustments to the release notes so they are re-purposed for
+         this emergency release (the abandoned release gets none, since
+         it effectively never will be released publicly).
+
+     * Otherwise, if the fix looks time-consuming or difficult,
+       let's release anyway. But let's add a known issue about
+       "This Tails release does not build reproducibility" to the
+       release notes, linking to the issue where
+       the nature of the reproducibility failure is clearly
+       described.
 
 Initialize the website release branch
 -------------------------------------
@@ -1040,9 +1043,11 @@ Run this command to verify that Jenkins reproduced your IUKs:
 
 The download step takes a few minutes.
 
-If this verification succeeds, move on to the next section.
+If this verification succeeds, good! Otherwise, see the next section
 
-Else, if this verification fails, then:
+### If IUK verification fails
+
+if the last command failed:
 
 1. Visit this page: `https://jenkins.tails.boum.org/job/build_IUKs/lastBuild/parameters/`
 
