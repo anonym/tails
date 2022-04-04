@@ -1,9 +1,89 @@
-tails (4.29) UNRELEASED; urgency=medium
+tails (4.29) unstable; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade to Tor Browser 11.0.x based on Firefox 91.8 (tails/tails!777)
 
- -- boyska <boyska@riseup.net>  Tue, 08 Mar 2022 17:38:49 +0100
+    Closes issues:
+      - Upgrade to Tor Browser 11.0.x based on Firefox 91.8 (tails/tails#18874)
 
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.0.10-build1
+
+  * Upgrade Thunderbird to 91.7
+
+  * Upgrade to obfs4proxy 0.0.12 (Elligator2 bug) (tails/tails!728)
+
+    Closes issues:
+      - Fix bug in obfs4proxy (Elligator2), upgrading to 0.0.12+ (tails/tails#18800)
+
+    Commits:
+      - Revert "Downgrade obfs4proxy to 0.0.12-dev from the Tor Browser 11.0.4 tarball"
+
+  * htpdate: log to stdout even when a log file is specified (tails/tails!772)
+
+    Closes issues:
+      - htpdate: also log to the Journal (tails/tails#18895)
+
+    Commits:
+      - htpdate: log to stdout even when a log file is specified
+
+  * Upgrade to Buster 10.12 and Linux 5.10.103-1 (tails/tails!771)
+
+    Closes issues:
+      - Upgrade to Buster 10.12 (tails/tails#18885)
+      - Upgrade Linux to 5.10.103-1 (DSA-5095-1) (tails/tails#18877)
+
+    Commits:
+      - Drop unused KERNEL_SOURCE_VERSION variable
+      - Upgrade to Buster 10.12 and Linux 5.10.106-1
+
+  * Test suite: drop OTR tests (tails/tails!769)
+
+    Closes issues:
+      - "Pidgin automatically generates an OTR key" test suite step fails when host
+        system is Bullseye (tails/tails#18866)
+
+    Commits:
+      - Test suite: rename otr-bot to xmpp-bot
+      - Test suite: drop support for OTR
+      - Test suite: drop OTR tests
+
+  * Provide HTTPS link when JavaScript is disabled (#18559) (tails/tails!755)
+
+    Commits:
+      - Update release process
+      - Improve comment
+      - Provide HTTPS link when JavaScript is disabled (#18559)
+
+  * Clarify purpose and timeline (tails/tails!744)
+
+    Commits:
+      - Add link to release notes on GitLab
+      - Include technical writers in the procedure
+      - Fix Markdown
+      - Clarify where
+      - Remember Technical Writers where to find the latest stable
+      - Clarify purpose and timeline
+
+  * Upgrade zlib1g to 1:1.2.11.dfsg-1+deb10u1 (DSA-5111-1)
+
+
+  * doc updates after releasing 4.28 (tails/tails!742)
+
+    Commits:
+      - Use expected location of release notes
+      - Easier technical-writers notification
+      - clean RCs from rsync.lizard: command
+      - twitter: less brain usage, more commands
+      - clicking links is easier than thinking
+      - RM: please communicate before clocking off
+      - more parallelization: do tests while IUKs are building
+      - lesson learned: read DSA mailing list
+      - be sure you are on the right branch
+      - importing PO often fails: let's explain why
+      - check iuks/v2 exists: scripted
+
+ -- Tails developers <tails@boum.org>  Mon, 04 Apr 2022 07:46:43 +0000
 tails (4.28) unstable; urgency=medium
 
   * Upgrade to Tor Browser 11.0.7-build2 based on Firefox 91.7 (tails/tails!741)
