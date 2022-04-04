@@ -1,9 +1,100 @@
-tails (4.31) UNRELEASED; urgency=medium
+tails (5.0~beta1) unstable; urgency=medium
 
-  [ Tails developers ]
-  * Dummy entry for next major release.
+  * Upgrade to Debian 11 (Bullseye).
+    - Fixes opening a Veracrypt volume with a long passphrase (tails#17474)
+    - NetworkManager now uses its internal DHCP client
+    - Removes python2
+    - Software upgrades:
+      - GNOME 3.38
+      - Audacity 2.4.2
+      - bookletimposer 0.3
+      - GIMP 2.20.22
+      - Inkscape 1.0.2
+      - LibreOffice 7.0.4
+      - NetworkManager 1.30.0
+      - OnionCircuits 0.7
+      - Pidgin 2.14.1
+      - Thunderbird 91.7.0-2~deb11u1
+      - X.Org 1.20.11
 
- -- boyska <boyska@riseup.net>  Tue, 08 Mar 2022 17:38:32 +0100
+  * Upgrade Tor Browser to 11.0.10-build1 (tails#777)
+
+  * Enable driverless printing and scanning (tails#18521)
+
+  * Fix locales translation in the Welcome Screen (tails#18199, tails/tails!683)
+
+    Commits:
+      - all formats are shown
+      - translations appear again in Greeter
+      - when native l10n is not available, use english
+      - all languages are listed
+
+  * Drop hack to kill GDM on login, not necessary anymore on Bullseye (tails#17952)
+
+  * Have tor log to the Journal (tails#18842)
+
+  * Have NetworkManager and MAC spoofing ignore veth* network interfaces (tails#18443)
+
+  * Drop deprecated printer-driver-hpijs (tails#18225)
+
+  * Fix devel branch FTBFS (tails/tails!773)
+
+    Commits:
+      - Preserve UIDs/GIDs stability
+      - Refresh list of standard packages
+
+  * Drop obsolete patch (tails/tails!690)
+
+    Commits:
+      - Drop obsolete patch
+
+  * Fix the Tails Installer in bullseye (tails/tails!679)
+
+    Commits:
+      - retry has shorter sleep times
+      - FIX self.sleep never existed
+      - retry getting udisks object upon failure
+      - don't rescan devices: we already know!
+      - partition_device returns a UDI
+      - refactor detect_supported_drives
+      - retrying getting system partition helps
+      - race conditions? let's increase sleep time!
+
+  * Fix Scenario: Upgrading an old Tails USB installation from another Tails USB
+    drive (tails/tails!765)
+
+    Commits:
+      - apparently fix tails/tails#18840
+      - send tails installer log to syslog
+
+  * Additional Software: synchronize APT data when needed directly from t-p-s
+    (tails/tails!764)
+
+    Commits:
+      - Test suite: restart Tails in the same way we expect the user to
+      - Test suite: don't exit the persistence wizard once done, make saving settings
+        explicit
+      - Test suite: refactoring (convert step to method)
+      - Additional Software: synchronize APT data when needed directly from t-p-s
+      - Remove XXX:Bullseye: this is not going to happen
+
+  * Update gdm-tails.json for Bullseye (tails/tails!689)
+
+    Commits:
+      - Add pointer accessibility support to gdm-tails.json
+      - gdm-tails.json: remove panelStyle
+
+  * Update VeraCrypt test suite for Bullseye (tails/tails!686)
+
+    Commits:
+      - Test suite: trim expected image to account for GNOME mounted volume
+        notification
+      - Give exchange USB drive more space
+      - Test suite: update to new GNOME Disks UI
+      - Test suite: update Nautilus application name
+      - Test suite: update expected picture
+
+ -- Tails developers <tails@boum.org>  Mon, 04 Apr 2022 07:25:58 +0000
 
 tails (4.28) unstable; urgency=medium
 
