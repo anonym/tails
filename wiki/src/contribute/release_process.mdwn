@@ -477,7 +477,7 @@ version's `.packages` file and the one from the to-be-released images:
 
    - Notify `@technical-writers` that the changelog is ready:
 
-         echo "Dear @technical-writers, you can find the changelog on ${RELEASE_BRANCH:?}"
+         echo "Dear @technical-writers, you can find the changelog on the ${RELEASE_BRANCH:?} branch"
 
    - Provide them a link to latest relevant Jenkins built image, so they can use that to make screenshots or write
 documentation.
@@ -710,8 +710,7 @@ suite should be ready, so it is time to:
    so don't bother setting it yourself.
 
 1. Make sure the Jenkins build starts as soon as possible. If needed, remove
-   other builds from the _Build Queue_ or cancel other running builds,
-   ideally on iguana so the build goes faster.
+   other builds from the _Build Queue_.
 
 1. Make sure the Jenkins build is right: you can recognize this is the case,
    when you see Jenkins starts building the website. Jenkins will take
