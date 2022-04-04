@@ -162,7 +162,7 @@ you need to set a bunch of environment variables.
         fpath = Path(os.path.expanduser("~/.config/tails/release_management/local.yml"))
         isos = Path(yaml.safe_load(fpath.open())["isos"])
         iuks = isos / "iuks/v2"
-        if not iuks.exists(): raise Exception("IUKS dir not found")
+        if not iuks.exists(): raise Exception("IUKS dir '%s' not found" % iuks)
         EOF
 
 4. Generate the resulting environment variables and export them into your
