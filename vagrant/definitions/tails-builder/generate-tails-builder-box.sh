@@ -198,6 +198,7 @@ steps:
       - rsync
       - ruby
       - sudo
+      - systemd-timesyncd
       - time
       - wget
     tag: rootfs
