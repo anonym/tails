@@ -1049,8 +1049,9 @@ Build the Incremental Upgrade Kits on Jenkins
    the `$IUK_SOURCE_VERSIONS` list, distributed across `isobuilderN` workers.
 
    If you have a fast computer, you'll be waiting for Jenkins to be done, while
-   your CPU is idle. Consider starting the automated test suite in the meanwhile to
-   optimize this: running it does not depend on any of the IUK-related steps.
+   your CPU is idle. Consider starting the [automated test
+   suite](#run-automated-tests) in the meanwhile to optimize this: running it
+   does not depend on any of the IUK-related steps.
 
 6. Add the time it took for `build_IUKs` to the table of [[!tails_ticket 17750]].
 
@@ -1354,6 +1355,24 @@ Now you can announce and seed the Torrents for the release you're preparing:
 Test that you can start downloading the ISO and USB images with a BitTorrent client.
 It can take a few dozen minutes before this works.
 
+<a id="run-automated-tests"></a>
+
+Run the automated test suite
+===============================
+
+This is not a required step: check the manual testers pad and see if anyone
+volunteered for that. But if noone did, start the automated test suite. The
+sooner, the better.
+
+You probably already know how to do that, but keep this in mind:
+
+ - you *need* to use the `--old-iso` option
+
+ - you probably want to specify `--tmpdir` to point to a non-volatile directory.
+   The default lives in `/tmp/`, which might lead to unpleasant surprises if,
+   for whatever reasons, you need to turn off your computer.
+
+
 Public testing
 ==============
 
@@ -1382,9 +1401,6 @@ Public testing
             done
         )
 
-    This could take quite some time. In the meanwhile, consider starting the
-    automated test suite (see next chapter).
-
 1. Email <tails-testers@boum.org> to ask them to test the tentative images:
 
    - subject: "Call for testing: $VERSION"
@@ -1399,10 +1415,6 @@ Lead the internal manual testing to conclusion
 
    To communicate this to them, delete "⚠ Wait until the Release Manager […]" in
    the "Reproducibility" section on the pad.
-
-1. Make sure someone is committed to run the automated test suite. If noone
-   committed, consider starting it yourself. Since it takes a long time, the
-   sooner the better.
 
 1. Make sure that enough people are here to run the tests, that they
    report their results in due time, and that they make it clear when
@@ -1422,6 +1434,9 @@ Lead the internal manual testing to conclusion
 
 1. Fill the holes and make sure that the automated and manual test
    suites are done in due time.
+
+1. If you were the one running the [automated test suite](#run-automated-tests),
+   check its results.
 
 1. Triage test results, reproduce bugs as needed, decide what the next
    step is and make sure it happens: add to known issues? file an issue?
