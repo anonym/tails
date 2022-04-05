@@ -1027,6 +1027,10 @@ Build the Incremental Upgrade Kits on Jenkins
    It should take about 20-25 minutes for each member of
    the `$IUK_SOURCE_VERSIONS` list, distributed across `isobuilderN` workers.
 
+   If you have a fast computer, you'll be waiting for Jenkins to be done, while
+   your CPU is idle. Consider starting the automated test suite in the meanwhile to
+   optimize this: running it does not depend on any of the IUK-related steps.
+
 6. Add the time it took for `build_IUKs` to the table of [[!tails_ticket 17750]].
 
 <a id="reproducibility-sanity-check-iuk"></a>
@@ -1357,6 +1361,8 @@ Public testing
             done
         )
 
+    This could take quite some time. In the meanwhile, consider starting the
+    automated test suite (see next chapter).
 
 1. Email <tails-testers@boum.org> to ask them to test the tentative images:
 
@@ -1373,7 +1379,9 @@ Lead the internal manual testing to conclusion
    To communicate this to them, delete "⚠ Wait until the Release Manager […]" in
    the "Reproducibility" section on the pad.
 
-1. Make sure someone is committed to run the automated test suite.
+1. Make sure someone is committed to run the automated test suite. If noone
+   committed, consider starting it yourself. Since it takes a long time, the
+   sooner the better.
 
 1. Make sure that enough people are here to run the tests, that they
    report their results in due time, and that they make it clear when
