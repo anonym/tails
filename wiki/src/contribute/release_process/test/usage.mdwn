@@ -167,23 +167,13 @@ These secrets are required for some scenarios in
             username: "friend"
             domain: "jabber.org"
             password: "trustno1"
-            otr_key: |
-              (privkeys
-               (account
-              (name friend)
-              (protocol xmpp)
-              (private-key
-               (dsa
-              [...]
 
 Note that the fields used in the above example show the *mandatory*
 fields.
 
 The XMPP account described by `Tails_account` (to be used in Tails'
 Pidgin) and `Friend_account` (run via a bot from the tester host) must
-be subscribed to each other but to no other XMPP account. Also, for the
-`Friend_account`, it's important that the `otr_key`'s `name` field is
-the same as `username`, and that the `protocol` field is `xmpp`.
+be subscribed to each other but to no other XMPP account.
 
 If a "Connect Server" is needed for any of the accounts, it can be set
 in the *optional* `connect_server` field.
