@@ -151,14 +151,14 @@ at the application level:
    (Thunderbird will send two EHLO/HELO: one before TLS is
    initiated; one after; the assumption here is that Thunderbird will
    send the same both times).
-3. Run `sudo tcpdump -n -i lo -w dump` while sending an email to
+3. Run `sudo tcpdump -n -i lo -w dump.pcap` while sending an email to
    capture the packets before Tor encrypts it, then close
    tcpdump. Note that the packet containing EHLO/HELO will be sent
    really early, so even if the email failed (e.g. because the mail
    server doesn't support plaintext SMTP on port 587) we are ok.
 4. Check the dump for the HELO/EHLO message and
    verify that it only contains `127.0.0.1`:
-   `sudo tcpdump -A -r dump | grep EHLO`
+   `sudo tcpdump -A -r dump.pcap | grep EHLO`
 
 WhisperBack
 ===========
