@@ -2,8 +2,7 @@
 Feature: Chatting anonymously using Pidgin
   As a Tails user
   when I chat using Pidgin
-  I should be able to use OTR
-  And I should be able to persist my Pidgin configuration
+  I should be able to persist my Pidgin configuration
   And AppArmor should prevent Pidgin from doing dangerous things
   And all Internet traffic should flow only through Tor
 
@@ -45,23 +44,6 @@ Feature: Chatting anonymously using Pidgin
     When I wait 10 seconds
     And I click on the Tails GitLab URL
     Then the Tor Browser loads the Tails GitLab
-
-  #18866
-  @check_tor_leaks @fragile
-  Scenario: Chatting with some friend over XMPP and with OTR
-    Given I have started Tails from DVD and logged in and the network is connected
-    When I start "Pidgin Internet Messenger" via GNOME Activities Overview
-    Then I see Pidgin's account manager window
-    When I create my XMPP account
-    And I close Pidgin's account manager window
-    Then Pidgin automatically enables my XMPP account
-    Given my XMPP friend goes online
-    When I start a conversation with my friend
-    And I start an OTR session with my friend
-    Then Pidgin automatically generates an OTR key
-    And an OTR session was successfully started with my friend
-    When I say something to my friend
-    Then I receive a response from my friend
 
   @check_tor_leaks
   Scenario: Connecting to the tails multi-user chat with my XMPP account
