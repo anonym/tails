@@ -88,6 +88,22 @@ that we can use as a basis to explain why we're removing the milestone.
 
 ## Automated tasks
 
+Make sure dependencies are installed:
+
+    sudo apt install -y python3-django python3-gitlab podman
+
+To avoid unneeded overhead in the next step, it can be good to first run a
+cleanup of GitLab users (see [[!tails_gitlab tails/sysadmin/-/issues/17823]]
+for latest sane parameters):
+
+    GITLAB_NAME=TailsRoot ./bin/gitlab-users-cleanup \
+        --min-creation-age='29 days' \
+        --min-inactivity='28 days' \
+        --active \
+        --max-post-sign-up-activity='120 days' \
+        --max-contribution-events=0 \
+        --action=deactivate-or-block
+
 To run the automated triaging processes described below, execute
 the following commands:
 

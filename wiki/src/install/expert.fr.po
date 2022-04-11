@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2022-02-25 17:10-0600\n"
-"PO-Revision-Date: 2022-03-04 12:24+0000\n"
-"Last-Translator: nihei <nihei@disroot.org>\n"
+"PO-Revision-Date: 2022-03-27 13:35+0000\n"
+"Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<div class=\"tip\">\n"
-msgstr ""
+msgstr "<div class=\"tip\">\n"
 
 #. type: Plain text
 #, no-wrap
@@ -86,7 +86,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "</div>\n"
-msgstr ""
+msgstr "</div>\n"
 
 #
 #. type: Plain text
@@ -98,7 +98,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<div class=\"note\">\n"
-msgstr ""
+msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
 #, no-wrap
@@ -135,6 +135,8 @@ msgid ""
 "       wget https://tails.boum.org/tails-signing.key\n"
 "       gpg --import < tails-signing.key\n"
 msgstr ""
+"       wget https://tails.boum.org/tails-signing.key\n"
+"       gpg --import < tails-signing.key\n"
 
 #
 #. type: Bullet: '1. '
@@ -146,7 +148,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "       sudo apt update && sudo apt install debian-keyring\n"
-msgstr ""
+msgstr "       sudo apt update && sudo apt install debian-keyring\n"
 
 #
 #. type: Bullet: '1. '
@@ -160,26 +162,32 @@ msgstr ""
 #, no-wrap
 msgid "       gpg --keyring=/usr/share/keyrings/debian-keyring.gpg --export chris@chris-lamb.co.uk | gpg --import\n"
 msgstr ""
+"       gpg --keyring=/usr/share/keyrings/debian-keyring.gpg --export chris"
+"@chris-lamb.co.uk | gpg --import\n"
 
 #
 #. type: Bullet: '1. '
 msgid "Verify the certifications made on the Tails signing key:"
-msgstr ""
+msgstr "Vérifier la certification faite sur la clé de signature Tails :"
 
 #. type: Plain text
 #, no-wrap
 msgid "       gpg --keyid-format 0xlong --check-sigs A490D0F4D311A4153E2BB7CADBB802B258ACD84F\n"
 msgstr ""
+"       gpg --keyid-format 0xlong --check-sigs "
+"A490D0F4D311A4153E2BB7CADBB802B258ACD84F\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "   In the output of this command, look for the following line:\n"
-msgstr ""
+msgstr "   Dans la sortie de cette commande, regarder la ligne suivante :\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "       sig!         0x1E953E27D4311E58 2020-03-19  Chris Lamb <chris@chris-lamb.co.uk>\n"
 msgstr ""
+"       sig!         0x1E953E27D4311E58 2020-03-19  Chris Lamb <chris@chris-"
+"lamb.co.uk>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -225,7 +233,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "       gpg --lsign-key A490D0F4D311A4153E2BB7CADBB802B258ACD84F\n"
-msgstr ""
+msgstr "       gpg --lsign-key A490D0F4D311A4153E2BB7CADBB802B258ACD84F\n"
 
 #. type: Plain text
 #, no-wrap
@@ -236,6 +244,8 @@ msgstr ""
 #, no-wrap
 msgid "<div class=\"step-image\">[[!img inc/infography/download.png link=\"no\" alt=\"\"]]</div>\n"
 msgstr ""
+"<div class=\"step-image\">[[!img inc/infography/download.png link=\"no\" alt="
+"\"\"]]</div>\n"
 
 #
 #. type: Bullet: '1. '
@@ -334,7 +344,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   <p class=\"pre command\">ls -1 /dev/sd?</p>\n"
-msgstr ""
+msgstr "   <p class=\"pre command\">ls -1 /dev/sd?</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -344,7 +354,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   <p class=\"pre command-output\">/dev/sda</p>\n"
-msgstr ""
+msgstr "   <p class=\"pre command-output\">/dev/sda</p>\n"
 
 #
 #. type: Bullet: '1. '
@@ -355,11 +365,13 @@ msgstr ""
 #, no-wrap
 msgid "   <div class=\"caution\"><p>All the data on this USB stick will be lost.</p></div>\n"
 msgstr ""
+"   <div class=\"caution\"><p>Toutes les données sur cette clé USB seront "
+"perdues.</p></div>\n"
 
 #
 #. type: Bullet: '1. '
 msgid "Execute again the same command:"
-msgstr ""
+msgstr "Exécutez à nouveau la même commande :"
 
 #. type: Plain text
 #, no-wrap
@@ -372,6 +384,8 @@ msgid ""
 "   <p class=\"pre command-output\">/dev/sda\n"
 "   /dev/sdb</p>\n"
 msgstr ""
+"   <p class=\"pre command-output\">/dev/sda\n"
+"   /dev/sdb</p>\n"
 
 #
 #. type: Bullet: '1. '
@@ -393,6 +407,12 @@ msgid ""
 "   <strong>you risk overwriting any hard disk on the system</strong>.</p>\n"
 "   </div>\n"
 msgstr ""
+"   <div class=\"caution\">\n"
+"   <p>Si vous n'avez pas la certitude d'avoir le bon nom de périphérique, "
+"vous devriez ne pas poursuivre ou\n"
+"   <strong>vous risquez d'écraser les données d'un disque dur de votre "
+"système</strong>.</p>\n"
+"   </div>\n"
 
 #
 #. type: Bullet: '1. '
@@ -400,11 +420,13 @@ msgid ""
 "Execute the following commands to copy the USB image that you downloaded "
 "earlier to the USB stick."
 msgstr ""
+"Exécutez les commandes suivantes pour copier sur la clé USB l'image USB que "
+"vous avez téléchargée précédemment."
 
 #. type: Plain text
 #, no-wrap
 msgid "   Replace:\n"
-msgstr ""
+msgstr "   Remplacer :\n"
 
 #
 #. type: Bullet: '   - '
@@ -412,6 +434,8 @@ msgid ""
 "<span class=\"command-placeholder\">tails.img</span> with the path to the "
 "USB image"
 msgstr ""
+"<span class=\"command-placeholder\">tails.img</span> par le chemin vers "
+"l'image USB"
 
 #
 #. type: Bullet: '   - '
@@ -424,6 +448,9 @@ msgstr ""
 #, no-wrap
 msgid "   <p class=\"pre command\">dd if=<span class=\"command-placeholder\">tails.img</span> of=<span class=\"command-placeholder\">device</span> bs=16M oflag=direct status=progress</p>\n"
 msgstr ""
+"   <p class=\"pre command\">dd if=<span class=\"command-placeholder\">tails."
+"img</span> of=<span class=\"command-placeholder\">device</span> bs=16M "
+"oflag=direct status=progress</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -434,6 +461,8 @@ msgstr ""
 #, no-wrap
 msgid "   <p class=\"pre command-example\">dd if=/home/user/tails-amd64-3.12.img of=/dev/sdb bs=16M oflag=direct status=progress</p>\n"
 msgstr ""
+"   <p class=\"pre command-example\">dd if=/home/user/tails-amd64-3.12.img "
+"of=/dev/sdb bs=16M oflag=direct status=progress</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -456,6 +485,10 @@ msgid ""
 "   <p class=\"pre command\">sudo dd if=<span class=\"command-placeholder\">tails.img</span> of=<span class=\"command-placeholder\">device</span> bs=16M oflag=direct status=progress</p>\n"
 "   </div>\n"
 msgstr ""
+"   <p class=\"pre command\">sudo dd if=<span class=\"command-placeholder\""
+">tails.img</span> of=<span class=\"command-placeholder\">device</span> "
+"bs=16M oflag=direct status=progress</p>\n"
+"   </div>\n"
 
 #. type: Plain text
 #, no-wrap
