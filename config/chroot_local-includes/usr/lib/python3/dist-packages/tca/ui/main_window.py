@@ -370,6 +370,7 @@ class StepChooseBridgeMixin:
 
 
 class StepConnectProgressMixin:
+
     def before_show_progress(self, coming_from):
         self.save_conf()
         self.state["progress"]["error"] = None
@@ -379,10 +380,15 @@ class StepConnectProgressMixin:
         self.connection_progress.set_fraction(0.0, allow_going_back=True)
         if not self.state["progress"]["success"]:
             if not self.state["hide"]["hide"]:
-                self.app.set_time_from_network()
-            self.spawn_tor_connect()
+                self.app.set_time_from_network(self.cb_system_time_set_from_network)
+            else:
+                self.spawn_tor_connect()
         else:
             self._step_progress_success_screen()
+
+    def cb_system_time_set_from_network(self, result, error):
+        log.debug("System time set, let's spawn_tor_connect")
+        self.spawn_tor_connect()
 
     def spawn_internet_test(self):
         test_spawn = GAsyncSpawn()

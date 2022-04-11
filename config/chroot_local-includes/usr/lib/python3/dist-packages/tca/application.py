@@ -53,7 +53,9 @@ class TCAApplication(Gtk.Application):
         self.portal.connect("response-error", self.on_portal_error)
         self.portal.connect("response-success", self.on_portal_response)
         self.portal.run()
-        set_tor_sandbox_fn = functools.partial(self.portal.call_async, "set-tor-sandbox")
+        set_tor_sandbox_fn = functools.partial(
+            self.portal.call_async, "set-tor-sandbox"
+        )
         self.configurator = TorLauncherUtils(
             controller,
             self.config_buf,
@@ -66,7 +68,7 @@ class TCAApplication(Gtk.Application):
             self.configurator.load_conf_from_file()
         self.log.debug(
             "Tor connection config: %s",
-            self.configurator.tor_connection_config.to_dict()
+            self.configurator.tor_connection_config.to_dict(),
         )
         self.netutils = TorLauncherNetworkUtils()
         self.args = args
@@ -80,11 +82,12 @@ class TCAApplication(Gtk.Application):
         self.has_unlocked_persistence = args.has_unlocked_persistence
         self.log.debug(
             "Persistence = %s, unlocked = %s",
-            self.has_persistence, self.has_unlocked_persistence
+            self.has_persistence,
+            self.has_unlocked_persistence,
         )
 
     def has_been_started_already(self):
-        return (self.configurator.read_tca_state() != {})
+        return self.configurator.read_tca_state() != {}
 
     def do_monitor_tor_is_working(self):
         # init tor-ready monitoring
@@ -119,7 +122,7 @@ class TCAApplication(Gtk.Application):
 
         if changed:
             self.log.info("tor state changed: %s", ",".join(changed))
-            if hasattr(self.window, 'on_tor_state_changed'):
+            if hasattr(self.window, "on_tor_state_changed"):
                 GLib.idle_add(self.window.on_tor_state_changed, self.tor_info, changed)
 
         return repeat
@@ -195,14 +198,20 @@ class TCAApplication(Gtk.Application):
 
         return False
 
-    def set_time_from_network(self):
+    def set_time_from_network(self, callback):
+        def on_set_system_time(portal, result, error):
+            self.log.debug(
+                "System time set: error=%s, result=%s", str(error), str(result)
+            )
+            GLib.idle_add(callback, result, error)
+
         def on_get_network_time(portal, result, error):
             if error:
                 if result.get("returncode", 1) == 5:
                     self.log.info("Detected captive portal")
             else:
                 self.portal.call_async(
-                    "set-system-time", None, result["stdout"].rstrip()
+                    "set-system-time", on_set_system_time, result["stdout"].rstrip()
                 )
 
         self.portal.call_async("get-network-time", on_get_network_time)
