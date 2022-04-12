@@ -391,11 +391,13 @@ class StepConnectProgressMixin:
         self.spawn_tor_connect()
 
     def spawn_internet_test(self):
+        # this is just a stub
         test_spawn = GAsyncSpawn()
         test_spawn.connect("process-done", self.cb_internet_test)
         test_spawn.run(["/bin/sh", "-c", "sleep 0.5; true"])
 
     def spawn_tor_test(self):
+        # this is just a stub
         test_spawn = GAsyncSpawn()
         test_spawn.connect("process-done", self.cb_tor_test)
         test_spawn.run(["/bin/sh", "-c", "sleep 0.5; true"])
