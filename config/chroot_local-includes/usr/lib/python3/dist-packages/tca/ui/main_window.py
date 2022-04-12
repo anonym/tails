@@ -378,8 +378,10 @@ class StepConnectProgressMixin:
         for obj in ['box_start', 'box_tortestok', 'box_internetok', 'box_internettest', 'box_tor_direct_fail']:
             self.get_object(obj).hide()
         self.connection_progress.set_fraction(0.0, allow_going_back=True)
+        self.show_connect_pbar()
         if not self.state["progress"]["success"]:
             if not self.state["hide"]["hide"]:
+                self.get_object("label_status").set_text(_("Syncing our clock…"))
                 self.app.set_time_from_network(self.cb_system_time_set_from_network)
             else:
                 self.spawn_tor_connect()
@@ -402,10 +404,11 @@ class StepConnectProgressMixin:
         test_spawn.connect("process-done", self.cb_tor_test)
         test_spawn.run(["/bin/sh", "-c", "sleep 0.5; true"])
 
-    def spawn_tor_connect(self):
+    def show_connect_pbar(self):
         self.builder.get_object("step_progress_box_torconnect").show()
         self.builder.get_object("step_progress_pbar_torconnect").show()
 
+    def spawn_tor_connect(self):
         def _apply_proxy():
             if not self.state["proxy"] or self.state["proxy"]["proxy_type"] == "no":
                 self.app.configurator.tor_connection_config.proxy = (
