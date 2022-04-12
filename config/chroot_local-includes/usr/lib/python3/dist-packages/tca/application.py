@@ -207,8 +207,11 @@ class TCAApplication(Gtk.Application):
 
         def on_get_network_time(portal, result, error):
             if error:
-                if result.get("returncode", 1) == 5:
+                if result is not None and result.get("returncode", 1) == 5:
                     self.log.info("Detected captive portal")
+                else:
+                    self.log.warning("Unspecified error: %s", error)
+                GLib.idle_add(callback, result, error)
             else:
                 self.portal.call_async(
                     "set-system-time", on_set_system_time, result["stdout"].rstrip()
