@@ -806,12 +806,10 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
     end
   end
   relays.each do |address, port|
-    command = "iptables -#{unblock ? 'D' : 'I'} OUTPUT " \
-              '-p tcp ' \
-              "--destination #{address} " \
-              "--destination-port #{port} " \
-              '-j REJECT --reject-with icmp-port-unreachable'
-    $vm.execute_successfully(command)
+    iptables_filter_add(!unblock,
+                        'REJECT --reject-with icmp-port-unreachable',
+                        address,
+                        port)
     unless unblock
       $vm.file_append('/etc/NetworkManager/dispatcher.d/00-firewall.sh',
                       command + "\n")
