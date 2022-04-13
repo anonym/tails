@@ -14,6 +14,7 @@ from typing import Dict, Optional
 import datetime
 
 from tailslib.release import get_release_date
+from tailslib.logutils import configure_logging
 
 LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
@@ -162,12 +163,17 @@ def main():
     parser.add_argument("--timeout", type=int, default=10)
 
     parser.add_argument("--debug", action="store_true", help="debug output")
+    parser.add_argument(
+        "--log-target",
+        default="auto",
+        choices=["auto", "stderr", "syslog"],
+        help="Where to send log to; 'auto' will pick syslog IF stderr is not a tty",
+    )
     args = parser.parse_args()
 
-    if args.debug:
-        logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
-    else:
-        logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
+    configure_logging(hint=args.log_target, ident='tails-get-network-time', format=LOG_FORMAT,
+            level=logging.DEBUG if args.debug else logging.INFO)
+
 
     url = Path(args.url_file).read_text().rstrip()
     c = NMishCurlClient(url=url, timeout=args.timeout)

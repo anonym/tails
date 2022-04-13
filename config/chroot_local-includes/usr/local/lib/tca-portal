@@ -141,7 +141,7 @@ class PersistenceSetupCommand(BaseCommand):
 
 class GetNetworkTimeCommand(BaseCommand):
     def __init__(self):
-        super().__init__(['/usr/local/lib/tails-get-network-time'], False)
+        super().__init__(['/usr/local/lib/tails-get-network-time', '--log-target=syslog'], False)
 
     def full_command(self, request: RPCRequest) -> list:
         drop = ["runuser", "-u", CLEARNET_USERNAME]
