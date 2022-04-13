@@ -31,6 +31,7 @@ RETURN_CODE = {
     "http-failure": 4,
     "captive-portal": 5,
     "date-in-past": 6,
+    "timeout": 7,
 }
 
 
@@ -43,20 +44,25 @@ class NMishCurlClient:
     """Wrapper around a curl client to emulate the fingerprintable
     network behavior of NetworkManager's connectivity check"""
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, timeout: int = 10):
         self.headers: Dict[str, str] = {}
         self.body = b''
+        self.url = url
+
         c = pycurl.Curl()
         c.setopt(c.URL, url)
         c.setopt(c.WRITEFUNCTION, self.write_cb)
         c.setopt(c.HEADERFUNCTION, self.header_cb)
         c.setopt(c.HTTPHEADER, ["Connection: close"])
         c.setopt(c.IPRESOLVE, c.IPRESOLVE_V4)
+        c.setopt(c.TIMEOUT, timeout)
         self.client = c
+
         self.connectivity: bool = False
         self.detected_error: Optional[str] = None
 
     def perform(self):
+        log.info("Performing request to %s", self.url)
         return self.client.perform()
 
     def header_cb(self, header_line) -> Optional[int]:
@@ -153,6 +159,8 @@ def main():
         default="/etc/tails-get-network-time-url",
         action="store",
     )
+    parser.add_argument("--timeout", type=int, default=10)
+
     parser.add_argument("--debug", action="store_true", help="debug output")
     args = parser.parse_args()
 
@@ -162,7 +170,7 @@ def main():
         logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 
     url = Path(args.url_file).read_text().rstrip()
-    c = NMishCurlClient(url=url)
+    c = NMishCurlClient(url=url, timeout=args.timeout)
 
     code = None
     try:
@@ -197,8 +205,12 @@ def main():
         if c.detected_error is not None:
             fail(c.detected_error)
         else:
-            log.error("Unexpected HTTP failure")
-            fail("http-failure")
+            if code == 0:
+                log.error("Time out")
+                fail("timeout")
+            else:
+                log.error("Unexpected HTTP failure")
+                fail("http-failure")
 
 
 if __name__ == "__main__":
