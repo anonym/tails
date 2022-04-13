@@ -54,6 +54,16 @@ def ip4tables_packet_counter_sum(**filters)
   pkts
 end
 
+def iptables_filter_add(add, target, address, port)
+  manipulate = add ? 'I' : 'D'
+  command = "iptables -#{manipulate} OUTPUT " \
+    '-p tcp ' \
+    "--destination #{address} " \
+    "--destination-port #{port} " \
+    "-j #{target}"
+  $vm.execute_successfully(command)
+end
+
 def try_xml_element_text(element, xpath, default = nil)
   node = element.elements[xpath]
   node.nil? || !node.has_text? ? default : node.text
@@ -747,7 +757,7 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?
     allowed_hosts << { address: $vmnet.bridge_ip_addr, port: 53 }
 
     conn_host, conn_nodes = if connectivity_check.include? 'fake'
-                              host = 'tails.boum.org'
+                              host = FAKE_CONNECTIVITY_CHECK_HOSTNAME
                               nodes = Resolv.getaddresses(host).map do |ip|
                                 { address: ip, port: 80 }
                               end

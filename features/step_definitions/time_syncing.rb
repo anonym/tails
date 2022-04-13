@@ -42,17 +42,18 @@ When /^I bump the (hardware clock's|system) time with "([^"]+)"$/ do |clock_type
          "'#{expected_time_lower_bound}' but is '#{new_time}'")
 end
 
-When /^I make sure time sync before Tor connects cannot work$/ do
-  hostname = 'tails.boum.org'
+When /^I make sure time sync before Tor connects (fails|times out)$/ do |failure_mode|
+  force_timeout = failure_mode == 'times out'
+  hostname = FAKE_CONNECTIVITY_CHECK_HOSTNAME
   @allowed_dns_queries = [hostname + '.']
-  ips = Resolv.getaddresses(hostname)
+  ips = Resolv.getaddresses(hostname).sort
   ips.each do |ip|
     add_extra_allowed_host(ip, 80)
   end
+  path = force_timeout ? 'delay/30' : 'redirect-to?url=foobar'
   $vm.file_overwrite(
     '/etc/tails-get-network-time-url',
-    # tails-get-network-time forbids redirects
-    'http://tails.boum.org/I_am_redirected_to_HTTPS'
+    "http://#{hostname}/#{path}"
   )
 end
 
