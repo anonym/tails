@@ -62,11 +62,11 @@ the Unsafe Browser in the additional settings of the Welcome Screen.")"
 	cancel="$(gettext "_Cancel")"
 	if  sudo -u "${SUDO_USER}" \
          zenity --question --ellipsize --title "" --text "${msg}" --icon-name="dialog-error" \
-                --ok-label "${restart}"  --cancel-label "${cancel}"; then
+                --ok-label "${restart}"  --cancel-label "${cancel}" --default-cancel; then
             msg="$(gettext "Do you really want to restart Tails now?\n\nAll your current work will be lost.")"
             confirm="$(gettext "Restart Now")"
             if sudo -u "${SUDO_USER}" \
-               zenity --warning --width=300 --title "" --text "${msg}" --ok-label "${confirm}"; then
+               zenity --question --width=300 --title "" --text "${msg}" --ok-label "${confirm}" --cancel-label "${cancel}" --default-cancel; then
                 if ! /sbin/reboot; then
                     error "$(gettext "Failed to restart the system.")"
                 fi
