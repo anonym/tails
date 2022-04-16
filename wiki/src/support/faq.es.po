@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-01-10 18:11+0000\n"
-"PO-Revision-Date: 2021-03-16 11:06+0000\n"
-"Last-Translator: emmapeel <emma.peel@riseup.net>\n"
+"POT-Creation-Date: 2022-03-25 08:30+0000\n"
+"PO-Revision-Date: 2022-04-15 21:22+0000\n"
+"Last-Translator: Joaquín Serna <bubuanabelas@cryptolab.net>\n"
 "Language-Team: Spanish <https://translate.tails.boum.org/projects/tails/faq/"
 "es/>\n"
 "Language: es\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.11.3\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #. type: Plain text
 #, no-wrap
@@ -757,17 +757,13 @@ msgstr ""
 "Persistente|doc/first_steps/persistence/configure#features]]."
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "We are frequently requested to add new features to the Persistent Storage "
-#| "but we are usually busy working on other priorities. See our"
 msgid ""
 "We are frequently requested to add new features to the Persistent Storage "
 "but we are usually busy working on other priorities. See the"
 msgstr ""
 "Muchas personas nos piden que agreguemos nuevas funcionalidades al "
 "Almacenamiento Persistente, pero estamos ocupados con otras prioridades. "
-"Mira nuestra"
+"Mira la"
 
 #. type: Plain text
 msgid ""
@@ -789,9 +785,9 @@ msgid ""
 "technique as the one we recommend for [[creating and using encrypted volumes|"
 "doc/encryption_and_privacy/encrypted_volumes]] in general."
 msgstr ""
-"Tails utiliza LUKS para cifrar el Almacenamiento Persistente. Esta "
-"técnica es la misma que recomendamos para [[crear y usar volúmenes "
-"cifrados|doc/encryption_and_privacy/encrypted_volumes]] en general."
+"Tails utiliza LUKS para cifrar el Almacenamiento Persistente. Esta técnica "
+"es la misma que recomendamos para [[crear y usar volúmenes cifrados|doc/"
+"encryption_and_privacy/encrypted_volumes]] en general."
 
 #. type: Plain text
 msgid ""
@@ -799,10 +795,10 @@ msgid ""
 "default technique for full-disk encryption proposed by many distributions, "
 "including Debian and Ubuntu, when installing a regular system."
 msgstr ""
-"LUKS es un estándar muy popular para cifrar discos en Linux. Es la "
-"técnica usada para cifrar discos completos propuesta por defecto por "
-"muchas distribuciones, incluyendo Debian y Ubuntu, cuando se instala un "
-"sistema normal."
+"LUKS es un estándar muy popular para cifrar discos en Linux. Es la técnica "
+"usada para cifrar discos completos propuesta por defecto por muchas "
+"distribuciones, incluyendo Debian y Ubuntu, cuando se instala un sistema "
+"normal."
 
 #. type: Plain text
 msgid ""
@@ -833,10 +829,10 @@ msgid ""
 "end up guessing your passphrase.  Such an attack is called [[!wikipedia "
 "Brute_force_attack desc=\"*brute-force attack*\"]]."
 msgstr ""
-"No. El cifrado del Almacenamiento Persistente es muy fuerte y es "
-"imposible recuperar la frase contraseña del Almacenamiento Persistente. "
-"Aunque, si la frase contraseña es lo suficientemente débil, un atacante "
-"podría intentar muchas contraseñas en lo que se llama un [[!wikipedia_es "
+"No. El cifrado del Almacenamiento Persistente es muy fuerte y es imposible "
+"recuperar la frase contraseña del Almacenamiento Persistente. Aunque, si la "
+"frase contraseña es lo suficientemente débil, un atacante podría intentar "
+"muchas contraseñas en lo que se llama un [[!wikipedia_es "
 "Ataque_de_fuerza_bruta desc=\"*ataque de fuerza bruta*\"]], y al final  "
 "adivinar la tuya."
 
@@ -1336,6 +1332,60 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "<h2 id=\"youtube\">Can I download videos from websites?</h2>\n"
+msgid "<h2 id=\"voip\">Can I do voice or video calls from Tails?</h2>\n"
+msgstr "<h2 id=\"youtube\">¿Puedo descargar videos de sitios web?</h2>\n"
+
+#. type: Plain text
+msgid "Not yet."
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Videoconferencing tools that work in web browsers, like *Jitsi*, *Google "
+"Meet*, and *BigBlueButton*, don't work in *Tor Browser* yet."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"  They rely on the [[!wikipedia WebRTC]] technology, which uses\n"
+"  [[!wikipedia User_Datagram_Protocol desc=\"UDP\"]] connections. But, the Tor network only\n"
+"  supports TCP connections, like the ones used for HTTP and email.\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"  The Tor Project is working on [supporting UDP traffic over\n"
+"  Tor](https://gitlab.torproject.org/tpo/core/torspec/-/issues/73), which\n"
+"  should remove this limitation.\n"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Proprietary applications like *Skype* or *Zoom* will never be available in "
+"Tails because they are not Free Software."
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"[*Mumble*](https://www.mumble.com/) is the only voice chat application that "
+"we know works from Tails. You can use the [[Additional Software|doc/"
+"first_steps/persistence#additional_software]] feature to add *Mumble* to "
+"your Tails."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"  [*Wahay*](https://wahay.org/) is a decentralized voice chat application based\n"
+"  on *Mumble*. If you are a Debian developer, please help us\n"
+"  [[!tails_ticket 17617 desc=\"get *Wahay* in Debian\"]].\n"
+msgstr ""
+
+#. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"desktop\">Desktop environment</h1>\n"
 msgstr "<h1 id=\"desktop\">Entorno de escritorio</h1>\n"
@@ -1569,8 +1619,12 @@ msgstr ""
 "Ver la [[!wikipedia Linux_malware desc=\"página de Wikipedia sobre malware "
 "en Linux\"]] para más detalles."
 
-#~ msgid "<h2 id=\"boot-statistics\">Does Tails collect information about its users?</h2>\n"
-#~ msgstr "<h2 id=\"boot-statistics\">¿Tails junta información sobre sus usuarios?</h2>\n"
+#~ msgid ""
+#~ "<h2 id=\"boot-statistics\">Does Tails collect information about its users?"
+#~ "</h2>\n"
+#~ msgstr ""
+#~ "<h2 id=\"boot-statistics\">¿Tails junta información sobre sus usuarios?</"
+#~ "h2>\n"
 
 #~ msgid ""
 #~ "When Tails starts, two HTTPS requests are made automatically to our "

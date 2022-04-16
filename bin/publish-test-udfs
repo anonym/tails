@@ -5,6 +5,7 @@ set -x
 
 cd "${MASTER_CHECKOUT:?}"
 git fetch
+git switch master
 git merge origin/master
 
 release_udf="wiki/src/upgrade/v2/Tails/${PREVIOUS_STABLE_VERSION:?}/amd64/${DIST:?}/upgrades.yml"
