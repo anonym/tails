@@ -62,6 +62,7 @@ def iptables_filter_add(add, target, address, port)
     "--destination-port #{port} " \
     "-j #{target}"
   $vm.execute_successfully(command)
+  command
 end
 
 def try_xml_element_text(element, xpath, default = nil)
@@ -806,10 +807,10 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
     end
   end
   relays.each do |address, port|
-    iptables_filter_add(!unblock,
-                        'REJECT --reject-with icmp-port-unreachable',
-                        address,
-                        port)
+    command = iptables_filter_add(!unblock,
+                                  'REJECT --reject-with icmp-port-unreachable',
+                                  address,
+                                  port)
     unless unblock
       $vm.file_append('/etc/NetworkManager/dispatcher.d/00-firewall.sh',
                       command + "\n")
