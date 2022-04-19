@@ -729,7 +729,7 @@ Then /^only the expected files are present on the persistence partition on USB d
     assert_not_nil(partition, "Could not find the 'TailsData' partition " \
                               "on disk '#{disk_handle}'")
     luks_mapping = File.basename(partition) + '_unlocked'
-    g.luks_open(partition, @persistence_password, luks_mapping)
+    g.cryptsetup_open(partition, @persistence_password, luks_mapping)
     luks_dev = "/dev/mapper/#{luks_mapping}"
     mount_point = '/'
     g.mount(luks_dev, mount_point)
@@ -747,7 +747,7 @@ Then /^only the expected files are present on the persistence partition on USB d
       )
     end
     g.umount(mount_point)
-    g.luks_close(luks_dev)
+    g.cryptsetup_close(luks_dev)
   end
 end
 
