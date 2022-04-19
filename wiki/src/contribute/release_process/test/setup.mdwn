@@ -19,7 +19,7 @@ Operating system
 </div>
 
 If you usually run another operating system than Debian
-Buster, Bullseye or Sid, then you need to:
+Bullseye or Sid, then you need to:
 
 1. Enable nested virtualization on your host system.
 
@@ -30,8 +30,7 @@ Buster, Bullseye or Sid, then you need to:
                  sudo tee /etc/modprobe.d/kvm.conf
          fi
 
-2. Prepare a Debian virtual machine; we recommend the stable release,
-   Debian Buster.
+2. Prepare a Debian virtual machine; we recommend the stable release.
 
 3. And then, every step below applies to this virtual machine, instead
    of to the host system.
@@ -45,15 +44,6 @@ To install the dependencies on our test suite:
 
 2. Install the following packages:
 
-        dist=$(lsb_release --short --codename)
-        if [ "${dist}" = buster ]; then
-            echo 'deb http://ftp.us.debian.org/debian/ buster-backports main' \
-                | sudo tee /etc/apt/sources.list.d/buster-backports.list
-            echo -e "Package: qemu* libfdt1\nPin: release n=buster-backports, o=Debian Backports\nPin-Priority: 990" \
-                | sudo tee /etc/apt/preferences.d/qemu
-            echo -e "Package: tor tor-geoipdb\nPin: release n=buster-backports, o=Debian Backports\nPin-Priority: 990" \
-                | sudo tee /etc/apt/preferences.d/tor
-        fi
         sudo apt update && \
         sudo apt install \
             cucumber \
