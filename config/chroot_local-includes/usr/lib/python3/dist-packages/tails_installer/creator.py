@@ -782,7 +782,19 @@ class TailsInstallerCreator(object):
                     time.sleep(5)
 
         self.log.debug('Creating partition')
-        partition_table = self._get_object().props.partition_table
+        for attempt in [1, 2]:
+            partition_table = self._get_object().props.partition_table
+            if partition_table is not None:
+                # success!
+                break
+
+            if attempt > 1:
+                raise Exception("Could not get a valid partition table")
+
+            self.log.debug("Failed to get a partition table. Trying again, which could solve the issue")
+            self.flush_buffers(silent=True)
+            time.sleep(5)
+
         try:
             partition_udi = partition_table.call_create_partition_sync(
                     arg_offset=0,
