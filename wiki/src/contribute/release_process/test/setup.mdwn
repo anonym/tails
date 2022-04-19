@@ -120,7 +120,7 @@ If you have AppArmor enabled:
 Firewall
 ----------
 
-If you have a firewall enabled, please check that you can receive connections from VMs back to your host
+If you have a firewall enabled, check that you can receive connections from VMs back to your host
 system. A typical rule to accomplish this might be:
 
 ```
@@ -130,7 +130,7 @@ iptables -I INPUT 1 -i virbr+ -j ACCEPT
 but of course this depends on the specific firewall you have.
 
 The rule posted above will accept any connections from any VM you have on your system. If you have other VMs
-running on your system and don't want to accept their connection, please take care before running this
+running on your system and don't want to accept their connection, take care before running this
 command.
 
 Special use cases
