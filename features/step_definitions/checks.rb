@@ -10,10 +10,7 @@ def assert_all_keys_are_valid_for_n_months(type, months)
   assert([:OpenPGP, :APT].include?(type))
   assert(months.is_a?(Integer))
 
-  ignored_keys = [
-    # We're in the process of rotating that key (sysadmin#17810)
-    '221F9A3C6FA3E09E182E060BC7988EA7A358D82E',
-  ]
+  ignored_keys = []
 
   cmd  = type == :OpenPGP ? 'gpg'     : 'apt-key adv'
   user = type == :OpenPGP ? LIVE_USER : 'root'
