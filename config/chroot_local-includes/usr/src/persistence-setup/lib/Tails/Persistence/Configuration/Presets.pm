@@ -179,7 +179,7 @@ method _build__presets () {
             description => __(
                 q{OpenPGP keys outside of Thunderbird}
             ),
-            icon_name   => 'thunderbird',
+            icon_name   => 'seahorse-key',
             enabled     => 0,
             atoms_args  => [
                 {
@@ -224,7 +224,7 @@ method _build__presets () {
             description => __(
                 q{SSH keys, configuration and known hosts}
             ),
-            icon_name   => 'thunderbird',
+            icon_name   => 'seahorse-key-ssh',
             enabled     => 0,
             atoms_args  => [
                 {
