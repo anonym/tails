@@ -49,7 +49,7 @@ $(gettext "The Unsafe Browser is not anonymous and the websites that you visit c
 verify_is_enabled () {
     # Check if the Unsafe Browser was disabled in the startup options
     if ! unsafe_browser_is_enabled; then
-	local msg restart close
+	local msg restart cancel confirm
 	msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
 To <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and enable \
 the Unsafe Browser in the additional settings of the Welcome Screen.")"
