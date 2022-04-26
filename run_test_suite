@@ -360,7 +360,7 @@ if [ -n "${JENKINS_URL:-}" ]; then
        || [ "${GIT_BRANCH#origin/}" = devel ] ; then
         TAGS_ARGS=""
     else
-        TAGS_ARGS="${TAGS_ARGS} --tag ~@fragile"
+        TAGS_ARGS="${TAGS_ARGS} --tag ~@fragile --tag ~@skip_by_default"
     fi
     if [ "${UPSTREAMJOB_GIT_COMMIT}" != "${UPSTREAMJOB_GIT_BASE_BRANCH_HEAD}" ] && \
            git_only_doc_changes_since "${UPSTREAMJOB_GIT_BASE_BRANCH_HEAD}"; then
