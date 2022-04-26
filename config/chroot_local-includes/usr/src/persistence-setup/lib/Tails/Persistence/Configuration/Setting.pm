@@ -179,7 +179,6 @@ method _build_icon_theme () {
     my $theme = Gtk3::IconTheme::get_default();
 
     $theme->append_search_path('/usr/share/pixmaps/cryptui/48x48');
-    $theme->append_search_path('/usr/share/pixmaps/seahorse/48x48');
     $theme->append_search_path('/usr/share/icons/gnome-colors-common/32x32/apps/');
     $theme->append_search_path('/usr/share/app-install/icons/');
 
