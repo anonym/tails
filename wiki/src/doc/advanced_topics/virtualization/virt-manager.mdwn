@@ -18,7 +18,7 @@ image|virt-manager#usb_image]].</p>
 
 <div class="note">
 
-<p>The following instructions have been tested on Debian 10 (Buster).</p>
+<p>The following instructions have been tested on Debian 11 (Bullseye).</p>
 
 <p>Please, [[let us know|about/contact#tails-dev]] if they do not apply
 to Debian 11 (Bullseye).</p>
@@ -65,6 +65,8 @@ command:
 Running Tails from an ISO image
 ===============================
 
+1. [[Download an ISO image|install/dvd]]
+
 1. Start *virt-manager*.
 
 1. Double-click on **localhost (QEMU)** to connect to the *QEMU*
@@ -80,9 +82,11 @@ Running Tails from an ISO image
 1. In *step 2*, choose:
 
    - **Use ISO image**, then **Browse...**, and **Browse Local** to
-     browse for the ISO image that you want to start from
+     browse for the ISO image that you want to start from.
    - **OS type**: **Linux**
-   - **Version**: **Debian Buster**
+   - **Version**: **Debian 10**
+   Note: in Debian stable (11 Bullseye), the osinfo-db doesn't contain Debian
+   11. If it is more recent, you should choose Debian 11 (debian11)
 
 1. In *step 3*, allocate at least 2048 MB of RAM.
 
@@ -167,7 +171,7 @@ allows you to use a Persistent Storage in a virtual machine.
 
    - Expand the **Advanced options** and set **Disk bus** to **USB**.
    - Click **Apply**.
-   - Check the **Removable** check box which should appear in the same view.
+   - Click advanced, check the **Removable** check box which should appear in the same view.
    - Click **Apply** again.
    - Click **Begin Installation** in the top left corner to start the virtual machine.
 
