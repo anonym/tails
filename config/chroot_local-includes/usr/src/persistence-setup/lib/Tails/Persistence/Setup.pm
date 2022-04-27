@@ -718,6 +718,7 @@ method goto_next_step () {
         $self->current_step->go_button->signal_connect(
             'clicked',
             sub {
+                $self->current_step->working(1);
                 $self->current_step->subtitle->set_text(__(
                     q{Tails is saving your files, please wait...}
                 ));
