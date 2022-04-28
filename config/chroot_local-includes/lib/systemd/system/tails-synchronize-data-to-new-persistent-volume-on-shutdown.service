@@ -1,6 +1,11 @@
 [Unit]
 Description=Synchronize data to newly created persistent volume on shutdown
 
+# Ensure we stop this service in the shutdown process before anything
+# else unmounts the new Persistent Storage while we're still copying
+# data to it (fixes #18839)
+After=systemd-logind.service
+
 [Service]
 RemainAfterExit=yes
 Type=oneshot

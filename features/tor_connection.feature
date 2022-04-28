@@ -25,3 +25,11 @@ Feature: Tor Connection helps the user in connecting to Tor
     #     When I close "Tor Connection"
     #     And I start "Tor Connection" via GNOME Activities Overview
     #     Then "Tor Connection" shows the success screen
+
+    # regression test for #18868
+    @slow @not_release_blocker @skip_by_default
+    Scenario: Time syncing works even if the user waits a lot before connecting
+        When the network is plugged
+        And I wait 720 seconds
+        Then Tor is ready
+        And the time has synced

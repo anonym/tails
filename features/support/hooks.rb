@@ -341,6 +341,10 @@ After('@product') do |scenario|
       if scenario.feature.file \
          == 'features/additional_software_packages.feature'
         save_vm_command_output(
+          command: 'ls -lAR --full-time /var/cache/apt',
+          id:      'var_cache_apt'
+        )
+        save_vm_command_output(
           command: 'ls -lAR --full-time /var/lib/apt',
           id:      'var_lib_apt'
         )
