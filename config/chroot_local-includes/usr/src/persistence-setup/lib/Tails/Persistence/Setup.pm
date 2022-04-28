@@ -15,7 +15,7 @@ use English qw{-no_match_vars};
 use Function::Parameters;
 use Glib qw{TRUE FALSE};
 use Gtk3 qw{-init};
-use IPC::System::Simple qw{systemx};
+use IPC::System::Simple qw{system systemx};
 use Locale::Messages qw{bind_textdomain_codeset
                         bind_textdomain_filter
                         turn_utf_8_on};
@@ -722,11 +722,10 @@ method goto_next_step () {
                 $self->current_step->subtitle->set_text(__(
                     q{Tails is saving your files, please wait...}
                 ));
-                systemx(
-                    qw{sudo -n},
-                    '/usr/local/lib/tails-synchronize-data-to-new-persistent-volume',
-                );
-                systemx(qw{sudo -n /sbin/reboot });
+                # In the general case it would be nicer to use GLib's spawn_async,
+                # but after this point the system will restart and we don't need
+                # to update the GUI anymore, let's KISS.
+                system('sudo -n /usr/local/lib/tails-synchronize-data-to-new-persistent-volume-then-reboot &');
             }
         );
         $self->current_step->go_button->set_label(__(q{Restart Now}));
