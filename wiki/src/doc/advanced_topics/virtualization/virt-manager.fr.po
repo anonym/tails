@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-02-28 20:53+0000\n"
+"POT-Creation-Date: 2022-04-28 08:47+0000\n"
 "PO-Revision-Date: 2022-03-05 03:24+0000\n"
 "Last-Translator: nihei <nihei@disroot.org>\n"
 "Language-Team: Tails translators <tails@boum.org>\n"
@@ -69,15 +69,19 @@ msgid "<div class=\"note\">\n"
 msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "<p>The following instructions have been tested on Debian 10 (Buster).</p>\n"
+#, fuzzy, no-wrap
+#| msgid "<p>The following instructions have been tested on Debian 10 (Buster).</p>\n"
+msgid "<p>The following instructions have been tested on Debian 11 (Bullseye).</p>\n"
 msgstr "<p>Les instructions suivantes ont été testées avec Debian 10 (Buster).</p>\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<p>Please, [[let us know|about/contact#tails-dev]] if they do not apply\n"
+#| "to Debian 11 (Bullseye).</p>\n"
 msgid ""
 "<p>Please, [[let us know|about/contact#tails-dev]] if they do not apply\n"
-"to Debian 11 (Bullseye).</p>\n"
+"to Debian 12 (Bookworm).</p>\n"
 msgstr ""
 "<p>S'il vous plaît, [[faites-nous savoir|about/contact#tails-dev]] si cela ne fonctionne pas\n"
 "dans Debian 11 (Bullseye).</p>\n"
@@ -177,6 +181,13 @@ msgid "Running Tails from an ISO image"
 msgstr "Exécuter Tails à partir d'une image ISO"
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid "[[Download a USB image|install/download]] instead of an ISO image."
+msgid "[[Download an ISO image|install/dvd]]."
+msgstr ""
+"[[Télécharger une image USB|install/download]] au lieu d'une image ISO."
+
+#. type: Bullet: '1. '
 msgid "Start *virt-manager*."
 msgstr "Démarrer *virt-manager*."
 
@@ -205,24 +216,33 @@ msgstr ""
 "CDROM)**."
 
 #. type: Bullet: '1. '
-msgid "In *step 2*, choose:"
-msgstr "À l'*étape 2*, choisir :"
+#, fuzzy
+#| msgid "In *step 5*:"
+msgid "In *step 2*:"
+msgstr "À l'*étape 5* :"
 
 #. type: Bullet: '   - '
+#, fuzzy
+#| msgid ""
+#| "**Use ISO image**, then **Browse...**, and **Browse Local** to browse for "
+#| "the ISO image that you want to start from"
 msgid ""
-"**Use ISO image**, then **Browse...**, and **Browse Local** to browse for "
-"the ISO image that you want to start from"
+"**Choose ISO image**, then **Browse...**, and **Browse Local** to browse for "
+"the ISO image that you want to start from."
 msgstr ""
 "**Utiliser image ISO**, puis **Parcourir...**, et **Parcourir en local** "
 "pour naviguer jusqu'à l'image ISO depuis laquelle vous souhaitez démarrer"
 
 #. type: Bullet: '   - '
-msgid "**OS type**: **Linux**"
-msgstr "**Type OS** : **Linux**"
+msgid ""
+"Disable **Automatically detected from the installation media / source**."
+msgstr ""
 
 #. type: Bullet: '   - '
-msgid "**Version**: **Debian Buster**"
-msgstr "**Version** : **Debian Buster**"
+msgid ""
+"Specify **Debian 10** in the field **Choose the operating system you are "
+"installing**."
+msgstr ""
 
 #. type: Bullet: '1. '
 msgid "In *step 3*, allocate at least 2048 MB of RAM."
@@ -237,7 +257,9 @@ msgid "In *step 5*:"
 msgstr "À l'*étape 5* :"
 
 #. type: Bullet: '   - '
-msgid "Type a name for the new virtual machine."
+#, fuzzy
+#| msgid "Type a name for the new virtual machine."
+msgid "Type a name of your choice for the new virtual machine."
 msgstr "Entrez un nom pour la nouvelle machine virtuelle."
 
 #. type: Bullet: '   - '
@@ -280,13 +302,10 @@ msgstr ""
 "    <span class=\"guimenuitem\">Détails de la connexion</span></span> pour\n"
 "    administrer la connexion à votre système\n"
 "    <span class=\"application\">QEMU</span> local.</li>\n"
-"<li>Cliquer sur l'onglet <span class=\"guilabel\">Réseaux virtuels</span>, "
-"puis\n"
-"    sélectionner le réseau virtuel <span class=\"guilabel\">default</span> "
-"dans la\n"
+"<li>Cliquer sur l'onglet <span class=\"guilabel\">Réseaux virtuels</span>, puis\n"
+"    sélectionner le réseau virtuel <span class=\"guilabel\">default</span> dans la\n"
 "    partie de gauche.</li>\n"
-"<li>Cliquer sur l'icône [[!img lib/media-playback-start.png alt=\"Démarrer "
-"le réseau\"\n"
+"<li>Cliquer sur l'icône [[!img lib/media-playback-start.png alt=\"Démarrer le réseau\"\n"
 "    link=no class=symbolic]] en bas de la partie gauche de la fenêtre pour\n"
 "    démarrer réseau virtuel *default*.</li>\n"
 "</ol>\n"
@@ -353,18 +372,13 @@ msgstr ""
 msgid "In *step 1*, choose **Import existing disk image**."
 msgstr "À l'*étape 1*, choisir **Importer une image disque existante**."
 
-#. type: Bullet: '1. '
-msgid ""
-"In *step 2*, choose **Browse...**, and **Browse Local** to browse for the "
-"USB image that you want to start from."
-msgstr ""
-"À l'*étape 2*, choisir **Parcourir...**, et **Parcourir en local** pour "
-"naviguer jusqu'à l'image USB depuis laquelle vous souhaitez démarrer."
-
 #. type: Plain text
-#, no-wrap
-msgid "   As operating system, choose **Debian Buster**.\n"
-msgstr "   Comme système d'exploitation, choisir **Debian Buster**.\n"
+#, fuzzy, no-wrap
+#| msgid "In *step 2*, choose **Browse...**, and **Browse Local** to browse for the USB image that you want to start from."
+msgid ""
+"   - Choose **Browse...**, and **Browse Local** to\n"
+"   browse for the USB image that you want to start from.\n"
+msgstr "À l'*étape 2*, choisir **Parcourir...**, et **Parcourir en local** pour naviguer jusqu'à l'image USB depuis laquelle vous souhaitez démarrer."
 
 #. type: Bullet: '1. '
 msgid "In *step 4*:"
@@ -379,24 +393,31 @@ msgid "Click **Finish** to open the configuration view."
 msgstr "Cliquer **Terminer** pour ouvrir la vue configuration."
 
 #. type: Bullet: '1. '
-msgid ""
-"In the **configuration view**, choose **VirtIO Disk 1** or **IDE Disk 1**"
+#, fuzzy
+#| msgid ""
+#| "In the **configuration view**, choose **VirtIO Disk 1** or **IDE Disk 1**"
+msgid "In the configuration view, choose **VirtIO Disk 1** or **IDE Disk 1**"
 msgstr ""
 "Dans la **vue configuration**, choisir **VirtIO Disk 1** ou **IDE Disk 1**"
 
 #. type: Bullet: '   - '
-msgid "Expand the **Advanced options** and set **Disk bus** to **USB**."
+msgid "Set **Disk bus** to **USB**."
 msgstr ""
-"Développer les **options avancées** et positionner **Disk bus** à **USB**."
 
 #. type: Bullet: '   - '
 msgid "Click **Apply**."
 msgstr "Cliquez sur **Appliquer**."
 
 #. type: Bullet: '   - '
-msgid "Check the **Removable** check box which should appear in the same view."
+#, fuzzy
+#| msgid "Expand the **Advanced options** and set **Disk bus** to **USB**."
+msgid "Expand the **Advanced options**."
 msgstr ""
-"Vérifier la case à cocher **Amovible** qui doit apparaître dans la même vue."
+"Développer les **options avancées** et positionner **Disk bus** à **USB**."
+
+#. type: Bullet: '   - '
+msgid "Enable **Removable**."
+msgstr ""
 
 #. type: Bullet: '   - '
 msgid "Click **Apply** again."
@@ -463,9 +484,9 @@ msgid ""
 "▸ <span class=\"guimenuitem\">Details</span></span> to edit the "
 "configuration of the virtual machine."
 msgstr ""
-"Choisir <span class=\"menuchoice\"> <span class=\"guimenu\""
-">Afficher</span>&nbsp;▸ <span class=\"guimenuitem\">Détails</span></span> "
-"pour modifier la configuration de la machine virtuelle."
+"Choisir <span class=\"menuchoice\"> <span class=\"guimenu\">Afficher</"
+"span>&nbsp;▸ <span class=\"guimenuitem\">Détails</span></span> pour modifier "
+"la configuration de la machine virtuelle."
 
 #. type: Bullet: '  1. '
 msgid "Click on the **Add Hardware** button on the bottom of the left pane."
@@ -533,8 +554,7 @@ msgstr ""
 "  1. Cliquer sur le bouton **Déconnecter** dans la partie droite.\n"
 "  1. Pour activer la clé USB comme option de démarrage :\n"
 "     1. Cliquer sur **Boot Options** dans la partie gauche.\n"
-"     1. Sélectionner l'option de démarrage **USB** correspondant à votre "
-"périphérique USB.\n"
+"     1. Sélectionner l'option de démarrage **USB** correspondant à votre périphérique USB.\n"
 "     1. Cliquer sur **Appliquer**.\n"
 "  1. Pour lancer la machine virtuelle choisir\n"
 "     <span class=\"menuchoice\">\n"
@@ -620,6 +640,25 @@ msgstr ""
 "   Démarrez avec les périphériques vidéo *Virtio* et *QXL* : ils donnent généralement\n"
 "   les meilleurs résultats. Si ils ne marchent pas bien pour vous, essayez tous les\n"
 "   autres modèles de périphérique vidéo.\n"
+
+#~ msgid "In *step 2*, choose:"
+#~ msgstr "À l'*étape 2*, choisir :"
+
+#~ msgid "**OS type**: **Linux**"
+#~ msgstr "**Type OS** : **Linux**"
+
+#~ msgid "**Version**: **Debian Buster**"
+#~ msgstr "**Version** : **Debian Buster**"
+
+#, no-wrap
+#~ msgid "   As operating system, choose **Debian Buster**.\n"
+#~ msgstr "   Comme système d'exploitation, choisir **Debian Buster**.\n"
+
+#~ msgid ""
+#~ "Check the **Removable** check box which should appear in the same view."
+#~ msgstr ""
+#~ "Vérifier la case à cocher **Amovible** qui doit apparaître dans la même "
+#~ "vue."
 
 #, fuzzy, no-wrap
 #~| msgid ""
