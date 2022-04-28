@@ -19,7 +19,7 @@ Operating system
 </div>
 
 If you usually run another operating system than Debian
-Buster, Bullseye or Sid, then you need to:
+Bullseye or Sid, then you need to:
 
 1. Enable nested virtualization on your host system.
 
@@ -30,8 +30,7 @@ Buster, Bullseye or Sid, then you need to:
                  sudo tee /etc/modprobe.d/kvm.conf
          fi
 
-2. Prepare a Debian virtual machine; we recommend the stable release,
-   Debian Buster.
+2. Prepare a Debian virtual machine; we recommend the stable release.
 
 3. And then, every step below applies to this virtual machine, instead
    of to the host system.
@@ -45,15 +44,6 @@ To install the dependencies on our test suite:
 
 2. Install the following packages:
 
-        dist=$(lsb_release --short --codename)
-        if [ "${dist}" = buster ]; then
-            echo 'deb http://ftp.us.debian.org/debian/ buster-backports main' \
-                | sudo tee /etc/apt/sources.list.d/buster-backports.list
-            echo -e "Package: qemu* libfdt1\nPin: release n=buster-backports, o=Debian Backports\nPin-Priority: 990" \
-                | sudo tee /etc/apt/preferences.d/qemu
-            echo -e "Package: tor tor-geoipdb\nPin: release n=buster-backports, o=Debian Backports\nPin-Priority: 990" \
-                | sudo tee /etc/apt/preferences.d/tor
-        fi
         sudo apt update && \
         sudo apt install \
             cucumber \
@@ -106,12 +96,8 @@ Other requirements
 Synchronized clock
 ------------------
 
-The system running the test suite needs an accurate clock since we
-sync the clock from the host to the Tails guest after a background
-snapshot restore to appease Tor.
-
-You might want to enable `systemd-timesyncd.service` or your favorite
-time synchronization tool for this.
+Enable `systemd-timesyncd.service` or your favorite time synchronization tool:
+the system running the test suite needs an accurate clock.
 
 File permissions
 ----------------
@@ -134,7 +120,7 @@ If you have AppArmor enabled:
 Firewall
 ----------
 
-If you have a firewall enabled, please check that you can receive connections from VMs back to your host
+If you have a firewall enabled, check that you can receive connections from VMs back to your host
 system. A typical rule to accomplish this might be:
 
 ```
@@ -144,7 +130,7 @@ iptables -I INPUT 1 -i virbr+ -j ACCEPT
 but of course this depends on the specific firewall you have.
 
 The rule posted above will accept any connections from any VM you have on your system. If you have other VMs
-running on your system and don't want to accept their connection, please take care before running this
+running on your system and don't want to accept their connection, take care before running this
 command.
 
 Special use cases
