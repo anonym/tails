@@ -36,7 +36,7 @@ done
 /usr/local/lib/systemctl-user amnesia start tca.service
 
 # that's not what it looks: htpdate will not really be started until Tor has bootstrapped
-systemctl --no-block start htpdate.service
+systemctl --no-block restart htpdate.service
 
 # Wait until the user is done with configuring Tor
 until [ "$(/usr/local/lib/tor_variable get --type=conf DisableNetwork)" = 0 ]; do
