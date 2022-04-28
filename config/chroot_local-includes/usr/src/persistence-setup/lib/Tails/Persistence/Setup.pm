@@ -720,7 +720,7 @@ method goto_next_step () {
             sub {
                 $self->current_step->working(1);
                 $self->current_step->subtitle->set_text(__(
-                    q{Tails is saving your files, please wait...}
+                    q{Tails is configuring your Persistent Storage. Please wait...}
                 ));
                 # In the general case it would be nicer to use GLib's spawn_async,
                 # but after this point the system will restart and we don't need
