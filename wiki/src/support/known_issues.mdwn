@@ -353,7 +353,7 @@ in Tails|doc/anonymous_internet/Tor_Browser#fingerprint]].
 
 -->
 
-<h1 id="other-issues">Other issues</h1>
+<h1 id="hardware">Other hardware issues</h1>
 
 <h2 id="touchpad-configurations">Touchpad configurations</h2>
 
@@ -377,6 +377,80 @@ following boot option when starting
 Tails|doc/advanced_topics/boot_options]]:
 
     pci=nocrs
+
+<h2 id="lenovo-thinkpad-11e">Lenovo ThinkPad 11e</h2>
+
+<!--
+Last updated: 2018-03-22
+Specs: https://www.cnet.com/products/lenovo-thinkpad-11e/specs/
+-->
+
+Tails might be unstable and stop working regularly on some Lenovo
+ThinkPad 11e laptops, such as the 2015 model.
+
+To fix this problem, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
+
+    intel_idle.max_cstate=1
+
+<h2 id="usb-gigabyte">USB devices are not working on some <a href="https://www.gigabyte.com/">GIGABYTE</a> motherboards</h2>
+
+<!--
+Last updated: 2019-06-02
+-->
+
+To workaround this issue, you can try to:
+
+- Use other USB ports. For example, use USB 2 ports instead of USB 3
+  ports and vice versa.
+
+- Enable these 3 options in the BIOS
+
+  - xHCI handoff
+  - EHCI handoff
+  - IOMMU controller
+
+- [[Add the following boot option when
+  starting Tails|doc/advanced_topics/boot_options]]:
+
+      amd_iommu=on iommu=pt
+
+- Disable IOMMU in the BIOS then enable it again.
+
+Some of these workarounds might disable some of the USB ports.
+
+<h2 id="graphics-corruption-tor-browser">Graphics corruption in Tor Browser and Thunderbird</h2>
+
+<!--
+Last updated: 2020-02-22
+-->
+
+On some computers, _Tor Browser_ and _Thunderbird_ are displayed incorrectly:
+
+ - The application window is initially empty and white.
+ - The icons and menus only appear when hovered by the mouse.
+ - The contents of the window is only displayed in stripes when scrolling.
+
+To workaround this issue, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
+
+    intel_iommu=off
+
+This problem affects at least the following computers:
+
+ - MacBookPro11,5
+ - other MacBooks with a Radeon R9 graphics adapter
+
+<h3 id="acer-swift-3">Acer Swift 3</h3>
+
+<!--
+Last updated: 2020-05-30
+-->
+
+In order to allow Tails to use all available memory,
+start Tails from the *F2 EFI setup* firmware entry.
+
+<h1 id="misc">Other issues</h1>
 
 <h2 id="bluetooth-devices-dont-work">Bluetooth devices don't work</h2>
 
@@ -457,78 +531,6 @@ To fix the ownership of TailsData_unlocked, set an administration password and
 execute the following command in a terminal:
 
     sudo chown root:root /live/persistence/TailsData_unlocked
-
-<h2 id="lenovo-thinkpad-11e">Lenovo ThinkPad 11e</h2>
-
-<!--
-Last updated: 2018-03-22
-Specs: https://www.cnet.com/products/lenovo-thinkpad-11e/specs/
--->
-
-Tails might be unstable and stop working regularly on some Lenovo
-ThinkPad 11e laptops, such as the 2015 model.
-
-To fix this problem, [[add the following boot option when
-starting Tails|doc/advanced_topics/boot_options]]:
-
-    intel_idle.max_cstate=1
-
-<h2 id="usb-gigabyte">USB devices are not working on some <a href="https://www.gigabyte.com/">GIGABYTE</a> motherboards</h2>
-
-<!--
-Last updated: 2019-06-02
--->
-
-To workaround this issue, you can try to:
-
-- Use other USB ports. For example, use USB 2 ports instead of USB 3
-  ports and vice versa.
-
-- Enable these 3 options in the BIOS
-
-  - xHCI handoff
-  - EHCI handoff
-  - IOMMU controller
-
-- [[Add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
-
-      amd_iommu=on iommu=pt
-
-- Disable IOMMU in the BIOS then enable it again.
-
-Some of these workarounds might disable some of the USB ports.
-
-<h2 id="graphics-corruption-tor-browser">Graphics corruption in Tor Browser and Thunderbird</h2>
-
-<!--
-Last updated: 2020-02-22
--->
-
-On some computers, _Tor Browser_ and _Thunderbird_ are displayed incorrectly:
-
- - The application window is initially empty and white.
- - The icons and menus only appear when hovered by the mouse.
- - The contents of the window is only displayed in stripes when scrolling.
-
-To workaround this issue, [[add the following boot option when
-starting Tails|doc/advanced_topics/boot_options]]:
-
-    intel_iommu=off
-
-This problem affects at least the following computers:
-
- - MacBookPro11,5
- - other MacBooks with a Radeon R9 graphics adapter
-
-<h3 id="acer-swift-3">Acer Swift 3</h3>
-
-<!--
-Last updated: 2020-05-30
--->
-
-In order to allow Tails to use all available memory,
-start Tails from the *F2 EFI setup* firmware entry.
 
 <h2 id="video-memory">Tails does not erase video memory</h2>
 
