@@ -333,21 +333,9 @@ The Realtek RTL8821CE Wi-Fi adapter is not supported in Linux yet.
 
 This problem is tracked by [[!debbug 917941]].
 
-<h1 id="security-issues">Security issues</h1>
-
-<h2 id="video-memory">Tails does not erase video memory</h2>
-
-Tails doesn't erase the [[!wikipedia Video_RAM_(dual-ported_DRAM) desc="video memory"]].
-
-When you restart your computer after using Tails, it might briefly display the
-last screen that was displayed in Tails.
-
-If you shut down your computer instead of restarting it, the video memory will
-erase itself automatically after some time.
-
-See [[!tails_ticket 5356 desc="Erase video memory on shutdown"]].
-
 <!--
+
+<h1 id="security-issues">Security issues</h1>
 
 Note: If we enable again this section in the future, we should link to
 it from /doc/anonymous_internet/Tor_Browser#fingerprint.
@@ -541,3 +529,15 @@ Last updated: 2020-05-30
 
 In order to allow Tails to use all available memory,
 start Tails from the *F2 EFI setup* firmware entry.
+
+<h2 id="video-memory">Tails does not erase video memory</h2>
+
+Tails doesn't erase the [[!wikipedia Video_RAM_(dual-ported_DRAM) desc="video memory"]].
+
+When you restart your computer after using Tails, it might briefly display the
+last screen that was displayed in Tails.
+
+If you shut down your computer instead of restarting it, the video memory will
+erase itself automatically after some time.
+
+See [[!tails_ticket 5356 desc="Erase video memory on shutdown"]].
