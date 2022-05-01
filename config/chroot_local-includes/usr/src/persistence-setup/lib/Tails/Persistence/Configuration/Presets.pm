@@ -177,7 +177,7 @@ method _build__presets () {
             id          => 'GnuPG',
             name        => __(q{GnuPG}),
             description => __(
-                q{OpenPGP keys outside of Thunderbird}
+                q{OpenPGP keys in GnuPG and Kleopatra}
             ),
             icon_name   => 'seahorse-key',
             enabled     => 0,
