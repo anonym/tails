@@ -250,7 +250,7 @@ class Screen
     nil
   end
 
-  def type(*args)
+  def type(*args, **kwargs)
     args.each do |arg|
       if arg.instance_of?(String)
         debug_log("Keyboard: typing: #{arg}")
@@ -258,7 +258,7 @@ class Screen
           press(char, log: false)
         end
       elsif arg.instance_of?(Array)
-        press(*arg)
+        press(*arg, **kwargs)
       else
         raise("Unsupported type: #{arg.class}")
       end
@@ -419,8 +419,8 @@ class ImageBumpingScreen
         end
       end
     else
-      define_method(m) do |*args|
-        return @screen.method(m).call(*args)
+      define_method(m) do |*args, **kwargs|
+        return @screen.method(m).call(*args, **kwargs)
       end
     end
   end
