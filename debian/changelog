@@ -1,9 +1,181 @@
-tails (5.2) UNRELEASED; urgency=medium
+tails (5.0) unstable; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade Thunderbird to 91.8
 
- -- Tails developers <tails@boum.org>  Tue, 05 Apr 2022 10:30:52 +0000
+  * Upgrade Tor Browser to 11.0.11 (based on esr91.9) (tails/tails!804)
 
+    Commits:
+      - Test suite: update expected image
+      - Test suite: update expected web page title
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.0.11-build1
+
+  * Fix Additional Software test suite on Bullseye (tails/tails!794)
+
+    Commits:
+      - Test suite: use popularity-contest as a test package instead of sslh
+
+  * Fix devel branch FTBFS (tails/tails!773)
+
+    Commits:
+      - Preserve UIDs/GIDs stability
+      - Refresh list of standard packages
+
+  * Drop obsolete patch (tails/tails!690)
+
+    Commits:
+      - Drop obsolete patch
+
+  * all languages are listed (tails/tails!683)
+
+    Commits:
+      - all formats are shown
+      - translations appear again in Greeter
+      - when native l10n is not available, use english
+      - all languages are listed
+
+  * Fix the Tails Installer in bullseye (tails/tails!679)
+
+    Commits:
+      - retry has shorter sleep times
+      - FIX self.sleep never existed
+      - retry getting udisks object upon failure
+      - don't rescan devices: we already know!
+      - partition_device returns a UDI
+      - refactor detect_supported_drives
+      - retrying getting system partition helps
+      - race conditions? let's increase sleep time!
+
+  * Document Kleopatra (tails/tails!803)
+
+    Commits:
+      - Be more clear
+      - Improve grammar
+      - Be more clear
+      - Improve grammar
+      - Fix typo
+      - Fix broken links
+      - Mention Kleopatra in the Persistent Storage settings
+      - Remove not-so-useful note
+      - Document Kleopatra (Closes: #18933)
+      - Remove Seahorse from the doc
+      - Remove screenshots that need updating
+      - Remove OpenPGP Applet from the doc
+      - Patch screenshots for the removal of the OpenPGP Applet
+
+  * Fix opening links and attachments from Thunderbird, disable LibreOffice tip of
+    the day (tails/tails!793)
+
+    Commits:
+      - AppArmor Thunderbird profile: allow executing /bin/dash with inherited policy
+      - Disable LibreOffice's tip of the day
+
+  * fix whisperback sending error (tails/tails!787)
+
+    Commits:
+      - Thread.isAlive -> is_alive
+
+  * Fix Scenario: Upgrading an old Tails USB installation from another Tails USB
+    drive (tails/tails!765)
+
+    Commits:
+      - apparently fix tails/tails#18840
+      - send tails installer log to syslog
+
+  * Additional Software: synchronize APT data when needed directly from t-p-s
+    (tails/tails!764)
+
+    Commits:
+      - Test suite: restart Tails in the same way we expect the user to
+      - Test suite: don't exit the persistence wizard once done, make saving settings
+        explicit
+      - Test suite: refactoring (convert step to method)
+      - Additional Software: synchronize APT data when needed directly from t-p-s
+      - Remove XXX:Bullseye: this is not going to happen
+
+  * Persistence: enable Additional Software by default (tails/tails!800)
+
+    Commits:
+      - Persistence Setup: adjust test suite to Additional Software being enabled by
+        default
+      - Persistence: enable Additional Software by default
+
+  * Let the user know they should wait while we are copying Additional Software to
+    a new Persistent Storage (tails/tails!799)
+
+    Commits:
+      - Use phrasing proposed by sajolida
+      - t-p-s: ensure the GUI is updated while we synchronize data to the new
+        Persistent Storage
+      - Persistence setup: forbid clicking "Restart Now" twice in a row
+      - Test suite: save a file listing of /var/cache/apt when a Additional Software
+        scenario fails
+      - Let the user know they should wait while we are copying Additional Software
+        data to a new Persistent Storage
+
+  * htpdate.service is always started (tails/tails!796)
+
+    Commits:
+      - be more explicit about what we are testing
+      - htpdate is started every time
+      - some tests can be excluded from feature branches
+      - add regression test for #18868
+      - start htpdate.service earlier
+
+  * Replace Seahorse and OpenPGP Applet with Kleopatra (tails/tails!792)
+
+    Commits:
+      - Ensure Seahorse icons are present when running the persistence-setup test suite
+      - Persistent Storage: re-add custom icons for the GnuPG and SSH Client features
+      - FT role definition: remove seahorse-nautilus
+      - Contributors & design doc: drop OpenPGP Applet
+      - Remove the topIcons GNOME Shell extension
+      - Test suite: remove OpenPGP Applet tests, and the code & images they used
+      - Re-add and update explanation for disabling ssh-agent
+      - Remove broken patch
+      - Remove Gettext stuff for Seahorse
+      - Remove hooks about Seahorse and OpenPGP Applet
+      - Replace our PGP tools with Kleopatra
+
+  * Fix Bullseye-based Tails booting 20% slower than 4.x (tails/tails!791)
+
+    Commits:
+      - Freeze the AppArmor kernel feature set too
+
+  * Stop trusting our old APT signing key (tails/tails!788)
+
+    Commits:
+      - Bump APT snapshots to versions signed with our new key
+      - Test suite: stop ignoring our old APT key
+      - Stop trusting our old APT signing key
+
+  * Update live-build to include the local packages fix. (tails/tails!776)
+
+    Commits:
+      - Update live-build to include the local packages fix.
+
+  * Tails Installer: retry getting partition table (tails/tails!767)
+
+    Commits:
+      - retry getting partition table
+
+  * Update gdm-tails.json for Bullseye (tails/tails!689)
+
+    Commits:
+      - Add pointer accessibility support to gdm-tails.json
+      - gdm-tails.json: remove panelStyle
+
+  * Update VeraCrypt test suite for Bullseye (tails/tails!686)
+
+    Commits:
+      - Test suite: trim expected image to account for GNOME mounted volume
+        notification
+      - Give exchange USB drive more space
+      - Test suite: update to new GNOME Disks UI
+      - Test suite: update Nautilus application name
+      - Test suite: update expected picture
+
+ -- Tails developers <tails@boum.org>  Mon, 02 May 2022 07:55:18 +0000
 tails (5.0~beta1) unstable; urgency=medium
 
   * Upgrade to Debian 11 (Bullseye).
