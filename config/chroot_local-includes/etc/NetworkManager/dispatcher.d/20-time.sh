@@ -37,5 +37,3 @@ start_notification_helper() {
 ### Main
 
 start_notification_helper
-
-systemctl --no-block start htpdate.service

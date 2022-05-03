@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-12-24 15:26+0000\n"
+"POT-Creation-Date: 2022-05-02 10:18+0200\n"
 "PO-Revision-Date: 2018-04-03 13:40+0200\n"
 "Last-Translator: Tails translators <tails@boum.org>\n"
 "Language-Team: \n"
@@ -50,6 +50,13 @@ msgstr ""
 "explizit entfernt wurde, zum Beispiel über die Kommandozeile.\n"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "Instead, they simply remove the file's entry from the file system "
+#| "directory, because this requires less work and is therefore faster. The "
+#| "contents of the file—the actual data—remain on the storage medium. The "
+#| "data will remain there until the operating system reuses the space for "
+#| "new data."
 msgid ""
 "Instead, they simply remove the file's entry from the file system directory, "
 "because this requires less work and is therefore faster. The contents of the "
@@ -76,9 +83,17 @@ msgstr ""
 "Abbildes leer bis auf die Dateien, die im Abbild enthalten sind."
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "Finally, even when the storage medium is overwritten, physical properties "
+#| "of the medium may make it possible to recover the previous contents. In "
+#| "most cases however, this recovery is not possible by just reading from "
+#| "the storage device in the usual way, but requires using laboratory "
+#| "techniques such as disassembling the device and directly accessing/"
+#| "reading from its components."
 msgid ""
 "Finally, even when the storage medium is overwritten, physical properties of "
-"the medium may make it possible to recover the previous contents. In most "
+"the medium might make it possible to recover the previous contents. In most "
 "cases however, this recovery is not possible by just reading from the "
 "storage device in the usual way, but requires using laboratory techniques "
 "such as disassembling the device and directly accessing/reading from its "
@@ -92,10 +107,11 @@ msgstr ""
 "Zugriff bzw. Lesen von den Komponenten."
 
 #. type: Plain text
-#, no-wrap
-msgid ""
-"<p class=\"quoted-from\">Quoted from [[!wikipedia Secure_file_deletion\n"
-"desc=\"Wikipedia: %s\"]].</p>\n"
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<p class=\"quoted-from\">Quoted from [[!wikipedia Secure_file_deletion\n"
+#| "desc=\"Wikipedia: %s\"]].</p>\n"
+msgid "*Quoted from [[!wikipedia Data_erasure desc=\"Wikipedia: %s\"]].*\n"
 msgstr ""
 "<p class=\"quoted-from\">Zitiert von [[!wikipedia Secure_file_deletion\n"
 "desc=\"Wikipedia: %s\"]].</p>\n"
@@ -177,17 +193,15 @@ msgstr ""
 "Rechtsklicken Sie die Dateien und wählen Sie <span class=\"guimenuitem"
 "\">Sicheres löschen</span>."
 
-#. type: Plain text
-#, no-wrap
-msgid "     [[!img wipe_files.png link=no alt=\"Right-click&nbsp;▸ Wipe\"]]\n"
-msgstr "     [[!img wipe_files.png link=no alt=\"Rechtsklick&nbsp;▸ Sicheres löschen\"]]\n"
-
 #. type: Bullet: '  1. '
 msgid "Confirm."
 msgstr "Bestätigen Sie."
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "  1. The deletion will start. It can last from a few seconds to several minutes,\n"
+#| "  according to the size of the files. Be patient…\n"
 msgid ""
 "  1. The deletion will start. It can last from a few seconds to several minutes,\n"
 "  according to the size of the files. Be patient…\n"
@@ -226,9 +240,13 @@ msgstr ""
 "USB-Sticks nicht wie erwartet.</p>\n"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "The disk or the folder may or may not contain other files. Those files "
+#| "will not be deleted during the operation."
 msgid ""
-"The disk or the folder may or may not contain other files. Those files will "
-"not be deleted during the operation."
+"The disk or the folder can contain other files. Those files will not be "
+"deleted during the operation."
 msgstr ""
 "Das Laufwerk oder der Ordner können andere Dateien enthalten oder nicht. "
 "Diese Dateien werden nicht während des Vorgangs gelöscht."
@@ -244,10 +262,9 @@ msgstr ""
 
 #. type: Bullet: '  1. '
 msgid ""
-"Click on the <span class=\"guimenu\">[[!img lib/pan-down.png alt=\"menu "
-"toggle\" class=\"symbolic\" link=\"no\"]]</span> button in the right corner "
-"of the title bar and choose <span class=\"guilabel\">Show Hidden Files</"
-"span>."
+"Click on the [[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link="
+"\"no\"]] button in the right corner of the title bar and choose **Show "
+"Hidden Files**."
 msgstr ""
 
 #. type: Bullet: '  1. '
@@ -266,16 +283,11 @@ msgstr ""
 "wählen Sie <span class=\"guimenuitem\">Sicheres Löschen des verfügbaren "
 "Festplattenplatzes</span>."
 
-#. type: Plain text
-#, no-wrap
-msgid ""
-"     [[!img wipe_available_diskspace.png link=no alt=\"Right-click&nbsp;▸ Wipe\n"
-"     available diskspace\"]]\n"
-msgstr ""
-"     [[!img wipe_available_diskspace.png link=no alt=\"Rechtsklick&nbsp;▸ Sicheres Löschen\n"
-"     des verfügbaren Festplattenplatzes\"]]\n"
-
 #. type: Bullet: '  1. '
+#, fuzzy
+#| msgid ""
+#| "The cleaning starts. It can last from a few minutes to a few hours, "
+#| "according to the size of the available diskspace. Be patient…"
 msgid ""
 "The cleaning starts. It can last from a few minutes to a few hours, "
 "according to the size of the available diskspace. Be patient…"
@@ -382,6 +394,18 @@ msgid ""
 "In the confirmation dialog, make sure that the device is correct. Click "
 "<span class=\"bold\">Format</span> to confirm."
 msgstr ""
+
+#, no-wrap
+#~ msgid "     [[!img wipe_files.png link=no alt=\"Right-click&nbsp;▸ Wipe\"]]\n"
+#~ msgstr "     [[!img wipe_files.png link=no alt=\"Rechtsklick&nbsp;▸ Sicheres löschen\"]]\n"
+
+#, no-wrap
+#~ msgid ""
+#~ "     [[!img wipe_available_diskspace.png link=no alt=\"Right-click&nbsp;▸ Wipe\n"
+#~ "     available diskspace\"]]\n"
+#~ msgstr ""
+#~ "     [[!img wipe_available_diskspace.png link=no alt=\"Rechtsklick&nbsp;▸ Sicheres Löschen\n"
+#~ "     des verfügbaren Festplattenplatzes\"]]\n"
 
 #~ msgid "[[!meta title=\"Securely delete files and clean diskspace\"]]\n"
 #~ msgstr ""

@@ -1,4 +1,3 @@
-# coding: utf-8
 # Returns a hash that for each persistence preset the running Tails is aware of,
 # for each of the corresponding configuration lines,
 # maps the source to the destination.
@@ -140,7 +139,7 @@ end
 
 When /^I start Tails Installer$/ do
   @installer_log_path = '/tmp/tails-installer.log'
-  command = "/usr/local/bin/tails-installer --verbose > #{@installer_log_path} 2>&1"
+  command = "/usr/local/bin/tails-installer --verbose  2>&1 | tee #{@installer_log_path} | logger -t tails-installer"
   step "I run \"#{command}\" in GNOME Terminal"
   @installer = Dogtail::Application.new('tails-installer')
   @installer.child('Tails Installer', roleName: 'frame')
@@ -192,14 +191,14 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
               action.capitalize
             end
     @installer.button(label).click
-   unless action ==  'upgrade'
-     confirmation_label = if persistence_exists?(name)
-                            'Delete Persistent Storage and Reinstall'
-                          else
-                            'Delete All Data and Install'
-                          end
-     @installer.child('Question',
-                      roleName: 'alert').button(confirmation_label).click
+    unless action == 'upgrade'
+      confirmation_label = if persistence_exists?(name)
+                             'Delete Persistent Storage and Reinstall'
+                           else
+                             'Delete All Data and Install'
+                           end
+      @installer.child('Question',
+                       roleName: 'alert').button(confirmation_label).click
     end
     try_for(15 * 60, delay: 10) do
       @installer
@@ -219,7 +218,7 @@ Given(/^I plug and mount a USB drive containing a Tails USB image$/) do
   @usb_image_path = "#{usb_image_dir}/#{File.basename(TAILS_IMG)}"
 end
 
-Given /^I enable all persistence presets$/ do
+def enable_all_persistence_presets
   @screen.wait('PersistenceWizardPresets.png', 20)
   presets = persistent_presets_ui_settings
   presets[0]['is_first'] = true
@@ -243,13 +242,11 @@ Given /^I enable all persistence presets$/ do
       debug_log('setting already enabled, skipping')
     end
   end
-  save_and_exit_the_persistence_wizard
 end
 
-def save_and_exit_the_persistence_wizard
+def save_persistence_settings
   @screen.press('Return') # Press the Save button
   @screen.wait('PersistenceWizardDone.png', 60)
-  @screen.press('alt', 'F4')
 end
 
 When /^I disable the first persistence preset$/ do
@@ -261,6 +258,7 @@ When /^I disable the first persistence preset$/ do
 end
 
 Given /^I create a persistent partition( with the default settings| for Additional Software)?$/ do |mode|
+  # XXX: the wording here could be misleading. Pay attention when reading it! (or, please improve it)
   default_settings = mode
   asp = mode == ' for Additional Software'
   unless asp
@@ -271,7 +269,8 @@ Given /^I create a persistent partition( with the default settings| for Addition
   @screen.press('Tab')
   @screen.type(@persistence_password, ['Return'])
   @screen.wait('PersistenceWizardPresets.png', 300)
-  step 'I enable all persistence presets' unless default_settings
+  enable_all_persistence_presets unless default_settings
+  save_persistence_settings unless asp
 end
 
 def check_disk_integrity(name, dev, scheme)
@@ -1137,8 +1136,8 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   disks.children(roleName: 'table cell')
        .find { |row| destination_disk_label_regexp.match(row.name) }
        .grabFocus
-  disks.child('Menu', roleName: 'toggle button').click
-  disks.child('Restore Disk Image…', roleName: 'menu item').click
+  @screen.wait('GnomeDisksDriveMenuButton.png', 5).click
+  disks.child('Restore Disk Image…', roleName: 'push button').click
   restore_dialog = disks.child('Restore Disk Image',
                                roleName:    'dialog',
                                showingOnly: true)
@@ -1239,4 +1238,8 @@ end
 
 Then /^(.*) is not configured to persist$/ do |dir|
   assert(!configured_persistent_mountpoints.include?(dir))
+end
+
+Then /^I accept the persistence wizard's offer to restart Tails$/ do
+  @screen.wait('PersistenceWizardRestartButton.png', 5).click
 end

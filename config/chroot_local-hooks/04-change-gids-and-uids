@@ -98,6 +98,11 @@ Change_gid () {
 
 # Temporarily give these users and groups a UID/GID that's out of the way,
 # to avoid collisions
+Change_uid systemd-timesync  1010
+Change_uid systemd-network   1020
+Change_uid systemd-resolve   1030
+Change_uid memlockd          1040
+Change_uid messagebus        1050
 Change_uid pulse             1070
 Change_uid speech-dispatcher 1080
 Change_uid saned             1090
@@ -105,14 +110,36 @@ Change_uid colord            1100
 Change_uid hplip             1110
 Change_uid Debian-gdm        1120
 Change_uid usbmux            1500
+Change_uid tcpdump           1510
+Change_uid avahi             1520
+Change_gid systemd-journal   1010
+Change_gid systemd-timesync  1020
+Change_gid systemd-network   1030
+Change_gid systemd-resolve   1040
+Change_gid input             1050
+Change_gid kvm               1060
+Change_gid render            1070
+Change_gid crontab           1080
+Change_gid netdev            1090
+Change_gid memlockd          1100
+Change_gid messagebus        1110
+Change_gid ssl-cert          1130
+Change_gid ssh               1140
 Change_gid lpadmin           1150
 Change_gid scanner           1160
 Change_gid pulse             1170
 Change_gid pulse-access      1180
 Change_gid saned             1200
 Change_gid colord            1210
+Change_gid tcpdump           1290
+Change_gid avahi             1520
 
 # Finally, give these users and groups the desired UID/GID
+Change_uid systemd-timesync  101
+Change_uid systemd-network   102
+Change_uid systemd-resolve   103
+Change_uid memlockd          104
+Change_uid messagebus        105
 Change_uid pulse             107
 Change_uid speech-dispatcher 108
 Change_uid saned             109
@@ -120,10 +147,28 @@ Change_uid colord            110
 Change_uid hplip             111
 Change_uid Debian-gdm        112
 Change_uid usbmux            150
-Change_gid Debian-gdm        200
+Change_uid tcpdump           151
+Change_uid avahi             152
+Change_gid systemd-journal   101
+Change_gid systemd-timesync  102
+Change_gid systemd-network   103
+Change_gid systemd-resolve   104
+Change_gid input             105
+Change_gid kvm               106
+Change_gid render            107
+Change_gid crontab           108
+Change_gid netdev            109
+Change_gid memlockd          110
+Change_gid messagebus        111
+Change_gid ssl-cert          113
+Change_gid ssh               114
 Change_gid lpadmin           115
 Change_gid scanner           116
 Change_gid pulse             117
 Change_gid pulse-access      118
 Change_gid saned             120
 Change_gid colord            121
+# GIDs 122-128 are assigned to groups created by later hooks
+Change_gid tcpdump           129
+Change_gid avahi             152
+Change_gid Debian-gdm        200

@@ -51,7 +51,7 @@ Feature: configuration model
     Given the file is empty
     When I merge the presets and the file
     Then the list of configuration atoms should contain 14 elements
-    And there should be 1 enabled configuration line
+    And there should be 3 enabled configuration line
 
   Scenario: merge non-empty file with enabled-by-default preset in
     Given the file has the following content
@@ -61,7 +61,7 @@ Feature: configuration model
       """
     When I merge the presets and the file
     Then the list of configuration atoms should contain 15 elements
-    And there should be 2 enabled configuration lines
+    And there should be 4 enabled configuration lines
 
   Scenario: merge non-empty file with disabled-by-default preset in
     Given the file has the following content
@@ -71,4 +71,4 @@ Feature: configuration model
       """
     When I merge the presets and the file
     Then the list of configuration atoms should contain 15 elements
-    And there should be 3 enabled configuration lines
+    And there should be 5 enabled configuration lines

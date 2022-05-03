@@ -25,3 +25,11 @@ When /^I close Evince$/ do
   @screen.press('ctrl', 'w')
   step 'process "evince" has stopped running after at most 20 seconds'
 end
+
+Then /^Evince tells me it cannot open "([^"]+)"$/ do |filename|
+  assert(Dogtail::Application.new('evince')
+                             .child?(
+                               "Unable to open document “file://#{filename}”.",
+                               roleName: 'label'
+                             ))
+end
