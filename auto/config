@@ -68,14 +68,14 @@ fi
 
 
 # space-separated list of additional packages debootstrap installs
-#  - gnupg: needed by apt-key, not installed by default anymore on Buster
+#  - gnupg: needed by apt-key, not installed by default since Buster
 export LB_BOOTSTRAP_INCLUDE="gnupg"
 
 # init variables
 RUN_LB_CONFIG="lb config noauto"
 
 # init config/ with defaults for the target distribution
-$RUN_LB_CONFIG --distribution buster "${@}"
+$RUN_LB_CONFIG --distribution bullseye "${@}"
 
 # set up everything for time-based snapshots:
 if [ -n "${APT_SNAPSHOTS_SERIALS:-}" ]; then
@@ -108,6 +108,12 @@ perl -pi \
         s|^(deb(?:-src)?\s+)https?://deb[.]torproject[.]org/torproject[.]org/?(\s+)|\$1$TORPROJECT_MIRROR\$2|" \
     config/chroot_sources/*.chroot \
     || fatal "APT mirror substitution failed with exit code $?"
+
+# Adjust live-build to handle the new security suite name
+# introduced in Debian Bullseye.
+# shellcheck disable=SC2016
+sed -i 's@${LB_DISTRIBUTION}/updates@${LB_DISTRIBUTION}-security@' \
+    /usr/share/live/build/scripts/build/lb_chroot_sources
 
 # set Amnesia's general options
 $RUN_LB_CONFIG \
@@ -160,8 +166,6 @@ echo "${AMNESIA_FULL_VERSION}" > config/chroot_local-includes/etc/amnesia/versio
 if git rev-list HEAD >/dev/null 2>&1; then
    git rev-list HEAD | head -n 1 >> config/chroot_local-includes/etc/amnesia/version
 fi
-echo "live-build: $(dpkg-query -W -f='${Version}\n' live-build)" \
-   >> config/chroot_local-includes/etc/amnesia/version
 # os-release
 cat >> config/chroot_local-includes/etc/os-release <<EOF
 TAILS_PRODUCT_NAME="Tails"

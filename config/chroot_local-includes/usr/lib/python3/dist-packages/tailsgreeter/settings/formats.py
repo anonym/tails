@@ -3,7 +3,7 @@ import logging
 
 import tailsgreeter.config
 from tailsgreeter.settings import SettingNotFoundError
-from tailsgreeter.settings.localization import LocalizationSetting, language_from_locale, country_from_locale
+from tailsgreeter.settings.localization import LocalizationSetting, language_from_locale, country_from_locale, add_encoding
 from tailsgreeter.settings.utils import read_settings, write_settings
 
 gi.require_version('GObject', '2.0')
@@ -89,11 +89,11 @@ class FormatsSetting(LocalizationSetting):
         default_locale = 'C'
         local_locale = self.get_default_locale(country_code)
         native_name = GnomeDesktop.get_country_from_code(
-            country_code, local_locale)
+            country_code, add_encoding(local_locale))
         if not native_name:
             return ""
         localized_name = GnomeDesktop.get_country_from_code(
-            country_code, default_locale)
+            country_code, add_encoding(default_locale))
         if native_name == localized_name:
             return native_name
         else:
@@ -106,10 +106,11 @@ class FormatsSetting(LocalizationSetting):
         country_code = country_from_locale(locale_code)
         language_name_locale = GnomeDesktop.get_language_from_code(lang_code)
         language_name_native = GnomeDesktop.get_language_from_code(
-                lang_code, locale_code)
+                lang_code, add_encoding(locale_code)) or language_name_locale
         country_name_locale = GnomeDesktop.get_country_from_code(country_code)
         country_name_native = GnomeDesktop.get_country_from_code(
-                country_code, locale_code)
+                country_code, add_encoding(locale_code)) or country_name_locale
+
         try:
             if (language_name_native == language_name_locale and
                     country_name_native == country_name_locale):

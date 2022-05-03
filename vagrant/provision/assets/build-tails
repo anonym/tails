@@ -139,6 +139,14 @@ git checkout --force "${GIT_REF}"
 git reset --hard "${GIT_COMMIT}"
 git submodule update --init
 
+# We use our own fork of live-build.  To ease development, we no
+# longer build and install Debian packages, but install it from a git
+# submodule.
+#
+# We just run make install here, which is cheap, and it makes sure
+# that we always use the current version even during development.
+as_root_do make -C "${TAILS_GIT_DIR}/submodules/live-build" install
+
 if as_root_do systemctl --quiet is-active apt-cacher-ng.service ; then
 	as_root_do ./auto/scripts/update-acng-config
 	as_root_do systemctl restart apt-cacher-ng.service
