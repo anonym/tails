@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-01 16:24+0200\n"
+"POT-Creation-Date: 2022-06-04 08:10+0200\n"
 "PO-Revision-Date: 2013-07-25 09:07+0000\n"
 "Last-Translator: Emma Peel, 2015,2017-2022\n"
 "Language-Team: Spanish (http://www.transifex.com/otf/torproject/language/"
@@ -30,7 +30,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
 
 #: config/chroot_local-includes/etc/whisperback/config.py:69
 #, python-format
@@ -92,9 +93,9 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:171
 msgid ""
-"To add more, install some software using <a href=\"synaptic.desktop"
-"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
-"\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic."
+"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
+"desktop\">APT on the command line</a>."
 msgstr ""
 "Para añadir más, instala software usando <a href=\"synaptic.desktop\">el "
 "Gestor de Paquetes Synaptic</a> o <a href=\"org.gnome.Terminal.desktop\">con "
@@ -125,12 +126,12 @@ msgid "Do you want to start Electrum anyway?"
 msgstr "¿Quieres iniciar Electrum de todas formas?"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:70
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:40
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:43
 msgid "_Launch"
 msgstr "_Iniciar"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:71
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:41
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:44
 msgid "_Exit"
 msgstr "_Salir"
 
@@ -147,6 +148,7 @@ msgid "1y"
 msgid_plural "{count}y"
 msgstr[0] "1a"
 msgstr[1] "{count}a"
+msgstr[2] "{count}a"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -157,6 +159,7 @@ msgid "1d"
 msgid_plural "{count}d"
 msgstr[0] "1d"
 msgstr[1] "{count}d"
+msgstr[2] "{count}d"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -167,6 +170,7 @@ msgid "1h"
 msgid_plural "{count}h"
 msgstr[0] "1h"
 msgstr[1] "{count}h"
+msgstr[2] "{count}h"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -177,6 +181,7 @@ msgid "1m"
 msgid_plural "{count}m"
 msgstr[0] "1m"
 msgstr[1] "{count}m"
+msgstr[2] "{count}m"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -187,6 +192,7 @@ msgid "1s"
 msgid_plural "{count}s"
 msgstr[0] "1s"
 msgstr[1] "{count}s"
+msgstr[2] "{count}s"
 
 #. Translators: don't translate {time}, {downloaded}, {size}
 #. and {speed}, they are placeholders and will be replaced.
@@ -227,10 +233,10 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:290
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</b>\\n"
-"\\nCheck your network connection, and restart Tails to try upgrading again."
-"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
-"upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</"
+"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
+"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/check.en.html"
 msgstr ""
 "<b>Se produjo un error al actualizar la clave de firma.</b>\\n\\n<b>Esto "
 "impide determinar si una actualización está disponible en nuestro sitio web."
@@ -564,9 +570,9 @@ msgid ""
 "install.en.html"
 msgstr ""
 "<b>Ha ocurrido un error al instalar la actualización.</b>\\n\\nTu "
-"dispositivo Tails debe repararse y podría ser que no pueda arrancar.\\n"
-"\\nPor favor, sigue las instrucciones en file:///usr/share/doc/tails/website/"
-"doc/upgrade/error/install.es.html"
+"dispositivo Tails debe repararse y podría ser que no pueda arrancar."
+"\\n\\nPor favor, sigue las instrucciones en file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/install.es.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:895
 msgid "Error while installing the upgrade"
@@ -796,14 +802,14 @@ msgid "Cannot find device %s"
 msgstr "No se pudo encontrar el dispositivo %s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:657
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:903
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:904
 msgid "Unknown filesystem.  Your device may need to be reformatted."
 msgstr ""
 "Sistema de archivos desconocido. Tu dispositivo podría tener que ser "
 "formateado."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:660
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:906
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:907
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "No se admite el sistema de archivos: %s"
@@ -849,70 +855,70 @@ msgstr "El punto de montaje %s sigue existiendo tras desmontar "
 msgid "Partitioning device %(device)s"
 msgstr "Particionando el dispositivo %(device)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:888
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:889
 #, python-format
 msgid "Unsupported device '%(device)s', please report a bug."
 msgstr "Dispositivo '%(device)s' no soportado, por favor informa del fallo."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:891
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:892
 msgid "Trying to continue anyway."
 msgstr "Tratando de continuar igualmente."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:900
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:901
 msgid "Verifying filesystem..."
 msgstr "Verificando el sistema de archivos... "
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:924
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:925
 #, python-format
 msgid "Unable to change volume label: %(message)s"
 msgstr "No se pudo cambiar la etiqueta del volumen: %(message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:929
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:930
 msgid "Installing bootloader..."
 msgstr "Instalando gestor de arranque (bootloader)... "
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:936
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:937
 #, python-format
 msgid "Removing %(file)s"
 msgstr "Eliminando %(file)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1018
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1019
 #, python-format
 msgid "%s already bootable"
 msgstr "%s ya es arrancable"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1038
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1039
 msgid "Unable to find partition"
 msgstr "Incapaz de encontrar la partición"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1057
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1058
 #, python-format
 msgid "Formatting %(device)s as FAT32"
 msgstr "Formateando %(device)s como FAT32"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1120
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1121
 #, python-format
 msgid "Reading extracted MBR from %s"
 msgstr "Leyendo extractos MBR desde %s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1124
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1125
 #, python-format
 msgid "Could not read the extracted MBR from %(path)s"
 msgstr "No se pudo leer el extracto MBR desde %(path)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1137
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1138
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1139
 #, python-format
 msgid "Resetting Master Boot Record of %s"
 msgstr "Restableciendo Master Boot Record de %s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1143
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1144
 msgid "Drive is a loopback, skipping MBR reset"
 msgstr ""
 "La unidad es de tipo loopback (virtual, de bucle), omitiendo el "
 "restablecimiento del MBR..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1147
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1148
 msgid "Synchronizing data on disk..."
 msgstr "Sincronizando datos en el disco... "
 
@@ -1145,8 +1151,8 @@ msgstr ""
 msgid "Could not open device for writing."
 msgstr "No se pudo abrir el dispositivo para la escritura"
 
-#: config/chroot_local-includes/usr/local/bin/keepassxc:17
-#, sh-format
+#: config/chroot_local-includes/usr/local/bin/keepassxc:19
+#, fuzzy, sh-format
 msgid ""
 "<b><big>Do you want to rename your <i>KeePassXC</i> database?</big></b>\n"
 "\n"
@@ -1154,11 +1160,8 @@ msgid ""
 "\n"
 "<i>${filename}</i>\n"
 "\n"
-"<i>KeePassXC</i> changed the default name of the database to <i>Passwords."
-"kdbx</i>.\n"
-"\n"
-"Renaming your database to <i>Passwords.kdbx</i> would allow <i>KeePassXC</i> "
-"to open it automatically in the future."
+"Renaming your database to <i>${default_filename}</i> would allow "
+"<i>KeePassXC</i> to open it automatically in the future."
 msgstr ""
 "<b><big>¿Quieres renombrar tu base de datos de <i>KeePassXC</i></big></b>?\n"
 "\n"
@@ -1448,7 +1451,7 @@ msgstr "Configurar el volumen persistente de Tails"
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Setup.pm:502
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:26
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:29
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:342
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:481
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:901
@@ -1523,6 +1526,7 @@ msgid "Tails is configuring your Persistent Storage. Please wait..."
 msgstr "No se ha podido configurar tu Almacenamiento Persistente"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Setup.pm:731
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
 msgid "Restart Now"
 msgstr "Reiniciar ahora"
 
@@ -1797,8 +1801,8 @@ msgid ""
 "gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
 "Para hacerlo, crea un almacenamiento persistente e instala software usando "
-"<a href=\"synaptic.desktop\">el Gestor de Paquetes Synaptic</a> o <a href="
-"\"org.gnome.Terminal.desktop\">con APT en la línea de comandos</a>."
+"<a href=\"synaptic.desktop\">el Gestor de Paquetes Synaptic</a> o <a "
+"href=\"org.gnome.Terminal.desktop\">con APT en la línea de comandos</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:205
 msgid "To do so, install Tails on a USB stick and create a persistent storage."
@@ -1827,7 +1831,7 @@ msgid "Set up a password to unlock the screen."
 msgstr "Establece una contraseña para desbloquear la pantalla"
 
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:149
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2028
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2030
 msgid "Password"
 msgstr "Contraseña"
 
@@ -1901,7 +1905,7 @@ msgstr ""
 "Mira {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:76
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:25
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:28
 msgid "error:"
 msgstr "error:"
 
@@ -1938,11 +1942,11 @@ msgstr "Más información"
 msgid "Tor Connection"
 msgstr "Conexión Tor"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:198
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:200
 msgid "_Use a bridge that you already know"
 msgstr "_Usa un puente que ya conozcas"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:239
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:241
 msgid ""
 "To save your bridge, <a href=\"doc/first_steps/persistence\">unlock you "
 "Persistent Storage</a>."
@@ -1950,7 +1954,7 @@ msgstr ""
 "Para guardar tu puente, <a href=\"doc/first_steps/persistence\">desbloquea "
 "el almacenamiento persistente</a>."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:246
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:248
 msgid ""
 "To save your bridge, <a href=\"doc/first_steps/persistence\">create a "
 "Persistent Storage</a> on your Tails USB stick."
@@ -1958,59 +1962,68 @@ msgstr ""
 "Para guardar tu puente, <a href=\"doc/first_steps/persistence\">crea un "
 "Almacenamiento Persistente</a> en tu memoria USB de Tails."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:266
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:667
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:268
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:692
 #, python-brace-format
 msgid "Invalid: {exception}"
 msgstr "No es válido: {exception}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:278
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:680
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:280
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:705
 msgid "You need to configure an obfs4 bridge to hide that you are using Tor"
 msgstr "Necesitas configurar un puente obfs4 para ocultar que estás usando Tor"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:326
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:327
 msgid "Failed to configure your Persistent Storage"
 msgstr "No se ha podido configurar tu Almacenamiento Persistente"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:420
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:389
+msgid "Synchronizing the system's clock…"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:438
 msgid "Connecting to Tor without bridges…"
 msgstr "Conectando a Tor sin puentes..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:427
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:451
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:445
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:469
 msgid "Connecting to Tor with default bridges…"
 msgstr "Conectando a Tor con puentes predeterminados..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:434
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:452
 msgid "Connecting to Tor with a custom bridge…"
 msgstr "Conectándo a Tor con un puente personalizado..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:543
-msgid ""
-"Connected to Tor successfully!\n"
-"\n"
-"You can now browse the Internet anonymously and uncensored."
-msgstr ""
-"Conectado a Tor!\n"
-"\n"
-"Puedes navegar por Internet de forma anónima y sin censura."
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:560
+#, fuzzy
+msgid "Connected to Tor successfully with bridges"
+msgstr "Conectado a Tor con éxito"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:670
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:562
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1764
+msgid "Connected to Tor successfully"
+msgstr "Conectado a Tor con éxito"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:566
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1789
+msgid "You can now browse the Internet anonymously and uncensored."
+msgstr "Puedes navegar por Internet de forma anónima y sin censura"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:695
 msgid "Bridge address malformed"
 msgstr "Error de sintaxis en la dirección del puente"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:686
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:713
 msgid "Setting a bridge is needed if you want to hide that you are using Tor"
 msgstr ""
 "El uso de un puente es necesario si quieres ocultar el hecho de que estás "
 "usando Tor"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:948
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:984
 msgid "Are you sure you want to lose progress?"
 msgstr "¿Estás seguro de que quieres perder el progreso?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:952
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:988
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -2244,11 +2257,11 @@ msgstr ""
 msgid "Choose File Container"
 msgstr "Selecciona contenedor de archivo"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:37
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:40
 msgid "Launch the Unsafe Browser?"
 msgstr "¿Iniciar el Navegador No Seguro?"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:39
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:42
 msgid ""
 "The Unsafe Browser is not anonymous and the websites that you visit can see "
 "your real IP address.\\n\\nOnly use the Unsafe Browser to sign in to a "
@@ -2258,50 +2271,57 @@ msgstr ""
 "tu dirección IP real.\\n\\nSólo uses el Navegador Inseguro para iniciar "
 "sesión en una red usando un portal cautivo."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:53
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:54
 msgid ""
 "The Unsafe Browser was not enabled in the Welcome Screen.\\n\\nTo <a "
 "href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
 "unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and "
 "enable the Unsafe Browser in the additional settings of the Welcome Screen."
 msgstr ""
-"El Navegador Inseguro no fue habilitado en la Pantalla de Bienvenida.\\n"
-"\\nPara <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
-"unsafe_browser.en.html#use'>usar el Navegador Inseguro</a>, reinicia Tails y "
-"activa el navegador inseguro en la configuración adicional de la pantalla de "
-"bienvenida."
+"El Navegador Inseguro no fue habilitado en la Pantalla de Bienvenida."
+"\\n\\nPara <a href='file:///usr/share/doc/tails/website/doc/"
+"anonymous_internet/unsafe_browser.en.html#use'>usar el Navegador Inseguro</"
+"a>, reinicia Tails y activa el navegador inseguro en la configuración "
+"adicional de la pantalla de bienvenida."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
 msgid ""
 "\\n\\nTo always enable the Unsafe Browser, turn on the Welcome Screen "
 "feature of the Persistent Storage."
 msgstr ""
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:62
 msgid "_Restart"
 msgstr "_Reiniciar"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:62
-msgid "_Close"
-msgstr "_Cerrar"
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:63
+#, fuzzy
+msgid "_Cancel"
+msgstr "Cancelar"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:67
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:64
+msgid ""
+"Do you really want to restart Tails now?\\n\\nAll your current work will be "
+"lost."
+msgstr ""
+
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
 msgid "Failed to restart the system."
 msgstr "Fallo al reiniciar el sistema."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:77
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
 msgid "Starting the Unsafe Browser..."
 msgstr "Iniciando el Navegador No Seguro..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:78
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:83
 msgid "This may take a while, so please be patient."
 msgstr "Esto puede llevar un tiempo, por favor ten paciencia."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:84
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:89
 msgid "Shutting down the Unsafe Browser..."
 msgstr "Cerrando el Navegador No Seguro..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:85
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:90
 msgid ""
 "This may take a while, and you may not restart the Unsafe Browser until it "
 "is properly shut down."
@@ -2309,13 +2329,13 @@ msgstr ""
 "Esto puede llevar un tiempo, y no podrás reiniciar el Navegador No Seguro "
 "hasta que se haya cerrado adecuadamente."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:98
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:1
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:512
 msgid "Unsafe Browser"
 msgstr "Navegador No Seguro"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:107
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:117
 msgid ""
 "Another Unsafe Browser is currently running, or being cleaned up. Please "
 "retry in a while."
@@ -2323,15 +2343,15 @@ msgstr ""
 "En este momento se está ejecutando o apagando otro Navegador No Seguro. "
 "Inténtalo de nuevo en un rato."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:115
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:125
 msgid "Failed to setup chroot."
 msgstr "Fallo al establecer chroot."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:122
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:132
 msgid "Failed to configure browser."
 msgstr "Fallo al configurar el navegador."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:128
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:139
 msgid ""
 "You are not connected to a local network yet.\\n\\nTo be able to start the "
 "Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile "
@@ -2341,7 +2361,7 @@ msgstr ""
 "Navegador No Seguro, primero necesitas conectarte a una red Wi-Fi, cableada "
 "o móvil."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:144
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:155
 msgid "Failed to run browser."
 msgstr "Falló al iniciar el navegador."
 
@@ -2507,6 +2527,8 @@ msgstr "Es imposible conectar a Tor en el modo sin conexión"
 #: config/chroot_local-includes/usr/local/bin/tca:158
 msgid "To connect to Tor and the Internet, restart Tails without Offline Mode."
 msgstr ""
+"Para conectar a Tor e Internet, reinicia Tails sin utilizar el modo sin "
+"conexión."
 
 #: ../config/chroot_local-includes/etc/skel/Desktop/Report_an_error.desktop.in.h:1
 msgid "Report an error"
@@ -2978,7 +3000,7 @@ msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:146
 msgid "Use a _default bridge"
-msgstr ""
+msgstr "Usa un puente por _defecto"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:170
 msgid "obfs4 (recommended)"
@@ -2995,7 +3017,7 @@ msgstr "Ninguno"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:225
 msgid "_Request a new bridge"
-msgstr ""
+msgstr "_Solicita un nuevo puente"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:260
 msgid "_Enter a bridge that you already know"
@@ -3158,6 +3180,7 @@ msgstr ""
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1236
 msgid "<b>_Hide to my local network that I'm connecting to Tor (safer)</b>"
 msgstr ""
+"<b>_Esconder de mi red local que estoy conectándome a Tor (más seguro)</b>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1286
 msgid ""
@@ -3179,6 +3202,16 @@ msgid ""
 "yet, if you connect from a public Wi-Fi network, or if you are in the "
 "Eastern Hemisphere."
 msgstr ""
+"Tails solo se conectará a Tor después de que configures un puente de Tor. "
+"Los puentes son repetidores Tor secretos que ocultan el hecho de que estás "
+"conectado a Tor.\n"
+"\n"
+"Nuestro equipo está haciendo todo lo posible para ayudarte a conectarte a "
+"Tor utilizando los tipos más discretos de puentes Tor.\n"
+"\n"
+"Tendrás que hacer configuración extra si todavía no conoces ningún puente de "
+"Tor, si te conectas desde una red Wi-Fi pública, o si estás en el hemisferio "
+"oriental."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1349
 msgid ""
@@ -3232,71 +3265,63 @@ msgstr "Tu red local está bloqueando el acceso a Tor."
 msgid "Connecting to Tor…"
 msgstr "Conectando a Tor"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1763
-msgid "Connected to Tor successfully"
-msgstr "Conectado a Tor con éxito"
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1787
-msgid "You can now browse the Internet anonymously and uncensored."
-msgstr "Puedes navegar por Internet de forma anónima y sin censura"
-
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1809
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1811
 msgid "Start Tor Browser"
 msgstr "Iniciar Tor Browser"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1828
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1830
 msgid "Open Network Monitor"
 msgstr "Abrir el monitor de red"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1841
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1843
 msgid "View Tor Circuits"
 msgstr "Ver los circuitos de Tor"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1855
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1857
 msgid "Reset Tor Connection"
 msgstr "Restablecer la conexión Tor"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1895
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1897
 msgid "Configure a Local Proxy"
 msgstr "Configurar un Proxy local"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1920
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1922
 msgid "Proxy Type"
 msgstr "Tipo de proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1937
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1939
 msgid "No proxy"
 msgstr "Sin proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1938
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1940
 msgid "SOCKS 4"
 msgstr "SOCKS 4"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1939
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1941
 msgid "SOCKS 5"
 msgstr "SOCKS 5"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1940
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1942
 msgid "HTTP / HTTPS"
 msgstr "HTTP / HTTPS"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1959
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1961
 msgid "Address"
 msgstr "Dirección"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1976
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1978
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1993
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1995
 msgid "IP address or hostname"
 msgstr "Dirección IP o nombre de máquina (host)"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2011
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2013
 msgid "Port"
 msgstr "Puerto"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2120
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2122
 msgid "_Save Proxy Settings"
 msgstr "_Guardar configuración de proxy"
 
@@ -3382,6 +3407,18 @@ msgstr "Diciembre"
 msgid "Clock"
 msgstr "Reloj"
 
+#~ msgid ""
+#~ "Connected to Tor successfully!\n"
+#~ "\n"
+#~ "You can now browse the Internet anonymously and uncensored."
+#~ msgstr ""
+#~ "Conectado a Tor!\n"
+#~ "\n"
+#~ "Puedes navegar por Internet de forma anónima y sin censura."
+
+#~ msgid "_Close"
+#~ msgstr "_Cerrar"
+
 #~ msgid "OpenPGP keys outside of Thunderbird"
 #~ msgstr "Claves OpenPGP fuera de Thunderbird"
 
@@ -3400,9 +3437,11 @@ msgstr "Reloj"
 #~ msgid_plural "Keys Imported"
 #~ msgstr[0] "Llave importada"
 #~ msgstr[1] "Llaves importadas"
+#~ msgstr[2] "Llaves importadas"
 
 #, python-brace-format
 #~ msgid "Imported a key for {uids}"
 #~ msgid_plural "Imported keys for {uids}"
 #~ msgstr[0] "Importada una llave para {uids}"
 #~ msgstr[1] "Llaves importadas para {uids}"
+#~ msgstr[2] "Llaves importadas para {uids}"

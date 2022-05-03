@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-05-24 14:10+0200\n"
+"POT-Creation-Date: 2022-06-04 08:38+0200\n"
 "PO-Revision-Date: 2021-12-24 18:15+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -714,7 +714,7 @@ msgstr ""
 #| "desc=\"list of issues about the Persistent Storage\"]]."
 msgid ""
 "groups/tails/-/issues?"
-"scope=all&utf8=â&state=opened&label_name%5B%5D=C%3APersistence desc=\"list "
+"scope=all&utf8=✓&state=opened&label_name%5B%5D=C%3APersistence desc=\"list "
 "of issues about the Persistent Storage\"]]."
 msgstr ""
 "groups/tails/-/issues?"
@@ -948,30 +948,50 @@ msgid "<h2 id=\"htp\">Why does Tails automatically connect to several websites w
 msgstr "<h2 id=\"htp\">Зачем Tails при запуске автоматически подключается к нескольким сайтам?</h2>\n"
 
 #. type: Plain text
-msgid ""
-"Tor requires the system clock to be well synchronized in order to work "
-"properly. When starting Tails, a notification is displayed while the clock "
-"is being synchronized."
+msgid "The clock of the computer needs to be set at the correct time to both:"
 msgstr ""
-"Для правильной работы Tor нужно, чтобы системные часы были аккуратно "
-"синхронизированы. Это и происходит при запуске Tails. Вы можете видеть "
-"соответствующее уведомление."
+
+#. type: Bullet: '1. '
+msgid "Be able to connect to the Tor network in the first place"
+msgstr ""
 
 #. type: Plain text
+#, no-wrap
 msgid ""
-"This synchronization is made by sending HTTPS queries through Tor to several "
-"websites and deducing a correct time from their answers. The list of "
-"websites that could be queried in this process can be found in `/etc/default/"
-"htpdate`."
+"   The computer clock is fixed a first time, approximately, before connecting\n"
+"   to Tor, either [[automatically|doc/anonymous_internet/tor#automatic]] or\n"
+"   [[manually|doc/anonymous_internet/tor/troubleshoot#clock]].\n"
 msgstr ""
-"Синхронизация выполняется путем отправки HTTPS-запросов через Tor на "
-"несколько сайтов и расчёта корректного времени на основе их ответов. Список "
-"этих сайтов доступен в `/etc/default/htpdate`."
+
+#. type: Bullet: '2. '
+msgid "Protect your anonymity while using Tor"
+msgstr ""
 
 #. type: Plain text
+#, no-wrap
 msgid ""
-"See also our [[design document|contribute/design/Time_syncing]] on this "
-"topic."
+"   The computer clock is fixed a second time, precisely, to prevent a website\n"
+"   from identifying you by analyzing minor differences of your computer clock\n"
+"   with the correct time.\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "This synchronization is made by sending HTTPS queries through Tor to several websites and deducing a correct time from their answers. The list of websites that could be queried in this process can be found in `/etc/default/htpdate`."
+msgid ""
+"   This second synchronization is made by sending HTTPS queries through Tor to several\n"
+"   websites and deducing a correct time from their answers. You can see the\n"
+"   list of websites that Tails can connect to in *[[!tails_gitweb config/chroot_local-includes/etc/default/htpdate.pools desc=\"/etc/default/htpdate.pools\"]]*.\n"
+msgstr "Синхронизация выполняется путем отправки HTTPS-запросов через Tor на несколько сайтов и расчёта корректного времени на основе их ответов. Список этих сайтов доступен в `/etc/default/htpdate`."
+
+#. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "See also our [[design document|contribute/design/Time_syncing]] on this "
+#| "topic."
+msgid ""
+"See also our [[design document on time synchronization|contribute/design/"
+"Time_syncing]]."
 msgstr "См. также нашу [[документацию|contribute/design/Time_syncing]]."
 
 #. type: Plain text
@@ -1300,53 +1320,6 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "<h1 id=\"desktop\">Desktop environment</h1>\n"
-msgstr "<h1 id=\"desktop\">Окружение рабочего стола</h1>\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"timezone\">Why is the time set wrong?</h2>\n"
-msgstr "<h2 id=\"timezone\">Почему неверно установлено время?</h2>\n"
-
-#. type: Plain text
-msgid ""
-"When Tails starts, the system timezone is set to UTC (Greenwich time). So, "
-"this time might be a few hours in the future if you are west of the United "
-"Kingdom, or in the past if you are east of the UK. The minutes should be "
-"accurate."
-msgstr ""
-"При запуске Tails системный часовой пояс устанавливается в UTC (время по "
-"Гринвичу). Это время может не совпадать с вашим. Оно будет больше вашего, "
-"если вы находитесь к западу от Соединенного Королевства, или меньше, если вы "
-"к востоку. Минутная стрелка будет показывать верное значение."
-
-#. type: Plain text
-msgid ""
-"We do this for anonymity reasons: if some application reveals your actual "
-"timezone, it might help identifying who you are."
-msgstr ""
-"Мы делаем это по соображениям анонимности. Если какое-либо приложение "
-"покажет ваш фактический часовой пояс, идентифицировать вас может оказаться "
-"проще."
-
-#. type: Plain text
-msgid ""
-"Having all Tails users set to the same timezone, makes it more difficult to "
-"distinguish you amongst all the other Tails users."
-msgstr ""
-"Если все пользователи Tails по умолчанию в одном и том же часовом поясе, вас "
-"будет сложнее выявить «в толпе»."
-
-#. type: Plain text
-msgid ""
-"We are working on a custom clock applet with configurable timezone. See [[!"
-"tails_ticket 6284]]."
-msgstr ""
-"Мы работаем над настраиваемым апплетом часов с изменяемым часовым поясом. "
-"См. [[!tails_ticket 6284]]."
-
-#. type: Plain text
-#, no-wrap
 msgid "<h1 id=\"misc\">Other security issues</h1>\n"
 msgstr "<h1 id=\"misc\">Другие вопросы безопасности</h1>\n"
 
@@ -1542,6 +1515,56 @@ msgstr ""
 "(https://ru.wikipedia.org/wiki/"
 "%D0%92%D1%80%D0%B5%D0%B4%D0%BE%D0%BD%D0%BE%D1%81%D0%BD%D1%8B%D0%B5_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D1%8B_%D0%B4%D0%BB%D1%8F_Unix-"
 "%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D1%8B%D1%85_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC)."
+
+#~ msgid ""
+#~ "Tor requires the system clock to be well synchronized in order to work "
+#~ "properly. When starting Tails, a notification is displayed while the "
+#~ "clock is being synchronized."
+#~ msgstr ""
+#~ "Для правильной работы Tor нужно, чтобы системные часы были аккуратно "
+#~ "синхронизированы. Это и происходит при запуске Tails. Вы можете видеть "
+#~ "соответствующее уведомление."
+
+#, no-wrap
+#~ msgid "<h1 id=\"desktop\">Desktop environment</h1>\n"
+#~ msgstr "<h1 id=\"desktop\">Окружение рабочего стола</h1>\n"
+
+#, no-wrap
+#~ msgid "<h2 id=\"timezone\">Why is the time set wrong?</h2>\n"
+#~ msgstr "<h2 id=\"timezone\">Почему неверно установлено время?</h2>\n"
+
+#~ msgid ""
+#~ "When Tails starts, the system timezone is set to UTC (Greenwich time). "
+#~ "So, this time might be a few hours in the future if you are west of the "
+#~ "United Kingdom, or in the past if you are east of the UK. The minutes "
+#~ "should be accurate."
+#~ msgstr ""
+#~ "При запуске Tails системный часовой пояс устанавливается в UTC (время по "
+#~ "Гринвичу). Это время может не совпадать с вашим. Оно будет больше вашего, "
+#~ "если вы находитесь к западу от Соединенного Королевства, или меньше, если "
+#~ "вы к востоку. Минутная стрелка будет показывать верное значение."
+
+#~ msgid ""
+#~ "We do this for anonymity reasons: if some application reveals your actual "
+#~ "timezone, it might help identifying who you are."
+#~ msgstr ""
+#~ "Мы делаем это по соображениям анонимности. Если какое-либо приложение "
+#~ "покажет ваш фактический часовой пояс, идентифицировать вас может "
+#~ "оказаться проще."
+
+#~ msgid ""
+#~ "Having all Tails users set to the same timezone, makes it more difficult "
+#~ "to distinguish you amongst all the other Tails users."
+#~ msgstr ""
+#~ "Если все пользователи Tails по умолчанию в одном и том же часовом поясе, "
+#~ "вас будет сложнее выявить «в толпе»."
+
+#~ msgid ""
+#~ "We are working on a custom clock applet with configurable timezone. See "
+#~ "[[!tails_ticket 6284]]."
+#~ msgstr ""
+#~ "Мы работаем над настраиваемым апплетом часов с изменяемым часовым поясом. "
+#~ "См. [[!tails_ticket 6284]]."
 
 #~ msgid ""
 #~ "<h2 id=\"boot-statistics\">Does Tails collect information about its users?"

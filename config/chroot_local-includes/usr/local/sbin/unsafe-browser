@@ -101,7 +101,11 @@ CHROOT="${CONF_DIR}/chroot"
 BROWSER_NAME="unsafe-browser"
 BROWSER_USER="amnesia"
 HUMAN_READABLE_NAME="$(gettext "Unsafe Browser")"
-WARNING_PAGE='/usr/share/doc/tails/website/misc/unsafe_browser_warning'
+if [ -f /run/tor-has-bootstrapped/done ]; then
+    WARNING_PAGE='/usr/share/doc/tails/website/misc/unsafe_browser_warning'
+else
+    WARNING_PAGE='/usr/share/doc/tails/website/misc/captive_portal_warning'
+fi
 HOME_PAGE="$(localized_tails_doc_page "${WARNING_PAGE}")"
 
 # Check if the Unsafe Browser was disabled in the startup options

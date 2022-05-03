@@ -76,7 +76,7 @@ Set `TBB_DIST_URL` to the chosen URL, and set `TBB_VERSION` to the desired Tor
 Browser version, for example:
 
     TBB_DIST_URL=https://people.torproject.org/~mikeperry/builds/4.5-build5/
-    TBB_VERSION="$(basename "${TBB_DIST_URL}")"
+    TBB_VERSION="$(basename "${TBB_DIST_URL:?}")"
 
 <div class="caution">
 Ensure you include the "-buildN" part.
@@ -87,30 +87,31 @@ Browser, and `TBB_IMPORT_BRANCH` to the branch we'll work on, which
 must include the `+force-all-tests` suffix:
 
     TBB_TAILS_TICKET=123456
-    TBB_IMPORT_BRANCH=${TBB_TAILS_TICKET}-tor-browser-${TBB_VERSION%%-*}+force-all-tests
+    TBB_IMPORT_BRANCH=${TBB_TAILS_TICKET:?}-tor-browser-${TBB_VERSION%%-*}+force-all-tests
 
 Check out the new branch:
 
-    git checkout -b ${TBB_IMPORT_BRANCH} origin/stable
+    git checkout -b ${TBB_IMPORT_BRANCH:?} origin/stable
 
-Set `TBB_SIGNER` to the nickname of the Tor Browser developer who signed the
-`sha256sums-unsigned-build.txt` file; the detached signature at `$TBB_DIST_URL`
-is named `sha256sums-unsigned-build.txt.asc-${TBB_SIGNER}`:
+Set `TBB_SIGNER_SUFFIX` to the nickname of the Tor Browser developer who signed
+the `sha256sums-unsigned-build.txt` file, preceeded by a dash; the detached
+signature at `$TBB_DIST_URL` is named
+`sha256sums-unsigned-build.txt.asc${TBB_SIGNER_SUFFIX}`:
 
-    TBB_SIGNER=XXX
+    TBB_SIGNER_SUFFIX='-boklm'
 
-XXX: The detached signature may be called `sha256sums-unsigned-build.txt.asc`
-instead. If that's the case, adapt the instructions below accordingly.
+Note: sometimes, the detached signature is called `sha256sums-unsigned-build.txt.asc`, with no suffix.
+If that's the case, just set it to an empty string
 
 Fetch the version's hash file and its detached signature, and verify
 with GnuPG:
 
     (
         set -e
-        for f in sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},}; do
+        for f in sha256sums-unsigned-build.txt{.asc${TBB_SIGNER_SUFFIX?},}; do
             wget "${TBB_DIST_URL:?}/$f" -O "$f"
         done
-        gpg --verify sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},}
+        gpg --verify sha256sums-unsigned-build.txt{.asc${TBB_SIGNER_SUFFIX?},}
     )
 
 
@@ -297,4 +298,4 @@ Clean up
 	git annex drop -- "${TBB_VERSION:?}" && \
     git annex sync && \
     rm -rf "${DL_DIR:?}" && \
-    rm -f "${TAILS_GIT_REPO:?}"/sha256sums-unsigned-build.txt{,.asc-${TBB_SIGNER}}
+    rm -f "${TAILS_GIT_REPO:?}"/sha256sums-unsigned-build.txt{,.asc${TBB_SIGNER_SUFFIX}}

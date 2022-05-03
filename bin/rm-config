@@ -23,6 +23,7 @@ log = logging.getLogger()
 STAGES = [
     "base",
     "built-almost-final",
+    "finalized-changelog",
     "reproduced-images",
     "built-iuks",
 ]
@@ -64,6 +65,9 @@ STAGE_SCHEMA = {
     },
     "built-almost-final": {
         "almost_final_build_manifest": IsBuildManifest,
+    },
+    "finalized-changelog": {
+        "source_date_epoch": int,
     },
     "reproduced-images": {
         "matching_jenkins_images_build_id": int,

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2022-02-25 17:10-0600\n"
-"PO-Revision-Date: 2022-05-20 22:40+0000\n"
+"PO-Revision-Date: 2022-06-04 12:40+0000\n"
 "Last-Translator: drebs <drebs@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: pt\n"
@@ -22,51 +22,67 @@ msgstr ""
 #, no-wrap
 msgid "[[!meta title=\"Install Tails from Debian or Ubuntu using the command line and GnuPG\"]]\n"
 msgstr ""
+"[[!meta title=\"Instalando Tailsa partir de um Debian ou Ubuntu usando a "
+"linha de comando e GnuPG\"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta stylesheet=\"inc/stylesheets/overview\" rel=\"stylesheet\" title=\"\"]]\n"
 msgstr ""
+"[[!meta stylesheet=\"inc/stylesheets/overview\" rel=\"stylesheet\" title=\"\""
+"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta stylesheet=\"inc/stylesheets/download\" rel=\"stylesheet\" title=\"\"]]\n"
 msgstr ""
+"[[!meta stylesheet=\"inc/stylesheets/download\" rel=\"stylesheet\" title=\"\""
+"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta stylesheet=\"doc/about/warnings\" rel=\"stylesheet\" title=\"\"]]\n"
 msgstr ""
+"[[!meta stylesheet=\"doc/about/warnings\" rel=\"stylesheet\" title=\"\"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta stylesheet=\"inc/stylesheets/steps\" rel=\"stylesheet\" title=\"\"]]\n"
 msgstr ""
+"[[!meta stylesheet=\"inc/stylesheets/steps\" rel=\"stylesheet\" title=\"\"]]"
+"\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta stylesheet=\"inc/stylesheets/expert\" rel=\"stylesheet\" title=\"\"]]\n"
 msgstr ""
+"[[!meta stylesheet=\"inc/stylesheets/expert\" rel=\"stylesheet\" title=\"\"]]"
+"\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!inline pages=\"install/inc/overview\" raw=\"yes\" sort=\"age\"]]\n"
 msgstr ""
+"[[!inline pages=\"install/inc/overview.pt\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!inline pages=\"install/inc/steps/warnings.inline\" raw=\"yes\" sort=\"age\"]]\n"
 msgstr ""
+"[[!inline pages=\"install/inc/steps/warnings.inline.pt\" raw=\"yes\" sort="
+"\"age\"]]\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"verify-key\" class=\"step\">Verify the Tails signing key</h1>\n"
 msgstr ""
+"<h1 id=\"verify-key\" class=\"step\">Verificando a chave de assinatura do "
+"Tails</h1>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<div class=\"tip\">\n"
-msgstr ""
+msgstr "<div class=\"tip\">\n"
 
 #. type: Plain text
 #, no-wrap
@@ -75,11 +91,15 @@ msgid ""
 "can skip this step and start [[downloading and verifying the USB\n"
 "image|expert#download]].</p>\n"
 msgstr ""
+"<p>Caso você já tenha certificado a chave de assinatura do Tails com a sua "
+"própria chave, você\n"
+"pode pular este passo e começar a [[baixar e verificar a imagem\n"
+"USB|expert#download.</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "</div>\n"
-msgstr ""
+msgstr "</div>\n"
 
 #
 #. type: Plain text
@@ -87,11 +107,14 @@ msgid ""
 "In this step, you will download and verify the *Tails signing key* which is "
 "the OpenPGP key that is used to cryptographically sign the Tails USB image."
 msgstr ""
+"Neste passo, você vai baixar e verificar a *Chave de assinatura do Tails*, "
+"que é a chave OpenPGP que é usada para assinar criptograficamente a imagem "
+"USB do Tails."
 
 #. type: Plain text
 #, no-wrap
 msgid "<div class=\"note\">\n"
-msgstr ""
+msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
 #, no-wrap
@@ -99,6 +122,8 @@ msgid ""
 "<p>To follow these instructions you need to have your own OpenPGP\n"
 "key.</p>\n"
 msgstr ""
+"<p>Para seguir estas instruções você tem que ter sua própria chave\n"
+"OpenPGP.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -107,6 +132,10 @@ msgid ""
 "<a href=\"https://riseup.net/en/security/message-security/openpgp/gpg-keys\">Managing\n"
 "OpenPGP Keys</a> by <em>Riseup</em>.</p>\n"
 msgstr ""
+"<p>Para aprender como criar uma chave OpenPGP, veja\n"
+"<a href=\"https://riseup.net/pt/security/message-security/openpgp/gpg-keys\">"
+"Gerenciando\n"
+"Chaves OpenPGP</a>, documentação mantida por <em>Riseup</em>.</p>\n"
 
 #
 #. type: Plain text
@@ -114,6 +143,9 @@ msgid ""
 "This verification technique uses the OpenPGP Web of Trust and the "
 "certification made by official Debian developers on the Tails signing key."
 msgstr ""
+"Esta técnica de verificação utiliza a Rede de Confiança OpenPGP e a "
+"certificação feita na chave de assinatura do Tails por desenvolvedores "
+"oficiais do Debian."
 
 #
 #. type: Bullet: '1. '
@@ -121,6 +153,8 @@ msgid ""
 "Import the Tails signing key in your <span class=\"application\">GnuPG</"
 "span> keyring:"
 msgstr ""
+"Importe a chave de assinatura do Tails em seu chaveiro <span class="
+"\"application\">GnuPG</span>:"
 
 #. type: Plain text
 #, no-wrap
@@ -128,6 +162,8 @@ msgid ""
 "       wget https://tails.boum.org/tails-signing.key\n"
 "       gpg --import < tails-signing.key\n"
 msgstr ""
+"       wget https://tails.boum.org/tails-signing.key\n"
+"       gpg --import < tails-signing.key\n"
 
 #
 #. type: Bullet: '1. '
@@ -135,11 +171,13 @@ msgid ""
 "Install the Debian keyring. It contains the OpenPGP keys of all Debian "
 "developers:"
 msgstr ""
+"Instale o chaveiro do Debian. Ele contém as chaves OpenPGP de todos os "
+"desenvolvedores Debian:"
 
 #. type: Plain text
 #, no-wrap
 msgid "       sudo apt update && sudo apt install debian-keyring\n"
-msgstr ""
+msgstr "       sudo apt update && sudo apt install debian-keyring\n"
 
 #
 #. type: Bullet: '1. '
@@ -148,6 +186,9 @@ msgid ""
 "\"Chris Lamb\"]], a former Debian Project Leader, from the Debian keyring "
 "into your keyring:"
 msgstr ""
+"Importe para o seu chaveiro a chave OpenPGP de [[!wikipedia "
+"Chris_Lamb_(software_developer) desc=\"Chris Lamb\"]], um ex-líder do "
+"projeto Debian, a partir do chaveiro do Debian:"
 
 #. type: Plain text
 #, no-wrap
