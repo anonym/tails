@@ -32,7 +32,6 @@ systemctl --global enable tails-add-GNOME-bookmarks.service
 systemctl --global enable tails-additional-software-install.service
 systemctl --global enable tails-configure-keyboard.service
 systemctl --global enable tails-create-tor-browser-directories.service
-systemctl --global enable tails-kill-gdm-session.service
 systemctl --global enable tails-security-check.service
 systemctl --global enable tails-upgrade-frontend.service
 systemctl --global enable tails-virt-notify-user.service
@@ -78,3 +77,8 @@ systemctl mask live-tools.service
 
 # "Daily man-db regeneration" is not needed in Tails (#16631)
 systemctl mask man-db.timer
+
+# Blocked by our firewall so cannot work; would need some security analysis
+# before we enable it
+systemctl mask avahi-daemon.socket
+systemctl mask avahi-daemon.service

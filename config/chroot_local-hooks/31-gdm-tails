@@ -3,10 +3,12 @@
 set -e
 set -u
 
+echo "Generate GNOME sessions files"
+
 ORIG_SHELL_DESKTOP_FILE="/usr/share/applications/org.gnome.Shell.desktop"
 TAILS_SHELL_DESKTOP_FILE="/usr/share/gdm/greeter/applications/gdm-shell-tails.desktop"
 
-ORIG_SESSION_FILE="/usr/share/gnome-session/sessions/gnome-classic.session"
+ORIG_SESSION_FILE="/usr/share/gnome-session/sessions/gnome.session"
 TAILS_SESSION_FILE="/usr/share/gnome-session/sessions/gdm-tails.session"
 
 create_gdm_shell_tails_desktop_file() {
@@ -25,14 +27,14 @@ create_tails_session_file() {
     if ! grep -q -E \
             "^RequiredComponents=org\.gnome\.Shell;" "${ORIG_SESSION_FILE}" || \
        ! grep -q --fixed-strings --line-regexp \
-            "Name=GNOME Classic" "${ORIG_SESSION_FILE}"; then
+            "Name=GNOME" "${ORIG_SESSION_FILE}"; then
         echo "Couldn't find expected Name and RequiredComponents lines in GNOME's session file:" >&2
         echo "(${ORIG_SESSION_FILE})" >&2
         exit 1
     fi
     sed -E \
         -e "s,^RequiredComponents=org\.gnome\.Shell;,RequiredComponents=gdm-shell-tails;tails-greeter;," \
-        -e "s,^Name=GNOME Classic$,Name=Display Manager," \
+        -e "s,^Name=GNOME$,Name=Display Manager," \
         -e "/^Name\[/d" \
         "${ORIG_SESSION_FILE}" \
         > "${TAILS_SESSION_FILE}"

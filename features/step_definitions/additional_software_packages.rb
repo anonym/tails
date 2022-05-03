@@ -41,7 +41,7 @@ Then /^I create a persistent storage and activate the Additional Software featur
   gnome_shell.child('Create Persistent Storage', roleName: 'push button').click
   step 'I create a persistent partition for Additional Software'
   step 'The Additional Software persistence option is enabled'
-  save_and_exit_the_persistence_wizard
+  save_persistence_settings
 end
 
 Then /^The Additional Software persistence option is enabled$/ do
@@ -142,7 +142,7 @@ Then /^I can open the Additional Software documentation from the notification$/ 
   gnome_shell = Dogtail::Application.new('gnome-shell')
   gnome_shell.child('Documentation', roleName: 'push button').click
   try_for(60) { @torbrowser = Dogtail::Application.new('Firefox') }
-  step '"Tails - Install from another Tails" has loaded in the Tor Browser'
+  step '"Tails - Install by cloning" has loaded in the Tor Browser'
 end
 
 Then /^the Additional Software dpkg hook has been run for package "([^"]*)" and notices the persistence is locked$/ do |package|
