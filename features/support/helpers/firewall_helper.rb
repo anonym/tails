@@ -1,4 +1,5 @@
 require 'packetfu'
+require 'net/dns'
 
 def looks_like_dhcp_packet?(eth_packet, protocol, sport, dport, ip_packet)
   protocol == 'udp' && sport == 68 && dport == 67 &&
@@ -39,6 +40,7 @@ def pcap_connections_helper(pcap_file, **opts)
     end
     sport = nil
     dport = nil
+    dns_question = []
     if PacketFu::IPv6Packet.can_parse?(p)
       ip_packet = PacketFu::IPv6Packet.parse(p)
       protocol = 'ipv6'
@@ -72,12 +74,24 @@ def pcap_connections_helper(pcap_file, **opts)
     next if opts[:ignore_arp] && protocol == 'arp'
     next if opts[:ignore_sources].include?(eth_packet.eth_saddr)
 
+    if protocol == 'udp' && dport == 53
+      begin
+        dns_packet = Net::DNS::Packet.parse(PacketFu::Packet.parse(p).payload)
+      rescue ArgumentError
+        dns_packet = nil
+      end
+      unless dns_packet.nil? || dns_packet.question.empty?
+        dns_question += dns_packet.question.map(&:qName)
+      end
+    end
+
     packet_info = {
-      mac_saddr: eth_packet.eth_saddr,
-      mac_daddr: eth_packet.eth_daddr,
-      protocol:  protocol,
-      sport:     sport,
-      dport:     dport,
+      mac_saddr:    eth_packet.eth_saddr,
+      mac_daddr:    eth_packet.eth_daddr,
+      protocol:     protocol,
+      sport:        sport,
+      dport:        dport,
+      dns_question: dns_question,
     }
 
     begin
@@ -108,17 +122,46 @@ end
 
 # These assertions are made from the perspective of the system under
 # testing when it comes to the concepts of "source" and "destination".
-def assert_all_connections(pcap_file, **opts, &block)
+def assert_all_connections(pcap_file,
+                           message: 'Unexpected connections were made',
+                           **opts, &block)
   all = pcap_connections_helper(pcap_file, **opts)
   good = all.select(&block)
   bad = all - good
   return if bad.empty?
 
   raise FirewallAssertionFailedError,
-        "Unexpected connections were made:\n" +
+        "#{message}\n" +
         bad.map { |e| "  #{e}" } .join("\n")
 end
 
 def assert_no_connections(pcap_file, **opts, &block)
   assert_all_connections(pcap_file, **opts) { |*args| !block.call(*args) }
+end
+
+def assert_no_leaks(pcap_file, allowed_hosts, allowed_dns_queries, **opts)
+  assert_all_connections(pcap_file, **opts) do |c|
+    allowed_hosts.include?({ address: c.daddr, port: c.dport })
+  end
+
+  # yes, we could combine these two checks in a single one, and that would probably be more efficient.
+  # However, we're gaining something when it comes to debugging:
+  # the line number now tells you *which* check  has failed
+  dns_opts = opts.clone
+  dns_opts[:message] = 'Unexpected DNS queries were made'
+  assert_all_connections(pcap_file, **dns_opts) do |c|
+    c.dns_question.all? { |q| allowed_dns_queries.include?(q) }
+  end
+end
+
+def debug_useless_dns_exceptions(pcap_file, allowed_dns_queries)
+  queries_made = Set.new
+  pcap_connections_helper(pcap_file).each do |c|
+    queries_made += c.dns_question
+  end
+  queries_allowed = Set.new(allowed_dns_queries)
+  useless_dns_exceptions = queries_allowed - queries_made
+  unless useless_dns_exceptions.empty?
+    info_log("Warning: these queries were allowed but not needed: #{useless_dns_exceptions.to_a}")
+  end
 end

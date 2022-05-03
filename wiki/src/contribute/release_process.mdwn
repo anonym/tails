@@ -96,7 +96,7 @@ To release Tails you'll need some packages installed:
 * `perl5lib` [[dependencies|contribute/release_process/perl5lib#build-deps]]
 * `iuk` [[dependencies|contribute/release_process/tails-iuk#build-deps]]
 * `squashfs-tools-ng` and `libsquashfs1` from Bullseye
-* `po4a` 0.55:
+* `po4a` 0.62:
    - Different versions extract Markdown headings in a different way, which
      makes tons of strings fuzzy.
    - Different versions emit different sets of message flags, some of which
@@ -1069,7 +1069,18 @@ Run this command to verify that Jenkins reproduced your IUKs:
 
 The download step takes a few minutes.
 
-If this verification succeeds, good! Otherwise, see the next section
+If this verification succeeds, good!
+
+Otherwise, see the next sections
+
+### If it fails with `urllib.error.HTTPError: HTTP Error 404: Not Found`
+
+This problem can be expected when we are maintaining Tails `N.x` together with Tails `(N+1).y`.
+
+If this is the case:
+
+1. Run the same command, adding the `--ignore-404` option
+2. In the output of this second attempt, verify that the only missing IUKs are not relevant to this release
 
 ### If IUK verification fails
 
@@ -1423,11 +1434,14 @@ Lead the internal manual testing to conclusion
 1. Ensure the "Incremental upgrades" part of the manual test suite
    is done:
 
-   1. Wait until most mirrors in the pool have the new version:
+   1. Wait until all mirrors in the DNS pool have the new version:
 
-        ./check-mirrors.rb --channel ${DIST:?} \
-            --allow-multiple --fast --stats \
-            tails-amd64-${VERSION:?}
+        IPS=$(host -t A dl.amnesia.boum.org | perl -pE 's/\Adl[.]amnesia[.]boum[.]org has address (.*)/$1/')
+        for ip in $(echo $IPS) ; do
+            ./check-mirrors.rb --channel ${DIST:?} \
+               --allow-multiple --fast \
+               --ip "$ip" "tails-amd64-${VERSION:?}"
+        done
 
    1. Delete "⚠ Wait until the Release Manager […]" in the "Incremental
       upgrades" section on the pad.
@@ -1481,7 +1495,7 @@ Rename, copy, garbage collect and update various files:
 
 Then, build the website and commit this last set of changes:
 
-	if [ "$(./bin/po4a-version)" = 0.55 ]; then
+	if [ "$(./bin/po4a-version)" = 0.62 ]; then
 	    ./build-website && \
 	    git add wiki/src/{inc,torrents} && \
 	    git commit -m "Update various website source files for ${VERSION:?}"
@@ -1560,7 +1574,7 @@ In any case
 Generate PO files for the pages added or updated earlier in this
 section, and publish them on the `$WEBSITE_RELEASE_BRANCH` branch:
 
-	if [ "$(./bin/po4a-version)" = 0.55 ]; then
+	if [ "$(./bin/po4a-version)" = 0.62 ]; then
 	    ./build-website && \
 	    git add wiki/src && \
 	    git commit -m "Releasing version ${VERSION:?}" && \

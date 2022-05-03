@@ -812,7 +812,18 @@ class VM
   end
 
   def power_off
-    @domain.destroy if running?
+    begin
+      @domain.destroy if running?
+    # We're sometimes running this code while Tails is shutting down (#18972),
+    # in which case the above statement is racy (TOCTOU). So we ignore
+    # the resulting failures:
+    rescue Guestfs::Error => e
+      raise e unless e.to_s == 'Call to virDomainDestroyFlags failed: ' \
+                               'Requested operation is not valid: ' \
+                               'domain is not running'
+
+      debug_log('Tried to destroy a domain that was already stopped, ignoring')
+    end
     @display.stop
   end
 

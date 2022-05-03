@@ -1,22 +1,44 @@
+[[!meta title="Time synchronization"]]
+
 [[!toc levels=2]]
 
 # Introduction
 
-Tor sometimes freaks out if they detect too large clock
-skews. It is therefore important for us to ensure that Tails somehow
+Tor will not bootstrap if the system clock is too incorrect,
+and then Tails is effectively useless for networking:
+
+ - Direct connection or regular bridge: circa ±24 hours time skew is acceptable;
+   beyond that, Tor won't bootstrap.
+
+ - obfs4 bridge: the system clock just has to be off by a few hours for
+   `obfs4proxy` to become completely unable to connect to obfs4 bridges.
+
+   That problematic situation is quite common: certain operating systems
+   (including Windows up to Windows 8 at least) set the hardware (BIOS) clock to
+   the local time, and since Tails uses UTC (and assumes the BIOS clock is UTC),
+   this becomes a problem for every user but those living in the
+   GMT+0/UTC timezone.
+
+It is therefore important for us to ensure that Tails somehow
 automatically synchronizes the system time at start in a safe manner.
 
-However, our only automated time syncing mechanism (`htpdate`) runs on Tor
-itself, which makes this a catch 22. We tackle this problem providing a method
-for the user to set the clock manually, if connection to Tor fails.
+However, in the past our only automated time syncing mechanism (`htpdate`) used Tor, which made this a catch 22. We tackled this problem in 2 ways
+that we describe below.
 
 # Overview
 
 In short this is how time syncing is performed when Tails starts:
 
+0. If the user has consented to Tails initiating Internet activity without
+   going through Tor, in order to help them connect to Tor, then
+   Tails sets the clock from the network without going through Tor,
+   piggy-backing on captive portal detection.
+
 0. Start Tor.
+
 0. If Tor can't connect, provide the user an opportunity to set the correct
    time and retry.
+
 0. As soon as Tor works, run HTP (see below) through Tor to get a more correct
    system time.
 
@@ -27,6 +49,16 @@ services running Tor prior to version 0.2.3.7-alpha requires clients
 to have a time that is no more than 30 minutes incorrect).
 
 The hardware clock is not affected.
+
+# Piggy-backing on captive portal detection
+
+When the user consented to this, Tails piggy-backs on widespread captive portal
+detection mechanisms in order to set the system clock from the network without
+going through Tor.
+
+For details, see the corresponding [[design
+documentation|contribute/design/Tor_enforcement#time-sync]], which includes
+a discussion about security and fingerprinting aspects of this mechanism.
 
 # HTP
 
@@ -52,19 +84,52 @@ custom version of the Perl HTP client into
 [[!tails_gitweb config/chroot_local-includes/usr/local/sbin/htpdate]].
 This script is maintained in [[!tails_gitweb_repo htp]].
 
-For reasons detailed below, this version of htpdate uses curl for all
-of its HTTP operations.
+For reasons detailed below, this version of htpdate uses
+[[!tails_gitweb config/chroot_local-includes/usr/local/bin/https-get-expired]],
+its own implementation of an HTTPS client for all of its HTTP operations.
 
 ## Authentication of servers
 
 The custom `/usr/local/sbin/htpdate` we use only connects to HTTPS servers,
-and delegates TLS X.509 certificate
-verification to curl. It also uses several different pools of time
-sources, and if there are too many that fail for any given pool,
-e.g. because of failed certificate checking or being unreachable, the
-pool is considered to be potentially compromised and htpdate aborts.
+and delegates certificate verification to `/usr/local/bin/https-get-expired`.
 
-curl is also directed to only use TLSv1 as a "secure" protocol.
+It also uses several different pools of time sources, and if there are too
+many that fail for any given pool, e.g. because of failed certificate checking
+or being unreachable, the pool is considered to be potentially compromised and
+htpdate aborts.
+
+`https-get-expired` is a simple HTTP client which performs the "typical" TLS
+certificate verification, with an important difference: certificates whose
+validity dates are in the future are considered to be valid. This is an important
+detail. In fact, our clock might well be in the past! Not only due to hardware
+problems (ie: the user's hardware clock is broken) but also because, if the
+user is performing time sync before Tor is ready, an attacker could easily
+modify this and set the user's clock in the past.
+When this happens, htpdate could fail if it was performing the typical TLS
+verification, because the "NotBefore" field could indicate that the
+certificate validity starts in the future. This would leave the system clock
+in the past, and allow an attacker to replay an old Tor consensus.
+
+That's why, instead, we accept certificates regardless of their "NotBefore"
+field, we are protected against this kind of attacks: tor will notice that its
+consensus is outdated and will attempt to retrieve a newer consensus. Then, the
+best the attacker can do is block that consensus retrieval, or replay an old
+consensus again, that this time tor will reject as outdated. This is a denial of
+service that such an attacker could do by merely blocking network
+traffic anyway.
+
+A more powerful adversary, who *also* got hold of (possibly old or future
+versions of) TLS key pairs for at least 1 server in 2 of our 3 HTP pools, could
+still force us to keep using the old Tor consensus that they control. We accept
+this risk. Note that this attack would also work if they got hold of the key pair
+for such a TLS certificate that'll become valid in the future: we have no
+guarantee that Certificate Authorities never release certificates whose
+"NotBefore" date is in the future (these could be useful for operational
+reasons).
+
+We don't need to ignore the "NotAfter" field: an attacker has no incentive in
+setting our clock in the future.
+
 
 ## HTP source pools
 
@@ -91,10 +156,10 @@ different pools conspire together against Tails users.
 
 The pools are listed in [[!tails_gitweb config/chroot_local-includes/etc/default/htpdate.pools]].
 
-Basically, Tails `htpdate` pick three random servers (one from each
-pool), and then build the mediate of the three advertised dates.
+Basically, Tails `htpdate` picks three random servers (one from each pool),
+and then build the median of the three advertised dates.
 
-# Fingerprinting Tails users
+## Fingerprinting Tails users
 
 Tails runs HTP through Tor, so the fingerprintability should be
 limited to traffic flow only. It should be noted that HTP only fetches
@@ -106,10 +171,14 @@ Tails developers still need to think thoroughly of these questions:
 are such fingerprinting possibilities a serious problem? What kind of
 efforts and compromise should be made to prevent these?
 
-# Implementation
+## Implementation
 
 A Network Manager hook runs the whole thing:
-[[!tails_gitweb config/chroot_local-includes/etc/NetworkManager/dispatcher.d/20-time.sh]].
+
+ - [[!tails_gitweb config/chroot_local-includes/etc/NetworkManager/dispatcher.d/20-time.sh]]
+ - [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/htpdate.service]]
+
+# Other aspects
 
 The `hwclock.sh` initscript is disabled at reboot/shutdown time,
 otherwise it would set the hardware clock to the system time,
@@ -118,8 +187,3 @@ hardware being used" design goal:
 
 * [[!tails_gitweb config/chroot_local-patches/do-not-modify-hardware-clock.diff]]
 * [[!tails_gitweb config/chroot_local-hooks/52-update-rc.d]]
-
-See also:
-
-* [[!tails_gitweb config/chroot_local-hooks/46-configure-htpdate]]
-* [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/htpdate.service]]
