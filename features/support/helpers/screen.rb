@@ -322,7 +322,7 @@ end
 
 # This class is the same as Screen but with the image matching methods
 # wrapped so failures (FindFailed) are intercepted, and we enter an
-# interactive mode allowing images to be updated. Note that the the
+# interactive mode allowing images to be updated. Note that the
 # negative image matching methods (*_vanish()) are excepted (it
 # doesn't make sense for them).
 class ImageBumpingScreen
