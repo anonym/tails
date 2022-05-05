@@ -661,12 +661,12 @@ Given /^all notifications have disappeared$/ do
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
     @screen.click(x, y)
     begin
-      gnome_shell.child('Clear All', roleName:    'push button',
-                                     showingOnly: true).click
+      gnome_shell.child('Clear', roleName:    'push button',
+                                 showingOnly: true).click
     rescue StandardError
       # Ignore exceptions: there might be no notification to clear, in
       # which case there will be a "No Notifications" label instead of
-      # a "Clear All" button.
+      # a "Clear" button.
     end
     gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
   end
