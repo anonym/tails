@@ -12,7 +12,7 @@ BEGIN {
 
 use Path::Tiny;
 use Test::BDD::Cucumber::Loader;
-use Test::BDD::Cucumber::Harness::TestBuilder;
+use Test::BDD::Cucumber::Harness::TAP;
 
 my @gitlab_ci_compatible_features = (
     'download_upgrade-description_file',
@@ -25,7 +25,7 @@ for my $feature_dir (path('features')->children) {
         next;
     }
     my ($executor, @features) = Test::BDD::Cucumber::Loader->load("$feature_dir");
-    my $harness = Test::BDD::Cucumber::Harness::TestBuilder->new({});
+    my $harness = Test::BDD::Cucumber::Harness::TAP->new({});
     $executor->execute( $_, $harness ) for @features;
 }
 done_testing;

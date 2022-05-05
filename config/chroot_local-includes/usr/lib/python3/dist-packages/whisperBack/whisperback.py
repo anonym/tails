@@ -247,7 +247,7 @@ class WhisperBack(object):
         def poll_thread(self):
             if progress_callback is not None:
                 progress_callback()
-            if self.__thread.isAlive():
+            if self.__thread.is_alive():
                 return True
             else:
                 if finished_callback is not None:
@@ -255,7 +255,7 @@ class WhisperBack(object):
                 return False
 
         self.__error_output = None
-        assert self.__thread is None or not self.__thread.isAlive()
+        assert self.__thread is None or not self.__thread.is_alive()
         self.__thread = threading.Thread(target=save_exception, args=(func, args))
         self.__thread.start()
         # XXX: there could be no main loop

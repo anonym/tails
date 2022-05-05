@@ -53,7 +53,7 @@ ENV['EXPORTED_VARIABLES'] = EXPORTED_VARIABLES.join(' ')
 EXTERNAL_HTTP_PROXY = ENV['http_proxy']
 
 # In-VM proxy URL
-INTERNAL_HTTP_PROXY = "http://127.0.0.1:3142".freeze
+INTERNAL_HTTP_PROXY = 'http://127.0.0.1:3142'.freeze
 
 ENV['ARTIFACTS'] ||= '.'
 
@@ -367,7 +367,6 @@ task :validate_http_proxy do
     if proxy_host.nil?
       ENV['TAILS_PROXY'] = nil
       abort "Invalid HTTP proxy: #{ENV['TAILS_PROXY']}"
-      return
     end
 
     if ENV['TAILS_PROXY_TYPE'] == 'vmproxy'

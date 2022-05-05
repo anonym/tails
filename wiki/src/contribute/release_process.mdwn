@@ -28,6 +28,27 @@ If you want to know whether the release you are doing is a major or not, you nee
  - if nothing is specified about being a major, then it's most probably a bugfix release
  - if it is a major, there has to be a release candidate before the final
 
+Plan your journey
+------------------------
+
+The release process is long. With proper planning and some luck, it's almost
+enjoyable.
+
+Here are some useful tips that will hopefully help you have a pleasant release
+process:
+
+ - if time allows, try to unblock other people's work.
+   For example, reaching the _Get the internal manual testing started_ on Monday
+   would be great, because it allows manual testers to plan their job better.
+
+ - when you are clocking off, or just spending some time afk, consider keeping
+   your CPU busy with some long-running jobs. Here are some good candidates:
+
+   - Building the final image
+   - Building IUKs
+   - Running the automated test suite
+
+ - cross your fingers 🤞
 
 Prepare your checklist
 ======================
@@ -162,7 +183,7 @@ you need to set a bunch of environment variables.
         fpath = Path(os.path.expanduser("~/.config/tails/release_management/local.yml"))
         isos = Path(yaml.safe_load(fpath.open())["isos"])
         iuks = isos / "iuks/v2"
-        if not iuks.exists(): raise Exception("IUKS dir not found")
+        if not iuks.exists(): raise Exception("IUKS dir '%s' not found" % iuks)
         EOF
 
 4. Generate the resulting environment variables and export them into your
@@ -638,6 +659,8 @@ Better catch this before people spend time doing manual tests.
 SquashFS file order
 -------------------
 
+Expected time: 20 minutes
+
 Feel free to skip this section when preparing an emergency release.
 
 1. Install the almost-final USB image to a USB stick.
@@ -681,6 +704,9 @@ Feel free to skip this section when preparing an emergency release.
 
 Build the final images
 ----------------------
+
+Expected time: 30-75 minutes depending on your computer and the available
+Jenkins workers.
 
 Then all included files should be up-to-date and the versioned APT
 suite should be ready, so it is time to:
@@ -767,54 +793,57 @@ To verify that Jenkins reproduced your images:
             . $(./bin/rm-config generate-environment --stage reproduced-images)
 
    - Else, if there is a hash mismatch for one of the images: ouch!
+     see next section
 
-     Now we are in a
-     tricky situation: on the one hand it seems like a poor idea to
-     block users from benefiting from this release's security updates,
-     but on the other hand the failure might imply that something
-     nefarious is going on. At this stage, no matter what, immediately
-     fetch Jenkins' image, compare it with your, and try to rule out
-     build system compromise:
+### If there is a hash mismatch
 
-          sudo diffoscope \
-              --text diffoscope.txt \
-              --html diffoscope.html \
-              --max-report-size 262144000 \
-              --max-diff-block-lines 10000 \
-              --max-diff-input-lines 10000000 \
-                  path/to/your/tails-amd64-${VERSION:?}.iso \
-                  path/to/jenkins/tails-amd64-${VERSION:?}.iso
+ Now we are in a
+ tricky situation: on the one hand it seems like a poor idea to
+ block users from benefiting from this release's security updates,
+ but on the other hand the failure might imply that something
+ nefarious is going on. At this stage, no matter what, immediately
+ fetch Jenkins' image, compare it with your, and try to rule out
+ build system compromise:
 
-     Do the same for the USB image as well.
+      sudo diffoscope \
+          --text diffoscope.txt \
+          --html diffoscope.html \
+          --max-report-size 262144000 \
+          --max-diff-block-lines 10000 \
+          --max-diff-input-lines 10000000 \
+              path/to/your/tails-amd64-${VERSION:?}.iso \
+              path/to/jenkins/tails-amd64-${VERSION:?}.iso
 
-     Then carefully investigate the `diffoscope` report:
+ Do the same for the USB image as well.
 
-       - If you cannot rule out that the difference is harmful: let's take
-         a step back; we might be compromised, so we are in no position to
-         release. Halt the release, involve the rest of the Board, and then
-         try to re-establish trust in all build machines and infra
-         involved, etc. Have fun!
+ Then carefully investigate the `diffoscope` report:
 
-       - Otherwise, if the change is definitely harmless:
+   - If you cannot rule out that the difference is harmful: let's take
+     a step back; we might be compromised, so we are in no position to
+     release. Halt the release, involve the rest of the Board, and then
+     try to re-establish trust in all build machines and infra
+     involved, etc. Have fun!
 
-         * If the source of non-determinism is identified quickly and
-           is easy and fast to fix, *and* the QA of the current images
-           has not gone very far (so at least that time is not wasted),
-           then you should consider abandoning the current version, and
-           immediately start preparing an emergency release with:
+   - Otherwise, if the change is definitely harmless:
 
-           - the reproducibility fix,
-           - a new changelog entry,
-           - adjustments to the release notes so they are re-purposed for
-             this emergency release (the abandoned release gets none, since
-             it effectively never will be released publicly).
+     * If the source of non-determinism is identified quickly and
+       is easy and fast to fix, *and* the QA of the current images
+       has not gone very far (so at least that time is not wasted),
+       then you should consider abandoning the current version, and
+       immediately start preparing an emergency release with:
 
-         * Otherwise, if the fix looks time-consuming or difficult,
-           let's release anyway. But let's add a known issue about
-           "This Tails release does not build reproducibility" to the
-           release notes, linking to the issue where
-           the nature of the reproducibility failure is clearly
-           described.
+       - the reproducibility fix,
+       - a new changelog entry,
+       - adjustments to the release notes so they are re-purposed for
+         this emergency release (the abandoned release gets none, since
+         it effectively never will be released publicly).
+
+     * Otherwise, if the fix looks time-consuming or difficult,
+       let's release anyway. But let's add a known issue about
+       "This Tails release does not build reproducibility" to the
+       release notes, linking to the issue where
+       the nature of the reproducibility failure is clearly
+       described.
 
 Initialize the website release branch
 -------------------------------------
@@ -1018,6 +1047,11 @@ Build the Incremental Upgrade Kits on Jenkins
    It should take about 20-25 minutes for each member of
    the `$IUK_SOURCE_VERSIONS` list, distributed across `isobuilderN` workers.
 
+   If you have a fast computer, you'll be waiting for Jenkins to be done, while
+   your CPU is idle. Consider starting the [automated test
+   suite](#run-automated-tests) in the meanwhile to optimize this: running it
+   does not depend on any of the IUK-related steps.
+
 6. Add the time it took for `build_IUKs` to the table of [[!tails_ticket 17750]].
 
 <a id="reproducibility-sanity-check-iuk"></a>
@@ -1034,9 +1068,11 @@ Run this command to verify that Jenkins reproduced your IUKs:
 
 The download step takes a few minutes.
 
-If this verification succeeds, move on to the next section.
+If this verification succeeds, good! Otherwise, see the next section
 
-Else, if this verification fails, then:
+### If IUK verification fails
+
+if the last command failed:
 
 1. Visit this page: `https://jenkins.tails.boum.org/job/build_IUKs/lastBuild/parameters/`
 
@@ -1318,6 +1354,24 @@ Now you can announce and seed the Torrents for the release you're preparing:
 Test that you can start downloading the ISO and USB images with a BitTorrent client.
 It can take a few dozen minutes before this works.
 
+<a id="run-automated-tests"></a>
+
+Run the automated test suite
+===============================
+
+This is not a required step: check the manual testers pad and see if anyone
+volunteered for that. But if noone did, start the automated test suite. The
+sooner, the better.
+
+You probably already know how to do that, but keep this in mind:
+
+ - you *need* to use the `--old-iso` option
+
+ - you probably want to specify `--tmpdir` to point to a non-volatile directory.
+   The default lives in `/tmp/`, which might lead to unpleasant surprises if,
+   for whatever reasons, you need to turn off your computer.
+
+
 Public testing
 ==============
 
@@ -1327,16 +1381,24 @@ Public testing
    <https://mirrors.wikimedia.org/tails/> are reliable and have plenty
    of bandwidth:
 
+        
         (
-            for mirror in mirrors.wikimedia.org mirrors.edge.kernel.org; do
-                ./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
-                    --url-prefix https://$mirror/tails/ \
-                    tails-amd64-${VERSION:?}
+            success=false
+            while true; do
+                for mirror in mirrors.wikimedia.org mirrors.edge.kernel.org; do
+                    url="https://$mirror/tails/"
+                    if [[ -z "$(./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
+                        --url-prefix "$url" \
+                        tails-amd64-${VERSION:?} )" ]]
+                    then
+                        echo "WORKING: $url"
+                        success=true
+                    fi
+                done
+                $success && exit 0
+                sleep 1m
             done
         )
-
-   `check-mirrors` will only output errors. It remains silent for
-   mirrors that are already synchronized.
 
 1. Email <tails-testers@boum.org> to ask them to test the tentative images:
 
@@ -1352,8 +1414,6 @@ Lead the internal manual testing to conclusion
 
    To communicate this to them, delete "⚠ Wait until the Release Manager […]" in
    the "Reproducibility" section on the pad.
-
-1. Make sure someone is committed to run the automated test suite.
 
 1. Make sure that enough people are here to run the tests, that they
    report their results in due time, and that they make it clear when
@@ -1373,6 +1433,9 @@ Lead the internal manual testing to conclusion
 
 1. Fill the holes and make sure that the automated and manual test
    suites are done in due time.
+
+1. If you were the one running the [automated test suite](#run-automated-tests),
+   check its results.
 
 1. Triage test results, reproduce bugs as needed, decide what the next
    step is and make sure it happens: add to known issues? file an issue?

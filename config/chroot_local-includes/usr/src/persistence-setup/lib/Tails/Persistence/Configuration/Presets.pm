@@ -130,7 +130,7 @@ method _build__presets () {
                 q{Software installed when starting Tails}
             ),
             icon_name           => 'package-x-generic',
-            enabled             => 0,
+            enabled             => 1,
             configuration_app_desktop_id => 'org.boum.tails.additional-software-config.desktop',
             atoms_args          => [
                 {
@@ -177,7 +177,7 @@ method _build__presets () {
             id          => 'GnuPG',
             name        => __(q{GnuPG}),
             description => __(
-                q{OpenPGP keys outside of Thunderbird}
+                q{OpenPGP keys in GnuPG and Kleopatra}
             ),
             icon_name   => 'seahorse-key',
             enabled     => 0,

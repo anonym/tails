@@ -4,14 +4,8 @@ set -e
 
 echo "Wrapping some applications with torsocks"
 
-APPS="openpgp-applet seahorse"
-DBUS_SERVICES="org.gnome.seahorse.Application org.fedoraproject.Config.Printing"
+DBUS_SERVICES="org.fedoraproject.Config.Printing"
 WRAPPED_DBUS_SERVICES=""
-
-for app in $APPS; do
-   sed -i'' --regexp-extended 's,^Exec=(.*),Exec=torsocks \1,' \
-       "/usr/share/applications/${app}.desktop"
-done
 
 for dbus_service in $DBUS_SERVICES; do
    sed -i'' --regexp-extended 's,^Exec=(.*),Exec=/usr/bin/torsocks \1,' \

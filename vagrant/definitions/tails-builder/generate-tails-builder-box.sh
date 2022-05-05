@@ -141,12 +141,6 @@ steps:
       Pin: release o=Tails,n=builder-jessie
       Pin-Priority: 99
 
-  - create-file: /etc/apt/preferences.d/live-build
-    contents: |
-      Package: live-build
-      Pin: release o=Tails,n=builder-jessie
-      Pin-Priority: 999
-
   - create-file: /etc/apt/preferences.d/${DISTRIBUTION}-backports
     contents: |
       Package: *
@@ -194,8 +188,8 @@ steps:
       - libtimedate-perl
       - libyaml-syck-perl
       - linux-image-amd64
-      - live-build
       - lsof
+      - make
       - mtools
       - openssh-server
       - po4a
@@ -204,6 +198,7 @@ steps:
       - rsync
       - ruby
       - sudo
+      - systemd-timesyncd
       - time
       - wget
     tag: rootfs
@@ -276,6 +271,11 @@ steps:
   # be used.
   - chroot: rootfs
     shell: systemctl disable apt-cacher-ng.service
+
+  # We use loop devices to extract build artifacts.  Make sure the
+  # module is loaded.
+  - create-file: /etc/modules-load.d/loop.conf
+    contents: loop
 
   - create-file: /etc/default/grub.d/cmdline.cfg
     contents: |

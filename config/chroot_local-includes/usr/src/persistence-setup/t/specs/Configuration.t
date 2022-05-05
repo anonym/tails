@@ -37,11 +37,11 @@ describe 'A configuration object' => sub {
         it 'has 14 atoms' => sub {
             is(scalar($configuration->all_atoms), 14);
         };
-        it 'has 1 enabled atom' => sub {
-            is(scalar($configuration->all_enabled_atoms), 1);
+        it 'has 3 enabled atom' => sub {
+            is(scalar($configuration->all_enabled_atoms), 3);
         };
-        it 'has 1 enabled line' => sub {
-            is(scalar($configuration->all_enabled_lines), 1);
+        it 'has 3 enabled line' => sub {
+            is(scalar($configuration->all_enabled_lines), 3);
         };
     };
     describe 'built with no argument and a non-empty configuration file' => sub {
@@ -62,11 +62,11 @@ EOF
         it 'has 15 atoms' => sub {
             is(scalar($configuration->all_atoms), 15);
         };
-        it 'has 4 enabled atoms' => sub {
-            is(scalar($configuration->all_enabled_atoms), 4);
+        it 'has 6 enabled atoms' => sub {
+            is(scalar($configuration->all_enabled_atoms), 6);
         };
-        it 'has 4 enabled lines' => sub {
-            is(scalar($configuration->all_enabled_lines), 4);
+        it 'has 6 enabled lines' => sub {
+            is(scalar($configuration->all_enabled_lines), 6);
         };
     };
 };
