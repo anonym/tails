@@ -221,21 +221,28 @@ When /^I cold reboot the computer$/ do
   step 'I start the computer'
 end
 
-def boot_menu_cmdline_image
+def boot_menu_cmdline_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuKernelCmdlineUEFI.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuKernelCmdlineUEFI_Bullseye.png.
+    [
+      'TailsBootMenuKernelCmdlineUEFI_Bullseye.png',
+      'TailsBootMenuKernelCmdlineUEFI_Bookworm.png',
+    ]
   else
-    'TailsBootMenuKernelCmdline.png'
+    ['TailsBootMenuKernelCmdline.png']
   end
 end
 
-def boot_menu_image
+def boot_menu_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuGRUB.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuGRUB_Bullseye.png.
+    ['TailsBootMenuGRUB_Bullseye.png', 'TailsBootMenuGRUB_Bookworm.png']
   else
-    'TailsBootMenuSyslinux.png'
+    ['TailsBootMenuSyslinux.png']
   end
 end
 
@@ -291,7 +298,7 @@ def enter_boot_menu_cmdline
   try_for(boot_timeout) do
     begin
       _up_spammer_job, kill_up_spammer = start_up_spammer($vm.domain_name)
-      @screen.wait(boot_menu_image, 15)
+      @screen.wait_any(boot_menu_images, 15)
       kill_up_spammer.call
 
       # Navigate to the end of the kernel command-line
@@ -303,7 +310,7 @@ def enter_boot_menu_cmdline
       else
         @screen.press('Tab')
       end
-      @screen.wait(boot_menu_cmdline_image, 5)
+      @screen.wait_any(boot_menu_cmdline_images, 5)
     rescue FindFailed => e
       debug_log('We missed the boot menu before we could deal with it, ' \
                 'resetting...')
