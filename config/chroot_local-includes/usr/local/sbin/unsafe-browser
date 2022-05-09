@@ -47,7 +47,7 @@ $(gettext "The Unsafe Browser is not anonymous and the websites that you visit c
 }
 
 exit_because_disabled() {
-    local msg restart cancel confirm
+    local msg restart cancel confirm_msg confirm_button
     msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
 To <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and enable \
 the Unsafe Browser in the additional settings of the Welcome Screen.")"
@@ -58,17 +58,17 @@ the Unsafe Browser in the additional settings of the Welcome Screen.")"
 
     restart="$(gettext "_Restart")"
     cancel="$(gettext "_Cancel")"
-    if  sudo -u "${SUDO_USER}" \
+    confirm_msg="$(gettext "Do you really want to restart Tails now?\n\nAll your current work will be lost.")"
+    confirm_button="$(gettext "Restart Now")"
+    if sudo -u "${SUDO_USER}" \
              zenity --question --ellipsize --title "" --text "${msg}" --icon-name="dialog-error" \
-                    --ok-label "${restart}"  --cancel-label "${cancel}" --default-cancel; then
-        msg="$(gettext "Do you really want to restart Tails now?\n\nAll your current work will be lost.")"
-        confirm="$(gettext "Restart Now")"
-        if sudo -u "${SUDO_USER}" \
-		zenity --question --width=300 --title "" --text "${msg}" --ok-label "${confirm}" --cancel-label "${cancel}" --default-cancel; then
-            if ! /sbin/reboot; then
-                error "$(gettext "Failed to restart the system.")"
-            fi
-	fi
+                    --ok-label "${restart}"  --cancel-label "${cancel}" --default-cancel \
+       && \
+       sudo -u "${SUDO_USER}" \
+            zenity --question --width=300 --title "" --text "${confirm_msg}" \
+                   --ok-label "${confirm_button}" --cancel-label "${cancel}" --default-cancel
+    then
+        /sbin/reboot || error "$(gettext "Failed to restart the system.")"
     fi
 
     exit 1
