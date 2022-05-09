@@ -70,6 +70,8 @@ the Unsafe Browser in the additional settings of the Welcome Screen.")"
                 if ! /sbin/reboot; then
                     error "$(gettext "Failed to restart the system.")"
                 fi
+	    else
+		exit 1
             fi
         else
             exit 1
