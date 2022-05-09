@@ -382,7 +382,7 @@ class StepConnectProgressMixin:
         self.show_connect_pbar()
         if not self.state["progress"]["success"]:
             if not self.state["hide"]["hide"]:
-                self.get_object("label_status").set_text(_("Syncing our clock…"))
+                self.get_object("label_status").set_text(_("Synchronizing the system's clock…"))
                 self.app.set_time_from_network(self.cb_system_time_set_from_network)
             else:
                 self.spawn_tor_connect()
