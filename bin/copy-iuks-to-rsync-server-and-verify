@@ -92,10 +92,10 @@ def main():
             iuks_dir=args.work_dir,
             hashes_file=Path(args.work_dir, args.hashes_file).name,
             ) is False:
-        sys.exit(1)
+        sys.exit(3)
 
     if not command.check_success():
-        sys.exit(1)
+        sys.exit(4)
     sys.exit(0)
 
 
@@ -233,10 +233,11 @@ class CopyAndVerify:
         return True
 
     def check_success(self):
+        '''This always returns True, but leaves us some room to define more validation'''
         if self.ignored_404 > 0:
-            print('ERROR: %d 404s have been found while looking for IUKs. Please check that this is correct' %
-                    self.ignored_404)
-            return False
+            print('WARNING: %d 404s have been found while looking for IUKs. ' +
+                  'Please inspect the log to be sure that this is correct' %
+                  self.ignored_404)
         return True
 
 
