@@ -327,10 +327,10 @@ end
 Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_apt_sources|
   enter_boot_menu_cmdline
   boot_key = @os_loader == 'UEFI' ? 'F10' : 'Return'
-  live_patch = $config['EARLY_LIVE_PATCH'] ? ' live_patch' : ''
+  early_patch = $config['EARLY_PATCH'] ? ' early_patch' : ''
   @screen.type(' autotest_never_use_this_option' \
                ' blacklist=psmouse' \
-               " #{live_patch} #{@boot_options}",
+               " #{early_patch} #{@boot_options}",
                [boot_key])
   @screen.wait('TailsGreeter.png', 5 * 60)
   # When enter_boot_menu_cmdline has rebooted the system after the Greeter

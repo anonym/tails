@@ -91,8 +91,8 @@ Options for '@product' features:
                      source and destination.
                      lines without a tab are ignored.
                      lines with a leading \"#\" are ignored.
-  --early-live-patch Boots the system with the \"live_patch\" cmdline option.
-                     See wiki/src/contribute/build/live-patch.mdwn for details
+  --early-patch      Boots the system with the \"early_patch\" cmdline option.
+                     See wiki/src/contribute/build/early-patch.mdwn for details
                      This is useful when you need something to be patched early
                      in the boot process; or if you need to run arbitrary
                      commands, not just copying files
@@ -234,9 +234,9 @@ KEEP_CHUTNEY=
 KEEP_SNAPSHOTS=
 TAILS_ISO=
 OLD_TAILS_ISO=
-EARLY_LIVE_PATCH=
+EARLY_PATCH=
 
-LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,disable-chutney,live-patch:,early-live-patch,iso:,old-iso:,interactive-debugging,image-bumping-mode"
+LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,disable-chutney,live-patch:,early-patch,iso:,old-iso:,interactive-debugging,image-bumping-mode"
 OPTS=$(getopt -o "" --longoptions $LONGOPTS -n "${NAME}" -- "$@")
 eval set -- "$OPTS"
 while [ $# -gt 0 ]; do
@@ -299,8 +299,8 @@ while [ $# -gt 0 ]; do
             fi
             export LIVE_PATCH
             ;;
-        --early-live-patch)
-            export EARLY_LIVE_PATCH="yes"
+        --early-patch)
+            export EARLY_PATCH="yes"
             ;;
         --tmpdir)
             shift

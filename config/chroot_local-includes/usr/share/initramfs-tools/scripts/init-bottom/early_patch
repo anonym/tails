@@ -3,7 +3,7 @@
 set -eu
 set -x
 
-option="$(tr ' ' '\n' < /proc/cmdline | grep '^live_patch\b')"
+option="$(tr ' ' '\n' < /proc/cmdline | grep '^early_patch\b')"
 
 [ -n "$option" ] || exit 0
 
