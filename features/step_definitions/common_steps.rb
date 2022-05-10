@@ -773,7 +773,7 @@ end
 def open_gnome_menu(name, menu_item)
   # On Bullseye the top bar menus are problematic: we generally have
   # to click several times for them to open.
-  retry_action(10) do
+  retry_action(20) do
     Dogtail::Application.new('gnome-shell').child(name, roleName: 'menu').click
     # Wait for the menu to be open and to have settled: sometimes menu
     # components appear too fast, before the menu has settled down to
