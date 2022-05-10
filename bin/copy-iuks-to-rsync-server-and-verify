@@ -87,11 +87,12 @@ def main():
             jenkins_build_id=args.jenkins_build_id,
         )
 
-    command.verify_iuks(
-        desthost=RSYNC_SERVER_HOSTNAME,
-        iuks_dir=args.work_dir,
-        hashes_file=Path(args.work_dir, args.hashes_file).name,
-    )
+    if command.verify_iuks(
+            desthost=RSYNC_SERVER_HOSTNAME,
+            iuks_dir=args.work_dir,
+            hashes_file=Path(args.work_dir, args.hashes_file).name,
+            ) is False:
+        sys.exit(1)
 
     if not command.check_success():
         sys.exit(1)
@@ -228,6 +229,8 @@ class CopyAndVerify:
         except subprocess.CalledProcessError:
             print("\nERROR: IUKs built on Jenkins don't match yours\n",
                   file=sys.stderr)
+            return False
+        return True
 
     def check_success(self):
         if self.ignored_404 > 0:
