@@ -57,7 +57,7 @@ Feature: Time syncing
     Given I have started Tails from DVD without network and logged in
     And I make sure time sync before Tor connects times out
     When the network is plugged
-    And Tor is ready
+    And I successfully configure Tor
     Then Tails clock is less than 5 minutes incorrect
 
   Scenario: I can manually recover from time sync failure when connecting automatically to obfs4 bridges with a clock East of UTC
