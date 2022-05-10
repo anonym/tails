@@ -213,7 +213,6 @@ class CopyAndVerify:
         for iuk_url in jenkins_iuks_urls:
             log.debug("Downloading %s to %s", iuk_url, destdir)
             run([
-                "echo",
                 "ssh", desthost, "wget", "--quiet", "--no-clobber",
                 "--directory-prefix=%s" % destdir, iuk_url
                 ], check=True, skip_if_dry_run=True)
@@ -222,7 +221,6 @@ class CopyAndVerify:
         log.info("Verifying that IUKs built on Jenkins match those you've built…")
         try:
             run([
-                "echo",
                 "ssh", desthost,
                 "cd '%(d)s' && sha256sum --check --strict '%(f)s'" % {
                     "d": iuks_dir,
