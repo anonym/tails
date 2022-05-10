@@ -11,6 +11,7 @@ from typing import List
 from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
+import urllib.error
 
 from bs4 import BeautifulSoup  # type: ignore
 
@@ -18,7 +19,18 @@ JENKINS_IUKS_BASE_URL = "https://nightly.tails.boum.org/build_IUKs"
 RSYNC_SERVER_HOSTNAME = "rsync.lizard"
 LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
+ignore_404 = False
+dry_run = False
 
+
+def run(*args, **kwargs):
+    skip_if_dry_run = kwargs.pop('skip_if_dry_run', False)
+    cmd = str(args[0]) if args else str(args)
+    if skip_if_dry_run and dry_run:
+        log.info('Would run %s, but --dry-run prevents this',
+                cmd)
+        return
+    return subprocess.run(*args, **kwargs)
 
 def main():
     parser = argparse.ArgumentParser(
@@ -44,7 +56,20 @@ def main():
     parser.add_argument("--skip-downloading-iuks",
                         action="store_true",
                         help="Assume the IUKs were already downloaded")
+    parser.add_argument("--ignore-404",
+                        action="store_true",
+                        default=False,
+                        help="If a IUK is not found, ignore this. " + 
+                        "This is useful when we are maintaining Tails " +
+                        "N.x (N+1).y at the same time")
+    parser.add_argument("--dry-run",
+            action='store_true',
+            default=False,
+            help="Don't change any file on the server; this is mostly for development purposes")
     args = parser.parse_args()
+    global ignore_404, dry_run
+    ignore_404 = args.ignore_404
+    dry_run = args.dry_run
 
     if args.debug:
         logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
@@ -86,8 +111,9 @@ def send_hashes_file(hashes_file: str, desthost: str, destdir: str) -> None:
         "d": destdir,
         "h": desthost,
     })
-    subprocess.run(
-        ["scp", hashes_file, "%s:%s" % (desthost, destdir)], check=True)
+    run(["scp", hashes_file, "%s:%s" % (desthost, destdir)],
+        check=True,
+        skip_if_dry_run=True)
 
 
 def iuks_listed_in(hashes_file: str) -> List[str]:
@@ -130,10 +156,17 @@ def get_jenkins_iuks_urls(jenkins_iuks_base_url: str,
         artifacts_index_url = label_url + '/builds/' + str(
             jenkins_build_id) + '/archive/'
         log.debug("Looking at %s", artifacts_index_url)
+        try:
+          page = BeautifulSoup(urlopen(Request(artifacts_index_url)), 'html.parser')
+        except urllib.error.HTTPError as exc:
+            if ignore_404 and exc.code == 404:
+                log.info("Error %d on %s, skipping", exc.code, artifacts_index_url)
+                continue
+            raise
         iuk_urls = [
-            artifacts_index_url + link.get('href') for link in BeautifulSoup(
-                urlopen(Request(artifacts_index_url)), 'html.parser').find_all(
-                    href=re.compile('[.]iuk$'))
+            artifacts_index_url + link.get('href')
+            for link in
+            page.find_all(href=re.compile('[.]iuk$'))
         ]
         if len(iuk_urls) == 0:
             log.debug("Found no IUK URL in %s, ignoring this source version",
@@ -170,24 +203,24 @@ def download_iuks_from_jenkins(hashes_file: str, desthost: str, destdir: str,
         sys.exit(1)
     for iuk_url in jenkins_iuks_urls:
         log.debug("Downloading %s to %s", iuk_url, destdir)
-        subprocess.run([
+        run([
+            "echo",
             "ssh", desthost, "wget", "--quiet", "--no-clobber",
             "--directory-prefix=%s" % destdir, iuk_url
-        ],
-                       check=True)
+            ], check=True, skip_if_dry_run=True)
 
 
 def verify_iuks(desthost: str, iuks_dir: str, hashes_file: str) -> None:
     log.info("Verifying that IUKs built on Jenkins match those you've built…")
     try:
-        subprocess.run([
+        run([
+            "echo",
             "ssh", desthost,
             "cd '%(d)s' && sha256sum --check --strict '%(f)s'" % {
                 "d": iuks_dir,
                 "f": Path(hashes_file).name,
-            }
-        ],
-                       check=True)
+                }
+            ], check=True)
     except subprocess.CalledProcessError:
         print("\nERROR: IUKs built on Jenkins don't match yours\n",
               file=sys.stderr)
