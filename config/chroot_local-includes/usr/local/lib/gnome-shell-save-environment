@@ -1,0 +1,32 @@
+#!/usr/bin/python3
+
+
+import shutil
+import sys
+from pathlib import Path
+
+from tailslib import LIVE_USERNAME
+
+
+def main():
+    src = Path('/home/%s/.gnome-shell-environment' % LIVE_USERNAME)
+    destdir = Path('/run/gnome-shell-environment/')
+    dest = destdir / 'environ'
+    try:
+        destdir.mkdir(mode=0o755, exist_ok=False)
+        dest.touch(mode=0o640, exist_ok=False)
+    except FileExistsError:
+        sys.exit(0)
+    dest.chmod(0o440)
+    with src.open('rb') as buf:
+        content = buf.read()
+    with dest.open('wb') as buf:
+        buf.write(content)
+    src.unlink()
+
+    shutil.chown(str(dest), group=LIVE_USERNAME)
+
+
+if __name__ == '__main__':
+    main()
+
