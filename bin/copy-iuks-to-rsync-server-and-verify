@@ -19,7 +19,6 @@ JENKINS_IUKS_BASE_URL = "https://nightly.tails.boum.org/build_IUKs"
 RSYNC_SERVER_HOSTNAME = "rsync.lizard"
 LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
-ignore_404 = False
 
 
 
@@ -58,8 +57,6 @@ def main():
             default=False,
             help="Don't change any file on the server; this is mostly for development purposes")
     args = parser.parse_args()
-    global ignore_404, dry_run
-    ignore_404 = args.ignore_404
 
     if args.debug:
         logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
@@ -104,6 +101,8 @@ def main():
 class CopyAndVerify:
     def __init__(self, args):
         self.dry_run = args.dry_run
+        self.ignore_404 = args.ignore_404
+
         self.ignored_404 = 0
 
     def run(self, *args, **kwargs):
@@ -167,7 +166,7 @@ class CopyAndVerify:
             try:
               page = BeautifulSoup(urlopen(Request(artifacts_index_url)), 'html.parser')
             except urllib.error.HTTPError as exc:
-                if ignore_404 and exc.code == 404:
+                if self.ignore_404 and exc.code == 404:
                     log.info("Error %d on %s, skipping", exc.code, artifacts_index_url)
                     self.ignored_404 += 1
                     continue
