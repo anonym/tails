@@ -1069,7 +1069,15 @@ Run this command to verify that Jenkins reproduced your IUKs:
 
 The download step takes a few minutes.
 
-If this verification succeeds, good! Otherwise, see the next section
+If this verification succeeds, good!
+
+Otherwise, see the next sections
+
+### If it fails with `urllib.error.HTTPError: HTTP Error 404: Not Found`
+
+This problem can be expected when we are maintaining Tails `N.x` together with Tails `(N+1).y`.
+
+If this is the case, please inspect the logs and run the same command, adding `--ignore-404` option.
 
 ### If IUK verification fails
 
