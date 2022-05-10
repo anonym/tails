@@ -20,17 +20,7 @@ RSYNC_SERVER_HOSTNAME = "rsync.lizard"
 LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
 ignore_404 = False
-dry_run = False
 
-
-def run(*args, **kwargs):
-    skip_if_dry_run = kwargs.pop('skip_if_dry_run', False)
-    cmd = str(args[0]) if args else str(args)
-    if skip_if_dry_run and dry_run:
-        log.info('Would run %s, but --dry-run prevents this',
-                cmd)
-        return
-    return subprocess.run(*args, **kwargs)
 
 
 def main():
@@ -70,7 +60,6 @@ def main():
     args = parser.parse_args()
     global ignore_404, dry_run
     ignore_404 = args.ignore_404
-    dry_run = args.dry_run
 
     if args.debug:
         logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
@@ -83,7 +72,7 @@ def main():
         log.error("%s does not exist", args.hashes_file)
         sys.exit(1)
 
-    command = CopyAndVerify()
+    command = CopyAndVerify(args)
 
     if not args.skip_sending_hashes_file:
         command.send_hashes_file(
@@ -113,8 +102,18 @@ def main():
 
 
 class CopyAndVerify:
-    def __init__(self):
+    def __init__(self, args):
+        self.dry_run = args.dry_run
         self.ignored_404 = 0
+
+    def run(self, *args, **kwargs):
+        skip_if_dry_run = kwargs.pop('skip_if_dry_run', False)
+        cmd = str(args[0]) if args else str(args)
+        if skip_if_dry_run and self.dry_run:
+            log.info('Would run %s, but --dry-run prevents this',
+                    cmd)
+            return
+        return subprocess.run(*args, **kwargs)
 
     def send_hashes_file(self, hashes_file: str, desthost: str, destdir: str) -> None:
         log.info("Sending %(f)s to %(d)s on %(h)s…" % {
@@ -122,7 +121,7 @@ class CopyAndVerify:
             "d": destdir,
             "h": desthost,
         })
-        run(["scp", hashes_file, "%s:%s" % (desthost, destdir)],
+        self.run(["scp", hashes_file, "%s:%s" % (desthost, destdir)],
             check=True,
             skip_if_dry_run=True)
 
@@ -212,7 +211,7 @@ class CopyAndVerify:
             sys.exit(1)
         for iuk_url in jenkins_iuks_urls:
             log.debug("Downloading %s to %s", iuk_url, destdir)
-            run([
+            self.run([
                 "ssh", desthost, "wget", "--quiet", "--no-clobber",
                 "--directory-prefix=%s" % destdir, iuk_url
                 ], check=True, skip_if_dry_run=True)
@@ -220,7 +219,7 @@ class CopyAndVerify:
     def verify_iuks(self, desthost: str, iuks_dir: str, hashes_file: str) -> None:
         log.info("Verifying that IUKs built on Jenkins match those you've built…")
         try:
-            run([
+            self.run([
                 "ssh", desthost,
                 "cd '%(d)s' && sha256sum --check --strict '%(f)s'" % {
                     "d": iuks_dir,
