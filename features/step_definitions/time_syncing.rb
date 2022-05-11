@@ -43,7 +43,7 @@ When /^I bump the (hardware clock's|system) time with "([^"]+)"$/ do |clock_type
 end
 
 Then /^the system clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
-  guest_time_str = $vm.execute('date --rfc-2822').stdout.chomp
+  guest_time_str = $vm.execute_successfully('date --rfc-2822').stdout.chomp
   guest_time = Time.rfc2822(guest_time_str)
   host_time = Time.now
   diff = (host_time - guest_time).abs
