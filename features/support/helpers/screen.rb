@@ -285,7 +285,7 @@ class Screen
     debug_log("Mouse: moving to (#{x}, #{y})") if opts[:log]
     stdout = xdotool('mousemove', x, y)
     assert(stdout.empty?, "xdotool reported an error:\n" + stdout)
-    try_for(10) { [x, y] == mouse_location }
+    try_for(10) { mouse_location == [x, y] }
     [x, y]
   end
 
