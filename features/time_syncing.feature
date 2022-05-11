@@ -15,7 +15,7 @@ Feature: Time syncing
     When the network is plugged
     And the Tor Connection Assistant autostarts
     And I configure some normal bridges in the Tor Connection Assistant
-    And I verify that Tor is ready
+    And I wait until Tor is ready
     Then Tails clock is less than 5 minutes incorrect
 
   Scenario: Clock is one day in the future while using obfs4 bridges
@@ -25,7 +25,7 @@ Feature: Time syncing
     And the network is plugged
     And the Tor Connection Assistant autostarts
     And I configure some obfs4 bridges in the Tor Connection Assistant in easy mode
-    And I verify that Tor is ready
+    And I wait until Tor is ready
     Then Tails clock is less than 5 minutes incorrect
     And all Internet traffic has only flowed through the configured bridges or connectivity check service
 
@@ -75,7 +75,7 @@ Feature: Time syncing
     Then I set the time zone in Tor Connection to "Asia/Shanghai"
     Then Tails clock is less than 20 minutes incorrect
     When I click "Connect to Tor"
-    Then I verify that Tor is ready
+    Then I wait until Tor is ready
     And all Internet traffic has only flowed through the default bridges or fake connectivity check service
     # check that htpdate has done its job
     And Tails clock is less than 5 minutes incorrect
@@ -95,7 +95,7 @@ Feature: Time syncing
     When I set the time zone in Tor Connection to "Asia/Shanghai"
     Then Tails clock is less than 20 minutes incorrect
     When I click "Connect to Tor"
-    Then I verify that Tor is ready
+    Then I wait until Tor is ready
     And all Internet traffic has only flowed through the configured bridges
     # check that htpdate has done its job
     And Tails clock is less than 5 minutes incorrect
