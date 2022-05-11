@@ -7,7 +7,7 @@ properly set the environment for many user-facing applications.
 First, it saves the environment in the home. Then, it asks root (with sudo) to move this environment to a
 root-owned but amnesia-readable directory.
 
-Any amnesia-capable attacker could do that. However, the privileged part will check if the file already
+Any amnesia-capable attacker could do that. However, the privileged part will abort if the file already
 exists. This means that it can only be run once.
 '''
 
