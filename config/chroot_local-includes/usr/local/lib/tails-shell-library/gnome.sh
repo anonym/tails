@@ -24,7 +24,9 @@ export_gnome_env() {
     # While this helps, this option is still racy: the namespace is checked after having retrieved the PID, so
     # it might be possible for an attacker that is not in the right namespace to fool us and circumvent this.
     # see https://gitlab.tails.boum.org/tails/tails/-/issues/18374
-    [ "$(id -u)" = 0 ] && set -- --ns 1 --nslist mnt
+    if [ "$(id -u)" = 0 ]; then
+        set -- --ns 1 --nslist mnt
+    fi
 
     #shellcheck disable=SC2086
     gnome_shell_pid="$(pgrep --newest --euid "${LIVE_USERNAME}" \
