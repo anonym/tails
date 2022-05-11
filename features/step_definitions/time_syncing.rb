@@ -49,7 +49,7 @@ Then /^the system clock is less than (\d+) minutes incorrect$/ do |max_diff_mins
   diff = (host_time - guest_time).abs
   assert(diff < max_diff_mins.to_i * 60,
          "The guest's clock is off by #{diff} seconds (#{guest_time})")
-  puts "Time was #{diff} seconds off"
+  debug_log "Time was #{diff} seconds off"
 end
 
 Then /^the system clock is just past Tails' source date$/ do
