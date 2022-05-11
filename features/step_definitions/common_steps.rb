@@ -635,7 +635,7 @@ end
 
 When /^I acknowledge Torbutton's New Identity confirmation prompt$/ do
   @screen.wait('GnomeQuestionDialogIcon.png', 30)
-  step 'I type "y"'
+  @screen.press('y')
 end
 
 Given /^I add a bookmark to eff.org in the Tor Browser$/ do
@@ -930,10 +930,6 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     sleep 4
     @screen.press('ctrl', 'Return')
   end
-end
-
-When /^I type "([^"]+)"$/ do |string|
-  @screen.type(string)
 end
 
 When /^I press the "([^"]+)" key$/ do |key|
