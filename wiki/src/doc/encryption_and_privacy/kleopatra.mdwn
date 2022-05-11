@@ -1,0 +1,110 @@
+[[!meta title="Encrypting text and files using GnuPG and Kleopatra"]]
+
+<!-- Not linking to the handbook because it's so bad: https://docs.kde.org/stable5/en/kleopatra/kleopatra/ -->
+<!-- Not more heading because of layout. -->
+
+[*Kleopatra*](https://www.openpgp.org/software/kleopatra/) is a graphical
+interface to [*GnuPG*](https://www.gnupg.org/), a tool to encrypt and
+authenticate text and files using the OpenPGP standard.
+
+<div class="note">
+
+<p><i>Kleopatra</i> was added in Tails 5.0 (May 2022) to replace the <i>OpenPGP
+Applet</i> and the <i>Password and Keys</i> utility, also known as
+<i>Seahorse</i>.</p>
+
+<p><i>Kleopatra</i> provides equivalent features in a single tool and is more
+actively developed.</p>
+
+</div>
+
+With *Kleopatra* you can:
+
+- Create new OpenPGP keys for yourself
+- Manage your OpenPGP private keys and the public keys of others
+- Encrypt and sign text with a public key
+- Encrypt text with a passphrase
+- Decrypt and verify text
+
+<div class="next">
+
+<p>The [[<i>Thunderbird</i>|anonymous_internet/thunderbird]] email client
+allows you to work with OpenPGP encrypted emails. Consider using
+<i>Thunderbird</i> instead of <i>Kleopatra</i> if you want to exchange encrypted emails.</p>
+
+<p>The OpenPGP keys stored in <i>Thunderbird</i> are separate from the keys
+stored in <i>GnuPG</i> and visible in <i>Kleopatra</i>.</p>
+
+</div>
+
+[[!toc]]
+
+<div class="tip">
+
+<p>To store your GnuPG keys and configuration across different working sessions,
+you can turn on the [[GnuPG|doc/first_steps/persistence#gnupg]]
+feature of the Persistent Storage.</p>
+
+</div>
+
+# Working with encrypted files
+
+To encrypt a file:
+
+1. Choose **Sign/Encrypt&hellip;** from the main window.
+
+1. Select the file that you want to encrypt.
+
+1. In the **Sign/Encrypt Files** dialog, either:
+
+   - Specify which OpenPGP keys you want to encrypt the file to.
+
+   - Choose **Encrypt with password**.
+
+To decrypt a file:
+
+1. Choose **Decrypt/Verify&hellip;** from the main window.
+
+1. Select the file that you want to decrypt.
+
+# Working with encrypted text
+
+<div class="caution">
+
+<p>It is unsafe to write confidential text in a web browser since JavaScript
+attacks can access it from inside the browser. You should rather write and
+encrypt your text directly in the notepad of <i>Kleopatra</i> and only paste
+the encrypted text in your browser.</p>
+
+</div>
+
+To encrypt text:
+
+1. Choose **Notepad** from the main window.
+
+1. Type your text in the **Notepad** tab in the bottom pane.
+
+1. In the **Recipients** tab, either:
+
+   - Specify which OpenPGP keys you want to encrypt the text to.
+
+   - Choose **Encrypt with password**.
+
+To decrypt text:
+
+1. Choose **Notepage** from the main window.
+
+1. Paste the encrypted text in the **Notepage** tab in the bottom pane.
+
+1. Choose **Decrypt/Verify Notepage**.
+
+<div class="bug">
+
+<p>When using <i>Kleopatra</i> to encrypt emails, non-ASCII characters (for
+example non-Latin characters or characters with accents) might not display
+correctly to the recipients of the email.</p>
+
+<p>If you often encrypt emails, we recommend you set up OpenPGP in
+[[<i>Thunderbird</i>|doc/anonymous_internet/thunderbird]] instead.</p>
+
+</div>

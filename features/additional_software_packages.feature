@@ -14,11 +14,11 @@ Feature: Additional software
   Scenario: I am warned I can not use Additional Software when I start Tails from a DVD and install a package
     Given I have started Tails from DVD and logged in with an administration password and the network is connected
     And I update APT using apt
-    When I install "sslh" using apt
-    Then I am notified I can not use Additional Software for "sslh"
+    When I install "popularity-contest" using apt
+    Then I am notified I can not use Additional Software for "popularity-contest"
     And I can open the Additional Software documentation from the notification
 
-  # Here we install the sslh package to test if debconf does not prevent
+  # Here we install the popularity-contest package to test if debconf does not prevent
   # Additional Software from automatically installing packages.
   # This scenario also sets up the "__internal" drive that the following
   # scenarios will reuse.
@@ -27,13 +27,16 @@ Feature: Additional software
   Scenario: I set up Additional Software when installing a package without persistent partition and the package is installed next time I start Tails
     Given I start Tails from a freshly installed USB drive with an administration password and the network is plugged and I login
     And I update APT using apt
-    And I install "sslh" using apt
-    Then I am proposed to add the "sslh" package to my Additional Software
+    And I install "popularity-contest" using apt
+    Then I am proposed to add the "popularity-contest" package to my Additional Software
     And I create a persistent storage and activate the Additional Software feature
-    And I shutdown Tails and wait for the computer to power off
-    And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
-    And Additional Software is correctly configured for package "sslh"
-    And the package "sslh" is installed after Additional Software has been started
+    And I accept the persistence wizard's offer to restart Tails
+    And the computer reboots Tails
+    And the network is unplugged
+    And I enable persistence
+    And I log in to a new session
+    And Additional Software is correctly configured for package "popularity-contest"
+    And the package "popularity-contest" is installed after Additional Software has been started
 
   # Depends on scenario: I set up Additional Software when installing a package without persistent partition and the package is installed next time I start Tails
   Scenario: The Additional Software dpkg hook notices when persistence is locked down while installing a package
@@ -48,9 +51,9 @@ Feature: Additional software
   Scenario: My Additional Software list is configurable through a GUI or through notifications when I install or remove packages with APT or Synaptic
     Given a computer
     And I start Tails from USB drive "__internal" and I login with persistence enabled and an administration password
-    When I uninstall "sslh" using apt
-    And I accept removing "sslh" from Additional Software
-    Then "sslh" is not in the list of Additional Software
+    When I uninstall "popularity-contest" using apt
+    And I accept removing "popularity-contest" from Additional Software
+    Then "popularity-contest" is not in the list of Additional Software
     When I start Synaptic
     And I update APT using Synaptic
     And I install "cowsay" using Synaptic

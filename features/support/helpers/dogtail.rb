@@ -68,7 +68,7 @@ module Dogtail
       @opts = opts
       @opts[:user] ||= LIVE_USER
       @find_code = "dogtail.tree.root.application('#{@app_name}')"
-      script_lines = [
+      init = [
         'import dogtail.config',
         'import dogtail.tree',
         'import dogtail.predicate',
@@ -77,16 +77,23 @@ module Dogtail
         'dogtail.config.logDebugToStdOut = False',
         'dogtail.config.blinkOnActions = True',
         'dogtail.config.searchShowingOnly = True',
+      ]
+      code = [
         "#{@var} = #{@find_code}",
       ]
-      run(script_lines)
+      run(code, init: init)
     end
 
     def to_s
       @var
     end
 
-    def run(code)
+    def run(code, init: nil)
+      if init
+        init = init.join("\n") if init.class == Array
+        c = RemoteShell::PythonCommand.new($vm, init, user: @opts[:user], debug_log: false)
+        raise Failure, "The Dogtail init script raised: #{c.exception}" if c.failure?
+      end
       code = code.join("\n") if code.class == Array
       c = RemoteShell::PythonCommand.new($vm, code, user: @opts[:user])
       raise Failure, "The Dogtail script raised: #{c.exception}" if c.failure?
@@ -94,8 +101,8 @@ module Dogtail
       c
     end
 
-    def child?(*args)
-      !child(*args).nil?
+    def child?(*args, **options)
+      !child(*args, **options).nil?
     rescue StandardError
       false
     end
@@ -129,30 +136,24 @@ module Dogtail
       end
     end
 
-    # Generates a Python-style parameter list from `args`. If the last
-    # element of `args` is a Hash, it's used as Python's kwargs dict.
+    # Generates a Python-style parameter list from `args` and `kwargs`.
     # In the end, the resulting string should be possible to copy-paste
     # into the parentheses of a Python function call.
-    # Example: [42, {:foo => 'bar'}] => "42, foo = 'bar'"
-    def self.args_to_s(args)
-      return '' if args.empty?
+    # Example: 42, :foo: 'bar' => "42, foo = 'bar'"
+    def self.args_to_s(*args, **kwargs)
+      return '' if args.empty? && kwargs.empty?
 
-      args_list = args
-      args_hash = nil
-      if args_list.class == Array && args_list.last.class == Hash
-        *args_list, args_hash = args_list
-      end
       (
-        (if args_list.nil?
+        (if args.nil?
            []
          else
-           args_list.map { |e| value_to_s(e) }
+           args.map { |e| value_to_s(e) }
          end
         ) +
-        (if args_hash.nil?
+        (if kwargs.nil?
            []
          else
-           args_hash.map { |k, v| "#{k}=#{value_to_s(v)}" }
+           kwargs.map { |k, v| "#{k}=#{value_to_s(v)}" }
          end
         )
       ).join(', ')
@@ -160,23 +161,20 @@ module Dogtail
 
     # Equivalent to the Tree API's Node.findChildren(), with the
     # arguments constructing a GenericPredicate to use as parameter.
-    def children(*args)
+    def children(*args, **kwargs)
       non_predicates = [:recursive, :showingOnly]
       findChildren_opts_hash = {}
-      if args.last.class == Hash
-        args_hash = args.last
-        non_predicates.each do |opt|
-          if args_hash.key?(opt)
-            findChildren_opts_hash[opt] = args_hash[opt]
-            args_hash.delete(opt)
-          end
+      non_predicates.each do |opt|
+        if kwargs.key?(opt)
+          findChildren_opts_hash[opt] = kwargs[opt]
+          kwargs.delete(opt)
         end
       end
       findChildren_opts = ''
       unless findChildren_opts_hash.empty?
-        findChildren_opts = ', ' + self.class.args_to_s([findChildren_opts_hash])
+        findChildren_opts = ', ' + self.class.args_to_s(**findChildren_opts_hash)
       end
-      predicate_opts = self.class.args_to_s(args)
+      predicate_opts = self.class.args_to_s(*args, **kwargs)
       nodes_var = "nodes#{@@node_counter += 1}"
       find_script_lines = [
         "#{nodes_var} = #{@var}.findChildren(" \
@@ -246,9 +244,9 @@ module Dogtail
     end
 
     TREE_API_APP_SEARCHES.each do |method|
-      define_method(method) do |*args|
+      define_method(method) do |*args, **kwargs|
         args[0] = translate(args[0], **@opts) if args[0].class == String
-        args_str = self.class.args_to_s(args)
+        args_str = self.class.args_to_s(*args, **kwargs)
         method_call = "#{method}(#{args_str})"
         Node.new("#{@var}.#{method_call}", **@opts)
       end
@@ -262,16 +260,7 @@ module Dogtail
 
     # Override the `child` method to add support for regex matching of
     # node names, which offers much greater flexibility.
-    def override_child(pattern, **opts)
-      # Ruby < 2.7 handles arguments vs option hash differently, so we
-      # need a workaround.
-      # XXX:Bullseye: drop this workaround once we run on Ruby >=2.7.
-      if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.7')
-        if pattern.class == Hash
-          opts.merge!(pattern)
-          pattern = nil
-        end
-      end
+    def override_child(pattern = nil, **opts)
       if pattern.instance_of?(Regexp)
         retries = 20
         if opts.key?(:retry)
@@ -306,8 +295,8 @@ module Dogtail
     end
 
     TREE_API_NODE_ACTIONS.each do |method|
-      define_method(method) do |*args|
-        args_str = self.class.args_to_s(args)
+      define_method(method) do |*args, **kwargs|
+        args_str = self.class.args_to_s(*args, **kwargs)
         method_call = "#{method}(#{args_str})"
         run("#{@var}.#{method_call}")
       end

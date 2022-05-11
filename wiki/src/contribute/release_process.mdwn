@@ -28,6 +28,27 @@ If you want to know whether the release you are doing is a major or not, you nee
  - if nothing is specified about being a major, then it's most probably a bugfix release
  - if it is a major, there has to be a release candidate before the final
 
+Plan your journey
+------------------------
+
+The release process is long. With proper planning and some luck, it's almost
+enjoyable.
+
+Here are some useful tips that will hopefully help you have a pleasant release
+process:
+
+ - if time allows, try to unblock other people's work.
+   For example, reaching the _Get the internal manual testing started_ on Monday
+   would be great, because it allows manual testers to plan their job better.
+
+ - when you are clocking off, or just spending some time afk, consider keeping
+   your CPU busy with some long-running jobs. Here are some good candidates:
+
+   - Building the final image
+   - Building IUKs
+   - Running the automated test suite
+
+ - cross your fingers 🤞
 
 Prepare your checklist
 ======================
@@ -41,6 +62,24 @@ Prepare your checklist
    a checklist: delete steps once you've successfully completed them.
    This ensures you won't mistakenly skip a step, without relying on memory, so
    "oops, I forgot X" cannot happen.
+
+TRAP: whenever you go AFK for long times
+===========================================
+
+Keep this section at the top of your pad, so you don't forget
+
+When you clock off, or take any other kind of long break, please comunicate this on XMPP. Clarify:
+
+ - when do you expect to come back
+
+ - what's the status right now
+
+ - try to give an ETA (or clarify that you cannot) for reaching this steps:
+
+   - When will the final image be available?
+
+   - When will manual testers be able to start their work?
+
 
 Requirements
 ============
@@ -137,6 +176,16 @@ you need to set a bunch of environment variables.
 3. Ensure there's a `iuks/v2` directory under the directory you specified for
    `isos` in `~/.config/tails/release_management/local.yml`.
 
+
+        python3 <<EOF
+        import yaml,os
+        from pathlib import Path
+        fpath = Path(os.path.expanduser("~/.config/tails/release_management/local.yml"))
+        isos = Path(yaml.safe_load(fpath.open())["isos"])
+        iuks = isos / "iuks/v2"
+        if not iuks.exists(): raise Exception("IUKS dir '%s' not found" % iuks)
+        EOF
+
 4. Generate the resulting environment variables and export them into your
    environment:
 
@@ -174,8 +223,10 @@ Coordinate with Debian security updates
 ---------------------------------------
 
 Look at the [list of upcoming Debian Security Advisories (DSA)][DSA needed]
-found in the Debian [security tracker][web]'s [Git repository][git].
+found in the Debian [security tracker][web]'s [Git repository][git] and in
+the [debian-security-announce mailing list][ml].
 
+[ml]: https://lists.debian.org/debian-security-announce/recent
 [web]: http://security-tracker.debian.org/tracker/
 [git]: https://salsa.debian.org/security-tracker-team/security-tracker
 [DSA needed]: https://salsa.debian.org/security-tracker-team/security-tracker/blob/master/data/dsa-needed.txt
@@ -204,8 +255,8 @@ Freeze
 This section ensures freezing is done. Freezing is relevant for Release Candidates and for bugfix releases.
 You can skip this if you're releasing a final major version.
 
-Only for Major release
-----------------------------
+Only for RC
+-------------
 
 Follow this part ONLY if you are preparing the release candidate for a major release.
 
@@ -303,11 +354,14 @@ Pull updated translations for languages translated in Transifex,
 refresh the code PO files,
 and commit the result, including new PO files:
 
-	cd "${RELEASE_CHECKOUT:?}" && \
-	./import-translations  && \
-	./refresh-translations && \
-	./submodules/jenkins-tools/slaves/lint_po && \
-	git add po && git commit -m 'Update PO files.'
+    (cd "${RELEASE_CHECKOUT:?}"
+     set -x
+     err() { echo "Error $*"; exit 1 }
+     ./import-translations || err "importing translations"
+     ./refresh-translations || err "refreshing translations"
+     ./submodules/jenkins-tools/slaves/lint_po || err "in lint"
+     git add po && git commit -m 'Update PO files.'
+    )
 
 If `lint_po` complains:
 
@@ -364,13 +418,13 @@ Update other base branches
    It's fine if that results in a no-op (it depends on how exactly previous
    operations were performed).
 
-3. Try to merge the `devel` Git branch into `feature/bullseye` (if it exists),
-   *without* merging the corresponding APT suite (for now `feature/bullseye` is
+3. Try to merge the `devel` Git branch into `feature/bookworm` (if it exists),
+   *without* merging the corresponding APT suite (for now `feature/bookworm` is
    handled as any other topic branch forked off `devel`: its base branch is set
    to `devel`):
 
-        if git describe feature/bullseye >/dev/null 2>&1; then
-           git checkout feature/bullseye && \
+        if git describe feature/bookworm >/dev/null 2>&1; then
+           git checkout feature/bookworm && \
            git pull && \
            git merge devel
         fi
@@ -379,7 +433,7 @@ Update other base branches
    resolving properly, abort this merge and let the Foundations
    Team know.
 
-4. Ensure that the `$RELEASE_BRANCH`, `devel` and `feature/bullseye` (if it exists) branches
+4. Ensure that the `$RELEASE_BRANCH`, `devel` and `feature/bookworm` (if it exists) branches
    have the expected content in `config/APT_overlays.d/`: e.g. it must
    not list any overlay APT suite that has been merged already.
 
@@ -387,7 +441,7 @@ Update other base branches
 
         git push origin                          \
            "${RELEASE_BRANCH:?}:${RELEASE_BRANCH:?}" \
-           $(if git describe feature/bullseye >/dev/null 2>&1; then echo feature/bullseye:feature/bullseye ; fi) \
+           $(if git describe feature/bookworm >/dev/null 2>&1; then echo feature/bookworm:feature/bookworm ; fi) \
            devel:devel
 
 Update more included files
@@ -438,8 +492,16 @@ version's `.packages` file and the one from the to-be-released images:
 	fi && \
     git push origin "${RELEASE_BRANCH:?}"
 
-4. Notify `@technical-writers` that the changelog is ready [on the GitLab issue
-   about the release notes](https://gitlab.tails.boum.org/groups/tails/-/issues?scope=all&search=release+notes&sort=milestone&state=opened).
+4. Let Technical Writers know that the changelog is ready
+
+   - Open the [GitLab issue about the release notes](https://gitlab.tails.boum.org/groups/tails/-/issues?scope=all&search=release+notes&sort=milestone&state=opened)
+
+   - Notify `@technical-writers` that the changelog is ready:
+
+         echo "Dear @technical-writers, you can find the changelog on the ${RELEASE_BRANCH:?} branch"
+
+   - Provide them a link to latest relevant Jenkins built image, so they can use that to make screenshots or write
+documentation.
 
 Included website
 ----------------
@@ -597,6 +659,8 @@ Better catch this before people spend time doing manual tests.
 SquashFS file order
 -------------------
 
+Expected time: 20 minutes
+
 Feel free to skip this section when preparing an emergency release.
 
 1. Install the almost-final USB image to a USB stick.
@@ -612,8 +676,8 @@ Feel free to skip this section when preparing an emergency release.
 1. Automatically connect to Tor with _Tor Connection_.
 1. Wait for _Tor Connection_ to report success.
 1. Start *Tor Browser*.
-1. A few minutes later, once the `boot-profile` process has been
-   killed, retrieve the new sort file from `/var/log/boot-profile`.
+1. 3 minutes after the start of the Gnome session, the `boot-profile` process will be
+   killed. Retrieve the new sort file from `/var/log/boot-profile`.
 1. Backup the old sort file: `cp config/binary_rootfs/squashfs.sort{,.old}`
 1. Copy the new sort file to `config/binary_rootfs/squashfs.sort`.
 1. To remove:
@@ -640,6 +704,9 @@ Feel free to skip this section when preparing an emergency release.
 
 Build the final images
 ----------------------
+
+Expected time: 30-75 minutes depending on your computer and the available
+Jenkins workers.
 
 Then all included files should be up-to-date and the versioned APT
 suite should be ready, so it is time to:
@@ -669,8 +736,7 @@ suite should be ready, so it is time to:
    so don't bother setting it yourself.
 
 1. Make sure the Jenkins build starts as soon as possible. If needed, remove
-   other builds from the _Build Queue_ or cancel other running builds,
-   ideally on iguana so the build goes faster.
+   other builds from the _Build Queue_.
 
 1. Make sure the Jenkins build is right: you can recognize this is the case,
    when you see Jenkins starts building the website. Jenkins will take
@@ -727,54 +793,57 @@ To verify that Jenkins reproduced your images:
             . $(./bin/rm-config generate-environment --stage reproduced-images)
 
    - Else, if there is a hash mismatch for one of the images: ouch!
+     see next section
 
-     Now we are in a
-     tricky situation: on the one hand it seems like a poor idea to
-     block users from benefiting from this release's security updates,
-     but on the other hand the failure might imply that something
-     nefarious is going on. At this stage, no matter what, immediately
-     fetch Jenkins' image, compare it with your, and try to rule out
-     build system compromise:
+### If there is a hash mismatch
 
-          sudo diffoscope \
-              --text diffoscope.txt \
-              --html diffoscope.html \
-              --max-report-size 262144000 \
-              --max-diff-block-lines 10000 \
-              --max-diff-input-lines 10000000 \
-                  path/to/your/tails-amd64-${VERSION:?}.iso \
-                  path/to/jenkins/tails-amd64-${VERSION:?}.iso
+ Now we are in a
+ tricky situation: on the one hand it seems like a poor idea to
+ block users from benefiting from this release's security updates,
+ but on the other hand the failure might imply that something
+ nefarious is going on. At this stage, no matter what, immediately
+ fetch Jenkins' image, compare it with your, and try to rule out
+ build system compromise:
 
-     Do the same for the USB image as well.
+      sudo diffoscope \
+          --text diffoscope.txt \
+          --html diffoscope.html \
+          --max-report-size 262144000 \
+          --max-diff-block-lines 10000 \
+          --max-diff-input-lines 10000000 \
+              path/to/your/tails-amd64-${VERSION:?}.iso \
+              path/to/jenkins/tails-amd64-${VERSION:?}.iso
 
-     Then carefully investigate the `diffoscope` report:
+ Do the same for the USB image as well.
 
-       - If you cannot rule out that the difference is harmful: let's take
-         a step back; we might be compromised, so we are in no position to
-         release. Halt the release, involve the rest of the Board, and then
-         try to re-establish trust in all build machines and infra
-         involved, etc. Have fun!
+ Then carefully investigate the `diffoscope` report:
 
-       - Otherwise, if the change is definitely harmless:
+   - If you cannot rule out that the difference is harmful: let's take
+     a step back; we might be compromised, so we are in no position to
+     release. Halt the release, involve the rest of the Board, and then
+     try to re-establish trust in all build machines and infra
+     involved, etc. Have fun!
 
-         * If the source of non-determinism is identified quickly and
-           is easy and fast to fix, *and* the QA of the current images
-           has not gone very far (so at least that time is not wasted),
-           then you should consider abandoning the current version, and
-           immediately start preparing an emergency release with:
+   - Otherwise, if the change is definitely harmless:
 
-           - the reproducibility fix,
-           - a new changelog entry,
-           - adjustments to the release notes so they are re-purposed for
-             this emergency release (the abandoned release gets none, since
-             it effectively never will be released publicly).
+     * If the source of non-determinism is identified quickly and
+       is easy and fast to fix, *and* the QA of the current images
+       has not gone very far (so at least that time is not wasted),
+       then you should consider abandoning the current version, and
+       immediately start preparing an emergency release with:
 
-         * Otherwise, if the fix looks time-consuming or difficult,
-           let's release anyway. But let's add a known issue about
-           "This Tails release does not build reproducibility" to the
-           release notes, linking to the issue where
-           the nature of the reproducibility failure is clearly
-           described.
+       - the reproducibility fix,
+       - a new changelog entry,
+       - adjustments to the release notes so they are re-purposed for
+         this emergency release (the abandoned release gets none, since
+         it effectively never will be released publicly).
+
+     * Otherwise, if the fix looks time-consuming or difficult,
+       let's release anyway. But let's add a known issue about
+       "This Tails release does not build reproducibility" to the
+       release notes, linking to the issue where
+       the nature of the reproducibility failure is clearly
+       described.
 
 Initialize the website release branch
 -------------------------------------
@@ -861,7 +930,8 @@ Build the Incremental Upgrade Kits locally
 
 Verify there's enough free disk space in `$IUKS_DIR`:
 
-    MIN_DISK_SPACE=30000
+    N_IUKS="$(echo ${IUK_SOURCE_VERSIONS?:} | wc -w)"
+    MIN_DISK_SPACE=$((N_IUKS * 700))
     FREE_DISK_SPACE=$(/bin/df --block-size=M --output=avail "${IUKS_DIR:?}" \
        | tail -n1 | sed --regexp-extended 's,M$,,')
     if [ "$FREE_DISK_SPACE" -lt "$MIN_DISK_SPACE" ]; then
@@ -902,6 +972,8 @@ you can follow the next steps:
 
  - ISO history
  - Build the Incremental Upgrade Kits on Jenkins
+ - If you expect the need to run some manual tests and you have one spare computer, you can prepare a USB
+   stick and do so.
 
 ISO history
 -----------
@@ -976,6 +1048,11 @@ Build the Incremental Upgrade Kits on Jenkins
    It should take about 20-25 minutes for each member of
    the `$IUK_SOURCE_VERSIONS` list, distributed across `isobuilderN` workers.
 
+   If you have a fast computer, you'll be waiting for Jenkins to be done, while
+   your CPU is idle. Consider starting the [automated test
+   suite](#run-automated-tests) in the meanwhile to optimize this: running it
+   does not depend on any of the IUK-related steps.
+
 6. Add the time it took for `build_IUKs` to the table of [[!tails_ticket 17750]].
 
 <a id="reproducibility-sanity-check-iuk"></a>
@@ -992,9 +1069,22 @@ Run this command to verify that Jenkins reproduced your IUKs:
 
 The download step takes a few minutes.
 
-If this verification succeeds, move on to the next section.
+If this verification succeeds, good!
 
-Else, if this verification fails, then:
+Otherwise, see the next sections
+
+### If it fails with `urllib.error.HTTPError: HTTP Error 404: Not Found`
+
+This problem can be expected when we are maintaining Tails `N.x` together with Tails `(N+1).y`.
+
+If this is the case:
+
+1. Run the same command, adding the `--ignore-404` option
+2. In the output of this second attempt, verify that the only missing IUKs are not relevant to this release
+
+### If IUK verification fails
+
+if the last command failed:
 
 1. Visit this page: `https://jenkins.tails.boum.org/job/build_IUKs/lastBuild/parameters/`
 
@@ -1276,6 +1366,24 @@ Now you can announce and seed the Torrents for the release you're preparing:
 Test that you can start downloading the ISO and USB images with a BitTorrent client.
 It can take a few dozen minutes before this works.
 
+<a id="run-automated-tests"></a>
+
+Run the automated test suite
+===============================
+
+This is not a required step: check the manual testers pad and see if anyone
+volunteered for that. But if noone did, start the automated test suite. The
+sooner, the better.
+
+You probably already know how to do that, but keep this in mind:
+
+ - you *need* to use the `--old-iso` option
+
+ - you probably want to specify `--tmpdir` to point to a non-volatile directory.
+   The default lives in `/tmp/`, which might lead to unpleasant surprises if,
+   for whatever reasons, you need to turn off your computer.
+
+
 Public testing
 ==============
 
@@ -1285,16 +1393,24 @@ Public testing
    <https://mirrors.wikimedia.org/tails/> are reliable and have plenty
    of bandwidth:
 
+        
         (
-            for mirror in mirrors.wikimedia.org mirrors.edge.kernel.org; do
-                ./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
-                    --url-prefix https://$mirror/tails/ \
-                    tails-amd64-${VERSION:?}
+            success=false
+            while true; do
+                for mirror in mirrors.wikimedia.org mirrors.edge.kernel.org; do
+                    url="https://$mirror/tails/"
+                    if [[ -z "$(./check-mirrors.rb --allow-multiple --fast --channel ${DIST:?} \
+                        --url-prefix "$url" \
+                        tails-amd64-${VERSION:?} )" ]]
+                    then
+                        echo "WORKING: $url"
+                        success=true
+                    fi
+                done
+                $success && exit 0
+                sleep 1m
             done
         )
-
-   `check-mirrors` will only output errors. It remains silent for
-   mirrors that are already synchronized.
 
 1. Email <tails-testers@boum.org> to ask them to test the tentative images:
 
@@ -1310,8 +1426,6 @@ Lead the internal manual testing to conclusion
 
    To communicate this to them, delete "⚠ Wait until the Release Manager […]" in
    the "Reproducibility" section on the pad.
-
-1. Make sure someone is committed to run the automated test suite.
 
 1. Make sure that enough people are here to run the tests, that they
    report their results in due time, and that they make it clear when
@@ -1331,6 +1445,9 @@ Lead the internal manual testing to conclusion
 
 1. Fill the holes and make sure that the automated and manual test
    suites are done in due time.
+
+1. If you were the one running the [automated test suite](#run-automated-tests),
+   check its results.
 
 1. Triage test results, reproduce bugs as needed, decide what the next
    step is and make sure it happens: add to known issues? file an issue?
@@ -1519,7 +1636,7 @@ Sanity checks
 -------------
 
 * Check for any feedback in the _Internal testing_ pad.
-* Check for any feedback on tails-testers@boum.org.
+* Check for any feedback on [tails-testers@boum.org](https://lists.autistici.org/list/tails-testers.html).
 * Verify once more that the Tor Browser we ship is still the most recent (see
   above).
 
@@ -1594,6 +1711,9 @@ Skip this part if preparing a release candidate.
    close the just-released [[!tails_gitlab groups/tails/-/milestones
    desc="milestone"]]. See this as an example:
    [[!tails_gitlab tails/gitlab-config/-/merge_requests/18 desc="tails/gitlab-config!18"]]
+   
+   A cheap way to do this, could be to use [Gitlab web interface to create the
+MR](https://gitlab.tails.boum.org/tails/gitlab-config/-/edit/master/main.yml)
 
    Assign the MR to the on-duty sysadmin (see link to "Semi-public
    calendar" in <https://gitlab.tails.boum.org/tails/summit/-/wikis/Teams#sysadmins>).
@@ -1630,7 +1750,7 @@ Check in the comments of the issue for the release notes if the
 technical writers have prepared a tweet. Otherwise tweet a simple link
 to the release notes:
 
-    Tails x.y is out: https://tails.boum.org/news/version_x.y/
+    echo "Tails ${VERSION:?} is out: https://tails.boum.org/news/version_${TAG:?}/"
 
 The credentials are in keyringer in `rm.git`.
 
@@ -1680,7 +1800,13 @@ If you just released a final release
          ssh bittorrent.lizard transmission-remote --list
 
 1. Remove any remaining RC for the just-published release from
-   `rsync.lizard:/srv/rsync/tails/tails/alpha/`
+   `rsync.lizard:/srv/rsync/tails/tails/alpha/`.
+
+    1. Check if there is anything:
+
+        ssh rsync.lizard find /srv/rsync/tails/tails/alpha/ -type f
+
+    2. Decide what to do!
 
 1. If you've published a final release, remove IUKs that upgrade to an
    older version as they were superseded by this release:
@@ -1842,7 +1968,7 @@ If you just released a final release
    - Cc <tails-manual-testers@boum.org>,
      asking them to privately tell the RM for that release
      _how much_ manual testing they can do on release day.
-   - Subject: "Release schedule for Tails NEXT_VERSION_NUMBER"
+   - `echo Subject: "Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"`
    - If a release candidate is planned, include it in the release schedule
      and the call for manual testers.
 

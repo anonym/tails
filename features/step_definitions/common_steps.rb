@@ -106,12 +106,10 @@ Given /^the network is unplugged$/ do
 end
 
 Given /^I (dis)?connect the network through GNOME$/ do |disconnect|
-  current_state = disconnect ? 'Connected' : 'Off'
-  action = disconnect ? 'Turn Off' : 'Connect'
-  gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('System', roleName: 'menu').click
-  gnome_shell.child("Wired #{current_state}", roleName: 'label').click
-  gnome_shell.child(action, roleName: 'label').click
+  action_image = disconnect ? 'TurnOffNetworkInterface.png' : 'ConnectNetworkInterface.png'
+  open_gnome_system_menu
+  @screen.wait('WiredNetworkInterface.png', 5).click
+  @screen.wait(action_image, 5).click
 end
 
 Given /^the network connection is ready(?: within (\d+) seconds)?$/ do |timeout|
@@ -223,21 +221,28 @@ When /^I cold reboot the computer$/ do
   step 'I start the computer'
 end
 
-def boot_menu_cmdline_image
+def boot_menu_cmdline_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuKernelCmdlineUEFI.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuKernelCmdlineUEFI_Bullseye.png.
+    [
+      'TailsBootMenuKernelCmdlineUEFI_Bullseye.png',
+      'TailsBootMenuKernelCmdlineUEFI_Bookworm.png',
+    ]
   else
-    'TailsBootMenuKernelCmdline.png'
+    ['TailsBootMenuKernelCmdline.png']
   end
 end
 
-def boot_menu_image
+def boot_menu_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuGRUB.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuGRUB_Bullseye.png.
+    ['TailsBootMenuGRUB_Bullseye.png', 'TailsBootMenuGRUB_Bookworm.png']
   else
-    'TailsBootMenuSyslinux.png'
+    ['TailsBootMenuSyslinux.png']
   end
 end
 
@@ -293,7 +298,7 @@ def enter_boot_menu_cmdline
   try_for(boot_timeout) do
     begin
       _up_spammer_job, kill_up_spammer = start_up_spammer($vm.domain_name)
-      @screen.wait(boot_menu_image, 15)
+      @screen.wait_any(boot_menu_images, 15)
       kill_up_spammer.call
 
       # Navigate to the end of the kernel command-line
@@ -305,7 +310,7 @@ def enter_boot_menu_cmdline
       else
         @screen.press('Tab')
       end
-      @screen.wait(boot_menu_cmdline_image, 5)
+      @screen.wait_any(boot_menu_cmdline_images, 5)
     rescue FindFailed => e
       debug_log('We missed the boot menu before we could deal with it, ' \
                 'resetting...')
@@ -542,7 +547,7 @@ Given /^Tor is ready$/ do
       try_for(30) { $vm.execute('systemctl is-system-running').success? }
     rescue Timeout::Error
       jobs = $vm.execute('systemctl list-jobs').stdout
-      units_status = $vm.execute('systemctl').stdout
+      units_status = $vm.execute('systemctl --all --state=failed').stdout
       raise "The system is not fully running yet:\n#{jobs}\n#{units_status}"
     end
   end
@@ -663,12 +668,12 @@ Given /^all notifications have disappeared$/ do
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
     @screen.click(x, y)
     begin
-      gnome_shell.child('Clear All', roleName:    'push button',
-                                     showingOnly: true).click
+      gnome_shell.child('Clear', roleName:    'push button',
+                                 showingOnly: true).click
     rescue StandardError
       # Ignore exceptions: there might be no notification to clear, in
       # which case there will be a "No Notifications" label instead of
-      # a "Clear All" button.
+      # a "Clear" button.
     end
     gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
   end
@@ -705,6 +710,9 @@ def deal_with_polkit_prompt(password, **opts)
     @screen.wait_vanish(image, 20)
   else
     @screen.wait('PolicyKitAuthFailure.png', 20)
+    # Ensure the dialog is ready to handle whatever else
+    # we want to do with it next, such as pressing Escape
+    sleep 0.5
   end
 end
 
@@ -743,8 +751,7 @@ end
 
 Then /^Tails eventually (shuts down|restarts)$/ do |mode|
   # In the Additional Software feature, we need to wait enough for
-  # tails-synchronize-data-to-new-persistent-volume-on-shutdown.service
-  # to complete: see its custom, higher-than-default, TimeoutStopSec=.
+  # tails-synchronize-data-to-new-persistent-volume to complete.
   try_for(6 * 60) do
     if mode == 'restarts'
       @screen.find('TailsGreeter.png')
@@ -760,28 +767,42 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-When /^I request a shutdown using the system menu$/ do
-  @screen.hide_cursor
-  @screen.wait('TailsEmergencyShutdownButton.png', 10).click
-  # Sometimes the next button too fast, before the menu has settled
-  # down to its final size and the icon we want to click is in its
-  # final position. dogtail might allow us to fix that, but given how
-  # rare this problem is, it's not worth the effort.
-  step 'I wait 5 seconds'
-  @screen.wait('TailsEmergencyShutdownHalt.png', 10).click
+def open_gnome_menu(menu_button, menu_item)
+  # On Bullseye the top bar menus are problematic: we generally have
+  # to click several times for them to open.
+  retry_action(10, delay: 2) do
+    @screen.hide_cursor
+    @screen.wait(menu_button, 10).click
+    # Wait for the menu to be open and to have settled: sometimes menu
+    # components appear too fast, before the menu has settled down to
+    # its final size and the button we want to click is in its final
+    # position. Dogtail might allow us to fix that, but given how rare
+    # this problem is, it's not worth the effort.
+    sleep 5
+    @screen.find(menu_item)
+  end
+end
+
+def open_gnome_places_menu
+  open_gnome_menu('GnomePlaces.png', 'GnomePlacesHome.png')
+end
+
+def open_gnome_system_menu
+  open_gnome_menu('GnomeSystemMenuButton.png', 'TailsEmergencyShutdownHalt.png')
+end
+
+When /^I request a (shutdown|reboot) using the system menu$/ do |action|
+  image = if action == 'shutdown'
+            'TailsEmergencyShutdownHalt.png'
+          else
+            'TailsEmergencyShutdownReboot.png'
+          end
+  open_gnome_system_menu
+  @screen.wait(image, 5).click
 end
 
 When /^I warm reboot the computer$/ do
   $vm.spawn('reboot')
-end
-
-When /^I request a reboot using the system menu$/ do
-  @screen.hide_cursor
-  @screen.wait('TailsEmergencyShutdownButton.png', 10).click
-  # See comment on /^I request a shutdown using the system menu$/
-  # that explains why we need to wait.
-  step 'I wait 5 seconds'
-  @screen.wait('TailsEmergencyShutdownReboot.png', 10).click
 end
 
 Given /^the package "([^"]+)" is( not)? installed( after Additional Software has been started)?$/ do |package, absent, asp|
@@ -934,7 +955,7 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   when 'persistent'
     bookmark_image = 'TorBrowserPersistentFilesBookmark.png'
   end
-  @screen.wait('GnomePlaces.png', 10).click
+  open_gnome_places_menu
   @screen.wait(bookmark_image, 40)
   @screen.press('Escape')
 end
@@ -1180,7 +1201,7 @@ def size_of_shared_disk_for(files)
   assert_equal(Array, files.class)
   disk_size = files.map { |f| File.new(f).size } .inject(0, :+)
   # Let's add some extra space for filesystem overhead etc.
-  disk_size += [convert_to_bytes(1, 'MiB'), (disk_size * 0.15).ceil].max
+  disk_size += [convert_to_bytes(16, 'MiB'), (disk_size * 0.15).ceil].max
   disk_size
 end
 

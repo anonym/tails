@@ -105,8 +105,7 @@ class Screen
   end
 
   def xdotool(*args)
-    out = cmd_helper(['xdotool'] + args.map(&:to_s))
-    assert(out.empty?, "xdotool reported an error:\n" + out)
+    cmd_helper(['xdotool'] + args.map(&:to_s))
   end
 
   def match_screen(image, sensitivity, show_image)
@@ -251,7 +250,7 @@ class Screen
     nil
   end
 
-  def type(*args)
+  def type(*args, **kwargs)
     args.each do |arg|
       if arg.instance_of?(String)
         debug_log("Keyboard: typing: #{arg}")
@@ -259,12 +258,16 @@ class Screen
           press(char, log: false)
         end
       elsif arg.instance_of?(Array)
-        press(*arg)
+        press(*arg, **kwargs)
       else
         raise("Unsupported type: #{arg.class}")
       end
     end
     nil
+  end
+
+  def mouse_location(**opts)
+    xdotool('getmouselocation').split[0..1].map { |s| s.split(':').last.to_i }
   end
 
   def hover(*args, **opts)
@@ -280,7 +283,9 @@ class Screen
       raise "unsupported arguments: #{args}"
     end
     debug_log("Mouse: moving to (#{x}, #{y})") if opts[:log]
-    xdotool('mousemove', '--sync', x, y)
+    stdout = xdotool('mousemove', x, y)
+    assert(stdout.empty?, "xdotool reported an error:\n" + stdout)
+    try_for(10) { [x, y] == mouse_location }
     [x, y]
   end
 
@@ -306,7 +311,8 @@ class Screen
     end
     button = { 1 => 'left', 2 => 'middle', 3 => 'right' }[opts[:button]]
     debug_log("Mouse: #{action} #{button} button at (#{x}, #{y})") if opts[:log]
-    xdotool('click', '--repeat', opts[:repeat], opts[:button])
+    stdout = xdotool('click', '--repeat', opts[:repeat], opts[:button])
+    assert(stdout.empty?, "xdotool reported an error:\n" + stdout)
     [x, y]
   end
 end
@@ -316,7 +322,7 @@ end
 
 # This class is the same as Screen but with the image matching methods
 # wrapped so failures (FindFailed) are intercepted, and we enter an
-# interactive mode allowing images to be updated. Note that the the
+# interactive mode allowing images to be updated. Note that the
 # negative image matching methods (*_vanish()) are excepted (it
 # doesn't make sense for them).
 class ImageBumpingScreen
@@ -413,8 +419,8 @@ class ImageBumpingScreen
         end
       end
     else
-      define_method(m) do |*args|
-        return @screen.method(m).call(*args)
+      define_method(m) do |*args, **kwargs|
+        return @screen.method(m).call(*args, **kwargs)
       end
     end
   end

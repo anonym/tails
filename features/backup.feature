@@ -4,6 +4,8 @@ Feature: Backing up the persistent storage
   I want to backup my persistent storage
   And easily keep that backup updated
 
+  #18727
+  @fragile
   Scenario: Using Tails' custom backup tool to backup a newly added file
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     # The volume cannot be in use when GuestFs clones it, which we do below

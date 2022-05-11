@@ -62,6 +62,57 @@ and the plugins we have installed:
    → We should stay on top of security advisories and react more quickly than
    "in less than 3 months".
 
+Upgrade steps
+=============
+
+- Preparation:
+  - [ ] Go through the [changelog](https://www.jenkins.io/changelog/), paying attention to changes on how agents connect to controller, config changes that may need update, important changes in plugins, etc.
+- Deployment:
+  - [ ] Take note of currently running builds before starting the upgrades.
+  - [ ] Deploy Jenkins upgrade to latest version available using Puppet.
+  - [ ] Generate a list of up-to-date plugins by running [[this Groovy script|contribute/working_together/roles/sysadmins/Jenkins/1.generate-plugins-list.groovy]] in [[the Jenkins Script Console|https://jenkins.tails.boum.org/script]]. Make sure to update the initial list containing actively used plugins if there were changes.
+  - [ ] Generate updated Puppet code for `tails::jenkins::master` using [[this Python3 script|contribute/working_together/roles/sysadmins/Jenkins/2.generate-puppet-code.py]] and the output of the above script.
+  - [ ] Deploy plugin upgrades using the code generated above.
+  - [ ] Restart all agents.
+  - [ ] Manually run the Update jobs script (may be needed so XML is valid with current Jenkins):
+    ```
+    sudo -u jenkins /usr/local/sbin/deploy_jenkins_jobs update
+    ```
+- Wrap up:
+  - [ ] Go through warnings in Jenkins interface.
+  - [ ] Manually remove uneeded plugins from /var/lib/jenkins/plugins.
+  - [ ] Restart builds that were interrupted by Jenkins restart.
+  - [ ] Update the [[Jenkins upgrade steps documentation|https://tails.boum.org/contribute/working_together/roles/sysadmins/Jenkins#upgrade-steps]] in case there were changes.
+  - [ ] Schedule next update.
+
+Agent to controller connections
+===============================
+
+These are the steps a Jenkins agent does when connecting to the controller:
+
+1. Fetch connection info from `http://jenkins.lizard:8080` (see the `tails::jenkins::slave` Puppet class).
+2. Receive the connection URL `https://jenkins.tails.boum.org` ("Jenkins URL", manually configured in [Configure System](https://jenkins.tails.boum.org/configure)).
+3. Resolve `jenkins.tails.boum.org` to `192.168.122.1` (because of libvirt config).
+4. Connect using HTTPS to `jenkins.tails.boum.org:443`.
+5. Learn about port `42585` (fixed "TCP port for inbound agents", manually configured in [Configure Global Security](https://jenkins.tails.boum.org/configureSecurity/)).
+6. Finally, connect using HTTP to `jenkins.tails.boum.org:42585`.
+
+For those steps to work, the following configuration exists outside of Jenkins VMs:
+
+- Firewall rules in Lizard to forward agents traffic to `www.lizard`:
+  - `192.168.122.1:80` → `www.lizard:1180`
+  - `192.168.122.1:443` → `www.lizard:11443`
+  - `192.168.122.1:42585` → `www.lizard:42585`
+- Nginx configs in `www.lizard` to reverse proxy traffic to `jenkins.lizard`:
+  - `www.lizard:1180` → `jenkins.lizard:80`
+  - `www.lizard:11443` → `jenkins.lizard:443`
+  - `www.lizard:42585` → `jenkins.lizard:42585`
+
+What could be improved:
+
+- Ports 1180/80 are probably not needed in the configs above.
+- Port 42585 could be directly forwarded to `jenkins.lizard` as it's not TLS protected.
+
 Generating jobs
 ===============
 

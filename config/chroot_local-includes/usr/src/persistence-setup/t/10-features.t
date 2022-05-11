@@ -11,9 +11,9 @@ BEGIN {
 }
 
 use Test::BDD::Cucumber::Loader;
-use Test::BDD::Cucumber::Harness::TestBuilder;
+use Test::BDD::Cucumber::Harness::TAP;
 
 my ($executor, @features) = Test::BDD::Cucumber::Loader->load('features/');
-my $harness = Test::BDD::Cucumber::Harness::TestBuilder->new({});
+my $harness = Test::BDD::Cucumber::Harness::TAP->new({});
 $executor->execute( $_, $harness ) for @features;
 done_testing;

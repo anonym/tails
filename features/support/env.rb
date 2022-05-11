@@ -9,8 +9,13 @@ require 'rspec'
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-def fatal_system(str, *args)
-  unless system(str, *args)
+# Opt-in for deprecation warnings, so we learn early enough about code
+# that will break with newer Ruby versions (example: the separation of
+# positional and keyword arguments in Ruby 3.0).
+Warning[:deprecated] = true if Warning.respond_to?(:[]=)
+
+def fatal_system(...)
+  unless system(...)
     raise StandardError, "Command exited with #{$CHILD_STATUS}"
   end
 end

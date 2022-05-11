@@ -13,9 +13,9 @@ devices.
 
 <div class="caution">
 
-For security reasons, we recommend you to use only the <span
-class="application">Open Source Edition</span>, though it does not
-allow use of a Persistent Storage.
+<p>For security reasons, we recommend you to use only the
+<i>Open Source Edition</i>, though it does not
+allow use of a Persistent Storage.</p>
 
 </div>
 
@@ -50,9 +50,9 @@ a virtual machine only if the host operating system is trustworthy.
 
 <div class="caution">
 
-Microsoft Windows and macOS being proprietary software, they cannot be considered
+<p>Microsoft Windows and macOS being proprietary software, they cannot be considered
 trustworthy. Only run Tails in a virtual machine on Windows or macOS for testing
-purposes and do not rely on it for security.
+purposes and do not rely on it for security.</p>
 
 </div>
 
@@ -118,20 +118,25 @@ To start the new virtual machine:
 <div class="note">
 
 <p><i>VirtualBox Guest Additions</i> has been removed since Tails 4.27. As a
-result, the screen resolution of Tails can't be changed by resizing the
+result:</p>
+
+<ul>
+
+<li><p>The
+<a href="https://www.virtualbox.org/manual/ch04.html#guestadd-intro">shared clipboard</a>
+feature of <i>VirtualBox</i> is unavailable.</p></li>
+
+<li><p>The screen resolution of Tails can't be changed by resizing the
 virtual machine window in the host OS. The screen resolution must be changed
 from inside Tails.</p>
 
-<p>To change the screen resolution from inside Tails:</p>
-
-<ol>
-  <li>Open the [[system menu|doc/first_steps/desktop#system]] in the top-right corner.</li>
-  <li>Click on the [[!img lib/preferences-system.png alt="System" class="symbolic" link="no"]] button to open the system settings.</li>
-  <li>Choose <b>Devices ▸ Displays ▸ Resolution</b>.</li>
-</ol>
+<p>To change the screen resolution from inside Tails, choose
+<b>Applications&nbsp;▸ System Tools&nbsp;▸ Settings&nbsp;▸ Displays&nbsp;▸ Resolution</b>.</p>
 
 <p>You might also need to adjust the virtual machine window in the host OS to
-fit the new screen resolution.</p>
+fit the new screen resolution.</p></li>
+
+</ul>
 
 <p>We plan to add back <i>VirtualBox Guest Additions</i> in a future version
 of Tails. See [[!tails_ticket 18728]].</p>

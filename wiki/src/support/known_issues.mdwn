@@ -20,19 +20,13 @@ for general troubleshooting tips.</p>
 
 </div>
 
-<!--
-Last updated:
-- MacBook Air 3,2: 2014-06-27
-- MacBook Pro 4,1: 2014-08-15
--->
+Tails does not start at all on Mac models that use the Apple M1 chip and on
+many other Mac models.
 
-### MacBook Air 3,2 (A1369 EMC 2392)
-
-  Freezes when booting Tails in UEFI mode.
-
-### Mac Pro Tower and MacBook Pro 4,1 (both from early 2008)
-
-  Fail to start on Tails.
+Apple does not prioritize collaborating with Free Software projects. Their
+newest hardware is usually very hard for Free Software developers to get
+working with Linux, and thus Tails. PC hardware tends to be more open and work
+better with Linux.
 
 <h2 id="pc-not-at-all">PC</h2>
 
@@ -46,41 +40,6 @@ for general troubleshooting tips.</p>
 <p>[[Let us know|support/talk]] if you discover a new issue or workaround.</p>
 
 </div>
-
-<h3 id="sg-black-screen">Acer Travelmate 8573T-254G50M</h3>
-
-<!--
-Last updated: 2013-08-08
--->
-
-Booting from DVD works fine, but does not start from USB sticks.
-
-This problem might be corrected in Tails 1.1 and newer: please report
-your test results back to us.
-
-<h3 id="aspire-5315-icl50">Acer Aspire 5315-ICL50</h3>
-
-<!--
-Last updated: 2015-04-10
--->
-
-Does not start on USB sticks.
-
-<h3 id="acer-chromebook-c720p">Acer Chromebook C720P</h3>
-
-Does not start Tails 4.13.
-
-<h3 id="asus-vivobook-x202e">ASUS VivoBook X202E</h3>
-
-<!--
-Last updated: 2013-07-20
--->
-
-Legacy support needs to be enabled in order to start Tails. To enable
-legacy boot support, enable 'Launch CSM' under boot (menu).
-
-This problem might be corrected in Tails 1.1 and newer: please report
-your test results back to us.
 
 <h3 id="dell-latitude-e5250">Dell Latitude E5250</h3>
 
@@ -104,44 +63,6 @@ Error message: `Invalid partition table!`
 
 Workaround (at least with BIOS versions A09, A11, and A12): just hit enter
 and it will continue with the boot.
-
-<h3 id="dell-xps-l702x">Dell XPS L702X/03RG89, Samsung RV520, Samsung Series 7 Chronos</h3>
-
-<!--
-Last updated:
-- Dell XPS L702X/03RG89: 2012-08-22
-- Samsung RV520: 2012-12-21
-- Samsung Series 7 Chronos: 2014-02-28
--->
-
-Does not start on USB sticks.
-
-We were reported that the legacy BIOS shipped on these systems doesn't
-know how to deal with the GPT partition scheme used in Tails.
-
-This problem might be corrected in Tails 1.1 and newer: please report
-your test results back to us.
-
-<https://www.dell.com/community/Laptops-General-Read-Only/GPT-Bootable-Bios-Optimus-Switch-Are-Necessary-For-L502x-L702x/m-p/3699920>
-
-<h3 id="hp-compaq-dc5750">HP Compaq dc5750 Microtower</h3>
-
-<!--
-Last updated: 2015-02-10
-Specs: https://support.hp.com/us-en/document/c01110206
--->
-
-Does not start Tails 1.2.3.
-
-<h3 id="hp-compaq-615">HP Compaq 615</h3>
-
-<!--
-Last updated: 2013-11-05
-Specs: https://support.hp.com/gb-en/document/c01768616
--->
-
-You need to update the firmware to its latest version in order to start from a
-USB stick.
 
 <h3 id="hp-compaq-cq60-214dx">HP Compaq CQ60-214DX</h3>
 
@@ -184,51 +105,6 @@ That workaround applied to, at least, the following HP ProBook:
 * 4330s
 * 6560b
 
-<h3 id="lenovo-ideapad-y410p">Lenovo IdeaPad Y410p</h3>
-
-<!--
-Last updated: 2014-08-03
-Specs: https://www.lenovo.com/us/en/laptops/lenovo/y-series/y410p/
--->
-
-Does not start Tails 1.1 from USB installed manually in Linux.
-
-<h3 id="lenovo-ideapad-z585">Lenovo IdeaPad z585</h3>
-
-<!--
-Last updated: 2014-08-05
-Specs: https://www.cnet.com/products/lenovo-ideapad-z585-15-6-a8-4500m-6-gb-ram-750-gb-hdd/
--->
-
-Goes back continuously to Boot Loader on Tails installed on DVD.
-
-<h3 id="clevo-w258cu">Clevo W258CU, ThinkPad X121e, T420i, T410, T520, W520, W540, T530, T60, E325, and E530</h3>
-
-<!--
-Last updated:
-- Clevo W258CU: 2014-03-29
-- ThinkPad X121e: 2014-02-10
-  Specs: https://www.cnet.com/products/lenovo-thinkpad-x121e-3045-11-6-core-i3-2367m-windows-7-pro-64-bit-4-gb-ram-320-gb-hdd-series/
-- ThinkPad T420i: 2014-06-06
-  Specs: https://www.cnet.com/products/lenovo-thinkpad-t420i-4178-14-core-i3-2310m-windows-7-pro-64-bit-4-gb-ram-320-gb-hdd-series/
-- ThinkPad T520: 2012-10-11
-  Specs: https://www.cnet.com/products/lenovo-thinkpad-t520/
-- ThinkPad W520: 2014-02-17
-  Specs: https://www.cnet.com/products/lenovo-thinkpad-w520/
-- ThinkPad T60: 2018-04-30
-  Specs: https://www.cnet.com/products/lenovo-thinkpad-t60/specs/
-- ThinkPad E325: 2013-02-28
-  Specs: https://www.cnet.com/products/lenovo-thinkpad-edge-e325-1297-13-3-e-350-windows-7-pro-64-bit-4-gb-ram-320-gb-hdd-series/
-- ThinkPad E530: 2014-03-17
-  Specs: https://www.cnet.com/products/lenovo-thinkpad-edge-e530/
--->
-
-These machines do not start on USB sticks
-due to a firmware limitation.
-
-This problem might be corrected in Tails 1.1 and newer: please report
-your test results back to us.
-
 <h3 id="system76-oryx-pro">System76 Oryx Pro</h3>
 
 <!--
@@ -259,7 +135,7 @@ for general troubleshooting tips.</p>
 Last updated:
 - MacBook Air Retina 2019: 2019-11-01
 - MacBook Pro 8,3: 2019-11-01
-- MacBook Pro 5,1: 2015-06-19
+- MacBook Pro 16,1: 2021-08-12
 -->
 
 ### MacBook Air Retina 2018 and 2019
@@ -269,7 +145,7 @@ starting Tails|doc/advanced_topics/boot_options]]:
 
     modprobe.blacklist=thunderbolt
 
-Still, the trackpad and keyboard may not work. You may use an external
+Still, the trackpad and keyboard might not work. You can use an external
 mouse and keyboard.
 
 ### MacBook Pro 8,3 17" (AMD Radeon HD6770M and Intel HD Graphics 3000)
@@ -278,13 +154,6 @@ If Tails fails to start, [[add the following boot option when
 starting Tails|doc/advanced_topics/boot_options]]:
 
     radeon.modeset=0
-
-### MacBook Pro 5,1 17" (Nvidia GeForce 9400M)
-
-To make the display work properly, [[add the following boot option when
-starting Tails|doc/advanced_topics/boot_options]]:
-
-    nouveau.noaccel=1
 
 ### MacBook Pro 16,1 (A2141)
 
@@ -324,10 +193,6 @@ Tails|doc/advanced_topics/boot_options]]:
 
     acpi_rev_override=1 nouveau.modeset=0
 
-<h3 id="amd-ryzen-vega-graphics">AMD Ryzen with Vega graphics cards</h3>
-
-See [[support/known_issues/graphics#amd-vega]].
-
 <h3 id="dell-chromebook-lulu">Dell Chromebook LULU</h3>
 
 <!--
@@ -350,32 +215,6 @@ If you find a workaround, please let us know.
 
 <h1 id="problematic-usb-sticks">Problematic USB sticks</h1>
 
-<h3 id="pny">PNY</h3>
-
-<!--
-Last updated: 2014-08-02
-
-I asked help desk about it.
-
-PNY is quite popular among WB reporters:
-
-    436 SanDisk
-    187 Kingston
-    119 USB
-     88 Generic
-     82 Lexar
-     79 Intenso
-     57 Verbatim
-     56 TOSHIBA
-     50 PNY
-
-If it was still problematic on all PNY USB sticks, this issue would
-still be loud on help desk. Is it?
--->
-
-When installing Tails, PNY USB sticks have problems with the constant write load
-and are prone to failure.
-
 <h3 id="aegis">Aegis Secure Key 3.0</h3>
 
 <!--
@@ -394,7 +233,7 @@ Last updated: 2018-09-18
 Success report received on 2020-01-04
 -->
 
-Starting Tails from a Kingston DataTraveler 2000 or DataTraveler 100G3 may
+Starting Tails from a Kingston DataTraveler 2000 or DataTraveler 100G3 might
 not work.
 
 <h1 id="wi-fi">Wi-Fi issues</h1>
@@ -494,21 +333,9 @@ The Realtek RTL8821CE Wi-Fi adapter is not supported in Linux yet.
 
 This problem is tracked by [[!debbug 917941]].
 
-<h1 id="security-issues">Security issues</h1>
-
-<h2 id="video-memory">Tails does not erase video memory</h2>
-
-Tails doesn't erase the [[!wikipedia Video_RAM_(dual-ported_DRAM) desc="video memory"]] yet.
-When one uses Tails, then restarts the computer into another operating
-system, that other operating system might, for a moment, display the last
-screen that was displayed in Tails.
-
-Shutting down the computer completely, instead of restarting it,
-might allow the video memory to empty itself.
-
-See [[!tails_ticket 5356 desc="Erase video memory on shutdown"]].
-
 <!--
+
+<h1 id="security-issues">Security issues</h1>
 
 Note: If we enable again this section in the future, we should link to
 it from /doc/anonymous_internet/Tor_Browser#fingerprint.
@@ -526,40 +353,9 @@ in Tails|doc/anonymous_internet/Tor_Browser#fingerprint]].
 
 -->
 
-<h1 id="other-issues">Other issues</h1>
-
-<h2 id="openpgp-import">Importing OpenPGP public keys using the <span class="application">Passwords and Keys</span> utility does nothing</h2>
-
-[[!inline pages="support/known_issues/import_broken_in_seahorse.inline" raw="yes" sort="age"]]
-
-<h2 id="boot-loader-display-issues">Boot Loader has display issues</h2>
-
-- For issues with graphics cards, see our [[known issues with graphics cards|known_issues/graphics]].
-
-<!--
-Last updated: 2014-06-27
-
-I asked some ThinkPad X230 users to confirm.
--->
-
-Since Tails 1.1, on some hardware (ThinkPad X230, MacBook Pro 8,1),
-the Boot Loader is not displayed properly. Tails starts fine, though.
+<h1 id="hardware">Other hardware issues</h1>
 
 <h2 id="touchpad-configurations">Touchpad configurations</h2>
-
-<h3 id="acer-travelmate-b113">Acer TravelMate B113 - ETPS/2 Elantech Touchpad</h3>
-
-<!--
-Last updated: 2013-08-15
-Specs: https://www.cnet.com/products/acer-travelmate-b113-e-2419-11-6-celeron-1017u-4-gb-ram-320-gb-hdd/
--->
-
-    synclient FingerPress=256;
-    synclient TapButton3=0;
-    synclient Clickpad=1;
-    synclient VertTwoFingerScroll=1;
-    synclient FingerLow=1;
-    synclient FingerHigh=1;
 
 <h3 id="acer-c720">Acer C720 - Cypress APA Touchpad</h3>
 
@@ -582,6 +378,80 @@ Tails|doc/advanced_topics/boot_options]]:
 
     pci=nocrs
 
+<h2 id="lenovo-thinkpad-11e">Lenovo ThinkPad 11e</h2>
+
+<!--
+Last updated: 2018-03-22
+Specs: https://www.cnet.com/products/lenovo-thinkpad-11e/specs/
+-->
+
+Tails might be unstable and stop working regularly on some Lenovo
+ThinkPad 11e laptops, such as the 2015 model.
+
+To fix this problem, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
+
+    intel_idle.max_cstate=1
+
+<h2 id="usb-gigabyte">USB devices are not working on some <a href="https://www.gigabyte.com/">GIGABYTE</a> motherboards</h2>
+
+<!--
+Last updated: 2019-06-02
+-->
+
+To workaround this issue, you can try to:
+
+- Use other USB ports. For example, use USB 2 ports instead of USB 3
+  ports and vice versa.
+
+- Enable these 3 options in the BIOS
+
+  - xHCI handoff
+  - EHCI handoff
+  - IOMMU controller
+
+- [[Add the following boot option when
+  starting Tails|doc/advanced_topics/boot_options]]:
+
+      amd_iommu=on iommu=pt
+
+- Disable IOMMU in the BIOS then enable it again.
+
+Some of these workarounds might disable some of the USB ports.
+
+<h2 id="graphics-corruption-tor-browser">Graphics corruption in Tor Browser and Thunderbird</h2>
+
+<!--
+Last updated: 2020-02-22
+-->
+
+On some computers, _Tor Browser_ and _Thunderbird_ are displayed incorrectly:
+
+ - The application window is initially empty and white.
+ - The icons and menus only appear when hovered by the mouse.
+ - The contents of the window is only displayed in stripes when scrolling.
+
+To workaround this issue, [[add the following boot option when
+starting Tails|doc/advanced_topics/boot_options]]:
+
+    intel_iommu=off
+
+This problem affects at least the following computers:
+
+ - MacBookPro11,5
+ - other MacBooks with a Radeon R9 graphics adapter
+
+<h3 id="acer-swift-3">Acer Swift 3</h3>
+
+<!--
+Last updated: 2020-05-30
+-->
+
+In order to allow Tails to use all available memory,
+start Tails from the *F2 EFI setup* firmware entry.
+
+<h1 id="misc">Other issues</h1>
+
 <h2 id="bluetooth-devices-dont-work">Bluetooth devices don't work</h2>
 
 Bluetooth is not enabled in Tails for security reasons.
@@ -603,8 +473,6 @@ Sometimes, after an automatic upgrade, your Tails might either:
 
 To fix this problem, you can [[update your Tails
 manually|doc/upgrade/#manual]].
-
-Note that your Persistent Storage will be safely preserved.
 
 <h2 id="persistence-disappears"><em>Persistent</em> folder disappears and data of the Persistent Storage is unavailable</h2>
 
@@ -664,100 +532,14 @@ execute the following command in a terminal:
 
     sudo chown root:root /live/persistence/TailsData_unlocked
 
-<h2 id="languages-incorrect-keyboard-layout">Some languages do not have the correct keyboard layout set by default</h2>
+<h2 id="video-memory">Tails does not erase video memory</h2>
 
-<!--
-Last updated: 2017-08-07
--->
+Tails doesn't erase the [[!wikipedia Video_RAM_(dual-ported_DRAM) desc="video memory"]].
 
-When selecting some languages in the Welcome Screen, the default associated
-keyboard layout fallbacks to US.
+When you restart your computer after using Tails, it might briefly display the
+last screen that was displayed in Tails.
 
-To use the right keyboard layout during a session, set it in the Welcome
-Screen after having set the language. When the desktop has started, apply
-the keyboard layout by clicking on the `en` systray icon.
+If you shut down your computer instead of restarting it, the video memory will
+erase itself automatically after some time.
 
-Affected language codes are `AYC`, `BHB`, `BRX`, `CMN`, `HAK`, `HNE`, `LIJ`,
-`LZH`, `MHR`, `NAN`, `NHN`, `QUZ`, `SGS`, `SHS`, `TCY`, `THE`, `UNM`, `WAE` and
-`YUE`.
-
-<h2 id="openpgp-prompt-steals-focus">The OpenPGP passphrase prompt steals the keyboard and mouse focus</h2>
-
-<!--
-Last updated: 2018-01-15
--->
-
-This happens when the GnuPG feature of the Persistent Storage was turned on before
-Tails 2.3. To fix this problem, execute the following command in
-a
-[[terminal|doc/first_steps/desktop#terminal]]:
-
-	echo "no-grab" >> ~/.gnupg/gpg-agent.conf
-
-<h2 id="lenovo-thinkpad-11e">Lenovo ThinkPad 11e</h2>
-
-<!--
-Last updated: 2018-03-22
-Specs: https://www.cnet.com/products/lenovo-thinkpad-11e/specs/
--->
-
-Tails may be unstable and stop working regularly on some Lenovo
-ThinkPad 11e laptops, such as the 2015 model.
-
-To fix this problem, [[add the following boot option when
-starting Tails|doc/advanced_topics/boot_options]]:
-
-    intel_idle.max_cstate=1
-
-<h2 id="usb-gigabyte">USB devices are not working on some <a href="https://www.gigabyte.com/">GIGABYTE</a> motherboards</h2>
-
-<!--
-Last updated: 2019-06-02
--->
-
-To workaround this issue, you can try to:
-
-- Use other USB ports. For example, use USB 2 ports instead of USB 3
-  ports and vice versa.
-
-- Enable these 3 options in the BIOS
-
-  - xHCI handoff
-  - EHCI handoff
-  - IOMMU controller
-
-- [[Add the following boot option when
-  starting Tails|doc/advanced_topics/boot_options]]:
-
-      amd_iommu=on iommu=pt
-
-- Disable IOMMU in the BIOS then enable it again.
-
-Some of these workarounds may disable some of the USB ports.
-
-<h2 id="graphics-corruption-tor-browser">Graphics corruption in Tor Browser and Thunderbird</h2>
-
-<!--
-Last updated: 2020-02-22
--->
-
-On some computers, _Tor Browser_ and _Thunderbird_ are displayed incorrectly:
-
- - The application window is initially empty and white.
- - The icons and menus only appear when hovered by the mouse.
- - The contents of the window is only displayed in stripes when scrolling.
-
-To workaround this issue, [[add the following boot option when
-starting Tails|doc/advanced_topics/boot_options]]:
-
-    intel_iommu=off
-
-This problem affects at least the following computers:
-
- - MacBookPro11,5
- - other MacBooks with a Radeon R9 graphics adapter
-
-<h3 id="acer-swift-3">Acer Swift 3</h3>
-
-In order to allow Tails to use all available memory,
-start Tails from the *F2 EFI setup* firmware entry.
+See [[!tails_ticket 5356 desc="Erase video memory on shutdown"]].

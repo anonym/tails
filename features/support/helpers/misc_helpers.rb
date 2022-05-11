@@ -71,6 +71,7 @@ def try_for(timeout, **options)
         # sometimes it does not, most likely due to nested usage of
         # it, possibly due to some Ruby bug.
         raise unique_timeout_exception if timeout < elapsed
+
         debug_log("try_for: attempt #{attempts} (#{elapsed}s elapsed " \
                   "of #{timeout}s)...") if options[:log]
         if yield
@@ -183,7 +184,7 @@ def retry_tor(recovery_proc = nil, &block)
                operation_name: 'Tor operation', &block)
 end
 
-def retry_action(max_retries, options = {}, &block)
+def retry_action(max_retries, **options, &block)
   assert(max_retries.is_a?(Integer), 'max_retries must be an integer')
   options[:recovery_proc] ||= nil
   options[:operation_name] ||= 'Operation'
@@ -235,13 +236,6 @@ def save_tor_journal
     file.write("Tor Journal\n")
     file.write("===========\n")
     file.write($vm.file_content('/tmp/tor.journal') + "\n")
-    file.write("Tor logs (/var/log/tor/log)\n")
-    file.write("===========================\n")
-    if $vm.file_exist?('/var/log/tor/log')
-      file.write($vm.file_content('/var/log/tor/log'))
-    else
-      file.write("The Tor logs did not exist\n")
-    end
   end
 end
 
@@ -480,6 +474,7 @@ end
 def drop_markup(str)
   done, first_tag, rest = str.partition(%r{<([^/>]+)>})
   return str if first_tag.empty?
+
   closer = "</#{Regexp.last_match[1]}>"
   if rest.include?(closer)
     rest.sub!(closer, '')
@@ -491,11 +486,11 @@ end
 
 # We discard unused keyword parameters by adding `**_` to the definition
 def translate(str, translation_domain: nil, drop_accelerator: true, drop_markup: true, **_)
-  if $language.empty? || translation_domain.nil? || translation_domain.empty?
-    rv = str
-  else
-    rv = $vm.execute_successfully("gettext '#{translation_domain}' '#{str}'").stdout
-  end
+  rv = if $language.empty? || translation_domain.nil? || translation_domain.empty?
+         str
+       else
+         $vm.execute_successfully("gettext '#{translation_domain}' '#{str}'").stdout
+       end
   if drop_accelerator
     assert(str.count('_') <= 1, 'translate() are supposed to drop the ' \
                                 'accelerator, but there are multiple ' \

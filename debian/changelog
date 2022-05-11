@@ -1,8 +1,372 @@
-tails (4.29) UNRELEASED; urgency=medium
+tails (5.1) UNRELEASED; urgency=medium
 
   * Dummy entry for next release.
 
- -- boyska <boyska@riseup.net>  Tue, 08 Mar 2022 17:38:49 +0100
+ -- boyska <boyska@riseup.net>  Tue, 03 May 2022 16:46:26 +0200
+
+tails (5.0) unstable; urgency=medium
+
+  * Upgrade Thunderbird to 91.8
+
+  * Upgrade Tor Browser to 11.0.11 (based on esr91.9) (tails/tails!804)
+
+    Commits:
+      - Test suite: update expected image
+      - Test suite: update expected web page title
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.0.11-build1
+
+  * Fix Additional Software test suite on Bullseye (tails/tails!794)
+
+    Commits:
+      - Test suite: use popularity-contest as a test package instead of sslh
+
+  * Fix devel branch FTBFS (tails/tails!773)
+
+    Commits:
+      - Preserve UIDs/GIDs stability
+      - Refresh list of standard packages
+
+  * Drop obsolete patch (tails/tails!690)
+
+    Commits:
+      - Drop obsolete patch
+
+  * all languages are listed (tails/tails!683)
+
+    Commits:
+      - all formats are shown
+      - translations appear again in Greeter
+      - when native l10n is not available, use english
+      - all languages are listed
+
+  * Fix the Tails Installer in bullseye (tails/tails!679)
+
+    Commits:
+      - retry has shorter sleep times
+      - FIX self.sleep never existed
+      - retry getting udisks object upon failure
+      - don't rescan devices: we already know!
+      - partition_device returns a UDI
+      - refactor detect_supported_drives
+      - retrying getting system partition helps
+      - race conditions? let's increase sleep time!
+
+  * Document Kleopatra (tails/tails!803)
+
+    Commits:
+      - Be more clear
+      - Improve grammar
+      - Be more clear
+      - Improve grammar
+      - Fix typo
+      - Fix broken links
+      - Mention Kleopatra in the Persistent Storage settings
+      - Remove not-so-useful note
+      - Document Kleopatra (Closes: #18933)
+      - Remove Seahorse from the doc
+      - Remove screenshots that need updating
+      - Remove OpenPGP Applet from the doc
+      - Patch screenshots for the removal of the OpenPGP Applet
+
+  * Fix opening links and attachments from Thunderbird, disable LibreOffice tip of
+    the day (tails/tails!793)
+
+    Commits:
+      - AppArmor Thunderbird profile: allow executing /bin/dash with inherited policy
+      - Disable LibreOffice's tip of the day
+
+  * fix whisperback sending error (tails/tails!787)
+
+    Commits:
+      - Thread.isAlive -> is_alive
+
+  * Fix Scenario: Upgrading an old Tails USB installation from another Tails USB
+    drive (tails/tails!765)
+
+    Commits:
+      - apparently fix tails/tails#18840
+      - send tails installer log to syslog
+
+  * Additional Software: synchronize APT data when needed directly from t-p-s
+    (tails/tails!764)
+
+    Commits:
+      - Test suite: restart Tails in the same way we expect the user to
+      - Test suite: don't exit the persistence wizard once done, make saving settings
+        explicit
+      - Test suite: refactoring (convert step to method)
+      - Additional Software: synchronize APT data when needed directly from t-p-s
+      - Remove XXX:Bullseye: this is not going to happen
+
+  * Persistence: enable Additional Software by default (tails/tails!800)
+
+    Commits:
+      - Persistence Setup: adjust test suite to Additional Software being enabled by
+        default
+      - Persistence: enable Additional Software by default
+
+  * Let the user know they should wait while we are copying Additional Software to
+    a new Persistent Storage (tails/tails!799)
+
+    Commits:
+      - Use phrasing proposed by sajolida
+      - t-p-s: ensure the GUI is updated while we synchronize data to the new
+        Persistent Storage
+      - Persistence setup: forbid clicking "Restart Now" twice in a row
+      - Test suite: save a file listing of /var/cache/apt when a Additional Software
+        scenario fails
+      - Let the user know they should wait while we are copying Additional Software
+        data to a new Persistent Storage
+
+  * htpdate.service is always started (tails/tails!796)
+
+    Commits:
+      - be more explicit about what we are testing
+      - htpdate is started every time
+      - some tests can be excluded from feature branches
+      - add regression test for #18868
+      - start htpdate.service earlier
+
+  * Replace Seahorse and OpenPGP Applet with Kleopatra (tails/tails!792)
+
+    Commits:
+      - Ensure Seahorse icons are present when running the persistence-setup test suite
+      - Persistent Storage: re-add custom icons for the GnuPG and SSH Client features
+      - FT role definition: remove seahorse-nautilus
+      - Contributors & design doc: drop OpenPGP Applet
+      - Remove the topIcons GNOME Shell extension
+      - Test suite: remove OpenPGP Applet tests, and the code & images they used
+      - Re-add and update explanation for disabling ssh-agent
+      - Remove broken patch
+      - Remove Gettext stuff for Seahorse
+      - Remove hooks about Seahorse and OpenPGP Applet
+      - Replace our PGP tools with Kleopatra
+
+  * Fix Bullseye-based Tails booting 20% slower than 4.x (tails/tails!791)
+
+    Commits:
+      - Freeze the AppArmor kernel feature set too
+
+  * Stop trusting our old APT signing key (tails/tails!788)
+
+    Commits:
+      - Bump APT snapshots to versions signed with our new key
+      - Test suite: stop ignoring our old APT key
+      - Stop trusting our old APT signing key
+
+  * Update live-build to include the local packages fix. (tails/tails!776)
+
+    Commits:
+      - Update live-build to include the local packages fix.
+
+  * Tails Installer: retry getting partition table (tails/tails!767)
+
+    Commits:
+      - retry getting partition table
+
+  * Update gdm-tails.json for Bullseye (tails/tails!689)
+
+    Commits:
+      - Add pointer accessibility support to gdm-tails.json
+      - gdm-tails.json: remove panelStyle
+
+  * Update VeraCrypt test suite for Bullseye (tails/tails!686)
+
+    Commits:
+      - Test suite: trim expected image to account for GNOME mounted volume
+        notification
+      - Give exchange USB drive more space
+      - Test suite: update to new GNOME Disks UI
+      - Test suite: update Nautilus application name
+      - Test suite: update expected picture
+
+ -- Tails developers <tails@boum.org>  Mon, 02 May 2022 12:03:37 +0200
+
+tails (5.0~beta1) unstable; urgency=medium
+
+  * Upgrade to Debian 11 (Bullseye).
+    - Fixes opening a Veracrypt volume with a long passphrase (tails#17474)
+    - NetworkManager now uses its internal DHCP client
+    - Removes python2
+    - Software upgrades:
+      - GNOME 3.38
+      - Audacity 2.4.2
+      - bookletimposer 0.3
+      - GIMP 2.20.22
+      - Inkscape 1.0.2
+      - LibreOffice 7.0.4
+      - NetworkManager 1.30.0
+      - OnionCircuits 0.7
+      - Pidgin 2.14.1
+      - Thunderbird 91.7.0-2~deb11u1
+      - X.Org 1.20.11
+
+  * Upgrade Tor Browser to 11.0.10-build1 (tails#777)
+
+  * Enable driverless printing and scanning (tails#18521)
+
+  * Fix locales translation in the Welcome Screen (tails#18199, tails/tails!683)
+
+    Commits:
+      - all formats are shown
+      - translations appear again in Greeter
+      - when native l10n is not available, use english
+      - all languages are listed
+
+  * Drop hack to kill GDM on login, not necessary anymore on Bullseye (tails#17952)
+
+  * Have tor log to the Journal (tails#18842)
+
+  * Have NetworkManager and MAC spoofing ignore veth* network interfaces (tails#18443)
+
+  * Drop deprecated printer-driver-hpijs (tails#18225)
+
+  * Fix devel branch FTBFS (tails/tails!773)
+
+    Commits:
+      - Preserve UIDs/GIDs stability
+      - Refresh list of standard packages
+
+  * Drop obsolete patch (tails/tails!690)
+
+    Commits:
+      - Drop obsolete patch
+
+  * Fix the Tails Installer in bullseye (tails/tails!679)
+
+    Commits:
+      - retry has shorter sleep times
+      - FIX self.sleep never existed
+      - retry getting udisks object upon failure
+      - don't rescan devices: we already know!
+      - partition_device returns a UDI
+      - refactor detect_supported_drives
+      - retrying getting system partition helps
+      - race conditions? let's increase sleep time!
+
+  * Fix Scenario: Upgrading an old Tails USB installation from another Tails USB
+    drive (tails/tails!765)
+
+    Commits:
+      - apparently fix tails/tails#18840
+      - send tails installer log to syslog
+
+  * Additional Software: synchronize APT data when needed directly from t-p-s
+    (tails/tails!764)
+
+    Commits:
+      - Test suite: restart Tails in the same way we expect the user to
+      - Test suite: don't exit the persistence wizard once done, make saving settings
+        explicit
+      - Test suite: refactoring (convert step to method)
+      - Additional Software: synchronize APT data when needed directly from t-p-s
+      - Remove XXX:Bullseye: this is not going to happen
+
+  * Update gdm-tails.json for Bullseye (tails/tails!689)
+
+    Commits:
+      - Add pointer accessibility support to gdm-tails.json
+      - gdm-tails.json: remove panelStyle
+
+  * Update VeraCrypt test suite for Bullseye (tails/tails!686)
+
+    Commits:
+      - Test suite: trim expected image to account for GNOME mounted volume
+        notification
+      - Give exchange USB drive more space
+      - Test suite: update to new GNOME Disks UI
+      - Test suite: update Nautilus application name
+      - Test suite: update expected picture
+
+ -- Tails developers <tails@boum.org>  Mon, 04 Apr 2022 09:25:25 +0000
+
+tails (4.29) unstable; urgency=medium
+
+  * Upgrade to Tor Browser 11.0.x based on Firefox 91.8 (tails/tails!777)
+
+    Closes issues:
+      - Upgrade to Tor Browser 11.0.x based on Firefox 91.8 (tails/tails#18874)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.0.10-build1
+
+  * Upgrade Thunderbird to 91.7
+
+  * Upgrade to obfs4proxy 0.0.12 (Elligator2 bug) (tails/tails!728)
+
+    Closes issues:
+      - Fix bug in obfs4proxy (Elligator2), upgrading to 0.0.12+ (tails/tails#18800)
+
+    Commits:
+      - Revert "Downgrade obfs4proxy to 0.0.12-dev from the Tor Browser 11.0.4 tarball"
+
+  * htpdate: log to stdout even when a log file is specified (tails/tails!772)
+
+    Closes issues:
+      - htpdate: also log to the Journal (tails/tails#18895)
+
+    Commits:
+      - htpdate: log to stdout even when a log file is specified
+
+  * Upgrade to Buster 10.12 and Linux 5.10.103-1 (tails/tails!771)
+
+    Closes issues:
+      - Upgrade to Buster 10.12 (tails/tails#18885)
+      - Upgrade Linux to 5.10.103-1 (DSA-5095-1) (tails/tails#18877)
+
+    Commits:
+      - Drop unused KERNEL_SOURCE_VERSION variable
+      - Upgrade to Buster 10.12 and Linux 5.10.106-1
+
+  * Test suite: drop OTR tests (tails/tails!769)
+
+    Closes issues:
+      - "Pidgin automatically generates an OTR key" test suite step fails when host
+        system is Bullseye (tails/tails#18866)
+
+    Commits:
+      - Test suite: rename otr-bot to xmpp-bot
+      - Test suite: drop support for OTR
+      - Test suite: drop OTR tests
+
+  * Provide HTTPS link when JavaScript is disabled (#18559) (tails/tails!755)
+
+    Commits:
+      - Update release process
+      - Improve comment
+      - Provide HTTPS link when JavaScript is disabled (#18559)
+
+  * Clarify purpose and timeline (tails/tails!744)
+
+    Commits:
+      - Add link to release notes on GitLab
+      - Include technical writers in the procedure
+      - Fix Markdown
+      - Clarify where
+      - Remember Technical Writers where to find the latest stable
+      - Clarify purpose and timeline
+
+  * Upgrade zlib1g to 1:1.2.11.dfsg-1+deb10u1 (DSA-5111-1)
+
+
+  * doc updates after releasing 4.28 (tails/tails!742)
+
+    Commits:
+      - Use expected location of release notes
+      - Easier technical-writers notification
+      - clean RCs from rsync.lizard: command
+      - twitter: less brain usage, more commands
+      - clicking links is easier than thinking
+      - RM: please communicate before clocking off
+      - more parallelization: do tests while IUKs are building
+      - lesson learned: read DSA mailing list
+      - be sure you are on the right branch
+      - importing PO often fails: let's explain why
+      - check iuks/v2 exists: scripted
+
+ -- Tails developers <tails@boum.org>  Mon, 04 Apr 2022 13:21:09 +0200
 
 tails (4.28) unstable; urgency=medium
 
@@ -90,7 +454,7 @@ tails (4.27) unstable; urgency=medium
   * Upgrade Tor Browser to 11.0.6-build1, based on Firefox 91.6 (tails!724)
 
     Closes issues: tails#18799
-  
+
     This upgrades obfs4proxy to the version shipped with Tor Browser 11.0.4
     (0.0.11 + a few commits).
 
@@ -1258,7 +1622,7 @@ tails (4.21) unstable; urgency=medium
       - Upgrade snapshot of the Debian archive to 2021080201
 
   * Upgrade Thunderbird to 78.12.0-1~deb10u1
-  
+
   * Don't (attempt to) build VirtualBox guest modules anymore (tails/tails!537)
 
     Commits:
@@ -2338,7 +2702,7 @@ tails (4.18) unstable; urgency=medium
 tails (4.17) unstable; urgency=medium
 
   * Upgrade Thunderbird to 78.8.0-1~deb10u1
-  
+
   * Upgrade Tor Browser to 10.0.14-build1 (tails/tails!382)
 
     Commits:
@@ -12514,7 +12878,7 @@ tails (0.7.1) unstable; urgency=high
   - Remove now useless "splash" boot parameter.
   - Fix a bunch of i386-isms.
   - Pass the noswap option to the kernel. This does not change actual Tails
-    behaviour but prevents users from unnecessarily worrying because of 
+    behaviour but prevents users from unnecessarily worrying because of
     the "Activating swap" boot message.
   - Make use of check.torproject.org's Arabic version.
 
@@ -12533,7 +12897,7 @@ tails (0.7) unstable; urgency=low
 
   * Software
   - Deinstall unwanted packages newly pulled by recent live-build.
-  
+
  -- Tails developers <amnesia@boum.org>  Wed, 06 Apr 2011 22:58:51 +0200
 
 tails (0.7~rc2) unstable; urgency=low
@@ -12541,7 +12905,7 @@ tails (0.7~rc2) unstable; urgency=low
   ** SNAPSHOT build @824f39248a08f9e190146980fb1eb0e55d483d71 **
 
   * Rebase on Debian Squeeze 6.0.1 point-release.
-  
+
   * Vidalia: new 0.2.10-3+tails5 custom package..
 
   * Hardware support
@@ -12563,7 +12927,7 @@ tails (0.7~rc1) UNRELEASED; urgency=low
   * Rebase on Debian Squeeze.
 
   * T(A)ILS has been renamed to Tails.
-  
+
   * Protecting against memory recovery
     New, safer way to wipe memory on shutdown which is now also used when
     the boot media is physically removed.
@@ -12593,7 +12957,7 @@ tails (0.7~rc1) UNRELEASED; urgency=low
     to use.
   - Upgrade WhisperBack to 1.3.1 (bugfixes, French translation).
   - Install scribus-ng instead of scribus. It is far less buggy in Squeeze.
-  
+
   * Firewall
   - Drop incoming packets by default.
   - Forbid queries to DNS resolvers on the LAN.
@@ -12705,7 +13069,7 @@ tails (0.6~rc3) UNRELEASED; urgency=low
   * Iceweasel
   - Autostart Iceweasel with the GNOME session. This workarounds the
     "Iceweasel first page is not loaded" bug.
-  
+
   * HTP
   - Upgrade htpdate script (taken from Git 7797fe9).
 
@@ -12877,7 +13241,7 @@ tails (0.5) unstable; urgency=low
     Live system on a regular basis, don't they?
 
   * Vidalia: rebased our custom package against 0.2.8.
-  
+
   * Claws Mail
   - Install Claws Mail from backports.org to use the X.509 CA
     certificates provided by Debian.
@@ -12886,7 +13250,7 @@ tails (0.5) unstable; urgency=low
       . Use gpg-agent to manage passwords.
       . Display warning on start-up if GnuPG doesn't work.
   - Set the IO timeout to 120s (i.e. the double of the default 60s).
-  
+
   * Pidgin
   - Automatically connect to irc.oftc.net with a randomized nickname,
     so as not to advertize the use of T(A)ILS; this nickname is made of:
@@ -12909,13 +13273,13 @@ tails (0.5) unstable; urgency=low
       . stop shipping binary NSS files. These were here only to
         install CaCert's certificate, that is actually shipped by Debian's
         patched libnss.
-  
+
   * Build system
   - Updated Debian Live snapshots APT repository URL.
   - Purge all devel packages at the end of the chroot configuration.
   - Make sure the hook that fixes permissions runs last.
   - Remove unwanted Iceweasel search plugins at build time.
-  
+
   * Misc
   - Added a progress bar for boot time file readahead.
   - Readahead more (~37MB) stuff in foreground at boot time.
@@ -12941,7 +13305,7 @@ tails (0.5) unstable; urgency=low
   * onBoard
   - Upgraded to a new custom, patched package (0.93.0-0ubuntu4~amnesia1).
   - Added an entry in the Applications menu.
-  
+
   * Software
   - Install vim-nox with basic configuration
   - Install pwgen
