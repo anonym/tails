@@ -46,30 +46,32 @@ $(gettext "The Unsafe Browser is not anonymous and the websites that you visit c
     fi
 }
 
-verify_is_enabled () {
-    # Check if the Unsafe Browser was disabled in the startup options
-    if ! unsafe_browser_is_enabled; then
-	local msg restart close
-	msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
+exit_because_disabled() {
+    local msg restart cancel confirm_msg confirm_button
+    msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
 To <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and enable \
 the Unsafe Browser in the additional settings of the Welcome Screen.")"
-	# Only mention the Persistent Storage if there is one (see #18551)
-	if persistence_is_enabled; then
-	    msg="${msg}""$(gettext "\n\nTo always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
-	fi
-
-	restart="$(gettext "_Restart")"
-	close="$(gettext "_Close")"
-	if  sudo -u "${SUDO_USER}" \
-         zenity --question --ellipsize --title "" --text "${msg}" --icon-name="dialog-error" \
-                --ok-label "${restart}"  --cancel-label "${close}"; then
-            if ! /sbin/reboot; then
-		error "$(gettext "Failed to restart the system.")"
-	    fi
-	else
-	    exit 1
-	fi
+    # Only mention the Persistent Storage if there is one (see #18551)
+    if persistence_is_enabled; then
+	msg="${msg}""$(gettext "\n\nTo always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
     fi
+
+    restart="$(gettext "_Restart")"
+    cancel="$(gettext "_Cancel")"
+    confirm_msg="$(gettext "Do you really want to restart Tails now?\n\nAll your current work will be lost.")"
+    confirm_button="$(gettext "Restart Now")"
+    if sudo -u "${SUDO_USER}" \
+             zenity --question --ellipsize --title "" --text "${msg}" --icon-name="dialog-error" \
+                    --ok-label "${restart}"  --cancel-label "${cancel}" --default-cancel \
+       && \
+       sudo -u "${SUDO_USER}" \
+            zenity --question --width=300 --title "" --text "${confirm_msg}" \
+                   --ok-label "${confirm_button}" --cancel-label "${cancel}" --default-cancel
+    then
+        /sbin/reboot || error "$(gettext "Failed to restart the system.")"
+    fi
+
+    exit 1
 }
 
 show_start_notification () {
@@ -99,7 +101,8 @@ HUMAN_READABLE_NAME="$(gettext "Unsafe Browser")"
 WARNING_PAGE='/usr/share/doc/tails/website/misc/unsafe_browser_warning'
 HOME_PAGE="$(localized_tails_doc_page "${WARNING_PAGE}")"
 
-verify_is_enabled
+# Check if the Unsafe Browser was disabled in the startup options
+unsafe_browser_is_enabled || exit_because_disabled
 
 # Prevent multiple instances of the script.
 exec 9>"${LOCK}"
