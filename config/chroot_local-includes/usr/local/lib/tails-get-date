@@ -17,7 +17,7 @@ def main():
         try:
             locale.setlocale(locale.LC_TIME, os.environ['LC_TIME'])
         except locale.Error:
-            logging.warning('Invalid timezone specificied: %s', os.environ['LC_TIME'])
+            logging.warning('Invalid timezone specified: %s', os.environ['LC_TIME'])
 
     try:
         tca_state = json.load(open('/run/tca/tca.state'))
