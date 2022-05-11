@@ -8,7 +8,7 @@ Feature: Time syncing
     Given I have started Tails from DVD without network and logged in
     When the network is plugged
     And Tor is ready
-    Then Tails clock is less than 5 minutes incorrect
+    Then the system clock is less than 5 minutes incorrect
 
   Scenario: Clock with host's time while using bridges
     Given I have started Tails from DVD without network and logged in
@@ -16,7 +16,7 @@ Feature: Time syncing
     And the Tor Connection Assistant autostarts
     And I configure some normal bridges in the Tor Connection Assistant
     And Tor is ready
-    Then Tails clock is less than 5 minutes incorrect
+    Then the system clock is less than 5 minutes incorrect
 
   Scenario: Clock is one day in the future while using bridges
     Given I have started Tails from DVD without network and logged in
@@ -25,7 +25,7 @@ Feature: Time syncing
     And the Tor Connection Assistant autostarts
     And I configure some normal bridges in the Tor Connection Assistant
     And Tor is ready
-    Then Tails clock is less than 5 minutes incorrect
+    Then the system clock is less than 5 minutes incorrect
 
   @not_release_blocker
   Scenario: The system time is not synced to the hardware clock
@@ -63,9 +63,9 @@ Feature: Time syncing
     Then the Tor Connection Assistant reports that it failed to connect
     # The "Fix Clock" button allows users to recover from this bug
     When I set the time zone in Tor Connection to "Asia/Shanghai"
-    Then Tails clock is less than 20 minutes incorrect
+    Then the system clock is less than 20 minutes incorrect
     When I click "Connect to Tor"
     Then Tor is ready
     And all Internet traffic has only flowed through the configured bridges
     # check that htpdate has done its job
-    And Tails clock is less than 5 minutes incorrect
+    And the system clock is less than 5 minutes incorrect

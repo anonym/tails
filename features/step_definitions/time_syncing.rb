@@ -42,7 +42,7 @@ When /^I bump the (hardware clock's|system) time with "([^"]+)"$/ do |clock_type
          "'#{expected_time_lower_bound}' but is '#{new_time}'")
 end
 
-Then /^Tails clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
+Then /^the system clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
   guest_time_str = $vm.execute('date --rfc-2822').stdout.chomp
   guest_time = Time.rfc2822(guest_time_str)
   host_time = Time.now
