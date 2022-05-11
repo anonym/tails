@@ -6,6 +6,7 @@ import logging
 import locale
 import os
 import sys
+import zoneinfo
 
 
 def main():
@@ -31,9 +32,8 @@ def main():
     # don't support.
     date_format = '%a %b %-e  %R'
     if tzname:
-        env = os.environ.copy()
-        env['TZ'] = tzname
-        os.execve('/bin/date', ['date', f"+{date_format}"], env=env)
+        now = datetime.datetime.now(tz=zoneinfo.ZoneInfo(tzname))
+        print(now.strftime(date_format))
     else:
         now = datetime.datetime.now()
         print(now.strftime(date_format), 'GMT')
