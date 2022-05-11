@@ -266,6 +266,12 @@ class Screen
     nil
   end
 
+  def paste(text)
+    $vm.set_clipboard(text)
+    press('ctrl', 'v')
+    sleep 1 # Wait for the paste operation to register.
+  end
+
   def mouse_location(**opts)
     xdotool('getmouselocation').split[0..1].map { |s| s.split(':').last.to_i }
   end

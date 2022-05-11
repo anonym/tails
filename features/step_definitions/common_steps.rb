@@ -1020,8 +1020,7 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
   @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it
-  $vm.set_clipboard(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
-  @screen.press('ctrl', 'v')
+  @screen.paste(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
   @screen.press('Return')
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do
