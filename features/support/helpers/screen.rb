@@ -266,9 +266,20 @@ class Screen
     nil
   end
 
-  def paste(text)
+  def paste(text, app: nil)
     $vm.set_clipboard(text)
-    press('ctrl', 'v')
+    case app
+    when nil
+      press('ctrl', 'v')
+    when :terminal
+      press('ctrl', 'shift', 'v')
+    when :gtk_file_chooser
+      press('ctrl', 'l')
+      sleep 1
+      press('ctrl', 'v')
+    else
+      raise "Unsupported app: #{app}"
+    end
     sleep 1 # Wait for the paste operation to register.
   end
 

@@ -645,7 +645,7 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
        '"The proxy server is refusing connections" error'
   @screen.press('ctrl', 'd')
   @screen.wait('TorBrowserBookmarkPrompt.png', 10)
-  @screen.type(url)
+  @screen.paste(url)
   # The new default location for bookmarks is "Bookmarks Toolbar", but our test
   # expects the new entry is available in "Bookmark Menu", that's why we need
   # to select the location explicitly.
@@ -851,7 +851,8 @@ When /^I run "([^"]+)" in GNOME Terminal$/ do |command|
   else
     @screen.wait('GnomeTerminalWindow.png', 20).click
   end
-  @screen.type(command, ['Return'])
+  @screen.paste(command, app: :terminal)
+  @screen.press('Return')
 end
 
 When /^the file "([^"]+)" exists(?:| after at most (\d+) seconds)$/ do |file, timeout|
@@ -989,12 +990,13 @@ When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) dire
   elsif output_dir == 'default downloads'
     output_dir = "/home/#{LIVE_USER}/Tor Browser"
   else
-    @screen.type(output_dir + '/')
+    @screen.paste(output_dir + '/')
   end
   # Only the part of the filename before the .html extension can be easily
   # replaced so we have to remove it before typing it into the arget filename
   # entry widget.
-  @screen.type(output_file.sub(/[.]html$/, ''), ['Return'])
+  @screen.paste(output_file.sub(/[.]html$/, ''))
+  @screen.press('Return')
   if should_work
     try_for(20,
             msg: "The page was not saved to #{output_dir}/#{output_file}") do
