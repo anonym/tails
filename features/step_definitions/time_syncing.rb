@@ -42,14 +42,23 @@ When /^I bump the (hardware clock's|system) time with "([^"]+)"$/ do |clock_type
          "'#{expected_time_lower_bound}' but is '#{new_time}'")
 end
 
+def assert_time_diff_smaller_than(reference:, actual:,
+                                  description:, max_diff_mins:)
+  diff = (reference - actual).abs
+  assert(diff < max_diff_mins.to_i * 60,
+         "The #{description} clock is off by #{diff} seconds (#{actual})")
+  debug_log "Time was #{diff} seconds off"
+end
+
 Then /^the system clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
   guest_time_str = $vm.execute_successfully('date --rfc-2822').stdout.chomp
   guest_time = Time.rfc2822(guest_time_str)
-  host_time = Time.now
-  diff = (host_time - guest_time).abs
-  assert(diff < max_diff_mins.to_i * 60,
-         "The guest's clock is off by #{diff} seconds (#{guest_time})")
-  debug_log "Time was #{diff} seconds off"
+  assert_time_diff_smaller_than(
+    reference:     Time.now,
+    actual:        guest_time,
+    description:   "guest's",
+    max_diff_mins: max_diff_mins
+  )
 end
 
 Then /^the system clock is just past Tails' source date$/ do
