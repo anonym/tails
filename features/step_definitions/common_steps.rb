@@ -13,6 +13,9 @@ end
 
 def post_snapshot_restore_hook(snapshot_name)
   $vm.wait_until_remote_shell_is_up
+  if !snapshot_name.end_with?('tails-greeter')
+    @screen.wait('DesktopTailsDocumentation.png', 10)
+  end
   post_vm_start_hook
 
   # When restoring from a snapshot while the Greeter is running, on
@@ -767,12 +770,11 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-def open_gnome_menu(menu_button, menu_item)
+def open_gnome_menu(name, menu_item)
   # On Bullseye the top bar menus are problematic: we generally have
   # to click several times for them to open.
-  retry_action(10, delay: 2) do
-    @screen.hide_cursor
-    @screen.wait(menu_button, 10).click
+  retry_action(20) do
+    Dogtail::Application.new('gnome-shell').child(name, roleName: 'menu').click
     # Wait for the menu to be open and to have settled: sometimes menu
     # components appear too fast, before the menu has settled down to
     # its final size and the button we want to click is in its final
@@ -784,11 +786,11 @@ def open_gnome_menu(menu_button, menu_item)
 end
 
 def open_gnome_places_menu
-  open_gnome_menu('GnomePlaces.png', 'GnomePlacesHome.png')
+  open_gnome_menu('Places', 'GnomePlacesHome.png')
 end
 
 def open_gnome_system_menu
-  open_gnome_menu('GnomeSystemMenuButton.png', 'TailsEmergencyShutdownHalt.png')
+  open_gnome_menu('System', 'TailsEmergencyShutdownHalt.png')
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|
@@ -949,15 +951,11 @@ Then /^the (amnesiac|persistent) Tor Browser directory (exists|does not exist)$/
 end
 
 Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser directory$/ do |persistent_or_not|
-  case persistent_or_not
-  when 'amnesiac'
-    bookmark_image = 'TorBrowserAmnesicFilesBookmark.png'
-  when 'persistent'
-    bookmark_image = 'TorBrowserPersistentFilesBookmark.png'
-  end
+  bookmark = 'Tor Browser'
+  bookmark += ' (persistent)' if persistent_or_not == 'persistent'
   open_gnome_places_menu
-  @screen.wait(bookmark_image, 40)
-  @screen.press('Escape')
+  Dogtail::Application.new('gnome-shell').child(bookmark, roleName: 'label', showingOnly: true)
+  Dogtail::Application.new('gnome-shell').child('Places', roleName: 'menu').click
 end
 
 def pulseaudio_sink_inputs
