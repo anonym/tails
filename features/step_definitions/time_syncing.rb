@@ -61,6 +61,41 @@ Then /^the system clock is less than (\d+) minutes incorrect$/ do |max_diff_mins
   )
 end
 
+def displayed_time_str
+  # Ugly and annoying to maintain, but I could not find a better way :/
+  ignore_labels = Set[
+    'Trash',
+    'Report an error',
+    'Tails documentation',
+    'Activities',
+    '',
+    'Applications',
+    'Places',
+    'Tor Connection',
+    'en',
+    '1 / 2',
+  ]
+  candidate_clock_labels = Set.new(
+    Dogtail::Application.new('gnome-shell')
+                        .child('', roleName: 'panel')
+                        .children(showingOnly: true, roleName: 'label')
+  ).keep_if { |l| !ignore_labels.include?(l.name) }
+
+  assert_equal(1, candidate_clock_labels.size)
+  candidate_clock_labels.to_a[0].name
+end
+
+Then /^the displayed clock is less than (\d+) minutes incorrect in "([^"]*)"/ do |max_diff_mins, timezone_offset|
+  displayed_time = DateTime.parse(displayed_time_str + ' ' + timezone_offset)
+                           .to_time
+  assert_time_diff_smaller_than(
+    reference:     Time.now(in: timezone_offset),
+    actual:        displayed_time,
+    description:   'displayed',
+    max_diff_mins: max_diff_mins
+  )
+end
+
 Then /^the system clock is just past Tails' source date$/ do
   system_time_str = $vm.execute_successfully('date').to_s
   system_time = DateTime.parse(system_time_str).to_time

@@ -64,8 +64,10 @@ Feature: Time syncing
     # The "Fix Clock" button allows users to recover from this bug
     When I set the time zone in Tor Connection to "Asia/Shanghai"
     Then the system clock is less than 20 minutes incorrect
+    And the displayed clock is less than 20 minutes incorrect in "+08:00"
     When I click "Connect to Tor"
     Then Tor is ready
     And all Internet traffic has only flowed through the configured bridges
     # check that htpdate has done its job
     And the system clock is less than 5 minutes incorrect
+    And the displayed clock is less than 5 minutes incorrect in "+08:00"
