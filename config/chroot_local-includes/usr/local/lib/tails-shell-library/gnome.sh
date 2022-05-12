@@ -28,7 +28,6 @@ export_gnome_env() {
         set -- --ns 1 --nslist mnt
     fi
 
-    #shellcheck disable=SC2086
     gnome_shell_pid="$(pgrep --newest --euid "${LIVE_USERNAME}" \
             --full --exact /usr/bin/gnome-shell \
              "$@" )"
