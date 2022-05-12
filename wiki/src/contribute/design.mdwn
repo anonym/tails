@@ -1209,6 +1209,25 @@ preferences and the cached Bitcoin blockchain.
 
 [[!inline pages="contribute/design/kernel_hardening" raw=yes sort="age"]]
 
+### 3.6.30 Time zone
+
+Tails sets the system time zone to UTC to make it harder to distinguish Tails
+users from each other.
+
+This confuses users, so we aim to provide ways to display the date and time in
+the user's own time zone, without changing the actual system time that
+applications would leak:
+
+ - [[status and plans|doc/first_steps/desktop/time]]
+ - [[!tails_gitweb_dir config/chroot_local-includes/usr/share/gnome-shell/extensions/date@tails.boum.org/]]
+ - [[!tails_gitweb config/chroot_local-includes/usr/local/lib/tails-get-date]]
+
+An adversary who can run arbitrary code as the `amnesia` user can use `sudo
+tails-get-date` to discover the timezone that the user chose. This is mitigated
+by the fact the most security-sensitive applications running as the `amnesia`
+user (e.g. Tor Browser, Thunderbird, and Pidgin) are not allowed to run `sudo`,
+thanks to AppArmor confinement and/or bubblewrap.
+
 ## 3.7 Running Tails in virtual machines
 
 ### 3.7.1 Current support

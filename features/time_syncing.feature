@@ -8,7 +8,7 @@ Feature: Time syncing
     Given I have started Tails from DVD without network and logged in
     When the network is plugged
     And Tor is ready
-    Then Tails clock is less than 5 minutes incorrect
+    Then the system clock is less than 5 minutes incorrect
 
   Scenario: Clock with host's time while using bridges
     Given I have started Tails from DVD without network and logged in
@@ -16,7 +16,7 @@ Feature: Time syncing
     And the Tor Connection Assistant autostarts
     And I configure some normal bridges in the Tor Connection Assistant
     And I wait until Tor is ready
-    Then Tails clock is less than 5 minutes incorrect
+    Then the system clock is less than 5 minutes incorrect
 
   Scenario: Clock is one day in the future while using obfs4 bridges
     Given I have started Tails from DVD without network and logged in
@@ -26,7 +26,7 @@ Feature: Time syncing
     And the Tor Connection Assistant autostarts
     And I configure some obfs4 bridges in the Tor Connection Assistant in easy mode
     And I wait until Tor is ready
-    Then Tails clock is less than 5 minutes incorrect
+    Then the system clock is less than 5 minutes incorrect
     And all Internet traffic has only flowed through the configured bridges or connectivity check service
 
   @not_release_blocker
@@ -93,9 +93,12 @@ Feature: Time syncing
     Then the Tor Connection Assistant reports that it failed to connect
     # The "Fix Clock" button allows users to recover from this bug
     When I set the time zone in Tor Connection to "Asia/Shanghai"
-    Then Tails clock is less than 20 minutes incorrect
+    Then the system clock is less than 20 minutes incorrect
+    # "Asia/Shanghai" is UTC+08:00 all year long (no DST)
+    And the displayed clock is less than 20 minutes incorrect in "+08:00"
     When I click "Connect to Tor"
     Then I wait until Tor is ready
     And all Internet traffic has only flowed through the configured bridges
     # check that htpdate has done its job
-    And Tails clock is less than 5 minutes incorrect
+    And the system clock is less than 5 minutes incorrect
+    And the displayed clock is less than 5 minutes incorrect in "+08:00"

@@ -57,14 +57,58 @@ When /^I make sure time sync before Tor connects (fails|times out)$/ do |failure
   )
 end
 
-Then /^Tails clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
-  guest_time_str = $vm.execute('date --rfc-2822').stdout.chomp
-  guest_time = Time.rfc2822(guest_time_str)
-  host_time = Time.now
-  diff = (host_time - guest_time).abs
+def assert_time_diff_smaller_than(reference:, actual:,
+                                  description:, max_diff_mins:)
+  diff = (reference - actual).abs
   assert(diff < max_diff_mins.to_i * 60,
-         "The guest's clock is off by #{diff} seconds (#{guest_time})")
-  puts "Time was #{diff} seconds off"
+         "The #{description} clock is off by #{diff} seconds (#{actual})")
+  debug_log "Time was #{diff} seconds off"
+end
+
+Then /^the system clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
+  guest_time_str = $vm.execute_successfully('date --rfc-2822').stdout.chomp
+  guest_time = Time.rfc2822(guest_time_str)
+  assert_time_diff_smaller_than(
+    reference:     Time.now,
+    actual:        guest_time,
+    description:   "guest's",
+    max_diff_mins: max_diff_mins
+  )
+end
+
+def displayed_time_str
+  # Ugly and annoying to maintain, but I could not find a better way :/
+  ignore_labels = Set[
+    'Trash',
+    'Report an error',
+    'Tails documentation',
+    'Activities',
+    '',
+    'Applications',
+    'Places',
+    'Tor Connection',
+    'en',
+    '1 / 2',
+  ]
+  candidate_clock_labels = Set.new(
+    Dogtail::Application.new('gnome-shell')
+                        .child('', roleName: 'panel')
+                        .children(showingOnly: true, roleName: 'label')
+  ).keep_if { |l| !ignore_labels.include?(l.name) }
+
+  assert_equal(1, candidate_clock_labels.size)
+  candidate_clock_labels.to_a[0].name
+end
+
+Then /^the displayed clock is less than (\d+) minutes incorrect in "([^"]*)"/ do |max_diff_mins, timezone_offset|
+  displayed_time = DateTime.parse(displayed_time_str + ' ' + timezone_offset)
+                           .to_time
+  assert_time_diff_smaller_than(
+    reference:     Time.now(in: timezone_offset),
+    actual:        displayed_time,
+    description:   'displayed',
+    max_diff_mins: max_diff_mins
+  )
 end
 
 Then /^the system clock is just past Tails' source date$/ do
