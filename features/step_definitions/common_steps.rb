@@ -50,7 +50,11 @@ def post_snapshot_restore_hook(snapshot_name)
   # with the other relays, so we ensure that we have fresh circuits.
   # Time jumps and incorrect clocks also confuses Tor in many ways.
   if $vm.connected_to_network?
-    if $vm.execute('systemctl --quiet is-active tor@default.service').success?
+    # Since Tor Connection was introduced, tor@default.service is always active, so we need to check if Tor
+    # was required in the snapshot we are using. For example, the with-network-logged-in-unsafe-browser have
+    # network connected but no Tor configured. Checking DisableNetwork is useful
+    if $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
+       check_disable_network != '1'
       $vm.execute('systemctl stop tor@default.service')
       $vm.host_to_guest_time_sync
       $vm.execute('systemctl start tor@default.service')
@@ -477,19 +481,13 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
-  # First we wait for tor's control port to be ready...
-  try_for(60) do
-    $vm.execute_successfully('/usr/local/lib/tor_variable get --type=info version')
-    true
-  end
-  # ... so we can ask if the tor's networking is disabled, in which
-  # case Tor Connection Assistant has not been dealt with yet. If
-  # tor's networking is enabled at this stage it means we already ran
-  # some steps dealing with Tor Connection Assistant, presumably to
-  # configure bridges.  Otherwise we just treat this as the default
-  # case, where it is not important for the test scenario that we go
-  # through the extra hassle and use bridges, so we simply attempt a
-  # direct connection.
+  # deprecated: please choose between "I successfully configure Tor" and "I wait until Tor is ready"
+  step 'I successfully configure Tor'
+end
+
+##
+# this is a #18293-aware version of `tor_variable get --type=conf DisableNetwork`
+def check_disable_network
   disable_network = nil
   # Gather debugging information for #18293
   try_for(10) do
@@ -506,6 +504,24 @@ Given /^Tor is ready$/ do
       true
     end
   end
+  disable_network
+end
+
+Given /^I successfully configure Tor$/ do
+  # First we wait for tor's control port to be ready...
+  try_for(60) do
+    $vm.execute_successfully('/usr/local/lib/tor_variable get --type=info version')
+    true
+  end
+  # ... so we can ask if the tor's networking is disabled, in which
+  # case Tor Connection Assistant has not been dealt with yet. If
+  # tor's networking is enabled at this stage it means we already ran
+  # some steps dealing with Tor Connection Assistant, presumably to
+  # configure bridges.  Otherwise we just treat this as the default
+  # case, where it is not important for the test scenario that we go
+  # through the extra hassle and use bridges, so we simply attempt a
+  # direct connection.
+  disable_network = check_disable_network
   if disable_network == '1'
     # This variable is initialized to false in each scenario, and only
     # ever set to true in some previously run step that configures tor
@@ -518,6 +534,10 @@ Given /^Tor is ready$/ do
     step 'I configure a direct connection in the Tor Connection Assistant'
   end
 
+  step 'I wait until Tor is ready'
+end
+
+Then /^I wait until Tor is ready$/ do
   # Here we actually check that Tor is ready
   step 'Tor has built a circuit'
   step 'the time has synced'

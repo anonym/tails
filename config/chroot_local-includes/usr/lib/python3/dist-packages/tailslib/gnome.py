@@ -2,6 +2,9 @@
 
 import shlex
 import subprocess
+from functools import lru_cache
+
+GNOME_SH_PATH = "/usr/local/lib/tails-shell-library/gnome.sh"
 
 def _gnome_sh_wrapper(cmd) -> str:
     command = shlex.split(
@@ -9,14 +12,16 @@ def _gnome_sh_wrapper(cmd) -> str:
     )
     return subprocess.check_output(command).decode()
 
-GNOME_SH_PATH = "/usr/local/lib/tails-shell-library/gnome.sh"
-GNOME_ENV_VARS = _gnome_sh_wrapper("echo ${GNOME_ENV_VARS}").strip().split()
+
+@lru_cache(maxsize=1)
+def _get_gnome_env_vars():
+    return _gnome_sh_wrapper("echo ${GNOME_ENV_VARS}").strip().split()
 
 
 def gnome_env_vars() -> list:
     ret = []
     for line in _gnome_sh_wrapper("export_gnome_env && env").split("\n"):
         (key, _, value) = line.rstrip().partition("=")
-        if key in GNOME_ENV_VARS:
+        if key in _get_gnome_env_vars():
             ret.append(key + "=" + value)
     return ret

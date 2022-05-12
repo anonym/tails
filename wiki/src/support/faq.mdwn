@@ -358,15 +358,25 @@ See our [[design document|contribute/design/Tor_enforcement/DNS]] on this topic.
 
 <h2 id="htp">Why does Tails automatically connect to several websites when starting?</h2>
 
-Tor requires the system clock to be well synchronized in order to work
-properly. When starting Tails, a notification is displayed while the clock is
-being synchronized.
+The clock of the computer needs to be set at the correct time to both:
 
-This synchronization is made by sending HTTPS queries through Tor to several
-websites and deducing a correct time from their answers. The list of websites
-that could be queried in this process can be found in `/etc/default/htpdate`.
+1. Be able to connect to the Tor network in the first place
 
-See also our [[design document|contribute/design/Time_syncing]] on this topic.
+   The computer clock is fixed a first time, approximately, before connecting
+   to Tor, either [[automatically|doc/anonymous_internet/tor#automatic]] or
+   [[manually|doc/anonymous_internet/tor/troubleshoot#clock]].
+
+2. Protect your anonymity while using Tor
+
+   The computer clock is fixed a second time, precisely, to prevent a website
+   from identifying you by analyzing minor differences of your computer clock
+   with the correct time.
+
+   This second synchronization is made by sending HTTPS queries through Tor to several
+   websites and deducing a correct time from their answers. You can see the
+   list of websites that Tails can connect to in *[[!tails_gitweb config/chroot_local-includes/etc/default/htpdate.pools desc="/etc/default/htpdate.pools"]]*.
+
+See also our [[design document on time synchronization|contribute/design/Time_syncing]].
 
 <h2 id="relay">Can I help the Tor network by running a relay or a bridge in Tails?</h2>
 

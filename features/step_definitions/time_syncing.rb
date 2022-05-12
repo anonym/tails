@@ -42,6 +42,21 @@ When /^I bump the (hardware clock's|system) time with "([^"]+)"$/ do |clock_type
          "'#{expected_time_lower_bound}' but is '#{new_time}'")
 end
 
+When /^I make sure time sync before Tor connects (fails|times out)$/ do |failure_mode|
+  force_timeout = failure_mode == 'times out'
+  hostname = FAKE_CONNECTIVITY_CHECK_HOSTNAME
+  @allowed_dns_queries = [hostname + '.']
+  ips = Resolv.getaddresses(hostname).sort
+  ips.each do |ip|
+    add_extra_allowed_host(ip, 80)
+  end
+  path = force_timeout ? 'delay/30' : 'redirect-to?url=foobar'
+  $vm.file_overwrite(
+    '/etc/tails-get-network-time-url',
+    "http://#{hostname}/#{path}"
+  )
+end
+
 Then /^Tails clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
   guest_time_str = $vm.execute('date --rfc-2822').stdout.chomp
   guest_time = Time.rfc2822(guest_time_str)
