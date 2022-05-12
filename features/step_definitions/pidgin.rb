@@ -205,7 +205,7 @@ When /^I join some empty multi-user chat$/ do
             'PidginChat1UserInRoom.png',]
   image_found = @screen.wait_any(images, 30)[:found_pattern]
   if image_found == 'PidginCreateNewRoomPrompt.png'
-    @screen.click('PidginCreateNewRoomAcceptDefaultsButton.png')
+    @screen.wait('PidginCreateNewRoomAcceptDefaultsButton.png', 15).click
   end
   $vm.focus_window(@chat_room_jid)
   @screen.wait('PidginChat1UserInRoom.png', 10)
