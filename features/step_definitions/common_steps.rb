@@ -13,6 +13,9 @@ end
 
 def post_snapshot_restore_hook(snapshot_name)
   $vm.wait_until_remote_shell_is_up
+  if !snapshot_name.end_with?('tails-greeter')
+    @screen.wait('DesktopTailsDocumentation.png', 10)
+  end
   post_vm_start_hook
 
   # When restoring from a snapshot while the Greeter is running, on
@@ -225,21 +228,28 @@ When /^I cold reboot the computer$/ do
   step 'I start the computer'
 end
 
-def boot_menu_cmdline_image
+def boot_menu_cmdline_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuKernelCmdlineUEFI.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuKernelCmdlineUEFI_Bullseye.png.
+    [
+      'TailsBootMenuKernelCmdlineUEFI_Bullseye.png',
+      'TailsBootMenuKernelCmdlineUEFI_Bookworm.png',
+    ]
   else
-    'TailsBootMenuKernelCmdline.png'
+    ['TailsBootMenuKernelCmdline.png']
   end
 end
 
-def boot_menu_image
+def boot_menu_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuGRUB.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuGRUB_Bullseye.png.
+    ['TailsBootMenuGRUB_Bullseye.png', 'TailsBootMenuGRUB_Bookworm.png']
   else
-    'TailsBootMenuSyslinux.png'
+    ['TailsBootMenuSyslinux.png']
   end
 end
 
@@ -295,7 +305,7 @@ def enter_boot_menu_cmdline
   try_for(boot_timeout) do
     begin
       _up_spammer_job, kill_up_spammer = start_up_spammer($vm.domain_name)
-      @screen.wait(boot_menu_image, 15)
+      @screen.wait_any(boot_menu_images, 15)
       kill_up_spammer.call
 
       # Navigate to the end of the kernel command-line
@@ -307,7 +317,7 @@ def enter_boot_menu_cmdline
       else
         @screen.press('Tab')
       end
-      @screen.wait(boot_menu_cmdline_image, 5)
+      @screen.wait_any(boot_menu_cmdline_images, 5)
     rescue FindFailed => e
       debug_log('We missed the boot menu before we could deal with it, ' \
                 'resetting...')
@@ -681,12 +691,12 @@ Given /^all notifications have disappeared$/ do
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
     @screen.click(x, y)
     begin
-      gnome_shell.child('Clear All', roleName:    'push button',
-                                     showingOnly: true).click
+      gnome_shell.child('Clear', roleName:    'push button',
+                                 showingOnly: true).click
     rescue StandardError
       # Ignore exceptions: there might be no notification to clear, in
       # which case there will be a "No Notifications" label instead of
-      # a "Clear All" button.
+      # a "Clear" button.
     end
     gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
   end
@@ -780,12 +790,11 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-def open_gnome_menu(menu_button, menu_item)
+def open_gnome_menu(name, menu_item)
   # On Bullseye the top bar menus are problematic: we generally have
   # to click several times for them to open.
-  retry_action(10, delay: 2) do
-    @screen.hide_cursor
-    @screen.wait(menu_button, 10).click
+  retry_action(20) do
+    Dogtail::Application.new('gnome-shell').child(name, roleName: 'menu').click
     # Wait for the menu to be open and to have settled: sometimes menu
     # components appear too fast, before the menu has settled down to
     # its final size and the button we want to click is in its final
@@ -797,11 +806,11 @@ def open_gnome_menu(menu_button, menu_item)
 end
 
 def open_gnome_places_menu
-  open_gnome_menu('GnomePlaces.png', 'GnomePlacesHome.png')
+  open_gnome_menu('Places', 'GnomePlacesHome.png')
 end
 
 def open_gnome_system_menu
-  open_gnome_menu('GnomeSystemMenuButton.png', 'TailsEmergencyShutdownHalt.png')
+  open_gnome_menu('System', 'TailsEmergencyShutdownHalt.png')
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|
@@ -962,15 +971,11 @@ Then /^the (amnesiac|persistent) Tor Browser directory (exists|does not exist)$/
 end
 
 Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser directory$/ do |persistent_or_not|
-  case persistent_or_not
-  when 'amnesiac'
-    bookmark_image = 'TorBrowserAmnesicFilesBookmark.png'
-  when 'persistent'
-    bookmark_image = 'TorBrowserPersistentFilesBookmark.png'
-  end
+  bookmark = 'Tor Browser'
+  bookmark += ' (persistent)' if persistent_or_not == 'persistent'
   open_gnome_places_menu
-  @screen.wait(bookmark_image, 40)
-  @screen.press('Escape')
+  Dogtail::Application.new('gnome-shell').child(bookmark, roleName: 'label', showingOnly: true)
+  Dogtail::Application.new('gnome-shell').child('Places', roleName: 'menu').click
 end
 
 def pulseaudio_sink_inputs

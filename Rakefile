@@ -71,31 +71,31 @@ class CommandError < StandardError
   end
 end
 
-def run_command(*args)
-  Process.wait Kernel.spawn(*args)
+def run_command(*args, **kwargs)
+  Process.wait Kernel.spawn(*args, **kwargs)
   return if $CHILD_STATUS.exitstatus.zero?
 
-  raise CommandError.new("command #{args} failed with exit status %<status>s",
+  raise CommandError.new("command #{args}, #{kwargs} failed with exit status %<status>s",
                          status: $CHILD_STATUS.exitstatus)
 end
 
-def capture_command(*args)
-  stdout, stderr, proc_status = Open3.capture3(*args)
+def capture_command(*args, **kwargs)
+  stdout, stderr, proc_status = Open3.capture3(*args, **kwargs)
   if proc_status.exitstatus != 0
-    raise CommandError.new("command #{args} failed with exit status " \
+    raise CommandError.new("command #{args}, #{kwargs} failed with exit status " \
                            '%<status>s: %<stderr>s',
                            stderr: stderr, status: proc_status.exitstatus)
   end
   [stdout, stderr]
 end
 
-def git_helper(*args)
+def git_helper(*args, **kwargs)
   question = args.first.end_with?('?')
   args.first.sub!(/\?$/, '')
   status = 0
   stdout = ''
   begin
-    stdout, = capture_command('auto/scripts/utils.sh', *args)
+    stdout, = capture_command('auto/scripts/utils.sh', *args, **kwargs)
   rescue CommandError => e
     status = e.status
   end
@@ -107,8 +107,8 @@ end
 
 # Runs the vagrant command, letting stdout/stderr through. Throws an
 # exception unless the vagrant command succeeds.
-def run_vagrant(*args)
-  run_command('vagrant', *args, chdir: './vagrant')
+def run_vagrant(*args, **kwargs)
+  run_command('vagrant', *args, chdir: './vagrant', **kwargs)
 rescue CommandError => e
   raise(VagrantCommandError, "'vagrant #{args}' command failed with exit " \
                              "status #{e.status}")
@@ -116,8 +116,8 @@ end
 
 # Runs the vagrant command, not letting stdout/stderr through, and
 # returns [stdout, stderr, Process::Status].
-def capture_vagrant(*args)
-  capture_command('vagrant', *args, chdir: './vagrant')
+def capture_vagrant(*args, **kwargs)
+  capture_command('vagrant', *args, chdir: './vagrant', **kwargs)
 rescue CommandError => e
   raise(VagrantCommandError, "'vagrant #{args}' command failed with exit " \
                              "status #{e.status}: #{e.stderr}")
