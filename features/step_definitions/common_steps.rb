@@ -840,14 +840,10 @@ Given /^I switch to the "([^"]+)" NetworkManager connection$/ do |con_name|
   end
 end
 
-When /^I start and focus GNOME Terminal$/ do
-  step 'I start "GNOME Terminal" via GNOME Activities Overview'
-  @screen.wait('GnomeTerminalWindow.png', 40)
-end
-
 When /^I run "([^"]+)" in GNOME Terminal$/ do |command|
   if !$vm.process_running?('gnome-terminal-server')
-    step 'I start and focus GNOME Terminal'
+    step 'I start "GNOME Terminal" via GNOME Activities Overview'
+    @screen.wait('GnomeTerminalWindow.png', 40)
   else
     @screen.wait('GnomeTerminalWindow.png', 20).click
   end
