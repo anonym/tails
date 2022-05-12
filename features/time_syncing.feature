@@ -64,6 +64,7 @@ Feature: Time syncing
     # The "Fix Clock" button allows users to recover from this bug
     When I set the time zone in Tor Connection to "Asia/Shanghai"
     Then the system clock is less than 20 minutes incorrect
+    # "Asia/Shanghai" is UTC+08:00 all year long (no DST)
     And the displayed clock is less than 20 minutes incorrect in "+08:00"
     When I click "Connect to Tor"
     Then Tor is ready
