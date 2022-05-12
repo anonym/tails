@@ -12,7 +12,27 @@ export_gnome_env() {
     # Get LIVE_USERNAME
     . /etc/live/config.d/username.conf
     local gnome_shell_pid
-    gnome_shell_pid="$(pgrep --newest --euid "${LIVE_USERNAME}" --exact gnome-shell)"
+
+    # since POSIX shell doesn't have arrays, let's use argv as a "pgrepOpts" array
+    set --
+
+    # --ns only works if we are root
+    # This is a useful hardening: this function is used in some security-sensitive context (tca-portal),
+    # so we'd better be really sure we're getting the real process.
+    # In particular, Tor Browser is _not_ in the main mount namespace, so this would exclude any of its
+    # children from being matched.
+    # While this helps, this option is still racy: the namespace is checked after having retrieved the PID, so
+    # it might be possible for an attacker that is not in the right namespace to fool us and circumvent this.
+    # see https://gitlab.tails.boum.org/tails/tails/-/issues/18374
+    if [ "$(id -u)" = 0 ]; then
+        set -- --ns 1 --nslist mnt
+    fi
+
+    gnome_shell_pid="$(pgrep --newest --euid "${LIVE_USERNAME}" \
+            --full --exact /usr/bin/gnome-shell \
+             "$@" )"
+    set --
+
     if [ -z "${gnome_shell_pid}" ]; then
         return
     fi
