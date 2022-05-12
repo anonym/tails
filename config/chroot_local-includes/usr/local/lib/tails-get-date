@@ -1,0 +1,43 @@
+#!/usr/bin/python3
+
+import json
+import datetime
+import logging
+import locale
+import os
+import sys
+import zoneinfo
+
+
+def main():
+    if os.getuid() != 0:
+        print("Only root can run this!", file=sys.stderr)
+        sys.exit(1)
+
+    if 'LC_TIME' in os.environ:
+        try:
+            locale.setlocale(locale.LC_TIME, os.environ['LC_TIME'])
+        except locale.Error:
+            logging.warning('Invalid timezone specified: %s', os.environ['LC_TIME'])
+
+    try:
+        tca_state = json.load(open('/run/tca/tca.state'))
+    except:
+        tzname = None
+    else:
+        tzname = tca_state.get('ui', {}).get('time', {}).get('tz', None)
+
+    # This is the default date format used by GNOME's clock. Note that
+    # there are dconf settings for making it show seconds etc that we
+    # don't support.
+    date_format = '%a %b %-e  %R'
+    if tzname:
+        now = datetime.datetime.now(tz=zoneinfo.ZoneInfo(tzname))
+        print(now.strftime(date_format))
+    else:
+        now = datetime.datetime.now()
+        print(now.strftime(date_format), 'GMT')
+
+
+if __name__ == '__main__':
+    main()
