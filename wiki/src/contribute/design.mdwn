@@ -1222,6 +1222,12 @@ applications would leak:
  - [[!tails_gitweb_dir config/chroot_local-includes/usr/share/gnome-shell/extensions/date@tails.boum.org/]]
  - [[!tails_gitweb config/chroot_local-includes/usr/local/lib/tails-get-date]]
 
+An adversary who can run arbitrary code as the `amnesia` user can use `sudo
+tails-get-date` to discover the timezone that the user chose. This is mitigated
+by the fact the most security-sensitive applications running as the `amnesia`
+user (e.g. Tor Browser, Thunderbird, and Pidgin) are not allowed to run `sudo`,
+thanks to AppArmor confinement and/or bubblewrap.
+
 ## 3.7 Running Tails in virtual machines
 
 ### 3.7.1 Current support
