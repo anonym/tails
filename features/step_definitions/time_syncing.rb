@@ -158,7 +158,7 @@ Then /^the hardware clock is still off by "([^"]+)"$/ do |timediff|
   expected_time_upper_bound = expected + 1
   assert(expected_time_lower_bound <= hwclock &&
          hwclock <= expected_time_upper_bound,
-         "The host's hwclock should be between " \
+         'The hardware clock of the Tails VM should be between ' \
          "'#{expected_time_lower_bound}' and '#{expected_time_upper_bound}', " \
          "but is actually '#{hwclock}'")
 end
