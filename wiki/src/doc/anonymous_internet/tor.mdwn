@@ -77,17 +77,40 @@ To connect to the Tor network:
 We recommend connecting to Tor automatically if you are on a public Wi-Fi
 network or if many people in your country use Tor to circumvent censorship.
 
-When you choose this option, Tails tries different ways of connecting to Tor
-until it succeeds:
+When you choose this option:
 
-1. Tails tries to connect to Tor directly using **public relays**, without
-   using a bridge.
+1. First, Tails synchronizes the clock of the computer automatically, because a
+   correct time is needed to be able to connect to the Tor network.
 
-1. Tails tries to connect to Tor using one of the **default bridges**, already
-   included in Tails, if connecting using public relays fails.
+   Tails learns the current time by connecting to the captive portal detection
+   service of [Fedora](https://getfedora.org/), which is used by most Linux
+   distributions. This connection does not go through the Tor network and is an
+   exception to our policy of only making Internet connections through the Tor
+   network.
 
-1. Tails asks you to configure a **custom bridge**, if connecting using the
-   default bridges fails.
+   <div class="next">
+
+   <p>You can learn more about our security assessment of this time
+   synchronization in our [[design documentation about non-Tor
+   traffic|contribute/design/Tor_enforcement#non-tor-traffic]].</p>
+
+   </div>
+
+   If you choose instead to [[hide that you are connecting to Tor|tor#hiding]],
+   you might have to fix the computer clock manually.
+
+1. Then, Tails tries different ways of connecting to Tor
+   until it succeeds:
+
+   1. Tails tries to connect to Tor directly using **public relays**, without
+      using a bridge.
+
+   1. Tails tries to connect to Tor using one of the **default bridges**,
+      already included in Tails, if connecting using public relays fails.
+
+   1. If public relays and default bridges don't work, Tails asks you to
+      configure a **custom bridge**, if connecting using the default bridges
+      fails.
 
 Someone monitoring your Internet connection could identify these attempts as
 coming from a Tails user.
