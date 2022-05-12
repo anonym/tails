@@ -498,7 +498,7 @@ def check_disable_network
       '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
     ).stdout.chomp
     if disable_network == ''
-      debug_log('Tor reported claims DisableNetwork is an empty string')
+      debug_log('Tor claims DisableNetwork is an empty string')
       false
     else
       true
