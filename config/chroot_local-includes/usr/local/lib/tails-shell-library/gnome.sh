@@ -1,4 +1,4 @@
-# shellcheck shell=sh
+# shellcheck shell=dash
 GNOME_ENV_VARS="
 DBUS_SESSION_BUS_ADDRESS
 DISPLAY
@@ -9,39 +9,12 @@ XDG_CURRENT_DESKTOP
 "
 
 export_gnome_env() {
-    # Get LIVE_USERNAME
-    . /etc/live/config.d/username.conf
-    local gnome_shell_pid
-
-    # since POSIX shell doesn't have arrays, let's use argv as a "pgrepOpts" array
-    set --
-
-    # --ns only works if we are root
-    # This is a useful hardening: this function is used in some security-sensitive context (tca-portal),
-    # so we'd better be really sure we're getting the real process.
-    # In particular, Tor Browser is _not_ in the main mount namespace, so this would exclude any of its
-    # children from being matched.
-    # While this helps, this option is still racy: the namespace is checked after having retrieved the PID, so
-    # it might be possible for an attacker that is not in the right namespace to fool us and circumvent this.
-    # see https://gitlab.tails.boum.org/tails/tails/-/issues/18374
-    if [ "$(id -u)" = 0 ]; then
-        set -- --ns 1 --nslist mnt
-    fi
-
-    gnome_shell_pid="$(pgrep --newest --euid "${LIVE_USERNAME}" \
-            --full --exact /usr/bin/gnome-shell \
-             "$@" )"
-    set --
-
-    if [ -z "${gnome_shell_pid}" ]; then
-        return
-    fi
     local tmp_env_file
     tmp_env_file="$(mktemp)"
     local vars
     # shellcheck disable=SC2086
     vars="($(echo ${GNOME_ENV_VARS} | tr ' ' '|'))"
-    tr '\0' '\n' < "/proc/${gnome_shell_pid}/environ" | \
+    tr '\0' '\n' < "/run/gnome-shell-environment/environ" | \
         grep -E "^${vars}=" > "${tmp_env_file}"
     # shellcheck disable=SC2163
     while read -r line; do export "${line}"; done < "${tmp_env_file}"
