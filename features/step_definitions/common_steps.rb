@@ -422,6 +422,9 @@ Given /^I set an administration password$/ do
   @screen.press('Tab')
   @screen.type(@sudo_password)
   @screen.press('Return')
+  # Wait for the Administration Password dialog to be closed,
+  # otherwise the next step can fail.
+  @screen.wait('TailsGreeterLoginButton.png', 5)
 end
 
 Given /^I allow the Unsafe Browser to be started$/ do
