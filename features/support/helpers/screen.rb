@@ -137,8 +137,8 @@ class Screen
   def wait(pattern, timeout, **opts)
     opts[:log] = true if opts[:log].nil?
     debug_log("Screen: waiting for #{pattern}") if opts[:log]
-    try_for(timeout, delay: 0, log: false) do
-      return real_find(pattern, **opts.clone.update(log: false))
+    try_for(timeout, delay: 0) do
+      return real_find(pattern, **opts)
     end
   rescue Timeout::Error
     raise FindFailed, "cannot find #{pattern} on the screen"
