@@ -1,5 +1,14 @@
 [[!meta robots="noindex"]]
 
+<style>
+.doc {
+  display: inline-block;
+}
+.warning {
+  display: none;
+}
+</style>
+
 To sign in to a network using a captive portal:
 
 1. Try visiting an innocent-looking website that is common in your
@@ -12,11 +21,15 @@ To sign in to a network using a captive portal:
 1. If you are redirected to a captive portal, sign in to the network.
 
    If you are not redirected to a captive portal and the website loads,
-   this means that you are already connected to the Internet. Close the
-   *Unsafe Browser* and try connecting to the Tor network again.
+   this means that you are already connected to the Internet. Close
+   <span class="warning">this browser</span>
+   <span class="doc">the <i>Unsafe Browser</i></span>
+   and try connecting to the Tor network again.
 
    <!-- Clarify this after #18382 and #5785. -->
 
-1. After Tor is ready, close the *Unsafe Browser*.
+1. After Tor is ready, close
+   <span class="warning">this browser.</span>
+   <span class="doc">the <i>Unsafe Browser</i>.</span>
 
    You can use *Tor Browser* or any other application as usual.
