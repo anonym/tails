@@ -84,19 +84,18 @@ class StepChooseHideMixin:
         self.builder.get_object("radio_unnoticed_yes").set_active(False)
         self.builder.get_object("radio_unnoticed_no").set_active(False)
         self.builder.get_object("radio_unnoticed_none").hide()
+        made_a_choice = self.user_wants_hide in (True, False)
         definitive = self.state.get("progress", {}).get("started", False)
         if definitive:
-            assert "hide" in self.state["hide"]
-            if self.state["hide"]["hide"]:
+            assert made_a_choice
+            if self.user_wants_hide:
                 self.builder.get_object("radio_unnoticed_no").set_sensitive(False)
                 self.builder.get_object("radio_unnoticed_yes").set_active(True)
             else:
                 self.builder.get_object("radio_unnoticed_yes").set_sensitive(False)
                 self.builder.get_object("radio_unnoticed_no").set_active(True)
-        elif (
-            "hide" in self.state["hide"]
-        ):  # the user is changing her mind before connecting to Tor
-            hide = self.state["hide"]["hide"]
+        elif made_a_choice:  # the user is changing their mind before connecting to Tor
+            hide = self.user_wants_hide
             self.builder.get_object("radio_unnoticed_yes").set_active(hide)
             self.builder.get_object("radio_unnoticed_no").set_active(not hide)
         self.builder.get_object("radio_unnoticed_no_bridge").set_active(
@@ -906,6 +905,15 @@ class TCAMainWindow(
         self.add(self.main_container)
         self.show()
         self.change_box(self.state["step"])
+
+    @property
+    def user_wants_hide(self) -> Optional[bool]:
+        '''
+        returns True or False if the user made a clear choice
+
+        returns None if they still haven't (first screen)
+        '''
+        return self.state.get('hide', {}).get('hide', None)
 
     def save_conf(self, successful_connect=False):
         log.info("Saving configuration (success=%s)", successful_connect)
