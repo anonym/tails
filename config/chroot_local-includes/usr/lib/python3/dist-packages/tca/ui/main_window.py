@@ -169,7 +169,6 @@ class StepChooseBridgeMixin:
         else:
             self.builder.get_object("step_bridge_radio_default").grab_focus()
         self.get_object("radio_default").set_sensitive(not hide_mode)
-        self.get_object("label_explain_hide").set_visible(hide_mode)
 
         self.builder.get_object("step_bridge_radio_type").set_active(hide_mode)
         self.get_object(
