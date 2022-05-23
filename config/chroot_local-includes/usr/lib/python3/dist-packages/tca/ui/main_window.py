@@ -551,12 +551,16 @@ class StepConnectProgressMixin:
         self.save_conf(successful_connect=True)
         self.get_object("box_torconnect").hide()
         self.get_object("box_tortestok").show()
-        self.get_object("label_status").set_text(
-            _(
-                "Connected to Tor successfully!\n\n"
-                "You can now browse the Internet anonymously and uncensored."
-            )
-        )
+
+        if self.app.is_tor_over_bridges:
+            status = _("Connected to Tor successfully (using bridges)")
+        else:
+            status = _("Connected to Tor successfully")
+
+        self.get_object("label_connected").set_text(status)
+        self.get_object("label_connected_explain").set_text(_(
+            "You can now browse the Internet anonymously and uncensored."
+        ))
         self.get_object("box_start").show()
 
     def cb_internet_test(self, spawn, retval):
