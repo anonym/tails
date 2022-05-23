@@ -80,6 +80,9 @@ class StepChooseHideMixin:
 
     def before_show_hide(self, coming_from):
         self.state.setdefault("hide", {})
+        first_time = self.state['hide'].get('first', True)
+        self.state['hide'].setdefault('first', False)
+
         self.builder.get_object("radio_unnoticed_none").set_active(True)
         self.builder.get_object("radio_unnoticed_yes").set_active(False)
         self.builder.get_object("radio_unnoticed_no").set_active(False)
@@ -98,9 +101,12 @@ class StepChooseHideMixin:
             hide = self.user_wants_hide
             self.builder.get_object("radio_unnoticed_yes").set_active(hide)
             self.builder.get_object("radio_unnoticed_no").set_active(not hide)
-        self.builder.get_object("radio_unnoticed_no_bridge").set_active(
-            self.state["hide"].get("bridge", False)
-        )
+
+        if first_time:
+            log.debug("Initialize easy-bridge widget based on data+config (first run)")
+            self.builder.get_object("radio_unnoticed_no_bridge").set_active(
+                    self.state["hide"].get("bridge", False)
+                    )
 
     def _step_hide_next(self):
         if self.state["hide"]["bridge"]:
