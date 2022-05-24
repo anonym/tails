@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2020-04-12 16:10+0200\n"
-"PO-Revision-Date: 2022-05-02 14:23+0000\n"
+"POT-Creation-Date: 2022-05-24 14:10+0200\n"
+"PO-Revision-Date: 2022-05-04 19:23+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
@@ -26,9 +26,7 @@ msgstr "[[!meta date=\"Thu, 07 May 2015 12:34:56 +0000\"]]\n"
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Claws Mail leaks plaintext of encrypted emails to IMAP server\"]]\n"
-msgstr ""
-"[[!meta title=\"Claws Mail laisse fuiter en clair les courriers "
-"électroniques chiffrés sur le serveur IMAP\"]]\n"
+msgstr "[[!meta title=\"Claws Mail laisse fuiter en clair les courriers électroniques chiffrés sur le serveur IMAP\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -50,33 +48,29 @@ msgstr ""
 "Tails, stocke en clair des copies de tous les messages sur le serveur IMAP "
 "distant, y compris ceux qui sont censés être chiffrés."
 
-#. type: Plain text
-#, no-wrap
+#. type: Bullet: '  - '
 msgid ""
-"  - When sending an email, *Claws Mail* copies the email in plaintext to\n"
-"    the sending queue of the IMAP server before encrypting the email.\n"
-"    *Claws Mail* deletes this plaintext copy after sending the email.\n"
-"  - *Claws Mail* drafts in plaintext on the server. An email can be\n"
-"    saved as draft either:\n"
-"    - Manually by clicking on the **Draft** button when composing an email.\n"
-"    - Automatically if you selected the **automatically save message to\n"
-"      Draft folder** option in the writing preferences. This option is\n"
-"      deselected by default in Tails.\n"
+"When sending an email, *Claws Mail* copies the email in plaintext to the "
+"sending queue of the IMAP server before encrypting the email.  *Claws Mail* "
+"deletes this plaintext copy after sending the email."
 msgstr ""
-"  - Lors de l'envoi d'un message, *Claws Mail* copie ce message en clair "
-"dans\n"
-"    la file d'envoi du serveur IMAP avant de chiffrer le message.\n"
-"    *Claws Mail* efface cette copie en clair après avoir envoyé le message.\n"
-"  - Les brouillons *Claws Mail* sont en clair sur le serveur. Un message "
-"peut\n"
-"    être enregistré comme brouillon soit : \n"
-"    - Manuellement en cliquant sur le bouton **Brouillon** pendant la "
-"rédaction d'un message.\n"
-"    - Automatiquement si vous avez sélectionné l'option **enregistrer "
-"automatiquement les messages dans le\n"
-"      dossier Brouillon** dans les préférences de composition. Cette option "
-"est\n"
-"      désactivée par défaut dans Tails.\n"
+
+#. type: Bullet: '  - '
+msgid ""
+"*Claws Mail* drafts in plaintext on the server. An email can be saved as "
+"draft either:"
+msgstr ""
+
+#. type: Bullet: '    - '
+msgid "Manually by clicking on the **Draft** button when composing an email."
+msgstr ""
+
+#. type: Bullet: '    - '
+msgid ""
+"Automatically if you selected the **automatically save message to Draft "
+"folder** option in the writing preferences. This option is deselected by "
+"default in Tails."
+msgstr ""
 
 #. type: Plain text
 #, no-wrap
@@ -93,10 +87,16 @@ msgid "<div class=\"tip\">\n"
 msgstr "<div class=\"tip\">\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "To know if you are using IMAP or POP, choose <span class=\"menuchoice\">\n"
+#| "<span class=\"guimenu\">Configuration</span>&nbsp;▸\n"
+#| "<span class=\"guimenuitem\">Edit accounts&hellip;</span></span> and refer\n"
+#| "to the <span class=\"guilabel\">Protocol</span> column in the list of\n"
+#| "accounts.\n"
 msgid ""
 "To know if you are using IMAP or POP, choose <span class=\"menuchoice\">\n"
-"<span class=\"guimenu\">Configuration</span>&nbsp;▸\n"
+"<span class=\"guimenu\">Configuration</span>&nbsp;â¸\n"
 "<span class=\"guimenuitem\">Edit accounts&hellip;</span></span> and refer\n"
 "to the <span class=\"guilabel\">Protocol</span> column in the list of\n"
 "accounts.\n"
@@ -120,10 +120,10 @@ msgid ""
 "problem in your setup and please warn others around you."
 msgstr ""
 "Malheureusement, nous ne sommes pas encore capables de corriger ce problème "
-"automatiquement et pour tout le monde. Cela nécessiterait soit de modifier *"
-"Claws Mail*, soit de migrer vers une autre application. Consultez la section "
-"*Solutions de contournement* ci-dessous pour corriger ce problème dans votre "
-"installation et veuillez avertir votre entourage."
+"automatiquement et pour tout le monde. Cela nécessiterait soit de modifier "
+"*Claws Mail*, soit de migrer vers une autre application. Consultez la "
+"section *Solutions de contournement* ci-dessous pour corriger ce problème "
+"dans votre installation et veuillez avertir votre entourage."
 
 #. type: Plain text
 #, no-wrap
@@ -171,8 +171,7 @@ msgid ""
 "*Claws Mail* can connect to the email server using either the IMAP or POP\n"
 "protocol.\n"
 msgstr ""
-"*Claws Mail* peut se connecter au serveur de messagerie en utilisant soit le "
-"protocole\n"
+"*Claws Mail* peut se connecter au serveur de messagerie en utilisant soit le protocole\n"
 "IMAP soit le protocole POP.\n"
 
 #. type: Bullet: '  - '
@@ -220,9 +219,12 @@ msgstr ""
 "à vos activités sur Tails. Pour ce faire :"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "1. Choose **File**&nbsp;▸ **Add mailbox**&nbsp;▸ **MH&hellip;** to\n"
+#| "create a local mailbox where to download your emails.\n"
 msgid ""
-"1. Choose **File**&nbsp;▸ **Add mailbox**&nbsp;▸ **MH&hellip;** to\n"
+"1. Choose **File**&nbsp;â¸ **Add mailbox**&nbsp;â¸ **MH&hellip;** to\n"
 "create a local mailbox where to download your emails.\n"
 msgstr ""
 "1. Choisissez **Fichier**&nbsp;▸ **Ajouter une boîte aux lettres**&nbsp;▸ **MH&hellip;** pour\n"
@@ -247,9 +249,13 @@ msgid "   [[!img claws_mail_leaks_plaintext_to_imap/add_mailbox.png link=\"no\"]
 msgstr "   [[!img claws_mail_leaks_plaintext_to_imap/add_mailbox.png link=\"no\"]]\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "1. Choose **Configuration**&nbsp;▸ **Edit accounts&hellip;**, select\n"
+#| "your IMAP account in the list of accounts, and click **Delete** to\n"
+#| "delete it. Doing so does not delete any email stored on the server.\n"
 msgid ""
-"1. Choose **Configuration**&nbsp;▸ **Edit accounts&hellip;**, select\n"
+"1. Choose **Configuration**&nbsp;â¸ **Edit accounts&hellip;**, select\n"
 "your IMAP account in the list of accounts, and click **Delete** to\n"
 "delete it. Doing so does not delete any email stored on the server.\n"
 msgstr ""
@@ -336,18 +342,25 @@ msgstr ""
 "lieux de ceux du serveur. Pour cela :"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "1. Choose **Add mailbox**&nbsp;▸ **MH&hellip;** to create a local\n"
+#| "mailbox where to save your drafts and queued emails.\n"
 msgid ""
-"1. Choose **Add mailbox**&nbsp;▸ **MH&hellip;** to create a local\n"
+"1. Choose **Add mailbox**&nbsp;â¸ **MH&hellip;** to create a local\n"
 "mailbox where to save your drafts and queued emails.\n"
 msgstr ""
 "1. Choisissez **Ajouter une boîte aux lettres**&nbsp;▸ **MH&hellip;** pour créer une\n"
 "boîte aux lettres locale où vos brouillons et messages en instance d'envoi seront enregistrés.\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "1. Choose **Configuration**&nbsp;▸ **Edit accounts&hellip;**, select\n"
+#| "your IMAP account in the list of accounts, and click **Edit** to edit\n"
+#| "its preferences.\n"
 msgid ""
-"1. Choose **Configuration**&nbsp;▸ **Edit accounts&hellip;**, select\n"
+"1. Choose **Configuration**&nbsp;â¸ **Edit accounts&hellip;**, select\n"
 "your IMAP account in the list of accounts, and click **Edit** to edit\n"
 "its preferences.\n"
 msgstr ""
@@ -469,12 +482,34 @@ msgstr ""
 "  1. Il se connecte au serveur IMAP et supprime le message en clair\n"
 "  enregistré à l'étape 1 dans le dossier **Queue**.\n"
 
+#, no-wrap
+#~ msgid ""
+#~ "  - When sending an email, *Claws Mail* copies the email in plaintext to\n"
+#~ "    the sending queue of the IMAP server before encrypting the email.\n"
+#~ "    *Claws Mail* deletes this plaintext copy after sending the email.\n"
+#~ "  - *Claws Mail* drafts in plaintext on the server. An email can be\n"
+#~ "    saved as draft either:\n"
+#~ "    - Manually by clicking on the **Draft** button when composing an email.\n"
+#~ "    - Automatically if you selected the **automatically save message to\n"
+#~ "      Draft folder** option in the writing preferences. This option is\n"
+#~ "      deselected by default in Tails.\n"
+#~ msgstr ""
+#~ "  - Lors de l'envoi d'un message, *Claws Mail* copie ce message en clair dans\n"
+#~ "    la file d'envoi du serveur IMAP avant de chiffrer le message.\n"
+#~ "    *Claws Mail* efface cette copie en clair après avoir envoyé le message.\n"
+#~ "  - Les brouillons *Claws Mail* sont en clair sur le serveur. Un message peut\n"
+#~ "    être enregistré comme brouillon soit : \n"
+#~ "    - Manuellement en cliquant sur le bouton **Brouillon** pendant la rédaction d'un message.\n"
+#~ "    - Automatiquement si vous avez sélectionné l'option **enregistrer automatiquement les messages dans le\n"
+#~ "      dossier Brouillon** dans les préférences de composition. Cette option est\n"
+#~ "      désactivée par défaut dans Tails.\n"
+
 #~ msgid "<div class=\"note\">\n"
 #~ msgstr "<div class=\"note\">\n"
 
 #~ msgid ""
-#~ "[[!inline pages=\"doc/anonymous_internet/icedove/replacement.inline\" raw="
-#~ "\"yes\" sort=\"age\"]]\n"
+#~ "[[!inline pages=\"doc/anonymous_internet/icedove/replacement.inline\" "
+#~ "raw=\"yes\" sort=\"age\"]]\n"
 #~ msgstr ""
 #~ "[[!inline pages=\"doc/anonymous_internet/icedove/replacement.inline.fr\" "
 #~ "raw=\"yes\" sort=\"age\"]]\n"
