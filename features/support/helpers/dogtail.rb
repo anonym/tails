@@ -28,8 +28,7 @@ module Dogtail
   private_constant :TREE_API_NODE_SEARCH_FIELDS
 
   TREE_API_NODE_ACTIONS = [
-    :click,
-    :doubleClick,
+    :doActionNamed,
     :grabFocus,
     :keyCombo,
     :point,
@@ -302,5 +301,15 @@ module Dogtail
       end
     end
 
+    # Custom methods that use at-spi actions instead of actions
+    # that rely on rawinput (which don't work on Wayland)
+    def click
+      doActionNamed('click')
+    end
+
+    def doubleClick
+      doActionNamed('click')
+      doActionNamed('click')
+    end
   end
 end
