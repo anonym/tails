@@ -266,6 +266,23 @@ class Screen
     nil
   end
 
+  def paste(text, app: nil)
+    $vm.set_clipboard(text)
+    case app
+    when nil
+      press('ctrl', 'v')
+    when :terminal
+      press('ctrl', 'shift', 'v')
+    when :gtk_file_chooser
+      press('ctrl', 'l')
+      sleep 1
+      press('ctrl', 'v')
+    else
+      raise "Unsupported app: #{app}"
+    end
+    sleep 1 # Wait for the paste operation to register.
+  end
+
   def mouse_location(**opts)
     xdotool('getmouselocation').split[0..1].map { |s| s.split(':').last.to_i }
   end
