@@ -549,7 +549,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
       btn.labelee.click
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
-        @screen.type(bridge[:line])
+        @screen.paste(bridge[:line])
         @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
         break # We currently support only 1 bridge
       end
