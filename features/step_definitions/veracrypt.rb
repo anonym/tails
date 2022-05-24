@@ -260,7 +260,7 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
     @screen.wait('GnomeDisksUnlockDialogHiddenVolumeLabel.png', 10).click
   end
   # Clicking is robust neither with Dogtail (no visible effect) nor
-  # with imaget matching (that sometimes clicks just a little bit
+  # with image matching (that sometimes clicks just a little bit
   # outside of the button)
   @screen.wait('Gtk3UnlockButton.png', 10)
   @screen.press('alt', 'u') # "Unlock" button
