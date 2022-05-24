@@ -76,7 +76,6 @@ module Dogtail
         'import dogtail.config',
         'import dogtail.tree',
         'import dogtail.predicate',
-        'import dogtail.rawinput',
         'dogtail.config.logDebugToFile = False',
         'dogtail.config.logDebugToStdOut = False',
         'dogtail.config.blinkOnActions = True',
