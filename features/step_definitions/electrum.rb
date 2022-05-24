@@ -69,7 +69,8 @@ When /^I follow the Electrum wizard to create a new bitcoin wallet$/ do
   electrum_wizard.button('Next').click
   @electrum_password = 'asdf'
   electrum_wizard.children(roleName: 'password text').each do |n|
-    n.typeText(@electrum_password)
+    n.grabFocus
+    @screen.type(@electrum_password)
   end
   electrum_wizard.button('Next').click
 end
@@ -84,7 +85,8 @@ Then /^I see a warning that Electrum is not persistent$/ do
 end
 
 When /^I enter my Electrum wallet password$/ do
-  electrum_wizard.child(roleName: 'password text').typeText(@electrum_password)
+  electrum_wizard.child(roleName: 'password text').grabFocus
+  @screen.type(@electrum_password)
   electrum_wizard.button('Next').click
 end
 

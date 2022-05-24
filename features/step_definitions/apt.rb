@@ -192,7 +192,8 @@ Then /^I install "(.+)" using Synaptic$/ do |package_name|
   retry_tor(recovery_proc) do
     @synaptic.button('Search').click
     find_dialog = @synaptic.dialog('Find')
-    find_dialog.child(roleName: 'text').typeText(package_name)
+    find_dialog.child(roleName: 'text').grabFocus
+    @screen.type(package_name)
     find_dialog.button('Search').click
     package_list = @synaptic.child('Installed Version',
                                    roleName: 'table column header').parent

@@ -1145,13 +1145,16 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
                                roleName:    'dialog',
                                showingOnly: true)
   # Open the file chooser
-  disks.pressKey('Enter')
+  @screen.press('Enter')
   select_disk_image_dialog = disks.child('Select Disk Image to Restore',
                                          roleName:    'file chooser',
                                          showingOnly: true)
-  disks.typeText(@usb_image_path)
+  @screen.paste(
+    @usb_image_path,
+    app: :gtk_file_chooser
+  )
   sleep 2 # avoid ENTER being eaten by the auto-completion system
-  disks.pressKey('Enter')
+  @screen.press('Enter')
   try_for(10) do
     !select_disk_image_dialog.showing
   end

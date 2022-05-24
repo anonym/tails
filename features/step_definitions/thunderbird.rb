@@ -90,7 +90,7 @@ Then /^I am prompted to setup an email account$/ do
 end
 
 Then /^I cancel setting up an email account$/ do
-  thunderbird_wizard.button('Cancel').click
+  thunderbird_wizard.button('Cancel').press
 end
 
 Then /^I open Thunderbird's Add-ons Manager$/ do
@@ -129,11 +129,14 @@ When /^I enter my email credentials into the autoconfiguration wizard$/ do
   address = $config['Thunderbird']['address']
   name = address.split('@').first
   password = $config['Thunderbird']['password']
-  thunderbird_wizard.child('Your full name', roleName: 'entry').typeText(name)
+  thunderbird_wizard.child('Your full name', roleName: 'entry').grabFocus
+  @screen.paste(name)
   thunderbird_wizard.child('Email address',
-                           roleName: 'entry').typeText(address)
-  thunderbird_wizard.child('Password', roleName: 'password text').typeText(password)
-  thunderbird_wizard.button('Continue').click
+                           roleName: 'entry').grabFocus
+  @screen.paste(address)
+  thunderbird_wizard.child('Password', roleName: 'password text').grabFocus
+  @screen.paste(password)
+  thunderbird_wizard.button('Continue').press
   # This button is shown if and only if a configuration has been found
   try_for(120) { thunderbird_wizard.button('Done') }
 end
@@ -170,14 +173,14 @@ When /^I fetch my email$/ do
 end
 
 When /^I accept the (?:autoconfiguration wizard's|manual) configuration$/ do
-  thunderbird_wizard.button('Done').click
+  thunderbird_wizard.button('Done').press
 
   # The password check can fail due to bad Tor circuits.
   retry_tor do
     try_for(120) do
       # Spam the button, even if it is disabled (while it is still
       # testing the password).
-      thunderbird_wizard.button('Finish').click
+      thunderbird_wizard.button('Finish').press
       false
     rescue StandardError
       true
@@ -208,17 +211,17 @@ When /^I send an email to myself$/ do
   thunderbird_main.child('Mail Toolbar',
                          roleName: 'tool bar').button('Write').click
   compose_window = thunderbird_app.child('Write: (no subject) - Thunderbird')
-  compose_window.child('To', roleName: 'entry')
-                .typeText($config['Thunderbird']['address'])
+  compose_window.child('To', roleName: 'entry').grabFocus
+  @screen.paste($config['Thunderbird']['address'])
   # The randomness of the subject will make it easier for us to later
   # find *exactly* this email. This makes it safe to run several tests
   # in parallel.
   @subject = "Automated test suite: #{random_alnum_string(32)}"
-  compose_window.child('Subject', roleName: 'entry')
-                .typeText(@subject)
+  compose_window.child('Subject', roleName: 'entry').grabFocus
+  @screen.paste(@subject)
   compose_window = thunderbird_app.child("Write: #{@subject} - Thunderbird")
-  compose_window.child('Message body', roleName: 'document web')
-                .typeText('test')
+  compose_window.child('Message body', roleName: 'document web').grabFocus
+  @screen.type('test')
   compose_window.child('Composition Toolbar', roleName: 'tool bar')
                 .button('Send').click
   try_for(120, delay: 2) do
@@ -230,9 +233,10 @@ Then /^I can find the email I sent to myself in my inbox$/ do
   recovery_proc = proc { step 'I fetch my email' }
   retry_tor(recovery_proc) do
     thunderbird_inbox.click
-    filter = thunderbird_main.child('Filter these messages <Ctrl+Shift+K>',
-                                    roleName: 'entry')
-    filter.typeText(@subject)
+    thunderbird_main.child('Filter these messages <Ctrl+Shift+K>',
+                           roleName: 'entry')
+                    .grabFocus
+    @screen.paste(@subject)
     hit_counter = thunderbird_main.child('1 message')
     inbox_view = hit_counter.parent
     message_list = inbox_view.child(roleName: 'table')
