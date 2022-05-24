@@ -96,7 +96,7 @@ To release Tails you'll need some packages installed:
 * `perl5lib` [[dependencies|contribute/release_process/perl5lib#build-deps]]
 * `iuk` [[dependencies|contribute/release_process/tails-iuk#build-deps]]
 * `squashfs-tools-ng` and `libsquashfs1` from Bullseye
-* `po4a` 0.55:
+* `po4a` 0.62:
    - Different versions extract Markdown headings in a different way, which
      makes tons of strings fuzzy.
    - Different versions emit different sets of message flags, some of which
@@ -1480,7 +1480,7 @@ Rename, copy, garbage collect and update various files:
 
 Then, build the website and commit this last set of changes:
 
-	if [ "$(./bin/po4a-version)" = 0.55 ]; then
+	if [ "$(./bin/po4a-version)" = 0.62 ]; then
 	    ./build-website && \
 	    git add wiki/src/{inc,torrents} && \
 	    git commit -m "Update various website source files for ${VERSION:?}"
@@ -1559,7 +1559,7 @@ In any case
 Generate PO files for the pages added or updated earlier in this
 section, and publish them on the `$WEBSITE_RELEASE_BRANCH` branch:
 
-	if [ "$(./bin/po4a-version)" = 0.55 ]; then
+	if [ "$(./bin/po4a-version)" = 0.62 ]; then
 	    ./build-website && \
 	    git add wiki/src && \
 	    git commit -m "Releasing version ${VERSION:?}" && \
