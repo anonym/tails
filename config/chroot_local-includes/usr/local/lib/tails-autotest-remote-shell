@@ -71,7 +71,9 @@ def get_user_env(user):
                             stdout=subprocess.PIPE,
                             shell=True)
     env_data = pipe.communicate()[0].decode('utf-8')
-    return dict((line.split('=', 1) for line in env_data.splitlines()))
+    env_dict = dict((line.split('=', 1) for line in env_data.splitlines()))
+    env_dict.update({'DISPLAY': ':0'})
+    return env_dict
 
 
 # Dogtail does not seem to support the root user interacting with
