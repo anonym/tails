@@ -162,12 +162,6 @@ steps:
       Pin: release o=Debian,n=buster
       Pin-Priority: -1
 
-  - create-file: /etc/apt/preferences.d/po4a
-    contents: |
-      Package: po4a
-      Pin: release o=Debian,n=buster
-      Pin-Priority: 999
-
   - chroot: rootfs
     shell: apt update
 
