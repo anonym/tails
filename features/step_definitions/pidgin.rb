@@ -90,16 +90,16 @@ When /^I create my XMPP account$/ do
   # the GUI has updated after switching protocol.
   @screen.wait('PidginAddAccountXMPPDomain.png', 5)
   click_mid_right_edge('PidginAddAccountXMPPUsername.png')
-  @screen.type(account['username'])
+  @screen.paste(account['username'])
   click_mid_right_edge('PidginAddAccountXMPPDomain.png')
-  @screen.type(account['domain'])
+  @screen.paste(account['domain'])
   click_mid_right_edge('PidginAddAccountXMPPPassword.png')
-  @screen.type(account['password'])
+  @screen.paste(account['password'])
   @screen.click('PidginAddAccountXMPPRememberPassword.png')
   if account['connect_server']
     @screen.click('PidginAddAccountXMPPAdvancedTab.png')
     click_mid_right_edge('PidginAddAccountXMPPConnectServer.png')
-    @screen.type(account['connect_server'])
+    @screen.paste(account['connect_server'])
   end
   @screen.click('PidginAddAccountXMPPAddButton.png')
 end
@@ -153,7 +153,8 @@ And /^I say (.*) to my friend( in the multi-user chat)?$/ do |msg, multi_chat|
   else
     $vm.focus_window(@friend_name)
   end
-  @screen.type(msg, ['Return'])
+  @screen.paste(msg)
+  @screen.press('Return')
 end
 
 Then /^I receive a response from my friend( in the multi-user chat)?$/ do |multi_chat|
@@ -187,7 +188,7 @@ When /^I join some empty multi-user chat$/ do
               else
                 random_alnum_string(10, 15)
               end
-  @screen.type(chat_room)
+  @screen.paste(chat_room)
 
   # We will need the conference server later, when starting the bot.
   click_mid_right_edge('PidginJoinChatServerLabel.png')
@@ -205,7 +206,7 @@ When /^I join some empty multi-user chat$/ do
             'PidginChat1UserInRoom.png',]
   image_found = @screen.wait_any(images, 30)[:found_pattern]
   if image_found == 'PidginCreateNewRoomPrompt.png'
-    @screen.click('PidginCreateNewRoomAcceptDefaultsButton.png')
+    @screen.wait('PidginCreateNewRoomAcceptDefaultsButton.png', 15).click
   end
   $vm.focus_window(@chat_room_jid)
   @screen.wait('PidginChat1UserInRoom.png', 10)
@@ -347,11 +348,11 @@ Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, server|
   @screen.wait('PidginBuddiesMenuJoinChat.png', 10).click
   @screen.wait('PidginJoinChatWindow.png', 10).click
   click_mid_right_edge('PidginJoinChatRoomLabel.png')
-  @screen.type(channel)
+  @screen.paste(channel)
   # Replace the default server (which is based on the XMPP account
   # being used by the client)
   triple_click_mid_right_edge('PidginJoinChatServerLabel.png')
-  @screen.type(server)
+  @screen.paste(server)
   @screen.click('PidginJoinChatButton.png')
   @chat_room_jid = channel + '@' + server
   $vm.focus_window(@chat_room_jid)
@@ -407,14 +408,16 @@ def pidgin_add_certificate_from(cert_file)
   end
   @screen.wait('GtkFileTypeFileNameButton.png', 10).click
   @screen.press('alt', 'l') # "Location" field
-  @screen.type(cert_file, ['Return'])
+  @screen.paste(cert_file)
+  @screen.press('Return')
 end
 
 Then /^I can add a certificate from the "([^"]+)" directory to Pidgin$/ do |cert_dir|
   pidgin_add_certificate_from("#{cert_dir}/test.crt")
   wait_and_focus('PidginCertificateAddHostnameDialog.png',
                  'Certificate Import', 10)
-  @screen.type('XXX test XXX', ['Return'])
+  @screen.paste('XXX test XXX')
+  @screen.press('Return')
   wait_and_focus('PidginCertificateTestItem.png', 'Certificate Manager', 10)
 end
 

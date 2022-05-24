@@ -422,6 +422,9 @@ Given /^I set an administration password$/ do
   @screen.press('Tab')
   @screen.type(@sudo_password)
   @screen.press('Return')
+  # Wait for the Administration Password dialog to be closed,
+  # otherwise the next step can fail.
+  @screen.wait('TailsGreeterLoginButton.png', 5)
 end
 
 Given /^I allow the Unsafe Browser to be started$/ do
@@ -489,16 +492,13 @@ end
 # this is a #18293-aware version of `tor_variable get --type=conf DisableNetwork`
 def check_disable_network
   disable_network = nil
-  # Gather debugging information for #18293
+  # Gather debugging information for #18557
   try_for(10) do
-    $vm.execute('pidof tor')
-    $vm.execute('fuser --namespace tcp 9052')
-    $vm.execute('systemctl status tor@default.service')
     disable_network = $vm.execute_successfully(
       '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
     ).stdout.chomp
     if disable_network == ''
-      debug_log('Tor reported claims DisableNetwork is an empty string')
+      debug_log('Tor claims DisableNetwork is an empty string')
       false
     else
       true
@@ -655,7 +655,7 @@ end
 
 When /^I acknowledge Torbutton's New Identity confirmation prompt$/ do
   @screen.wait('GnomeQuestionDialogIcon.png', 30)
-  step 'I type "y"'
+  @screen.press('y')
 end
 
 Given /^I add a bookmark to eff.org in the Tor Browser$/ do
@@ -665,7 +665,7 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
        '"The proxy server is refusing connections" error'
   @screen.press('ctrl', 'd')
   @screen.wait('TorBrowserBookmarkPrompt.png', 10)
-  @screen.type(url)
+  @screen.paste(url)
   # The new default location for bookmarks is "Bookmarks Toolbar", but our test
   # expects the new entry is available in "Bookmark Menu", that's why we need
   # to select the location explicitly.
@@ -860,18 +860,15 @@ Given /^I switch to the "([^"]+)" NetworkManager connection$/ do |con_name|
   end
 end
 
-When /^I start and focus GNOME Terminal$/ do
-  step 'I start "GNOME Terminal" via GNOME Activities Overview'
-  @screen.wait('GnomeTerminalWindow.png', 40)
-end
-
 When /^I run "([^"]+)" in GNOME Terminal$/ do |command|
   if !$vm.process_running?('gnome-terminal-server')
-    step 'I start and focus GNOME Terminal'
+    step 'I start "GNOME Terminal" via GNOME Activities Overview'
+    @screen.wait('GnomeTerminalWindow.png', 40)
   else
     @screen.wait('GnomeTerminalWindow.png', 20).click
   end
-  @screen.type(command, ['Return'])
+  @screen.paste(command, app: :terminal)
+  @screen.press('Return')
 end
 
 When /^the file "([^"]+)" exists(?:| after at most (\d+) seconds)$/ do |file, timeout|
@@ -952,10 +949,6 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   end
 end
 
-When /^I type "([^"]+)"$/ do |string|
-  @screen.type(string)
-end
-
 When /^I press the "([^"]+)" key$/ do |key|
   @screen.press(key)
 end
@@ -1013,12 +1006,13 @@ When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) dire
   elsif output_dir == 'default downloads'
     output_dir = "/home/#{LIVE_USER}/Tor Browser"
   else
-    @screen.type(output_dir + '/')
+    @screen.paste(output_dir + '/')
   end
   # Only the part of the filename before the .html extension can be easily
   # replaced so we have to remove it before typing it into the arget filename
   # entry widget.
-  @screen.type(output_file.sub(/[.]html$/, ''), ['Return'])
+  @screen.paste(output_file.sub(/[.]html$/, ''))
+  @screen.press('Return')
   if should_work
     try_for(20,
             msg: "The page was not saved to #{output_dir}/#{output_file}") do
@@ -1040,8 +1034,7 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
   @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it
-  $vm.set_clipboard(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
-  @screen.press('ctrl', 'v')
+  @screen.paste(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
   @screen.press('Return')
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do

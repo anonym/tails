@@ -137,8 +137,8 @@ class Screen
   def wait(pattern, timeout, **opts)
     opts[:log] = true if opts[:log].nil?
     debug_log("Screen: waiting for #{pattern}") if opts[:log]
-    try_for(timeout, delay: 0, log: false) do
-      return real_find(pattern, **opts.clone.update(log: false))
+    try_for(timeout, delay: 0) do
+      return real_find(pattern, **opts)
     end
   rescue Timeout::Error
     raise FindFailed, "cannot find #{pattern} on the screen"
@@ -264,6 +264,23 @@ class Screen
       end
     end
     nil
+  end
+
+  def paste(text, app: nil)
+    $vm.set_clipboard(text)
+    case app
+    when nil
+      press('ctrl', 'v')
+    when :terminal
+      press('ctrl', 'shift', 'v')
+    when :gtk_file_chooser
+      press('ctrl', 'l')
+      sleep 1
+      press('ctrl', 'v')
+    else
+      raise "Unsupported app: #{app}"
+    end
+    sleep 1 # Wait for the paste operation to register.
   end
 
   def mouse_location(**opts)
