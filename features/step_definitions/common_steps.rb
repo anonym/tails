@@ -422,6 +422,9 @@ Given /^I set an administration password$/ do
   @screen.press('Tab')
   @screen.type(@sudo_password)
   @screen.press('Return')
+  # Wait for the Administration Password dialog to be closed,
+  # otherwise the next step can fail.
+  @screen.wait('TailsGreeterLoginButton.png', 5)
 end
 
 Given /^I allow the Unsafe Browser to be started$/ do
@@ -489,16 +492,13 @@ end
 # this is a #18293-aware version of `tor_variable get --type=conf DisableNetwork`
 def check_disable_network
   disable_network = nil
-  # Gather debugging information for #18293
+  # Gather debugging information for #18557
   try_for(10) do
-    $vm.execute('pidof tor')
-    $vm.execute('fuser --namespace tcp 9052')
-    $vm.execute('systemctl status tor@default.service')
     disable_network = $vm.execute_successfully(
       '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
     ).stdout.chomp
     if disable_network == ''
-      debug_log('Tor reported claims DisableNetwork is an empty string')
+      debug_log('Tor claims DisableNetwork is an empty string')
       false
     else
       true

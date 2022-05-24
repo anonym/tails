@@ -153,12 +153,12 @@ Then /^the hardware clock is still off by "([^"]+)"$/ do |timediff|
   hwclock = DateTime.parse(
     $vm.execute_successfully('hwclock -r').stdout.chomp
   ).to_time
-  expected_time_lower_bound = DateTime.parse(
-    cmd_helper(['date', '-d', "now #{timediff}"])
-  ).to_time - max_time_drift
-  expected_time_upper_bound = expected_time_lower_bound + max_time_drift
+  expected = DateTime.parse(cmd_helper(['date', '-d', "now #{timediff}"])).to_time
+  expected_time_lower_bound = expected - max_time_drift
+  expected_time_upper_bound = expected + 1
   assert(expected_time_lower_bound <= hwclock &&
          hwclock <= expected_time_upper_bound,
-         "The host's hwclock should be approximately " \
-         "'#{expected_time_lower_bound}' but is actually '#{hwclock}'")
+         'The hardware clock of the Tails VM should be between ' \
+         "'#{expected_time_lower_bound}' and '#{expected_time_upper_bound}', " \
+         "but is actually '#{hwclock}'")
 end
