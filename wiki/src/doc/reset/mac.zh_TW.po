@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2020-04-12 16:10+0200\n"
+"POT-Creation-Date: 2022-05-24 14:09+0200\n"
 "PO-Revision-Date: 2018-11-05 11:30+0000\n"
 "Last-Translator: Weblate Admin <admin@example.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,6 +152,152 @@ msgstr "<!-- Note for translators: This section is very similar to /install/mac/
 msgid "Unplug the USB stick from the computer."
 msgstr "電腦上拔除 USB 隨身碟。"
 
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid ""
+"1. Open <span class=\"application\">Terminal</span> from\n"
+"   <span class=\"menuchoice\">\n"
+"     <span class=\"guimenu\">Applications</span>&nbsp;â¸\n"
+"     <span class=\"guisubmenu\">Utilities</span>&nbsp;â¸\n"
+"     <span class=\"guimenuitem\">Terminal.app</span></span>.\n"
+msgstr ""
+"1. 開啟  <span class=\"menuchoice\">底下的\n"
+"     <span class=\"application\">Terminal</span>\n"
+"     <span class=\"guimenu\">應用程式</span>&nbsp;▸\n"
+"     <span class=\"guisubmenu\">工具</span>&nbsp;▸\n"
+"     <span class=\"guimenuitem\">Terminal.app</span></span>.\n"
+
+#. type: Bullet: '1. '
+msgid "Execute the following command:"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "       diskutil list\n"
+msgstr "       diskutil list\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "   It returns a list of the storage devices on the system. For example:\n"
+msgstr "   如果它傳回一個系統上的儲存設備清單，例如像：\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"       $ diskutil list\n"
+"       /dev/disk0\n"
+"         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
+"         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
+"         1:                      EFI              209.7 MB  disk0s1\n"
+"         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
+"         3:                      EFI              134.1 GB  disk0s3\n"
+"         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
+msgstr ""
+"       $ diskutil list\n"
+"       /dev/disk0\n"
+"         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
+"         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
+"         1:                      EFI              209.7 MB  disk0s1\n"
+"         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
+"         3:                      EFI              134.1 GB  disk0s3\n"
+"         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
+
+#. type: Bullet: '1. '
+msgid "Plug the USB stick in the computer."
+msgstr "電腦插上 USB 隨身碟。"
+
+#. type: Bullet: '1. '
+msgid "Execute again the same command:"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   Your USB stick appears as a new device in the list. Check\n"
+"   that its size corresponds to the size of your USB stick.\n"
+msgstr ""
+"   你的 USB 隨身碟會出現在清單上的一個新設備。檢查\n"
+"   它的容量大小是否符合你的USB 隨身碟\n"
+
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid ""
+"       $ diskutil list\n"
+"       /dev/disk0\n"
+"         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
+"         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
+"         1:                      EFI              209.7 MB  disk0s1\n"
+"         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
+"         3:                      EFI              134.1 GB  disk0s3\n"
+"         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
+"       /dev/disk1\n"
+"         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
+"         0:   FDisk_partition_scheme             *8.0 GB    disk1\n"
+"         1:                Apple_HFS Untitled 1   8.0 GB    disk1s1\n"
+msgstr ""
+"       $ diskutil list\n"
+"       /dev/disk0\n"
+"         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
+"         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
+"         1:                      EFI              209.7 MB  disk0s1\n"
+"         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
+"         3:                      EFI              134.1 GB  disk0s3\n"
+"         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
+
+#. type: Bullet: '1. '
+msgid ""
+"Take note of the *device name* of your USB stick.  In this example, the USB "
+"stick is 8.0 GB and its device name is <span class=\"code\">/dev/disk1</"
+"span>.  Yours might be different."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   <div class=\"caution\">\n"
+"   <p>If you are unsure about the device name, you should stop proceeding or\n"
+"   <strong>you risk overwriting any hard disk on the system</strong>.</p>\n"
+"   </div>\n"
+msgstr ""
+"   <div class=\"caution\">\n"
+"   <p>如果不確定設備名稱，你最好停止操作否則\n"
+"   <strong>會造成覆寫掉系統上任何一顆硬碟的風險</strong>.</p>\n"
+"   </div>\n"
+
+#. type: Bullet: '1. '
+msgid ""
+"Execute the following command to safely remove the USB stick. Replace <span "
+"class=\"code\">[device]</span> with the device name found in step 6."
+msgstr ""
+"執行以下指令來安全地移除USB 隨身磁，取代 <span class=\"code\">[device]</"
+"span> 在步驟6所找出的設備名稱。"
+
+#. type: Plain text
+#, no-wrap
+msgid "       diskutil unmountDisk [device]\n"
+msgstr "       diskutil unmountDisk [device]\n"
+
+#. type: Bullet: '2. '
+msgid ""
+"Execute the following command to format the USB stick. Replace <span class="
+"\"code\">[device]</span> with the device name found in step 6."
+msgstr ""
+"執行以下指令來格式化 USB 隨身磁，取代 <span class=\"code\">[device]</span> 在"
+"步驟6所找出的設備名稱。"
+
+#. type: Plain text
+#, no-wrap
+msgid "       sudo fdisk -iy [device]\n"
+msgstr "       sudo fdisk -iy [device]\n"
+
+#. type: Bullet: '1. '
+msgid ""
+"You can try to reset the USB stick again using <span class=\"application"
+"\">Disk Utility</span> from the beginning of this page."
+msgstr ""
+"你可以試著使用本頁開始的 <span class=\"application\">磁碟工具</span> 來重置 "
+"USB 隨身磁。"
+
 #~ msgid ""
 #~ "[[!inline pages=\"doc/first_steps/reset.intro\" raw=\"yes\" sort=\"age"
 #~ "\"]]\n"
@@ -164,92 +310,3 @@ msgstr "電腦上拔除 USB 隨身碟。"
 
 #~ msgid "Format using the command line\n"
 #~ msgstr "使用文字指令行來進行格式化 \n"
-
-#~ msgid ""
-#~ "1. Open <span class=\"application\">Terminal</span> from\n"
-#~ "   <span class=\"menuchoice\">\n"
-#~ "     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-#~ "     <span class=\"guisubmenu\">Utilities</span>&nbsp;▸\n"
-#~ "     <span class=\"guimenuitem\">Terminal.app</span></span>.\n"
-#~ msgstr ""
-#~ "1. 開啟  <span class=\"menuchoice\">底下的\n"
-#~ "     <span class=\"application\">Terminal</span>\n"
-#~ "     <span class=\"guimenu\">應用程式</span>&nbsp;▸\n"
-#~ "     <span class=\"guisubmenu\">工具</span>&nbsp;▸\n"
-#~ "     <span class=\"guimenuitem\">Terminal.app</span></span>.\n"
-
-#~ msgid "       diskutil list\n"
-#~ msgstr "       diskutil list\n"
-
-#~ msgid ""
-#~ "   It returns a list of the storage devices on the system. For example:\n"
-#~ msgstr "   如果它傳回一個系統上的儲存設備清單，例如像：\n"
-
-#~ msgid ""
-#~ "       $ diskutil list\n"
-#~ "       /dev/disk0\n"
-#~ "         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
-#~ "         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
-#~ "         1:                      EFI              209.7 MB  disk0s1\n"
-#~ "         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
-#~ "         3:                      EFI              134.1 GB  disk0s3\n"
-#~ "         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
-#~ msgstr ""
-#~ "       $ diskutil list\n"
-#~ "       /dev/disk0\n"
-#~ "         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
-#~ "         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
-#~ "         1:                      EFI              209.7 MB  disk0s1\n"
-#~ "         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
-#~ "         3:                      EFI              134.1 GB  disk0s3\n"
-#~ "         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
-
-#~ msgid "Plug the USB stick in the computer."
-#~ msgstr "電腦插上 USB 隨身碟。"
-
-#~ msgid ""
-#~ "   Your USB stick appears as a new device in the list. Check\n"
-#~ "   that its size corresponds to the size of your USB stick.\n"
-#~ msgstr ""
-#~ "   你的 USB 隨身碟會出現在清單上的一個新設備。檢查\n"
-#~ "   它的容量大小是否符合你的USB 隨身碟\n"
-
-#~ msgid ""
-#~ "   <div class=\"caution\">\n"
-#~ "   <p>If you are unsure about the device name, you should stop proceeding "
-#~ "or\n"
-#~ "   <strong>you risk overwriting any hard disk on the system</strong>.</"
-#~ "p>\n"
-#~ "   </div>\n"
-#~ msgstr ""
-#~ "   <div class=\"caution\">\n"
-#~ "   <p>如果不確定設備名稱，你最好停止操作否則\n"
-#~ "   <strong>會造成覆寫掉系統上任何一顆硬碟的風險</strong>.</p>\n"
-#~ "   </div>\n"
-
-#~ msgid ""
-#~ "Execute the following command to safely remove the USB stick. Replace "
-#~ "<span class=\"code\">[device]</span> with the device name found in step 6."
-#~ msgstr ""
-#~ "執行以下指令來安全地移除USB 隨身磁，取代 <span class=\"code\">[device]</"
-#~ "span> 在步驟6所找出的設備名稱。"
-
-#~ msgid "       diskutil unmountDisk [device]\n"
-#~ msgstr "       diskutil unmountDisk [device]\n"
-
-#~ msgid ""
-#~ "Execute the following command to format the USB stick. Replace <span "
-#~ "class=\"code\">[device]</span> with the device name found in step 6."
-#~ msgstr ""
-#~ "執行以下指令來格式化 USB 隨身磁，取代 <span class=\"code\">[device]</"
-#~ "span> 在步驟6所找出的設備名稱。"
-
-#~ msgid "       sudo fdisk -iy [device]\n"
-#~ msgstr "       sudo fdisk -iy [device]\n"
-
-#~ msgid ""
-#~ "You can try to reset the USB stick again using <span class=\"application"
-#~ "\">Disk Utility</span> from the beginning of this page."
-#~ msgstr ""
-#~ "你可以試著使用本頁開始的 <span class=\"application\">磁碟工具</span> 來重"
-#~ "置 USB 隨身磁。"
