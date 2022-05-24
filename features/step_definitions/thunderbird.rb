@@ -114,7 +114,7 @@ Then /^I open the Extensions tab$/ do
   # finally do the click.
   try_for(10) do
     @thunderbird_addons
-      .child('Extensions', roleName: 'page tab', retry: false).click
+      .child('Extensions', roleName: 'page tab', retry: false).press
     # Verify that we clicked correctly:
     @thunderbird_addons
       .child('Manage Your Extensions', roleName: 'heading', retry: false)
@@ -160,15 +160,18 @@ def wait_for_thunderbird_progress_bar_to_vanish(thunderbird_frame)
 end
 
 When /^I fetch my email$/ do
-  account = thunderbird_main.child($config['Thunderbird']['address'],
-                                   roleName: 'table row')
-  account.click
+  thunderbird_main.child($config['Thunderbird']['address'],
+                         roleName: 'table row')
+                  .activate
   thunderbird_frame = thunderbird_app.child(
     "#{$config['Thunderbird']['address']} - Mozilla Thunderbird", roleName: 'frame'
   )
 
-  thunderbird_frame.child('Mail Toolbar', roleName: 'tool bar')
-                   .button('Get Messages').click
+  get_messages_menu = thunderbird_frame.child('Mail Toolbar', roleName: 'tool bar')
+                                       .button('Get Messages')
+  get_messages_menu.press
+  get_messages_menu.child('Get All New Messages', roleName: 'menu item')
+                   .click
   wait_for_thunderbird_progress_bar_to_vanish(thunderbird_frame)
 end
 
@@ -209,7 +212,7 @@ end
 
 When /^I send an email to myself$/ do
   thunderbird_main.child('Mail Toolbar',
-                         roleName: 'tool bar').button('Write').click
+                         roleName: 'tool bar').button('Write').press
   compose_window = thunderbird_app.child('Write: (no subject) - Thunderbird')
   compose_window.child('To', roleName: 'entry').grabFocus
   @screen.paste($config['Thunderbird']['address'])
@@ -223,7 +226,7 @@ When /^I send an email to myself$/ do
   compose_window.child('Message body', roleName: 'document web').grabFocus
   @screen.type('test')
   compose_window.child('Composition Toolbar', roleName: 'tool bar')
-                .button('Send').click
+                .button('Send').press
   try_for(120, delay: 2) do
     !compose_window.exist?
   end
@@ -232,7 +235,7 @@ end
 Then /^I can find the email I sent to myself in my inbox$/ do
   recovery_proc = proc { step 'I fetch my email' }
   retry_tor(recovery_proc) do
-    thunderbird_inbox.click
+    thunderbird_inbox.activate
     thunderbird_main.child('Filter these messages <Ctrl+Shift+K>',
                            roleName: 'entry')
                     .grabFocus
@@ -243,13 +246,13 @@ Then /^I can find the email I sent to myself in my inbox$/ do
     the_message = message_list.child(@subject, roleName: 'table cell')
     assert_not_nil(the_message)
     # Let's clean up
-    the_message.click
-    inbox_view.button('Delete').click
+    the_message.parent.activate
+    inbox_view.button('Delete').press
   end
 end
 
 Then /^my Thunderbird inbox is non-empty$/ do
-  thunderbird_inbox.click
+  thunderbird_inbox.activate
   message_list = thunderbird_main.child('Filter these messages <Ctrl+Shift+K>',
                                         roleName: 'entry')
                                  .parent.parent.child(roleName: 'table')

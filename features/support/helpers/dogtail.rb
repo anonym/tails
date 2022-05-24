@@ -36,6 +36,7 @@ module Dogtail
   private_constant :TREE_API_NODE_ACTIONS
 
   TREE_API_NODE_AT_SPI_ACTIONS = [
+    :activate,
     :click,
     :press,
   ].freeze
