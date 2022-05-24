@@ -152,22 +152,6 @@ steps:
       Pin: release n=${DISTRIBUTION}-backports
       Pin-Priority: 100
 
-  - create-file: /etc/apt/sources.list.d/buster.list
-    contents: |
-      deb http://time-based.snapshots.deb.tails.boum.org/debian/${DEBIAN_SERIAL}/ buster main
-
-  - create-file: /etc/apt/preferences.d/buster
-    contents: |
-      Package: *
-      Pin: release o=Debian,n=buster
-      Pin-Priority: -1
-
-  - create-file: /etc/apt/preferences.d/po4a
-    contents: |
-      Package: po4a
-      Pin: release o=Debian,n=buster
-      Pin-Priority: 999
-
   - chroot: rootfs
     shell: apt update
 
