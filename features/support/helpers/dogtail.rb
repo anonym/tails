@@ -35,6 +35,12 @@ module Dogtail
   ].freeze
   private_constant :TREE_API_NODE_ACTIONS
 
+  TREE_API_NODE_AT_SPI_ACTIONS = [
+    :click,
+    :press,
+  ].freeze
+  private_constant :TREE_API_NODE_AT_SPI_ACTIONS
+
   TREE_API_APP_SEARCHES = TREE_API_NODE_SEARCHES + [
     :dialog,
     :window,
@@ -287,17 +293,13 @@ module Dogtail
 
     # Custom methods that use at-spi actions instead of actions
     # that rely on rawinput (which don't work on Wayland)
-    def click
-      doActionNamed('click')
+    TREE_API_NODE_AT_SPI_ACTIONS.each do |action|
+      define_method(action) { doActionNamed(action.to_s) }
     end
 
     def doubleClick
       doActionNamed('click')
       doActionNamed('click')
-    end
-
-    def press
-      doActionNamed('press')
     end
   end
 end
