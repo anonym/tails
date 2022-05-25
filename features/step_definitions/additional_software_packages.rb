@@ -38,7 +38,8 @@ end
 
 Then /^I create a persistent storage and activate the Additional Software feature$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Create Persistent Storage', roleName: 'push button').click
+  gnome_shell.child('Create Persistent Storage', roleName: 'push button').grabFocus
+  @screen.press('enter')
   step 'I create a persistent partition for Additional Software'
   step 'The Additional Software persistence option is enabled'
   save_persistence_settings
@@ -107,7 +108,8 @@ When /^I (refuse|accept) (adding|removing) "([^"]*)" (?:to|from) Additional Soft
       .children('', roleName: 'notification')
       .find { |notif| notif.child?(notification_title, roleName: 'label') }
     assert_not_nil(notification)
-    notification.child(button_title, roleName: 'push button').click
+    notification.child(button_title, roleName: 'push button').grabFocus
+    @screen.press('enter')
   end
 end
 
@@ -140,7 +142,8 @@ end
 
 Then /^I can open the Additional Software documentation from the notification$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Documentation', roleName: 'push button').click
+  gnome_shell.child('Documentation', roleName: 'push button').grabFocus
+  @screen.press('enter')
   try_for(60) { @torbrowser = Dogtail::Application.new('Firefox') }
   step '"Tails - Install by cloning" has loaded in the Tor Browser'
 end
@@ -162,13 +165,15 @@ end
 
 When /^I can open the Additional Software configuration window from the notification$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Configure', roleName: 'push button').click
+  gnome_shell.child('Configure', roleName: 'push button').grabFocus
+  @screen.press('enter')
   Dogtail::Application.new('tails-additional-software-config')
 end
 
 Then /^I can open the Additional Software log file from the notification$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Show Log', roleName: 'push button').click
+  gnome_shell.child('Show Log', roleName: 'push button').grabFocus
+  @screen.press('enter')
   try_for(60) do
     Dogtail::Application.new('gedit').child(
       "log [Read-Only] (#{ASP_STATE_DIR}) - gedit", roleName: 'frame'
