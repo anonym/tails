@@ -96,7 +96,7 @@ def displayed_time_str
                         .children(showingOnly: true, roleName: 'label')
   ).keep_if { |l| !ignore_labels.include?(l.name) }
 
-  assert_equal(1, candidate_clock_labels.size)
+  assert_equal(1, candidate_clock_labels.size, "Too many candidate_clock_labels: #{candidate_clock_labels}")
   candidate_clock_labels.to_a[0].name
 end
 
