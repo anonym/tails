@@ -909,9 +909,9 @@ class TCAMainWindow(
     @property
     def user_wants_hide(self) -> Optional[bool]:
         '''
-        returns True or False if the user made a clear choice
+        If the user decided already: returns what they decided, as a boolean.
 
-        returns None if they still haven't (first screen)
+        Else (first screen), returns None.
         '''
         return self.state.get('hide', {}).get('hide', None)
 
