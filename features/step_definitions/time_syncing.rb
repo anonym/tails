@@ -89,6 +89,7 @@ def displayed_time_str
     'Tor Connection',
     'en',
     '1 / 2',
+    'Zenity',
   ]
   candidate_clock_labels = Set.new(
     Dogtail::Application.new('gnome-shell')
