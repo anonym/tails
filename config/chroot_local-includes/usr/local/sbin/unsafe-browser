@@ -96,7 +96,7 @@ CHROOT="${CONF_DIR}/chroot"
 BROWSER_NAME="unsafe-browser"
 BROWSER_USER="clearnet"
 HUMAN_READABLE_NAME="$(gettext "Unsafe Browser")"
-if [ -f /run/tails-has-bootstrapped/done ]; then
+if [ -f /run/tor-has-bootstrapped/done ]; then
     WARNING_PAGE='/usr/share/doc/tails/website/misc/unsafe_browser_warning'
 else
     WARNING_PAGE='/usr/share/doc/tails/website/misc/captive_portal_warning'
