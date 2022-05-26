@@ -1,8 +1,8 @@
 # Extracts the secrets for the XMPP account `account_name`.
-def xmpp_account(account_name, required_options = [])
+def xmpp_account(account_name)
   begin
     account = $config['Pidgin']['Accounts']['XMPP'][account_name]
-    check_keys = ['username', 'domain', 'password'] + required_options
+    check_keys = ['username', 'domain', 'password']
     check_keys.each do |key|
       assert(account.key?(key))
       assert_not_nil(account[key])
@@ -115,14 +115,13 @@ Then /^Pidgin automatically enables my XMPP account$/ do
 end
 
 Given /^my XMPP friend goes online( and joins the multi-user chat)?$/ do |join_chat|
-  account = xmpp_account('Friend_account', ['otr_key'])
+  account = xmpp_account('Friend_account')
   bot_opts = account.select { |k, _| ['connect_server'].include?(k) }
   bot_opts['auto_join'] = [@chat_room_jid] if join_chat
   @friend_name = account['username']
   @chatbot = ChatBot.new(
     account['username'] + '@' + account['domain'],
     account['password'],
-    account['otr_key'],
     **(bot_opts.transform_keys(&:to_sym))
   )
   @chatbot.start
@@ -169,23 +168,6 @@ Then /^I receive a response from my friend( in the multi-user chat)?$/ do |multi
     end
     @screen.find('PidginFriendExpectedAnswer.png')
   end
-end
-
-When /^I start an OTR session with my friend$/ do
-  $vm.focus_window(@friend_name)
-  @screen.click('PidginConversationOTRMenu.png')
-  @screen.hide_cursor
-  @screen.click('PidginOTRMenuStartSession.png')
-end
-
-Then /^Pidgin automatically generates an OTR key$/ do
-  @screen.wait('PidginOTRKeyGenPrompt.png', 30)
-  @screen.wait('PidginOTRKeyGenPromptDoneButton.png', 30).click
-end
-
-Then /^an OTR session was successfully started with my friend$/ do
-  $vm.focus_window(@friend_name)
-  @screen.wait('PidginConversationOTRUnverifiedSessionStarted.png', 10)
 end
 
 # The reason the chat must be empty is to guarantee that we don't mix

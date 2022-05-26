@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-02-28 20:53+0000\n"
-"PO-Revision-Date: 2022-03-05 03:24+0000\n"
-"Last-Translator: nihei <nihei@disroot.org>\n"
+"POT-Creation-Date: 2022-05-24 14:09+0200\n"
+"PO-Revision-Date: 2022-05-22 16:40+0000\n"
+"Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: Tails translators <tails@boum.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -70,17 +70,17 @@ msgstr "<div class=\"note\">\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<p>The following instructions have been tested on Debian 10 (Buster).</p>\n"
-msgstr "<p>Les instructions suivantes ont été testées avec Debian 10 (Buster).</p>\n"
+msgid "<p>The following instructions have been tested on Debian 11 (Bullseye).</p>\n"
+msgstr "<p>Les instructions suivantes ont été testées avec Debian 11 (Bullseye).</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid ""
 "<p>Please, [[let us know|about/contact#tails-dev]] if they do not apply\n"
-"to Debian 11 (Bullseye).</p>\n"
+"to Debian 12 (Bookworm).</p>\n"
 msgstr ""
 "<p>S'il vous plaît, [[faites-nous savoir|about/contact#tails-dev]] si cela ne fonctionne pas\n"
-"dans Debian 11 (Bullseye).</p>\n"
+"dans Debian 12 (Bookworm).</p>\n"
 
 #. type: Title =
 #, no-wrap
@@ -177,6 +177,13 @@ msgid "Running Tails from an ISO image"
 msgstr "Exécuter Tails à partir d'une image ISO"
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid "[[Download a USB image|install/download]] instead of an ISO image."
+msgid "[[Download an ISO image|install/dvd]]."
+msgstr ""
+"[[Télécharger une image USB|install/download]] au lieu d'une image ISO."
+
+#. type: Bullet: '1. '
 msgid "Start *virt-manager*."
 msgstr "Démarrer *virt-manager*."
 
@@ -189,14 +196,19 @@ msgstr ""
 "de votre hôte."
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "To create a new virtual machine, choose <span class=\"menuchoice\"> <span "
+#| "class=\"guimenu\">File</span>&nbsp;▸ <span class=\"guimenuitem\">New "
+#| "Virtual Machine</span></span>."
 msgid ""
 "To create a new virtual machine, choose <span class=\"menuchoice\"> <span "
-"class=\"guimenu\">File</span>&nbsp;▸ <span class=\"guimenuitem\">New Virtual "
-"Machine</span></span>."
+"class=\"guimenu\">File</span>&nbsp;â¸ <span class=\"guimenuitem\">New "
+"Virtual Machine</span></span>."
 msgstr ""
-"Pour créer une nouvelle machine virtuelle, choisissez <span class="
-"\"menuchoice\"> <span class=\"guimenu\">Fichier</span>&nbsp;▸ <span class="
-"\"guimenuitem\">Nouvelle machine virtuelle</span></span>."
+"Pour créer une nouvelle machine virtuelle, choisissez <span "
+"class=\"menuchoice\"> <span class=\"guimenu\">Fichier</span>&nbsp;▸ <span "
+"class=\"guimenuitem\">Nouvelle machine virtuelle</span></span>."
 
 #. type: Bullet: '1. '
 msgid "In *step 1*, choose **Local install media (ISO image or CDROM)**."
@@ -205,24 +217,33 @@ msgstr ""
 "CDROM)**."
 
 #. type: Bullet: '1. '
-msgid "In *step 2*, choose:"
-msgstr "À l'*étape 2*, choisir :"
+#, fuzzy
+#| msgid "In *step 5*:"
+msgid "In *step 2*:"
+msgstr "À l'*étape 5* :"
 
 #. type: Bullet: '   - '
+#, fuzzy
+#| msgid ""
+#| "**Use ISO image**, then **Browse...**, and **Browse Local** to browse for "
+#| "the ISO image that you want to start from"
 msgid ""
-"**Use ISO image**, then **Browse...**, and **Browse Local** to browse for "
-"the ISO image that you want to start from"
+"**Choose ISO image**, then **Browse...**, and **Browse Local** to browse for "
+"the ISO image that you want to start from."
 msgstr ""
 "**Utiliser image ISO**, puis **Parcourir...**, et **Parcourir en local** "
 "pour naviguer jusqu'à l'image ISO depuis laquelle vous souhaitez démarrer"
 
 #. type: Bullet: '   - '
-msgid "**OS type**: **Linux**"
-msgstr "**Type OS** : **Linux**"
+msgid ""
+"Disable **Automatically detected from the installation media / source**."
+msgstr ""
 
 #. type: Bullet: '   - '
-msgid "**Version**: **Debian Buster**"
-msgstr "**Version** : **Debian Buster**"
+msgid ""
+"Specify **Debian 10** in the field **Choose the operating system you are "
+"installing**."
+msgstr ""
 
 #. type: Bullet: '1. '
 msgid "In *step 3*, allocate at least 2048 MB of RAM."
@@ -237,7 +258,9 @@ msgid "In *step 5*:"
 msgstr "À l'*étape 5* :"
 
 #. type: Bullet: '   - '
-msgid "Type a name for the new virtual machine."
+#, fuzzy
+#| msgid "Type a name for the new virtual machine."
+msgid "Type a name of your choice for the new virtual machine."
 msgstr "Entrez un nom pour la nouvelle machine virtuelle."
 
 #. type: Bullet: '   - '
@@ -256,12 +279,27 @@ msgstr ""
 "active</span>\", essayez alors de démarrer le réseau virtuel par défaut :\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<ol>\n"
+#| "<li>Click on <span class=\"guilabel\">localhost (QEMU)</span>.</li>\n"
+#| "<li>Choose <span class=\"menuchoice\">\n"
+#| "    <span class=\"guimenu\">Edit</span>&nbsp;▸\n"
+#| "    <span class=\"guimenuitem\">Connection details</span></span> to\n"
+#| "    administer the connection to your local\n"
+#| "    <span class=\"application\">QEMU</span> system.</li>\n"
+#| "<li>Click on <span class=\"guilabel\">Virtual Networks</span> tab, then\n"
+#| "    select the <span class=\"guilabel\">default</span> virtual network in\n"
+#| "    the left pane.</li>\n"
+#| "<li>Click on the [[!img lib/media-playback-start.png alt=\"Start Network\"\n"
+#| "    link=no class=symbolic]] icon on the bottom of the left pane to\n"
+#| "    start the default virtual network.</li>\n"
+#| "</ol>\n"
 msgid ""
 "<ol>\n"
 "<li>Click on <span class=\"guilabel\">localhost (QEMU)</span>.</li>\n"
 "<li>Choose <span class=\"menuchoice\">\n"
-"    <span class=\"guimenu\">Edit</span>&nbsp;▸\n"
+"    <span class=\"guimenu\">Edit</span>&nbsp;â¸\n"
 "    <span class=\"guimenuitem\">Connection details</span></span> to\n"
 "    administer the connection to your local\n"
 "    <span class=\"application\">QEMU</span> system.</li>\n"
@@ -280,15 +318,12 @@ msgstr ""
 "    <span class=\"guimenuitem\">Détails de la connexion</span></span> pour\n"
 "    administrer la connexion à votre système\n"
 "    <span class=\"application\">QEMU</span> local.</li>\n"
-"<li>Cliquer sur l'onglet <span class=\"guilabel\">Réseaux virtuels</span>, "
-"puis\n"
-"    sélectionner le réseau virtuel <span class=\"guilabel\">default</span> "
-"dans la\n"
+"<li>Cliquer sur l'onglet <span class=\"guilabel\">Réseaux virtuels</span>, puis\n"
+"    sélectionner le réseau virtuel <span class=\"guilabel\">default</span> dans la\n"
 "    partie de gauche.</li>\n"
-"<li>Cliquer sur l'icône [[!img lib/media-playback-start.png alt=\"Démarrer "
-"le réseau\"\n"
+"<li>Cliquer sur l'icône  [[!img lib/media-playback-start.png alt=\"Démarrer le réseau\"\n"
 "    link=no class=symbolic]] en bas de la partie gauche de la fenêtre pour\n"
-"    démarrer réseau virtuel *default*.</li>\n"
+"    démarrer le réseau virtuel par défaut.</li>\n"
 "</ol>\n"
 
 #. type: Plain text
@@ -353,18 +388,13 @@ msgstr ""
 msgid "In *step 1*, choose **Import existing disk image**."
 msgstr "À l'*étape 1*, choisir **Importer une image disque existante**."
 
-#. type: Bullet: '1. '
-msgid ""
-"In *step 2*, choose **Browse...**, and **Browse Local** to browse for the "
-"USB image that you want to start from."
-msgstr ""
-"À l'*étape 2*, choisir **Parcourir...**, et **Parcourir en local** pour "
-"naviguer jusqu'à l'image USB depuis laquelle vous souhaitez démarrer."
-
 #. type: Plain text
-#, no-wrap
-msgid "   As operating system, choose **Debian Buster**.\n"
-msgstr "   Comme système d'exploitation, choisir **Debian Buster**.\n"
+#, fuzzy, no-wrap
+#| msgid "In *step 2*, choose **Browse...**, and **Browse Local** to browse for the USB image that you want to start from."
+msgid ""
+"   - Choose **Browse...**, and **Browse Local** to\n"
+"   browse for the USB image that you want to start from.\n"
+msgstr "À l'*étape 2*, choisir **Parcourir...**, et **Parcourir en local** pour naviguer jusqu'à l'image USB depuis laquelle vous souhaitez démarrer."
 
 #. type: Bullet: '1. '
 msgid "In *step 4*:"
@@ -379,24 +409,24 @@ msgid "Click **Finish** to open the configuration view."
 msgstr "Cliquer **Terminer** pour ouvrir la vue configuration."
 
 #. type: Bullet: '1. '
-msgid ""
-"In the **configuration view**, choose **VirtIO Disk 1** or **IDE Disk 1**"
-msgstr ""
-"Dans la **vue configuration**, choisir **VirtIO Disk 1** ou **IDE Disk 1**"
+msgid "In the configuration view, choose **VirtIO Disk 1** or **IDE Disk 1**"
+msgstr "Dans la vue configuration, choisir **VirtIO Disk 1** ou **IDE Disk 1**"
 
 #. type: Bullet: '   - '
-msgid "Expand the **Advanced options** and set **Disk bus** to **USB**."
+msgid "Set **Disk bus** to **USB**."
 msgstr ""
-"Développer les **options avancées** et positionner **Disk bus** à **USB**."
 
-#. type: Bullet: '   - '
+#. type: Bullet: '     1. '
 msgid "Click **Apply**."
 msgstr "Cliquez sur **Appliquer**."
 
 #. type: Bullet: '   - '
-msgid "Check the **Removable** check box which should appear in the same view."
+msgid "Expand the **Advanced options**."
+msgstr "Développer les **options avancées**."
+
+#. type: Bullet: '   - '
+msgid "Enable **Removable**."
 msgstr ""
-"Vérifier la case à cocher **Amovible** qui doit apparaître dans la même vue."
 
 #. type: Bullet: '   - '
 msgid "Click **Apply** again."
@@ -442,30 +472,44 @@ msgid "Then do the following:"
 msgstr "Puis faire ce qui suit :"
 
 #. type: Bullet: '  1. '
+#, fuzzy
+#| msgid ""
+#| "From the virtual machine window, choose <span class=\"menuchoice\"> <span "
+#| "class=\"guimenu\">Virtual Machine</span>&nbsp;▸ <span "
+#| "class=\"guisubmenuitem\">Shut Down</span>&nbsp;▸ <span "
+#| "class=\"guimenuitem\">Force Off</span></span> to shut down the virtual "
+#| "machine."
 msgid ""
 "From the virtual machine window, choose <span class=\"menuchoice\"> <span "
-"class=\"guimenu\">Virtual Machine</span>&nbsp;▸ <span class=\"guisubmenuitem"
-"\">Shut Down</span>&nbsp;▸ <span class=\"guimenuitem\">Force Off</span></"
-"span> to shut down the virtual machine."
+"class=\"guimenu\">Virtual Machine</span>&nbsp;â¸ <span "
+"class=\"guisubmenuitem\">Shut Down</span>&nbsp;â¸ <span "
+"class=\"guimenuitem\">Force Off</span></span> to shut down the virtual "
+"machine."
 msgstr ""
 "Dans la fenêtre de la machine virtuelle, choisir <span class=\"menuchoice\"> "
-"<span class=\"guimenu\">Machine virtuelle</span>&nbsp;▸ <span class="
-"\"guisubmenuitem\">Éteindre</span>&nbsp;▸ <span class=\"guimenuitem\">Forcer "
-"l'extinction</span></span> pour éteindre la machine virtuelle."
+"<span class=\"guimenu\">Machine virtuelle</span>&nbsp;▸ <span "
+"class=\"guisubmenuitem\">Éteindre</span>&nbsp;▸ <span "
+"class=\"guimenuitem\">Forcer l'extinction</span></span> pour éteindre la "
+"machine virtuelle."
 
 #. type: Bullet: '  1. '
 msgid "Plug in the USB stick from which you want to run Tails."
 msgstr "Brancher la clé USB depuis laquelle vous voulez démarrer Tails."
 
 #. type: Bullet: '  1. '
+#, fuzzy
+#| msgid ""
+#| "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">View</"
+#| "span>&nbsp;▸ <span class=\"guimenuitem\">Details</span></span> to edit "
+#| "the configuration of the virtual machine."
 msgid ""
 "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">View</span>&nbsp;"
-"▸ <span class=\"guimenuitem\">Details</span></span> to edit the "
+"â¸ <span class=\"guimenuitem\">Details</span></span> to edit the "
 "configuration of the virtual machine."
 msgstr ""
-"Choisir <span class=\"menuchoice\"> <span class=\"guimenu\""
-">Afficher</span>&nbsp;▸ <span class=\"guimenuitem\">Détails</span></span> "
-"pour modifier la configuration de la machine virtuelle."
+"Choisir <span class=\"menuchoice\"> <span class=\"guimenu\">Afficher</"
+"span>&nbsp;▸ <span class=\"guimenuitem\">Détails</span></span> pour modifier "
+"la configuration de la machine virtuelle."
 
 #. type: Bullet: '  1. '
 msgid "Click on the **Add Hardware** button on the bottom of the left pane."
@@ -510,39 +554,50 @@ msgstr ""
 msgid "Shut down the virtual machine."
 msgstr "Éteindre la machine virtuelle."
 
-#. type: Plain text
-#, no-wrap
+#. type: Bullet: '  1. '
 msgid ""
-"  1. In the configuration of the virtual machine, click on **IDE CDROM\n"
-"     1** in the left pane.\n"
-"  1. Click on the **Disconnect** button in the right pane.\n"
-"  1. To enable the USB stick as a boot option:\n"
-"     1. Click on **Boot Options** in the left pane.\n"
-"     1. Select the **USB** boot option corresponding to your USB device.\n"
-"     1. Click **Apply**.\n"
-"  1. To start the virtual machine choose\n"
-"     <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">View</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Console</span></span> and then\n"
-"     <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">Virtual Machine</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Run</span></span>.\n"
+"In the configuration of the virtual machine, click on **IDE CDROM 1** in the "
+"left pane."
 msgstr ""
-"  1. Dans la configuration de la machine virtuelle, cliquer sur **IDE CDROM\n"
-"     1** dans la partie gauche de la fenêtre.\n"
-"  1. Cliquer sur le bouton **Déconnecter** dans la partie droite.\n"
-"  1. Pour activer la clé USB comme option de démarrage :\n"
-"     1. Cliquer sur **Boot Options** dans la partie gauche.\n"
-"     1. Sélectionner l'option de démarrage **USB** correspondant à votre "
-"périphérique USB.\n"
-"     1. Cliquer sur **Appliquer**.\n"
-"  1. Pour lancer la machine virtuelle choisir\n"
-"     <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">Afficher</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Console</span></span> puis\n"
-"     <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">Machine virtuelle</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Démarrer</span></span>.\n"
+
+#. type: Bullet: '  1. '
+#, fuzzy
+#| msgid "Click on the **Add Hardware** button on the bottom of the left pane."
+msgid "Click on the **Disconnect** button in the right pane."
+msgstr ""
+"Cliquer sur le bouton **Ajouter un matériel** en bas de la partie gauche de "
+"la fenêtre."
+
+#. type: Bullet: '  1. '
+msgid "To enable the USB stick as a boot option:"
+msgstr ""
+
+#. type: Bullet: '     1. '
+#, fuzzy
+#| msgid "Select **USB Disk 1** in the left pane."
+msgid "Click on **Boot Options** in the left pane."
+msgstr "Sélectionner **USB Disk 1** dans la partie gauche de la fenêtre."
+
+#. type: Bullet: '     1. '
+msgid "Select the **USB** boot option corresponding to your USB device."
+msgstr ""
+
+#. type: Bullet: '  1. '
+#, fuzzy
+#| msgid ""
+#| "To create a new virtual machine, choose <span class=\"menuchoice\"> <span "
+#| "class=\"guimenu\">File</span>&nbsp;▸ <span class=\"guimenuitem\">New "
+#| "Virtual Machine</span></span>."
+msgid ""
+"To start the virtual machine choose <span class=\"menuchoice\"> <span "
+"class=\"guimenu\">View</span>&nbsp;â¸ <span class=\"guimenuitem\">Console</"
+"span></span> and then <span class=\"menuchoice\"> <span "
+"class=\"guimenu\">Virtual Machine</span>&nbsp;â¸ <span "
+"class=\"guimenuitem\">Run</span></span>."
+msgstr ""
+"Pour créer une nouvelle machine virtuelle, choisissez <span "
+"class=\"menuchoice\"> <span class=\"guimenu\">Fichier</span>&nbsp;▸ <span "
+"class=\"guimenuitem\">Nouvelle machine virtuelle</span></span>."
 
 #. type: Plain text
 msgid ""
@@ -621,27 +676,12 @@ msgstr ""
 "   les meilleurs résultats. Si ils ne marchent pas bien pour vous, essayez tous les\n"
 "   autres modèles de périphérique vidéo.\n"
 
-#, fuzzy, no-wrap
-#~| msgid ""
-#~| "<ol>\n"
-#~| "<li>Click on <span class=\"guilabel\">localhost (QEMU)</span>.</li>\n"
-#~| "<li>Choose <span class=\"menuchoice\">\n"
-#~| "    <span class=\"guimenu\">Edit</span>&nbsp;▸\n"
-#~| "    <span class=\"guimenuitem\">Connection details</span></span> to\n"
-#~| "    administer the connection to your local\n"
-#~| "    <span class=\"application\">QEMU</span> system.</li>\n"
-#~| "<li>Click on <span class=\"guilabel\">Virtual Networks</span> tab, then\n"
-#~| "    select the <span class=\"guilabel\">default</span> virtual network in\n"
-#~| "    the left pane.</li>\n"
-#~| "<li>Click on the [[!img lib/media-playback-start.png alt=\"Start Network\"\n"
-#~| "    link=no class=symbolic]] icon on the bottom of the left pane to\n"
-#~| "    start the default virtual network.</li>\n"
-#~| "</ol>\n"
+#, no-wrap
 #~ msgid ""
 #~ "<ol>\n"
 #~ "<li>Click on <span class=\"guilabel\">localhost (QEMU)</span>.</li>\n"
 #~ "<li>Choose <span class=\"menuchoice\">\n"
-#~ "    <span class=\"guimenu\">Edit</span>&nbsp;â¸\n"
+#~ "    <span class=\"guimenu\">Edit</span>&nbsp;▸\n"
 #~ "    <span class=\"guimenuitem\">Connection details</span></span> to\n"
 #~ "    administer the connection to your local\n"
 #~ "    <span class=\"application\">QEMU</span> system.</li>\n"
@@ -663,39 +703,61 @@ msgstr ""
 #~ "<li>Cliquer sur l'onglet <span class=\"guilabel\">Réseaux virtuels</span>, puis\n"
 #~ "    sélectionner le réseau virtuel <span class=\"guilabel\">default</span> dans la\n"
 #~ "    partie de gauche.</li>\n"
-#~ "<li>Cliquer sur l'icône  [[!img lib/media-playback-start.png alt=\"Démarrer le réseau\"\n"
+#~ "<li>Cliquer sur l'icône [[!img lib/media-playback-start.png alt=\"Démarrer le réseau\"\n"
 #~ "    link=no class=symbolic]] en bas de la partie gauche de la fenêtre pour\n"
-#~ "    démarrer le réseau virtuel par défaut.</li>\n"
+#~ "    démarrer le réseau virtuel `default`.</li>\n"
 #~ "</ol>\n"
 
-#, fuzzy
-#~| msgid ""
-#~| "Click on the **Add Hardware** button on the bottom of the left pane."
-#~ msgid "Click on the **Disconnect** button in the right pane."
-#~ msgstr ""
-#~ "Cliquer sur le bouton **Ajouter un matériel** en bas de la partie gauche "
-#~ "de la fenêtre."
-
-#, fuzzy
-#~| msgid "Select **USB Disk 1** in the left pane."
-#~ msgid "Click on **Boot Options** in the left pane."
-#~ msgstr "Sélectionner **USB Disk 1** dans la partie gauche de la fenêtre."
-
-#, fuzzy
-#~| msgid ""
-#~| "To create a new virtual machine, choose <span class=\"menuchoice\"> "
-#~| "<span class=\"guimenu\">File</span>&nbsp;▸ <span class=\"guimenuitem"
-#~| "\">New Virtual Machine</span></span>."
+#, no-wrap
 #~ msgid ""
-#~ "To start the virtual machine choose <span class=\"menuchoice\"> <span "
-#~ "class=\"guimenu\">View</span>&nbsp;â¸ <span class=\"guimenuitem"
-#~ "\">Console</span></span> and then <span class=\"menuchoice\"> <span class="
-#~ "\"guimenu\">Virtual Machine</span>&nbsp;â¸ <span class=\"guimenuitem"
-#~ "\">Run</span></span>."
+#~ "  1. In the configuration of the virtual machine, click on **IDE CDROM\n"
+#~ "     1** in the left pane.\n"
+#~ "  1. Click on the **Disconnect** button in the right pane.\n"
+#~ "  1. To enable the USB stick as a boot option:\n"
+#~ "     1. Click on **Boot Options** in the left pane.\n"
+#~ "     1. Select the **USB** boot option corresponding to your USB device.\n"
+#~ "     1. Click **Apply**.\n"
+#~ "  1. To start the virtual machine choose\n"
+#~ "     <span class=\"menuchoice\">\n"
+#~ "     <span class=\"guimenu\">View</span>&nbsp;▸\n"
+#~ "     <span class=\"guimenuitem\">Console</span></span> and then\n"
+#~ "     <span class=\"menuchoice\">\n"
+#~ "     <span class=\"guimenu\">Virtual Machine</span>&nbsp;▸\n"
+#~ "     <span class=\"guimenuitem\">Run</span></span>.\n"
 #~ msgstr ""
-#~ "Pour créer une nouvelle machine virtuelle, choisissez <span class="
-#~ "\"menuchoice\"> <span class=\"guimenu\">Fichier</span>&nbsp;▸ <span class="
-#~ "\"guimenuitem\">Nouvelle machine virtuelle</span></span>."
+#~ "  1. Dans la configuration de la machine virtuelle, cliquer sur **IDE CDROM\n"
+#~ "     1** dans la partie gauche de la fenêtre.\n"
+#~ "  1. Cliquer sur le bouton **Déconnecter** dans la partie droite.\n"
+#~ "  1. Pour activer la clé USB comme option de démarrage :\n"
+#~ "     1. Cliquer sur **Boot Options** dans la partie gauche.\n"
+#~ "     1. Sélectionner l'option de démarrage **USB** correspondant à votre périphérique USB.\n"
+#~ "     1. Cliquer sur **Appliquer**.\n"
+#~ "  1. Pour lancer la machine virtuelle choisir\n"
+#~ "     <span class=\"menuchoice\">\n"
+#~ "     <span class=\"guimenu\">Afficher</span>&nbsp;▸\n"
+#~ "     <span class=\"guimenuitem\">Console</span></span> puis\n"
+#~ "     <span class=\"menuchoice\">\n"
+#~ "     <span class=\"guimenu\">Machine virtuelle</span>&nbsp;▸\n"
+#~ "     <span class=\"guimenuitem\">Démarrer</span></span>.\n"
+
+#~ msgid "In *step 2*, choose:"
+#~ msgstr "À l'*étape 2*, choisir :"
+
+#~ msgid "**OS type**: **Linux**"
+#~ msgstr "**Type OS** : **Linux**"
+
+#~ msgid "**Version**: **Debian Buster**"
+#~ msgstr "**Version** : **Debian Buster**"
+
+#, no-wrap
+#~ msgid "   As operating system, choose **Debian Buster**.\n"
+#~ msgstr "   Comme système d'exploitation, choisir **Debian Buster**.\n"
+
+#~ msgid ""
+#~ "Check the **Removable** check box which should appear in the same view."
+#~ msgstr ""
+#~ "Vérifier la case à cocher **Amovible** qui doit apparaître dans la même "
+#~ "vue."
 
 #~ msgid ""
 #~ "Once you started from the USB device you can [[create a persistent volume|"

@@ -26,7 +26,6 @@ ovmf
 pry
 python3-opencv
 python3-pil
-python3-potr
 python3-slixmpp
 qemu-system-x86
 ruby-guestfs
@@ -139,16 +138,18 @@ package_installed() {
 }
 
 check_dependencies() {
-    local tor_version
     while [ -n "${1:-}" ]; do
         if ! command -v "${1}" >/dev/null && ! package_installed "${1}" ; then
             error "'${1}' is missing, please install it and run again."
         fi
         shift
     done
-    set -x
+}
+
+check_tor_version() {
+    local tor_version
     tor_version=$(tor --version | grep -Po '^Tor version \K.*' | sed --regexp-extended 's,[.]$,,')
-    set +x
+    echo "tor version: $tor_version"
     if dpkg --compare-versions "$tor_version" lt "$MINIMUM_TOR_VERSION"; then
 	error "Please upgrade to tor ${MINIMUM_TOR_VERSION} or newer."
     fi
@@ -328,6 +329,7 @@ fi
 
 # shellcheck disable=SC2086
 check_dependencies ${GENERAL_DEPENDENCIES}
+check_tor_version
 
 TARGET_DISPLAY=$(next_free_display)
 
@@ -353,11 +355,12 @@ if [ -n "${JENKINS_URL:-}" ]; then
     # environment variables instead.
     elif echo "${GIT_BRANCH}" | grep -q -E '[+-]force-all-tests$' \
        || git_on_a_tag \
+       || [ "${GIT_BRANCH#origin/}" = feature/bullseye ] \
        || [ "${GIT_BRANCH#origin/}" = testing ] \
        || [ "${GIT_BRANCH#origin/}" = devel ] ; then
         TAGS_ARGS=""
     else
-        TAGS_ARGS="${TAGS_ARGS} --tag ~@fragile"
+        TAGS_ARGS="${TAGS_ARGS} --tag ~@fragile --tag ~@skip_by_default"
     fi
     if [ "${UPSTREAMJOB_GIT_COMMIT}" != "${UPSTREAMJOB_GIT_BASE_BRANCH_HEAD}" ] && \
            git_only_doc_changes_since "${UPSTREAMJOB_GIT_BASE_BRANCH_HEAD}"; then

@@ -64,13 +64,12 @@ $SIG{__DIE__} = sub {
 sub message {
     my @msg = @_;
 
+    print "@msg\n" unless $quiet;
+
     if ($log) {
         open my $h, '>>', $log or die "Cannot open log file $log: $!";
         print $h "@msg\n";
         close $h;
-    }
-    else {
-        print "@msg\n" unless $quiet;
     }
 }
 
@@ -93,7 +92,7 @@ sub parseCommandLine () {
         [ 'user|u:s', "userid to run as" ],
         [ 'dont_set_date|x', "do not set the time (only show)", { default => 0 } ],
         [ 'user_agent|a:s', "http user agent to use", { default => "htpdate/$VERSION" } ],
-        [ 'log_file|l:s', "log to this file rather than to STDOUT" ],
+        [ 'log_file|l:s', "log to this file on top of STDOUT" ],
         [ 'done_file|D:s', "create this file after quitting in any way" ],
         [ 'success_file|T:s', "create this file after setting time successfully" ],
         [ 'pool1=s@', "first pool of hostnames" ],
@@ -227,11 +226,7 @@ sub getUrlDateDiff {
         '--max-time', '30',
         '--head', '--output', catfile($tmpdir, 'headers'),
     );
-    # Resolve the host name "locally" rather than via the SOCKS proxy,
-    # in order to get a "curl: (6) Could not resolve host" error upon
-    # name resolution, instead of the unhelpful "curl: (7) Can't
-    # complete SOCKS5 connection".
-    push @curl_options, ('--proxy', "socks5://$proxy") if defined $proxy;
+    push @curl_options, ('--proxy', "socks5h://$proxy") if defined $proxy;
 
     my @cmdline = ('curl', @curl_options, $url);
 

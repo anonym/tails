@@ -316,7 +316,7 @@ method operation_finished (HashRef $replies) {
             q{The Tails persistence partition will be mounted.}
         ));
         $self->working(1);
-        systemx(qw{/sbin/udevadm settle});
+        systemx(qw{/bin/udevadm settle});
         my $mountpoint = $self->mount_persistence_partition_cb->();
         $self->working(0);
         say STDERR "mounted persistence partition on $mountpoint";
