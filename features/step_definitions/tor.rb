@@ -54,6 +54,17 @@ def ip4tables_packet_counter_sum(**filters)
   pkts
 end
 
+def iptables_filter_add(add, target, address, port)
+  manipulate = add ? 'I' : 'D'
+  command = "iptables -#{manipulate} OUTPUT " \
+    '-p tcp ' \
+    "--destination #{address} " \
+    "--destination-port #{port} " \
+    "-j #{target}"
+  $vm.execute_successfully(command)
+  command
+end
+
 def try_xml_element_text(element, xpath, default = nil)
   node = element.elements[xpath]
   node.nil? || !node.has_text? ? default : node.text
@@ -369,7 +380,7 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
       done = true
     else
       done = tor_connection_assistant.child?(
-        'Connected to Tor successfully', roleName: 'label',
+        /\AConnected to Tor successfully\b/, roleName: 'label',
         retry: false, showingOnly: true
       )
     end
@@ -378,11 +389,33 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
   raise TCAConnectionFailure, 'TCA failed to connect to Tor' if failure_reported
 end
 
+Then /^the Tor Connection Assistant fails to connect to Tor$/ do
+  step 'the Tor Connection Assistant connects to Tor'
+rescue TCAConnectionFailure
+  # Expected!
+  next
+rescue StandardError => e
+  raise 'Expected TCAConnectionFailure to be raised but got ' \
+        "#{e.class.name}: #{e}"
+else
+  raise 'TCA managed to connect to Tor but was expected to fail'
+end
+
 def tca_configure(mode, connect: true, &block)
   step 'the Tor Connection Assistant is running'
   case mode
   when :easy
     radio_button_label = '<b>Connect to Tor _automatically (easier)</b>'
+    # If we run the step "I make sure time sync before Tor connects cannot work",
+    # @allowed_dns_queries is already initialized, and the corresponding add_extra_allowed_hosts have already been
+    # called
+    unless @allowed_dns_queries && !@allowed_dns_queries.empty?
+      @allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME + '.']
+      Resolv.getaddresses(CONNECTIVITY_CHECK_HOSTNAME).each do |ip|
+        add_extra_allowed_host(ip, 80)
+      end
+    end
+    add_dns_to_extra_allowed_host
   when :hide
     @user_wants_pluggable_transports = true
     radio_button_label = '<b>Hide to my local network that I\'m connecting to Tor (safer)</b>'
@@ -470,7 +503,7 @@ end
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 
-When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |persistent, bridge_type, mode|
+When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?( without connecting|)$/ do |persistent, bridge_type, mode, connect|
   # If the "mode" isn't specified we pick one that makes sense for
   # what is requested.
   config_mode = if mode.nil?
@@ -481,10 +514,11 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
   # Internally a "normal" bridge is called just "bridge" which we have
   # to respect below.
   bridge_type = 'bridge' if bridge_type == 'normal'
+  connect = (connect == '')
 
   # XXX: giving up on a few worst offenders for now
   # rubocop:disable Metrics/BlockLength
-  tca_configure(config_mode) do
+  tca_configure(config_mode, connect: connect) do
     @user_wants_pluggable_transports = bridge_type != 'bridge'
     debug_log('user_wants_pluggable_transports = '\
               "#{@user_wants_pluggable_transports}")
@@ -496,6 +530,10 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
     click_connect_to_tor
     if bridge_type == 'default'
       assert_equal(:easy, config_mode)
+      @bridge_hosts = chutney_bridges('obfs4', chutney_tag: 'defbr').map do |bridge|
+        { address: bridge[:address], port: bridge[:port] }
+      end
+
       tor_connection_assistant.child('Use a _default bridge',
                                      roleName: 'radio button')
                               .click
@@ -511,7 +549,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
       btn.labelee.click
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
-        @screen.type(bridge[:line])
+        @screen.paste(bridge[:line])
         @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
         break # We currently support only 1 bridge
       end
@@ -556,7 +594,7 @@ rescue StandardError => e
   raise 'Expected TCAConnectionFailure to be raised but got ' \
         "#{e.class.name}: #{e}"
 else
-  raise 'TCA managed to connect to Tor with normal bridges in hide mode'
+  raise 'TCA managed to connect to Tor but was expected to fail'
 end
 
 When /^I try to configure some normal bridges in the Tor Connection Assistant in hide mode$/ do
@@ -686,7 +724,7 @@ def bridges_to_ipport(file_content)
     .map { |ip, port| { address: ip, port: port.to_i } }
 end
 
-Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
+Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?:fake )?connectivity check service|)$/ do |flow_target, connectivity_check|
   case flow_target
   when 'Tor'
     allowed_hosts = allowed_hosts_under_tor_enforcement
@@ -708,6 +746,32 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
   else
     raise "Unsupported flow target '#{flow_target}'"
   end
+
+  # Note: many scenarios that use the network do not explicitly allow
+  # using the connectivity check service. They pass because we're
+  # restoring a snapshot where time sync has already happened (most
+  # often "I have started Tails from DVD and logged in and the network
+  # is connected").
+  if !connectivity_check.empty?
+    # Allow connections to the local DNS resolver, used by
+    # tails-get-network-time
+    allowed_hosts << { address: $vmnet.bridge_ip_addr, port: 53 }
+
+    conn_host, conn_nodes = if connectivity_check.include? 'fake'
+                              host = FAKE_CONNECTIVITY_CHECK_HOSTNAME
+                              nodes = Resolv.getaddresses(host).map do |ip|
+                                { address: ip, port: 80 }
+                              end
+                              [host, nodes]
+                            else
+                              [CONNECTIVITY_CHECK_HOSTNAME, CONNECTIVITY_CHECK_ALLOWED_NODES]
+                            end
+    allowed_hosts += conn_nodes
+    allowed_dns_queries = [conn_host + '.']
+  else
+    allowed_dns_queries = []
+  end
+
   flow_target_s = flow_target.delete_prefix('the ')
   allowed_hosts_s = allowed_hosts
                     .map { |address| "#{address[:address]}:#{address[:port]}" }
@@ -716,6 +780,12 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
   assert_all_connections(@sniffer.pcap_file) do |c|
     allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
+
+  debug_log("Allowed hosts: #{allowed_hosts}")
+  debug_log("Allowed DNS queries: #{allowed_dns_queries}")
+
+  assert_no_leaks(@sniffer.pcap_file, allowed_hosts, allowed_dns_queries)
+  debug_useless_dns_exceptions(@sniffer.pcap_file, allowed_dns_queries)
 end
 
 Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |default_bridges, unblock|
@@ -737,12 +807,10 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
     end
   end
   relays.each do |address, port|
-    command = "iptables -#{unblock ? 'D' : 'I'} OUTPUT " \
-              '-p tcp ' \
-              "--destination #{address} " \
-              "--destination-port #{port} " \
-              '-j REJECT --reject-with icmp-port-unreachable'
-    $vm.execute_successfully(command)
+    command = iptables_filter_add(!unblock,
+                                  'REJECT --reject-with icmp-port-unreachable',
+                                  address,
+                                  port)
     unless unblock
       $vm.file_append('/etc/NetworkManager/dispatcher.d/00-firewall.sh',
                       command + "\n")

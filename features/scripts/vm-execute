@@ -14,9 +14,9 @@ $config = {}
 
 def debug_log(*args); end
 
+# Implements the subset of the VM class that we need here
 class FakeVM
   def initialize
-    domain = nil
     @domain_xml = ''
     begin
       virt = Libvirt.open('qemu:///system')

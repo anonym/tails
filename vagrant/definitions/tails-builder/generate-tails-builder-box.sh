@@ -127,6 +127,11 @@ steps:
       sed -e 's/${DISTRIBUTION}/${DISTRIBUTION}-updates/' /etc/apt/sources.list \\
         > "/etc/apt/sources.list.d/${DISTRIBUTION}-updates.list"
 
+  - chroot: rootfs
+    shell: |
+      sed -e 's/${DISTRIBUTION}/${DISTRIBUTION}-backports/' /etc/apt/sources.list \\
+        > "/etc/apt/sources.list.d/${DISTRIBUTION}-backports.list"
+
   - create-file: /etc/apt/sources.list.d/${DISTRIBUTION}-security.list
     contents: |
       deb http://time-based.snapshots.deb.tails.boum.org/debian-security/${DEBIAN_SECURITY_SERIAL}/ ${DISTRIBUTION}-security main
@@ -147,28 +152,12 @@ steps:
       Pin: release n=${DISTRIBUTION}-backports
       Pin-Priority: 100
 
-  - create-file: /etc/apt/sources.list.d/buster.list
-    contents: |
-      deb http://time-based.snapshots.deb.tails.boum.org/debian/${DEBIAN_SERIAL}/ buster main
-
-  - create-file: /etc/apt/preferences.d/buster
-    contents: |
-      Package: *
-      Pin: release o=Debian,n=buster
-      Pin-Priority: -1
-
-  - create-file: /etc/apt/preferences.d/po4a
-    contents: |
-      Package: po4a
-      Pin: release o=Debian,n=buster
-      Pin-Priority: 999
-
   - chroot: rootfs
     shell: apt update
 
   - apt: install
     packages:
-      - apt-cacher-ng
+      - apt-cacher-ng/${DISTRIBUTION}-backports
       - ca-certificates
       - curl
       # Install dbus to ensure we can use timedatectl
