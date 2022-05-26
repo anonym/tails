@@ -16,6 +16,7 @@ Feature: Browsing the web using the Unsafe Browser
     And I open a page on the LAN web server in the Unsafe Browser
     Then I see "UnsafeBrowserHelloLANWebServer.png" after at most 20 seconds
 
+  @doc
   Scenario: Starting the Unsafe Browser works as it should
     Given I have started Tails from DVD and logged in with the Unsafe Browser enabled and the network is connected
     When I successfully start the Unsafe Browser
