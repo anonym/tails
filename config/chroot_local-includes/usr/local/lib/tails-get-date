@@ -22,6 +22,19 @@ def normalize_tzname(tzname):
     return tzname
 
 
+def get_tz(tzname):
+    return zoneinfo.ZoneInfo(tzname)
+
+
+def tzname_is_valid(tzname):
+    try:
+        get_tz(tzname)
+    except Exception as exc:
+        logging.warning("tzname is not valid: %s", str(exc))
+        return False
+    return True
+
+
 def main():
     if os.getuid() != 0:
         print("Only root can run this!", file=sys.stderr)
@@ -46,8 +59,8 @@ def main():
     # there are dconf settings for making it show seconds etc that we
     # don't support.
     date_format = '%a %b %-e  %R'
-    if tzname:
-        now = datetime.datetime.now(tz=zoneinfo.ZoneInfo(tzname))
+    if tzname and tzname_is_valid(tzname):
+        now = datetime.datetime.now(tz=get_tz(tzname))
         print(now.strftime(date_format))
     else:
         now = datetime.datetime.now()
