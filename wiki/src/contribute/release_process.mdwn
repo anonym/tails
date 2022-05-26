@@ -1422,11 +1422,14 @@ Lead the internal manual testing to conclusion
 1. Ensure the "Incremental upgrades" part of the manual test suite
    is done:
 
-   1. Wait until most mirrors in the pool have the new version:
+   1. Wait until all mirrors in the DNS pool have the new version:
 
-        ./check-mirrors.rb --channel ${DIST:?} \
-            --allow-multiple --fast --stats \
-            tails-amd64-${VERSION:?}
+        IPS=$(host -t A dl.amnesia.boum.org | perl -pE 's/\Adl[.]amnesia[.]boum[.]org has address (.*)/$1/')
+        for ip in $(echo $IPS) ; do
+            ./check-mirrors.rb --channel ${DIST:?} \
+               --allow-multiple --fast \
+               --ip "$ip" "tails-amd64-${VERSION:?}"
+        done
 
    1. Delete "⚠ Wait until the Release Manager […]" in the "Incremental
       upgrades" section on the pad.
