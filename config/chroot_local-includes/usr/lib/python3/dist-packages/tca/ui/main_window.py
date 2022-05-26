@@ -84,19 +84,18 @@ class StepChooseHideMixin:
         self.builder.get_object("radio_unnoticed_yes").set_active(False)
         self.builder.get_object("radio_unnoticed_no").set_active(False)
         self.builder.get_object("radio_unnoticed_none").hide()
+        made_a_choice = self.user_wants_hide in (True, False)
         definitive = self.state.get("progress", {}).get("started", False)
         if definitive:
-            assert "hide" in self.state["hide"]
-            if self.state["hide"]["hide"]:
+            assert made_a_choice
+            if self.user_wants_hide:
                 self.builder.get_object("radio_unnoticed_no").set_sensitive(False)
                 self.builder.get_object("radio_unnoticed_yes").set_active(True)
             else:
                 self.builder.get_object("radio_unnoticed_yes").set_sensitive(False)
                 self.builder.get_object("radio_unnoticed_no").set_active(True)
-        elif (
-            "hide" in self.state["hide"]
-        ):  # the user is changing her mind before connecting to Tor
-            hide = self.state["hide"]["hide"]
+        elif made_a_choice:  # the user is changing their mind before connecting to Tor
+            hide = self.user_wants_hide
             self.builder.get_object("radio_unnoticed_yes").set_active(hide)
             self.builder.get_object("radio_unnoticed_no").set_active(not hide)
         self.builder.get_object("radio_unnoticed_no_bridge").set_active(
@@ -169,7 +168,6 @@ class StepChooseBridgeMixin:
         else:
             self.builder.get_object("step_bridge_radio_default").grab_focus()
         self.get_object("radio_default").set_sensitive(not hide_mode)
-        self.get_object("label_explain_hide").set_visible(hide_mode)
 
         self.builder.get_object("step_bridge_radio_type").set_active(hide_mode)
         self.get_object(
@@ -551,12 +549,16 @@ class StepConnectProgressMixin:
         self.save_conf(successful_connect=True)
         self.get_object("box_torconnect").hide()
         self.get_object("box_tortestok").show()
-        self.get_object("label_status").set_text(
-            _(
-                "Connected to Tor successfully!\n\n"
-                "You can now browse the Internet anonymously and uncensored."
-            )
-        )
+
+        if self.app.is_tor_over_bridges:
+            status = _("Connected to Tor successfully with bridges")
+        else:
+            status = _("Connected to Tor successfully")
+
+        self.get_object("label_connected").set_text(status)
+        self.get_object("label_connected_explain").set_text(_(
+            "You can now browse the Internet anonymously and uncensored."
+        ))
         self.get_object("box_start").show()
 
     def cb_internet_test(self, spawn, retval):
@@ -903,6 +905,15 @@ class TCAMainWindow(
         self.add(self.main_container)
         self.show()
         self.change_box(self.state["step"])
+
+    @property
+    def user_wants_hide(self) -> Optional[bool]:
+        '''
+        If the user decided already: returns what they decided, as a boolean.
+
+        Else (first screen), returns None.
+        '''
+        return self.state.get('hide', {}).get('hide', None)
 
     def save_conf(self, successful_connect=False):
         log.info("Saving configuration (success=%s)", successful_connect)
