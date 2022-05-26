@@ -551,7 +551,7 @@ class StepConnectProgressMixin:
         self.get_object("box_tortestok").show()
 
         if self.app.is_tor_over_bridges:
-            status = _("Connected to Tor successfully (using bridges)")
+            status = _("Connected to Tor successfully with bridges")
         else:
             status = _("Connected to Tor successfully")
 
