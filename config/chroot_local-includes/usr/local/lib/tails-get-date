@@ -9,6 +9,19 @@ import sys
 import zoneinfo
 
 
+def normalize_tzname(tzname):
+    '''
+    Tor Connection stores some tz in non-standard way.
+
+    This helps us avoid problem when this appears.
+    '''
+    if tzname is None:
+        return None
+    if tzname.startswith('UTC'):
+        tzname = None
+    return tzname
+
+
 def main():
     if os.getuid() != 0:
         print("Only root can run this!", file=sys.stderr)
@@ -26,6 +39,8 @@ def main():
         tzname = None
     else:
         tzname = tca_state.get('ui', {}).get('time', {}).get('tz', None)
+
+    tzname = normalize_tzname(tzname)
 
     # This is the default date format used by GNOME's clock. Note that
     # there are dconf settings for making it show seconds etc that we
