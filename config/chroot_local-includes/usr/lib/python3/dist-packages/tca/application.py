@@ -132,6 +132,11 @@ class TCAApplication(Gtk.Application):
         return bool(self._tor_is_working)
 
     @property
+    def is_tor_over_bridges(self) -> bool:
+        bridges = self.configurator.tor_connection_config.bridges
+        return bool(bridges)
+
+    @property
     def is_network_link_ok(self) -> bool:
         return self.last_nm_state is not None and self.last_nm_state >= 60
 
