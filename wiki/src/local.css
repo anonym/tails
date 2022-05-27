@@ -451,60 +451,6 @@ label[for="searchbox"]{
   }
 }
 
-/* Translation hack
- *
- * This section works around the fact that ikiwiki can't localize strings in templates.
- */
-
-/* Hide all languages by default */
-.lang.en,
-.lang.de,
-.lang.es,
-.lang.fr,
-.lang.it,
-.lang.pt,
-.lang.ru {
-  display: none;
-}
-
-/* Hide English for all other languages
-
-   This way, the English is still displayed when the PO plugin is
-   disabled. This is useful for development.
-   */
-body.de .lang.en,
-body.es .lang.en,
-body.fa .lang.en,
-body.fr .lang.en,
-body.it .lang.en,
-body.pt .lang.en,
-body.ru .lang.en {
-  display: none;
-}
-
-/* Show the current language */
-body.en .lang.en.flex,
-body.de .lang.de.flex,
-body.es .lang.es.flex,
-body.fa .lang.fa.flex,
-body.fr .lang.fr.flex,
-body.it .lang.it.flex,
-body.pt .lang.pt.flex,
-body.ru .lang.ru.flex {
-  display: flex !important;
-}
-
-body.en .lang.en.block,
-body.de .lang.de.block,
-body.es .lang.es.block,
-body.fa .lang.fa.block,
-body.fr .lang.fr.block,
-body.it .lang.it.block,
-body.pt .lang.pt.block,
-body.ru .lang.ru.block {
-  display: block !important;
-}
-
 /* Top bar */
 
 .topbar {
