@@ -380,7 +380,10 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
       done = true
     else
       done = tor_connection_assistant.child?(
-        /\AConnected to Tor successfully\b/, roleName: 'label',
+        'Connected to Tor successfully', roleName: 'label',
+        retry: false, showingOnly: true
+      ) || tor_connection_assistant.child?(
+        'Connected to Tor successfully with bridges', roleName: 'label',
         retry: false, showingOnly: true
       )
     end
