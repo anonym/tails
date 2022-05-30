@@ -179,16 +179,12 @@ class SetTimeCommand(RootCommand):
         super().__init__(('/usr/local/lib/tails-set-date',), True)
         # we know our argument is an ISO8601 date whose separator is a T,
         # and with no microseconds
-        # examples:
-        #   2021-08-06T17:38+00:00
-        #   2021-08-06T17:38:49+00:00
+        # example: 2021-08-06T17:38:49+00:00
         regexp = (
                 # date
                 r'^\d{4}-\d\d-\d\d'
                 # time
-                r'T\d\d:\d\d'
-                # seconds are optional
-                r'(:\d\d)?'
+                r'T\d\d:\d\d:\d\d'
                 # timezone offset
                 r'[+-]\d\d:\d\d$'
                 )
@@ -198,8 +194,8 @@ class SetTimeCommand(RootCommand):
         if len(args) != 1:
             raise InvalidArgsError("Invalid number of arguments")
         datestring = args[0]
-        max_len = 25  # with seconds
-        min_len = 22  # without seconds
+        max_len = 25
+        min_len = 25
         if len(datestring) > max_len:
             raise InvalidArgsError("Datestring too long")
         if len(datestring) < min_len:
