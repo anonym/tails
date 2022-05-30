@@ -451,6 +451,25 @@ When /^I configure a direct connection in the Tor Connection Assistant$/ do
   tca_configure(:easy)
 end
 
+When(/^I look at the hide mode but then I go back$/) do
+  tca_configure(:hide, connect: false) do
+    click_connect_to_tor
+
+    tor_connection_assistant.child(
+      'Configure a Tor bridge',
+      roleName:    'heading',
+      showingOnly: true
+    )
+
+    btn = tor_connection_assistant.child(
+      '_Back',
+      roleName: 'push button'
+    )
+    assert_equal('True', btn.get_field('sensitive'))
+    btn.click
+  end
+end
+
 # XXX: giving up on a few worst offenders for now
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
@@ -628,6 +647,15 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
                             .text.chomp,
   ]
   assert(persistent_bridges_lines.size.positive?)
+end
+
+Then(/^Tor Connection does not propose me to use Tor bridges$/) do
+  assert_equal(
+    false,
+    tor_connection_assistant.child('Configure a Tor bridge',
+                                   roleName: 'check box')
+                            .checked
+  )
 end
 
 When /^I close the Tor Connection Assistant$/ do
