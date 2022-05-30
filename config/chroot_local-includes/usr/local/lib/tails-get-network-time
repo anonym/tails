@@ -147,7 +147,7 @@ def on_date_found(dt: datetime.datetime):
     '''
     if (get_release_date() - datetime.timedelta(days=1)) > dt:
         fail("date-in-past")
-    print(dt.isoformat())
+    print(dt.isoformat(sep='T', timespec='seconds'))
 
 
 def main():
