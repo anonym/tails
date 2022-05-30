@@ -90,6 +90,7 @@ def displayed_time_str
     'en',
     '1 / 2',
     'Zenity',
+    'Known security issues',
   ]
   candidate_clock_labels = Set.new(
     Dogtail::Application.new('gnome-shell')
