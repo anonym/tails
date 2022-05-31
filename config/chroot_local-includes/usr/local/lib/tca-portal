@@ -161,7 +161,7 @@ class SetTimeCommand(RootCommand):
     InvalidArgsError: Datestring too short
 
     Format mismatch is refused, even if tails-set-date itself would accept it:
-    >>> c.validate_args(('-123456 days',))
+    >>> c.validate_args(('2021-08-06 -123456seconds',))
     Traceback (most recent call last):
         ...
     InvalidArgsError: Datestring has invalid format
