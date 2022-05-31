@@ -138,7 +138,6 @@ steps:
 
   - create-file: /etc/apt/sources.list.d/tails.list
     contents: |
-      deb http://time-based.snapshots.deb.tails.boum.org/tails/${TAILS_SERIAL}/ builder-jessie main
       deb http://time-based.snapshots.deb.tails.boum.org/tails/${TAILS_SERIAL}/ ikiwiki main
 
   - create-file: /etc/apt/preferences.d/ikiwiki
@@ -146,12 +145,6 @@ steps:
       Package: ikiwiki
       Pin: origin deb.tails.boum.org
       Pin-Priority: 1000
-
-  - create-file: /etc/apt/preferences.d/tails
-    contents: |
-      Package: *
-      Pin: release o=Tails,n=builder-jessie
-      Pin-Priority: 99
 
   - create-file: /etc/apt/preferences.d/${DISTRIBUTION}-backports
     contents: |
