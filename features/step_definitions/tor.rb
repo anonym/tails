@@ -303,7 +303,6 @@ When /^I monitor the network connections of (.*)$/ do |application|
             "  #{netns_wrapper} ss -taupen " \
             "    | grep --line-buffered '#{info[:grep_monitor_expr]}' " \
             "    >> #{@process_monitor_log} ;" \
-            '  sleep 0.1; ' \
             'done')
 end
 
