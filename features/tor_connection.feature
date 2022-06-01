@@ -33,3 +33,12 @@ Feature: Tor Connection helps the user in connecting to Tor
         And I wait 720 seconds
         Then Tor is ready
         And the time has synced
+
+    # regression test for #18546
+    @not_release_blocker
+    Scenario: Bridges are not enabled in automatic mode when going back from hiding Tor
+        When the network is plugged
+        And the Tor Connection Assistant autostarts
+        And I look at the hide mode but then I go back
+        And I choose to connect to Tor automatically
+        Then Tor Connection does not propose me to use Tor bridges
