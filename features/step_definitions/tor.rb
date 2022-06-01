@@ -332,7 +332,7 @@ And /^I re-run tails-security-check$/ do
 end
 
 And /^I re-run htpdate$/ do
-  $vm.execute_successfully('service htpdate stop && ' \
+  $vm.execute_successfully('systemctl stop htpdate && ' \
                            'rm -f /run/htpdate/* && ' \
                            'systemctl --no-block start htpdate.service')
   step 'the time has synced'
