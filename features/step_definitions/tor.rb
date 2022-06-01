@@ -304,7 +304,7 @@ When /^I monitor the network connections of (.*)$/ do |application|
             "    | grep --line-buffered '#{info[:grep_monitor_expr]}' " \
             "    >> #{@process_monitor_log} ;" \
             '  sleep 0.1; ' \
-            "done")
+            'done')
 end
 
 Then /^I see that (.+) is properly stream isolated(?: after (\d+) seconds)?$/ do |application, delay|
