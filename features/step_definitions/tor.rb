@@ -296,13 +296,15 @@ end
 
 When /^I monitor the network connections of (.*)$/ do |application|
   @process_monitor_log = '/tmp/ss.log'
+  $vm.execute_successfully("rm -f #{@process_monitor_log}")
   info = stream_isolation_info(application)
   netns_wrapper = info[:netns].nil? ? '' : "ip netns exec #{info[:netns]}"
   $vm.spawn('while true; do ' \
             "  #{netns_wrapper} ss -taupen " \
-            "    | grep '#{info[:grep_monitor_expr]}'; " \
+            "    | grep --line-buffered '#{info[:grep_monitor_expr]}' " \
+            "    >> #{@process_monitor_log} ;" \
             '  sleep 0.1; ' \
-            "done > #{@process_monitor_log}")
+            "done")
 end
 
 Then /^I see that (.+) is properly stream isolated(?: after (\d+) seconds)?$/ do |application, delay|
