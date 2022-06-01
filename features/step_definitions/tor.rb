@@ -263,7 +263,7 @@ end
 
 STREAM_ISOLATION_INFO = {
   'htpdate'                        => {
-    grep_monitor_expr: 'users:(("curl"',
+    grep_monitor_expr: 'users:(("https-get-expir"',
     socksport:         9062,
     # htpdate is resolving names through the system resolver, not through socksport
     # (in order to have better error messages). Let it connect to local DNS!
