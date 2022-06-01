@@ -150,37 +150,50 @@ class GetNetworkTimeCommand(BaseCommand):
 class SetTimeCommand(RootCommand):
     """
     >>> c = SetTimeCommand()
-    >>> c.validate_args(('12345678901234',))
-    ('12345678901234',)
 
-    Empty time is refused:
+    >>> c.validate_args(('2021-08-06T17:38:12+00:00',))
+    ('2021-08-06T17:38:12+00:00',)
+
+    Empty time is refused before even trying to check the exact format:
     >>> c.validate_args(('',))
     Traceback (most recent call last):
         ...
     InvalidArgsError: Datestring too short
 
-    Other characters are refused:
-    >>> c.validate_args(('-123456 days',))
+    Format mismatch is refused, even if tails-set-date itself would accept it:
+    >>> c.validate_args(('2021-08-06 -123456seconds',))
     Traceback (most recent call last):
         ...
-    InvalidArgsError: Datestring has invalid characters
+    InvalidArgsError: Datestring has invalid format
+
     """
     def __init__(self):
         super().__init__(('/usr/local/lib/tails-set-date',), True)
-        # we know our argument is an ISO8601 date whose separator is a T, and with no microseconds
-        self.re = re.compile(r'^[0-9+:T-]*$')
+        # we know our argument is an ISO8601 date whose separator is a T,
+        # and with no microseconds
+        # example: 2021-08-06T17:38:49+00:00
+        regexp = (
+                # date
+                r'^\d{4}-\d\d-\d\d'
+                # time
+                r'T\d\d:\d\d:\d\d'
+                # timezone offset
+                r'[+-]\d\d:\d\d$'
+                )
+        self.re = re.compile(regexp)
 
     def validate_args(self, args: tuple) -> tuple:
         if len(args) != 1:
             raise InvalidArgsError("Invalid number of arguments")
-        # args[0] should be sth like 2021-08-06T17:38+00:00 or 2021-08-06T17:38:49+00:00
         datestring = args[0]
-        if len(datestring) > 25:
+        max_len = 25
+        min_len = 25
+        if len(datestring) > max_len:
             raise InvalidArgsError("Datestring too long")
-        if len(datestring) < 10:
+        if len(datestring) < min_len:
             raise InvalidArgsError("Datestring too short")
         if not self.re.fullmatch(datestring):
-            raise InvalidArgsError("Datestring has invalid characters")
+            raise InvalidArgsError("Datestring has invalid format")
         return args
 
 
