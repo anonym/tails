@@ -1386,3 +1386,16 @@ end
 Given /^I write a file (\S+) with contents "([^"]*)"$/ do |path, content|
   $vm.file_overwrite(path, content)
 end
+
+def gnome_disks_app
+  disks_app = Dogtail::Application.new('gnome-disks')
+  # Give GNOME Shell some time to draw the minimize/maximize/close
+  # buttons in the title bar, to ensure the other title bar buttons we
+  # will later click, such as GnomeDisksDriveMenuButton.png, have
+  # stopped moving. Otherwise, we sometimes lose the race: the
+  # coordinates returned by Screen#wait are obsolete by the time we
+  # run Screen#click, which makes us click on the minimize
+  # button instead.
+  @screen.wait('GnomeWindowActionsButtons.png', 5)
+  disks_app
+end

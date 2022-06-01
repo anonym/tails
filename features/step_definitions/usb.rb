@@ -1131,7 +1131,7 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
             size_in_GB_of_destination_disk)
 
   step 'I start "Disks" via GNOME Activities Overview'
-  disks = Dogtail::Application.new('gnome-disks')
+  disks = gnome_disks_app
   destination_disk_label_regexp = /^#{size_in_GB_of_destination_disk} GB Drive/
   disks.children(roleName: 'table cell')
        .find { |row| destination_disk_label_regexp.match(row.name) }
