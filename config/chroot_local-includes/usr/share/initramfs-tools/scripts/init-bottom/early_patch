@@ -18,3 +18,8 @@ if [ -x "${mountpoint}/hook" ]
 then
     "${mountpoint}/hook" /root
 fi
+
+if echo "$option" | grep -qw umount
+then
+    umount "$mountpoint"
+fi
