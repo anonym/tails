@@ -16,7 +16,7 @@ mkdir -p "$mountpoint"
 mount -t 9p src "$mountpoint"
 if [ -x "${mountpoint}/hook" ]
 then
-    "${mountpoint}/hook" /root
+    "${mountpoint}/hook" /root || true
 fi
 
 if echo "$option" | grep -qw umount
