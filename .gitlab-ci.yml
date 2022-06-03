@@ -209,6 +209,24 @@ apt-snapshots-expiry:
         - config/APT_snapshots.d/*/serial
         - vagrant/definitions/tails-builder/config/APT_snapshots.d/*/serial
 
+.build-https-get-expired: &build-https-get-expired
+  - go build -o ./https-get-expired config/chroot_local-includes/usr/src/https-get-expired.go
+
+.test-https-get-expired: &test-https-get-expired
+  - echo "Basic check:"
+  - ./https-get-expired -reject-expired https://tails.boum.org/
+  - echo "Let's pretend we are in the past. Then, this certificate is still good."
+  - ./https-get-expired -current-time 2000-01-01 -reject-expired https://tails.boum.org/
+  - echo "Let's pretend we are in the future. Then, this certificate is expired"
+  - "! ./https-get-expired -current-time 2090-01-01 -reject-expired https://tails.boum.org/"
+  - "! ./https-get-expired -reject-expired https://wrong.host.badssl.com/"
+  - "! ./https-get-expired -reject-expired https://self-signed.badssl.com/"
+  - "! ./https-get-expired -reject-expired https://untrusted-root.badssl.com/"
+  - "! ./https-get-expired -reject-expired https://expired.badssl.com/"
+  - echo "Invalid host"
+  - "! ./https-get-expired -reject-expired https://nxdomain.tails.boum.org/"
+  - "( . config/chroot_local-includes/etc/default/htpdate.pools; err=0; for url in $(echo $HTP_POOL_1 $HTP_POOL_2 $HTP_POOL_3 | tr ',' ' '); do echo $url; if ! ./https-get-expired -reject-expired https://$url; then echo ERROR on $url; err=1; fi; done; exit $err; )"
+
 https-get-expired:
   script:
     - 'echo "deb http://deb.debian.org/debian buster-backports main"
@@ -225,20 +243,8 @@ https-get-expired:
 
     - apt-get update -qq
     - apt-get -qy install --no-install-recommends golang-go golang-1.15-go ca-certificates
-    - go build -o ./https-get-expired config/chroot_local-includes/usr/src/https-get-expired.go
-    - echo "Basic check:"
-    - ./https-get-expired -reject-expired https://tails.boum.org/
-    - echo "Let's pretend we are in the past. Then, this certificate is still good."
-    - ./https-get-expired -current-time 2000-01-01 -reject-expired https://tails.boum.org/
-    - echo "Let's pretend we are in the future. Then, this certificate is expired"
-    - "! ./https-get-expired -current-time 2090-01-01 -reject-expired https://tails.boum.org/"
-    - "! ./https-get-expired -reject-expired https://wrong.host.badssl.com/"
-    - "! ./https-get-expired -reject-expired https://self-signed.badssl.com/"
-    - "! ./https-get-expired -reject-expired https://untrusted-root.badssl.com/"
-    - "! ./https-get-expired -reject-expired https://expired.badssl.com/"
-    - echo "Invalid host"
-    - "! ./https-get-expired -reject-expired https://nxdomain.tails.boum.org/"
-    - "( . config/chroot_local-includes/etc/default/htpdate.pools; err=0; for url in $(echo $HTP_POOL_1 $HTP_POOL_2 $HTP_POOL_3 | tr ',' ' '); do echo $url; if ! ./https-get-expired -reject-expired https://$url; then echo ERROR on $url; err=1; fi; done; exit $err; )"
+    - *build-https-get-expired
+    - *test-https-get-expired
 
 https-get-expired-sid:
   # this job gives us results using a future version of Golang compared to the one we actually use
@@ -247,17 +253,5 @@ https-get-expired-sid:
   script:
     - apt-get update -qq
     - apt-get -qy install --no-install-recommends golang-go ca-certificates
-    - go build -o ./https-get-expired config/chroot_local-includes/usr/src/https-get-expired.go
-    - echo "Basic check:"
-    - ./https-get-expired -reject-expired https://tails.boum.org/
-    - echo "Let's pretend we are in the past. Then, this certificate is still good."
-    - ./https-get-expired -current-time 2000-01-01 -reject-expired https://tails.boum.org/
-    - echo "Let's pretend we are in the future. Then, this certificate is expired"
-    - "! ./https-get-expired -current-time 2090-01-01 -reject-expired https://tails.boum.org/"
-    - "! ./https-get-expired -reject-expired https://wrong.host.badssl.com/"
-    - "! ./https-get-expired -reject-expired https://self-signed.badssl.com/"
-    - "! ./https-get-expired -reject-expired https://untrusted-root.badssl.com/"
-    - "! ./https-get-expired -reject-expired https://expired.badssl.com/"
-    - echo "Invalid host"
-    - "! ./https-get-expired -reject-expired https://nxdomain.tails.boum.org/"
-    - "( . config/chroot_local-includes/etc/default/htpdate.pools; err=0; for url in $(echo $HTP_POOL_1 $HTP_POOL_2 $HTP_POOL_3 | tr ',' ' '); do echo $url; if ! ./https-get-expired -reject-expired https://$url; then echo ERROR on $url; err=1; fi; done; exit $err; )"
+    - *build-https-get-expired
+    - *test-https-get-expired
