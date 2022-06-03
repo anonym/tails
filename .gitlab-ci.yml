@@ -249,7 +249,10 @@ https-get-expired:
 https-get-expired-sid:
   # this job gives us results using a future version of Golang compared to the one we actually use
   image: debian:sid
-
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "devel"'
+    - changes:
+        - config/chroot_local-includes/usr/src/https-get-expired.go
   script:
     - apt-get update -qq
     - apt-get -qy install --no-install-recommends golang-go ca-certificates
