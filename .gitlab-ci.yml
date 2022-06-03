@@ -242,20 +242,9 @@ https-get-expired:
 
 https-get-expired-sid:
   # this job gives us results using a future version of Golang compared to the one we actually use
+  image: debian:sid
 
   script:
-    - 'echo "deb http://deb.debian.org/debian sid main"
-         > /etc/apt/sources.list.d/sid.list'
-
-    # Needs to be kept in sync' with config/chroot_apt/preferences
-    - |
-      cat > /etc/apt/preferences.d/golang.pref <<-'EOF'
-      Explanation: Compiling https-get-expired reproducibly needs a recent version of Go
-      Package: golang-go golang-src golang-*-go golang-*-src
-      Pin: release o=Debian,n=sid
-      Pin-Priority: 999
-      EOF
-
     - apt-get update -qq
     - apt-get -qy install --no-install-recommends golang-go ca-certificates
     - go build -o ./https-get-expired config/chroot_local-includes/usr/src/https-get-expired.go
