@@ -552,7 +552,7 @@ Build the almost-final images
    - Set `defaultcomp`, so we can more accurately optimize our
      SquashFS file ordering.
    - Do _not_ set `keeprunning`, nor `ignorechanges`, nor `rescue`.
-   Expected time: 15-30 minutes depending on your computer.
+   Expected time: 15-45 minutes depending on your computer.
 
 2. Keep the resulting build artifacts until the end of this release process.
 
@@ -637,7 +637,7 @@ Note:
 Build images
 ============
 
-Expected time: 30-75 minutes depending on your computer and the available
+Expected time: 50-95 minutes depending on your computer and the available
 Jenkins workers.
 
 Sanity check
@@ -676,7 +676,7 @@ Feel free to skip this section when preparing an emergency release.
 1. Automatically connect to Tor with _Tor Connection_.
 1. Wait for _Tor Connection_ to report success.
 1. Start *Tor Browser*.
-1. 3 minutes after the start of the Gnome session, the `boot-profile` process will be
+1. 3 minutes after the start of the GNOME session, the `boot-profile` process will be
    killed. Retrieve the new sort file from `/var/log/boot-profile`.
 1. Backup the old sort file: `cp config/binary_rootfs/squashfs.sort{,.old}`
 1. Copy the new sort file to `config/binary_rootfs/squashfs.sort`.
@@ -716,12 +716,20 @@ suite should be ready, so it is time to:
         dch --release --no-force-save-on-release --maintmaint && \
         git commit -m "Mark Tails ${VERSION:?} as released." debian/changelog
 
-1. Export `SOURCE_DATE_EPOCH`:
+1. To update the `~/.config/tails/release_management/current.yml` template
+   with newly required variables, run:
 
-        export SOURCE_DATE_EPOCH=$(date --utc --date="$(dpkg-parsechangelog --show-field=Date)" '+%s')
+        ./bin/rm-config generate-boilerplate --stage finalized-changelog
 
-1. Take note of the value of `$SOURCE_DATE_EPOCH`: you'll need it to "Build the
-   Incremental Upgrade Kits on Jenkins" until [[!tails_ticket 18318]] is solved.
+1. Edit `~/.config/tails/release_management/current.yml` and replace
+  `FIXME`:s:
+
+        "${EDITOR:?}" ~/.config/tails/release_management/current.yml
+
+1. Generate the resulting environment variables and export them
+   into your environment:
+
+        . $(./bin/rm-config generate-environment --stage finalized-changelog)
 
 1. tag the release *again*, with all included files in:
 
@@ -964,9 +972,6 @@ To build the IUKS, run this command:
      cd "${IUKS_DIR?:}" && \
      sha256sum Tails_amd64_*_to_${VERSION?:}.iuk > "${IUKS_HASHES?:}"
 
-Take note of the `time` output above and add it to the table in
-[[!tails_ticket 17750]].
-
 This command takes a long time. In parallel, while it is running,
 you can follow the next steps:
 
@@ -1017,7 +1022,8 @@ Build the Incremental Upgrade Kits on Jenkins
     - `TAILS_GIT_COMMIT`: the value of `$TAG` in your release environment
     - `SOURCE_DATE_EPOCH`: the value of `$SOURCE_DATE_EPOCH` in your
       release environment, i.e. the same value you are using to
-      "Build the Incremental Upgrade Kits locally"
+      "Build the Incremental Upgrade Kits locally"; you can find it in
+      `~/.config/tails/release_management/current.yml`
     - `NEW_VERSION`: the value of `$VERSION` in your release environment
     - `EXTRA_ARGS`: leave it blank
 
@@ -1053,12 +1059,12 @@ Build the Incremental Upgrade Kits on Jenkins
    suite](#run-automated-tests) in the meanwhile to optimize this: running it
    does not depend on any of the IUK-related steps.
 
-6. Add the time it took for `build_IUKs` to the table of [[!tails_ticket 17750]].
-
 <a id="reproducibility-sanity-check-iuk"></a>
 
 Verify that Jenkins reproduced your IUKs
 ----------------------------------------
+
+### Compare the IUKs
 
 Run this command to verify that Jenkins reproduced your IUKs:
 

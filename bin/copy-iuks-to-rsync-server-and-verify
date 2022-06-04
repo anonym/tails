@@ -165,7 +165,7 @@ class CopyAndVerify:
                 jenkins_build_id) + '/archive/'
             log.debug("Looking at %s", artifacts_index_url)
             try:
-              page = BeautifulSoup(urlopen(Request(artifacts_index_url)), 'html.parser')
+                page = BeautifulSoup(urlopen(Request(artifacts_index_url)), 'html.parser')
             except urllib.error.HTTPError as exc:
                 if self.ignore_404 and exc.code == 404:
                     log.info("Error %d on %s, skipping", exc.code, artifacts_index_url)
@@ -235,9 +235,9 @@ class CopyAndVerify:
     def check_success(self):
         '''This always returns True, but leaves us some room to define more validation'''
         if self.ignored_404 > 0:
-            print('WARNING: %d 404s have been found while looking for IUKs. ' +
-                  'Please inspect the log to be sure that this is correct' %
-                  self.ignored_404)
+            log.warning('%d 404s have been found while looking for IUKs. ' +
+                        'Please inspect the log to be sure that this is correct',
+                        self.ignored_404)
         return True
 
 
