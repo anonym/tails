@@ -42,14 +42,76 @@ When /^I bump the (hardware clock's|system) time with "([^"]+)"$/ do |clock_type
          "'#{expected_time_lower_bound}' but is '#{new_time}'")
 end
 
-Then /^Tails clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
-  guest_time_str = $vm.execute('date --rfc-2822').stdout.chomp
-  guest_time = Time.rfc2822(guest_time_str)
-  host_time = Time.now
-  diff = (host_time - guest_time).abs
+When /^I make sure time sync before Tor connects (fails|times out)$/ do |failure_mode|
+  force_timeout = failure_mode == 'times out'
+  hostname = FAKE_CONNECTIVITY_CHECK_HOSTNAME
+  @allowed_dns_queries = [hostname + '.']
+  ips = Resolv.getaddresses(hostname).sort
+  ips.each do |ip|
+    add_extra_allowed_host(ip, 80)
+  end
+  path = force_timeout ? 'delay/30' : 'redirect-to?url=foobar'
+  $vm.file_overwrite(
+    '/etc/tails-get-network-time-url',
+    "http://#{hostname}/#{path}"
+  )
+end
+
+def assert_time_diff_smaller_than(reference:, actual:,
+                                  description:, max_diff_mins:)
+  diff = (reference - actual).abs
   assert(diff < max_diff_mins.to_i * 60,
-         "The guest's clock is off by #{diff} seconds (#{guest_time})")
-  puts "Time was #{diff} seconds off"
+         "The #{description} clock is off by #{diff} seconds (#{actual})")
+  debug_log "Time was #{diff} seconds off"
+end
+
+Then /^the system clock is less than (\d+) minutes incorrect$/ do |max_diff_mins|
+  guest_time_str = $vm.execute_successfully('date --rfc-2822').stdout.chomp
+  guest_time = Time.rfc2822(guest_time_str)
+  assert_time_diff_smaller_than(
+    reference:     Time.now,
+    actual:        guest_time,
+    description:   "guest's",
+    max_diff_mins: max_diff_mins
+  )
+end
+
+def displayed_time_str
+  # Ugly and annoying to maintain, but I could not find a better way :/
+  ignore_labels = Set[
+    'Trash',
+    'Report an error',
+    'Tails documentation',
+    'Activities',
+    '',
+    'Applications',
+    'Places',
+    'Tor Connection',
+    'en',
+    '1 / 2',
+    'Zenity',
+    'Known security issues',
+  ]
+  candidate_clock_labels = Set.new(
+    Dogtail::Application.new('gnome-shell')
+                        .child('', roleName: 'panel')
+                        .children(showingOnly: true, roleName: 'label')
+                        .map(&:name)
+  ).keep_if { |l| !ignore_labels.include?(l) }.to_a
+
+  assert_equal(1, candidate_clock_labels.size, "Too many candidate_clock_labels: #{candidate_clock_labels}")
+  candidate_clock_labels[0]
+end
+
+Then /^the displayed clock is less than (\d+) minutes incorrect in "([^"]*)"/ do |max_diff_mins, timezone_offset|
+  displayed_time = DateTime.parse(displayed_time_str + ' ' + timezone_offset)
+                           .to_time
+  assert_time_diff_smaller_than(
+    reference:     Time.now(in: timezone_offset),
+    actual:        displayed_time,
+    description:   'displayed',
+    max_diff_mins: max_diff_mins
+  )
 end
 
 Then /^the system clock is just past Tails' source date$/ do
@@ -94,12 +156,12 @@ Then /^the hardware clock is still off by "([^"]+)"$/ do |timediff|
   hwclock = DateTime.parse(
     $vm.execute_successfully('hwclock -r').stdout.chomp
   ).to_time
-  expected_time_lower_bound = DateTime.parse(
-    cmd_helper(['date', '-d', "now #{timediff}"])
-  ).to_time - max_time_drift
-  expected_time_upper_bound = expected_time_lower_bound + max_time_drift
+  expected = DateTime.parse(cmd_helper(['date', '-d', "now #{timediff}"])).to_time
+  expected_time_lower_bound = expected - max_time_drift
+  expected_time_upper_bound = expected + 1
   assert(expected_time_lower_bound <= hwclock &&
          hwclock <= expected_time_upper_bound,
-         "The host's hwclock should be approximately " \
-         "'#{expected_time_lower_bound}' but is actually '#{hwclock}'")
+         'The hardware clock of the Tails VM should be between ' \
+         "'#{expected_time_lower_bound}' and '#{expected_time_upper_bound}', " \
+         "but is actually '#{hwclock}'")
 end

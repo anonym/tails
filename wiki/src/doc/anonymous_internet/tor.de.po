@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-01-31 22:54+0000\n"
+"POT-Creation-Date: 2022-06-04 08:38+0200\n"
 "PO-Revision-Date: 2021-10-30 13:04+0000\n"
 "Last-Translator: Weblate Admin <tails-weblate@boum.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,27 +190,73 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-msgid ""
-"When you choose this option, Tails tries different ways of connecting to Tor "
-"until it succeeds:"
+msgid "When you choose this option:"
 msgstr ""
 
 #. type: Bullet: '1. '
+msgid ""
+"First, Tails synchronizes the clock of the computer automatically, because a "
+"correct time is needed to be able to connect to the Tor network."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   Tails learns the current time by connecting to the captive portal detection\n"
+"   service of [Fedora](https://getfedora.org/), which is used by most Linux\n"
+"   distributions. This connection does not go through the Tor network and is an\n"
+"   exception to our policy of only making Internet connections through the Tor\n"
+"   network.\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "<div class=\"next\">\n"
+msgid "   <div class=\"next\">\n"
+msgstr "<div class=\"next\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   <p>You can learn more about our security assessment of this time\n"
+"   synchronization in our [[design documentation about non-Tor\n"
+"   traffic|contribute/design/Tor_enforcement#non-tor-traffic]].</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "</div>\n"
+msgid "   </div>\n"
+msgstr "</div>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   If you choose instead to [[hide that you are connecting to Tor|tor#hiding]],\n"
+"   you might have to fix the computer clock manually.\n"
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid ""
+"Then, Tails tries different ways of connecting to Tor until it succeeds:"
+msgstr ""
+
+#. type: Bullet: '   1. '
 msgid ""
 "Tails tries to connect to Tor directly using **public relays**, without "
 "using a bridge."
 msgstr ""
 
-#. type: Bullet: '1. '
+#. type: Bullet: '   1. '
 msgid ""
 "Tails tries to connect to Tor using one of the **default bridges**, already "
 "included in Tails, if connecting using public relays fails."
 msgstr ""
 
-#. type: Bullet: '1. '
+#. type: Bullet: '   1. '
 msgid ""
-"Tails asks you to configure a **custom bridge**, if connecting using the "
-"default bridges fails."
+"If public relays and default bridges don't work, Tails asks you to configure "
+"a **custom bridge**, if connecting using the default bridges fails."
 msgstr ""
 
 #. type: Plain text
@@ -300,8 +346,8 @@ msgstr ""
 
 #. type: Bullet: '  1. '
 msgid ""
-"Send an empty email to <a href=\"mailto:bridges@torproject.org"
-"\">bridges@torproject.org</a> from a Gmail or Riseup email address."
+"Send an empty email to <a href=\"mailto:bridges@torproject."
+"org\">bridges@torproject.org</a> from a Gmail or Riseup email address."
 msgstr ""
 
 #. type: Plain text
@@ -366,7 +412,7 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "[[!img doc/first_steps/introduction_to_gnome_and_the_tails_desktop/tor-status.png link=\"no\"]]\n"
+msgid "[[!img doc/first_steps/desktop/tor-status.png link=\"no\"]]\n"
 msgstr ""
 
 #. type: Bullet: '  - '
@@ -377,8 +423,8 @@ msgstr ""
 
 #. type: Bullet: '  - '
 msgid ""
-"[[!img lib/symbolic/tor-disconnected.png alt=\"Onion icon that is crossed out"
-"\" link=no class=\"symbolic\"]] You are not connected to Tor."
+"[[!img lib/symbolic/tor-disconnected.png alt=\"Onion icon that is crossed "
+"out\" link=no class=\"symbolic\"]] You are not connected to Tor."
 msgstr ""
 
 #. type: Plain text

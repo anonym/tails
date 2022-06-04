@@ -67,7 +67,8 @@ Then /^the Unsafe Browser has only Firefox's default bookmarks configured$/ do
   @screen.wait('UnsafeBrowserExportBookmarksMenuEntry.png', 20).click
   @screen.wait('UnsafeBrowserExportBookmarksSavePrompt.png', 20)
   path = "/home/#{info[:user]}/bookmarks"
-  @screen.type(path, ['Return'])
+  @screen.paste(path)
+  @screen.press('Return')
   chroot_path = "#{info[:chroot]}/#{path}.json"
   try_for(10) { $vm.file_exist?(chroot_path) }
   dump = JSON.parse($vm.file_content(chroot_path))

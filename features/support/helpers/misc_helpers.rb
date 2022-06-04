@@ -184,7 +184,7 @@ def retry_tor(recovery_proc = nil, &block)
                operation_name: 'Tor operation', &block)
 end
 
-def retry_action(max_retries, options = {}, &block)
+def retry_action(max_retries, **options, &block)
   assert(max_retries.is_a?(Integer), 'max_retries must be an integer')
   options[:recovery_proc] ||= nil
   options[:operation_name] ||= 'Operation'

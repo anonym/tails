@@ -6,7 +6,7 @@ Feature: Networking
     And I wait between 30 and 60 seconds
     Then the Tor Status icon tells me that Tor is not usable
     When the network is plugged
-    Then Tor is ready
+    Then I successfully configure Tor
     And the Tor Status icon tells me that Tor is usable
     And all notifications have disappeared
     And the time has synced
