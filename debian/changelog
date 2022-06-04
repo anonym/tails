@@ -1,8 +1,564 @@
-tails (5.1) UNRELEASED; urgency=medium
+tails (5.1) unstable; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade to Thunderbird 91.9.0
 
- -- boyska <boyska@riseup.net>  Tue, 03 May 2022 16:46:26 +0200
+  * Upgrade to Tor Browser 11.0.14 based on Firefox 91.10 (tails/tails!852)
+
+    Closes issues:
+      - Upgrade to Tor Browser 11.0.14 based on Firefox 91.10 (tails/tails#18979)
+
+    Commits:
+      - htpdate: replace tachanka.org with www.autistici.org
+      - Mark security advisory against 5.0 as fixed
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.0.14-build1
+
+  * Resolve "displayed_time_str fails in test suite" (tails/tails!839)
+
+    Closes issues:
+      - displayed_time_str fails in test suite (tails/tails#18991)
+
+    Commits:
+      - Ignore advisories when looking for displayed time
+      - help debug
+
+  * FIX Clock disappearing when the user sets UTC as their local timezone
+    (tails/tails!841)
+
+    Closes issues:
+      - Clock disappears from the GNOME top bar after "Fix the clock" and choosing UTC
+        timezone (tails/tails#18993)
+
+    Commits:
+      - safety net for future problems
+      - handle UTC special-case
+
+  * Test suite: workaround lost and duplicate key presses by pasting long strings
+    instead of typing them (tails/tails!821)
+
+    Commits:
+      - Test suite: merge step used only by another step into its caller
+      - Test suite: paste long strings instead of typing them
+      - Test suite: drop useless step
+      - Test suite: refactor (extract code to method)
+
+  * Test suite: Make opening GNOME menus more robust (tails/tails!816)
+
+    Closes issues:
+      - Opening GNOME menus in the test suite on Bullseye is very fragile
+        (tails/tails#18930)
+
+    Commits:
+      - Test suite: try harder to open GNOME menus
+      - Test suite: drop unnecessary delay
+      - Test suite: use Dogtail to check presence of GNOME bookmarks
+      - Test suite: use Dogtail to open the GNOME menus
+      - Test suite: wait for the desktop to be visible before we interact with it after
+        restoring a snapshot
+      - Lint.
+
+  * Upgrade to Linux 5.10.113-1 (DSA 5127-1) (tails/tails!813)
+
+    Closes issues:
+      - Upgrade Linux to 5.10.113-1 (DSA 5127-1) (tails/tails#18962)
+
+    Commits:
+      - Upgrade to Linux 5.10.113-1 (DSA 5127-1)
+
+  * Make console-setup.service startup non-racy (tails/tails!811)
+
+    Closes issues:
+      - console-setup.service fails sometimes, which breaks "Tor is ready" in test
+        suite (tails/tails#18636)
+
+    Commits:
+      - Make console-setup.service startup non-racy
+
+  * Test suite: support running on Ruby 3.0 (tails/tails!810)
+
+    Closes issues:
+      - Test suite misbehaves on Ruby 3.0, e.g. "the Tor Connection Assistant connects
+        to Tor" step always incorrectly fails (tails/tails#18904)
+
+    Commits:
+      - Test suite: ensure we don't try to click the "Restore Disk Image" button before
+        it's visible
+      - Test suite: support Bookworm host system's improved UEFI graphics
+      - Test suite: enable Ruby deprecation warnings
+      - Test suite: adjust to separation of positional and keyword arguments in Ruby
+        3.0
+      - Test suite: update button label for Bullseye
+      - Remove duplicate word in comment
+      - Test suite: drop workaround for Ruby < 2.7
+      - Test suite: migrate from deprecated luks_open and luks_close to
+        cryptsetup_{open,close}
+
+  * test https-get-expired with sid's Go (tails/tails!849)
+
+    Commits:
+      - GitLab CI: only run https-get-expired-sid job when relevant
+      - GitLab CI: factorize
+      - GitLab CI: test https-get-expired with sid's Go on a sid image
+      - also test https-get-expired with sid's golang
+
+  * Vagrant: install ikiwiki that fixes #18992 (tails/tails!847)
+
+    Closes issues:
+      - ikiwiki generates buggy PO files with po4a 0.62 (tails/tails#18992)
+
+    Commits:
+      - Vagrant: stop using the obsolete builder-jessie APT suite
+      - Vagrant: install ikiwiki that fixes #18992
+
+  * tca-portal: stricter validation (tails/tails!846)
+
+    Commits:
+      - test: right length, valid for date(1), but invalid format
+      - drop test case for "minutes" timespec
+      - be more explicit about the format we want
+      - seconds always included
+      - stricter validation for SetTimeCommand
+
+  * ignore advisories + better debug (tails/tails!845)
+
+    Commits:
+      - ignore advisory
+      - FIX error message
+
+  * Test suite: fix regression when testing Tor Connection in non-English locale
+    (tails/tails!843)
+
+    Commits:
+      - Test suite: fix regression when testing Tor Connection in non-English locale
+
+  * FIX sharing via onionshare from nautilus (tails/tails!840)
+
+    Closes issues:
+      - "Share via OnionShare" does nothing (tails/tails#18990)
+
+    Commits:
+      - FIX sharing via onionshare from nautilus
+
+  * lint_po: ignore unknown-message-flag errors (tails/tails!836)
+
+    Commits:
+      - lint_po: ignore unknown-message-flag errors
+
+  * Don't enable "configure a bridge" just because the user looked at the hide mode
+    (tails/tails!835)
+
+    Closes issues:
+      - “Configure a Bridge” is enabled when rolling back from hiding Tor
+        (tails/tails#18546)
+
+    Commits:
+      - regression test for #18546
+      - enable easymode-bridges only in easy mode
+
+  * Vagrant build box: upgrade to po4a 0.62-1 (tails/tails!834)
+
+    Commits:
+      - Vagrant build box: drop APT configuration for Buster
+      - Vagrant build box: upgrade to po4a 0.62-1
+
+  * Installer: create system partition 2 MiB from the beginning of the drive
+    (tails/tails!832)
+
+    Commits:
+      - Installer: create system partition 2 MiB from the beginning of the drive
+
+  * Various Tor Connection UX improvements (tails/tails!831)
+
+    Closes issues:
+      - Tor Connection: Give the same instructions on both bridge screens
+        (tails/tails#18596)
+      - Always tell whether bridges are used in the success screen (tails/tails#18547)
+
+    Commits:
+      - Clarify docstring
+      - Test suite: update expected images
+      - Make phrasing consistent
+      - Test suite: DRY
+      - refactor: properties allow our code to be clearer
+      - bridges: same instructions on both screens
+      - Success message conditional to bridges
+
+  * Rewrite the home pages of the Unsafe Browser + Have different homes for the
+    Unsafe Browser depending on whether we're connected to Tor already
+    (tails/tails!829)
+
+    Closes issues:
+      - Have different homes for the Unsafe Browser depending on whether we're
+        connected to Tor already (tails/tails#18601)
+      - Rewrite the home pages of the Unsafe Browser (tails/tails#18602)
+
+    Commits:
+      - Apply style guide
+      - Improve sentence
+      - Improve grammar
+      - Improve grammar
+      - Improve grammar
+      - Be more clear
+      - Add illustration by Andrés
+      - Test suite: remove obsolete localized images
+      - Test suite: update expected image
+      - Test suite: add missing @doc tag
+      - FIX wrong path was checked
+      - Clarify that the image is an example
+      - Clarify use of CSS (Take 2)
+      - Unsafe browser: home page if non connected to Tor
+      - Clarify use of CSS
+      - Rework CSS
+      - Improve structure
+      - Write a dedicated page for captive portals
+      - Improve instructions
+      - Give examples of websites to use
+      - Use our own image and remove the login and password
+      - Shorten
+
+  * Test suite: misc. robustness improvements (tails/tails!827)
+
+    Closes issues:
+      - Tests for backup are fragile (tails/tails#18727)
+
+    Commits:
+      - Test suite: add localized expected image for Unsafe Browser start page in pt_BR
+      - Test suite: enable debug logging for Screen#wait
+      - Test suite: Fix frequent "cannot find TailsGreeterLoginButton.png" failures
+      - Test suite: update expected image for Bullseye
+      - Test suite: give the XMPP server some time to create the room
+      - Test suite: update expected Pidgin images
+      - Test suite: fix error message
+      - Test suite: Improve error reporting
+      - Test suite: Fix clock upper bound calculation
+      - Test suite: refactoring (save value to variable)
+      - Test suite: Drop most debugging info for issue that does not happen anymore
+      - Test suite: Drop spurious verb in debug log
+      - Revert "Mark test scenario as fragile"
+      - Test suite (backup): Wait for Zenity to have filled its widgets with the
+        expected text
+
+  * Upgrade apt-cacher-ng to bullseye-backports - fixes issue #18931
+    (tails/tails!825)
+
+    Closes issues:
+      - rake build fails - apt-get works erratically ( 502 connection closed
+        [IP:127.0.0.1:3142] ) - No build artifacts were found! (tails/tails#18931)
+
+    Commits:
+      - Upgrade apt-cacher-ng to bullseye-backports.
+
+  * Disable search providers in the Activities Overview: Calculator, Nautilus,
+    Terminal (tails/tails!824)
+
+    Closes issues:
+      - Disable some GNOME Overview search providers (tails/tails#18952)
+
+    Commits:
+      - Disable search providers in the Activities Overview: Calculator, Contacts,
+        Documents, Nautilus, Terminal
+
+  * Test suite: ignore failures to destroy a stopped domain (tails/tails!822)
+
+    Closes issues:
+      - Scenario: "Upgrading an old Tails USB installation from another Tails USB
+        drive" after-hook is racy (tails/tails#18972)
+
+    Commits:
+      - Test suite: ignore failures to destroy a stopped domain
+
+  * Associate OpenPGP-encrypted files with Kleopatra (tails/tails!820)
+
+    Closes issues:
+      - Tails 5 does not decrypt .gpg files when double-clicking them
+        (tails/tails#18967)
+
+    Commits:
+      - Associate OpenPGP-encrypted files with Kleopatra
+
+  * safely get gnome_env_vars (tails/tails!819)
+
+    Commits:
+      - clarify about which environment is being dumped
+      - Clarify comment
+      - Fix typo in comment
+      - comments clarify why we think we are safe
+      - fix systemd path
+      - gnome_env_vars look at the gnome-shell env dump
+      - gnome-shell dumps its conf in a root-owned file
+
+  * Avoid user confusion wrt. name of the default KeePassXC database
+    (tails/tails!818)
+
+    Closes issues:
+      - KeePassXC offers to rename the default database on non-English locales
+        (tails/tails#18966)
+
+    Commits:
+      - Silence false positive
+      - Drop obsolete reason
+      - Don't allow translating Passwords.kdbx
+
+  * Use Bullseye debootstrap configuration (tails/tails!817)
+
+    Commits:
+      - Use Bullseye debootstrap configuration
+
+  * FIX IUK verification when we have 2 series at the same time (tails/tails!815)
+
+    Closes issues:
+      - bin/copy-iuks-to-rsync-server-and-verify failing because of old releases
+        (tails/tails#18959)
+
+    Commits:
+      - Apply 1 suggestion(s) to 1 file(s)
+      - document how the RM should use this command
+      - don't fail when 404s have been ignored
+      - proper exit code on failure
+      - refactor --ignore-404
+      - refactor run()
+      - fix leftover
+      - 404s found -> non-zero exit code
+      - --ignore-404 and --dry-run
+
+  * Fix FTBFS with uBlock 1.42 (tails/tails!814)
+
+    Commits:
+      - Unfuzzy patch
+
+  * Upgrade to tor 0.4.7.7 (tails/tails!812)
+
+    Closes issues:
+      - Upgrade to tor 0.4.7.x (tails/tails#18932)
+
+    Commits:
+      - Upgrade to tor 0.4.7.7
+
+  * Add translation files for Qt5 (#18958) (tails/tails!808)
+
+    Closes issues:
+      - Translations of basic Qt5 strings are missing (tails/tails#18958)
+
+    Commits:
+      - Add translation files for Qt
+
+  * Make news/version_3* non-translatable (#16758) (tails/tails!805)
+
+    Commits:
+      - Make news/version_3* non-translatable (#16758)
+
+  * Add Kleopatra to the Favorites (tails/tails!802)
+
+    Commits:
+      - Test suite: make expected image a tiny bit smaller
+      - Add Kleopatra to the Favorites submenu
+
+  * Test suite: drop pre-Bullseye compatibility (tails/tails!789)
+
+    Commits:
+      - Test suite: drop workaround for Ruby < 2.7
+      - Test suite: migrate from deprecated luks_open and luks_close to
+        cryptsetup_{open,close}
+
+  * Add to confirm before restarting (#18912) (tails/tails!782)
+
+    Closes issues:
+      - New dialog when Unsafe Browser is not enabled makes it too easy to lose work
+        (tails/tails#18912)
+
+    Commits:
+      - Make code more readable
+      - Make function's responsibility tighter to simplify its code
+      - Handle new code branch that was forgotten
+      - Fix local variables declaration
+      - Use 'Cancel' as default button (#18912)
+      - 'Cancel' is more standard
+      - Add to confirm before restarting (#18912)
+
+  * Display time in the timezone that the user has chosen in Tor Connection
+    (tails/tails!751)
+
+    Closes issues:
+      - Display time in the timezone that the user has chosen in Tor Connection
+        (tails/tails#6284)
+
+    Commits:
+      - Design doc: Explain security trade-off
+      - Test suite: Explain that Asia/Shanghai == +08:00
+      - tails-get-date: use Python instead of date(1)
+      - Fix typo in error message
+      - Test suite: ensure the displayed clock is in the user's timezone
+      - Test suite: remove workaround
+      - Test suite: refactor (extract code do method)
+      - Test suite: be more defensive to give better error output
+      - Test suite: send debug info to the debug log
+      - Test suite: make step name clearer
+      - Design doc: mention timezone status and plans
+      - Apply 1 suggestion(s) to 1 file(s)
+      - Fix typo in comment
+      - Improve grammar
+      - Improve grammar
+      - Remove unnecessary comma
+      - try to fix the vertical misalignment
+      - Update to #6284
+      - Link back to main page
+      - https://www.merriam-webster.com/dictionary/time%20zone
+      - Move FAQ to a dedicated page
+      - Shorten path
+      - Don't potentially overwrite TZ key in dict with environment's value.
+      - Cleanup dead code, fix formatting.
+      - Consistently display GMT instead of UTC.
+      - Use the same time format as GNOME's clock.
+      - use date to format the date
+      - date@ extension does The Right Thing
+      - DRAFT: display time in local timezone
+
+  * Follow-up on "Audit tca-portal" (tails/tails!723)
+
+    Commits:
+      - useless shellcheck directive
+      - Apply 2 suggestion(s) to 2 file(s)
+      - Fix typo in comment
+      - clarify how we believe pgrep --ns 1 will help us
+      - PersistenceSetupCommand: gnome_env_vars not needed
+      - export_gnome_env hardening
+      - some more validation when setting system time
+      - gnome.py executes later; required for testing
+      - add some doctests to tca-portal
+      - more tuples, less lists
+      - clarify: we are fine with the TOCTOU
+      - --systemd-socket is exclusive with --listen
+      - be more explicit about stdout/stderr handling
+      - clarify handle_* comments
+      - clarify what is the role of handle_line
+      - anchor SetTimeCommand regexp
+      - clarify comment about validate_args
+      - use full path to commands whenever possible
+
+  * Automatic time sync before connecting to Tor in automatic mode
+    (tails/tails!681)
+
+    Closes issues:
+      - Mitigate attack by active network adversary on automated time sync + replayed
+        Tor consensus (tails/tails#18830)
+      - Automatic time sync before connecting to Tor in automatic mode
+        (tails/tails#18717)
+
+    Commits:
+      - Test suite: rename step to make it closer to what a user would do
+      - use the non-deprecated version of "Tor is ready"
+      - Use less jargon
+      - Add missing word in comment
+      - Update comment: this now build reproducibly
+      - Clarify comment
+      - fix undefined local variable
+      - tails-get-network-time better syslog
+      - tails-get-network-time has timeout
+      - refactor old test case based on new functions
+      - new test: time sync times out
+      - tor connection runs even if timesync fails
+      - python style
+      - some info is shown during network time sync
+      - comments
+      - wait for time to be retrieved before starting Tor
+      - use APT preferences, not --target-release
+      - gitlab tests run with the correct Go version
+      - public key type check
+      - Explain why these if statements don't apply to us
+      - Fix typo
+      - Design doc: 2 out of 3 is enough since we're using the median
+      - ignore redirects
+      - test all urls in htpdate.pools
+      - https-get-expired gets more testing
+      - https-get-expired: explain how this compares to Go implementation
+      - Test suite: explain why scenarios pass in a somewhat surprisingly manner
+      - Lint
+      - Lint
+      - Design doc: explain why we accept a risk
+      - Design doc: improve phrasing
+      - Design doc: drop conditional
+      - Design doc: explain why we're protected
+      - Design doc: clarify phrasing
+      - Update design doc: this is not a problem anymore
+      - reproducibility: clean cache after compiling
+      - fix spelling
+      - htpdate performs the median
+      - design doc: explain https-get-expired
+      - Lint: gofmt
+      - Pick Go from buster-backports
+      - try to make go build reproducible: -trimpath
+      - Test suite: mark fragile scenario as such
+      - https-get-expired: CI tests now
+      - test https-get-expired building
+      - https-get-expired gains -proxy option
+      - port htpdate to https-get-expired
+      - https-get-expired: more similar to htpdate's curl
+      - https-get-expired output headers, not body
+      - fix go compilation
+      - add https-get-expired: will need for time sync
+      - "date in past" check is more robust
+      - sanity check: the new date cannot be in the past
+      - unsafe browser is checked for tor leaks
+      - UnsafeBrowser correctly detects if we're online
+      - checking DisableNetowrk is #18293-aware
+      - Merge the new scenario with the old one
+      - FIX restore: some snapshot has network but no Tor
+      - UnsafeBrowser tests don't need Tor; scenarios--
+      - FIX we don't even need to check Tor
+      - Test suite: clarify what we're actually testing
+      - Improve grammar
+      - Fix typo
+      - Fix typo
+      - Update doc to automatic time sync (#18717)
+      - Improve structure of design doc
+      - Avoid jargon
+      - Design doc: copy more detailed explanation from the blueprint
+      - Design doc: improve structure
+      - Design doc: document new automatic time sync mechanism
+      - Remove very old explanation
+      - wording: we're looking for unneeded *exceptions*
+      - Apply 5 suggestion(s) to 2 file(s)
+      - FIX test case: allow it to use time sync
+      - "flow through" supports fake connectivity check
+      - FIX globally setting allowed DNS queries
+      - refactor check for leaks
+      - debugging leaks is easier
+      - fix DNS query for easy mode
+      - test suite self-correction warning
+      - dns queries are allowed only when needed
+      - +debug "traffic has only flowed through"
+      - break the "Tor is ready" step in two
+      - rubocop
+      - easy-mode allowed_hosts are set in tca_configure
+      - explicitly allow connectivity check in many tests
+      - fix time sync error simulation
+      - fix exception wording
+      - use DNS inspection to check for leaks
+      - the FirewallHelper is DNS-aware
+      - one more check
+      - test "traffic only flows through" supports timesync
+      - Add tests for time sync before Tor connects
+      - Improve TCA test suite code
+      - add vm script to upload/download files
+      - tails-get-network-time: don't assume anything about body encoding
+      - Raise exception instance, not class
+      - Clean up code
+      - tails-get-network-time: emulate NetworkManager's behavior more closely
+      - Move hard-coded string to constant
+      - Blacken
+      - tails-get-network-time: refactor
+      - Add more typing
+      - tails-get-network-time: migrate to pycurl, to make our fingerprint closer to
+        NetworkManager's
+      - Store the network time server in a configuration file
+      - Move code to main() function
+      - Test suite: adjust to new automatic time sync feature
+      - Test suite: drop workaround
+      - Tor Connection: in automatic mode, set the system time from the network
+      - tca-portal: implement a new get-network-time command
+      - tca-portal: include stdout in responses
+
+ -- Tails developers <tails@boum.org>  Sat, 04 Jun 2022 08:11:47 +0000
 
 tails (5.0) unstable; urgency=medium
 
