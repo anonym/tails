@@ -153,16 +153,6 @@ class Config():
             "milestone": re.sub('~.*', '', self.data["version"]),
             "tails_signature_key_long_id": tails_signature_key[24:],
         }
-        if self.stage == 'finalized-changelog':
-            changelog_date = subprocess.check_output(
-                ["dpkg-parsechangelog", "--show-field=Date"],
-                encoding="utf8").rstrip("\n")
-            source_date_epoch = int(subprocess.check_output(
-                ["date", "--utc", "--date=%s" % changelog_date, "+%s"],
-                encoding="utf8").rstrip("\n"))
-            generated_config.update({
-                "source_date_epoch": source_date_epoch,
-            })
         if self.stage == 'built-iuks':
             iso_path = Path(self.data["isos"]) \
                 / ("tails-amd64-%s/tails-amd64-%s.iso" % (version, version))
