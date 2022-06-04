@@ -112,8 +112,6 @@ Feature: Browsing the web using the Tor Browser
     When I open the address "https://mozilla.github.io/webrtc-landing/pc_test.html" in the Tor Browser
     Then Tor Browser displays a "RTCPeerConnection is missing!" heading on the "Simple RTCPeerConnection Video Test" page
 
-  #15336
-  @fragile
   Scenario: The persistent Tor Browser directory is usable
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And the network is plugged
@@ -130,8 +128,6 @@ Feature: Browsing the web using the Tor Browser
     Then "Tails - How Tails works" has loaded in the Tor Browser
     And I can print the current page as "output.pdf" to the persistent Tor Browser directory
 
-  #11585
-  @fragile
   Scenario: Persistent browser bookmarks
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And all persistence presets are enabled

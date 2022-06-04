@@ -12,8 +12,6 @@ Feature: Using Evince
     Then I see "CupsTestPage.png" after at most 40 seconds
     And I can print the current document to "/home/amnesia/output.pdf"
 
-  #10994
-  @fragile
   Scenario: I can view and print a PDF file stored in non-persistent /home/amnesia
     Given I have started Tails from DVD without network and logged in
     And I copy "/usr/share/cups/data/default-testpage.pdf" to "/home/amnesia" as user "amnesia"
@@ -45,8 +43,6 @@ Feature: Using Evince
     # as /lib/live/mount/overlay.
     And AppArmor has denied "/usr/bin/evince" from opening "/lib/live/mount/overlay/rw/home/amnesia/.gnupg/default-testpage.pdf"
 
-  #10994
-  @fragile
   Scenario: I can view and print a PDF file stored in persistent /home/amnesia/Persistent
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And I copy "/usr/share/cups/data/default-testpage.pdf" to "/home/amnesia/Persistent" as user "amnesia"

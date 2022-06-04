@@ -10,6 +10,7 @@
 //     name version [comma-separated list of dependencies]
 
 initialList = [
+  'build-symlink',
   'build-timeout',
   'cluster-stats',
   'conditional-buildstep',

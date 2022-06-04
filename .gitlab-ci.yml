@@ -58,6 +58,8 @@ check-translatable-live-website-urls:
     - ./bin/check-translatable-live-website-urls po/tails.pot
 
 test-iuk:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
   - 'cat config/chroot_local-packageslists/tails-perl5lib.list
          config/chroot_local-packageslists/tails-iuk.list
@@ -94,6 +96,8 @@ test-iuk:
      dzil test --all'
 
 test-perl5lib:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
   - 'cat config/chroot_local-packageslists/tails-perl5lib.list
        | grep -E -v "^#"
@@ -113,6 +117,8 @@ test-perl5lib:
   - dzil test --all
 
 test-persistence-setup:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
   - apt-get -qy install apt-file
   - apt-get update -qq # Take into account APT configuration added by apt-file
@@ -167,6 +173,8 @@ test-python-doctest:
     - env PYTHONPATH=config/chroot_local-includes/usr/lib/python3/dist-packages python3 config/chroot_local-includes/usr/local/bin/tails-documentation --doctest
 
 test-tca:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
     - 'cat config/chroot_local-packageslists/tor-connection-assistant.list
        | grep -E -v "^#"
@@ -174,6 +182,8 @@ test-tca:
     - 'cd config/chroot_local-includes/usr/lib/python3/dist-packages ; find tca -name "*.py" -print0 | xargs -0 -L1 env PYTHONPATH=. python3 -m doctest'
 
 test-tca-portal:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
     - 'cat config/chroot_local-packageslists/tor-connection-assistant.list
        | grep -E -v "^#"
@@ -182,11 +192,15 @@ test-tca-portal:
 
 
 test-tailslib:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
     - apt-get -qy install python3 python3-atomicwrites python3-sh git
     - 'cd config/chroot_local-includes/usr/lib/python3/dist-packages ; find tailslib -name "*.py" -print0 | grep --null-data -v -e netnsdrop.py -e gnome.py | xargs -0 -L1 env PYTHONPATH=. python3 -m doctest'
 
 test-whisperback:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
     - 'cat config/chroot_local-packageslists/whisperback.list | grep -E -v "^#"
          | xargs apt-get -qy install'
@@ -228,6 +242,11 @@ apt-snapshots-expiry:
   - "( . config/chroot_local-includes/etc/default/htpdate.pools; err=0; for url in $(echo $HTP_POOL_1 $HTP_POOL_2 $HTP_POOL_3 | tr ',' ' '); do echo $url; if ! ./https-get-expired -reject-expired https://$url; then echo ERROR on $url; err=1; fi; done; exit $err; )"
 
 https-get-expired:
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^stable|testing|devel$/'
+    - changes:
+        - config/chroot_local-includes/usr/src/https-get-expired.go
+        - config/chroot_local-includes/etc/default/htpdate.pools
   script:
     - 'echo "deb http://deb.debian.org/debian buster-backports main"
          > /etc/apt/sources.list.d/buster-backports.list'
@@ -253,6 +272,7 @@ https-get-expired-sid:
     - if: '$CI_COMMIT_BRANCH == "devel"'
     - changes:
         - config/chroot_local-includes/usr/src/https-get-expired.go
+        - config/chroot_local-includes/etc/default/htpdate.pools
   script:
     - apt-get update -qq
     - apt-get -qy install --no-install-recommends golang-go ca-certificates

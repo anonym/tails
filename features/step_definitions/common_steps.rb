@@ -1,7 +1,7 @@
 require 'fileutils'
 
 def post_vm_start_hook
-  $vm.live_patch if $config['LIVE_PATCH']
+  $vm.late_patch if $config['LATE_PATCH']
 
   # Sometimes the first click is lost (presumably it's used to give
   # focus to virt-viewer or similar) so we do that now rather than
@@ -315,9 +315,10 @@ end
 Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_apt_sources|
   enter_boot_menu_cmdline
   boot_key = @os_loader == 'UEFI' ? 'F10' : 'Return'
+  early_patch = $config['EARLY_PATCH'] ? ' early_patch=umount' : ''
   @screen.type(' autotest_never_use_this_option' \
                ' blacklist=psmouse' \
-               " #{@boot_options}",
+               " #{early_patch} #{@boot_options}",
                [boot_key])
   @screen.wait('TailsGreeter.png', 5 * 60)
   # When enter_boot_menu_cmdline has rebooted the system after the Greeter
