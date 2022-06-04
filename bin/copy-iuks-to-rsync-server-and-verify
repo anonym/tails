@@ -165,7 +165,7 @@ class CopyAndVerify:
                 jenkins_build_id) + '/archive/'
             log.debug("Looking at %s", artifacts_index_url)
             try:
-              page = BeautifulSoup(urlopen(Request(artifacts_index_url)), 'html.parser')
+                page = BeautifulSoup(urlopen(Request(artifacts_index_url)), 'html.parser')
             except urllib.error.HTTPError as exc:
                 if self.ignore_404 and exc.code == 404:
                     log.info("Error %d on %s, skipping", exc.code, artifacts_index_url)
