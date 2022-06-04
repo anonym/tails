@@ -23,7 +23,8 @@ Then /^I cannot login as root using su with the standard passwords$/ do
     terminal = Dogtail::Application.new('gnome-terminal-server')
                                    .child('Terminal', roleName: 'terminal')
     terminal.text['Password:']
-    @screen.type(password, ['Return'])
+    @screen.paste(password, app: :terminal)
+    @screen.press('Return')
     try_for(10, msg: 'su did not return an authentication failure') do
       terminal.text['su: Authentication failure']
     end

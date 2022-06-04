@@ -13,6 +13,9 @@ end
 
 def post_snapshot_restore_hook(snapshot_name)
   $vm.wait_until_remote_shell_is_up
+  if !snapshot_name.end_with?('tails-greeter')
+    @screen.wait('DesktopTailsDocumentation.png', 10)
+  end
   post_vm_start_hook
 
   # When restoring from a snapshot while the Greeter is running, on
@@ -47,7 +50,11 @@ def post_snapshot_restore_hook(snapshot_name)
   # with the other relays, so we ensure that we have fresh circuits.
   # Time jumps and incorrect clocks also confuses Tor in many ways.
   if $vm.connected_to_network?
-    if $vm.execute('systemctl --quiet is-active tor@default.service').success?
+    # Since Tor Connection was introduced, tor@default.service is always active, so we need to check if Tor
+    # was required in the snapshot we are using. For example, the with-network-logged-in-unsafe-browser have
+    # network connected but no Tor configured. Checking DisableNetwork is useful
+    if $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
+       check_disable_network != '1'
       $vm.execute('systemctl stop tor@default.service')
       $vm.host_to_guest_time_sync
       $vm.execute('systemctl start tor@default.service')
@@ -221,21 +228,28 @@ When /^I cold reboot the computer$/ do
   step 'I start the computer'
 end
 
-def boot_menu_cmdline_image
+def boot_menu_cmdline_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuKernelCmdlineUEFI.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuKernelCmdlineUEFI_Bullseye.png.
+    [
+      'TailsBootMenuKernelCmdlineUEFI_Bullseye.png',
+      'TailsBootMenuKernelCmdlineUEFI_Bookworm.png',
+    ]
   else
-    'TailsBootMenuKernelCmdline.png'
+    ['TailsBootMenuKernelCmdline.png']
   end
 end
 
-def boot_menu_image
+def boot_menu_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuGRUB.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuGRUB_Bullseye.png.
+    ['TailsBootMenuGRUB_Bullseye.png', 'TailsBootMenuGRUB_Bookworm.png']
   else
-    'TailsBootMenuSyslinux.png'
+    ['TailsBootMenuSyslinux.png']
   end
 end
 
@@ -291,7 +305,7 @@ def enter_boot_menu_cmdline
   try_for(boot_timeout) do
     begin
       _up_spammer_job, kill_up_spammer = start_up_spammer($vm.domain_name)
-      @screen.wait(boot_menu_image, 15)
+      @screen.wait_any(boot_menu_images, 15)
       kill_up_spammer.call
 
       # Navigate to the end of the kernel command-line
@@ -303,7 +317,7 @@ def enter_boot_menu_cmdline
       else
         @screen.press('Tab')
       end
-      @screen.wait(boot_menu_cmdline_image, 5)
+      @screen.wait_any(boot_menu_cmdline_images, 5)
     rescue FindFailed => e
       debug_log('We missed the boot menu before we could deal with it, ' \
                 'resetting...')
@@ -408,6 +422,9 @@ Given /^I set an administration password$/ do
   @screen.press('Tab')
   @screen.type(@sudo_password)
   @screen.press('Return')
+  # Wait for the Administration Password dialog to be closed,
+  # otherwise the next step can fail.
+  @screen.wait('TailsGreeterLoginButton.png', 5)
 end
 
 Given /^I allow the Unsafe Browser to be started$/ do
@@ -467,6 +484,30 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
+  # deprecated: please choose between "I successfully configure Tor" and "I wait until Tor is ready"
+  step 'I successfully configure Tor'
+end
+
+##
+# this is a #18293-aware version of `tor_variable get --type=conf DisableNetwork`
+def check_disable_network
+  disable_network = nil
+  # Gather debugging information for #18557
+  try_for(10) do
+    disable_network = $vm.execute_successfully(
+      '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
+    ).stdout.chomp
+    if disable_network == ''
+      debug_log('Tor claims DisableNetwork is an empty string')
+      false
+    else
+      true
+    end
+  end
+  disable_network
+end
+
+Given /^I successfully configure Tor$/ do
   # First we wait for tor's control port to be ready...
   try_for(60) do
     $vm.execute_successfully('/usr/local/lib/tor_variable get --type=info version')
@@ -480,22 +521,7 @@ Given /^Tor is ready$/ do
   # case, where it is not important for the test scenario that we go
   # through the extra hassle and use bridges, so we simply attempt a
   # direct connection.
-  disable_network = nil
-  # Gather debugging information for #18293
-  try_for(10) do
-    $vm.execute('pidof tor')
-    $vm.execute('fuser --namespace tcp 9052')
-    $vm.execute('systemctl status tor@default.service')
-    disable_network = $vm.execute_successfully(
-      '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
-    ).stdout.chomp
-    if disable_network == ''
-      debug_log('Tor reported claims DisableNetwork is an empty string')
-      false
-    else
-      true
-    end
-  end
+  disable_network = check_disable_network
   if disable_network == '1'
     # This variable is initialized to false in each scenario, and only
     # ever set to true in some previously run step that configures tor
@@ -508,6 +534,10 @@ Given /^Tor is ready$/ do
     step 'I configure a direct connection in the Tor Connection Assistant'
   end
 
+  step 'I wait until Tor is ready'
+end
+
+Then /^I wait until Tor is ready$/ do
   # Here we actually check that Tor is ready
   step 'Tor has built a circuit'
   step 'the time has synced'
@@ -625,7 +655,7 @@ end
 
 When /^I acknowledge Torbutton's New Identity confirmation prompt$/ do
   @screen.wait('GnomeQuestionDialogIcon.png', 30)
-  step 'I type "y"'
+  @screen.press('y')
 end
 
 Given /^I add a bookmark to eff.org in the Tor Browser$/ do
@@ -635,7 +665,7 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
        '"The proxy server is refusing connections" error'
   @screen.press('ctrl', 'd')
   @screen.wait('TorBrowserBookmarkPrompt.png', 10)
-  @screen.type(url)
+  @screen.paste(url)
   # The new default location for bookmarks is "Bookmarks Toolbar", but our test
   # expects the new entry is available in "Bookmark Menu", that's why we need
   # to select the location explicitly.
@@ -661,12 +691,12 @@ Given /^all notifications have disappeared$/ do
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
     @screen.click(x, y)
     begin
-      gnome_shell.child('Clear All', roleName:    'push button',
-                                     showingOnly: true).click
+      gnome_shell.child('Clear', roleName:    'push button',
+                                 showingOnly: true).click
     rescue StandardError
       # Ignore exceptions: there might be no notification to clear, in
       # which case there will be a "No Notifications" label instead of
-      # a "Clear All" button.
+      # a "Clear" button.
     end
     gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
   end
@@ -760,12 +790,11 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-def open_gnome_menu(menu_button, menu_item)
+def open_gnome_menu(name, menu_item)
   # On Bullseye the top bar menus are problematic: we generally have
   # to click several times for them to open.
-  retry_action(10, delay: 2) do
-    @screen.hide_cursor
-    @screen.wait(menu_button, 10).click
+  retry_action(20) do
+    Dogtail::Application.new('gnome-shell').child(name, roleName: 'menu').click
     # Wait for the menu to be open and to have settled: sometimes menu
     # components appear too fast, before the menu has settled down to
     # its final size and the button we want to click is in its final
@@ -777,11 +806,11 @@ def open_gnome_menu(menu_button, menu_item)
 end
 
 def open_gnome_places_menu
-  open_gnome_menu('GnomePlaces.png', 'GnomePlacesHome.png')
+  open_gnome_menu('Places', 'GnomePlacesHome.png')
 end
 
 def open_gnome_system_menu
-  open_gnome_menu('GnomeSystemMenuButton.png', 'TailsEmergencyShutdownHalt.png')
+  open_gnome_menu('System', 'TailsEmergencyShutdownHalt.png')
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|
@@ -831,18 +860,15 @@ Given /^I switch to the "([^"]+)" NetworkManager connection$/ do |con_name|
   end
 end
 
-When /^I start and focus GNOME Terminal$/ do
-  step 'I start "GNOME Terminal" via GNOME Activities Overview'
-  @screen.wait('GnomeTerminalWindow.png', 40)
-end
-
 When /^I run "([^"]+)" in GNOME Terminal$/ do |command|
   if !$vm.process_running?('gnome-terminal-server')
-    step 'I start and focus GNOME Terminal'
+    step 'I start "GNOME Terminal" via GNOME Activities Overview'
+    @screen.wait('GnomeTerminalWindow.png', 40)
   else
     @screen.wait('GnomeTerminalWindow.png', 20).click
   end
-  @screen.type(command, ['Return'])
+  @screen.paste(command, app: :terminal)
+  @screen.press('Return')
 end
 
 When /^the file "([^"]+)" exists(?:| after at most (\d+) seconds)$/ do |file, timeout|
@@ -923,10 +949,6 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   end
 end
 
-When /^I type "([^"]+)"$/ do |string|
-  @screen.type(string)
-end
-
 When /^I press the "([^"]+)" key$/ do |key|
   @screen.press(key)
 end
@@ -942,15 +964,11 @@ Then /^the (amnesiac|persistent) Tor Browser directory (exists|does not exist)$/
 end
 
 Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser directory$/ do |persistent_or_not|
-  case persistent_or_not
-  when 'amnesiac'
-    bookmark_image = 'TorBrowserAmnesicFilesBookmark.png'
-  when 'persistent'
-    bookmark_image = 'TorBrowserPersistentFilesBookmark.png'
-  end
+  bookmark = 'Tor Browser'
+  bookmark += ' (persistent)' if persistent_or_not == 'persistent'
   open_gnome_places_menu
-  @screen.wait(bookmark_image, 40)
-  @screen.press('Escape')
+  Dogtail::Application.new('gnome-shell').child(bookmark, roleName: 'label', showingOnly: true)
+  Dogtail::Application.new('gnome-shell').child('Places', roleName: 'menu').click
 end
 
 def pulseaudio_sink_inputs
@@ -988,12 +1006,13 @@ When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) dire
   elsif output_dir == 'default downloads'
     output_dir = "/home/#{LIVE_USER}/Tor Browser"
   else
-    @screen.type(output_dir + '/')
+    @screen.paste(output_dir + '/')
   end
   # Only the part of the filename before the .html extension can be easily
   # replaced so we have to remove it before typing it into the arget filename
   # entry widget.
-  @screen.type(output_file.sub(/[.]html$/, ''), ['Return'])
+  @screen.paste(output_file.sub(/[.]html$/, ''))
+  @screen.press('Return')
   if should_work
     try_for(20,
             msg: "The page was not saved to #{output_dir}/#{output_file}") do
@@ -1015,8 +1034,7 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
   @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it
-  $vm.set_clipboard(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
-  @screen.press('ctrl', 'v')
+  @screen.paste(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
   @screen.press('Return')
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do

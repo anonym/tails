@@ -160,6 +160,11 @@ def add_extra_allowed_host(ipaddr, port)
   @extra_allowed_hosts << { address: ipaddr, port: port }
 end
 
+def add_dns_to_extra_allowed_host
+  # Allow connections to the local DNS resolver
+  add_extra_allowed_host($vmnet.bridge_ip_addr, 53)
+end
+
 BeforeFeature('@product') do
   images = { 'ISO' => TAILS_ISO, 'IMG' => TAILS_IMG }
   images.each do |type, path|
@@ -413,10 +418,13 @@ end
 After('@product', '@check_tor_leaks') do |scenario|
   @tor_leaks_sniffer.stop
   if scenario.passed?
+    @allowed_dns_queries ||= []
+
     allowed_nodes = @bridge_hosts || allowed_hosts_under_tor_enforcement
-    assert_all_connections(@tor_leaks_sniffer.pcap_file) do |c|
-      allowed_nodes.include?({ address: c.daddr, port: c.dport })
-    end
+    allowed_nodes += @extra_allowed_hosts
+    debug_log("[check_tor_leaks] Allowed hosts: #{allowed_nodes}")
+    debug_log("[check_tor_leaks] Allowed DNS queries: #{@allowed_dns_queries}")
+    assert_no_leaks(@tor_leaks_sniffer.pcap_file, allowed_nodes, @allowed_dns_queries)
   end
 end
 

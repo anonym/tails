@@ -3,14 +3,12 @@ When /^I start Tails' custom backup tool$/ do
 end
 
 Then /^the backup tool displays "([^"]+)"$/ do |expected|
-  message = nil
   try_for(30) do
-    message = Dogtail::Application.new('zenity')
-                                  .child(roleName: 'label')
-                                  .text
-    true
+    Dogtail::Application.new('zenity')
+                        .child(roleName: 'label')
+                        .text
+                        .include?(expected)
   end
-  assert(message.include?(expected))
 end
 
 When /^I click "([^"]+)" in the backup tool$/ do |node|

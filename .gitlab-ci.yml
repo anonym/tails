@@ -173,6 +173,14 @@ test-tca:
        | xargs apt-get -qy install'
     - 'cd config/chroot_local-includes/usr/lib/python3/dist-packages ; find tca -name "*.py" -print0 | xargs -0 -L1 env PYTHONPATH=. python3 -m doctest'
 
+test-tca-portal:
+  script:
+    - 'cat config/chroot_local-packageslists/tor-connection-assistant.list
+       | grep -E -v "^#"
+       | xargs apt-get -qy install'
+    - 'PYTHONPATH=config/chroot_local-includes/usr/lib/python3/dist-packages env python3 ./config/chroot_local-includes/usr/local/lib/tca-portal --doctest-only --log-level DEBUG'
+
+
 test-tailslib:
   script:
     - apt-get -qy install python3 python3-atomicwrites python3-sh git
@@ -200,3 +208,53 @@ apt-snapshots-expiry:
     - changes:
         - config/APT_snapshots.d/*/serial
         - vagrant/definitions/tails-builder/config/APT_snapshots.d/*/serial
+
+.build-https-get-expired: &build-https-get-expired
+  - go build -o ./https-get-expired config/chroot_local-includes/usr/src/https-get-expired.go
+
+.test-https-get-expired: &test-https-get-expired
+  - echo "Basic check:"
+  - ./https-get-expired -reject-expired https://tails.boum.org/
+  - echo "Let's pretend we are in the past. Then, this certificate is still good."
+  - ./https-get-expired -current-time 2000-01-01 -reject-expired https://tails.boum.org/
+  - echo "Let's pretend we are in the future. Then, this certificate is expired"
+  - "! ./https-get-expired -current-time 2090-01-01 -reject-expired https://tails.boum.org/"
+  - "! ./https-get-expired -reject-expired https://wrong.host.badssl.com/"
+  - "! ./https-get-expired -reject-expired https://self-signed.badssl.com/"
+  - "! ./https-get-expired -reject-expired https://untrusted-root.badssl.com/"
+  - "! ./https-get-expired -reject-expired https://expired.badssl.com/"
+  - echo "Invalid host"
+  - "! ./https-get-expired -reject-expired https://nxdomain.tails.boum.org/"
+  - "( . config/chroot_local-includes/etc/default/htpdate.pools; err=0; for url in $(echo $HTP_POOL_1 $HTP_POOL_2 $HTP_POOL_3 | tr ',' ' '); do echo $url; if ! ./https-get-expired -reject-expired https://$url; then echo ERROR on $url; err=1; fi; done; exit $err; )"
+
+https-get-expired:
+  script:
+    - 'echo "deb http://deb.debian.org/debian buster-backports main"
+         > /etc/apt/sources.list.d/buster-backports.list'
+
+    # Needs to be kept in sync' with config/chroot_apt/preferences
+    - |
+      cat > /etc/apt/preferences.d/golang.pref <<-'EOF'
+      Explanation: Compiling https-get-expired reproducibly needs a recent version of Go
+      Package: golang-go golang-src golang-1.15-go golang-1.15-src
+      Pin: release o=Debian Backports,n=buster-backports
+      Pin-Priority: 999
+      EOF
+
+    - apt-get update -qq
+    - apt-get -qy install --no-install-recommends golang-go golang-1.15-go ca-certificates
+    - *build-https-get-expired
+    - *test-https-get-expired
+
+https-get-expired-sid:
+  # this job gives us results using a future version of Golang compared to the one we actually use
+  image: debian:sid
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "devel"'
+    - changes:
+        - config/chroot_local-includes/usr/src/https-get-expired.go
+  script:
+    - apt-get update -qq
+    - apt-get -qy install --no-install-recommends golang-go ca-certificates
+    - *build-https-get-expired
+    - *test-https-get-expired

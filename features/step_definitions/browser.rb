@@ -100,8 +100,7 @@ When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser|
     # The browser sometimes loses keypresses when suggestions are
     # shown, which we work around by pasting the address from the
     # clipboard, in one go.
-    $vm.set_clipboard(address)
-    @screen.press('ctrl', 'v')
+    @screen.paste(address)
     @screen.press('Return')
   end
   recovery_on_failure = proc do
@@ -317,8 +316,7 @@ Then /^DuckDuckGo is the default search engine$/ do
   step 'I open a new tab in the Tor Browser'
   # Typing would require maintaining keymaps for every language in
   # which we run this step ⇒ instead, paste the search string.
-  $vm.set_clipboard('a random search string')
-  @screen.press('ctrl', 'v')
+  @screen.paste('a random search string')
   @screen.wait(ddg_search_prompt, 20)
   step 'I kill the Tor Browser'
 end

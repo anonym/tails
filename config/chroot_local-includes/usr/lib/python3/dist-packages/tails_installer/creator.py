@@ -797,7 +797,8 @@ class TailsInstallerCreator(object):
 
         try:
             partition_udi = partition_table.call_create_partition_sync(
-                    arg_offset=0,
+                    # workaround #18986 (in bytes)
+                    arg_offset=2 * 1024 * 1024,
                     arg_size=self.system_partition_size(
                         self.drive['parent_size']
                         if self.drive['parent_size']
