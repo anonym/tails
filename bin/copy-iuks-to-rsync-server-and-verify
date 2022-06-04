@@ -235,9 +235,9 @@ class CopyAndVerify:
     def check_success(self):
         '''This always returns True, but leaves us some room to define more validation'''
         if self.ignored_404 > 0:
-            print('WARNING: %d 404s have been found while looking for IUKs. ' +
-                  'Please inspect the log to be sure that this is correct' %
-                  self.ignored_404)
+            log.warning('%d 404s have been found while looking for IUKs. ' +
+                        'Please inspect the log to be sure that this is correct',
+                        self.ignored_404)
         return True
 
 
