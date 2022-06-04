@@ -157,9 +157,9 @@ class Config():
             changelog_date = subprocess.check_output(
                 ["dpkg-parsechangelog", "--show-field=Date"],
                 encoding="utf8").rstrip("\n")
-            source_date_epoch = subprocess.check_output(
+            source_date_epoch = int(subprocess.check_output(
                 ["date", "--utc", "--date=%s" % changelog_date, "+%s"],
-                encoding="utf8").rstrip("\n")
+                encoding="utf8").rstrip("\n"))
             generated_config.update({
                 "source_date_epoch": source_date_epoch,
             })
