@@ -53,26 +53,15 @@ CHECKPOINTS =
       ],
     },
 
-    'no-network-logged-in-unsafe-browser'        => {
+    'with-network-logged-in-unsafe-browser'      => {
       temporary:         true,
-      description:       'I have started Tails from DVD without network and logged in with the Unsafe Browser enabled',
+      description:       'I have started Tails from DVD and logged in with the Unsafe Browser enabled and the network is connected',
       parent_checkpoint: 'tails-greeter',
       steps:             [
         'I allow the Unsafe Browser to be started',
         'I log in to a new session',
-        'all notifications have disappeared',
-      ],
-    },
-
-    'with-network-logged-in-unsafe-browser'      => {
-      temporary:         true,
-      description:       'I have started Tails from DVD and logged in with the Unsafe Browser enabled and the network is connected',
-      parent_checkpoint: 'no-network-logged-in-unsafe-browser',
-      steps:             [
         'the network is plugged',
-        'Tor is ready',
         'all notifications have disappeared',
-        'available upgrades have been checked',
       ],
     },
 

@@ -162,7 +162,8 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with Unlock Ver
   when 'file container'
     @screen.wait('UnlockVeraCryptVolumesAddButton.png', 10).click
     @screen.wait('Gtk3FileChooserDesktopButton.png', 10)
-    @screen.type(@veracrypt_shared_dir_in_guest + '/' + $veracrypt_volume_name)
+    @screen.paste(@veracrypt_shared_dir_in_guest + '/' + $veracrypt_volume_name,
+                  app: :gtk_file_chooser)
     sleep 2 # avoid ENTER being eaten by the auto-completion system
     @screen.press('Return')
   end
@@ -218,7 +219,8 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
       # to generate a mouse event at negative coordinates" Dogtail error
       false
     end
-    @screen.type(@veracrypt_shared_dir_in_guest + '/' + $veracrypt_volume_name)
+    @screen.paste(@veracrypt_shared_dir_in_guest + '/' + $veracrypt_volume_name,
+                  app: :gtk_file_chooser)
     sleep 2 # avoid ENTER being eaten by the auto-completion system
     @screen.press('Return')
     try_for(15) do
@@ -249,7 +251,9 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
     @screen.click('GnomeDisksUnlockDialogKeyfileComboBox.png')
     @screen.wait('Gtk3FileChooserDesktopButton.png', 10)
     $vm.file_overwrite('/tmp/keyfile', 'asdf')
-    @screen.type('/tmp/keyfile', ['Return'])
+    @screen.paste('/tmp/keyfile',
+                  app: :gtk_file_chooser)
+    @screen.press('Return')
     @screen.wait_vanish('Gtk3FileChooserDesktopButton.png', 10)
   end
   if @veracrypt_is_hidden
