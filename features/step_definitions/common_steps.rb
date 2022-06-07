@@ -684,13 +684,10 @@ Given /^the Tor Browser has a bookmark to eff.org$/ do
 end
 
 Given /^all notifications have disappeared$/ do
-  # These magic coordinates always locates GNOME's clock in the top
-  # bar, which when clicked opens the calendar.
-  x = 512
-  y = 10
   gnome_shell = Dogtail::Application.new('gnome-shell')
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
-    @screen.click(x, y)
+    @screen.press('super', 'v') # Show the notification list
+    @screen.wait('GnomeDoNotDisturb.png', 5)
     begin
       gnome_shell.child('Clear', roleName:    'push button',
                                  showingOnly: true).click
