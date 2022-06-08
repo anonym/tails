@@ -232,6 +232,7 @@ https-get-expired:
     - if: '$CI_COMMIT_BRANCH =~ /^stable|testing|devel$/'
     - changes:
         - config/chroot_local-includes/usr/src/https-get-expired.go
+        - config/chroot_local-includes/etc/default/htpdate.pools
   script:
     - 'echo "deb http://deb.debian.org/debian buster-backports main"
          > /etc/apt/sources.list.d/buster-backports.list'
@@ -257,6 +258,7 @@ https-get-expired-sid:
     - if: '$CI_COMMIT_BRANCH == "devel"'
     - changes:
         - config/chroot_local-includes/usr/src/https-get-expired.go
+        - config/chroot_local-includes/etc/default/htpdate.pools
   script:
     - apt-get update -qq
     - apt-get -qy install --no-install-recommends golang-go ca-certificates
