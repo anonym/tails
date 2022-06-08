@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2021-09-07 14:15+0200\n"
-"PO-Revision-Date: 2022-02-24 21:24+0000\n"
+"PO-Revision-Date: 2022-06-08 09:39+0000\n"
 "Last-Translator: drebs <drebs@riseup.net>\n"
 "Language-Team: Tails translators <tails@boum.org>\n"
 "Language: pt\n"
@@ -21,7 +21,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Error while checking for upgrades\"]]\n"
-msgstr "[[!meta title=\"Erro ao verificar por atualizações\"]]\n"
+msgstr "[[!meta title=\"Erro ao buscar atualizações\"]]\n"
 
 #. type: Plain text
 msgid ""
@@ -40,8 +40,8 @@ msgstr "Para resolver isso:"
 msgid ""
 "Check your network connection and restart Tails to check for upgrades again."
 msgstr ""
-"Verifique a sua conexão à rede, e reinicie o Tails para verificar por "
-"atualizações novamente."
+"Verifique a sua conexão de rede e reinicie o Tails para tentar novamente "
+"buscar atualizações."
 
 #. type: Bullet: '1. '
 msgid ""
@@ -60,36 +60,43 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a id=\"4.18\"></a>\n"
-msgstr ""
+msgstr "<a id=\"4.18\"></a>\n"
 
 #. type: Title =
 #, no-wrap
 msgid "Automatic upgrades are broken between Tails 4.15 and Tails 4.18"
 msgstr ""
+"As atualizações automáticas estão quebradas entre as versões 4.15 e 4.18 do "
+"Tails"
 
 #. type: Plain text
 msgid ""
 "To upgrade from Tails 4.15, Tails 4.16, Tails 4.17, or Tails 4.18, you can "
 "either:"
 msgstr ""
+"Para atualizar a partir do Tails 4.15, Tails 4.16, Tails 4.17 ou Tails 4.18 "
+"você pode fazer um dos seguintes:"
 
 #. type: Plain text
 msgid "- Do a [[manual upgrade|doc/upgrade#manual]]."
-msgstr ""
+msgstr "- Uma [[atualização manual|doc/upgrade#manual]]."
 
 #. type: Plain text
 msgid "- Fix the automatic upgrade from a terminal. To do so:"
 msgstr ""
+"- Consertar a atualização automática usando o terminal. Para isso, faça:"
 
 #. type: Bullet: '  1. '
 msgid ""
 "Start Tails and set up an [[administration password|doc/first_steps/"
 "welcome_screen/administration_password]]."
 msgstr ""
+"Inicie o Tails e configure uma [[senha de administração|doc/first_steps/"
+"welcome_screen/administration_password]]."
 
 #. type: Bullet: '  1. '
 msgid "In a terminal, execute the following command:"
-msgstr ""
+msgstr "Em um terminal, execute o seguinte comando:"
 
 #. type: Plain text
 #, no-wrap
@@ -98,11 +105,16 @@ msgid ""
 "         | sudo tee --append /usr/local/etc/ssl/certs/tails.boum.org-CA.pem \\\n"
 "         && systemctl --user restart tails-upgrade-frontend\n"
 msgstr ""
+"         torsocks curl --silent https://tails.boum.org/isrg-root-x1-cross-"
+"signed.pem \\\n"
+"         | sudo tee --append /usr/local/etc/ssl/certs/tails.boum.org-CA.pem "
+"\\\n"
+"         && systemctl --user restart tails-upgrade-frontend\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "     <div class=\"note\">\n"
-msgstr ""
+msgstr "     <div class=\"note\">\n"
 
 #. type: Plain text
 #, no-wrap
@@ -111,11 +123,15 @@ msgid ""
 "     Copy and paste the entire block at once and make sure that it executes\n"
 "     as a single command.</p>\n"
 msgstr ""
+"     <p>Este comando é um único comando quebrado em diversas linhas.\n"
+"     Copie e cole o bloco inteiro de uma vez e tenha certeza de que ele é "
+"executado\n"
+"     como um único comando.</p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "     </div>\n"
-msgstr ""
+msgstr "     </div>\n"
 
 #. type: Bullet: '  1. '
 msgid ""
@@ -123,6 +139,9 @@ msgid ""
 "latest version of Tails. If no prompt appears, you might already be running "
 "the latest version of Tails."
 msgstr ""
+"Aproximadamente 30 segundos depois, deve aparecer uma solicitação para "
+"atualizar para a última versão do Tails. Se nada aparecer, talvez você já "
+"esteja executando a versão mais recente do Tails."
 
 #, fuzzy
 #~| msgid "This is probably caused by a network connection problem."
