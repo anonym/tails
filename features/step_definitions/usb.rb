@@ -916,7 +916,7 @@ Then /^I can successfully install the incremental upgrade to version (.+)$/ do |
     found_pic = @screen.wait_any([success_pic, failure_pic], 2 * 60)[:found_pattern]
     assert_equal(success_pic, found_pic)
   end
-  @screen.click('TailsUpgraderApplyUpgradeButton.png')
+  @screen.wait('TailsUpgraderApplyUpgradeButton.png', 5).click
   @screen.wait('TailsUpgraderDone.png', 60)
   # Restore syslinux.cfg: our test IUKs replace it with something
   # that would break the next boot
