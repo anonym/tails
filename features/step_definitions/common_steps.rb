@@ -378,14 +378,15 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
-  login_button_region = if RTL_LANGUAGES.include?(lang)
-                          # If we select a RTL language below, the
-                          # login and shutdown buttons will
-                          # swap place.
-                          @screen.find('TailsGreeterShutdownButton.png')
-                        else
-                          @screen.find('TailsGreeterLoginButton.png')
-                        end
+  login_button = if RTL_LANGUAGES.include?(lang)
+                   # If we select a RTL language below, the
+                   # login and shutdown buttons will
+                   # swap place.
+                   'TailsGreeterShutdownButton.png'
+                 else
+                   'TailsGreeterLoginButton.png'
+                 end
+  login_button_region = @screen.wait(login_button, 5)
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
