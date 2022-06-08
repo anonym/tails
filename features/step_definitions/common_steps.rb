@@ -772,10 +772,13 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
 end
 
 def open_gnome_menu(name, menu_item)
+  menu_position = Dogtail::Application.new('gnome-shell')
+                                      .child(name, roleName: 'menu')
+                                      .position
   # On Bullseye the top bar menus are problematic: we generally have
   # to click several times for them to open.
   retry_action(20) do
-    Dogtail::Application.new('gnome-shell').child(name, roleName: 'menu').click
+    @screen.click(*menu_position)
     # Wait for the menu to be open and to have settled: sometimes menu
     # components appear too fast, before the menu has settled down to
     # its final size and the button we want to click is in its final
@@ -949,7 +952,7 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   bookmark += ' (persistent)' if persistent_or_not == 'persistent'
   open_gnome_places_menu
   Dogtail::Application.new('gnome-shell').child(bookmark, roleName: 'label', showingOnly: true)
-  Dogtail::Application.new('gnome-shell').child('Places', roleName: 'menu').click
+  @screen.press('Escape')
 end
 
 def pulseaudio_sink_inputs
@@ -1011,7 +1014,7 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                  "/home/#{LIVE_USER}/Tor Browser"
                end
   @screen.press('ctrl', 'p')
-  @torbrowser.child('Save', roleName: 'push button').click
+  @torbrowser.child('Save', roleName: 'push button').press
   @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it

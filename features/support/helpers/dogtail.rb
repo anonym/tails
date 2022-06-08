@@ -301,5 +301,9 @@ module Dogtail
       doActionNamed('click')
       doActionNamed('click')
     end
+
+    def position
+      get_field('position')[1...-1].split(', ').map { |str| str.to_i }
+    end
   end
 end

@@ -568,7 +568,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
       # btn.labelee is the widget "labelled by" btn.
       # For details, see label-for and labelled-by accessibility relations
       # in main.ui.in, aka. "Label For" and "Labeled By" in Glade.
-      btn.labelee.click
+      btn.labelee.grabFocus
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
         @screen.paste(bridge[:line])
