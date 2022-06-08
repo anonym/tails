@@ -228,6 +228,10 @@ apt-snapshots-expiry:
   - "( . config/chroot_local-includes/etc/default/htpdate.pools; err=0; for url in $(echo $HTP_POOL_1 $HTP_POOL_2 $HTP_POOL_3 | tr ',' ' '); do echo $url; if ! ./https-get-expired -reject-expired https://$url; then echo ERROR on $url; err=1; fi; done; exit $err; )"
 
 https-get-expired:
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^stable|testing|devel$/'
+    - changes:
+        - config/chroot_local-includes/usr/src/https-get-expired.go
   script:
     - 'echo "deb http://deb.debian.org/debian buster-backports main"
          > /etc/apt/sources.list.d/buster-backports.list'
