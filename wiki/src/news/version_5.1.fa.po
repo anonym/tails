@@ -1,0 +1,360 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2022-06-04 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!meta title=\"Tails 5.1 is out\"]]\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!meta date=\"Sat, 04 Jun 2022 18:00:00 +0000\"]]\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!pagetemplate template=\"news.tmpl\"]]\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!tag announce]]\n"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"This release fixes the security vulnerability in the JavaScript engine of "
+"*Firefox* and *Tor Browser* announced on [[May 24|security/"
+"prototype_pollution]]."
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"This release was delayed from May 31 to June 5 because of a delay in the "
+"release of *Tor Browser* [11.0.14](https://blog.torproject.org/new-release-"
+"tor-browser-11014/)."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"changes\">Changes and updates</h1>\n"
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "Tor Connection assistant"
+msgstr ""
+
+#. type: Plain text
+msgid "Tails 5.1 includes many improvements to the Tor Connection assistant:"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"The *Tor Connection* assistant now automatically fixes the computer clock if "
+"you choose to connect to Tor automatically."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "  This makes is much easier for people in Asia to circumvent censorship.\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"  Tails learns the current time by connecting to the captive portal detection\n"
+"  service of [Fedora](https://getfedora.org/), which is used by most Linux\n"
+"  distributions. This connection does not go through the Tor network and is an\n"
+"  exception to our policy of only making Internet connections through the Tor\n"
+"  network.\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "  <div class=\"next\">\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"  <p>You can learn more about our security assessment of this time\n"
+"  synchronization in our [[design documentation about non-Tor\n"
+"  traffic|contribute/design/Tor_enforcement#non-tor-traffic]].</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "  </div>\n"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"The time displayed in the top navigation uses the time zone selected when "
+"fixing the clock in the *Tor Connection* assistant."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"  In the future, we will make it possible to change the displayed time zone for\n"
+"  everybody from the desktop ([[!tails_ticket 10819]]) and store it in the\n"
+"  Persistent Storage ([[!tails_ticket 12094]]).\n"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"The last screen of the *Tor Connection* assistant makes it clear whether you "
+"are connected using Tor bridges or not."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "  [[!img bridges.png link=\"no\" alt=\"Connected to Tor successfully with bridges\"]]\n"
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "*Unsafe Browser* and captive portals"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"We wrote a new homepage for the *Unsafe Browser* when you are not connected "
+"to the Tor network yet. This new version makes it easier to understand how "
+"to sign in to the network using a captive portal."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "  [[!img doc/anonymous_internet/unsafe_browser/captive_portal.svg link=\"no\" alt=\"Example of captive portal: Free Wi-Fi hotspot\"]]\n"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Tails now asks for confirmation before restarting when the *Unsafe Browser* "
+"was not enabled in the Welcome Screen. This prevents losing work too easily."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "  [[!img confirmation.png link=\"no\" alt=\"\"]]\n"
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "Kleopatra"
+msgstr ""
+
+#. type: Plain text
+msgid "- Associate OpenPGP files with *Kleopatra* in the *Files* browser."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "  You can now double-click on `.gpg` files to decrypt them.\n"
+msgstr ""
+
+#. type: Plain text
+msgid "- Add *Kleopatra* to the Favorites applications."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "  [[!img favorites.png link=\"no\" alt=\"\"]]\n"
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "Included software"
+msgstr ""
+
+#. type: Plain text
+msgid "- Update *tor* to 0.4.7.7."
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"- Update *Tor Browser* to [11.0.14](https://blog.torproject.org/new-release-"
+"tor-browser-11014/)."
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"- Update *Thunderbird* to [91.9](https://www.thunderbird.net/en-US/"
+"thunderbird/91.9.0/releasenotes/)."
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Update the *Linux* kernel to 5.10.113. This should improve the support for "
+"newer hardware: graphics, Wi-Fi, and so on."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"fixes\">Fixed problems</h1>\n"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Remove the automatic selection of the option **Configure a bridge** when "
+"rolling back from the option to hide that you are connecting to Tor.  ([[!"
+"tails_ticket 18546]])"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Give the same instructions on both screens where you have to configure a "
+"bridge. ([[!tails_ticket 18596]])"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Help rename the default *KeePassXC* database to open it automatically in the "
+"future. ([[!tails_ticket 18966]])"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Fix sharing files using *OnionShare* from the *Files* browser.  ([[!"
+"tails_ticket 18990]])"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "  [[!img onionshare.png link=\"no\" alt=\"Share via OnionShare\"]]\n"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Disable search providers in the Activities overview: files, calculator, and "
+"terminal. ([[!tails_ticket 18952]])"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"For more details, read our [[!tails_gitweb debian/changelog desc=\"changelog"
+"\"]]."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"issues\">Known issues</h1>\n"
+msgstr ""
+
+#. type: Plain text
+msgid "None specific to this release."
+msgstr ""
+
+#. type: Plain text
+msgid "See the list of [[long-standing issues|support/known_issues]]."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"get\">Get Tails 5.1</h1>\n"
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "To upgrade your Tails USB stick and keep your persistent storage"
+msgstr ""
+
+#. type: Plain text
+msgid "- Automatic upgrades are available from Tails 5.0."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"  You can [[reduce the size of the download|doc/upgrade#reduce]] of future\n"
+"  automatic upgrades by doing a manual upgrade to the latest version.\n"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"If you cannot do an automatic upgrade or if Tails fails to start after an "
+"automatic upgrade, please try to do a [[manual upgrade|doc/upgrade/#manual]]."
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "To install Tails on a new USB stick"
+msgstr ""
+
+#. type: Plain text
+msgid "Follow our installation instructions:"
+msgstr ""
+
+#. type: Bullet: '  - '
+msgid "[[Install from Windows|install/windows]]"
+msgstr ""
+
+#. type: Bullet: '  - '
+msgid "[[Install from macOS|install/mac]]"
+msgstr ""
+
+#. type: Bullet: '  - '
+msgid "[[Install from Linux|install/linux]]"
+msgstr ""
+
+#. type: Bullet: '  - '
+msgid ""
+"[[Install from Debian or Ubuntu using the command line and GnuPG|install/"
+"expert]]"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<div class=\"caution\"><p>The Persistent Storage on the USB stick will be lost if\n"
+"you install instead of upgrading.</p></div>\n"
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "To download only"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"If you don't need installation or upgrade instructions, you can download "
+"Tails 5.1 directly:"
+msgstr ""
+
+#. type: Bullet: '  - '
+msgid "[[For USB sticks (USB image)|install/download]]"
+msgstr ""
+
+#. type: Bullet: '  - '
+msgid "[[For DVDs and virtual machines (ISO image)|install/download-iso]]"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"next\">What's coming up?</h1>\n"
+msgstr ""
+
+#. type: Plain text
+msgid "Tails 5.2 is [[scheduled|contribute/calendar]] for June 28."
+msgstr ""
+
+#. type: Plain text
+msgid "Have a look at our [[!tails_roadmap]] to see where we are heading to."
+msgstr ""

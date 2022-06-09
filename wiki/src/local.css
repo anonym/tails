@@ -111,22 +111,20 @@ h1, h2, h3 {
    Their line-height are adjusted to a multiple of λ. */
 
 h1 {
-  font-size: 2em; /* 14×2=28px */
+  font-size: 28px;
   line-height: 1em;
   margin: 1.5em 0 1em;
 }
 
 h2 {
-  font-size: 1.5em; /* 14×1.5=21px */
+  font-size: 24px;
   line-height: 1em;
-  margin: 1em 0 1em 0; /* 21×1=21px=λ */
+  margin: 1em 0 1em 0;
 }
 
 h3 {
-  font-size: 1.071em; /* 14×1.071=15px */
-  text-transform: uppercase;
-  letter-spacing: 0.067em; /* 15×0.067=1px */
-  margin: 0.7em 0 0.7em 0; /* 15×1.4=21px=λ */
+  font-size: 20px;
+  margin: 0.75em 0 0.75em 0;
 }
 
 /* avoid super-long lines */
@@ -301,15 +299,23 @@ input[type="checkbox"], input[type="radio"] {
   top: -4px;
 }
 
+button, input, textarea {
+  padding: 5px;
+  border-radius: 0.5em;
+}
+
+input:focus, textarea:focus {
+  outline: 2px solid #53b351;
+}
+
 /* Layout */
 
 .page {
   margin: 0 auto;
-  padding: 0 2em 2em 2em;
+  padding: 0 30px 30px 30px;
   max-width: 986px;
   position: relative;
   border: 0px solid black;
-  box-shadow: 3px 3px 5px #ccc;
   background: white;
 }
 
@@ -323,7 +329,6 @@ div.header { /* override style.css */
 
 .banner {
   background: #56347c url(lib/logo.svg) no-repeat 30px 10px;
-  box-shadow: 3px 3px 5px #ccc;
   padding-bottom: 10px;
   margin: 0 auto;
   max-width: 986px;
@@ -446,73 +451,21 @@ label[for="searchbox"]{
   }
 }
 
-/* Translation hack
- *
- * This section works around the fact that ikiwiki can't localize strings in templates.
- */
-
-/* Hide all languages by default */
-.lang.en,
-.lang.de,
-.lang.es,
-.lang.fr,
-.lang.it,
-.lang.pt,
-.lang.ru {
-  display: none;
-}
-
-/* Hide English for all other languages
-
-   This way, the English is still displayed when the PO plugin is
-   disabled. This is useful for development.
-   */
-body.de .lang.en,
-body.es .lang.en,
-body.fa .lang.en,
-body.fr .lang.en,
-body.it .lang.en,
-body.pt .lang.en,
-body.ru .lang.en {
-  display: none;
-}
-
-/* Show the current language */
-body.en .lang.en.flex,
-body.de .lang.de.flex,
-body.es .lang.es.flex,
-body.fa .lang.fa.flex,
-body.fr .lang.fr.flex,
-body.it .lang.it.flex,
-body.pt .lang.pt.flex,
-body.ru .lang.ru.flex {
-  display: flex !important;
-}
-
-body.en .lang.en.block,
-body.de .lang.de.block,
-body.es .lang.es.block,
-body.fa .lang.fa.block,
-body.fr .lang.fr.block,
-body.it .lang.it.block,
-body.pt .lang.pt.block,
-body.ru .lang.ru.block {
-  display: block !important;
-}
-
 /* Top bar */
 
 .topbar {
   background: white;
   max-width: 986px;
   margin: 0 auto;
-  padding-left: 15px;
+  padding-left: 30px;
   border-bottom: 1px solid #eee;
 }
 
 .topbar ul {
   margin: 0;
   max-width: 100%;
+  display: flex;
+  gap: 20px;
 }
 
 .topbar ul li {
@@ -521,7 +474,6 @@ body.ru .lang.ru.block {
 
 .topbar a, .topbar .selflink {
   display: block;
-  margin: 0 8px;
   padding: 4px 0;
   font-family: "Source Sans Pro Regular", "DejaVu Sans", "Verdana", sans-serif;
   font-weight: bold;
@@ -545,8 +497,10 @@ body.ru .lang.ru.block {
 @media (min-width: 810px) {
   .topbar a, .topbar .selflink {
     padding-top: 8px;
-    margin: 0 12px;
     font-size: 16px;
+  }
+  .topbar ul {
+    gap: 30px;
   }
 }
 
@@ -1187,4 +1141,43 @@ div#highlight p {
 
 .embedded {
   display: none;
+}
+
+/* Footer */
+
+#footer {
+  background: #58595b;
+  margin: 0 auto;
+  max-width: 986px;
+  padding: 30px;
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+  font-size: 12px;
+  color: white;
+  flex-wrap: wrap;
+}
+
+#footer h3 {
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+#footer ul {
+  list-style: none;
+  margin-left: 0;
+}
+
+#footer a {
+  color: white;
+}
+
+#footer img {
+  margin-top: 30px;
+}
+
+#footer p a {
+  text-decoration: underline;
 }
