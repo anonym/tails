@@ -263,7 +263,7 @@ end
 
 STREAM_ISOLATION_INFO = {
   'htpdate'                        => {
-    grep_monitor_expr: 'users:(("curl"',
+    grep_monitor_expr: 'users:(("https-get-expir"',
     socksport:         9062,
     # htpdate is resolving names through the system resolver, not through socksport
     # (in order to have better error messages). Let it connect to local DNS!
@@ -296,13 +296,14 @@ end
 
 When /^I monitor the network connections of (.*)$/ do |application|
   @process_monitor_log = '/tmp/ss.log'
+  $vm.execute_successfully("rm -f #{@process_monitor_log}")
   info = stream_isolation_info(application)
   netns_wrapper = info[:netns].nil? ? '' : "ip netns exec #{info[:netns]}"
   $vm.spawn('while true; do ' \
             "  #{netns_wrapper} ss -taupen " \
-            "    | grep '#{info[:grep_monitor_expr]}'; " \
-            '  sleep 0.1; ' \
-            "done > #{@process_monitor_log}")
+            "    | grep --line-buffered '#{info[:grep_monitor_expr]}' " \
+            "    >> #{@process_monitor_log} ;" \
+            'done')
 end
 
 Then /^I see that (.+) is properly stream isolated(?: after (\d+) seconds)?$/ do |application, delay|
@@ -332,7 +333,7 @@ And /^I re-run tails-security-check$/ do
 end
 
 And /^I re-run htpdate$/ do
-  $vm.execute_successfully('service htpdate stop && ' \
+  $vm.execute_successfully('systemctl stop htpdate && ' \
                            'rm -f /run/htpdate/* && ' \
                            'systemctl --no-block start htpdate.service')
   step 'the time has synced'

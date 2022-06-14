@@ -190,7 +190,7 @@ end
 
 When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disks$/ do |support|
   step 'I start "Disks" via GNOME Activities Overview'
-  disks = Dogtail::Application.new('gnome-disks')
+  disks = gnome_disks_app
   size = veracrypt_volume_size_in_gnome_disks(
     isHidden: @veracrypt_is_hidden,
     needsPim: @veracrypt_needs_pim

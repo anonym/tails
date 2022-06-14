@@ -272,6 +272,7 @@ class Screen
     when nil
       press('ctrl', 'v')
     when :terminal
+      sleep 0.5
       press('ctrl', 'shift', 'v')
     when :gtk_file_chooser
       press('ctrl', 'l')

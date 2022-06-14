@@ -322,16 +322,13 @@ Then /^DuckDuckGo is the default search engine$/ do
 end
 
 Then(/^the screen keyboard works in Tor Browser$/) do
-  osk_key = 'ScreenKeyboardKeyX.png'
-  browser_bar_x = 'BrowserAddressBarX.png'
+  osk_key = 'ScreenKeyboardKeyComma.png'
+  browser_bar_x = 'BrowserAddressBarComma.png'
   case $language
   when 'Arabic'
-    browser_bar_x = 'BrowserAddressBarXRTL.png'
-  when 'Hindi'
-    browser_bar_x = "BrowserAddressBarX#{$language}.png"
+    browser_bar_x = 'BrowserAddressBarCommaRTL.png'
   when 'Persian'
-    osk_key = 'ScreenKeyboardKeyPersian.png'
-    browser_bar_x = 'BrowserAddressBarXPersian.png'
+    osk_key = 'ScreenKeyboardKeyCommaPersian.png'
   end
   step 'I start the Tor Browser'
   step 'I open a new tab in the Tor Browser'
