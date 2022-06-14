@@ -49,9 +49,9 @@ def tor_browser_application_info(defaults)
 end
 
 def unsafe_browser_application_info(defaults)
-  user = 'clearnet'
+  user = LIVE_USER
   binary = $vm.execute_successfully(
-    'echo ${TBB_INSTALL}/firefox.real', libs: 'tor-browser'
+    'echo ${TBB_INSTALL}/firefox-unconfined', libs: 'tor-browser'
   ).stdout.chomp
   cmd_regex = "#{binary} .* " \
               "-profile /home/#{user}/\.unsafe-browser/profile\.default"
