@@ -42,7 +42,7 @@ Then /^I can start the Unsafe Browser in a few supported languages$/ do
       failed << lang
     end
     begin
-      step 'I kill the Unsafe Browser'
+      step 'I close the Unsafe Browser'
     rescue ExecutionFailedInVM
       # The Unsafe Browser wasn't running
     end
