@@ -49,10 +49,7 @@ then
                        "which should happen neither on feature/bookworm nor on"  \
                         "a branch based on $BASE_BRANCH"
     esac
-    if version_was_released "$(version_in_changelog)"; then
-        git_on_a_tag \
-            || fatal "Not building from a tag, but last version in changelog" \
-                     "was released"
+    if version_was_released "$(version_in_changelog)" && git_on_a_tag; then
         output_tagged_snapshot "$ARCHIVE" "$(version_in_changelog)"
     else
        if [ "$BASE_BRANCH" = stable ] ; then

@@ -175,7 +175,7 @@ test_suite_cleanup() {
 }
 
 start_xvfb() {
-    Xvfb "$TARGET_DISPLAY" -screen 0 1024x768x24+32 >/dev/null 2>&1 &
+    Xvfb "$TARGET_DISPLAY" -screen 0 1024x768x24+32 -noreset >/dev/null 2>&1 &
     XVFB_PID=$!
     # Wait for Xvfb to run on TARGET_DISPLAY
     until display_in_use "$TARGET_DISPLAY"; do
