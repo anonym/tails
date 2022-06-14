@@ -644,6 +644,9 @@ class VM
   def set_clipboard(text)
     execute_successfully("echo -n '#{text}' | xsel --input --clipboard",
                          user: LIVE_USER)
+    try_for(5) do
+      get_clipboard == text
+    end
   end
 
   def get_clipboard

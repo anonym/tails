@@ -378,14 +378,15 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
-  login_button_region = if RTL_LANGUAGES.include?(lang)
-                          # If we select a RTL language below, the
-                          # login and shutdown buttons will
-                          # swap place.
-                          @screen.find('TailsGreeterShutdownButton.png')
-                        else
-                          @screen.find('TailsGreeterLoginButton.png')
-                        end
+  login_button = if RTL_LANGUAGES.include?(lang)
+                   # If we select a RTL language below, the
+                   # login and shutdown buttons will
+                   # swap place.
+                   'TailsGreeterShutdownButton.png'
+                 else
+                   'TailsGreeterLoginButton.png'
+                 end
+  login_button_region = @screen.wait(login_button, 5)
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -683,13 +684,10 @@ Given /^the Tor Browser has a bookmark to eff.org$/ do
 end
 
 Given /^all notifications have disappeared$/ do
-  # These magic coordinates always locates GNOME's clock in the top
-  # bar, which when clicked opens the calendar.
-  x = 512
-  y = 10
   gnome_shell = Dogtail::Application.new('gnome-shell')
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
-    @screen.click(x, y)
+    @screen.press('super', 'v') # Show the notification list
+    @screen.wait('GnomeDoNotDisturb.png', 5)
     begin
       gnome_shell.child('Clear', roleName:    'push button',
                                  showingOnly: true).click
@@ -1385,4 +1383,17 @@ end
 
 Given /^I write a file (\S+) with contents "([^"]*)"$/ do |path, content|
   $vm.file_overwrite(path, content)
+end
+
+def gnome_disks_app
+  disks_app = Dogtail::Application.new('gnome-disks')
+  # Give GNOME Shell some time to draw the minimize/maximize/close
+  # buttons in the title bar, to ensure the other title bar buttons we
+  # will later click, such as GnomeDisksDriveMenuButton.png, have
+  # stopped moving. Otherwise, we sometimes lose the race: the
+  # coordinates returned by Screen#wait are obsolete by the time we
+  # run Screen#click, which makes us click on the minimize
+  # button instead.
+  @screen.wait('GnomeWindowActionsButtons.png', 5)
+  disks_app
 end
