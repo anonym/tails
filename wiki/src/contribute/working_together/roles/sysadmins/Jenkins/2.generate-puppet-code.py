@@ -62,10 +62,26 @@ def print_puppet_code(plugin, version, deps):
     print('')
 
 
+def print_puppet_header():
+    print('# Manage Jenkins plugins')
+    print('class tails::jenkins::master::plugins {')
+    print('')
+    print('  # lint:ignore:140chars -- SHA512')
+    print('')
+
+
+def print_puppet_footer():
+    print('  # lint:endignore')
+    print('')
+    print('}')
+
+
 def main(path):
     plugins = parse_plugins(path)
+    print_puppet_header()
     for plugin, data in plugins.items():
       print_puppet_code(plugin, data['version'], data['deps'])
+    print_puppet_footer()
 
 
 if __name__ == '__main__':
