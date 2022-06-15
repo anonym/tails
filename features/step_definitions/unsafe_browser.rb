@@ -38,7 +38,8 @@ Then /^I can start the Unsafe Browser in a few supported languages$/ do
     step "I start the Unsafe Browser in the \"#{lang}\" locale"
     begin
       step "the Unsafe Browser has started in the \"#{lang}\" locale"
-    rescue StandardError
+    rescue StandardError => e
+      debug_log("Error while running Unsafe Browser in #{lang} locale: #{e.to_s}")
       failed << lang
     end
     begin
