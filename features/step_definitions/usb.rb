@@ -916,7 +916,7 @@ Then /^I can successfully install the incremental upgrade to version (.+)$/ do |
     found_pic = @screen.wait_any([success_pic, failure_pic], 2 * 60)[:found_pattern]
     assert_equal(success_pic, found_pic)
   end
-  @screen.click('TailsUpgraderApplyUpgradeButton.png')
+  @screen.wait('TailsUpgraderApplyUpgradeButton.png', 5).click
   @screen.wait('TailsUpgraderDone.png', 60)
   # Restore syslinux.cfg: our test IUKs replace it with something
   # that would break the next boot
@@ -1131,7 +1131,7 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
             size_in_GB_of_destination_disk)
 
   step 'I start "Disks" via GNOME Activities Overview'
-  disks = Dogtail::Application.new('gnome-disks')
+  disks = gnome_disks_app
   destination_disk_label_regexp = /^#{size_in_GB_of_destination_disk} GB Drive/
   disks.children(roleName: 'table cell')
        .find { |row| destination_disk_label_regexp.match(row.name) }
