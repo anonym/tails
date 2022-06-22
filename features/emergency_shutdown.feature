@@ -1,5 +1,4 @@
-#13462
-@product @fragile @not_release_blocker
+@product @not_release_blocker
 Feature: Emergency shutdown
   As a Tails user
   when I unplug my Tails device to trigger emergency shutdown

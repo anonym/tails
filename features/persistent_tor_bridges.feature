@@ -27,6 +27,8 @@ Feature: Using persistent Tor bridges and pluggable transports
     When the network is plugged
     And the Tor Connection Assistant autostarts
 
+  #18926
+  @fragile
   Scenario: Using Persistent Tor bridges
     When I choose to connect to Tor automatically
     And I accept Tor Connection's offer to use my persistent bridges
@@ -36,6 +38,8 @@ Feature: Using persistent Tor bridges and pluggable transports
     And /var/lib/tca is still configured to persist
     And all Internet traffic has only flowed through the configured bridges or connectivity check service
 
+  #18926
+  @fragile
   Scenario: Disabling persistence of Tor bridges
     When I choose to connect to Tor automatically
     And I accept Tor Connection's offer to use my persistent bridges
