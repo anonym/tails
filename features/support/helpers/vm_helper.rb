@@ -95,6 +95,17 @@ class VM
       rexml.elements['domain/cpu/model'].add_attribute('fallback', 'allow')
     end
 
+    if $config['EARLY_PATCH']
+      rexml.elements['domain/devices'].add_element('filesystem')
+      rexml.elements['domain/devices/filesystem'].add_attribute('type', 'mount')
+      rexml.elements['domain/devices/filesystem'].add_attribute('accessmode', 'passthrough')
+      rexml.elements['domain/devices/filesystem'].add_element('source')
+      rexml.elements['domain/devices/filesystem'].add_element('target')
+      rexml.elements['domain/devices/filesystem'].add_element('readonly')
+      rexml.elements['domain/devices/filesystem/source'].add_attribute('dir', Dir.pwd)
+      rexml.elements['domain/devices/filesystem/target'].add_attribute('dir', 'src')
+    end
+
     update(xml: rexml.to_s)
     set_vcpu($config['VCPUS']) if $config['VCPUS']
     @display = Display.new(@domain_name, x_display)
@@ -611,10 +622,10 @@ class VM
     end
   end
 
-  def live_patch(fname = nil)
-    fname = $config['LIVE_PATCH'] if fname.nil?
+  def late_patch(fname = nil)
+    fname = $config['LATE_PATCH'] if fname.nil?
     if fname.nil? || fname.empty?
-      debug_log('live_patch called but no filename found')
+      debug_log('late_patch called but no filename found')
       return
     end
 
@@ -623,7 +634,7 @@ class VM
 
       src, dest = line.strip.split("\t", 2)
       unless File.exist?(src)
-        debug_log("Error in --live-patch: #{src} does not exist")
+        debug_log("Error in --late-patch: #{src} does not exist")
         next
       end
       if File.file?(src)
@@ -631,7 +642,7 @@ class VM
       elsif File.directory?(src)
         $vm.file_copy_local_dir(src, dest)
       else
-        debug_log("Error in --live-patch: #{src} not a file or a dir")
+        debug_log("Error in --late-patch: #{src} not a file or a dir")
       end
     end
   end
