@@ -23,6 +23,27 @@ export TEXTDOMAIN
 # Import nm_is_connected
 . /usr/local/lib/tails-shell-library/network.sh
 
+# Import export_gnome_env()
+. /usr/local/lib/tails-shell-library/gnome.sh
+
+
+_zenity () {
+    DBUS_SESSION_BUS_ADDRESS="$(
+        export_gnome_env
+        echo "${DBUS_SESSION_BUS_ADDRESS}"
+    )"
+    AT_SPI_BUS_ADDRESS="$(
+        sudo -u "${SUDO_USER}" \
+            env DBUS_SESSION_BUS_ADDRESS=${DBUS_SESSION_BUS_ADDRESS} \
+            dbus-send --session --print-reply=literal \
+                --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress \
+                | sed 's/^ *//'
+    )"
+    sudo -u "${SUDO_USER}" \
+         env AT_SPI_BUS_ADDRESS="${AT_SPI_BUS_ADDRESS}" \
+         /usr/bin/zenity "${@}"
+}
+
 error () {
     local cli_text dialog_text
     cli_text="${CMD}: $(gettext "error:") ${*}"
@@ -30,7 +51,7 @@ error () {
 
 ${*}"
     echo "${cli_text}" >&2
-    sudo -u "${SUDO_USER}" zenity --error --ellipsize --title "" --text "${dialog_text}"
+    _zenity --error --ellipsize --title "" --text "${dialog_text}"
     exit 1
 }
 
@@ -42,9 +63,8 @@ verify_start () {
 $(gettext "The Unsafe Browser is not anonymous and the websites that you visit can see your real IP address.\n\nOnly use the Unsafe Browser to sign in to a network using a captive portal.")"
     launch="$(gettext "_Launch")"
     exit="$(gettext "_Exit")"
-    if ! sudo -u "${SUDO_USER}" \
-         zenity --question --ellipsize --title "" --text "${dialog_msg}" --default-cancel \
-         --ok-label "${launch}"  --cancel-label "${exit}"; then
+    if ! _zenity --question --ellipsize --title "" --text "${dialog_msg}" \
+         --default-cancel --ok-label "${launch}"  --cancel-label "${exit}"; then
         exit 0
     fi
 }
@@ -63,13 +83,11 @@ the Unsafe Browser in the additional settings of the Welcome Screen.")"
     cancel="$(gettext "_Cancel")"
     confirm_msg="$(gettext "Do you really want to restart Tails now?\n\nAll your current work will be lost.")"
     confirm_button="$(gettext "Restart Now")"
-    if sudo -u "${SUDO_USER}" \
-             zenity --question --ellipsize --title "" --text "${msg}" --icon-name="dialog-error" \
-                    --ok-label "${restart}"  --cancel-label "${cancel}" --default-cancel \
+    if _zenity --question --ellipsize --title "" --text "${msg}" --icon-name="dialog-error" \
+               --ok-label "${restart}"  --cancel-label "${cancel}" --default-cancel \
        && \
-       sudo -u "${SUDO_USER}" \
-            zenity --question --width=300 --title "" --text "${confirm_msg}" \
-                   --ok-label "${confirm_button}" --cancel-label "${cancel}" --default-cancel
+       _zenity --question --width=300 --title "" --text "${confirm_msg}" \
+               --ok-label "${confirm_button}" --cancel-label "${cancel}" --default-cancel
     then
         /sbin/reboot || error "$(gettext "Failed to restart the system.")"
     fi
