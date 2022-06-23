@@ -83,6 +83,7 @@ When /^I create my XMPP account$/ do
   account = xmpp_account('Tails_account')
   @screen.click('PidginAccountManagerAddButton.png')
   @screen.wait('PidginAddAccountWindow.png', 20)
+  @screen.wait('PidginAddAccountProtocolLabel.png', 20)
   click_mid_right_edge('PidginAddAccountProtocolLabel.png')
   @screen.click('PidginAddAccountProtocolXMPP.png')
   # We first wait for some field that is shown for XMPP but not the

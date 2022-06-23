@@ -1,4 +1,5 @@
-@product
+#19040
+@product @fragile
 Feature: Chatting anonymously using Pidgin
   As a Tails user
   when I chat using Pidgin
