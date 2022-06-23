@@ -139,6 +139,9 @@ configure_chroot_browser_profile () {
     local chroot_browser_config="/usr/share/tails/chroot-browsers"
     cat "${chroot_browser_config}/common/prefs.js" \
         "${chroot_browser_config}/${browser_name}/prefs.js" > "${browser_prefs}"
+    if [ -f "${chroot_browser_config}/${browser_name}/onion-aliases.json" ]; then
+        cp "${chroot_browser_config}/${browser_name}/onion-aliases.json" "${browser_profile}/onion-aliases.json"
+    fi
 
     # Install addonStartup.json.lz4. This is required to enable the red theme.
     cp "${chroot_browser_config}/${browser_name}/addonStartup.json.lz4" \
