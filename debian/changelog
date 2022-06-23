@@ -4,6 +4,150 @@ tails (5.3) UNRELEASED; urgency=medium
 
  -- boyska <boyska@riseup.net>  Tue, 03 May 2022 16:45:48 +0200
 
+tails (5.1.1) unstable; urgency=medium
+
+  * Upgrade Linux to 5.10.120-1 and tor to 0.4.7.8 (tails/tails!863)
+
+    Closes issues:
+      - Upgrade to tor 0.4.7.8 (tails/tails#19035)
+      - Upgrade Linux to 5.10.120-1 (tails/tails#19036)
+
+    Commits:
+      - Upgrade Linux kernel packages to 5.10.0-15 (currently at version 5.10.120-1)
+      - Upgrade to tor 0.4.7.8
+
+  * Upgrade to Thunderbird 91.10.0
+
+  * Fix htpdate pool: https://www.mozilla.org returns incorrects Date header
+    (tails/tails!864)
+
+    Closes issues:
+      - Fix htpdate pool: https://www.mozilla.org returns incorrects Date header
+        (tails/tails#19020)
+
+    Commits:
+      - Fix htpdate pool: https://www.mozilla.org returns incorrects Date header
+
+  * Test suite: update the set of @fragile tags (tails/tails!862)
+
+    Closes issues:
+      - "Persistent browser bookmarks" is fragile (tails/tails#11585)
+      - "The persistent Tor Browser directory is usable" test suite scenario is fragile
+        (tails/tails#15336)
+      - The "is properly stream isolated" test suite mechanism is fragile
+        (tails/tails#17013)
+      - Step "a screenshot is saved to the live user's Pictures directory" is fragile
+        (tails/tails#13458)
+      - "I can view and print a PDF file" scenarios are fragile (tails/tails#10994)
+      - Memory erasure on boot medium removal is fragile (tails/tails#13462)
+      - Test suite: update the set of @fragile tags (tails/tails#19007)
+
+    Commits:
+      - add @fragile tags when it's useful
+      - Remove many @feature tags
+
+  * follow up again on tca audit: clarify comments (tails/tails!860)
+
+    Closes issues:
+      - Audit tca-portal (tails/tails#18374)
+
+    Commits:
+      - acknowledge jvoisin's comments
+
+  * Test suite: exercise the screen keyboard with a key that won't auto-complete
+    (tails/tails!857)
+
+    Closes issues:
+      - "the screen keyboard works in Tor Browser" fails in Arabic (tails/tails#19013)
+
+    Commits:
+      - Test suite: exercise the screen keyboard with a key that won't auto-complete
+
+  * GitLab CI: improve jobs rules (tails/tails!856)
+
+    Commits:
+      - GitLab CI: don't run code tests on the master branch
+      - GitLab CI: also run https-get-expired* jobs when we modify our htpdate
+        configuration
+      - GitLab CI: only run https-get-expired when relevant
+
+  * Inline strtobool function (tails/tails!855)
+
+    Commits:
+      - Inline strtobool function
+
+  * Test suite: improve robustness (tails/tails!851)
+
+    Closes issues:
+      - Developers need to apply workaround in order to build Tails during the release
+        process (tails/tails#18998)
+      - Test scenario "htpdate is using the Tails-specific SocksPort" is broken
+        (tails/tails#19003)
+
+    Commits:
+      - Test suite: avoid missed clicks retry when opening the calendar & notifications
+        menu
+      - Test suite: give the Upgrader time to fill the zenity dialog
+      - Test suite: give the Greeter some time to re-enable the login button
+      - Fix building from dev branches during the release process
+      - Test suite: don't reset virtual X display between clients
+      - Test suite: hopefully increase chances we catch the process we want
+      - Lint
+      - Test suite: ensure we write every line extracted from "ss -taupen" as soon as
+        we have it
+      - Test suite: migrate from service(8) to directly using systemctl
+      - Test suite: adapt to new HTTPS client used by htpdate
+      - Test suite: make setting up a Pidgin account more robust
+      - Test suite: make interaction with GNOME Disks title bar buttons more robust
+      - Test suite: make copying'n'pasting into a Terminal more robust
+
+  * Have a better footer (tails/tails!756)
+
+    Commits:
+      - Translate a couple strings to check sidebar2 vs. PO plugin
+      - Update PO files
+      - Update PO files
+      - Link to accessibility from footer
+      - Rescue translations
+      - Update PO files
+      - Fix very old bug
+      - Use sidebar2 to replace translation hacks in templates
+      - Integrate sidebar2 in the local build
+      - Add missing ARIA label
+      - Make the label bold
+      - Improve the appeal to the newsletter (#16888)
+      - Translate footer into Spanish
+      - Update PO files
+      - Move jobs from top navigation to footer
+      - Use more consistent margin system
+      - Have a better footer (#17699)
+      - Create dedicated page for testimonials
+      - Don't use all capitals (#16137)
+
+  * early-patch: live-patch at initramfs's time (tails/tails!696)
+
+    Commits:
+      - Fix formatting
+      - Fix documentation wrt. the name of the option actually passed
+      - Document --late-patch
+      - more documentation
+      - works even if hook fails
+      - early_patch from test suite umounts immediately
+      - pass 9p fs to TailsToaster: --early-patch works
+      - live-patch → late-patch
+      - early-live-patch → early-patch
+      - Test suite: make EARLY_LIVE_PATCH a boolean
+      - Disable obsolete shellcheck override
+      - Don't enable live_patch by default
+      - Make headings levels consistent with the rest of our website
+      - Add a TOC
+      - Apply 4 suggestion(s) to 1 file(s)
+      - run_test_suite --early-live-patch
+      - developer documentation for live_patch
+      - live_patch: early-patching system
+
+ -- Tails developers <tails@boum.org>  Wed, 22 Jun 2022 11:31:52 +0000
+
 tails (5.1) unstable; urgency=medium
 
   * Upgrade to Thunderbird 91.9.0

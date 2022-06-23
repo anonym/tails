@@ -95,6 +95,7 @@ class Git:
                 self.git('--no-pager',
                          'branch',
                          '--no-color',
+                         '--no-column',
                          '--merged',
                          commit).splitlines()]
 
