@@ -1,0 +1,58 @@
+[[!meta title="Early patching an image"]]
+
+<div class="caution">
+Early patching is a <strong>development</strong> feature. Please don't use it for your regular Tails!
+</div>
+
+The goal of this page is to give you hint on how to speed up your development by avoiding to build an image.
+Rebuilding an image is unfortunately very slow and resource-intensive, which makes the Developer Experience
+unpleasant.
+
+The idea of early-patch is very simple: at boot time, if a specific boot option is added, a directory is shared
+between the host and the Tails VM, and mounted at `/mnt/`. Since mounting in itself is not very useful,
+you can configure a program to run at initramfs-time.
+
+[[!toc levels=2]]
+
+# HowTo
+
+## Configure libvirt
+
+Please add this to your domain definition, inside the `<devices>` tag:
+
+```
+<filesystem type='mount' accessmode='passthrough'>
+  <source dir='/path/to/your/tails/checkout/'/>
+  <target dir='src'/>
+  <readonly/>
+</filesystem>
+```
+
+The word `src` is a magic constant. Do *not* change it.
+
+## Create an install script
+
+Let's say that you are iterating on improvements for
+`config/chroot_local-includes/etc/NetworkManager/dispatcher.d/`.
+You might want to put a script such as this in `./hook` at the root of the shared directory:
+
+```
+#!/bin/sh
+# this will typically be '/root'; but more generally, it is the root of the system.
+root="$1"
+find "$root/etc/NetworkManager/dispatcher.d/" -type f -exec rm {} \;
+find "$root/mnt/config/chroot_local-includes/etc/NetworkManager/dispatcher.d/" -type f -exec cp {} "$root/etc/NetworkManager/dispatcher.d/" \;
+```
+
+and make it executable.
+Remember: you are running at initramfs-time, which is why you have to take care of the `/root` prefix.  For
+the same reason, you should write in POSIX shell, not bash.
+
+## Run
+
+Run your VM, and add `early_patch` to the kernel cmdline.
+
+# Implementation
+
+Most important implementation bits are at
+[[!tails_gitweb config/chroot_local-includes/usr/share/initramfs-tools/scripts/init-bottom/early_patch]]
