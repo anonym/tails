@@ -21,34 +21,34 @@ def assert_all_keys_are_valid_for_n_months(type, months)
             .flatten
             .reject { |key| ignored_keys.include?(key) }
 
-  invalid = keys.reject do |key|
-    key_valid_for_n_months?(type, key, months)
+  invalid = []
+  keys.each do |key|
+    assert_key_is_valid_for_n_months(type, key, months)
+  rescue Test::Unit::AssertionFailedError
+    invalid << key
+    next
   end
   assert(invalid.empty?,
          "The following #{type} key(s) will not be valid " \
          "in #{months} months: #{invalid.join(', ')}")
 end
 
-def key_valid_for_n_months?(type, fingerprint, months)
+def assert_key_is_valid_for_n_months(type, fingerprint, months)
   assert([:OpenPGP, :APT].include?(type))
   assert(months.is_a?(Integer))
 
   cmd  = type == :OpenPGP ? 'gpg'     : 'apt-key adv'
   user = type == :OpenPGP ? LIVE_USER : 'root'
-  dates = $vm.execute_successfully(
-    "#{cmd} --batch --list-options show-unusable-subkeys --list-key #{fingerprint}", user: user
+  shipped_sig_key_info = $vm.execute_successfully(
+    "#{cmd} --batch --list-key #{fingerprint}", user: user
   ).stdout
-             .scan(/\[expire[ds]: ([0-9-]*)\]/)
-             .flatten
-             .map do |expiration_date|
-    Date.parse(expiration_date)
-  end
+  m = /\[expire[ds]: ([0-9-]*)\]/.match(shipped_sig_key_info)
+  return unless m
 
-  valid = dates.map do |expiration_date|
-    (expiration_date << months.to_i) > DateTime.now
-  end
-
-  valid.all?
+  expiration_date = Date.parse(m[1])
+  assert((expiration_date << months.to_i) > DateTime.now,
+         "The shipped key #{fingerprint} will not be valid " \
+         "#{months} months from now.")
 end
 
 Then /^the live user has been setup by live\-boot$/ do
