@@ -50,29 +50,29 @@ Then /^I am prompted to (configure Electrum|enter my Electrum wallet password)$/
 end
 
 When /^I follow the Electrum wizard to create a new bitcoin wallet$/ do
-  electrum_wizard.button('Next').click
+  electrum_wizard.button('Next').press
   electrum_wizard.child('What kind of wallet do you want to create?',
                         roleName: 'panel')
-  electrum_wizard.child('Standard wallet', roleName: 'radio button').click
-  electrum_wizard.button('Next').click
+  electrum_wizard.child('Standard wallet', roleName: 'radio button').select
+  electrum_wizard.button('Next').press
   electrum_wizard.child('Keystore', roleName: 'label')
-  electrum_wizard.child('Create a new seed', roleName: 'radio button').click
-  electrum_wizard.button('Next').click
+  electrum_wizard.child('Create a new seed', roleName: 'radio button').select
+  electrum_wizard.button('Next').press
   electrum_wizard.child('Choose Seed type', roleName: 'label')
-  electrum_wizard.child('Standard', roleName: 'radio button').click
-  electrum_wizard.button('Next').click
+  electrum_wizard.child('Standard', roleName: 'radio button').select
+  electrum_wizard.button('Next').press
   electrum_wizard.child('Your wallet generation seed is:', roleName: 'label')
   seed = electrum_wizard.child(roleName: 'text').text
-  electrum_wizard.button('Next').click
+  electrum_wizard.button('Next').press
   electrum_wizard.child('Confirm Seed', roleName: 'label')
   electrum_wizard.child(roleName: 'text').text = seed
-  electrum_wizard.button('Next').click
+  electrum_wizard.button('Next').press
   @electrum_password = 'asdf'
   electrum_wizard.children(roleName: 'password text').each do |n|
     n.grabFocus
     @screen.type(@electrum_password)
   end
-  electrum_wizard.button('Next').click
+  electrum_wizard.button('Next').press
 end
 
 Then /^I see a warning that Electrum is not persistent$/ do
@@ -87,7 +87,7 @@ end
 When /^I enter my Electrum wallet password$/ do
   electrum_wizard.child(roleName: 'password text').grabFocus
   @screen.type(@electrum_password)
-  electrum_wizard.button('Next').click
+  electrum_wizard.button('Next').press
 end
 
 Then /^I see the main Electrum client window$/ do

@@ -190,7 +190,7 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
             else
               action.capitalize
             end
-    @installer.button(label).click
+    @installer.button(label).press
     unless action == 'upgrade'
       confirmation_label = if persistence_exists?(name)
                              'Delete Persistent Storage and Reinstall'
@@ -198,7 +198,7 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
                              'Delete All Data and Install'
                            end
       @installer.child('Question',
-                       roleName: 'alert').button(confirmation_label).click
+                       roleName: 'alert').button(confirmation_label).press
     end
     try_for(15 * 60, delay: 10) do
       @installer
@@ -1140,7 +1140,7 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   disks.child('Restore Disk Image…',
               roleName:    'push button',
               showingOnly: true)
-       .click
+       .press
   restore_dialog = disks.child('Restore Disk Image',
                                roleName:    'dialog',
                                showingOnly: true)
@@ -1160,10 +1160,10 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   end
   restore_dialog.child('Start Restoring…',
                        roleName:    'push button',
-                       showingOnly: true).click
+                       showingOnly: true).press
   disks.child('Information', roleName: 'alert', showingOnly: true)
        .child('Restore', roleName: 'push button', showingOnly: true)
-       .click
+       .press
   # Wait until the restoration job is finished
   job = disks.child('Job', roleName: 'label', showingOnly: true)
   try_for(60) do

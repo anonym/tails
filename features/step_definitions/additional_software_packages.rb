@@ -38,8 +38,7 @@ end
 
 Then /^I create a persistent storage and activate the Additional Software feature$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Create Persistent Storage', roleName: 'push button').grabFocus
-  @screen.press('enter')
+  gnome_shell.child('Create Persistent Storage', roleName: 'push button').press
   step 'I create a persistent partition for Additional Software'
   step 'The Additional Software persistence option is enabled'
   save_persistence_settings
@@ -108,16 +107,15 @@ When /^I (refuse|accept) (adding|removing) "([^"]*)" (?:to|from) Additional Soft
       .children('', roleName: 'notification')
       .find { |notif| notif.child?(notification_title, roleName: 'label') }
     assert_not_nil(notification)
-    notification.child(button_title, roleName: 'push button').grabFocus
-    @screen.press('enter')
+    notification.child(button_title, roleName: 'push button').press
   end
 end
 
 Given /^I remove "([^"]*)" from the list of Additional Software using Additional Software GUI$/ do |package|
   asp_gui = Dogtail::Application.new('tails-additional-software-config')
   installed_package = asp_gui.child(package, roleName: 'label')
-  installed_package.parent.parent.child('Remove', roleName: 'push button').click
-  asp_gui.child('Question', roleName: 'alert').button('Remove').click
+  installed_package.parent.parent.child('Remove', roleName: 'push button').press
+  asp_gui.child('Question', roleName: 'alert').button('Remove').press
   deal_with_polkit_prompt(@sudo_password)
 end
 
@@ -142,8 +140,7 @@ end
 
 Then /^I can open the Additional Software documentation from the notification$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Documentation', roleName: 'push button').grabFocus
-  @screen.press('enter')
+  gnome_shell.child('Documentation', roleName: 'push button').press
   try_for(60) { @torbrowser = Dogtail::Application.new('Firefox') }
   step '"Tails - Install by cloning" has loaded in the Tor Browser'
 end
@@ -165,15 +162,13 @@ end
 
 When /^I can open the Additional Software configuration window from the notification$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Configure', roleName: 'push button').grabFocus
-  @screen.press('enter')
+  gnome_shell.child('Configure', roleName: 'push button').press
   Dogtail::Application.new('tails-additional-software-config')
 end
 
 Then /^I can open the Additional Software log file from the notification$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Show Log', roleName: 'push button').grabFocus
-  @screen.press('enter')
+  gnome_shell.child('Show Log', roleName: 'push button').press
   try_for(60) do
     Dogtail::Application.new('gedit').child(
       "log [Read-Only] (#{ASP_STATE_DIR}) - gedit", roleName: 'frame'

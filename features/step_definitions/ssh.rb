@@ -137,7 +137,7 @@ Then /^I connect to an SFTP server on the Internet$/ do
       .child(roleName: 'filler', recursive: false)
       .child(roleName: 'text', recursive: false)
       .text = 'sftp://' + @sftp_username + '@' + @sftp_host + ':' + @sftp_port
-    connect_bar.button('Connect', recursive: false).click
+    connect_bar.button('Connect', recursive: false).press
     step 'I verify the SSH fingerprint for the SFTP server'
   end
 end

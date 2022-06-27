@@ -599,7 +599,7 @@ When /^I start the Tor Browser( in offline mode)?$/ do |offline|
                    .button('Start Tor Browser Offline', showingOnly: true)
     # Sometimes this click is lost. Maybe the dialog is not fully setup yet?
     sleep 2
-    start_button.click
+    start_button.press
   end
   step 'the Tor Browser has started'
   if offline
@@ -632,8 +632,8 @@ Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ d
 end
 
 When /^I request a new identity using Torbutton$/ do
-  @torbrowser.child('Tor Browser', roleName: 'push button').click
-  @torbrowser.child('New Identity', roleName: 'push button').click
+  @torbrowser.child('Tor Browser', roleName: 'push button').press
+  @torbrowser.child('New Identity', roleName: 'push button').press
 end
 
 When /^I acknowledge Torbutton's New Identity confirmation prompt$/ do
@@ -672,7 +672,7 @@ Given /^all notifications have disappeared$/ do
     @screen.wait('GnomeDoNotDisturb.png', 5)
     begin
       gnome_shell.child('Clear', roleName:    'push button',
-                                 showingOnly: true).click
+                                 showingOnly: true).press
     rescue StandardError
       # Ignore exceptions: there might be no notification to clear, in
       # which case there will be a "No Notifications" label instead of
