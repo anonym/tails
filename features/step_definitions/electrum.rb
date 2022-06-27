@@ -78,9 +78,8 @@ end
 Then /^I see a warning that Electrum is not persistent$/ do
   assert(
     Dogtail::Application.new('zenity')
-      .child(roleName: 'label')
-      .name
-      .start_with?('Persistence is disabled for Electrum')
+      .children(roleName: 'label')
+      .any? { |n| n.name.start_with?('Persistence is disabled for Electrum') }
   )
 end
 
