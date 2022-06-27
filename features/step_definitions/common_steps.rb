@@ -8,7 +8,6 @@ def post_vm_start_hook
   # having an important click lost. The point we click should be
   # somewhere where no clickable elements generally reside.
   @screen.click(@screen.w - 1, @screen.h / 2)
-  sleep 1
 end
 
 def post_snapshot_restore_hook(snapshot_name)
@@ -45,6 +44,8 @@ def post_snapshot_restore_hook(snapshot_name)
   # Activities Overview would fail (SUPER has no effect when the
   # Applications menu is still opened).
   @screen.press('Escape')
+  # Wait for the menu to be closed
+  sleep 1
 
   # The guest's Tor's circuits' states are likely to get out of sync
   # with the other relays, so we ensure that we have fresh circuits.
