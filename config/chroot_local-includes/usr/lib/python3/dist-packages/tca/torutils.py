@@ -294,7 +294,27 @@ class TorConnectionConfig:
 
     @classmethod
     def parse_qr_content(cls, content: str) -> List[str]:
-        """Parse the content of a QR code received by BridgeDB."""
+        """
+        Parse the content of a QR code received by BridgeDB.
+
+        >>> br1 = 'obfs4 1.2.3.4:80 XZAWCH5CIBSUXZAWCH5CIBSUXZAWCH5CIBSU cert=blblbl iat-mode=0'
+        >>> br2 = br1.replace(':80', ':81')
+
+        It can parse the old format: python string repreasentation of a list
+        >>> parsed = TorConnectionConfig.parse_qr_content(str([br1, br2]))
+        >>> len(parsed)
+        2
+        >>> parsed[0] == br1
+        True
+        >>> parsed[1] == br2
+        True
+
+        It can parse the new format: list of bridge lines
+        >>> parsed2 = TorConnectionConfig.parse_qr_content('\\n'.join([br1, br2]))
+        >>> parsed2 == parsed
+        True
+
+        """
         bridge_strings = content.strip()
         if bridge_strings.startswith("[") and bridge_strings.endswith("]"):
             # "Old" format: str([...lines...]) in Python.
