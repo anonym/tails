@@ -212,6 +212,7 @@ class Handler(socketserver.StreamRequestHandler):
     MAX_LINESIZE = 1024
 
     spawn_commands = {  # some commands just mean "run this specified commands as LIVE_USERNAME, please"
+        "scan-qrcode": UserCommand(("/usr/bin/zbarcam", "--raw", "--oneshot"), False),
         "open-unsafebrowser": UserCommand(("/usr/bin/gtk-launch", "unsafe-browser"), False),
         "open-tbb": UserCommand(("/usr/bin/gtk-launch", "tor-browser"), False),
         "open-networkmonitor": UserCommand(
