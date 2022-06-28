@@ -368,6 +368,19 @@ class StepChooseBridgeMixin:
     def cb_step_bridge_btn_back_clicked(self, *args):
         self.change_box("hide")
 
+    def cb_step_bridge_btn_scanqrcode_clicked(self, *args):
+        log.info("Let's scan QR!")
+        def on_qrcode_scanned(gjsonrpcclient, res, error):
+            log.info('qrcode scanned!')
+            if not res or res.get("returncode", 1) != 0:
+                log.warn("Invalid QR code")
+                return
+            raw_content = res.get('stdout', '')
+            # XXX: validate and convert
+            content = str(raw_content)
+            self.get_object("text").get_buffer().set_text(content, len(content))
+        self.app.portal.call_async("scan-qrcode", on_qrcode_scanned)
+
 
 class StepConnectProgressMixin:
     def before_show_progress(self, coming_from):
