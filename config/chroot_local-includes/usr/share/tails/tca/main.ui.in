@@ -304,7 +304,7 @@ For example, you can send the email from your phone and:
                 <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
                 <signal name="backspace" handler="cb_step_bridge_text_changed" swapped="no"/>
                 <accessibility>
-                  <relation type="controlled-by" target="step_bridge_scan_qrcode_button"/>
+                  <relation type="controlled-by" target="step_bridge_btn_scanqrcode"/>
                   <relation type="labelled-by" target="step_bridge_radio_type"/>
                   <relation type="described-by" target="step_bridge_label_warning"/>
                   <relation type="described-by" target="step_bridge_persistence_help_label"/>
@@ -320,7 +320,7 @@ For example, you can send the email from your phone and:
               <placeholder/>
             </child>
             <child>
-              <object class="GtkButton" id="step_bridge_scan_qrcode_button">
+              <object class="GtkButton" id="step_bridge_btn_scanqrcode">
                 <property name="label" translatable="yes">Scan QR code</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
@@ -330,6 +330,7 @@ For example, you can send the email from your phone and:
                 <accessibility>
                   <relation type="controller-for" target="step_bridge_text"/>
                 </accessibility>
+                <signal name="clicked" handler="cb_step_bridge_btn_scanqrcode_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -882,7 +883,7 @@ For example, you can send the email from your phone and:
                     <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
                     <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
                     <accessibility>
-                      <relation type="controlled-by" target="step_error_scan_qrcode_button"/>
+                      <relation type="controlled-by" target="step_error_btn_scanqrcode"/>
                       <relation type="described-by" target="step_error_label_warning"/>
                     </accessibility>
                   </object>
@@ -893,7 +894,7 @@ For example, you can send the email from your phone and:
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="step_error_scan_qrcode_button">
+                  <object class="GtkButton" id="step_error_btn_scanqrcode">
                     <property name="label" translatable="yes">Scan QR code</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
@@ -901,6 +902,7 @@ For example, you can send the email from your phone and:
                     <accessibility>
                       <relation type="controller-for" target="step_error_text"/>
                     </accessibility>
+                    <signal name="clicked" handler="cb_step_error_btn_scanqrcode_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
