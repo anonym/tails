@@ -6,13 +6,13 @@
     <property name="name">box_main_container_image_step</property>
     <property name="height-request">590</property>
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="baseline_position">bottom</property>
+    <property name="can-focus">False</property>
+    <property name="baseline-position">bottom</property>
     <child>
       <object class="GtkImage" id="main_img_side">
         <property name="name">main_img_side</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">start</property>
         <property name="valign">center</property>
         <property name="stock">gtk-missing-image</property>
@@ -31,18 +31,18 @@
     <child>
       <object class="GtkScrolledWindow" id="box_main_container_scroll">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="can-focus">True</property>
         <property name="hscrollbar-policy">never</property>
         <property name="propagate-natural-height">True</property>
         <child>
           <object class="GtkViewport">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <child>
               <object class="GtkStack" id="box_main_container_stack">
                 <property name="name">box_main_container_stack</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -60,12 +60,12 @@
   </object>
   <object class="GtkBox" id="step_bridge_box">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="step_bridge_box_heading">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">start</property>
         <property name="label" translatable="yes">Configure a Tor bridge</property>
         <accessibility>
@@ -89,7 +89,7 @@
     <child>
       <object class="GtkLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">start</property>
         <property name="label" translatable="yes">Bridges are secret Tor relays. Use a bridge as your first Tor relay if accessing Tor is blocked from where you are.</property>
         <property name="wrap">True</property>
@@ -104,12 +104,12 @@
     <child>
       <object class="GtkLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">start</property>
-        <property name="margin_top">12</property>
+        <property name="margin-top">12</property>
         <property name="label" translatable="yes">&lt;a href="doc/anonymous_internet/tor"&gt;Learn more about Tor bridges&lt;/a&gt;</property>
-        <property name="use_markup">True</property>
-        <property name="track_visited_links">False</property>
+        <property name="use-markup">True</property>
+        <property name="track-visited-links">False</property>
         <signal name="activate-link" handler="on_link_help_clicked" swapped="no"/>
       </object>
       <packing>
@@ -121,28 +121,28 @@
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_top">18</property>
+        <property name="can-focus">False</property>
+        <property name="margin-top">18</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkRadioButton" id="step_bridge_radio_default">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="margin_bottom">12</property>
-            <property name="draw_indicator">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
+            <property name="margin-bottom">12</property>
+            <property name="draw-indicator">True</property>
             <property name="group">step_bridge_radio_none</property>
             <signal name="toggled" handler="cb_step_bridge_radio_changed" swapped="no"/>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <object class="GtkLabel" id="step_bridge_default_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_start">6</property>
+                    <property name="margin-start">6</property>
                     <property name="label" translatable="yes">Use a _default bridge</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">step_bridge_radio_default</property>
@@ -160,12 +160,12 @@
                   <object class="GtkComboBoxText" id="step_bridge_combo">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">center</property>
                     <property name="valign">start</property>
-                    <property name="margin_start">12</property>
+                    <property name="margin-start">12</property>
                     <property name="active">0</property>
-                    <property name="button_sensitivity">on</property>
+                    <property name="button-sensitivity">on</property>
                     <items>
                       <item id="obfs4" translatable="yes">obfs4 (recommended)</item>
                       <item id="meek_lite" translatable="yes">meek</item>
@@ -195,11 +195,11 @@
         <child>
           <object class="GtkRadioButton" id="step_bridge_radio_none">
             <property name="label" translatable="yes">None</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
             <property name="halign">start</property>
             <property name="active">True</property>
-            <property name="draw_indicator">True</property>
+            <property name="draw-indicator">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -209,19 +209,19 @@
         </child>
         <child>
           <object class="GtkRadioButton" id="step_bridge_radio_new">
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
             <property name="halign">start</property>
-            <property name="margin_bottom">12</property>
-            <property name="draw_indicator">True</property>
+            <property name="margin-bottom">12</property>
+            <property name="draw-indicator">True</property>
             <property name="group">step_bridge_radio_none</property>
             <signal name="toggled" handler="cb_step_bridge_radio_changed" swapped="no"/>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="margin_start">6</property>
+                <property name="margin-start">6</property>
                 <property name="label" translatable="yes">_Request a new bridge</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">step_bridge_radio_new</property>
@@ -237,34 +237,32 @@
         <child>
           <object class="GtkBox" id="step_bridge_manual_box">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_bottom">12</property>
+            <property name="can-focus">False</property>
+            <property name="valign">start</property>
+            <property name="margin-bottom">12</property>
             <property name="vexpand">True</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkRadioButton" id="step_bridge_radio_type">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="halign">start</property>
-                <property name="margin_bottom">6</property>
-                <property name="draw_indicator">True</property>
+                <property name="margin-bottom">6</property>
+                <property name="draw-indicator">True</property>
                 <property name="group">step_bridge_radio_none</property>
                 <signal name="toggled" handler="cb_step_bridge_radio_changed" swapped="no"/>
                 <child>
                   <object class="GtkLabel" id="step_bridge_label_type">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_start">6</property>
+                    <property name="margin-start">6</property>
                     <property name="label" translatable="yes">_Enter a bridge that you already know</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">step_bridge_radio_type</property>
                   </object>
                 </child>
-                <accessibility>
-                  <relation type="label-for" target="step_bridge_text"/>
-                </accessibility>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -276,16 +274,18 @@
               <object class="GtkLabel" id="step_bridge_label_explain_hide">
                 <property name="name">step_bridge_label_explain_hide</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="margin_start">30</property>
-                <property name="margin_bottom">6</property>
+                <property name="margin-start">30</property>
+                <property name="margin-bottom">6</property>
                 <property name="label" translatable="yes">To request a bridge, you can send an empty email to
 &lt;tt&gt;bridges@torproject.org&lt;/tt&gt; from a Gmail or Riseup email address.
 
-For example, you can send the email from your phone and type the bridge in Tails.
-</property>
-                <property name="use_markup">True</property>
+For example, you can send the email from your phone and:
+
+• either type the bridge in Tails
+• or scan the QR code in Tails</property>
+                <property name="use-markup">True</property>
                 <property name="wrap">True</property>
               </object>
               <packing>
@@ -296,14 +296,15 @@ For example, you can send the email from your phone and type the bridge in Tails
             </child>
             <child>
               <object class="GtkEntry" id="step_bridge_text">
-                <property name="margin_start">30</property>
-		<property name="valign">start</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
+                <property name="can-focus">True</property>
+                <property name="margin-start">30</property>
+                <property name="margin-bottom">6</property>
+                <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
                 <signal name="backspace" handler="cb_step_bridge_text_changed" swapped="no"/>
                 <accessibility>
+                  <relation type="controlled-by" target="step_bridge_scan_qrcode_button"/>
                   <relation type="labelled-by" target="step_bridge_radio_type"/>
                   <relation type="described-by" target="step_bridge_label_warning"/>
                   <relation type="described-by" target="step_bridge_persistence_help_label"/>
@@ -316,15 +317,36 @@ For example, you can send the email from your phone and type the bridge in Tails
               </packing>
             </child>
             <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkButton" id="step_bridge_scan_qrcode_button">
+                <property name="label" translatable="yes">Scan QR code</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="valign">start</property>
+                <property name="margin-start">30</property>
+                <accessibility>
+                  <relation type="controller-for" target="step_bridge_text"/>
+                </accessibility>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkBox" id="step_bridge_box_warning">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="margin-start">30</property>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">gtk-dialog-warning</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">gtk-dialog-warning</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -335,14 +357,11 @@ For example, you can send the email from your phone and type the bridge in Tails
                 <child>
                   <object class="GtkLabel" id="step_bridge_label_warning">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="margin-start">12</property>
                     <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Error</property>
-                    <accessibility>
-                      <relation type="description-for" target="step_bridge_text"/>
-                    </accessibility>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -354,7 +373,7 @@ For example, you can send the email from your phone and type the bridge in Tails
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
@@ -419,7 +438,7 @@ For example, you can send the email from your phone and type the bridge in Tails
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">4</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
@@ -434,9 +453,6 @@ For example, you can send the email from your phone and type the bridge in Tails
                     <property name="can-focus">False</property>
                     <property name="use-markup">True</property>
                     <signal name="activate-link" handler="on_link_help_clicked" swapped="no"/>
-                    <accessibility>
-                      <relation type="description-for" target="step_bridge_text"/>
-                    </accessibility>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -451,7 +467,7 @@ For example, you can send the email from your phone and type the bridge in Tails
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">5</property>
+                <property name="position">7</property>
               </packing>
             </child>
             <child>
@@ -482,7 +498,6 @@ For example, you can send the email from your phone and type the bridge in Tails
                     <property name="wrap">True</property>
                     <accessibility>
                       <relation type="label-for" target="step_bridge_persistence_switch"/>
-                      <relation type="description-for" target="step_bridge_text"/>
                     </accessibility>
                   </object>
                   <packing>
@@ -495,7 +510,7 @@ For example, you can send the email from your phone and type the bridge in Tails
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">6</property>
+                <property name="position">8</property>
               </packing>
             </child>
           </object>
@@ -515,14 +530,14 @@ For example, you can send the email from your phone and type the bridge in Tails
     <child>
       <object class="GtkButtonBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkButton" id="step_bridge_btn_back">
             <property name="label">gtk-go-back</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_stock">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="use-stock">True</property>
             <signal name="clicked" handler="cb_step_bridge_btn_back_clicked" swapped="no"/>
           </object>
           <packing>
@@ -536,9 +551,9 @@ For example, you can send the email from your phone and type the bridge in Tails
             <property name="label" translatable="yes">_Connect to Tor</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_underline">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="use-underline">True</property>
             <signal name="clicked" handler="cb_step_bridge_btn_submit_clicked" swapped="no"/>
             <style>
               <class name="suggested-action"/>
@@ -557,7 +572,7 @@ For example, you can send the email from your phone and type the bridge in Tails
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="pack_type">end</property>
+        <property name="pack-type">end</property>
         <property name="position">6</property>
       </packing>
     </child>
@@ -571,12 +586,12 @@ For example, you can send the email from your phone and type the bridge in Tails
   <object class="GtkBox" id="step_error_box">
     <property name="name">step_error_box</property>
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">start</property>
         <property name="label" translatable="yes">Error connecting to Tor</property>
         <style>
@@ -841,7 +856,7 @@ For example, you can send the email from your phone and type the bridge in Tails
 
             1. Send an empty email to &lt;tt&gt;bridges@torproject.org&lt;/tt&gt; from a Gmail or Riseup email address.
 
-              2. Type below one of the bridges that you received by email.</property>
+              2. Either type below one of the bridges that you received by email, or scan the QR code.</property>
                 <property name="use-markup">True</property>
                 <style>
                   <class name="step-error-section-description"/>
@@ -867,6 +882,7 @@ For example, you can send the email from your phone and type the bridge in Tails
                     <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
                     <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
                     <accessibility>
+                      <relation type="controlled-by" target="step_error_scan_qrcode_button"/>
                       <relation type="described-by" target="step_error_label_warning"/>
                     </accessibility>
                   </object>
@@ -874,6 +890,22 @@ For example, you can send the email from your phone and type the bridge in Tails
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="step_error_scan_qrcode_button">
+                    <property name="label" translatable="yes">Scan QR code</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
+                    <accessibility>
+                      <relation type="controller-for" target="step_error_text"/>
+                    </accessibility>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -913,7 +945,7 @@ For example, you can send the email from your phone and type the bridge in Tails
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
@@ -984,14 +1016,14 @@ For example, you can send the email from your phone and type the bridge in Tails
   <object class="GtkTextBuffer" id="step_error_text_buffer"/>
   <object class="GtkBox" id="step_hide_box">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <property name="spacing">12</property>
-    <property name="baseline_position">top</property>
+    <property name="baseline-position">top</property>
     <child>
       <object class="GtkLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">start</property>
         <property name="label" translatable="yes">Everything you do on the Internet from Tails goes through the Tor network.</property>
       </object>
@@ -1005,7 +1037,7 @@ For example, you can send the email from your phone and type the bridge in Tails
     <child>
       <object class="GtkLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">start</property>
         <property name="label" translatable="yes">Tor encrypts and anonymizes your connection by passing it through 3 relays.
 Tor relays are servers operated by different organizations and volunteers around the world.</property>
@@ -1020,31 +1052,31 @@ Tor relays are servers operated by different organizations and volunteers around
     <child>
       <object class="GtkBox" id="step_hide_radio_buttons">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox" id="unnoticed_no_heading">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_bottom">6</property>
+            <property name="can-focus">False</property>
+            <property name="margin-bottom">6</property>
             <child>
               <object class="GtkRadioButton" id="radio_unnoticed_no">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="halign">start</property>
                 <property name="active">True</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
                 <property name="group">radio_unnoticed_none</property>
                 <signal name="toggled" handler="cb_step_hide_radio_changed" swapped="no"/>
                 <child>
                   <object class="GtkLabel" id="label_unnoticed_no">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_start">6</property>
+                    <property name="margin-start">6</property>
                     <property name="label" translatable="yes">&lt;b&gt;Connect to Tor _automatically (easier)&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
+                    <property name="use-markup">True</property>
                     <property name="use-underline">True</property>
                     <property name="wrap">True</property>
                     <property name="mnemonic-widget">radio_unnoticed_no</property>
@@ -1061,15 +1093,15 @@ Tor relays are servers operated by different organizations and volunteers around
             <child>
               <object class="GtkLinkButton" id="step_hide_unnoticed_no_help_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="relief">none</property>
                 <signal name="activate-link" handler="cb_toggle_help_unnoticed_no" swapped="no"/>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">tails-help</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">tails-help</property>
                   </object>
                 </child>
               </object>
@@ -1090,13 +1122,13 @@ Tor relays are servers operated by different organizations and volunteers around
           <object class="GtkLabel" id="unnoticed_no_explanation">
             <property name="name">unnoticed_no_explanation</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="margin_start">36</property>
+            <property name="margin-start">36</property>
             <property name="label" translatable="yes">We recommend connecting to Tor automatically if you are on a public Wi-Fi network or if many people in your country use Tor to circumvent censorship.</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="wrap">True</property>
-            <property name="max_width_chars">70</property>
+            <property name="max-width-chars">70</property>
             <property name="xalign">0</property>
           </object>
           <packing>
@@ -1107,16 +1139,16 @@ Tor relays are servers operated by different organizations and volunteers around
         </child>
         <child>
           <object class="GtkLabel" id="unnoticed_no_help">
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="margin_start">36</property>
-            <property name="margin_top">12</property>
+            <property name="margin-start">36</property>
+            <property name="margin-top">12</property>
             <property name="label" translatable="yes">Tails will try different ways of connecting to Tor until it succeeds.
 
 Someone monitoring your Internet connection could identify these attempts as coming from a Tails user.</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="wrap">True</property>
-            <property name="max_width_chars">70</property>
+            <property name="max-width-chars">70</property>
             <property name="xalign">0</property>
             <signal name="activate-link" handler="on_link_help_clicked" swapped="no"/>
           </object>
@@ -1128,29 +1160,29 @@ Someone monitoring your Internet connection could identify these attempts as com
         </child>
         <child>
           <object class="GtkBox" id="step_hide_box_bridge">
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="margin_start">30</property>
-            <property name="margin_top">6</property>
+            <property name="margin-start">30</property>
+            <property name="margin-top">6</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox" id="step_hide_bridge_heading">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">start</property>
-                <property name="margin_top">6</property>
-                <property name="margin_bottom">6</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
                 <property name="hexpand">False</property>
                 <property name="vexpand">False</property>
                 <child>
                   <object class="GtkCheckButton" id="radio_unnoticed_no_bridge">
                     <property name="label" translatable="yes">Configure a Tor _bridge</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="draw_indicator">True</property>
-                    <property name="use_underline">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1161,16 +1193,16 @@ Someone monitoring your Internet connection could identify these attempts as com
                 <child>
                   <object class="GtkLinkButton" id="step_hide_link_helpbridge">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
                     <property name="halign">end</property>
                     <property name="relief">none</property>
                     <signal name="activate-link" handler="cb_toggle_help_bridges" swapped="no"/>
                     <child>
                       <object class="GtkImage">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="icon_name">tails-help</property>
+                        <property name="can-focus">False</property>
+                        <property name="icon-name">tails-help</property>
                       </object>
                     </child>
                   </object>
@@ -1189,13 +1221,13 @@ Someone monitoring your Internet connection could identify these attempts as com
             </child>
             <child>
               <object class="GtkLabel" id="bridges_help">
-                <property name="can_focus">False</property>
-                <property name="margin_start">24</property>
+                <property name="can-focus">False</property>
+                <property name="margin-start">24</property>
                 <property name="label" translatable="yes">Tor bridges are secret Tor relays. Use a bridge as your first Tor relay if connections to Tor are blocked, for example in some countries, by some public networks, or by some parental controls.
 
 Choose this option if you already know that you need a bridge. Otherwise, Tails will autodetect whether you need a bridge to connect to Tor from your local network.</property>
                 <property name="wrap">True</property>
-                <property name="max_width_chars">70</property>
+                <property name="max-width-chars">70</property>
                 <property name="xalign">0</property>
               </object>
               <packing>
@@ -1214,27 +1246,27 @@ Choose this option if you already know that you need a bridge. Otherwise, Tails 
         <child>
           <object class="GtkBox" id="unnoticed_yes_heading">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">18</property>
-            <property name="margin_bottom">6</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">18</property>
+            <property name="margin-bottom">6</property>
             <child>
               <object class="GtkRadioButton" id="radio_unnoticed_yes">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="halign">start</property>
                 <property name="active">True</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
                 <property name="group">radio_unnoticed_none</property>
                 <signal name="toggled" handler="cb_step_hide_radio_changed" swapped="no"/>
                 <child>
                   <object class="GtkLabel" id="label_unnoticed_yes">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_start">6</property>
+                    <property name="margin-start">6</property>
                     <property name="label" translatable="yes">&lt;b&gt;_Hide to my local network that I'm connecting to Tor (safer)&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
+                    <property name="use-markup">True</property>
                     <property name="use-underline">True</property>
                     <property name="wrap">True</property>
                     <property name="mnemonic-widget">radio_unnoticed_yes</property>
@@ -1251,15 +1283,15 @@ Choose this option if you already know that you need a bridge. Otherwise, Tails 
             <child>
               <object class="GtkLinkButton" id="step_hide_unnoticed_yes_help_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="relief">none</property>
                 <signal name="activate-link" handler="cb_toggle_help_unnoticed_yes" swapped="no"/>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">tails-help</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">tails-help</property>
                   </object>
                 </child>
               </object>
@@ -1280,13 +1312,13 @@ Choose this option if you already know that you need a bridge. Otherwise, Tails 
           <object class="GtkLabel" id="unnoticed_yes_explanation">
             <property name="name">unnoticed_yes_explanation</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="margin_start">36</property>
+            <property name="margin-start">36</property>
             <property name="label" translatable="yes">You might need to go unnoticed if using Tor could look suspicious to someone who monitors your Internet connection.</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="wrap">True</property>
-            <property name="max_width_chars">70</property>
+            <property name="max-width-chars">70</property>
             <property name="xalign">0</property>
           </object>
           <packing>
@@ -1297,18 +1329,18 @@ Choose this option if you already know that you need a bridge. Otherwise, Tails 
         </child>
         <child>
           <object class="GtkLabel" id="unnoticed_yes_help">
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="margin_start">36</property>
-            <property name="margin_top">12</property>
+            <property name="margin-start">36</property>
+            <property name="margin-top">12</property>
             <property name="label" translatable="yes">Tails will only connect to Tor after you configured a Tor bridge. Bridges are secret Tor relays that hide that you are connecting to Tor.
 
 Our team is doing its best to help you connect to Tor using the most discrete types of Tor bridges.
 
 You will have to do extra configuration if you don't know any Tor bridges yet, if you connect from a public Wi-Fi network, or if you are in the Eastern Hemisphere.</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="wrap">True</property>
-            <property name="max_width_chars">70</property>
+            <property name="max-width-chars">70</property>
             <property name="xalign">0</property>
             <signal name="activate-link" handler="on_link_help_clicked" swapped="no"/>
           </object>
@@ -1321,11 +1353,11 @@ You will have to do extra configuration if you don't know any Tor bridges yet, i
         <child>
           <object class="GtkRadioButton" id="radio_unnoticed_none">
             <property name="label" translatable="yes">None</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
             <property name="halign">start</property>
             <property name="active">True</property>
-            <property name="draw_indicator">True</property>
+            <property name="draw-indicator">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1344,10 +1376,10 @@ You will have to do extra configuration if you don't know any Tor bridges yet, i
     <child>
       <object class="GtkLabel">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="can-focus">True</property>
         <property name="halign">start</property>
         <property name="label" translatable="yes">&lt;a href="doc/anonymous_internet/tor"&gt;Learn more about how Tails connects to Tor&lt;/a&gt;</property>
-        <property name="use_markup">True</property>
+        <property name="use-markup">True</property>
         <signal name="activate-link" handler="on_link_help_clicked" swapped="no"/>
       </object>
       <packing>
@@ -1361,11 +1393,11 @@ You will have to do extra configuration if you don't know any Tor bridges yet, i
         <property name="label" translatable="yes">_Connect to Tor</property>
         <property name="visible">True</property>
         <property name="sensitive">False</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">True</property>
         <property name="halign">end</property>
         <property name="valign">end</property>
-        <property name="use_underline">True</property>
+        <property name="use-underline">True</property>
         <signal name="clicked" handler="cb_step_hide_btn_connect_clicked" swapped="no"/>
         <style>
           <class name="suggested-action"/>
@@ -1384,21 +1416,21 @@ You will have to do extra configuration if you don't know any Tor bridges yet, i
   </object>
   <object class="GtkBox" id="step_offline_box">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="valign">baseline</property>
         <property name="vexpand">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">12</property>
-        <property name="baseline_position">top</property>
+        <property name="baseline-position">top</property>
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
             <property name="label" translatable="yes">Everything you do on the Internet from Tails goes through the Tor network.</property>
@@ -1413,7 +1445,7 @@ You will have to do extra configuration if you don't know any Tor bridges yet, i
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
             <property name="label" translatable="yes">Tor encrypts and anonymizes your connection by passing it through 3 relays.
@@ -1429,7 +1461,7 @@ Tor relays are servers operated by different organizations and volunteers around
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="label" translatable="yes">Connect to a local network</property>
             <style>
@@ -1445,7 +1477,7 @@ Tor relays are servers operated by different organizations and volunteers around
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
             <property name="label" translatable="yes">You are not connected to a local network yet. To be able to connect to the Tor network, you first need to connect to a Wi-Fi, wire, or mobile network.</property>
@@ -1463,8 +1495,8 @@ Tor relays are servers operated by different organizations and volunteers around
             <property name="label" translatable="yes">Open Wi-Fi settings</property>
             <property name="name">step_offline_wificonf</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
             <property name="halign">end</property>
             <signal name="clicked" handler="cb_step_offline_wificonf_clicked" swapped="no"/>
             <style>
@@ -1487,16 +1519,16 @@ Tor relays are servers operated by different organizations and volunteers around
   </object>
   <object class="GtkBox" id="step_progress_box">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox" id="step_progress_box_internettest">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkSpinner" id="step_progress_spinner_internet">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="active">True</property>
           </object>
           <packing>
@@ -1508,7 +1540,7 @@ Tor relays are servers operated by different organizations and volunteers around
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Testing Internet access…</property>
             <style>
               <class name="progress-box-text"/>
@@ -1529,11 +1561,11 @@ Tor relays are servers operated by different organizations and volunteers around
     </child>
     <child>
       <object class="GtkBox" id="step_progress_box_internetok">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkImage">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="stock">gtk-apply</property>
             <style>
               <class name="progress-box-icon"/>
@@ -1548,7 +1580,7 @@ Tor relays are servers operated by different organizations and volunteers around
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">You have access to the Internet</property>
           </object>
           <packing>
@@ -1566,11 +1598,11 @@ Tor relays are servers operated by different organizations and volunteers around
     </child>
     <child>
       <object class="GtkBox" id="step_progress_box_tortest">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkSpinner" id="step_progress_spinner_tortest">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="active">True</property>
           </object>
           <packing>
@@ -1582,7 +1614,7 @@ Tor relays are servers operated by different organizations and volunteers around
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Testing access to Tor…</property>
             <style>
               <class name="progress-box-text"/>
@@ -1606,11 +1638,11 @@ Tor relays are servers operated by different organizations and volunteers around
     </child>
     <child>
       <object class="GtkBox" id="step_progress_box_torok">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkImage" id="step_progress_img_torok">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="stock">gtk-apply</property>
             <style>
               <class name="progress-box-icon"/>
@@ -1625,7 +1657,7 @@ Tor relays are servers operated by different organizations and volunteers around
         <child>
           <object class="GtkLabel" id="step_progress_label_torok">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">You can connect to Tor</property>
             <style>
               <class name="progress-box-text"/>
@@ -1649,12 +1681,12 @@ Tor relays are servers operated by different organizations and volunteers around
     </child>
     <child>
       <object class="GtkBox" id="step_progress_box_tor_direct_fail">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="label" translatable="yes">Failed to connect to Tor without bridges.</property>
             <style>
@@ -1670,7 +1702,7 @@ Tor relays are servers operated by different organizations and volunteers around
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="label" translatable="yes">Your local network is blocking access to Tor.</property>
             <style>
@@ -1696,13 +1728,13 @@ Tor relays are servers operated by different organizations and volunteers around
     <child>
       <object class="GtkBox" id="step_progress_box_torconnect">
         <property name="name">step_progress_box_torconnect</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">12</property>
         <child>
           <object class="GtkLabel" id="step_progress_label_status">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="label" translatable="yes">Connecting to Tor…</property>
             <style>
@@ -1718,8 +1750,8 @@ Tor relays are servers operated by different organizations and volunteers around
         <child>
           <object class="GtkProgressBar" id="step_progress_pbar_torconnect">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="pulse_step">0.029999999999999999</property>
+            <property name="can-focus">False</property>
+            <property name="pulse-step">0.029999999999999999</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1736,15 +1768,15 @@ Tor relays are servers operated by different organizations and volunteers around
     </child>
     <child>
       <object class="GtkBox" id="step_progress_box_tortestok">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <child>
               <object class="GtkImage">
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="stock">gtk-apply</property>
                 <style>
                   <class name="progress-box-icon"/>
@@ -1760,7 +1792,7 @@ Tor relays are servers operated by different organizations and volunteers around
               <object class="GtkLabel" id="step_progress_label_connected">
                 <property name="name">step_progress_label_connected</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Connected to Tor successfully</property>
                 <style>
                   <class name="progress-box-heading"/>
@@ -1783,9 +1815,9 @@ Tor relays are servers operated by different organizations and volunteers around
           <object class="GtkLabel" id="step_progress_label_connected_explain">
             <property name="name">step_progress_label_connected_explain</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="margin_top">18</property>
+            <property name="margin-top">18</property>
             <property name="label" translatable="yes">You can now browse the Internet anonymously and uncensored.</property>
           </object>
           <packing>
@@ -1803,7 +1835,7 @@ Tor relays are servers operated by different organizations and volunteers around
     </child>
     <child>
       <object class="GtkBox" id="step_progress_box_start">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="valign">end</property>
         <property name="orientation">vertical</property>
         <child>
@@ -1811,8 +1843,8 @@ Tor relays are servers operated by different organizations and volunteers around
             <property name="label" translatable="yes">Start Tor Browser</property>
             <property name="name">step_progress_btn_tbb</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
             <signal name="clicked" handler="cb_step_progress_btn_starttbb_clicked" swapped="no"/>
           </object>
           <packing>
@@ -1824,12 +1856,12 @@ Tor relays are servers operated by different organizations and volunteers around
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <child>
               <object class="GtkButton">
                 <property name="label" translatable="yes">Open Network Monitor</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="cb_step_progress_btn_monitor_clicked" swapped="no"/>
               </object>
               <packing>
@@ -1842,8 +1874,8 @@ Tor relays are servers operated by different organizations and volunteers around
               <object class="GtkButton">
                 <property name="label" translatable="yes">View Tor Circuits</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="cb_step_progress_btn_onioncircuits_clicked" swapped="no"/>
               </object>
               <packing>
@@ -1856,8 +1888,8 @@ Tor relays are servers operated by different organizations and volunteers around
               <object class="GtkButton" id="step_progress_btn_reset">
                 <property name="label" translatable="yes">Reset Tor Connection</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="cb_step_progress_btn_reset_clicked" swapped="no"/>
               </object>
               <packing>
@@ -1886,13 +1918,13 @@ Tor relays are servers operated by different organizations and volunteers around
   </object>
   <object class="GtkBox" id="step_proxy_box">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="proxy_config_title">
         <property name="name">proxy_config_title</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">start</property>
         <property name="label" translatable="yes">Configure a Local Proxy</property>
         <style>
@@ -1906,35 +1938,36 @@ Tor relays are servers operated by different organizations and volunteers around
       </packing>
     </child>
     <child>
+      <!-- n-columns=3 n-rows=5 -->
       <object class="GtkGrid">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="valign">center</property>
-        <property name="margin_bottom">18</property>
+        <property name="margin-bottom">18</property>
         <property name="hexpand">True</property>
         <child>
           <object class="GtkLabel" id="step_proxy_label_type">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">end</property>
-            <property name="margin_end">12</property>
-            <property name="margin_bottom">6</property>
+            <property name="margin-end">12</property>
+            <property name="margin-bottom">6</property>
             <property name="label" translatable="yes">Proxy Type</property>
             <accessibility>
               <relation type="label-for" target="step_proxy_combo"/>
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkComboBoxText" id="step_proxy_combo">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_bottom">6</property>
-            <property name="active_id">no</property>
+            <property name="can-focus">False</property>
+            <property name="margin-bottom">6</property>
+            <property name="active-id">no</property>
             <items>
               <item id="no" translatable="yes">No proxy</item>
               <item id="Socks4" translatable="yes">SOCKS 4</item>
@@ -1947,147 +1980,162 @@ Tor relays are servers operated by different organizations and volunteers around
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="step_proxy_label_address">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">end</property>
-            <property name="margin_end">12</property>
-            <property name="margin_bottom">6</property>
+            <property name="margin-end">12</property>
+            <property name="margin-bottom">6</property>
             <property name="label" translatable="yes">Address</property>
             <accessibility>
               <relation type="label-for" target="step_proxy_entry_address"/>
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="step_proxy_label_username">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">end</property>
-            <property name="margin_end">12</property>
-            <property name="margin_bottom">6</property>
+            <property name="margin-end">12</property>
+            <property name="margin-bottom">6</property>
             <property name="label" translatable="yes">Username</property>
             <accessibility>
               <relation type="label-for" target="step_proxy_entry_username"/>
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="step_proxy_entry_address">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="margin_bottom">6</property>
+            <property name="can-focus">True</property>
+            <property name="margin-bottom">6</property>
             <property name="hexpand">True</property>
-            <property name="max_length">15</property>
-            <property name="placeholder_text" translatable="yes">IP address or hostname</property>
-            <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_LOWERCASE | GTK_INPUT_HINT_NONE</property>
+            <property name="max-length">15</property>
+            <property name="placeholder-text" translatable="yes">IP address or hostname</property>
+            <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_LOWERCASE | GTK_INPUT_HINT_NONE</property>
             <accessibility>
               <relation type="labelled-by" target="step_proxy_label_address"/>
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="step_proxy_label_port">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">end</property>
-            <property name="margin_end">12</property>
-            <property name="margin_bottom">6</property>
+            <property name="margin-end">12</property>
+            <property name="margin-bottom">6</property>
             <property name="label" translatable="yes">Port</property>
             <accessibility>
               <relation type="label-for" target="step_proxy_entry_port"/>
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="step_proxy_label_password">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">end</property>
-            <property name="margin_end">12</property>
-            <property name="margin_bottom">6</property>
+            <property name="margin-end">12</property>
+            <property name="margin-bottom">6</property>
             <property name="label" translatable="yes">Password</property>
             <accessibility>
               <relation type="label-for" target="step_proxy_entry_password"/>
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="step_proxy_entry_username">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="margin_bottom">6</property>
+            <property name="can-focus">True</property>
+            <property name="margin-bottom">6</property>
             <property name="hexpand">True</property>
-            <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
+            <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
             <accessibility>
               <relation type="labelled-by" target="step_proxy_label_username"/>
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="step_proxy_entry_port">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="margin_bottom">6</property>
+            <property name="can-focus">True</property>
+            <property name="margin-bottom">6</property>
             <property name="hexpand">True</property>
-            <property name="input_purpose">digits</property>
-            <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
+            <property name="input-purpose">digits</property>
+            <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
             <accessibility>
               <relation type="labelled-by" target="step_proxy_label_port"/>
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="step_proxy_entry_password">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="margin_bottom">6</property>
+            <property name="can-focus">True</property>
+            <property name="margin-bottom">6</property>
             <property name="hexpand">True</property>
             <property name="visibility">False</property>
-            <property name="invisible_char">●</property>
-            <property name="input_purpose">password</property>
-            <property name="input_hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
+            <property name="invisible-char">●</property>
+            <property name="input-purpose">password</property>
+            <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
             <accessibility>
               <relation type="labelled-by" target="step_proxy_label_password"/>
             </accessibility>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">4</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
       <packing>
@@ -2099,16 +2147,16 @@ Tor relays are servers operated by different organizations and volunteers around
     <child>
       <object class="GtkButtonBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="hexpand">True</property>
         <child>
           <object class="GtkButton">
             <property name="label">gtk-go-back</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_stock">True</property>
-            <property name="always_show_image">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="use-stock">True</property>
+            <property name="always-show-image">True</property>
             <signal name="clicked" handler="cb_step_proxy_btn_back_clicked" swapped="no"/>
           </object>
           <packing>
@@ -2121,10 +2169,10 @@ Tor relays are servers operated by different organizations and volunteers around
           <object class="GtkButton" id="step_proxy_btn_submit">
             <property name="label" translatable="yes">_Save Proxy Settings</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
             <property name="valign">end</property>
-            <property name="use_underline">True</property>
+            <property name="use-underline">True</property>
             <signal name="activate" handler="cb_step_proxy_btn_submit_clicked" swapped="no"/>
             <signal name="clicked" handler="cb_step_proxy_btn_submit_clicked" swapped="no"/>
             <style>
