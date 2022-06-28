@@ -376,9 +376,24 @@ class StepChooseBridgeMixin:
                 log.warn("Invalid QR code")
                 return
             raw_content = res.get('stdout', '')
-            # XXX: validate and convert
-            content = str(raw_content)
-            self.get_object("text").get_buffer().set_text(content, len(content))
+            try:
+                bridges = TorConnectionConfig.parse_qr_content(raw_content)
+            except Exception:
+                dialog = Gtk.MessageDialog(
+                        transient_for=self,
+                        flags=0,
+                        message_type=Gtk.MessageType.ERROR,
+                        buttons=Gtk.ButtonsType.OK,
+                        text="Scanning bridges from QR code failed",
+                        )
+                dialog.format_secondary_text("You might want to try again")
+                dialog.run()
+
+                dialog.destroy()
+            else:
+                # it should be content = '\n'.join(bridges), but 7c3f738d58
+                content = bridges[0]
+                self.get_object("text").get_buffer().set_text(content, len(content))
         self.app.portal.call_async("scan-qrcode", on_qrcode_scanned)
 
 
