@@ -26,10 +26,10 @@ for LOCALE in $(supported_tor_browser_locales); do
         BROKEN_LOCALES="${BROKEN_LOCALES} ${LOCALE}"
     fi
 done
-# if [ -n "${BROKEN_LOCALES}" ]; then
-#     echo "The following supported browser locales lack descriptions in ${DESCRIPTIONS_FILE}:${BROKEN_LOCALES}" >&2
-#     exit 1
-# fi
+if [ -n "${BROKEN_LOCALES}" ]; then
+    echo "The following supported browser locales lack descriptions in ${DESCRIPTIONS_FILE}:${BROKEN_LOCALES}" >&2
+    exit 1
+fi
 
 # This very long while-loop is fed the DESCRIPTIONS_FILE (IO
 # redirection at the bottom), which describes how we will localize
