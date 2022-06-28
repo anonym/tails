@@ -323,6 +323,10 @@ download_and_verify_files "${TBB_TARBALLS_BASE_URL}" "${TBB_TARBALLS}" "${TMP}"
 
 # shellcheck disable=SC2153
 install_tor_browser "${TMP}/${MAIN_TARBALL}" "${TBB_INSTALL}"
+
+# sometime (?) this get added to a tor browser tarball; let's clean that
+rm -f /usr/local/lib/tor-browser/start-tor-browser.orig
+
 apply_prefs_hacks "${TBB_INSTALL}" "${TBB_TIMESTAMP}"
 install_debian_extensions "${TBB_INSTALL}" "${TBB_TIMESTAMP}"
 disable_update_checks "${TBB_INSTALL}"
