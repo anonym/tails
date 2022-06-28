@@ -371,10 +371,19 @@ class StepChooseBridgeMixin:
     def cb_step_bridge_btn_scanqrcode_clicked(self, *args):
         log.info("Let's scan QR!")
         def on_qrcode_scanned(gjsonrpcclient, res, error):
-            log.info('qrcode scanned!')
             if not res or res.get("returncode", 1) != 0:
-                log.warn("Invalid QR code")
+                dialog = Gtk.MessageDialog(
+                        transient_for=self,
+                        flags=0,
+                        message_type=Gtk.MessageType.ERROR,
+                        buttons=Gtk.ButtonsType.OK,
+                        text="Could not acquire QR code",
+                        )
+                dialog.format_secondary_text("Maybe you have no supported webcam?")
+                dialog.run()
+                dialog.destroy()
                 return
+
             raw_content = res.get('stdout', '')
             try:
                 bridges = TorConnectionConfig.parse_qr_content(raw_content)
