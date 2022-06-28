@@ -368,7 +368,9 @@ class StepChooseBridgeMixin:
     def cb_step_bridge_btn_back_clicked(self, *args):
         self.change_box("hide")
 
-    def cb_step_bridge_btn_scanqrcode_clicked(self, *args):
+    def scan_qrcode(self):
+        # yes, the *exactly* same code is run, no matter if you are calling
+        # this from "bridge" step or from "error" step
         log.info("Let's scan QR!")
         def on_qrcode_scanned(gjsonrpcclient, res, error):
             if not res or res.get("returncode", 1) != 0:
@@ -405,6 +407,8 @@ class StepChooseBridgeMixin:
                 self.get_object("text").get_buffer().set_text(content, len(content))
         self.app.portal.call_async("scan-qrcode", on_qrcode_scanned)
 
+    def cb_step_bridge_btn_scanqrcode_clicked(self, *args):
+        self.scan_qrcode()
 
 class StepConnectProgressMixin:
     def before_show_progress(self, coming_from):
@@ -771,6 +775,9 @@ class StepErrorMixin:
             self.state["hide"]["bridge"] = True
             self.state["bridge"]["kind"] = "manual"
         self.change_box("progress")
+
+    def cb_step_error_btn_scanqrcode_clicked(self, *args):
+        self.cb_step_bridge_btn_scanqrcode_clicked(*args)
 
 
 class StepProxyMixin:
