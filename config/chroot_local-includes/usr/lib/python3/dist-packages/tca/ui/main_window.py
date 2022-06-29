@@ -394,7 +394,15 @@ class StepChooseBridgeMixin:
                 dialog.destroy()
                 return
 
-            raw_content = res.get('stdout', '')
+            raw_content = res.get('stdout', '').strip()
+            if not raw_content:
+                # if the output is empty, we assume that the user closed the window by themself
+                # to be really sure, we should use zbarcam --xml;
+                # however, do "empty" QR codes even exists?
+
+                # If the user closed window by themself, they don't need to be informed
+                return
+
             try:
                 bridges = TorConnectionConfig.parse_qr_content(raw_content)
             except Exception:
