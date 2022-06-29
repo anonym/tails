@@ -372,7 +372,15 @@ class StepChooseBridgeMixin:
     def scan_qrcode(self):
         # yes, the *exactly* same code is run, no matter if you are calling
         # this from "bridge" step or from "error" step
+
+        step_called_from = self.state['step']
+
         def on_qrcode_scanned(gjsonrpcclient, res, error):
+            if self.state['step'] != step_called_from:
+                log.info("QR code scanned (exitcode: %d) too late, ignoring",
+                         res.get('returncode', -1) if res else -1)
+                return
+
             if not res or res.get("returncode", 1) != 0:
                 dialog = Gtk.MessageDialog(
                         transient_for=self,
