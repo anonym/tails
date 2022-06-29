@@ -372,7 +372,6 @@ class StepChooseBridgeMixin:
     def scan_qrcode(self):
         # yes, the *exactly* same code is run, no matter if you are calling
         # this from "bridge" step or from "error" step
-        log.info("Let's scan QR!")
         def on_qrcode_scanned(gjsonrpcclient, res, error):
             if not res or res.get("returncode", 1) != 0:
                 dialog = Gtk.MessageDialog(
@@ -398,7 +397,10 @@ class StepChooseBridgeMixin:
                         buttons=Gtk.ButtonsType.OK,
                         text=_("Scanning bridges from QR code failed"),
                         )
-                dialog.format_secondary_text(_("You might want to try again"))
+                dialog.format_secondary_text(_(
+                    "The QR code you scanned didn't look like "
+                    "one that contains Tor Bridges"
+                ))
                 dialog.run()
 
                 dialog.destroy()
