@@ -289,6 +289,7 @@ class StepChooseBridgeMixin:
         manual = self.builder.get_object("step_bridge_radio_type").get_active()
         self.get_object("combo").set_sensitive(default)
         self.builder.get_object("step_bridge_text").set_sensitive(manual)
+        self.builder.get_object("step_bridge_btn_scanqrcode").set_sensitive(manual)
         self.builder.get_object("step_bridge_btn_submit").set_sensitive(
             default or (manual and self._step_bridge_is_text_valid())
         )
