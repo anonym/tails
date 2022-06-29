@@ -379,9 +379,9 @@ class StepChooseBridgeMixin:
                         flags=0,
                         message_type=Gtk.MessageType.ERROR,
                         buttons=Gtk.ButtonsType.OK,
-                        text="Could not acquire QR code",
+                        text=_("Could not acquire QR code"),
                         )
-                dialog.format_secondary_text("Maybe you have no supported webcam?")
+                dialog.format_secondary_text(_("Maybe you have no supported webcam?"))
                 dialog.run()
                 dialog.destroy()
                 return
@@ -395,9 +395,9 @@ class StepChooseBridgeMixin:
                         flags=0,
                         message_type=Gtk.MessageType.ERROR,
                         buttons=Gtk.ButtonsType.OK,
-                        text="Scanning bridges from QR code failed",
+                        text=_("Scanning bridges from QR code failed"),
                         )
-                dialog.format_secondary_text("You might want to try again")
+                dialog.format_secondary_text(_("You might want to try again"))
                 dialog.run()
 
                 dialog.destroy()
