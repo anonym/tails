@@ -19,10 +19,10 @@ def assert_all_keys_are_valid_for_n_months(type, months)
   ).stdout
             .scan(/^fpr:::::::::([A-Z0-9]+):$/)
             .flatten
-            .reject { |key| ignored_keys.include?(key) }
+            .reject { |fpr| ignored_keys.include?(fpr) }
 
-  invalid = keys.reject do |key|
-    key_valid_for_n_months?(type, key, months)
+  invalid = keys.reject do |fpr|
+    key_valid_for_n_months?(type, fpr, months)
   end
   assert(invalid.empty?,
          "The following #{type} key(s) will not be valid " \
