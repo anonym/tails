@@ -29,26 +29,59 @@ def assert_all_keys_are_valid_for_n_months(type, months)
          "in #{months} months: #{invalid.join(', ')}")
 end
 
+def check_key_valid(line, months)
+  # line comes from gpg --list-keys (don't use --with-colons)
+  expiry = line.scan(/\[expire[ds]: ([0-9-]*)\]/)
+  return true if expiry.empty?
+
+  expiration_date = Date.parse(expiry.flatten.first)
+  valid = ((expiration_date << months.to_i) > DateTime.now)
+  valid
+end
+
 def key_valid_for_n_months?(type, fingerprint, months)
+  # we define a check to be valid:
+  #  - only if the master key is valid
+  #  - only if either:
+  #    - there are no subkeys at all
+  #    - at least one subkey is valid
+  #
+  # Please note that this is not truly perfect: for example, if a key
+  # has only its encryption subkey valid, but its signing subkey is expired,
+  # this should give an error but will not.
+  # Let's hope people behave sensibly about that!
+
   assert([:OpenPGP, :APT].include?(type))
   assert(months.is_a?(Integer))
 
   cmd  = type == :OpenPGP ? 'gpg'     : 'apt-key adv'
   user = type == :OpenPGP ? LIVE_USER : 'root'
-  dates = $vm.execute_successfully(
-    "#{cmd} --batch --list-options show-unusable-subkeys --list-key #{fingerprint}", user: user
-  ).stdout
-             .scan(/\[expire[ds]: ([0-9-]*)\]/)
-             .flatten
-             .map do |expiration_date|
-    Date.parse(expiration_date)
+  list_options = '--list-options show-unusable-subkeys'
+
+  key_description = $vm.execute_successfully(
+    "#{cmd} --batch  #{list_options} --list-key #{fingerprint}", user: user
+  ).stdout.split("\n")
+
+  masterkey = key_description.grep(/^pub\b/)
+  subkeys = key_description.grep(/^sub\b/)
+
+  unless check_key_valid(masterkey.first, months)
+    debug_log("Masterkey not valid: #{masterkey}")
+    return false
   end
 
-  valid = dates.map do |expiration_date|
-    (expiration_date << months.to_i) > DateTime.now
+  return true if subkeys.empty?
+
+  valid_subkeys = subkeys.filter do |subkey_line|
+    if check_key_valid(subkey_line, months)
+      true
+    else
+      debug_log("subkey not valid: #{subkey_line}")
+      false
+    end
   end
 
-  valid.all?
+  !valid_subkeys.empty?
 end
 
 Then /^the live user has been setup by live\-boot$/ do
