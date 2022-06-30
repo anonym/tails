@@ -617,7 +617,7 @@ class VM
       vm_path = fpath[1..-1]
       dir = File.dirname(vm_path)
 
-      execute_successfully("mkdir -p '#{dir}'")
+      execute_successfully("mkdir -p '#{File.join(vm_dir, dir)}'")
       file_copy_local(File.join(localdir, fpath), File.join(vm_dir, vm_path))
     end
   end
