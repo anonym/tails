@@ -190,7 +190,11 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
             else
               action.capitalize
             end
-    @installer.button(label).click
+    # Despite being a normal "push button" this button doesn't respond
+    # to the "press" action. It has a "click" action, which works, but
+    # after that the installer is inaccessible for Dogtail.
+    @installer.button(label).grabFocus
+    @screen.press('Enter')
     unless action == 'upgrade'
       confirmation_label = if persistence_exists?(name)
                              'Delete Persistent Storage and Reinstall'
