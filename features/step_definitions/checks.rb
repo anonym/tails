@@ -39,17 +39,27 @@ def check_key_valid(line, months)
   valid
 end
 
+def get_subkey_use(line)
+  # useful to check if a subkey can be used for signing, for example
+  # returns a string such as "SEA" (sign+encrypt+authenticate) or "S", etc.
+  uses = line.scan(/\d\d\d\d-\d\d-\d\d \[([SEAC]+)\]/).flatten.first
+
+  uses.split('').sort
+end
+
 def key_valid_for_n_months?(type, fingerprint, months)
   # we define a check to be valid:
   #  - only if the master key is valid
   #  - only if either:
   #    - there are no subkeys at all
-  #    - at least one subkey is valid
+  #    - at least one relevant subkey is valid
   #
-  # Please note that this is not truly perfect: for example, if a key
+  # any subkey is relevant if type == :OpenPGP
+  # only signing keys are relevant if type == :APT
+  #
+  # Please note that this is not truly perfect: for example, if a OpenPGP key
   # has only its encryption subkey valid, but its signing subkey is expired,
   # this should give an error but will not.
-  # Let's hope people behave sensibly about that!
 
   assert([:OpenPGP, :APT].include?(type))
   assert(months.is_a?(Integer))
@@ -73,6 +83,11 @@ def key_valid_for_n_months?(type, fingerprint, months)
   return true if subkeys.empty?
 
   valid_subkeys = subkeys.filter do |subkey_line|
+    if type == :APT && !get_subkey_use(subkey_line).include?('S')
+      # we don't care about non-signing key
+      return false
+    end
+
     if check_key_valid(subkey_line, months)
       true
     else
