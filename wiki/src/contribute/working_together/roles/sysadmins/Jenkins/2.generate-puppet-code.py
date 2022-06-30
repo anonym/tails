@@ -14,6 +14,7 @@ import argparse
 import fileinput
 import re
 import requests
+import sys
 
 from bs4 import BeautifulSoup
 
@@ -22,8 +23,14 @@ BASE_URL = 'https://updates.jenkins.io/download/plugins'
 
 
 def fetch_hash(plugin, version):
-    url = BASE_URL + '/' + plugin
-    page = requests.get(url)
+    url = BASE_URL + '/' + plugin + '/'
+    while True:
+        try:
+            print(f'Fetching {url}...', file=sys.stderr)
+            page = requests.get(url)
+            break
+        except requests.exceptions.ConnectionError as e:
+            print(f'Error: {e}', file=sys.stderr)
     soup = BeautifulSoup(page.text, 'html.parser')
     # This has to be updated when/if the Jenkins update website HTML changes
     checksums = soup.findAll('li', {'id': version}).pop().findAll('div', {'class': 'checksums'})
