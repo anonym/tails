@@ -421,7 +421,7 @@ class StepChooseBridgeMixin:
 
                 dialog.destroy()
             else:
-                # it should be content = '\n'.join(bridges), but 7c3f738d58
+                # it should be content = '\n'.join(bridges), but #18981
                 content = bridges[0]
                 self.get_object("text").get_buffer().set_text(content, len(content))
         self.app.portal.call_async("scan-qrcode", on_qrcode_scanned)
