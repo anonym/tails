@@ -527,10 +527,18 @@ end
 # rubocop:enable Metrics/MethodLength
 
 def feed_qr_code_video_to_virtual_webcam(qrcode_image)
+  white_image = '/usr/share/tails/test_suite/white.jpg'
+  # Display a white picture for 15s, then slide in the QR code from
+  # the right in 5s, and leave it there for another 10s.
+  #
+  # How to hack:
+  #
+  #  - The parameters are managed in this part: ((t-15)*w/5). That -15
+  #    tells to start after 15s, that /5 is the speed (the highest
+  #    the divider, the slowest is the transition).
+  #  - We believe the -t 30 and -t 15 play a role, too.
   $vm.spawn(
-    'ffmpeg -nostdin -re -t 30 -stream_loop -1 ' \
-    "-f image2 -i #{qrcode_image} " \
-    '-an -f v4l2 /dev/video0',
+    "ffmpeg -nostdin -re -loop 1 -t 30 -i #{white_image} -loop 1 -t 15 -i #{qrcode_image} -filter_complex \"[0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:#FFFFFF@1[v0]; [1:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:#FFFFFF@1,setpts=PTS-STARTPTS[v1]; [v0][v1] overlay=x='max(w-((t-15)*w/5)\,0)'[vv0]; [vv0] format=yuv420p [video]\" -map \"[video]\" -f v4l2 /dev/video0",
     user: LIVE_USER
   )
 end
@@ -590,7 +598,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
         tor_connection_assistant.child('Scan QR code',
                                        roleName: 'push button')
                                 .click
-        try_for(10) { !tor_connection_assistant.textentry('').text.empty? }
+        try_for(30) { !tor_connection_assistant.textentry('').text.empty? }
       else
         tor_connection_assistant.textentry('').click
         chutney_bridges(bridge_type).each do |bridge|
