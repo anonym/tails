@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'tempfile'
 
 def post_vm_start_hook
   $vm.late_patch if $config['LATE_PATCH']
@@ -1401,4 +1402,17 @@ def gnome_disks_app
   # button instead.
   @screen.wait('GnomeWindowActionsButtons.png', 5)
   disks_app
+end
+
+def save_qrcode(str)
+  # Generate a QR code similar enough to BridgeDB's:
+  # https://gitlab.torproject.org/tpo/anti-censorship/bridgedb/-/blob/main/bridgedb/qrcodes.py
+  qrencode_output_file = Tempfile.create('qrcode', $config['TMPDIR'])
+  qrencode_output_file.close
+  output_file = qrencode_output_file.path + '.jpg'
+  cmd_helper(['qrencode', '-o', qrencode_output_file.path, '--size=5', '--margin=5', str])
+  assert(File.exist?(qrencode_output_file.path))
+  cmd_helper(['convert', qrencode_output_file.path, output_file])
+  assert(File.exist?(output_file))
+  output_file
 end

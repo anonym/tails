@@ -526,7 +526,16 @@ end
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 
-When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?( without connecting|)$/ do |persistent, bridge_type, mode, connect|
+def feed_qr_code_video_to_virtual_webcam(qrcode_image)
+  $vm.spawn(
+    'ffmpeg -nostdin -re -t 30 -stream_loop -1 ' \
+    "-f image2 -i #{qrcode_image} " \
+    '-an -f v4l2 /dev/video0',
+    user: LIVE_USER
+  )
+end
+
+When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in the Tor Connection Assistant(?: in (easy|hide) mode)?( without connecting|)$/ do |persistent, bridge_type, qr_code, mode, connect|
   # If the "mode" isn't specified we pick one that makes sense for
   # what is requested.
   config_mode = if mode.nil?
@@ -566,13 +575,31 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
         roleName: 'radio button'
       )
       btn.click
-      # btn.labelee is the widget "labelled by" btn.
-      # For details, see label-for and labelled-by accessibility relations
-      # in main.ui.in, aka. "Label For" and "Labeled By" in Glade.
-      btn.labelee.click
+      if qr_code
+        $vm.execute_successfully('modprobe v4l2loopback')
+        qrcode_image = save_qrcode(
+          '[' + \
+          chutney_bridges(bridge_type).map { |bridge| "'" + bridge[:line] + "'" }
+            .join(', ') + \
+          ']'
+        )
+        $vm.file_copy_local(qrcode_image, '/tmp/qrcode.jpg')
+        feed_qr_code_video_to_virtual_webcam('/tmp/qrcode.jpg')
+        # Give ffmpeg time to start pushing frames to the virtual webcam
+        sleep 5
+        tor_connection_assistant.child('Scan QR code',
+                                       roleName: 'push button')
+                                .click
+        try_for(10) { !tor_connection_assistant.textentry('').text.empty? }
+      else
+        tor_connection_assistant.textentry('').click
+        chutney_bridges(bridge_type).each do |bridge|
+          @screen.paste(bridge[:line])
+          break # We currently support only 1 bridge
+        end
+      end
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
-        @screen.paste(bridge[:line])
         @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
         break # We currently support only 1 bridge
       end

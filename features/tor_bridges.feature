@@ -24,6 +24,13 @@ Feature: Using Tor bridges and pluggable transports
     And available upgrades have been checked
     And all Internet traffic has only flowed through the configured bridges
 
+  Scenario: Using obfs4 pluggable transports from a QR code
+    When I configure some obfs4 bridges from a QR code in the Tor Connection Assistant in hide mode
+    Then I wait until Tor is ready
+    And tca.conf includes the configured bridges
+    And available upgrades have been checked
+    And all Internet traffic has only flowed through the configured bridges
+
   @supports_real_tor
   Scenario: Default Tor bridges
     When I configure the default bridges in the Tor Connection Assistant
