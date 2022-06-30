@@ -29,6 +29,7 @@ module Dogtail
 
   TREE_API_NODE_ACTIONS = [
     :click,
+    :doActionNamed,
     :doubleClick,
     :grabFocus,
     :keyCombo,

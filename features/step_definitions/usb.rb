@@ -191,7 +191,9 @@ def enable_all_persistence_presets
       debug_log("#{switch.name} is already enabled, skipping")
     else
       debug_log("enabling #{switch.name}")
-      switch.click
+      # To avoid having to bother with scrolling the window we just
+      # send an AT-SPI action instead of clicking.
+      switch.doActionNamed('toggle')
       try_for(10) { switch.checked }
     end
   end
