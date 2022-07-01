@@ -49,6 +49,7 @@ that's needed by the test suite, and setting a `umask` that runs the tests in
 conditions closer to production):
 
     export SOURCE_DATE_EPOCH=$(date --utc +%s)
+    export NODE_TLS_REJECT_UNAUTHORIZED=0
     sudo true
     umask 077
     
