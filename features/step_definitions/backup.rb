@@ -5,7 +5,8 @@ end
 Then /^the backup tool displays "([^"]+)"$/ do |expected|
   try_for(30) do
     Dogtail::Application.new('zenity')
-                        .child(roleName: 'label')
+                        .children(roleName: 'label')
+                        .last
                         .text
                         .include?(expected)
   end
