@@ -53,13 +53,13 @@ When /^I follow the Electrum wizard to create a new bitcoin wallet$/ do
   electrum_wizard.button('Next').press
   electrum_wizard.child('What kind of wallet do you want to create?',
                         roleName: 'panel')
-  electrum_wizard.child('Standard wallet', roleName: 'radio button').select
+  electrum_wizard.child('Standard wallet', roleName: 'radio button').click
   electrum_wizard.button('Next').press
   electrum_wizard.child('Keystore', roleName: 'label')
-  electrum_wizard.child('Create a new seed', roleName: 'radio button').select
+  electrum_wizard.child('Create a new seed', roleName: 'radio button').click
   electrum_wizard.button('Next').press
   electrum_wizard.child('Choose Seed type', roleName: 'label')
-  electrum_wizard.child('Standard', roleName: 'radio button').select
+  electrum_wizard.child('Standard', roleName: 'radio button').click
   electrum_wizard.button('Next').press
   electrum_wizard.child('Your wallet generation seed is:', roleName: 'label')
   seed = electrum_wizard.child(roleName: 'text').text
