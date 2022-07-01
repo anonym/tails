@@ -8,7 +8,6 @@ def post_vm_start_hook
   # having an important click lost. The point we click should be
   # somewhere where no clickable elements generally reside.
   @screen.click(@screen.w - 1, @screen.h / 2)
-  sleep 1
 end
 
 def post_snapshot_restore_hook(snapshot_name)
@@ -26,10 +25,13 @@ def post_snapshot_restore_hook(snapshot_name)
   # Activities Overview would fail (SUPER has no effect when the
   # Applications menu is still opened).
   @screen.press('Escape')
+  # Wait for the menu to be closed
+  sleep 1
 
   # The guest's Tor's circuits' states are likely to get out of sync
   # with the other relays, so we ensure that we have fresh circuits.
   # Time jumps and incorrect clocks also confuses Tor in many ways.
+  already_synced_time_host_to_guest = false
   if $vm.connected_to_network?
     # Since Tor Connection was introduced, tor@default.service is always active, so we need to check if Tor
     # was required in the snapshot we are using. For example, the with-network-logged-in-unsafe-browser have
@@ -38,12 +40,12 @@ def post_snapshot_restore_hook(snapshot_name)
        check_disable_network != '1'
       $vm.execute('systemctl stop tor@default.service')
       $vm.host_to_guest_time_sync
+      already_synced_time_host_to_guest = true
       $vm.execute('systemctl start tor@default.service')
       wait_until_tor_is_working
     end
-  else
-    $vm.host_to_guest_time_sync
   end
+  $vm.host_to_guest_time_sync unless already_synced_time_host_to_guest
 end
 
 Given /^a computer$/ do
