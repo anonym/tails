@@ -28,6 +28,7 @@ ikiwiki --setup ikiwiki.setup \
     | sed '/^<p><img [^<>]*\/><\/p>$/d' \
     | sed '/^<div[^<>]*\>/d' \
     | sed '/^<\/div>$/d' \
+    | sed 's@<img [^<>]*/>@@g' \
     | sed 's@<a name[^<>]*></a>@@g' \
     | sed 's@href="\.\./@href="https://tails.boum.org/@g' \
     | sed 's@src="\./@src="https://tails.boum.org/news/@g' \
