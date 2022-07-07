@@ -7,15 +7,16 @@ error () {
     exit 1
 }
 
-USAGE="Usage: $(basename "$0") VERSION"
+USAGE="Usage: $(basename "$0") VERSION RELEASE_DATE"
 
-[ $# -eq 1 ] || error "$USAGE"
+[ $# -eq 2 ] || error "$USAGE"
 
-VERSION="$1"
+export VERSION="$1"
+export RELEASE_DATE="$2"
 
 MARKDOWN_TMPFILE=$(mktemp /tmp/tor-blog-post-XXXXXX.md)
 
-body() {
+html_body() {
     ikiwiki --setup ikiwiki.setup \
             --libdir lib/perl5 \
             --render "wiki/src/news/version_${VERSION:?}.mdwn" \
@@ -38,6 +39,8 @@ body() {
     echo '<p>For support and feedback, visit the <a href="https://tails.boum.org/support/">Support section</a> on the Tails website.</p>'
 }
 
-body | html2markdown > "$MARKDOWN_TMPFILE"
+BODY=$(html_body | html2markdown) j2 --import-env '' \
+    config/release_management/templates/Tor_blog_post.md.jinja \
+    > "$MARKDOWN_TMPFILE"
 
 echo "Done! The draft Tor blog post was written to $MARKDOWN_TMPFILE"
