@@ -261,7 +261,6 @@ https-get-expired-sid:
         - config/chroot_local-includes/usr/src/https-get-expired.go
         - config/chroot_local-includes/etc/default/htpdate.pools
   script:
-    - apt-get update -qq
     - apt-get -qy install --no-install-recommends golang-go ca-certificates
     - *build-https-get-expired
     - *test-https-get-expired
