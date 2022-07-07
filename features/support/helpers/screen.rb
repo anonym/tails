@@ -110,7 +110,9 @@ class Screen
 
   def match_screen(image, sensitivity, show_image)
     screenshot = "#{$config['TMPDIR']}/screenshot.png"
+    debug_log('Screen[match_screen]: taking screenshot')
     $vm.display.screenshot(screenshot)
+    debug_log('Screen[match_screen]: matching template to screenshot')
     OpenCV.matchTemplate("#{OPENCV_IMAGE_PATH}/#{image}",
                          screenshot, sensitivity, show_image)
   end

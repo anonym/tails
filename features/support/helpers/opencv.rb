@@ -13,6 +13,7 @@ module OpenCV
     else
       env['DISPLAY'] = ENV['USER_DISPLAY']
     end
+    debug_log('OpenCV: starting opencv_match_template.py')
     p = popen_wait(
       [env, 'python3', "#{GIT_DIR}/features/scripts/opencv_match_template.py",
        screen, image, sensitivity.to_s, show_match.to_s,],
