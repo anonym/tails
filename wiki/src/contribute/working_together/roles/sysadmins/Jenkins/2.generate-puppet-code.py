@@ -14,6 +14,7 @@ import argparse
 import fileinput
 import re
 import requests
+import sys
 
 from bs4 import BeautifulSoup
 
@@ -21,12 +22,19 @@ from bs4 import BeautifulSoup
 BASE_URL = 'https://updates.jenkins.io/download/plugins'
 
 
-def fetch_hash(plugin):
-    url = BASE_URL + '/' + plugin
-    page = requests.get(url)
+def fetch_hash(plugin, version):
+    url = BASE_URL + '/' + plugin + '/'
+    while True:
+        try:
+            print(f'Fetching {url}...', file=sys.stderr)
+            page = requests.get(url)
+            break
+        except requests.exceptions.ConnectionError as e:
+            print(f'Error: {e}', file=sys.stderr)
     soup = BeautifulSoup(page.text, 'html.parser')
     # This has to be updated when/if the Jenkins update website HTML changes
-    h = next(filter(lambda e: 'SHA-256' in e.text, soup.findAll('div', {'class':'checksums'}))).findChildren('code')[0].text
+    checksums = soup.findAll('li', {'id': version}).pop().findAll('div', {'class': 'checksums'})
+    h = next(filter(lambda e: 'SHA-256' in e.text, checksums)).findChildren('code')[0].text
     return h
 
 
@@ -48,7 +56,7 @@ def parse_plugins(path):
 
 
 def print_puppet_code(plugin, version, deps):
-    h = fetch_hash(plugin)
+    h = fetch_hash(plugin, version)
     print('  jenkins::plugin { \'' + plugin + '\':')
     print('    version       => \'' + version + '\',')
     print('    digest_string => \'' + h + '\',')
