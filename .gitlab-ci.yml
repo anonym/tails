@@ -223,6 +223,9 @@ apt-snapshots-expiry:
         - config/APT_snapshots.d/*/serial
         - vagrant/definitions/tails-builder/config/APT_snapshots.d/*/serial
 
+.install-https-get-expired-build-deps: &install-https-get-expired-build-deps
+  - apt-get -qy install --no-install-recommends golang-go ca-certificates
+
 .build-https-get-expired: &build-https-get-expired
   - go build -o ./https-get-expired config/chroot_local-includes/usr/src/https-get-expired.go
 
@@ -248,7 +251,7 @@ https-get-expired:
         - config/chroot_local-includes/usr/src/https-get-expired.go
         - config/chroot_local-includes/etc/default/htpdate.pools
   script:
-    - apt-get -qy install --no-install-recommends golang-go ca-certificates
+    - *install-https-get-expired-build-deps
     - *build-https-get-expired
     - *test-https-get-expired
 
@@ -261,6 +264,6 @@ https-get-expired-sid:
         - config/chroot_local-includes/usr/src/https-get-expired.go
         - config/chroot_local-includes/etc/default/htpdate.pools
   script:
-    - apt-get -qy install --no-install-recommends golang-go ca-certificates
+    - *install-https-get-expired-build-deps
     - *build-https-get-expired
     - *test-https-get-expired
