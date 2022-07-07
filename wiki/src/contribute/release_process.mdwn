@@ -1604,7 +1604,15 @@ Skip this if you are preparing anything but a final, major release.
 - Proof-read the draft blog post
 
 - Prepare a *draft* merge request against the [Tor blog](https://gitlab.torproject.org/tpo/web/blog)
-  - documentation: https://gitlab.torproject.org/tpo/tpa/team/-/wikis/service/blog#how-to-write-a-new-blog-post-in-gitlab
+  - Follow the
+    [Tor documentation](https://gitlab.torproject.org/tpo/tpa/team/-/wikis/service/blog#how-to-write-a-new-blog-post-in-gitlab).
+    It's OK to create the MR on the command line instead of in the GitLab Web IDE.
+  - Reuse our existing lead image:
+    - `cd` into the directory you created for the new blog post
+    - Create a symlink to the existing lead image:
+
+          ln -s ../../../assets/static/images/blog/tails.jpeg lead.jpg && \
+          git add lead.jpg
 
 Go wild!
 ========
