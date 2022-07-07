@@ -505,8 +505,8 @@ class VM
   end
 
   def host_to_guest_time_sync
-    host_time = DateTime.now.strftime('%s').to_s
-    execute_successfully("date -s '@#{host_time}'")
+    host_time = DateTime.now.strftime('%F %T').to_s
+    execute_successfully("timedatectl set-time '#{host_time}'")
   end
 
   def connected_to_network?
