@@ -248,19 +248,6 @@ https-get-expired:
         - config/chroot_local-includes/usr/src/https-get-expired.go
         - config/chroot_local-includes/etc/default/htpdate.pools
   script:
-    - 'echo "deb http://deb.debian.org/debian buster-backports main"
-         > /etc/apt/sources.list.d/buster-backports.list'
-
-    # Needs to be kept in sync' with config/chroot_apt/preferences
-    - |
-      cat > /etc/apt/preferences.d/golang.pref <<-'EOF'
-      Explanation: Compiling https-get-expired reproducibly needs a recent version of Go
-      Package: golang-go golang-src golang-1.15-go golang-1.15-src
-      Pin: release o=Debian Backports,n=buster-backports
-      Pin-Priority: 999
-      EOF
-
-    - apt-get update -qq
     - apt-get -qy install --no-install-recommends golang-go golang-1.15-go ca-certificates
     - *build-https-get-expired
     - *test-https-get-expired
