@@ -89,7 +89,7 @@ Packages
 
 To release Tails you'll need some packages installed:
 
-* `gitlab-cli jq tidy mktorrent podman python3-bs4 python3-debian python3-gitlab python3-jinja2 python3-voluptuous transmission-cli`
+* `gitlab-cli jq tidy mktorrent podman python3-bs4 python3-debian python3-gitlab python3-jinja2 python3-html2text python3-voluptuous transmission-cli`
   - Note: if the Debian version you are running does not include all required
     Go packages, such as [[!debpts podman]], you should be able to install
     them from a more recent Debian release with APT pinning.
@@ -1599,24 +1599,9 @@ Skip this if you are preparing anything but a final, major release.
         ./bin/generate-Tor-blog-post "${VERSION:?}"
 
 - Proof-read the draft blog post
-- [login to the Tor blog](https://blog.torproject.org/user). The
-  credentials are in keyringer in `rm.git`.
-- click *Content* → *Add content* → *Blog Post*
-- add these tags, each in a separate text entry field (use _Add another item_):
-  * tails
-  * anonymous operating system
-  * tails releases
-- set *Title* to "New Release: Tails $VERSION"
-- set *URL alias* to "/new-release-tails-XYZ" (without dots)
-- choose *Filtered HTML* as the *Text format* in the blog post editor
-- copy the text you have prepared into the *Post Body* textarea of the
-  blog post editor
-- open *Comment Settings* and verify that comments are *Closed*
-- open *Promotion Options* and check *Promoted to front page*
-- click *Preview* and ensure everything is OK
-- click *Back to content editing*
-- ensure the *Publish* checkbox is _not_ checked
-- click *Save* to save the draft
+
+- Prepare a *draft* merge request against the [Tor blog](https://gitlab.torproject.org/tpo/web/blog)
+  - documentation: https://gitlab.torproject.org/tpo/tpa/team/-/wikis/service/blog#how-to-write-a-new-blog-post-in-gitlab
 
 Go wild!
 ========
@@ -1763,15 +1748,12 @@ to the release notes:
 
 The credentials are in keyringer in `rm.git`.
 
-Publish the Tor blog post
--------------------------
+Request the publication of the Tor blog post
+--------------------------------------------
 
 If you prepared a draft Tor blog post earlier, then:
 
-1. Open the draft Tor blog post you have prepared earlier
-1. Adjust *Authoring Information* → *Authored on* to make the
-   publication date correct
-1. Click *Save and publish*
+- Mark the merge request as ready: remove the `Draft:` prefix.
 
 Amnesia news
 ------------

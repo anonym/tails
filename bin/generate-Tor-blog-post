@@ -13,7 +13,8 @@ USAGE="Usage: $(basename "$0") VERSION"
 
 VERSION="$1"
 
-TMPFILE=$(mktemp /tmp/tor-blog-post-XXXXXX.html)
+HTML_TMPFILE=$(mktemp /tmp/tor-blog-post-XXXXXX.html)
+MARKDOWN_TMPFILE=$(mktemp /tmp/tor-blog-post-XXXXXX.md)
 
 ikiwiki --setup ikiwiki.setup \
         --libdir lib/perl5 \
@@ -31,11 +32,13 @@ ikiwiki --setup ikiwiki.setup \
     | sed 's@href="\.\./@href="https://tails.boum.org/@g' \
     | sed 's@src="\./@src="https://tails.boum.org/news/@g' \
     | sed 's@\(\.en\)\?.html@/@g' \
-    > "$TMPFILE"
+    > "$HTML_TMPFILE"
 
-cat >> "$TMPFILE" <<EOF
+cat >> "$HTML_TMPFILE" <<EOF
 <h1>Support and feedback</h1>
 <p>For support and feedback, visit the <a href="https://tails.boum.org/support/">Support section</a> on the Tails website.</p>
 EOF
 
-echo "Done! The draft Tor blog post was written to $TMPFILE"
+html2markdown "$HTML_TMPFILE" > "$MARKDOWN_TMPFILE"
+
+echo "Done! The draft Tor blog post was written to $MARKDOWN_TMPFILE"
