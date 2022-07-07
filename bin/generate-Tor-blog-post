@@ -16,6 +16,7 @@ VERSION="$1"
 TMPFILE=$(mktemp /tmp/tor-blog-post-XXXXXX.html)
 
 ikiwiki --setup ikiwiki.setup \
+        --libdir lib/perl5 \
         --render "wiki/src/news/version_${VERSION:?}.mdwn" \
     | tidy --quiet yes \
 	   --mute MISSING_ENDTAG_BEFORE,INSERTING_TAG,DISCARDING_UNEXPECTED,UNKNOWN_ENTITY,MISSING_ATTRIBUTE,TRIM_EMPTY_ELEMENT,STRING_CONTENT_LOOKS \
