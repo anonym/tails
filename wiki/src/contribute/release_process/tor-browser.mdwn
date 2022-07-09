@@ -63,7 +63,7 @@ and see if the desired version is available. If it's not, and you want to
     do
         if (for u in "${tbbUrls[@]}"; do elinks -no-numbering -no-references -dump "$u" | sed -e "s+^+[${u//+/ }]+" ; done)| grep -F 11.0.10
         then
-            echo FOUND!
+            echo FOUND
             notify-send "Release dir" 'found'
         fi
         sleep 10m
