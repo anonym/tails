@@ -496,12 +496,13 @@ version's `.packages` file and the one from the to-be-released images:
 
    - Open the [GitLab issue about the release notes](https://gitlab.tails.boum.org/groups/tails/-/issues?scope=all&search=release+notes&sort=milestone&state=opened)
 
-   - Notify `@technical-writers` that the changelog is ready:
+   - Notify `@technical-writers` that the changelog is ready,
+     and provide them a link to latest relevant Jenkins built image, so they can use that to make screenshots or write
+documentation:
 
-         echo "Dear @technical-writers, the changelog entry is ready: https://gitlab.tails.boum.org/tails/tails/-/blob/${RELEASE_BRANCH:?}/debian/changelog"
-
-   - Provide them a link to latest relevant Jenkins built image, so they can use that to make screenshots or write
-documentation.
+         echo "Dear @technical-writers,\n"
+         echo "- The changelog entry is ready: https://gitlab.tails.boum.org/tails/tails/-/blob/${RELEASE_BRANCH:?}/debian/changelog"
+         echo "- The latest corresponding images built by Jenkins are there: https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/build-artifacts"
 
 Included website
 ----------------
