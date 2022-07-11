@@ -481,16 +481,16 @@ version's `.packages` file and the one from the to-be-released images:
    - new upstream releases of other important components such as the
      Linux kernel
 
-   And mention those changes in `debian/changelog`
+   And those changes in `debian/changelog`
 
 3. Sanity check the version, commit, and push:
 
-	if [ "$(dpkg-parsechangelog -SVersion)" = "${VERSION:?}" ]; then
-	    git commit debian/changelog -m "Update changelog for ${VERSION:?}."
-	else
-	    echo 'Error: version mismatch: please compare ${VERSION:?} with the last entry in debian/changelog'
-	fi && \
-    git push origin "${RELEASE_BRANCH:?}"
+	    if [ "$(dpkg-parsechangelog -SVersion)" = "${VERSION:?}" ]; then
+	       git commit debian/changelog -m "Update changelog for ${VERSION:?}."
+	    else
+	       echo 'Error: version mismatch: please compare ${VERSION:?} with the last entry in debian/changelog'
+	    fi && \
+        git push origin "${RELEASE_BRANCH:?}"
 
 4. Let Technical Writers know that the changelog is ready
 
@@ -498,7 +498,7 @@ version's `.packages` file and the one from the to-be-released images:
 
    - Notify `@technical-writers` that the changelog is ready:
 
-         echo "Dear @technical-writers, you can find the changelog on the ${RELEASE_BRANCH:?} branch"
+         echo "Dear @technical-writers, the changelog entry is ready: https://gitlab.tails.boum.org/tails/tails/-/blob/${RELEASE_BRANCH:?}/debian/changelog"
 
    - Provide them a link to latest relevant Jenkins built image, so they can use that to make screenshots or write
 documentation.
