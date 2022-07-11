@@ -704,8 +704,11 @@ Feel free to skip this section when preparing an emergency release.
             <( cut -d' ' -f1 config/binary_rootfs/squashfs.sort     | sort ) \
             | less
 
-1. `git commit -m 'Updating SquashFS sort file' config/binary_rootfs/squashfs.sort`
-1. Clean up: `rm -f config/binary_rootfs/squashfs.sort.old`
+1. Commit the new SquashFS sort file and clean up
+
+        git commit -m 'Updating SquashFS sort file' \
+            config/binary_rootfs/squashfs.sort && \
+        rm -f config/binary_rootfs/squashfs.sort.old
 
 Build the final images
 ----------------------
