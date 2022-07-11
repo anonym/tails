@@ -28,3 +28,8 @@ user_pref("extensions.torbutton.inserted_security_level", true);
 
 // Don't enable private browsing mode by default
 user_pref("browser.privatebrowsing.autostart", false);
+
+// onionrewrites are useless and even dangerous for Unsafe Browser:
+// in fact, when they are enabled, the browser will fetch data from relevant websites
+// (ie: securedrop.org), which will hint any attacker that this is a Tails.
+user_pref("browser.urlbar.onionRewrites.enabled", false);

@@ -323,15 +323,26 @@ download_and_verify_files "${TBB_TARBALLS_BASE_URL}" "${TBB_TARBALLS}" "${TMP}"
 
 # shellcheck disable=SC2153
 install_tor_browser "${TMP}/${MAIN_TARBALL}" "${TBB_INSTALL}"
+
+# sometime (?) this get added to a tor browser tarball; let's clean that
+rm -f /usr/local/lib/tor-browser/start-tor-browser.orig
+
 apply_prefs_hacks "${TBB_INSTALL}" "${TBB_TIMESTAMP}"
 install_debian_extensions "${TBB_INSTALL}" "${TBB_TIMESTAMP}"
 disable_update_checks "${TBB_INSTALL}"
 strip_nondeterminism "${TBB_INSTALL}" "${TBB_TIMESTAMP}"
 
 mkdir -p "${TBB_EXT}"
-if [ "${NIGHTLY_BUILD}" != yes ]; then
-    LANGPACKS_TARBALL="$(echo "${TBB_TARBALLS}" | grep -o "langpacks-tor-browser-linux64-.*\.tar\.xz")"
+LANGPACKS_TARBALL="$(echo "${TBB_TARBALLS}" | grep -o "langpacks-tor-browser-linux64-.*\.tar\.xz")"
+if [ -n "$LANGPACKS_TARBALL" ]; then
     install_langpacks "${TMP}/${LANGPACKS_TARBALL}" "${TBB_EXT}"
+else
+    if [ "${NIGHTLY_BUILD}" != yes ]; then
+        echo "ERROR: langpacks not found" >&2
+        exit 4
+    else
+        echo "WARNING: langpacks not found"
+    fi
 fi
 
 install_pluggable_transports "${TMP}/${MAIN_TARBALL}" /usr/bin
