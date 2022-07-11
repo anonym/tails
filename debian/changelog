@@ -1,8 +1,127 @@
 tails (5.2) UNRELEASED; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade Thunderbird to 91.11.0
 
- -- intrigeri <intrigeri@debian.org>  Thu, 23 Jun 2022 10:19:59 +0000
+  * Upgrade Tor Browser to 11.5 (tails/tails!889)
+
+    Closes issues:
+      - Upgrade to Tor Browser based on Firefox 91.11 (tails/tails#19029)
+
+    Commits:
+      - more bumping tor browser
+      - bump torbrowser images
+      - autobump
+      - manual bump TorBrowserOverviewIcon.png
+      - some more image bumping
+      - l10n screenshot updated
+      - bump duckduckgo prompt image
+      - adapt tor browser screenshot
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.5
+      - Revert "NIGHTLY ONLY! REMOVE ME!"
+      - clean nightly dirt
+      - install langpacks for nightlies, too (if possible)
+      - NIGHTLY ONLY! REMOVE ME!
+      - Revert "disable OnionAliases for Unsafe Browser"
+      - use new TBB setting to disable onionrewrites altogether
+      - take tbb 11.5 from nightlies
+      - disable OnionAliases for Unsafe Browser
+      - Upgrade Tor Browser to 11.5a13-build2
+
+  * Adapt release process to new Tor blog platform (tails/tails!887)
+
+    Closes issues:
+      - Change release process details for blog.torproject.org (tails/tails#18963)
+
+    Commits:
+      - Be explicit
+      - Release process: suggest publishing a Tor blog even for bugfix releases
+      - Release process: improve Tor blog post instructions
+      - generate-Tor-blog-post: use actual template and also generate the Lektor header
+      - generate-Tor-blog-post: refactor (extract code to function)
+      - generate-Tor-blog-post: remove inline images too
+      - Release process: adapt the Tor blog post process to Lektor
+      - generate-Tor-blog-post: fix ikiwiki command
+
+  * GitLab CI: clean up and refactor https-get-expired jobs (tails/tails!884)
+
+    Commits:
+      - GitLab CI: force running jobs when updating .gitlab-ci.yml
+      - GitLab CI: factorize
+      - GitLab CI: install golang in the same way we do during a Tails build
+      - GitLab CI: remove duplicate call to "apt-get update"
+      - GitLab CI: drop obsolete pinning to Buster
+
+  * Git: ignore the early_patch= (aka. --early-patch) hook (tails/tails!882)
+
+    Commits:
+      - Git: ignore the early_patch= (aka. --early-patch) hook
+
+  * Resolve "IUK test suite: features/frontend is broken (tails-transform-mirror-
+    url fails)" (tails/tails!880)
+
+    Closes issues:
+      - IUK test suite: features/frontend is broken (tails-transform-mirror-url fails)
+        (tails/tails#18661)
+
+    Commits:
+      - IUk test suite: Set Torsocks to allow outbound connections to the loopback
+        interface
+      - IUK test suite: Add test file
+      - IUK test suite: disable certificate verification
+
+  * Test suite: fix copying a new directory with late patch (tails/tails!877)
+
+    Commits:
+      - Test suite: fix copying a new directory with late patch
+
+  * Resolve "Test "The included APT repository keys are up-to-date" does not check
+    subkeys" (tails/tails!876)
+
+    Closes issues:
+      - Test "The included APT repository keys are up-to-date" does not check subkeys
+        (tails/tails#19047)
+
+    Commits:
+      - check we have at least one *relevant* subkey
+      - gpg checks deeper: both master keys and subkeys
+      - consistent naming
+      - Revert "Revert "check APT subkeys, too""
+
+  * Test suite: misc bugfixes (tails/tails!872)
+
+    Commits:
+      - Test suite: also set the guest's time when connected to the LAN but not to Tor
+      - Test suite: move sleep where it was supposed to be
+
+  * workaround persistent Tor bridges bug (tails/tails!870)
+
+    Closes issues:
+      - Tor Bridges persistence sometimes fails to save bridges during initial setup on
+        Bullseye, at least in our test suite (tails/tails#18926)
+
+    Commits:
+      - workaround for bug only present in test suite
+
+  * check APT subkeys, too (tails/tails!869)
+
+    Closes issues:
+      - Test "The included APT repository keys are up-to-date" does not check subkeys
+        (tails/tails#19047)
+
+    Commits:
+      - check APT subkeys, too
+
+  * Set Samba workgroup used by GTK applications to "localhost" (tails/tails!865)
+
+    Closes issues:
+      - Several applications ask Tor to resolve the "workgroup" hostname
+        (tails/tails#19030)
+
+    Commits:
+      - Set Samba workgroup used by GTK applications to "localhost"
+
+ -- Tails developers <tails@boum.org>  Mon, 11 Jul 2022 06:30:59 +0000
 
 tails (5.1.1) unstable; urgency=medium
 
