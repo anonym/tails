@@ -369,6 +369,10 @@ If `lint_po` complains:
 * send a note to <tails-l10n@boum.org> [public] so that they get in touch with
   whoever can fix them.
 
+If the previous commit added a PO file for a new locale, add it to
+`config/chroot_local-includes/usr/share/tails/browser-localization/descriptions`
+(in the `MOZILLA_LOCALE:LOCATION` format).
+
 If preparing a final release
 ================================
 
@@ -481,27 +485,28 @@ version's `.packages` file and the one from the to-be-released images:
    - new upstream releases of other important components such as the
      Linux kernel
 
-   And mention those changes in `debian/changelog`
+   And those changes in `debian/changelog`
 
 3. Sanity check the version, commit, and push:
 
-	if [ "$(dpkg-parsechangelog -SVersion)" = "${VERSION:?}" ]; then
-	    git commit debian/changelog -m "Update changelog for ${VERSION:?}."
-	else
-	    echo 'Error: version mismatch: please compare ${VERSION:?} with the last entry in debian/changelog'
-	fi && \
-    git push origin "${RELEASE_BRANCH:?}"
+	    if [ "$(dpkg-parsechangelog -SVersion)" = "${VERSION:?}" ]; then
+	       git commit debian/changelog -m "Update changelog for ${VERSION:?}."
+	    else
+	       echo 'Error: version mismatch: please compare ${VERSION:?} with the last entry in debian/changelog'
+	    fi && \
+        git push origin "${RELEASE_BRANCH:?}"
 
 4. Let Technical Writers know that the changelog is ready
 
    - Open the [GitLab issue about the release notes](https://gitlab.tails.boum.org/groups/tails/-/issues?scope=all&search=release+notes&sort=milestone&state=opened)
 
-   - Notify `@technical-writers` that the changelog is ready:
+   - Notify `@technical-writers` that the changelog is ready,
+     and provide them a link to latest relevant Jenkins built image, so they can use that to make screenshots or write
+documentation:
 
-         echo "Dear @technical-writers, you can find the changelog on the ${RELEASE_BRANCH:?} branch"
-
-   - Provide them a link to latest relevant Jenkins built image, so they can use that to make screenshots or write
-documentation.
+         echo "Dear @technical-writers,\n"
+         echo "- The changelog entry is ready: https://gitlab.tails.boum.org/tails/tails/-/blob/${RELEASE_BRANCH:?}/debian/changelog"
+         echo "- The latest corresponding images built by Jenkins are there: https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/build-artifacts"
 
 Included website
 ----------------
@@ -676,9 +681,9 @@ Feel free to skip this section when preparing an emergency release.
 1. Automatically connect to Tor with _Tor Connection_.
 1. Wait for _Tor Connection_ to report success.
 1. Start *Tor Browser*.
+1. Backup the old sort file: `cp config/binary_rootfs/squashfs.sort{,.old}`
 1. 3 minutes after the start of the GNOME session, the `boot-profile` process will be
    killed. Retrieve the new sort file from `/var/log/boot-profile`.
-1. Backup the old sort file: `cp config/binary_rootfs/squashfs.sort{,.old}`
 1. Copy the new sort file to `config/binary_rootfs/squashfs.sort`.
 1. To remove:
 
@@ -699,8 +704,11 @@ Feel free to skip this section when preparing an emergency release.
             <( cut -d' ' -f1 config/binary_rootfs/squashfs.sort     | sort ) \
             | less
 
-1. `git commit -m 'Updating SquashFS sort file' config/binary_rootfs/squashfs.sort`
-1. Clean up: `rm -f config/binary_rootfs/squashfs.sort.old`
+1. Commit the new SquashFS sort file and clean up
+
+        git commit -m 'Updating SquashFS sort file' \
+            config/binary_rootfs/squashfs.sort && \
+        rm -f config/binary_rootfs/squashfs.sort.old
 
 Build the final images
 ----------------------
@@ -975,9 +983,9 @@ To build the IUKS, run this command:
 This command takes a long time. In parallel, while it is running,
 you can follow the next steps:
 
- - ISO history
- - Build the Incremental Upgrade Kits on Jenkins
- - If you expect the need to run some manual tests and you have one spare computer, you can prepare a USB
+1. ISO history
+2. Build the Incremental Upgrade Kits on Jenkins
+3. If you expect the need to run some manual tests and you have one spare computer, you can prepare a USB
    stick and do so.
 
 ISO history
@@ -1958,8 +1966,9 @@ If you just released a final release
 1. In [[contribute/calendar]] (`master` branch), remove the entries about the version that you've
    just released.
 
-1. Check the Mozilla release calendars:
+1. Check the Mozilla and Tor Browser release calendars:
 
+   * [Tor Browser release calendar](https://nc.torproject.net/apps/calendar/p/Dy5spytzmYoJPieT/dayGridMonth/now) — what we're looking for here is the *release* events, not the *rebase* ones
    * [Google calendar](https://www.google.com/calendar/embed?src=mozilla.com_2d37383433353432352d3939%40resource.calendar.google.com)
    * [Release schedule](https://wiki.mozilla.org/Release_Management/Calendar)
 
