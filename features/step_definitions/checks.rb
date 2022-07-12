@@ -19,36 +19,84 @@ def assert_all_keys_are_valid_for_n_months(type, months)
   ).stdout
             .scan(/^fpr:::::::::([A-Z0-9]+):$/)
             .flatten
-            .reject { |key| ignored_keys.include?(key) }
+            .reject { |fpr| ignored_keys.include?(fpr) }
 
-  invalid = []
-  keys.each do |key|
-    assert_key_is_valid_for_n_months(type, key, months)
-  rescue Test::Unit::AssertionFailedError
-    invalid << key
-    next
+  invalid = keys.reject do |fpr|
+    key_valid_for_n_months?(type, fpr, months)
   end
   assert(invalid.empty?,
          "The following #{type} key(s) will not be valid " \
          "in #{months} months: #{invalid.join(', ')}")
 end
 
-def assert_key_is_valid_for_n_months(type, fingerprint, months)
+def check_key_valid(line, months)
+  # line comes from gpg --list-keys (don't use --with-colons)
+  expiry = line.scan(/\[expire[ds]: ([0-9-]*)\]/)
+  return true if expiry.empty?
+
+  expiration_date = Date.parse(expiry.flatten.first)
+  valid = ((expiration_date << months.to_i) > DateTime.now)
+  valid
+end
+
+def get_subkey_use(line)
+  # useful to check if a subkey can be used for signing, for example
+  # returns a string such as "SEA" (sign+encrypt+authenticate) or "S", etc.
+  uses = line.scan(/\d\d\d\d-\d\d-\d\d \[([SEAC]+)\]/).flatten.first
+
+  uses.split('').sort
+end
+
+def key_valid_for_n_months?(type, fingerprint, months)
+  # we define a check to be valid:
+  #  - only if the master key is valid
+  #  - only if either:
+  #    - there are no subkeys at all
+  #    - at least one relevant subkey is valid
+  #
+  # any subkey is relevant if type == :OpenPGP
+  # only signing keys are relevant if type == :APT
+  #
+  # Please note that this is not truly perfect: for example, if a OpenPGP key
+  # has only its encryption subkey valid, but its signing subkey is expired,
+  # this should give an error but will not.
+
   assert([:OpenPGP, :APT].include?(type))
   assert(months.is_a?(Integer))
 
   cmd  = type == :OpenPGP ? 'gpg'     : 'apt-key adv'
   user = type == :OpenPGP ? LIVE_USER : 'root'
-  shipped_sig_key_info = $vm.execute_successfully(
-    "#{cmd} --batch --list-key #{fingerprint}", user: user
-  ).stdout
-  m = /\[expire[ds]: ([0-9-]*)\]/.match(shipped_sig_key_info)
-  return unless m
+  list_options = '--list-options show-unusable-subkeys'
 
-  expiration_date = Date.parse(m[1])
-  assert((expiration_date << months.to_i) > DateTime.now,
-         "The shipped key #{fingerprint} will not be valid " \
-         "#{months} months from now.")
+  key_description = $vm.execute_successfully(
+    "#{cmd} --batch  #{list_options} --list-key #{fingerprint}", user: user
+  ).stdout.split("\n")
+
+  masterkey = key_description.grep(/^pub\b/)
+  subkeys = key_description.grep(/^sub\b/)
+
+  unless check_key_valid(masterkey.first, months)
+    debug_log("Masterkey not valid: #{masterkey}")
+    return false
+  end
+
+  return true if subkeys.empty?
+
+  valid_subkeys = subkeys.filter do |subkey_line|
+    if type == :APT && !get_subkey_use(subkey_line).include?('S')
+      # we don't care about non-signing key
+      return false
+    end
+
+    if check_key_valid(subkey_line, months)
+      true
+    else
+      debug_log("subkey not valid: #{subkey_line}")
+      false
+    end
+  end
+
+  !valid_subkeys.empty?
 end
 
 Then /^the live user has been setup by live\-boot$/ do

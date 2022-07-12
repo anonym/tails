@@ -43,6 +43,7 @@ Upgrade Tor Browser in Tails
 Have a look at
 
 * <https://archive.torproject.org/tor-package-archive/torbrowser/?C=M;O=D>
+* <https://tb-build-05.torproject.org/~richard/builds/release/unsigned/11.5-build1/?C=M;O=D>
 * <https://www.torproject.org/dist/torbrowser/?C=M;O=D>
 * <https://people.torproject.org/~gk/builds/?C=M;O=D>
 * <https://people.torproject.org/~boklm/builds/?C=M;O=D>
@@ -61,9 +62,11 @@ and see if the desired version is available. If it's not, and you want to
     mapfile -t tbbUrls < <(grep -F https: < /tmp/tbb-urls.txt |sed -e 's+^ *++;s+ *$++')
     while true
     do
-        if (for u in "${tbbUrls[@]}"; do elinks -no-numbering -no-references -dump "$u" | sed -e "s+^+[${u//+/ }]+" ; done)| grep -F 11.0.10
+        if (for u in "${tbbUrls[@]}"; do
+            elinks -no-numbering -no-references -dump "$u" | sed -e "s+^+[${u//+/ }]+" ; done
+            )| grep -F -e "${TBB_VERSION}" -e "$(date +%F)"  -e "$(date +%F -d yesterday)" --color
         then
-            echo FOUND!
+            echo FOUND
             notify-send "Release dir" 'found'
         fi
         sleep 10m
