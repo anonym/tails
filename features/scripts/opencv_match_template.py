@@ -4,7 +4,6 @@ import cv2
 import os
 import sys
 import traceback
-from PIL import Image
 
 class FindFailed(RuntimeError):
     pass
