@@ -22,7 +22,7 @@ def post_snapshot_restore_hook(snapshot_name)
   # invisible until redrawn. So as a workaround we move this window,
   # to force a full redraw.
   # This problem does not happen on Wayland so we can remove this hack
-  # when we switch to Wayland: #18120, !322.
+  # when we switch to Wayland (#19042).
   if snapshot_name.end_with?('tails-greeter')
     unless @screen.exists('TailsGreeter.png')
       $vm.execute_successfully(
@@ -47,14 +47,15 @@ def post_snapshot_restore_hook(snapshot_name)
   # Wait for the menu to be closed
   sleep 1
 
-  # The guest's Tor's circuits' states are likely to get out of sync
-  # with the other relays, so we ensure that we have fresh circuits.
-  # Time jumps and incorrect clocks also confuses Tor in many ways.
+  # The guest's Tor circuits are likely to get out of sync
+  # with our Chutney network, so we ensure that we have fresh circuits.
+  # Time jumps and incorrect clocks also confuse Tor in many ways.
   already_synced_time_host_to_guest = false
   if $vm.connected_to_network?
-    # Since Tor Connection was introduced, tor@default.service is always active, so we need to check if Tor
-    # was required in the snapshot we are using. For example, the with-network-logged-in-unsafe-browser have
-    # network connected but no Tor configured. Checking DisableNetwork is useful
+    # tor@default.service is always active, so we need to check if Tor
+    # was configured in the snapshot we are using: for example,
+    # with-network-logged-in-unsafe-browser connects to the LAN
+    # but did not configure Tor.
     if $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
        check_disable_network != '1'
       $vm.execute('systemctl stop tor@default.service')
