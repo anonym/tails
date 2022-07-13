@@ -148,7 +148,7 @@ class Screen
 
   def find(pattern, **opts)
     debug_log("Screen: trying to find #{pattern}") if opts[:log]
-    wait(pattern, 5, **opts.clone.update(log: false))
+    wait(pattern, 10, **opts.clone.update(log: false))
   end
 
   def exists(pattern, **opts)
