@@ -129,7 +129,7 @@ module Dogtail
         # occurrences inside.
         "'#{value.gsub("'", "\\\\'")}'"
       elsif [Integer, Float].include?(value.class)
-        v.to_s
+        value.to_s
       else
         raise "#{name} does not know how to handle argument type " \
               "'#{value.class}'"
