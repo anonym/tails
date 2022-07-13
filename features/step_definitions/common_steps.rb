@@ -390,7 +390,7 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
                  else
                    'TailsGreeterLoginButton.png'
                  end
-  login_button_region = @screen.wait(login_button, 5)
+  login_button_region = @screen.wait(login_button, 10)
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -429,7 +429,7 @@ Given /^I set an administration password$/ do
   @screen.press('Return')
   # Wait for the Administration Password dialog to be closed,
   # otherwise the next step can fail.
-  @screen.wait('TailsGreeterLoginButton.png', 5)
+  @screen.wait('TailsGreeterLoginButton.png', 10)
 end
 
 Given /^I allow the Unsafe Browser to be started$/ do
@@ -933,12 +933,12 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   # really needed, e.g. to avoid having to encode lots of keymaps
   # to be able to type the name correctly:
   if app_name.match(/[.]png$/)
-    @screen.wait('GnomeActivitiesOverviewLaunchersReady.png', 10)
+    @screen.wait('GnomeActivitiesOverviewLaunchersReady.png', 20)
     # This should be ctrl + click, to ensure we open a new window.
     # Let's implement this once once of the callers needs this.
     @screen.wait(app_name, 10).click
   else
-    @screen.wait('GnomeActivitiesOverviewSearch.png', 10)
+    @screen.wait('GnomeActivitiesOverviewSearch.png', 20)
     # Trigger startup of search providers
     @screen.type(app_name[0])
     # Give search providers some time to start (#13469#note-5) otherwise
