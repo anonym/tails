@@ -32,6 +32,10 @@ def match(image, candidate, sensitivity, show_match=False):
 
 
 def main():
+    if len(sys.argv) < 3:
+        print("error: first argument must be the screen and the second the " +
+              "image to find inside the screen", file=sys.stderr)
+        sys.exit(2)
     try:
         try:
             sensitivity = float(sys.argv[3])
@@ -45,10 +49,6 @@ def main():
                      sensitivity, show_match))
     except FindFailed:
         sys.exit(1)
-    except IndexError:
-        print("error: first argument must be the screen and the second the " +
-              "image to find inside the screen", file=sys.stderr)
-        sys.exit(2)
     except:
         traceback.print_exc()
         sys.exit(127)
