@@ -5,13 +5,13 @@ import os
 import sys
 import traceback
 
+
 class FindFailed(RuntimeError):
     pass
 
+
 def match(image, candidate, sensitivity, show_match=False):
-    """
-    Returns the pos of candidate inside image, or raises if no match
-    """
+    "Return the pos of candidate inside image, or raises if no match."
     assert(sensitivity < 1.0)
     image_rgb = cv2.imread(image, 1)
     image_gray = cv2.cvtColor(image_rgb, cv2.COLOR_BGR2GRAY)
@@ -29,6 +29,7 @@ def match(image, candidate, sensitivity, show_match=False):
         cv2.imshow('Found match!', image_rgb)
         cv2.waitKey(0)
     return [x, y, w, h]
+
 
 def main():
     try:
@@ -51,6 +52,7 @@ def main():
     except:
         traceback.print_exc()
         sys.exit(127)
+
 
 if __name__ == "__main__":
     main()
