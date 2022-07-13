@@ -13,9 +13,9 @@ class FindFailed(RuntimeError):
 def match(image, candidate, sensitivity, show_match=False):
     "Return the pos of candidate inside image, or raises if no match."
     assert(sensitivity < 1.0)
-    image_rgb = cv2.imread(image, 1)
+    image_rgb = cv2.imread(image, cv2.IMREAD_COLOR)
     image_gray = cv2.cvtColor(image_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread(candidate, 0)
+    template = cv2.imread(candidate, cv2.IMREAD_GRAYSCALE)
     w, h = template.shape[::-1]
     res = cv2.matchTemplate(image_gray, template, cv2.TM_CCOEFF_NORMED)
     _, val, _, pos = cv2.minMaxLoc(res)
