@@ -232,7 +232,12 @@ Given /^I create a persistent partition( with the default settings| for Addition
   try_for(300) do
     persistent_storage_main_frame.child('Personal Data', roleName: 'label')
   end
-  enable_all_persistence_presets unless default_settings
+  unless default_settings
+    # XXX: remove once the Dotfiles user story is fixed, see #17803
+    $vm.execute_successfully('install -d -m 700 --owner amnesia --group amnesia /live/persistence/TailsData_unlocked/dotfiles')
+    $vm.execute_successfully('install --owner amnesia --group amnesia /dev/null /live/persistence/TailsData_unlocked/dotfiles/.bla')
+    enable_all_persistence_presets
+  end
 end
 
 def check_disk_integrity(name, dev, scheme)
