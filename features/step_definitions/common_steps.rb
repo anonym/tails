@@ -25,6 +25,7 @@ def post_snapshot_restore_hook(snapshot_name)
   # when we switch to Wayland (#19042).
   if snapshot_name.end_with?('tails-greeter')
     unless @screen.exists('TailsGreeter.png')
+      # We cannot do this using "user: LIVE_USER" due to #19049
       $vm.execute_successfully(
         "env $(tr '\\0' '\\n' " \
         '< /proc/$(pgrep --newest --euid Debian-gdm gnome-shell)/environ ' \
