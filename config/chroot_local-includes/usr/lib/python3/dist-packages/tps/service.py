@@ -22,17 +22,22 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
+
 class AlreadyCreatedError(Exception):
     pass
+
 
 class NotCreatedError(Exception):
     pass
 
+
 class AlreadyUnlockedError(Exception):
     pass
 
+
 class NotUnlockedError(Exception):
     pass
+
 
 class Service(DBusObject, ServiceUsingJobs):
     dbus_info = '''
@@ -99,7 +104,7 @@ class Service(DBusObject, ServiceUsingJobs):
     def Quit_method_call_handler(self, connection: Gio.DBusConnection,
                                  parameters: GLib.Variant,
                                  invocation: Gio.DBusMethodInvocation):
-        """Terminate the Persistent Storage service"""
+        """Terminate the Persistent Storage service."""
         # Make the D-Bus method return first, else our main thread
         # might exit before we can call return, resulting in a NoReply
         # error on the client.
@@ -293,7 +298,7 @@ class Service(DBusObject, ServiceUsingJobs):
 
     @property
     def IsCreated(self) -> bool:
-        """Whether the Persistent Storage partition is created"""
+        """Whether the Persistent Storage partition is created."""
         return self._created
 
     @IsCreated.setter
@@ -373,7 +378,7 @@ class Service(DBusObject, ServiceUsingJobs):
     # ----- Non-exported functions ----- #
 
     def start(self):
-        """Start the Persistent Storage service"""
+        """Start the Persistent Storage service."""
         try:
             self.register(self.connection)
 
@@ -414,7 +419,7 @@ class Service(DBusObject, ServiceUsingJobs):
             time.sleep(0.1)
 
     def save_config_file(self):
-        """Save all currently active features to the config file"""
+        """Save all currently active features to the config file."""
         active_features = [feature for feature in self.features
                            if feature.IsActive]
         self.config_file.save(active_features)
