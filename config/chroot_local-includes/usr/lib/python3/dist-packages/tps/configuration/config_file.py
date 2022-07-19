@@ -127,7 +127,7 @@ class ConfigFile(object):
             # partially written config file if e.g. the user unplugs the
             # Tails device in the wrong moment).
             dir_ = os.path.dirname(self.path)
-            tmpfile = tempfile.NamedTemporaryFile(dir=dir_)
+            tmpfile = tempfile.NamedTemporaryFile(dir=dir_, delete=False)
 
             # Write the result list of features to the temporary file
             with self._open(tmpfile.name, "w") as f:
