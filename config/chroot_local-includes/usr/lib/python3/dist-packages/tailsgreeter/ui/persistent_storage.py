@@ -7,7 +7,7 @@ import threading
 from typing import TYPE_CHECKING, Callable
 
 from tailsgreeter.ui import _
-from tailsgreeter.config import settings_dir, persistent_settings_dir, unsafe_browser_setting_filename
+from tailsgreeter.config import settings_dir, persistent_settings_dir
 from tailsgreeter.errors import PersistentStorageError
 
 gi.require_version('GLib', '2.0')
