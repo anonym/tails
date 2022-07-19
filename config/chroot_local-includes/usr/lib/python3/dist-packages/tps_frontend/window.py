@@ -128,8 +128,8 @@ class Window(Gtk.ApplicationWindow):
         elif self.state != State.NOT_CREATED:
             self.was_deleting = False
 
-        # The Persistent Storage state changed, so we check if we have
-        # switch to another view
+        # The Persistent Storage state changed, so we switch to
+        # another view if needed
         self.refresh_view()
 
     @Gtk.Template.Callback()
