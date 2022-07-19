@@ -2,7 +2,6 @@ from enum import Enum
 import gettext
 import gi
 import os
-import sys
 
 _ = gettext.gettext
 
