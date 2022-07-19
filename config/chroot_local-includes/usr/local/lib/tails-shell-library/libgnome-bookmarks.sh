@@ -37,12 +37,12 @@ remove_gnome_bookmark() {
     flock --exclusive 9
 
     # Check if the line exists
-    if ! grep -q "^${line}$" "${BOOKMARKS_FILE}"; then
+    if ! grep --fixed-strings --line-regexp -q "${line}" "${BOOKMARKS_FILE}"; then
         return 1
     fi
 
     # Delete the line
-    grep -v "^${line}$" "${BOOKMARKS_FILE}" > "${tmpfile}"
+    grep -v --fixed-strings --line-regexp "${line}" "${BOOKMARKS_FILE}" > "${tmpfile}"
     # We do this instead of mv to preserve the ownership and
     # permissions of the bookmarks file
     cat "${tmpfile}" > "${BOOKMARKS_FILE}"
