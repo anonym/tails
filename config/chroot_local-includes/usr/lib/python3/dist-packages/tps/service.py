@@ -230,7 +230,7 @@ class Service(DBusObject, ServiceUsingJobs):
             self.do_unlock(passphrase)
         finally:
             self.refresh_state(overwrite_in_progress=True)
-            self.refresh_features()
+            self.refresh_features(refresh_is_active=False)
 
     def do_unlock(self, passphrase: str):
         self.state = State.UNLOCKING
@@ -419,7 +419,7 @@ class Service(DBusObject, ServiceUsingJobs):
                            if feature.IsActive]
         self.config_file.save(active_features)
 
-    def refresh_features(self):
+    def refresh_features(self, refresh_is_active: bool = True):
         # Refresh custom features
         mounts = list()
         if self.config_file.exists():
@@ -447,9 +447,10 @@ class Service(DBusObject, ServiceUsingJobs):
                 self.object_manager.unexport(known_custom_feature.dbus_path)
                 self.features.remove(known_custom_feature)
 
-        # Refresh IsActive of all features
-        for feature in self.features:
-            feature.refresh_is_active()
+        if refresh_is_active:
+            # Refresh IsActive of all features
+            for feature in self.features:
+                feature.refresh_is_active()
 
     def refresh_state(self, overwrite_in_progress: bool = False):
         if not self._boot_device:
