@@ -141,9 +141,6 @@ class PersistentStorage(object):
         self.infobar_persistence.set_visible(False)
         self.image_storage_state.set_from_icon_name('tails-unlocked',
                                                     Gtk.IconSize.BUTTON)
-        self.image_storage_state.set_visible(True)
-        self.box_storage_unlocked.set_visible(True)
-        self.button_start.set_sensitive(True)
 
         # Copy all settings from the "persistent settings directory". This is
         # a workaround for an issue that caused the "Settings were loaded"-
@@ -197,6 +194,11 @@ class PersistentStorage(object):
             self.apply_settings_cb()
         else:
             self.load_settings_cb()
+
+        # We're done unlocking and activating the Persistent Storage
+        self.image_storage_state.set_visible(True)
+        self.box_storage_unlocked.set_visible(True)
+        self.button_start.set_sensitive(True)
 
     def cb_checkbutton_storage_show_passphrase_toggled(self, widget):
         self.entry_storage_passphrase.set_visibility(widget.get_active())
