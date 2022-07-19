@@ -1,7 +1,15 @@
 #!/bin/dash
 
+# Get LIVE_USERNAME
+. /etc/live/config.d/username.conf
+
 LOCK="/run/lock/libgnome-bookmarks.sh"
-BOOKMARKS_FILE="/home/amnesia/.config/gtk-3.0/bookmarks"
+BOOKMARKS_FILE="/home/${LIVE_USERNAME}/.config/gtk-3.0/bookmarks"
+
+if [ "$USER" != "$LIVE_USERNAME" ]; then
+    echo "This library can only be used as ${LIVE_USERNAME}" >&2
+    exit 1
+fi
 
 _build_bookmark_line() {
     local target
