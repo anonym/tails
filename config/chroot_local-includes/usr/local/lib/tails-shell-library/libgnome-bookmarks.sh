@@ -43,8 +43,5 @@ remove_gnome_bookmark() {
 
     # Delete the line
     grep -v --fixed-strings --line-regexp "${line}" "${BOOKMARKS_FILE}" > "${tmpfile}"
-    # We do this instead of mv to preserve the ownership and
-    # permissions of the bookmarks file
-    cat "${tmpfile}" > "${BOOKMARKS_FILE}"
-    rm "${tmpfile}"
+    mv "${tmpfile}" "${BOOKMARKS_FILE}"
 }
