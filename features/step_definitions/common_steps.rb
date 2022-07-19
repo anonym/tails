@@ -937,7 +937,7 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     @screen.wait('GnomeActivitiesOverviewLaunchersReady.png', 20)
     # This should be ctrl + click, to ensure we open a new window.
     # Let's implement this once one of the callers needs this.
-    @screen.wait(app_name, 10).click
+    @screen.wait(app_name, 20).click
   else
     @screen.wait('GnomeActivitiesOverviewSearch.png', 20)
     # Trigger startup of search providers
