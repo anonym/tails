@@ -173,3 +173,10 @@ To disable `cron.sh` temporarily, run:
 To re-enable `cron.sh`, run:
 
     rm /var/lib/weblate/config/.maintenance
+
+Unlock translations
+===================
+
+When Weblate fails to fetch from repositories it locks translations. They can be unlocked with:
+
+    sudo -u weblate podman exec -t -i weblate weblate unlock_translation tails
