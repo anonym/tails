@@ -188,6 +188,8 @@ class PersistentStorage(object):
         # (e5653981228b375c28bf4d1ace9be3367e080900) and the commit which
         # extended its usage and introduced this lengthy comment, can be
         # reverted once #11529 is done.
+        #
+        # This clean up is tracked on #19062.
         for setting in glob.glob(os.path.join(persistent_settings_dir, 'tails.*')):
             sh.cp("-a", setting, settings_dir)
 
