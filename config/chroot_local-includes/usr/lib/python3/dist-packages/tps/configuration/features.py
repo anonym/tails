@@ -22,11 +22,10 @@ class BrowserBookmarks(Feature):
     ]
 
 
-class AdministrationPassword(Feature):
-    Id = "AdministrationPassword"
+class WelcomeScreen(Feature):
+    Id = "WelcomeScreen"
     Mounts = [
-        Mount("password", "/var/lib/gdm3/settings/persistent/tails.password",
-              is_file=True),
+        Mount("greeter-settings", "/var/lib/gdm3/settings/persistent")
     ]
 
 

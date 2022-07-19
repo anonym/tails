@@ -23,7 +23,7 @@ class PersistentDirectory(Feature):
 class BrowserBookmarks(Feature):
     pass
 
-class AdministrationPassword(Feature):
+class WelcomeScreen(Feature):
     pass
 
 class Printers(Feature):
