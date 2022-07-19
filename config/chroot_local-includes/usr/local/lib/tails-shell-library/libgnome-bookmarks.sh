@@ -1,6 +1,6 @@
 #!/bin/dash
 
-LOCK="/var/lock/libgnome-bookmarks.sh"
+LOCK="/run/lock/libgnome-bookmarks.sh"
 BOOKMARKS_FILE="/home/amnesia/.config/gtk-3.0/bookmarks"
 
 _build_bookmark_line() {
