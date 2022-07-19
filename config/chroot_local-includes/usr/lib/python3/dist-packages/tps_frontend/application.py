@@ -1,5 +1,3 @@
-import atexit
-import os
 from logging import getLogger
 from gi.repository import Gdk, Gio, GLib, Gtk
 

@@ -16,7 +16,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 """Persistent Storage handling"""
-import atexit
 import logging
 import os
 
