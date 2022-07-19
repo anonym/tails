@@ -433,19 +433,19 @@ class Service(DBusObject, ServiceUsingJobs):
                     Id = f"CustomFeature{i}"
                     Description = str(mount.dest_orig)
                     Mounts = [mount]
-                feature = CustomFeature(self, is_custom=True)
-                feature.register(self.connection)
-                self.object_manager.export(Gio.DBusObjectSkeleton.new(feature.dbus_path))
-                self.features.append(feature)
+                custom_feature = CustomFeature(self, is_custom=True)
+                custom_feature.register(self.connection)
+                self.object_manager.export(Gio.DBusObjectSkeleton.new(custom_feature.dbus_path))
+                self.features.append(custom_feature)
 
         # Remove the ones whose mount entry was removed from the config
         # file
         custom_features = [f for f in self.features if f.is_custom]
-        for feature in custom_features:
-            if feature.Mounts[0] not in mounts:
-                feature.unregister(self.connection)
-                self.object_manager.unexport(feature.dbus_path)
-                self.features.remove(feature)
+        for known_custom_feature in custom_features:
+            if known_custom_feature.Mounts[0] not in mounts:
+                known_custom_feature.unregister(self.connection)
+                self.object_manager.unexport(known_custom_feature.dbus_path)
+                self.features.remove(known_custom_feature)
 
         # Refresh IsActive of all features
         for feature in self.features:
