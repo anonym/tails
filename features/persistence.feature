@@ -3,6 +3,16 @@ Feature: Tails persistence
   As a Tails user
   I want to use Tails persistence feature
 
+  Scenario: Tails Persistent Storage behave tests
+    Given I have started Tails from DVD and logged in with an administration password and the network is connected
+    And I update APT using apt
+    And I install "python3-behave" using apt
+    Then the Tails Persistent Storage behave tests pass
+
+  Scenario: Tails Persistent Storage configuration file unit tests
+    Given I have started Tails from DVD without network and logged in
+    Then the Tails Persistent Storage configuration file unit tests pass
+
   Scenario: Booting Tails from a USB drive with a disabled persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
     When I log in to a new session
