@@ -186,7 +186,7 @@ class Mount(object):
                 raise SymlinkSourceDirectoryError(error_msg)
 
         # Check if anything else is mounted on the destination
-        # XXX: Should we use self._dest_orig here?
+        # XXX: Should we use self.dest_orig here?
         src = _what_is_mounted_on(self.dest)
         if src:
             raise FailedPrecondition(f"Path {src} is mounted on {self.dest}")
