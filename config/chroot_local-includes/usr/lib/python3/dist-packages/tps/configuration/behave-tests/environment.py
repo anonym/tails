@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", "..", ".."))
 
 from tps import executil
 from tps.configuration.mount import Mount
-from tps.mountutil import mount, MOUNTFLAG_NOSYMFOLLOW, MOUNTFLAG_NOATIME, \
+from tps.mountutil import mount, MOUNTFLAG_NOSYMFOLLOW, \
     MOUNTFLAG_BIND, MOUNTFLAG_REMOUNT
 
 logging.basicConfig(level=logging.DEBUG)
@@ -181,7 +181,7 @@ def before_all(context):
     mount(src="/", dest=NOSYMFOLLOW_MOUNTPOINT, flags=MOUNTFLAG_BIND)
     mount(
         src="", dest=NOSYMFOLLOW_MOUNTPOINT,
-        flags=MOUNTFLAG_REMOUNT | MOUNTFLAG_NOATIME | MOUNTFLAG_NOSYMFOLLOW,
+        flags=MOUNTFLAG_REMOUNT | MOUNTFLAG_NOSYMFOLLOW,
     )
 
 
