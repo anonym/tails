@@ -9,6 +9,7 @@ import re
 
 import atomicwrites
 
+from tailslib import PERSISTENT_STORAGE_USERNAME
 from tailslib.persistence import get_persistence_path
 
 
@@ -25,12 +26,21 @@ class ASPDataError(ASPError):
 
 
 def _write_config(packages):
+    config_file_owner_uid = pwd.getpwnam(PERSISTENT_STORAGE_USERNAME).pw_uid
+    config_file_owner_gid = grp.getgrnam(PERSISTENT_STORAGE_USERNAME).gr_gid
+
     packages_list_path = get_packages_list_path()
-    with atomicwrites.atomic_write(packages_list_path,
-                                   overwrite=True) as f:
-        for package in sorted(packages):
-            f.write(package + '\n')
-    os.chmod(packages_list_path, 0o0644)
+    try:
+        os.setegid(config_file_owner_gid)
+        os.seteuid(config_file_owner_uid)
+        with atomicwrites.atomic_write(packages_list_path,
+                                       overwrite=True) as f:
+            for package in sorted(packages):
+                f.write(package + '\n')
+        os.chmod(packages_list_path, 0o0644)
+    finally:
+        os.seteuid(0)
+        os.setegid(0)
 
 
 def filter_package_details(pkg):

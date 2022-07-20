@@ -1,9 +1,11 @@
 import tempfile
 from contextlib import contextmanager
+import grp
 from io import TextIOBase
 import logging
 import os
 from pathlib import Path
+import pwd
 import shlex
 import subprocess
 from typing import TYPE_CHECKING, List, Optional
@@ -15,8 +17,8 @@ if TYPE_CHECKING:
     from tps.configuration.feature import Feature
 
 CONFIG_FILE_NAME = "persistence.conf"
-UID = os.getuid()
-GID = os.getgid()
+TPS_UID = pwd.getpwnam("tails-persistent-storage").pw_uid
+TPS_GID = grp.getgrnam("tails-persistent-storage").gr_gid
 
 logger = logging.getLogger(__name__)
 
@@ -70,11 +72,13 @@ class ConfigFile(object):
         stat = self.path.stat()
 
         # Check ownership
-        if stat.st_uid != UID:
-            msg = f"File {self.path} has UID {stat.st_uid}, expected {UID}"
+        if stat.st_uid != TPS_UID:
+            msg = f"File {self.path} has UID {stat.st_uid}, expected " \
+                  f"{TPS_UID} (tails-persistent-storage)"
             raise InvalidStatError(msg)
-        if stat.st_gid != GID:
-            msg = f"File {self.path} has GID {stat.st_uid}, expected {GID}"
+        if stat.st_gid != TPS_GID:
+            msg = f"File {self.path} has GID {stat.st_gid}, expected " \
+                  f"{TPS_GID} (tails-persistent-storage)"
             raise InvalidStatError(msg)
 
         # Check mode. Expected is:
@@ -160,8 +164,9 @@ class ConfigFile(object):
         #   * the file to be created owner-readable
         fd = os.open(path, flags | os.O_SYNC, mode=0o600)
 
-        # Ensure that the file is owned by the current user
-        os.fchown(fd, UID, GID)
+        # Ensure that the file is owned by the tails-persistent-storage
+        # user
+        os.fchown(fd, TPS_UID, TPS_GID)
 
         # Ensure changes made elsewhere are written synchronously on the disk
         # (in case something else ever needs to modify this file)
