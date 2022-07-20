@@ -163,7 +163,7 @@ test-persistent-storage-behave:
 
 test-persistent-storage-config-file:
   script:
-    - apt-get -qy install python3 python3-gi acl
+    - apt-get -qy install python3 python3-gi acl gir1.2-udisks-2.0 udisks2
     - config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/config_file_test.py
 
 test-python-doctest:
