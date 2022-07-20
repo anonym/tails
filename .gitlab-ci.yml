@@ -156,10 +156,14 @@ shellcheck:
     reports:
       junit: shellcheck.xml
 
-test-persistent-storage:
+test-persistent-storage-behave:
   script:
     - apt-get -qy install python3 python3-behave python3-gi python3-pkg-resources acl
     - config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/behave-tests/run-tests.sh
+
+test-persistent-storage-config-file:
+  script:
+    - apt-get -qy install python3 python3-gi acl
     - config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/config_file_test.py
 
 test-python-doctest:
