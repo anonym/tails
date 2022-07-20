@@ -75,7 +75,7 @@ def after_feature(context: EnvironmentContext, feature):
         return
 
     # Clean up the loop device and the associated file. We register
-    # this function via atext.register so that it is run even if an
+    # this function via atexit.register so that it is run even if an
     # exception was raised during setUpModule (we tried to use
     # unittest.addModuleCleanup instead but it didn't work, cleanUpModule
     # was never run).
