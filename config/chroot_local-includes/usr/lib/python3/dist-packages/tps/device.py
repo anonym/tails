@@ -327,8 +327,8 @@ class CleartextDevice(object):
             # a system directory. This e.g. avoids setting wrong
             # permissions on the APT, CUPS and NetworkManager
             # persistent directories.
-            if d.stat().st_uid == LIVE_USER_UID or \
-                    d.stat().st_gid == LIVE_USER_UID:
+            if d.stat().st_uid != LIVE_USER_UID or \
+                    d.stat().st_gid != LIVE_USER_UID:
                 continue
             # Remove all permissions for group and others
             current = stat.S_IMODE(d.stat().st_mode)
