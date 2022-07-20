@@ -9,7 +9,6 @@ NOSYMFOLLOW_MOUNTPOINT=/var/lib/tails-persistent-storage/nosymfollow
 # symlinks attacks. See
 # https://gitlab.tails.boum.org/tails/tails/-/merge_requests/339#note_169215
 if ! mountpoint --quiet "${NOSYMFOLLOW_MOUNTPOINT}"; then
-  mkdir -p -m 700 "${NOSYMFOLLOW_MOUNTPOINT}"
   mount --bind / "${NOSYMFOLLOW_MOUNTPOINT}"
   mount -o remount,nosymfollow "${NOSYMFOLLOW_MOUNTPOINT}"
 fi
