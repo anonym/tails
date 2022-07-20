@@ -8,6 +8,7 @@ from pathlib import Path
 import pwd
 import shlex
 import subprocess
+import sys
 from typing import TYPE_CHECKING, List, Optional
 from threading import Lock
 
@@ -17,8 +18,12 @@ if TYPE_CHECKING:
     from tps.configuration.feature import Feature
 
 CONFIG_FILE_NAME = "persistence.conf"
-TPS_UID = pwd.getpwnam("tails-persistent-storage").pw_uid
-TPS_GID = grp.getgrnam("tails-persistent-storage").gr_gid
+if 'unittest' in sys.modules:
+    TPS_UID = os.getuid()
+    TPS_GID = os.getgid()
+else:
+    TPS_UID = pwd.getpwnam("tails-persistent-storage").pw_uid
+    TPS_GID = grp.getgrnam("tails-persistent-storage").gr_gid
 
 logger = logging.getLogger(__name__)
 
