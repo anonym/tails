@@ -54,8 +54,8 @@ def before_feature(context: EnvironmentContext, feature):
     # Store the file name for cleanup
     context.device_backing_file = f.name
 
-    # Extend the file to 1MB
-    f.truncate(1024**2)
+    # Extend the file to 2MB
+    f.truncate(2*1024**2)
 
     # Format it as ext4
     executil.check_call(["mkfs.ext4", f.name])
