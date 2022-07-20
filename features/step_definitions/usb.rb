@@ -536,10 +536,6 @@ Then /^all persistence configuration files have safe access rights$/ do
       "#{mountpoint}/persistence.conf does not exist, while it should"
     )
     assert_vmcommand_success(
-      $vm.execute("test -e #{mountpoint}/persistence.conf.bak"),
-      "#{mountpoint}/persistence.conf.bak does not exist, while it should"
-    )
-    assert_vmcommand_success(
       $vm.execute("test ! -e #{mountpoint}/live-persistence.conf"),
       "#{mountpoint}/live-persistence.conf does exist, while it should not"
     )
