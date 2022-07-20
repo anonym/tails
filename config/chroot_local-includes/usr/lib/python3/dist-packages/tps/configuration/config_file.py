@@ -26,27 +26,27 @@ class InvalidStatError(Exception):
 
 
 class ConfigFile(object):
+    """The Persistent Storage's config file, which lists the
+    directories which should be mounted on startup.
+
+    The format is compatible with the persistence.conf file of
+    live-boot(5), except that:
+    * Each line must contain a "source" option
+    * The only other option that is supported is the "link" option.
+      Specifying the default "bind" option explicitly is not
+      supported and the "union" option is also unsupported.
+
+    We only support writing the full config file with all currently
+    enabled features.
+    We can not easily support adding / deleting the lines of a
+    a specific feature or list of features, because that would
+    cause the config file to be broken if any two features have the
+    same mount. In that case, we would not be able to tell which
+    feature a specific line in the config file belongs to, so
+    it's not clear which lines should be removed on feature
+    deactivation.
+    """
     def __init__(self, mount_point: str):
-        """The Persistent Storage's config file, which lists the
-        directories which should be mounted on startup.
-
-        The format is compatible with the persistence.conf file of
-        live-boot(5), except that:
-        * Each line must contain a "source" option
-        * The only other option that is supported is the "link" option.
-          Specifying the default "bind" option explicitly is not
-          supported and the "union" option is also unsupported.
-
-        We only support writing the full config file with all currently
-        enabled features.
-        We can not easily support adding / deleting the lines of a
-        a specific feature or list of features, because that would
-        cause the config file to be broken if any two features have the
-        same mount. In that case, we would not be able to tell which
-        feature a specific line in the config file belongs to, so
-        it's not clear which lines should be removed on feature
-        deactivation.
-        """
         self.path = Path(mount_point, CONFIG_FILE_NAME)
         # A lock for ensuring that the config file is not read or
         # written while another method writes to it.
