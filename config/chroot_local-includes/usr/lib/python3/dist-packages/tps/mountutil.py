@@ -3,7 +3,10 @@ from pathlib import Path
 import os
 from typing import Union
 
-MOUNTFLAG_BIND=0x1000
+MOUNTFLAG_REMOUNT = 32
+MOUNTFLAG_NOSYMFOLLOW = 256
+MOUNTFLAG_BIND = 0x1000
+
 
 class MountException(Exception):
     pass
