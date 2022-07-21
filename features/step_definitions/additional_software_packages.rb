@@ -49,7 +49,7 @@ Then /^The Additional Software persistence option is enabled$/ do
     'Activate Additional Software',
     roleName: 'toggle button'
   )
-  assert additional_software_switch.get_field('checked')
+  assert additional_software_switch.checked
 end
 
 Then /^Additional Software is correctly configured for package "([^"]*)"$/ do |package|
