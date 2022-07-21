@@ -21,8 +21,8 @@ sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", ".."))
 # we don't need it here and it may not be running.
 os.environ["NO_UDISKS"] = "1"
 
-from tps.configuration.config_file import ConfigFile, InvalidStatError
-from tps.configuration.mount import Mount
+from tps.configuration.config_file import ConfigFile, InvalidStatError  # noqa: E402,E501
+from tps.configuration.mount import Mount  # noqa: E402
 
 logging.basicConfig(level=logging.DEBUG)
 
