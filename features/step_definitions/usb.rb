@@ -1212,10 +1212,6 @@ Then /^(.*) is not configured to persist$/ do |dir|
   assert(!configured_persistent_mountpoints.include?(dir))
 end
 
-Then /^I accept the persistence wizard's offer to restart Tails$/ do
-  @screen.wait('PersistenceWizardRestartButton.png', 5).click
-end
-
 Then /^the Tails Persistent Storage behave tests pass$/ do
   $vm.execute_successfully('/usr/lib/python3/dist-packages/tps/configuration/behave-tests/run-tests.sh')
 end

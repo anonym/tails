@@ -45,8 +45,9 @@ end
 
 Then /^The Additional Software persistence option is enabled$/ do
   assert persistent_storage_main_frame.child('Personal Data', roleName: 'label')
-  additional_software_switch = persistent_storage_main_frame.button(
-    'Activate Additional Software'
+  additional_software_switch = persistent_storage_main_frame.child(
+    'Activate Additional Software',
+    roleName: 'toggle button'
   )
   assert additional_software_switch.get_field('checked')
 end
