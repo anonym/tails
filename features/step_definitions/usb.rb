@@ -716,14 +716,14 @@ end
 
 When /^I delete the persistent partition$/ do
   step 'I start "Persistent Storage" via GNOME Activities Overview'
-  try_for(120) do
-    persistent_storage_main_frame.button('Delete Persistent Storage')
-  end
+  assert persistent_storage_main_frame.button('Delete Persistent Storage')
+  persistent_storage_main_frame.button('Delete Persistent Storage').click
   persistent_storage_frontend
     .child('Warning', roleName: 'alert')
     .button('Delete Persistent Storage').click
-  assert persistent_storage_main_frame.label(
-    'The Persistent Storage was successfully deleted.'
+  assert persistent_storage_main_frame.child(
+    'The Persistent Storage was successfully deleted.',
+    roleName: 'label'
   )
 end
 
