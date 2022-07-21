@@ -20,11 +20,11 @@ def mount(src: Union[str, Path], dest: Union[str, Path], flags: int):
     b_src = str(src).encode()
     b_dest = str(dest).encode()
     ret = libc.mount(
-        b_src,  # source
-        b_dest, # target
-        None,   # filesystemtype, empty for bind mounts
-        flags,  # mountflags
-        None,   # data
+        b_src,   # source
+        b_dest,  # target
+        None,    # filesystemtype, empty for bind mounts
+        flags,   # mountflags
+        None,    # data
     )
     if ret != 0:
         error = os.strerror(ctypes.get_errno())
