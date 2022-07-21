@@ -138,9 +138,11 @@ class Window(Gtk.ApplicationWindow):
                                    Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                    Gtk.MessageType.WARNING,
                                    Gtk.ButtonsType.NONE,
-                                   _("Delete Persistent Storage?"))
-        dialog.format_secondary_text(_("All data on your Persistent Storage "
-                                       "will be permanently deleted."))
+                                   _("Delete Persistent Storage"))
+        dialog.format_secondary_text(_(
+            "Are you sure that you want to delete your Persistent Storage? "
+            "This action cannot be undone."
+        ))
         dialog.add_button(_("_Cancel"), Gtk.ResponseType.CANCEL)
         dialog.add_button(_("_Delete Persistent Storage"), Gtk.ResponseType.OK)
         dialog.set_default_response(Gtk.ResponseType.CANCEL)
