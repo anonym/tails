@@ -66,7 +66,7 @@ def before_feature(context: EnvironmentContext, feature):
     ]).strip()
 
     # Mount the loop device
-    context.mount_point = mkdtemp(prefix="TailsData-")
+    context.mount_point = mkdtemp(prefix="TailsData-", dir="/var/cache")
     executil.check_call(["mount", context.device, context.mount_point])
 
 
@@ -121,7 +121,7 @@ def before_scenario(context: EnvironmentContext, scenario):
     if "requires_mountpoint" not in context.feature.tags:
         return
     # Create a temporary directory which is used by the mount tests
-    context.tmpdir = Path(mkdtemp(prefix="dest-TailsData"))
+    context.tmpdir = Path(mkdtemp(prefix="dest-TailsData", dir="/var/cache"))
 
 
 def after_scenario(context: EnvironmentContext, scenario):
