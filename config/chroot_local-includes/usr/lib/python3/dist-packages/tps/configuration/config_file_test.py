@@ -361,4 +361,4 @@ class TestSave(ConfigFileTestCase):
 if __name__ == '__main__':
     # We set the module name explicitly to be able to run the tests
     # with `trace`, see https://stackoverflow.com/a/25300465.
-   unittest.main("config_file_test", failfast=True, buffer=True)
+    unittest.main("config_file_test", failfast=True, buffer=True)
