@@ -15,13 +15,14 @@ import signal
 import sys
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gio
-from gi.repository import Gtk
+from gi.repository import Gio  # noqa: E402
+from gi.repository import Gtk  # noqa: E402
 
-from tps_frontend.application import Application
+from tps_frontend.application import Application  # noqa: E402
 
 LOCALE_DIR = "/usr/share/locale"
 TRANSLATION_DOMAIN = "tails"
+
 
 def set_exception_hook():
     """Configures sys.excepthook to enforce Gtk application exiting."""
@@ -35,12 +36,14 @@ def set_exception_hook():
     old_hook = sys.excepthook
     sys.excepthook = new_hook
 
+
 def set_internationalization():
     """Sets application internationalization."""
     locale.bindtextdomain(TRANSLATION_DOMAIN, LOCALE_DIR)
     locale.textdomain(TRANSLATION_DOMAIN)
     gettext.bindtextdomain(TRANSLATION_DOMAIN, LOCALE_DIR)
     gettext.textdomain(TRANSLATION_DOMAIN)
+
 
 def main():
     # Parse arguments
@@ -50,8 +53,8 @@ def main():
 
     # Set up logging
     debug = args.debug or \
-            os.getenv("DEBUG") or \
-            "debug" in Path("/proc/cmdline").read_text().split()
+        os.getenv("DEBUG") or \
+        "debug" in Path("/proc/cmdline").read_text().split()
     log_level = logging.DEBUG if debug else logging.INFO
     log_format = \
         "%(levelname)s:%(filename)s:%(lineno)d: %(message)s"
