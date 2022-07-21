@@ -30,7 +30,7 @@ class EnvironmentContext(object):
     device_backing_file: str
     device: str
     mount_point: str
-    tmpdir: str
+    tmpdir: Path
     mount: Mount
 
 
