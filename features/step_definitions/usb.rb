@@ -1216,10 +1216,6 @@ Then /^I accept the persistence wizard's offer to restart Tails$/ do
   @screen.wait('PersistenceWizardRestartButton.png', 5).click
 end
 
-Then /^the Tails Persistent Storage configuration file unit tests pass$/ do
-  $vm.execute_successfully('/usr/lib/python3/dist-packages/tps/configuration/config_file_test.py')
-end
-
 Then /^the Tails Persistent Storage behave tests pass$/ do
   $vm.execute_successfully('/usr/lib/python3/dist-packages/tps/configuration/behave-tests/run-tests.sh')
 end
