@@ -17,6 +17,10 @@ import sys
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", ".."))
 
+# Ensure tps/__init__.py does not try to connect to UDisks:
+# we don't need it here and it may not be running.
+os.environ["NO_UDISKS"] = "1"
+
 from tps.configuration.config_file import ConfigFile, InvalidStatError
 from tps.configuration.mount import Mount
 

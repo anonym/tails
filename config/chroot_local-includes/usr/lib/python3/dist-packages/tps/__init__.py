@@ -6,9 +6,9 @@ import os
 _ = gettext.gettext
 
 # Don't connect to the udisks service when we're just running the
-# behave tests - they don't use it and it might not even be running,
+# tests - they don't use it and it might not even be running,
 # which would cause this line to throw an exception
-if not os.getenv("BEHAVE"):
+if not os.getenv("BEHAVE") and not os.getenv("NO_UDISKS"):
     gi.require_version('UDisks', '2.0')
     from gi.repository import UDisks
     # noinspection PyArgumentList
