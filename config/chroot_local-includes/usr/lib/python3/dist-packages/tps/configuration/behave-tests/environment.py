@@ -35,7 +35,7 @@ class EnvironmentContext(object):
 
 
 def before_feature(context: EnvironmentContext, feature):
-    if not "requires_mountpoint" in feature.tags:
+    if "requires_mountpoint" not in feature.tags:
         return
 
     # Create a file containing an ext4 filesystem and associate it with
@@ -71,7 +71,7 @@ def before_feature(context: EnvironmentContext, feature):
 
 
 def after_feature(context: EnvironmentContext, feature):
-    if not "requires_mountpoint" in feature.tags:
+    if "requires_mountpoint" not in feature.tags:
         return
 
     # Clean up the loop device and the associated file. We register
@@ -118,14 +118,14 @@ def after_feature(context: EnvironmentContext, feature):
 
 
 def before_scenario(context: EnvironmentContext, scenario):
-    if not "requires_mountpoint" in context.feature.tags:
+    if "requires_mountpoint" not in context.feature.tags:
         return
     # Create a temporary directory which is used by the mount tests
     context.tmpdir = Path(mkdtemp(prefix="dest-TailsData"))
 
 
 def after_scenario(context: EnvironmentContext, scenario):
-    if not "requires_mountpoint" in context.feature.tags:
+    if "requires_mountpoint" not in context.feature.tags:
         return
 
     # Deactivate the mount in case it was activated by the scenario
