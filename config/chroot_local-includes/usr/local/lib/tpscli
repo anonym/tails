@@ -20,6 +20,9 @@ case "$SUBCOMMAND" in
     is-active)
 	tps_feature_is_active "${FEATURE_NAME}"
 	;;
+    ensure-is-active)
+	tps_ensure_feature_is_active "${FEATURE_NAME}"
+	;;
     *)
 	echo "Sub-command ${SUBCOMMAND} is not supported" >&2
 	exit 4

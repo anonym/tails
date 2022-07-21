@@ -49,3 +49,8 @@ tps_deactivate_feature() {
          --method org.boum.tails.PersistentStorage.Feature.Deactivate \
          > /dev/null
 }
+
+tps_ensure_feature_is_active() {
+    local feature="${1}"
+    tps_feature_is_active "${feature}" || tps_activate_feature "${feature}"
+}

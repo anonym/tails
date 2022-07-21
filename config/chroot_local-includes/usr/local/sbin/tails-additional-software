@@ -374,9 +374,7 @@ def handle_removed_packages(packages):
 
 def setup_additional_packages():
     """Enable additional software in persistence."""
-    launch_tps_frontend("--no-gui",
-                             "--no-display_finished_message",
-                             "--force_enable_preset", "AdditionalSoftware")
+    subprocess.check_call(["/usr/local/lib/tpscli", "ensure-is-active", "AdditionalSoftware"])
 
 
 def create_persistence_and_setup_additional_packages(packages):
