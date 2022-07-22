@@ -10,6 +10,7 @@ import pwd
 import shutil
 import subprocess
 import sys
+import time
 
 import apt.cache
 
@@ -372,6 +373,14 @@ def handle_removed_packages(packages):
             raise e
 
 
+def additional_software_persistence_feature_is_active() -> bool:
+    """Return True iff. the AdditionalSoftware persistent storage feature
+    is active."""
+    return subprocess.run(
+        ["/usr/local/lib/tpscli", "is-active", "AdditionalSoftware"]
+    ).returncode == 0
+
+
 def setup_additional_packages():
     """Enable additional software in persistence."""
     subprocess.check_call(["/usr/local/lib/tpscli", "ensure-is-active", "AdditionalSoftware"])
@@ -386,7 +395,15 @@ def create_persistence_and_setup_additional_packages(packages):
     packages should be a list of packages names.
     """
     logging.info("Creating new persistent volume")
+    # TODO: start tps-frontend in the background and don't wait for it
+    # to exit (which may never happen)
     launch_tps_frontend()
+    logging.info("Waiting for Persistent Storage to be ready")
+    # This can take a while: tps is copying the APT lists and packages
+    # to the newly created Persistent Storage.
+    while not additional_software_persistence_feature_is_active():
+        time.sleep(2)
+    logging.info("Persistent Storage is ready, setting up additional packages")
     add_additional_packages(packages)
 
 
