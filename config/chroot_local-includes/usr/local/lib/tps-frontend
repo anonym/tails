@@ -61,12 +61,12 @@ def main():
     logging.basicConfig(level=log_level,
                         format=log_format)
 
-    # XXX: tails-additional-software uses the --force_enable_preset
+    # XXX: tails-additional-software-config uses the --force_enable_preset
     # flag, which we currently don't implement. Either we have to
     # implement it, which would have security implications (any process
     # which can execute /usr/local/bin/tps-frontend-wrapper can enable
     # arbitrary features) or find a different solution to allow
-    # tails-additional-software to enable itself.
+    # tails-additional-software-config to enable itself.
     # Suggestion: We instead support highlighting a specific setting
 
     set_exception_hook()
