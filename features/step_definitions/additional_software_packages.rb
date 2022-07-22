@@ -40,10 +40,10 @@ Then /^I create a persistent storage and activate the Additional Software featur
   gnome_shell = Dogtail::Application.new('gnome-shell')
   gnome_shell.child('Create Persistent Storage', roleName: 'push button').click
   step 'I create a persistent partition for Additional Software'
-  step 'The Additional Software persistence option is enabled'
+  assert_additional_software_persistent_storage_feature_is_enabled
 end
 
-Then /^The Additional Software persistence option is enabled$/ do
+def assert_additional_software_persistent_storage_feature_is_enabled
   assert persistent_storage_main_frame.child('Personal Data', roleName: 'label')
   additional_software_switch = persistent_storage_main_frame.child(
     'Activate Additional Software',
