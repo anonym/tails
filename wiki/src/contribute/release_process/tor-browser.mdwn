@@ -267,13 +267,6 @@ Commit and push your changes
 	git annex copy --to origin -- "${TBB_VERSION:?}" && \
 	git annex sync
 
-Wait for the synchronization
-----------------------------
-
-Before you proceed with the next steps, wait for the tarballs to appear on
-<https://torbrowser-archive.tails.boum.org/?C=M&O=D>. This can take up to
-10 minutes.
-
 Adjust the URL in the main Git repository
 -----------------------------------------
 
@@ -289,7 +282,16 @@ Adjust the URL in the main Git repository
        git show
     done
 
-Once happy, push:
+Wait for the synchronization
+----------------------------
+
+Before you can build Tails using Tor Browser from our own archive,
+you need to wait for the tarballs to appear on
+<https://torbrowser-archive.tails.boum.org/?C=M&O=D>. This can take up to
+10 minutes.
+
+Push the updated branch
+-----------------------
 
 	git push -o merge_request.create --set-upstream \
 	   origin "${TBB_IMPORT_BRANCH:?}"
