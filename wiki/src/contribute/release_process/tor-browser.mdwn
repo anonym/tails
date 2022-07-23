@@ -303,4 +303,5 @@ Clean up
 	git annex drop -- "${TBB_VERSION:?}" && \
     git annex sync && \
     rm -rf "${DL_DIR:?}" && \
-    rm -f "${TAILS_GIT_REPO:?}"/sha256sums-unsigned-build.txt{,.asc${TBB_SIGNER_SUFFIX}}
+    cd "${TAILS_GIT_REPO:?}" && \
+    rm -f sha256sums-unsigned-build.txt{,.asc${TBB_SIGNER_SUFFIX}}
