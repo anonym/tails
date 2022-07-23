@@ -132,10 +132,32 @@ embed_extensions_in_omni_ja () {
 diff -Naur browser-omni.orig/modules/BrowserGlue.jsm browser-omni/modules/BrowserGlue.jsm
 --- browser-omni.orig/modules/BrowserGlue.jsm	2020-09-11 19:25:00.000000000 +0200
 +++ browser-omni/modules/BrowserGlue.jsm	2020-09-19 11:44:17.439692582 +0200
-@@ -1367,6 +1367,29 @@
-       }
-     })();
- 
+@@ -45,6 +45,7 @@ XPCOMUtils.defineLazyModuleGetters(this, {
+   DownloadsViewableInternally:
+     "resource:///modules/DownloadsViewableInternally.jsm",
+   E10SUtils: "resource://gre/modules/E10SUtils.jsm",
++  ExtensionData: "resource://gre/modules/Extension.jsm",
+   ExtensionsUI: "resource:///modules/ExtensionsUI.jsm",
+   FeatureGate: "resource://featuregates/FeatureGate.jsm",
+   FxAccounts: "resource://gre/modules/FxAccounts.jsm",
+@@ -120,6 +121,13 @@ XPCOMUtils.defineLazyServiceGetters(this, {
+   PushService: ["@mozilla.org/push/Service;1", "nsIPushService"],
+ });
+
++XPCOMUtils.defineLazyServiceGetters(this, {
++  resProto: [
++    "@mozilla.org/network/protocol;1?name=resource",
++    "nsISubstitutingProtocolHandler",
++  ],
++});
++
+ const PREF_PDFJS_ISDEFAULT_CACHE_STATE = "pdfjs.enabledCache.state";
+
+ /**
+@@ -1441,6 +1449,29 @@ BrowserGlue.prototype = {
+       "resource://builtin-themes/alpenglow/"
+     );
+
 +    (async () => {
 +      const UBLOCK_ORIGIN_ID = "uBlock0@raymondhill.net";
 +      const UBLOCK_ORIGIN_BUILTIN_URL =
