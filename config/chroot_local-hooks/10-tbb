@@ -116,6 +116,7 @@ embed_extensions_in_omni_ja () {
     (
         cd "${tmp}"
         7z x -tzip "${tbb_install}/omni.ja"
+        mkdir chrome/torbutton/content/extensions
         cp -a '/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/uBlock0@raymondhill.net' chrome/torbutton/content/extensions/
         find chrome/torbutton/content/extensions/ -exec touch --date="@${tbb_timestamp}" '{}' \;
         rm "${tbb_install}/omni.ja"
