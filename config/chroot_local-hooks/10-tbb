@@ -70,8 +70,8 @@ install_tor_browser() {
 
     # Let's use the libstdc++ that the Tor Browser is intended to be used with,
     # instead of the system one, whenever ours is too old.
-    # For details see projects/firefox/abicheck.cc in
-    # https://git.torproject.org/builders/tor-browser-build.git
+    # For details see
+    # https://gitlab.torproject.org/tpo/applications/tor-browser-build/-/blob/main/projects/firefox/abicheck.cc
     cp "${prep}"/TorBrowser/Tor/libstdc++/libstdc++.so.6 "${prep}"
 
     # We don't need the Tor binary, the shared libraries Tor needs
@@ -301,7 +301,7 @@ install_debian_extensions() {
     apt-get install --yes webext-ublock-origin-firefox
     patch -p1 < /usr/share/tails/uBlock-disable-autoUpdate.diff
 
-    # Apply the same hack for our extension as the Tor Browser does
+    # Apply the same hack for our extension as the Tor Browser used to
     # for HTTPS-Everywhere in order to bypass the mandatory extension
     # signature check, which we lack since we install our extensions
     # from Debian ...
