@@ -190,6 +190,9 @@ set_chroot_browser_name () {
           torbutton_locale_dir="chrome/torbutton/locale/en-US"
        fi
        sed -i "s/<"'!'"ENTITY\s\+brand\(Full\|Short\|Shorter\)Name.*$/<"'!'"ENTITY brand\1Name \"${human_readable_name}\">/" "${torbutton_locale_dir}/brand.dtd"
+       sed --regexp-extended -i \
+           "s/-brand-(full|short|shorter|product)-name = .*$/-brand-\1-name = ${human_readable_name}/" \
+	   "${torbutton_locale_dir}/branding/brand.ftl"
        7z u -tzip "${pack}" .
     )
     chmod a+r "${pack}"
