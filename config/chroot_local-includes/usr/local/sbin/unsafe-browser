@@ -148,7 +148,8 @@ echo "* Starting Unsafe Browser"
 # Do not localize the 5th argument: it becomes WM_CLASS and then GNOME
 # displays the localized app name found in the matching .desktop file;
 # if WM_CLASS were localized then not only string encoding problems
-# would happen, but GNOME would pick the wrong icon.
+# would happen, but GNOME would pick the wrong icon. It is also passed
+# as the value for the --name Firefox option.
 run_browser_in_chroot "${CHROOT}" "${BROWSER_NAME}" "${BROWSER_USER}" \
     "${SUDO_USER}" \
     'Unsafe Browser' || \
