@@ -110,7 +110,9 @@ class Screen
 
   def match_screen(image, sensitivity, show_image)
     screenshot = "#{$config['TMPDIR']}/screenshot.png"
+    debug_log('Screen[match_screen]: taking screenshot')
     $vm.display.screenshot(screenshot)
+    debug_log('Screen[match_screen]: matching template to screenshot')
     OpenCV.matchTemplate("#{OPENCV_IMAGE_PATH}/#{image}",
                          screenshot, sensitivity, show_image)
   end
@@ -146,7 +148,7 @@ class Screen
 
   def find(pattern, **opts)
     debug_log("Screen: trying to find #{pattern}") if opts[:log]
-    wait(pattern, 5, **opts.clone.update(log: false))
+    wait(pattern, 10, **opts.clone.update(log: false))
   end
 
   def exists(pattern, **opts)
