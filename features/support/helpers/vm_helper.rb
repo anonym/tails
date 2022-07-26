@@ -505,8 +505,8 @@ class VM
   end
 
   def host_to_guest_time_sync
-    host_time = DateTime.now.strftime('%s').to_s
-    execute("date -s '@#{host_time}'").success?
+    host_time = DateTime.now.strftime('%F %T').to_s
+    execute_successfully("timedatectl set-time '#{host_time}'")
   end
 
   def connected_to_network?
@@ -617,7 +617,7 @@ class VM
       vm_path = fpath[1..-1]
       dir = File.dirname(vm_path)
 
-      execute_successfully("mkdir -p '#{dir}'")
+      execute_successfully("mkdir -p '#{File.join(vm_dir, dir)}'")
       file_copy_local(File.join(localdir, fpath), File.join(vm_dir, vm_path))
     end
   end

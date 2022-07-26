@@ -181,7 +181,10 @@ set_chroot_browser_name () {
        if [ ! -d "${torbutton_locale_dir}" ]; then
           torbutton_locale_dir="chrome/torbutton/locale/en-US"
        fi
-       sed -i "s/<"'!'"ENTITY\s\+brand\(Full\|Short\|Shorter\)Name.*$/<"'!'"ENTITY brand\1Name \"${human_readable_name}\">/" "${torbutton_locale_dir}/brand.dtd"
+       sed -i "s/<"'!'"ENTITY\s\+brand\(Full\|Product\|Short\|Shorter\)Name.*$/<"'!'"ENTITY brand\1Name \"${human_readable_name}\">/" "${torbutton_locale_dir}/brand.dtd"
+       sed --regexp-extended -i \
+           "s/-brand-(full|short|shorter|product)-name = .*$/-brand-\1-name = ${human_readable_name}/" \
+	   "${torbutton_locale_dir}/branding/brand.ftl"
        7z u -tzip "${pack}" .
     )
     chmod a+r "${pack}"
@@ -305,5 +308,7 @@ run_browser_in_chroot () {
                    --setenv=DISPLAY=$DISPLAY \
                    /bin/sh -c \
         ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
-         exec_unconfined_firefox --class='${wm_class}' -profile '${profile}'"
+         exec_unconfined_firefox --class='${wm_class}' \
+                                 --name '${wm_class}' \
+                                 -profile '${profile}'"
 }

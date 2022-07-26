@@ -70,9 +70,9 @@ install_tor_browser() {
 
     # Let's use the libstdc++ that the Tor Browser is intended to be used with,
     # instead of the system one, whenever ours is too old.
-    # For details see projects/firefox/abicheck.cc in
-    # https://git.torproject.org/builders/tor-browser-build.git
-    cp "${prep}"/TorBrowser/Tor/libstdc++/libstdc++.so.6 "${prep}"
+    # For details see
+    # https://gitlab.torproject.org/tpo/applications/tor-browser-build/-/blob/main/projects/firefox/abicheck.cc
+    # cp "${prep}"/TorBrowser/Tor/libstdc++/libstdc++.so.6 "${prep}"
 
     # We don't need the Tor binary, the shared libraries Tor needs
     # (but Firefox doesn't) and documentation shipped in the TBB.
@@ -116,7 +116,9 @@ embed_extensions_in_omni_ja () {
     (
         cd "${tmp}"
         7z x -tzip "${tbb_install}/omni.ja"
-        cp -a '/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/uBlock0@raymondhill.net' chrome/torbutton/content/extensions/
+        mkdir chrome/torbutton/content/extensions
+        cp -a --target-directory=chrome/torbutton/content/extensions \
+           '/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/uBlock0@raymondhill.net'
         find chrome/torbutton/content/extensions/ -exec touch --date="@${tbb_timestamp}" '{}' \;
         rm "${tbb_install}/omni.ja"
         7z a -mtc=off -tzip -- "${tbb_install}/omni.ja" *
@@ -131,10 +133,32 @@ embed_extensions_in_omni_ja () {
 diff -Naur browser-omni.orig/modules/BrowserGlue.jsm browser-omni/modules/BrowserGlue.jsm
 --- browser-omni.orig/modules/BrowserGlue.jsm	2020-09-11 19:25:00.000000000 +0200
 +++ browser-omni/modules/BrowserGlue.jsm	2020-09-19 11:44:17.439692582 +0200
-@@ -1367,6 +1367,29 @@
-       }
-     })();
- 
+@@ -45,6 +45,7 @@ XPCOMUtils.defineLazyModuleGetters(this, {
+   DownloadsViewableInternally:
+     "resource:///modules/DownloadsViewableInternally.jsm",
+   E10SUtils: "resource://gre/modules/E10SUtils.jsm",
++  ExtensionData: "resource://gre/modules/Extension.jsm",
+   ExtensionsUI: "resource:///modules/ExtensionsUI.jsm",
+   FeatureGate: "resource://featuregates/FeatureGate.jsm",
+   FxAccounts: "resource://gre/modules/FxAccounts.jsm",
+@@ -120,6 +121,13 @@ XPCOMUtils.defineLazyServiceGetters(this, {
+   PushService: ["@mozilla.org/push/Service;1", "nsIPushService"],
+ });
+
++XPCOMUtils.defineLazyServiceGetters(this, {
++  resProto: [
++    "@mozilla.org/network/protocol;1?name=resource",
++    "nsISubstitutingProtocolHandler",
++  ],
++});
++
+ const PREF_PDFJS_ISDEFAULT_CACHE_STATE = "pdfjs.enabledCache.state";
+
+ /**
+@@ -1441,6 +1449,29 @@ BrowserGlue.prototype = {
+       "resource://builtin-themes/alpenglow/"
+     );
+
 +    (async () => {
 +      const UBLOCK_ORIGIN_ID = "uBlock0@raymondhill.net";
 +      const UBLOCK_ORIGIN_BUILTIN_URL =
@@ -277,7 +301,7 @@ install_debian_extensions() {
     apt-get install --yes webext-ublock-origin-firefox
     patch -p1 < /usr/share/tails/uBlock-disable-autoUpdate.diff
 
-    # Apply the same hack for our extension as the Tor Browser does
+    # Apply the same hack for our extension as the Tor Browser used to
     # for HTTPS-Everywhere in order to bypass the mandatory extension
     # signature check, which we lack since we install our extensions
     # from Debian ...
@@ -323,15 +347,26 @@ download_and_verify_files "${TBB_TARBALLS_BASE_URL}" "${TBB_TARBALLS}" "${TMP}"
 
 # shellcheck disable=SC2153
 install_tor_browser "${TMP}/${MAIN_TARBALL}" "${TBB_INSTALL}"
+
+# sometime (?) this get added to a tor browser tarball; let's clean that
+rm -f /usr/local/lib/tor-browser/start-tor-browser.orig
+
 apply_prefs_hacks "${TBB_INSTALL}" "${TBB_TIMESTAMP}"
 install_debian_extensions "${TBB_INSTALL}" "${TBB_TIMESTAMP}"
 disable_update_checks "${TBB_INSTALL}"
 strip_nondeterminism "${TBB_INSTALL}" "${TBB_TIMESTAMP}"
 
 mkdir -p "${TBB_EXT}"
-if [ "${NIGHTLY_BUILD}" != yes ]; then
-    LANGPACKS_TARBALL="$(echo "${TBB_TARBALLS}" | grep -o "langpacks-tor-browser-linux64-.*\.tar\.xz")"
+LANGPACKS_TARBALL="$(echo "${TBB_TARBALLS}" | grep -o "langpacks-tor-browser-linux64-.*\.tar\.xz")"
+if [ -n "$LANGPACKS_TARBALL" ]; then
     install_langpacks "${TMP}/${LANGPACKS_TARBALL}" "${TBB_EXT}"
+else
+    if [ "${NIGHTLY_BUILD}" != yes ]; then
+        echo "ERROR: langpacks not found" >&2
+        exit 4
+    else
+        echo "WARNING: langpacks not found"
+    fi
 fi
 
 install_pluggable_transports "${TMP}/${MAIN_TARBALL}" /usr/bin
