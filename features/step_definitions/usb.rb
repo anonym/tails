@@ -399,6 +399,7 @@ end
 
 Given /^I enable persistence$/ do
   @screen.wait('TailsGreeterPersistencePassphrase.png', 60).click
+  sleep 1
   @screen.type(@persistence_password, ['Return'])
   @screen.wait('TailsGreeterPersistenceUnlocked.png', 30)
 end

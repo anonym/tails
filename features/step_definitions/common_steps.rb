@@ -12,7 +12,7 @@ end
 
 def post_snapshot_restore_hook(snapshot_name)
   $vm.wait_until_remote_shell_is_up
-  if !snapshot_name.end_with?('tails-greeter')
+  unless snapshot_name.end_with?('tails-greeter')
     @screen.wait('DesktopTailsDocumentation.png', 10)
   end
   post_vm_start_hook
@@ -22,9 +22,10 @@ def post_snapshot_restore_hook(snapshot_name)
   # invisible until redrawn. So as a workaround we move this window,
   # to force a full redraw.
   # This problem does not happen on Wayland so we can remove this hack
-  # when we switch to Wayland: #18120, !322.
+  # when we switch to Wayland (#19042).
   if snapshot_name.end_with?('tails-greeter')
     unless @screen.exists('TailsGreeter.png')
+      # We cannot do this using "user: LIVE_USER" due to #19049
       $vm.execute_successfully(
         "env $(tr '\\0' '\\n' " \
         '< /proc/$(pgrep --newest --euid Debian-gdm gnome-shell)/environ ' \
@@ -47,14 +48,15 @@ def post_snapshot_restore_hook(snapshot_name)
   # Wait for the menu to be closed
   sleep 1
 
-  # The guest's Tor's circuits' states are likely to get out of sync
-  # with the other relays, so we ensure that we have fresh circuits.
-  # Time jumps and incorrect clocks also confuses Tor in many ways.
+  # The guest's Tor circuits are likely to get out of sync
+  # with our Chutney network, so we ensure that we have fresh circuits.
+  # Time jumps and incorrect clocks also confuse Tor in many ways.
   already_synced_time_host_to_guest = false
   if $vm.connected_to_network?
-    # Since Tor Connection was introduced, tor@default.service is always active, so we need to check if Tor
-    # was required in the snapshot we are using. For example, the with-network-logged-in-unsafe-browser have
-    # network connected but no Tor configured. Checking DisableNetwork is useful
+    # tor@default.service is always active, so we need to check if Tor
+    # was configured in the snapshot we are using: for example,
+    # with-network-logged-in-unsafe-browser connects to the LAN
+    # but did not configure Tor.
     if $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
        check_disable_network != '1'
       $vm.execute('systemctl stop tor@default.service')
@@ -389,7 +391,7 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
                  else
                    'TailsGreeterLoginButton.png'
                  end
-  login_button_region = @screen.wait(login_button, 5)
+  login_button_region = @screen.wait(login_button, 10)
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -428,7 +430,7 @@ Given /^I set an administration password$/ do
   @screen.press('Return')
   # Wait for the Administration Password dialog to be closed,
   # otherwise the next step can fail.
-  @screen.wait('TailsGreeterLoginButton.png', 5)
+  @screen.wait('TailsGreeterLoginButton.png', 10)
 end
 
 Given /^I allow the Unsafe Browser to be started$/ do
@@ -932,12 +934,12 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   # really needed, e.g. to avoid having to encode lots of keymaps
   # to be able to type the name correctly:
   if app_name.match(/[.]png$/)
-    @screen.wait('GnomeActivitiesOverviewLaunchersReady.png', 10)
+    @screen.wait('GnomeActivitiesOverviewLaunchersReady.png', 20)
     # This should be ctrl + click, to ensure we open a new window.
-    # Let's implement this once once of the callers needs this.
-    @screen.wait(app_name, 10).click
+    # Let's implement this once one of the callers needs this.
+    @screen.wait(app_name, 20).click
   else
-    @screen.wait('GnomeActivitiesOverviewSearch.png', 10)
+    @screen.wait('GnomeActivitiesOverviewSearch.png', 20)
     # Trigger startup of search providers
     @screen.type(app_name[0])
     # Give search providers some time to start (#13469#note-5) otherwise

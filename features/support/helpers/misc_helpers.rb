@@ -22,6 +22,7 @@ def assert_vmcommand_success(p, msg = nil) # rubocop:disable Naming/MethodParame
          if msg.nil?
            "Command failed: #{p.cmd}\n" \
            "error code: #{p.returncode}\n" \
+           "stdout: #{p.stdout}\n" \
            "stderr: #{p.stderr}"
          else
            msg
