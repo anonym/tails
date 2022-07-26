@@ -1,3 +1,74 @@
+tails (5.3) unstable; urgency=medium
+
+  * Upgrade to Tor Browser 11.5.1, bring back uBlock, and fix the Unsafe Browser's
+    window title (tails/tails!894)
+
+    Closes issues:
+      - uBlock is not enabled in Tor Browser (tails/tails#19059)
+      - Upgrade to Tor Browser based on ESR 91.12 (tails/tails#19058)
+      - Window title of Unsafe Browser reads "Tor Browser" (tails/tails#18603)
+
+    Commits:
+      - Tor Browser: use the system's libstdc++.so.6 like upstream would on a Bullseye
+        system
+      - update-acng-config: get ready for 6.x
+      - Remove hack that's not needed on Bullseye anymore
+      - Update comments
+      - Make cp behavior deterministic
+      - htpdate pool 2: replace fragile thepiratebay.org with www.gnome.org
+      - Bring back code needed to install uBlock
+      - Create directory before copying into it
+      - Browsers: also pass --name to Firefox
+      - Reformat code: make room for more options and nicer Git diffs
+      - Unsafe Browser: also set brandProductName to "Unsafe Browser", for consistency
+      - Unsafe Browser: set the branding in the file that's actually used in current
+        Tor Browser
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.5.1-build1
+
+  * Test suite: misc. improvements (tails/tails!892)
+
+    Closes issues:
+      - Test suite sometimes fails to find a picture (e.g. TailsGreeterLoginButton.png)
+        while it's present on screen (tails/tails#19044)
+
+    Commits:
+      - Test suite: also display stdout on vmcommand failure
+      - Test suite: bump timeout
+      - Test suite: fix typo in comment
+      - Welcome Screen: remove unused import
+      - Test suite: point to relevant issue
+      - Test suite: wait more for some images
+      - Test suite: have Screen#find wait longer
+      - Test suite: add debug logging to investigate #19044
+      - Test suite: fix variable name
+      - Test suite: give some time to the persistence passphrase widget to get focus
+      - Use named constants instead of magic numbers
+      - Don't catch unrelated IndexError exceptions
+      - Lint
+      - Remove unused import
+      - Test suite: fix, improve, and update comments
+      - Test suite: set the time in the guest using timedatectl
+      - Make host_to_guest_time_sync raise an exception on failure
+      - Lint
+
+  * Upgrade to Debian Bullseye 11.4, Linux 5.10.127, and Network Manager 1.30.6
+    (tails/tails!891)
+
+    Closes issues:
+      - Upgrade to Debian Bullseye 11.4 (tails/tails#19046)
+
+    Commits:
+      - Refresh patch
+      - Update Vagrant box to Debian Bullseye 11.4
+      - Enable the 19046-bullseye-11.4-force-all-tests APT overlay (refs: #19046).
+      - Upgrade to Linux 5.10.0-16 (currently at 5.10.127-1)
+      - Upgrade to Debian Bullseye 11.4
+
+  * Upgrade mat2 to 0.12.1-2+deb11u1
+
+ -- Tails developers <tails@boum.org>  Mon, 25 Jul 2022 13:45:07 +0200
+
 tails (5.2) unstable; urgency=medium
 
   * Upgrade Thunderbird to 91.11.0

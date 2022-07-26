@@ -1,7 +1,6 @@
 import os
 import os.path
 import logging
-import shlex
 import subprocess
 
 import tailsgreeter.config
