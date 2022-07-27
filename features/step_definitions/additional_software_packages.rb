@@ -36,9 +36,20 @@ Then /^I am proposed to add the "([^"]*)" package to my Additional Software$/ do
   step "I see the \"#{title}\" notification after at most 300 seconds"
 end
 
+def click_gnome_shell_notification_button(title)
+  # The notification buttons do not expose any actions through AT-SPI,
+  # so Dogtail is unable to click it. Luckily the buttons report the
+  # correct position (unlike most applications under Wayland) so we
+  # at least can learn where to click using other methods.
+  @screen.click(
+    *Dogtail::Application.new('gnome-shell')
+       .child(title, roleName: 'push button')
+       .position
+  )
+end
+
 Then /^I create a persistent storage and activate the Additional Software feature$/ do
-  gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Create Persistent Storage', roleName: 'push button').press
+  click_gnome_shell_notification_button('Create Persistent Storage')
   step 'I create a persistent partition for Additional Software'
   step 'The Additional Software persistence option is enabled'
   save_persistence_settings
@@ -101,13 +112,7 @@ When /^I (refuse|accept) (adding|removing) "([^"]*)" (?:to|from) Additional Soft
     end
   end
   try_for(300) do
-    notification =
-      Dogtail::Application
-      .new('gnome-shell')
-      .children('', roleName: 'notification')
-      .find { |notif| notif.child?(notification_title, roleName: 'label') }
-    assert_not_nil(notification)
-    notification.child(button_title, roleName: 'push button').click
+    click_gnome_shell_notification_button(button_title)
   end
 end
 
@@ -139,8 +144,7 @@ When /^I remove the "([^"]*)" deb files from the APT cache$/ do |package|
 end
 
 Then /^I can open the Additional Software documentation from the notification$/ do
-  gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Documentation', roleName: 'push button').press
+  click_gnome_shell_notification_button('Documentation')
   try_for(60) { @torbrowser = Dogtail::Application.new('Firefox') }
   step '"Tails - Install by cloning" has loaded in the Tor Browser'
 end
@@ -161,14 +165,12 @@ Then /^the Additional Software dpkg hook has been run for package "([^"]*)" and 
 end
 
 When /^I can open the Additional Software configuration window from the notification$/ do
-  gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Configure', roleName: 'push button').press
+  click_gnome_shell_notification_button('Configure')
   Dogtail::Application.new('tails-additional-software-config')
 end
 
 Then /^I can open the Additional Software log file from the notification$/ do
-  gnome_shell = Dogtail::Application.new('gnome-shell')
-  gnome_shell.child('Show Log', roleName: 'push button').press
+  click_gnome_shell_notification_button('Show Log')
   try_for(60) do
     Dogtail::Application.new('gedit').child(
       "log [Read-Only] (#{ASP_STATE_DIR}) - gedit", roleName: 'frame'
