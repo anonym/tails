@@ -30,6 +30,7 @@ Feature: Additional software
     And I install "popularity-contest" using apt
     Then I am proposed to add the "popularity-contest" package to my Additional Software
     And I create a persistent storage and activate the Additional Software feature
+    And Additional Software is correctly configured for package "popularity-contest"
     And I shutdown Tails and wait for the computer to power off
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
     And Additional Software is correctly configured for package "popularity-contest"
