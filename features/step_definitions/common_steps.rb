@@ -776,13 +776,7 @@ Given /^I kill the process "([^"]+)"$/ do |process|
 end
 
 Then /^Tails eventually (shuts down|restarts)$/ do |mode|
-  # In the Additional Software feature, we need to wait enough for
-  # tails-synchronize-data-to-new-persistent-volume to complete.
-  # XXX(segfault): We don't use
-  # tails-synchronize-data-to-new-persistent-volume.service
-  # anymore, we can probably decrease this timeout, but I don't know
-  # what would be a reasonable value.
-  try_for(6 * 60) do
+  try_for(3 * 60) do
     if mode == 'restarts'
       @screen.find('TailsGreeter.png')
       true
