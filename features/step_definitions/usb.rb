@@ -1145,7 +1145,7 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   disks.child('Restore Disk Image…',
               roleName:    'push button',
               showingOnly: true)
-       .press
+       .click
   restore_dialog = disks.child('Restore Disk Image',
                                roleName:    'dialog',
                                showingOnly: true)

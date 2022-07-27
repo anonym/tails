@@ -107,15 +107,15 @@ When /^I (refuse|accept) (adding|removing) "([^"]*)" (?:to|from) Additional Soft
       .children('', roleName: 'notification')
       .find { |notif| notif.child?(notification_title, roleName: 'label') }
     assert_not_nil(notification)
-    notification.child(button_title, roleName: 'push button').press
+    notification.child(button_title, roleName: 'push button').click
   end
 end
 
 Given /^I remove "([^"]*)" from the list of Additional Software using Additional Software GUI$/ do |package|
   asp_gui = Dogtail::Application.new('tails-additional-software-config')
   installed_package = asp_gui.child(package, roleName: 'label')
-  installed_package.parent.parent.child('Remove', roleName: 'push button').press
-  asp_gui.child('Question', roleName: 'alert').button('Remove').press
+  installed_package.parent.parent.child('Remove', roleName: 'push button').click
+  asp_gui.child('Question', roleName: 'alert').button('Remove').click
   deal_with_polkit_prompt(@sudo_password)
 end
 
