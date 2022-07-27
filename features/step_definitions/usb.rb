@@ -1163,12 +1163,16 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   try_for(10) do
     !select_disk_image_dialog.showing
   end
+  # Clicking this button using Dogtail works, but afterwards GNOME
+  # Disks becomes inaccessible.
   restore_dialog.child('Start Restoring…',
                        roleName:    'push button',
-                       showingOnly: true).press
+                       showingOnly: true).grabFocus
+  @screen.press('Return')
   disks.child('Information', roleName: 'alert', showingOnly: true)
        .child('Restore', roleName: 'push button', showingOnly: true)
-       .press
+       .grabFocus
+  @screen.press('Return')
   # Wait until the restoration job is finished
   job = disks.child('Job', roleName: 'label', showingOnly: true)
   try_for(60) do
