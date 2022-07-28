@@ -451,6 +451,11 @@ Given /^the Tails desktop is ready$/ do
     'gsettings set org.gnome.desktop.interface toolkit-accessibility true',
     user: LIVE_USER
   )
+  # And also for the root user for applications that run with
+  # sudo/pkexec under XWayland.
+  $vm.execute_successfully(
+    'DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/0/bus gsettings set org.gnome.desktop.interface toolkit-accessibility true'
+  )
   # Optimize upgrade check: avoid 30 second sleep
   $vm.execute_successfully(
     'sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service'
