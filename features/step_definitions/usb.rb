@@ -140,7 +140,7 @@ Then /^(no|the "([^"]+)") USB drive is selected$/ do |mode, name|
 end
 
 def persistence_exists?(name)
-  data_part_dev = $vm.disk_dev(name) + '2'
+  data_part_dev = $vm.persistent_storage_dev_on_disk(name)
   $vm.execute("test -b #{data_part_dev}").success?
 end
 
@@ -314,13 +314,13 @@ Then /^the running Tails is installed on USB drive "([^"]+)"$/ do |target_name|
 end
 
 Then /^there is no persistence partition on USB drive "([^"]+)"$/ do |name|
-  data_part_dev = $vm.disk_dev(name) + '2'
+  data_part_dev = $vm.persistent_storage_dev_on_disk(name)
   assert($vm.execute("test -b #{data_part_dev}").failure?,
          "USB drive #{name} has a partition '#{data_part_dev}'")
 end
 
 Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
-  dev = $vm.disk_dev(name) + '2'
+  dev = $vm.persistent_storage_dev_on_disk(name)
   check_part_integrity(name, dev, 'crypto', 'crypto_LUKS',
                        part_label: 'TailsData')
 
