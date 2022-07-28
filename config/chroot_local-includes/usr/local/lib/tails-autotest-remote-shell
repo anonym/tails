@@ -33,6 +33,7 @@
 
 import base64
 import fcntl
+import glob
 import json
 import os
 import pwd
@@ -73,6 +74,8 @@ def get_user_env(user):
     env_data = pipe.communicate()[0].decode('utf-8')
     env_dict = dict((line.split('=', 1) for line in env_data.splitlines()))
     env_dict.update({'DISPLAY': ':0'})
+    if xauth := glob.glob('/run/user/1000/.mutter-Xwaylandauth.*'):
+        env_dict.update({'XAUTHORITY': xauth[0]})
     return env_dict
 
 
