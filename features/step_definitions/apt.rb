@@ -152,7 +152,7 @@ end
 When /^I start Synaptic$/ do
   step 'I start "Synaptic Package Manager" via GNOME Activities Overview'
   deal_with_polkit_prompt(@sudo_password)
-  @synaptic = Dogtail::Application.new('synaptic')
+  @synaptic = Dogtail::Application.new('synaptic', user: 'root')
   # The seemingly spurious space is needed because that is how this
   # frame is named...
   @synaptic.child(
