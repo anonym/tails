@@ -166,7 +166,7 @@ When /^I update APT using Synaptic$/ do
     step 'I start Synaptic'
   end
   retry_tor(recovery_proc) do
-    @synaptic.button('Reload').press
+    @synaptic.button('Reload').click
     sleep 10 # It might take some time before APT starts downloading
     try_for(15 * 60, msg: 'Took too much time to download the APT data') do
       !$vm.process_running?('/usr/lib/apt/methods/tor+http')
@@ -190,22 +190,36 @@ Then /^I install "(.+)" using Synaptic$/ do |package_name|
     step 'I start Synaptic'
   end
   retry_tor(recovery_proc) do
-    @synaptic.button('Search').press
+    # Clicking this button using Dogtail works, but afterwards
+    # synaptic becomes inaccessible.
+    @synaptic.button('Search').grabFocus
+    @screen.press('Return')
     find_dialog = @synaptic.dialog('Find')
     find_dialog.child(roleName: 'text').grabFocus
     @screen.type(package_name)
-    find_dialog.button('Search').press
+    find_dialog.button('Search').click
     package_list = @synaptic.child('Installed Version',
                                    roleName: 'table column header').parent
     package_entry = package_list.child(package_name, roleName: 'table cell')
-    package_entry.doubleClick
-    @synaptic.button('Apply').press
+    # We need to wait for the synaptic UI to get responsive after the
+    # search has completed.
+    try_for(10) do
+      package_entry.grabFocus
+      package_entry.get_field("selected")
+    end
+    @screen.press('Return')
+    # Now we have makred the package for installation and we have to
+    # wait for the Apply button to become available
+    try_for(10) { @synaptic.button('Apply').get_field("sensitive") }
+    # This button is also problematic when clicking with Dogtail
+    @synaptic.button('Apply').grabFocus
+    @screen.press('Return')
     apply_prompt = nil
     try_for(60) do
       apply_prompt = @synaptic.dialog('Summary')
       true
     end
-    apply_prompt.button('Apply').press
+    apply_prompt.button('Apply').click
     try_for(4 * 60) do
       @synaptic.child('Changes applied', roleName: 'frame', recursive: false)
       true
