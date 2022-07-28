@@ -1,3 +1,5 @@
+require 'securerandom'
+
 # Returns a hash that for each persistence preset the running Tails is aware of,
 # for each of the corresponding configuration lines,
 # maps the source to the destination.
@@ -1214,4 +1216,11 @@ end
 
 Then /^the Tails Persistent Storage behave tests pass$/ do
   $vm.execute_successfully('/usr/lib/python3/dist-packages/tps/configuration/behave-tests/run-tests.sh')
+end
+
+When /^I give the Persistent Storage on drive "([^"]+)" its own UUID$/ do |name|
+  # Rationale: udisks cannot unlock 2 devices with the same UUID.
+  dev = $vm.persistent_storage_dev_on_disk(name)
+  uuid = SecureRandom.uuid
+  $vm.execute_successfully("cryptsetup luksUUID --uuid #{uuid} #{dev}")
 end
