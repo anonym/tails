@@ -44,6 +44,8 @@ import systemd.daemon
 import textwrap
 import traceback
 
+from tailslib.gnome import gnome_env
+
 REMOTE_SHELL_DEV = '/dev/virtio-ports/org.tails.remote_shell.0'
 
 
@@ -64,18 +66,13 @@ def get_user_env(user):
     # setting up the GNOME shell environment, and extracting the
     # environment via `env`; not that we will run `env` unconditionally
     # since the former command could fail, e.g. if GNOME is not running.
-    env_cmd = '. /usr/local/lib/tails-shell-library/gnome.sh && ' + \
-              'export_gnome_env ; ' + \
-              'env'
-    wrapped_env_cmd = "su -c '{}' {}".format(env_cmd, user)
+    wrapped_env_cmd = "su -c env {}".format(user)
     pipe = subprocess.Popen(wrapped_env_cmd,
                             stdout=subprocess.PIPE,
                             shell=True)
     env_data = pipe.communicate()[0].decode('utf-8')
     env_dict = dict((line.split('=', 1) for line in env_data.splitlines()))
-    env_dict.update({'DISPLAY': ':0'})
-    if xauth := glob.glob('/run/user/1000/.mutter-Xwaylandauth.*'):
-        env_dict.update({'XAUTHORITY': xauth[0]})
+    env_dict.update(gnome_env())
     return env_dict
 
 
