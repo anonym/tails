@@ -119,7 +119,10 @@ end
 Given /^I remove "([^"]*)" from the list of Additional Software using Additional Software GUI$/ do |package|
   asp_gui = Dogtail::Application.new('tails-additional-software-config')
   installed_package = asp_gui.child(package, roleName: 'label')
-  installed_package.parent.parent.child('Remove', roleName: 'push button').click
+  # Clicking this button using Dogtail works, but afterwards the ASP
+  # GUI becomes inaccessible.
+  installed_package.parent.parent.child('Remove', roleName: 'push button').grabFocus
+  @screen.press('Return')
   asp_gui.child('Question', roleName: 'alert').button('Remove').click
   deal_with_polkit_prompt(@sudo_password)
 end
