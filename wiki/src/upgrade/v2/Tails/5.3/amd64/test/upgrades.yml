@@ -1,0 +1,20 @@
+---
+build-target: amd64
+channel: test
+initial-install-version: '5.3'
+product-name: Tails
+upgrades:
+- details-url: https://tails.boum.org/news/version_5.3.1/
+  type: major
+  upgrade-paths:
+  - target-files:
+    - sha256: 5794e1bfe4d7a3105e72c4d5296676bff7af7ff8e84e5928330e6cfebbf5318b
+      size: 1299595264
+      url: http://dl.amnesia.boum.org/tails/stable/tails-amd64-5.3.1/tails-amd64-5.3.1.iso
+    type: full
+  - target-files:
+    - sha256: 3d9026d3463959df8d11a1a67c2b28e38422919b72120b3b8b0454d21178ec91
+      size: 223600640
+      url: http://dl.amnesia.boum.org/tails/stable/iuk/v2/Tails_amd64_5.3_to_5.3.1.iuk
+    type: incremental
+  version: 5.3.1
