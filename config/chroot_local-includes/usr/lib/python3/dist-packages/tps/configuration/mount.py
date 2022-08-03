@@ -99,7 +99,6 @@ class Mount(object):
             self._relative_src = \
                 self.src.relative_to(self.tps_mount_point)
         except ValueError:
-            # XXX: Do we want to translate errors like this?
             raise InvalidMountError(f"Mount source {self.src} is outside of "
                                     f"the Persistent Storage mount point "
                                     f"{self.tps_mount_point}")
