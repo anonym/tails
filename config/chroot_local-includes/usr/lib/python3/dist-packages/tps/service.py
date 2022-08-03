@@ -215,8 +215,6 @@ class Service(DBusObject, ServiceUsingJobs):
             finally:
                 raise InvalidConfigFileError(e) from e
 
-        # XXX: What happens when the config file is invalid? Should we
-        # catch an exception here?
         mounts = self.config_file.parse()
         for mount in mounts:
             mount.activate()
