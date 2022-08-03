@@ -44,7 +44,6 @@ class PassphraseView(View):
             parameters=GLib.Variant("(s)", (passphrase,)),
             flags=Gio.DBusCallFlags.NONE,
             timeout_msec=GLib.MAXINT,
-            # XXX: Maybe support cancellation
             cancellable=None,
             callback=self.window.on_create_call_finished,
         )
