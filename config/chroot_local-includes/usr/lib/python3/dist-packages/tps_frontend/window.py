@@ -234,7 +234,6 @@ class Window(Gtk.ApplicationWindow):
             # -1 means the default timeout of 25 seconds is used,
             # which should be enough.
             timeout_msec=-1,
-            # XXX: Maybe support cancellation
             cancellable=None,
             callback=self.on_activate_call_finished,
         )
