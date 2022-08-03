@@ -31,7 +31,7 @@ def set_passphrase_strength_hint(progress_bar: Gtk.ProgressBar,
 
     if len(passhrase) == 0:
         hint = ""
-        strength = 0
+        strength = 0.0
     else:
         strength = get_passphrase_strength()
         # We use the same hints for the same strength as
