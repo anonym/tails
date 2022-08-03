@@ -294,13 +294,6 @@ class CleartextDevice(object):
         executil.check_call(["mount", "-o", "acl", self.device_path,
                              self.mount_point])
 
-        # XXX: live-persist checked the owner and access rights of the
-        # mount point here and disables the config files if they are
-        # not correct. I wonder of what use that check is. If an
-        # attacker is able to modify files on the volume, they can most
-        # probably also set the access rights back to normal again
-        # afterwards.
-
         # Ensure that the mount point has the correct owner, permissions
         # and ACL.
         # Permissions are set to 770. ACLs are set to allow the amnesia
