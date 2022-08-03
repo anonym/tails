@@ -3,6 +3,7 @@ from gi.repository import Gtk
 
 from tps_frontend import _
 
+
 def set_passphrase_strength_hint(progress_bar: Gtk.ProgressBar,
                                  passhrase: str):
     def get_passphrase_strength() -> float:
