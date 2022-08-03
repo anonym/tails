@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
+
 class UnlockView(View):
     _ui_file = UNLOCK_VIEW_UI_FILE
 

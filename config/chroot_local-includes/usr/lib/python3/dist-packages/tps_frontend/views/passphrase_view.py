@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
+
 class PassphraseView(View):
     _ui_file = PASSPHRASE_VIEW_UI_FILE
 
