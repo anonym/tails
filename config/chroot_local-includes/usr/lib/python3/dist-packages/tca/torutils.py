@@ -402,7 +402,7 @@ class TorConnectionConfig:
 class TorLauncherUtils:
     def __init__(self, stem_controller: Controller,
                  config_buf, state_buf,
-                 set_tor_sandbox_fn: Callable[[bool], None]):
+                 set_tor_sandbox_fn: Callable[[Callable, str], None]):
         """
         Arguments:
         stem_controller -- an already connected and authorized stem Controller
