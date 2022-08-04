@@ -1,8 +1,8 @@
 #!/bin/sh
 
-service tor stop
-service networking stop
-service NetworkManager stop
+systemctl stop tor
+systemctl stop networking
+systemctl stop NetworkManager
 
 # Do *not* 'set -e' earlier:
 # 1. We don't run Vidalia in Windows Camouflage mode, so 'set -e'
