@@ -2,7 +2,6 @@
 
 from pathlib import Path
 import re
-import subprocess
 import ipaddress
 import time
 import logging
