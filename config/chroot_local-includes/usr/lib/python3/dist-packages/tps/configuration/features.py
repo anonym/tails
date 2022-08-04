@@ -47,6 +47,11 @@ class AdditionalSoftware(Feature):
     enabled_by_default = True
     conflicting_apps = [
         ConflictingApp(name="apt", process_names=["apt"]),
+        ConflictingApp(name="apt-get", process_names=["apt-get"]),
+        ConflictingApp(name="dpkg", process_names=["dpkg"]),
+        ConflictingApp(name="Synaptic",
+                       desktop_id="synaptic.desktop",
+                       process_names=["synaptic"]),
     ]
 
 
