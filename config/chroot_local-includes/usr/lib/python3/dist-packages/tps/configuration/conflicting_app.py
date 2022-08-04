@@ -12,7 +12,7 @@ all_apps = Gio.AppInfo.get_all()  # type: List[Gio.AppInfo]
 
 
 class ConflictingApp(object):
-    """A app that must not be running while the feature this app
+    """An app that must not be running while the feature this app
     belongs to is activated or deactivated.
 
     Args:
