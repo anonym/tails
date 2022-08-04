@@ -1,4 +1,5 @@
 from logging import getLogger
+import subprocess
 from gi.repository import Gio, GLib, GObject, Gtk
 
 import gi
@@ -8,7 +9,7 @@ from gi.repository import Handy
 Handy.init()
 
 from tps import State, IN_PROGRESS_STATES
-from tps.dbus.errors import InvalidConfigFileError, IncorrectPassphraseError, \
+from tps.dbus.errors import \
     TargetIsBusyError
 
 from tps_frontend import _, WINDOW_UI_FILE
@@ -19,7 +20,7 @@ from tps_frontend.views.spinner_view import SpinnerView
 from tps_frontend.views.fail_view import FailView
 from tps_frontend.views.features_view import FeaturesView
 from tps_frontend.views.passphrase_view import PassphraseView
-from tps_frontend.views.unlock_view import UnlockView
+from tps_frontend.views.locked_view import LockedView
 from tps_frontend.views.welcome_view import WelcomeView
 
 # Only required for type hints
@@ -38,6 +39,7 @@ class Window(Gtk.ApplicationWindow):
 
     view_box = Gtk.Template.Child()  # type: Gtk.Box
     change_passphrase_button = Gtk.Template.Child()  # type: Gtk.Button
+    restart_button = Gtk.Template.Child()  # type: Gtk.Button
     delete_button = Gtk.Template.Child()  # type: Gtk.Button
 
     def __init__(self, app: "Application", bus: Gio.DBusConnection):
@@ -58,7 +60,7 @@ class Window(Gtk.ApplicationWindow):
         self.spinner_view = SpinnerView(self)
         self.features_view = FeaturesView(self, bus)
         self.passphrase_view = PassphraseView(self)
-        self.unlock_view = UnlockView(self)
+        self.locked_view = LockedView(self)
         self.welcome_view = WelcomeView(self)
 
         # Subscribe to changes of the service name owner, so that we
@@ -90,7 +92,7 @@ class Window(Gtk.ApplicationWindow):
         elif self.state == State.NOT_CREATED:
             self.welcome_view.show()
         elif self.state == State.NOT_UNLOCKED:
-            self.unlock_view.show()
+            self.locked_view.show()
         elif self.state == State.CREATING:
             self.creation_view.show()
         elif self.state in (State.DELETING, State.UNLOCKING):
@@ -176,6 +178,10 @@ class Window(Gtk.ApplicationWindow):
         dialog = ChangePassphraseDialog(self, self.service_proxy)
         dialog.run()
 
+    @Gtk.Template.Callback()
+    def on_restart_button_clicked(self, button: Gtk.Button):
+        subprocess.run(["sudo", "-n", "/sbin/reboot"])
+
     def on_create_call_finished(self, proxy: GObject.Object,
                                 res: Gio.AsyncResult):
         try:
@@ -207,70 +213,6 @@ class Window(Gtk.ApplicationWindow):
                 self.display_error(_("Error deleting Persistent Storage"),
                                    e.message)
         self.refresh_view()
-
-    def on_unlock_call_finished(self, proxy: GObject.Object,
-                                res: Gio.AsyncResult):
-        try:
-            proxy.call_finish(res)
-        except GLib.Error as e:
-            logger.error(f"failed to unlock Persistent Storage: {e.message}")
-            if IncorrectPassphraseError.is_instance(e):
-                self.display_error(_("Failed to unlock Persistent Storage"),
-                                   _("Incorrect passphrase"),
-                                   with_send_report_button=False)
-                return
-            else:
-                self.display_error(_("Failed to unlock Persistent Storage"),
-                                   e.message)
-            if self.active_view == self.spinner_view:
-                self.close()
-            return
-
-        # Now activate the Persistent Storage
-        self.service_proxy.call(
-            method_name="Activate",
-            parameters=None,
-            flags=Gio.DBusCallFlags.NONE,
-            # -1 means the default timeout of 25 seconds is used,
-            # which should be enough.
-            timeout_msec=-1,
-            cancellable=None,
-            callback=self.on_activate_call_finished,
-        )
-
-    def on_activate_call_finished(self, proxy: GObject.Object,
-                                res: Gio.AsyncResult):
-        try:
-            proxy.call_finish(res)
-        except GLib.Error as e:
-            logger.error(f"failed to activate Persistent Storage: {e.message}")
-
-            if InvalidConfigFileError.is_instance(e):
-                # The config file is invalid, probably because the user
-                # made some invalid manual modifications. The invalid
-                # config file is automatically renamed to to "*.invalid"
-                # a new empty config file is created instead, so all we
-                # have to do here is to show a message to the user.
-                # We don't want error reports for this, because the
-                # cause is probably a user error.
-                InvalidConfigFileError.strip_remote_error(e)
-                title = _(
-                    "There was an issue activating the Persistent Storage"
-                )
-                # Translators: Don't translate {e.message}, it's a placeholder
-                msg = _(
-                    "The Persistent Storage config file could not be accessed:"
-                    f" {e.message}\n\n"
-                    f"A new, empty config file has been created. Your data "
-                    f"is not lost, but you have to turn on the features "
-                    f"again which you want to be saved on the Persistent "
-                    f"Storage."
-                )
-                self.display_error(title, msg, False)
-            else:
-                self.display_error(_("Failed to activate Persistent Storage"),
-                                   e.message)
-            return
 
     def display_error(self, title: str, msg: str,
                       with_send_report_button: bool = None):

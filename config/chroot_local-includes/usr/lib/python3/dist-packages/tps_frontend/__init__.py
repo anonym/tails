@@ -26,7 +26,7 @@ FAIL_VIEW_UI_FILE = path.join(DATA_DIR, "fail_view.ui")
 FEATURES_VIEW_UI_FILE = path.join(DATA_DIR, "features_view.ui")
 PASSPHRASE_VIEW_UI_FILE = path.join(DATA_DIR, "passphrase_view.ui")
 SPINNER_VIEW_UI_FILE = path.join(DATA_DIR, "spinner_view.ui")
-UNLOCK_VIEW_UI_FILE = path.join(DATA_DIR, "unlock_view.ui")
+LOCKED_VIEW_UI_FILE = path.join(DATA_DIR, "locked_view.ui")
 WELCOME_VIEW_UI_FILE = path.join(DATA_DIR, "welcome_view.ui")
 WINDOW_UI_FILE = path.join(DATA_DIR, "window.ui")
 
