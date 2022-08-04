@@ -9,7 +9,6 @@ class PersistentDirectory(Feature):
     Id = "PersistentDirectory"
     Mounts = [Mount("Persistent", "/home/amnesia/Persistent")]
     enabled_by_default = True
-    conflicting_apps = []
 
 
 class BrowserBookmarks(Feature):
