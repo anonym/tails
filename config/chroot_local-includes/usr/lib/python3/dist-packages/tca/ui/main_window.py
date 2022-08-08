@@ -411,11 +411,10 @@ class StepChooseBridgeMixin:
                         flags=0,
                         message_type=Gtk.MessageType.ERROR,
                         buttons=Gtk.ButtonsType.OK,
-                        text=_("Scanning bridges from QR code failed"),
+                        text=_("Invalid QR code"),
                         )
                 dialog.format_secondary_text(_(
-                    "The QR code you scanned didn't look like "
-                    "one that contains Tor Bridges"
+                    "Try sending another email and scanning again."
                 ))
                 dialog.run()
 
