@@ -8,3 +8,4 @@ locale_dir = "/usr/share/locale/"
 APPLICATION_TITLE = _("Tor Connection")
 APPLICATION_ICON_NAME = "gdm-setup"
 APPLICATION_WM_CLASS = 'TorConnectionAssistant'
+CONFIG_FILE = "/var/lib/tca/tca.conf"

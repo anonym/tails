@@ -35,6 +35,7 @@ from tailslib import (
     LIVE_USERNAME,
     PERSISTENT_STORAGE_USERNAME
 )
+from tca.config import CONFIG_FILE as TCA_CONFIG_FILE
 
 TPS_TOR_CONFIG_FEATURE_NAME = "TorConfiguration"
 
@@ -89,6 +90,9 @@ class BaseCommand:
     def __init__(self, cmd: List[str], arguments: bool):
         self.cmd = cmd
         self.arguments = arguments
+        # See WriteFileCommand.run for an example of how to use this
+        # in a child class.
+        self.stdin = None
 
     def validate_request(self, request: RPCRequest) -> None:
         '''
@@ -115,7 +119,7 @@ class BaseCommand:
     def run(self, request: RPCRequest):
         cmd = self.full_command(request)
         log.debug("Running %s", cmd)
-        return Popen(cmd, stdout=PIPE, universal_newlines=True)
+        return Popen(cmd, stdin=PIPE, stdout=PIPE, universal_newlines=True)
 
 
 class RootCommand(BaseCommand):
@@ -200,6 +204,27 @@ class SetTimeCommand(RootCommand):
         return args
 
 
+class WriteFileCommand(RootCommand):
+    def __init__(self, dest_file: str):
+        super().__init__(["/bin/dd", "status=none", f"of={dest_file}"], True)
+
+    def validate_args(self, args: tuple) -> tuple:
+        if len(args) != 1:
+            raise InvalidArgsError("Invalid number of arguments")
+        config_str = args[0]
+        max_len = 4096
+        if len(config_str) > max_len:
+            raise InvalidArgsError("Configuration string is too long")
+        return args
+
+    def full_command(self, request: RPCRequest) -> tuple:
+        cmd = (*self.cmd,)
+        return cmd
+
+    def run(self, request: RPCRequest):
+        self.stdin = self.validate_args(request.args)[0]
+        return super().run(request)
+
 class Handler(socketserver.StreamRequestHandler):
     """
     This class implements the JSON-RPC line-protocol + some glue code to call relevant actions.
@@ -212,7 +237,7 @@ class Handler(socketserver.StreamRequestHandler):
      - server-initiated messages (ie: signals)
     """
 
-    MAX_LINESIZE = 1024
+    MAX_LINESIZE = 4096
 
     spawn_commands = {  # some commands just mean "run this specified commands as LIVE_USERNAME, please"
         "open-unsafebrowser": UserCommand(("/usr/bin/gtk-launch", "unsafe-browser"), False),
@@ -240,6 +265,8 @@ class Handler(socketserver.StreamRequestHandler):
             False),
         "get-network-time": GetNetworkTimeCommand(),
         "set-system-time": SetTimeCommand(),
+        "read-tca-config": RootCommand(["/bin/cat", TCA_CONFIG_FILE], False),
+        "write-tca-config": WriteFileCommand(TCA_CONFIG_FILE),
     }
     valid_commands = set(spawn_commands.keys())
 
@@ -303,7 +330,7 @@ class Handler(socketserver.StreamRequestHandler):
         """
         process = cmd.run(req)
         # stdout and stderr from the process
-        stdout, _ = process.communicate()
+        stdout, _ = process.communicate(cmd.stdin)
         if process.returncode == 0:
             response = req.respond(result={"returncode": process.returncode, "stdout": stdout})
         else:

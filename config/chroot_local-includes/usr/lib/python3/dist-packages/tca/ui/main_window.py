@@ -848,6 +848,8 @@ class TCAMainWindow(
             tca.config.APPLICATION_WM_CLASS, tca.config.APPLICATION_WM_CLASS
         )
         self.set_title(tca.config.APPLICATION_TITLE)
+
+    def finish_init(self):
         # self.state collects data from user interactions. Its main key is the step name
         self.state: Dict[str, Any] = {
             "hide": {},

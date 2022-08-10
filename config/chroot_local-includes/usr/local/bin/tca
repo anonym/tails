@@ -80,8 +80,6 @@ def main():
     connect_drop = [
         "/usr/local/lib/connect-drop",
         "-c",
-        "FILE:%s:r+" % conffile,
-        "-c",
         "FILE:%s:r+" % statefile,
         "-c",
         "UNIX:%s" % portalsock,
