@@ -356,9 +356,8 @@ if __name__ == "__main__":
     # stem is a really really noisy logger. set it to debug only if really needed
     logging.getLogger("stem").setLevel(logging.DEBUG)
 
-    _ = gettext.gettext
     GLib.set_prgname(tca.config.APPLICATION_TITLE)
-    GLib.set_application_name(_(tca.config.APPLICATION_TITLE))
+    GLib.set_application_name(tca.config.LOCALIZED_APPLICATION_TITLE)
 
     application = TCAApplication(args)
     application.run([sys.argv[0]])

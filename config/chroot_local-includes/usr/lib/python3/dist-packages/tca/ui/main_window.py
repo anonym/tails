@@ -839,7 +839,9 @@ class TCAMainWindow(
 
     def __init__(self, app):
         Gtk.ApplicationWindow.__init__(
-            self, title=tca.config.APPLICATION_TITLE, application=app
+            self,
+            title=tca.config.LOCALIZED_APPLICATION_TITLE,
+            application=app
         )
         self.app = app
         self.set_role(tca.config.APPLICATION_WM_CLASS)

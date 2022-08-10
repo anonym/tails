@@ -149,7 +149,7 @@ def main():
 
 def get_display_error_cmd() -> List[str]:
     _ = gettext.gettext
-    title = _(tca.config.APPLICATION_TITLE)
+    title = tca.config.LOCALIZED_APPLICATION_TITLE
     textlines = [
         _("You turned on Offline Mode in the Welcome Screen."),
         _("It is impossible to connect to Tor in Offline Mode."),
