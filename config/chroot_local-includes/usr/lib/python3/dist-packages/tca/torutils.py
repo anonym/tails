@@ -13,7 +13,7 @@ import stem.socket
 from typing import List, Optional, Dict, Any, Tuple, cast, Callable
 import tca.config
 
-log = logging.getLogger("tor-launcher")
+log = logging.getLogger("torutils")
 
 
 class StemFDSocket(stem.socket.ControlSocket):
