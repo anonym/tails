@@ -20,6 +20,7 @@ from tps.mountutil import MountException  # noqa: F401
 sys.path.insert(0, SCRIPT_DIR)
 import testutils
 
+
 # A definition of the context we pass between step implementations.
 # This is not actually the class that behave passes to the step_impl
 # functions, but pretending that it is provides code completion.
@@ -31,10 +32,10 @@ class TestContext(object):
     mount_point: str
 
 
-TEST_FILE_NAME="testfile"
-SECRET_FILE_NAME="shadow"
-SECRET_CONTENT="secret"
-SECRET_DIR_NAME="secrets"
+TEST_FILE_NAME = "testfile"
+SECRET_FILE_NAME = "shadow"
+SECRET_CONTENT = "secret"
+SECRET_DIR_NAME = "secrets"
 
 
 @given('a mount object for mounting a directory "{src}" to '
