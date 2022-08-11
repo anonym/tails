@@ -10,8 +10,7 @@ from tailslib import LIVE_USERNAME, LIVE_USER_UID
 from tps import _, TPS_MOUNT_POINT
 from tps import executil
 from tps.mountutil import mount, MOUNTFLAG_BIND
-from tps.dbus.errors import TargetIsBusyError, \
-    SymlinkSourceDirectoryError
+from tps.dbus.errors import TargetIsBusyError
 
 logger = logging.getLogger(__name__)
 
@@ -167,23 +166,6 @@ class Mount(object):
             logger.warning(f"Is already mounted: {self}")
             return
 
-        # If this mount uses symlinks, check if the source directory
-        # exists and contains any files which we could create symlinks
-        # for
-        if self.uses_symlinks:
-            if not self.src.exists():
-                # XXX: This is an expected error which we display to the
-                #      user, we might want to translate it.
-                error_msg = f"Source directory {self.src_orig} does not exist. " \
-                            f"You have to create it and copy files into it " \
-                            f"before you can activate this feature."
-                raise SymlinkSourceDirectoryError(error_msg)
-            if not any(self.src.iterdir()):
-                error_msg = f"Source directory {self.src_orig} is empty. " \
-                            f"You have to copy files into it before you " \
-                            f"can activate this feature."
-                raise SymlinkSourceDirectoryError(error_msg)
-
         # Check if anything else is mounted on the destination
         src = _what_is_mounted_on(self.dest)
         if src:
@@ -321,6 +303,14 @@ class Mount(object):
                 if not dest.is_symlink():
                     continue
                 dest.unlink()
+        # Delete the source directory if it's empty, otherwise it
+        # would be impossible to successfully disable the Dotfiles
+        # feature when the Dotfiles directory is empty: this operation
+        # would fail because tps will still think the feature is
+        # active (technically it is: 0% of "no setup needed" == 100%
+        # of "no setup needed").
+        if not any(self.src.iterdir()):
+            self.src.rmdir()
 
     def _deactivate_using_bind_mount(self):
         # Unmount the destination directory
@@ -359,8 +349,8 @@ class Mount(object):
             raise IsActiveException()
 
     def _is_active_using_symlinks(self):
-        if not self.src.exists() or not any(self.src.iterdir()):
-            # If the source directory doesn't exist or is empty,
+        if not self.src.exists() or not self.dest.exists():
+            # If the source or destination directory doesn't exist,
             # the feature can't be active.
             return False
 

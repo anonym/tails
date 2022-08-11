@@ -12,8 +12,7 @@ from tempfile import mkdtemp
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", "..", "..", ".."))
 
-from tps.configuration.mount import Mount, \
-    SymlinkSourceDirectoryError  # noqa: F401
+from tps.configuration.mount import Mount  # noqa: F401
 from tps.mountutil import MountException  # noqa: F401
 
 # Import testutils
@@ -228,6 +227,12 @@ def step_impl(context: TestContext):
     # The _is_active_using_symlinks function checks exactly what we want
     # to check here
     assert context.mount._is_active_using_symlinks()
+
+@then('the {mount_operand} directory contains no symlink')
+def step_impl(context: TestContext, mount_operand: str):
+    path = testutils.get_mount_operand(context.mount, mount_operand)
+    for child in path.iterdir():
+        assert not child.is_symlink()
 
 @then('the file owned by root was not changed')
 def step_impl(context: TestContext):

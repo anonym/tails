@@ -8,25 +8,24 @@ Feature: Symlink directories
         Given a mount object for mounting a directory "foo" to "foo" in the destination directory using symlinks
 
     Scenario: Neither source nor destination directory exist
-        # This should fail because the source directory does not exist
-        When the mount is tried to be activated
-        Then mount activation fails with a SymlinkSourceDirectoryError
-        And the source directory does not exist
-        And the destination directory does not exist
+        When the mount is activated
+        Then the source directory exists
+        And the destination directory exists
+        And the destination directory contains no symlink
 
     Scenario: Only the destination directory exists
-        # This should fail because the source directory does not exist
         Given the destination directory exists
-        When the mount is tried to be activated
-        Then mount activation fails with a SymlinkSourceDirectoryError
-        And the source directory does not exist
+        When the mount is activated
+        Then the source directory exists
+        And the destination directory exists
+        And the destination directory contains no symlink
 
     Scenario: Only the source directory exists and is empty
-        # This should fail because the source directory is empty
         Given the source directory exists
-        When the mount is tried to be activated
-        Then mount activation fails with a SymlinkSourceDirectoryError
-        And the destination directory does not exist
+        When the mount is activated
+        Then the source directory exists
+        And the destination directory exists
+        And the destination directory contains no symlink
 
     Scenario: Only the source directory exists and contains a file owned by root
         Given the source directory exists
@@ -46,11 +45,10 @@ Feature: Symlink directories
         And the destination directory contains a symlink to a file owned by amnesia
 
     Scenario: Both the destination directory and the source directory exist
-        # This should fail because the source directory is empty
         Given the destination directory exists
         And the source directory exists
-        When the mount is tried to be activated
-        Then mount activation fails with a SymlinkSourceDirectoryError
+        When the mount is activated
+        Then the destination directory contains no symlink
 
     Scenario: Both source and destination exist and the source contains a file owned by amnesia
         Given the destination directory exists
