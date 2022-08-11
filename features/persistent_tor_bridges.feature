@@ -18,8 +18,7 @@ Feature: Using persistent Tor bridges and pluggable transports
     And I wait until Tor is ready
     Then tca.conf includes the configured bridges
     And /var/lib/tca is configured to persist
-    When I apply a workaround to make sure Tor bridges are copied to persistence
-    And I cold reboot the computer
+    When I cold reboot the computer
     And the computer reboots Tails
     And I enable persistence
     And I capture all network traffic

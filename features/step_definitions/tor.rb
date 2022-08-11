@@ -912,10 +912,3 @@ Then /^tca.conf includes the configured bridges$/ do
     end
   )
 end
-
-# Workaround for #18926
-When /^I apply a workaround to make sure Tor bridges are copied to persistence$/ do
-  $vm.execute_successfully(
-    '/usr/local/lib/tails-synchronize-tor-configuration-to-persistent-storage'
-  )
-end
