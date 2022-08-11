@@ -337,9 +337,9 @@ class StepChooseBridgeMixin:
             )
 
         if state:
-            portal_method = "enable-tor-configuration-persistence"
+            portal_method = "ensure-tor-configuration-is-persistent"
         else:
-            portal_method = "disable-tor-configuration-persistence"
+            portal_method = "ensure-tor-configuration-is-not-persistent"
         self.app.portal.call_async(
             portal_method,
             cb_persistence_config_changed,

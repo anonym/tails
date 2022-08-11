@@ -257,11 +257,11 @@ class Handler(socketserver.StreamRequestHandler):
         "is-tor-configuration-persistent?": UserCommand(
             ("/usr/local/lib/tpscli", "is-active", TPS_TOR_CONFIG_FEATURE_NAME),
             False),
-        "enable-tor-configuration-persistence": PersistentStorageCommand(
-            ("/usr/local/lib/tpscli", "activate", TPS_TOR_CONFIG_FEATURE_NAME),
+        "ensure-tor-configuration-is-persistent": PersistentStorageCommand(
+            ("/usr/local/lib/tpscli", "ensure-is-active", TPS_TOR_CONFIG_FEATURE_NAME),
             False),
-        "disable-tor-configuration-persistence": PersistentStorageCommand(
-            ("/usr/local/lib/tpscli", "deactivate", TPS_TOR_CONFIG_FEATURE_NAME),
+        "ensure-tor-configuration-is-not-persistent": PersistentStorageCommand(
+            ("/usr/local/lib/tpscli", "ensure-is-inactive", TPS_TOR_CONFIG_FEATURE_NAME),
             False),
         "get-network-time": GetNetworkTimeCommand(),
         "set-system-time": SetTimeCommand(),

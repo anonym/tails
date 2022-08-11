@@ -54,3 +54,8 @@ tps_ensure_feature_is_active() {
     local feature="${1}"
     tps_feature_is_active "${feature}" || tps_activate_feature "${feature}"
 }
+
+tps_ensure_feature_is_inactive() {
+    local feature="${1}"
+    ! tps_feature_is_active "${feature}" || tps_deactivate_feature "${feature}"
+}
