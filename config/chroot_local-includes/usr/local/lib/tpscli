@@ -12,9 +12,13 @@ FEATURE_NAME="$2"
 
 case "$SUBCOMMAND" in
     activate)
+	# This will fail if the feature is already active,
+	# so in some cases ensure-is-active is better suited.
 	tps_activate_feature "${FEATURE_NAME}"
 	;;
     deactivate)
+	# This will fail if the feature is already inactive,
+	# so in some cases ensure-is-active is better suited.
 	tps_deactivate_feature "${FEATURE_NAME}"
 	;;
     is-active)

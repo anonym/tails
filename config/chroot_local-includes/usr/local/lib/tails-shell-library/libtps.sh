@@ -29,8 +29,12 @@ tps_feature_is_active() {
 }
 
 tps_activate_feature() {
-    # Note: Only tails-persistent-storage and Debian-gdm have the required
-    # permissions to call this
+    # Notes:
+    # - Only tails-persistent-storage and Debian-gdm have the required
+    #   permissions to call this
+    # - This will fail if the feature is already active,
+    #   so in some cases tps_ensure_feature_is_active is better suited.
+    #
     local feature="${1}"
     local object_path="/org/boum/tails/PersistentStorage/Features/${feature}"
     gdbus call --system --dest org.boum.tails.PersistentStorage \
@@ -40,8 +44,11 @@ tps_activate_feature() {
 }
 
 tps_deactivate_feature() {
-    # Note: Only tails-persistent-storage and Debian-gdm have the required
-    # permissions to call this
+    # Notes:
+    # - Only tails-persistent-storage and Debian-gdm have the required
+    #   permissions to call this
+    # - This will fail if the feature is already active,
+    #   so in some cases tps_ensure_feature_is_inactive is better suited.
     local feature="${1}"
     local object_path="/org/boum/tails/PersistentStorage/Features/${feature}"
     gdbus call --system --dest org.boum.tails.PersistentStorage \
