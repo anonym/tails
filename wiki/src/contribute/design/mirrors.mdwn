@@ -51,22 +51,22 @@ to the website itself.
 The configuration file is essentially a list of mirrors, and for each
 of them we need a few values:
 
- * url_prefix: whatever needs to be pre-pended to the path to an ISO
+ * `url_prefix`: whatever needs to be pre-pended to the path to an ISO
    (e.g. `/stable/tails-i386-2.0/tails-i386-2.0.iso`) that is shared
    between all mirrors, to form a complete URL to that ISO; for
    example `https://mirrors.wikimedia.org/tails/`
 
- * rsync_url: this URL is used by the server-side redirector to periodically
+ * `rsync_url`: this URL is used by the server-side redirector to periodically
    check each mirror's health.
 
- * weight: the probability this mirror has to be picked by the
+ * `weight`: the probability this mirror has to be picked by the
    dispatcher code, expressed as a non-negative integer; weight
    0 means that the mirror is currently disabled, and will never be
    redirected to
 
- * email (optional): the email address of the mirror's operator
+ * `email` (optional): the email address of the mirror's operator
 
- * notes (optional): various additional notes that can be useful to
+ * `notes` (optional): various additional notes that can be useful to
    the managers of the mirror pool
 
 For a more formal, and probably more up-to-date definition of the data
