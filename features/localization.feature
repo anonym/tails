@@ -11,10 +11,10 @@ Feature: Localization
     When I double-click on the Report an Error launcher on the desktop
     Then the support documentation page opens in Tor Browser
 
-  Scenario: I can start the Unsafe Browser in a few supported languages
+  Scenario: I can start the Unsafe Browser in all supported languages
     Given I have started Tails from DVD and logged in and the network is connected
     And I magically allow the Unsafe Browser to be started
-    Then I can start the Unsafe Browser in a few supported languages
+    Then I can start the Unsafe Browser in all supported languages
 
   @slow @not_release_blocker
   Scenario Outline: Tails is localized for every tier-1 language
