@@ -291,6 +291,7 @@ class StepChooseBridgeMixin:
         self.get_object("combo").set_sensitive(default)
         self.builder.get_object("step_bridge_text").set_sensitive(manual)
         self.builder.get_object("step_bridge_btn_scanqrcode").set_sensitive(scan)
+        self.builder.get_object("step_bridge_label_scanresult").set_sensitive(scan)
         self.builder.get_object("step_bridge_btn_submit").set_sensitive(
             default or (manual and self._step_bridge_is_text_valid())
             or (scan and self.get_object('label_scanresult').get_property('visible'))
@@ -350,21 +351,7 @@ class StepChooseBridgeMixin:
         return True  # disable the default handler
 
     def cb_step_bridge_btn_submit_clicked(self, *args):
-        default = self.builder.get_object("step_bridge_radio_default").get_active()
-        manual = self.builder.get_object("step_bridge_radio_type").get_active()
-        self.state["hide"]["bridge"] = True
-        if default:
-            self.state["bridge"]["kind"] = "default"
-            self.state["bridge"]["default_method"] = self.get_object(
-                "combo"
-            ).get_active_id()
-        elif manual:
-            self.state["bridge"]["kind"] = "manual"
-            text = self.get_object("text").get_buffer().get_text()
-            self.state["bridge"]["bridges"] = TorConnectionConfig.parse_bridge_lines(
-                [text]
-            )
-            log.info("Bridges parsed: %s", self.state["bridge"]["bridges"])
+        self._step_bridge_set_state_from_view()
 
         self.change_box("progress")
 
@@ -406,7 +393,7 @@ class StepChooseBridgeMixin:
                 return
 
             try:
-                self.state['bridge']['bridges'] = TorConnectionConfig.parse_qr_content(raw_content)
+                self.last_scanned_qrcode = TorConnectionConfig.parse_qr_content(raw_content)
             except Exception:
                 dialog = Gtk.MessageDialog(
                         transient_for=self,
@@ -422,26 +409,34 @@ class StepChooseBridgeMixin:
 
                 dialog.destroy()
             else:
-                # it should be content = '\n'.join(bridges), but #18981
-                content = self.state['bridge']['bridges'][0]
-
-                bridge_info = content.split()[1]  # IP address
-                bridge_type=content.split()[0]
-                informative_message = _("Scanned {bridge_type} bridge: <b>{bridge_info}</b>")
-                self.get_object("label_scanresult").set_text(
-                        informative_message.format(
-                            bridge_info=bridge_info,
-                            bridge_type=bridge_type,
-                            )
-                        )
-                self.get_object('label_scanresult').set_property("use-markup", True)
-                self.get_object('label_scanresult').show()
                 self._step_bridge_set_actives()
+                self._step_bridge_set_state_from_view()
 
         self.app.portal.call_async("scan-qrcode", on_qrcode_scanned)
 
     def cb_step_bridge_btn_scanqrcode_clicked(self, *args):
         self.scan_qrcode()
+
+    def _step_bridge_set_state_from_view(self):
+        default = self.builder.get_object("step_bridge_radio_default").get_active()
+        manual = self.builder.get_object("step_bridge_radio_type").get_active()
+        scan = self.builder.get_object("step_bridge_radio_scan").get_active()
+        self.state["hide"]["bridge"] = True
+        if default:
+            self.state["bridge"]["kind"] = "default"
+            self.state["bridge"]["default_method"] = self.get_object(
+                "combo"
+            ).get_active_id()
+        elif manual:
+            self.state["bridge"]["kind"] = "manual"
+            text = self.get_object("text").get_buffer().get_text()
+            self.state["bridge"]["bridges"] = TorConnectionConfig.parse_bridge_lines(
+                [text]
+            )
+            log.info("Bridges parsed: %s", self.state["bridge"]["bridges"])
+        elif scan:
+            self.state["bridge"]["kind"] = "manual"
+            self.state["bridge"]["bridges"] = self.last_scanned_qrcode
 
 class StepConnectProgressMixin:
     def before_show_progress(self, coming_from):
@@ -989,6 +984,37 @@ class TCAMainWindow(
         self.add(self.main_container)
         self.show()
         self.change_box(self.state["step"])
+
+    @property
+    def last_scanned_qrcode(self):
+        return self.state.get('bridges', {}).get('last_scanned_qrcode', [])
+
+    @last_scanned_qrcode.setter
+    def last_scanned_qrcode(self, value):
+        '''
+        When setting the QR code, we're also refreshing the relevant part of the UI: step_bridge_label_scanresult
+        '''
+        self.state.setdefault('bridges', {})
+        self.state['bridges']['last_scanned_qrcode'] = value
+
+        bridge_info = value[0].split()[1]  # IP address
+        bridge_type = value[0].split()[0]
+        informative_message = _("Scanned {bridge_type} bridge: <b>{bridge_info}</b>")
+
+        label_scanresult = self.builder.get_object("step_bridge_label_scanresult")
+        label_scanresult.set_text(
+                informative_message.format(
+                    bridge_info=bridge_info,
+                    bridge_type=bridge_type,
+                    )
+                )
+        label_scanresult.set_property("use-markup", True)
+        label_scanresult.show()
+
+        content = str(value[0])
+        text = self.builder.get_object("step_error_text")
+        text.get_buffer().set_text(content, len(content))
+
 
     @property
     def user_wants_hide(self) -> Optional[bool]:
