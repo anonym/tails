@@ -91,6 +91,12 @@ class PythonSession:
         if not user:
             user = pwd.getpwuid(os.getuid()).pw_name
         env = get_user_env(user)
+        # If WAYLAND_DISPLAY is set, Dogtail breaks for non-amnesia
+        # users. It is not needed for Dogtail even when run as
+        # amnesia, so we can just unset it as long as this class is
+        # used solely for Dogtail.
+        if 'WAYLAND_DISPLAY' in env:
+            del(env['WAYLAND_DISPLAY'])
         cwd = env.get('HOME', '/')
         self.process = subprocess.Popen(
             ["python3", "-u", "-c", interactive_shell_code],
