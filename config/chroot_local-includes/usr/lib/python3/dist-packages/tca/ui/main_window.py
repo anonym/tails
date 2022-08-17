@@ -967,7 +967,6 @@ class TCAMainWindow(
         builder.add_from_file(tca.config.data_path + MAIN_UI_FILE)
         builder.connect_signals(self)
 
-        self.main_container = builder.get_object("box_main_container_image_step")
         self.stack = builder.get_object("box_main_container_stack")
         for step in self.STEPS_ORDER:
             box = builder.get_object("step_{}_box".format(step))
@@ -976,7 +975,7 @@ class TCAMainWindow(
 
         self.connection_progress = ConnectionProgress(self)
         GLib.timeout_add(1000, self.connection_progress.tick)
-        self.add(self.main_container)
+        self.add(builder.get_object("box_main_container"))
         self.show()
         self.change_box(self.state["step"])
 
