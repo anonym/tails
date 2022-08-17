@@ -115,12 +115,6 @@ mirror `tails.example.com`.
 Manual set up
 -------------------------
 
-<div class="tip">
-If you are using [[!wikipedia Puppet_(software) desc="Puppet"]] to configure
-your server infrastructure, consider using the available [[HTTP mirror Puppet
-module|mirror#http-puppet]].
-</div>
-
 ### 1. Set up your web server
 
 Set up a virtual host for the hostname chosen at the
@@ -201,42 +195,6 @@ this content:
     0 * * * * root sleep $(shuf --input-range=0-2400 --head-count=1) && flock -n /var/run/lock/tails-mirror-rsync rsync -rt --delete mirrors.rsync.tails.boum.org::amnesia-archive /var/www/YOUR_PATH/
 
 You can now [[ask for your mirror to be added to the pool|mirror#http-pool]].
-
-<a id="http-puppet"></a>
-
-Set up with Puppet
------------------
-
-It is assumed that Puppet is already installed and configured to function well
-for your infrastructure.
-
-### 1. Clone the `tails` Puppet module
-
-Clone the module inside the puppet modules' directory of your puppetmaster. On
-Debian, this directory should be `/etc/puppet/modules`.
-
-     git clone \
-         https://gitlab.tails.boum.org/tails/puppet-tails.git \
-         /etc/puppet/modules/tails
-
-### 2. Use the tails::mirror class
-
-On a node where you wish setup the mirror you should include the class like
-
-     include tails::mirror
-
-If you need to adjust any parameters of the class, you should declare it like
-
-     class { 'tails::mirror':
-       webserver   => 'apache2',
-       server_name => 'tails.example.com',
-       mirror_path => '/srv/tails/mirror',
-     }
-
-#### Configurable parameters
-
-See the documentation on top of
-[[!tails_gitweb_puppet_tails manifests/mirror.pp desc="the module"]].
 
 <a id="http-pool"></a>
 
