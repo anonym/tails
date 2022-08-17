@@ -8,16 +8,16 @@
     <property name="visible">True</property>
 
     <child>
-        <object class="GtkInfoBar" id="step_bridge_infobar_scanqrcode">
+        <object class="GtkInfoBar" id="infobar_scanqrcode">
             <property name="message-type">error</property>
             <property name="show-close-button">True</property>
-            <signal name="response" handler="cb_step_bridge_infobar_scanqrcode_close" swapped="no"/>
+            <signal name="response" handler="cb_infobar_scanqrcode_close" swapped="no"/>
             <child internal-child="content_area">
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="halign">start</property>
                     <child>
-                        <object class="GtkLabel" id="step_bridge_infobar_scanqrcode_heading">
+                        <object class="GtkLabel" id="infobar_scanqrcode_heading">
                           <property name="halign">start</property>
                             <attributes>
                                 <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
@@ -28,7 +28,7 @@
                         </packing>
                     </child>
                     <child>
-                        <object class="GtkLabel" id="step_bridge_infobar_scanqrcode_text">
+                        <object class="GtkLabel" id="infobar_scanqrcode_text">
                           <property name="halign">start</property>
                         </object>
                         <packing>
@@ -41,7 +41,7 @@
                 <object class="GtkBox">
                   <property name="visible">True</property>
                     <child>
-                        <object class="GtkButton" id="step_bridge_infobar_scanqrcode_btn_scanagain">
+                        <object class="GtkButton" id="infobar_scanqrcode_btn_scanagain">
                             <property name="label" translatable="yes">Scan again</property>
                             <property name="visible">True</property>
                             <signal name="clicked" handler="cb_step_bridge_btn_scanqrcode_clicked" swapped="no"/>

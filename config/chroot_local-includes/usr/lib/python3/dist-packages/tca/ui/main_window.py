@@ -358,18 +358,18 @@ class StepChooseBridgeMixin:
     def cb_step_bridge_btn_back_clicked(self, *args):
         self.change_box("hide")
 
-    def cb_step_bridge_infobar_scanqrcode_close(self, *args):
-        infobar = self.get_object('infobar_scanqrcode')
+    def cb_infobar_scanqrcode_close(self, *args):
+        infobar = self.builder.get_object('infobar_scanqrcode')
         infobar.hide()
 
     def scan_qrcode(self):
         # yes, the *exactly* same code is run, no matter if you are calling
         # this from "bridge" step or from "error" step
 
-        infobar = self.get_object('infobar_scanqrcode')
+        infobar = self.builder.get_object('infobar_scanqrcode')
+        infobar.hide()
         step_called_from = self.state['step']
 
-        infobar.hide()
 
         def on_qrcode_scanned(gjsonrpcclient, res, error):
             if self.state['step'] != step_called_from:
@@ -377,8 +377,8 @@ class StepChooseBridgeMixin:
                          res.get('returncode', -1) if res else -1)
                 return
 
-            infobar_heading = self.get_object('infobar_scanqrcode_heading')
-            infobar_text = self.get_object('infobar_scanqrcode_text')
+            infobar_heading = self.builder.get_object('infobar_scanqrcode_heading')
+            infobar_text = self.builder.get_object('infobar_scanqrcode_text')
             if not res or res.get("returncode", 1) != 0:
                 infobar_heading.set_text(_("Failed to detect a webcam"))
                 infobar_text.set_text(_("Maybe your webcam is too old"))
@@ -790,6 +790,9 @@ class StepErrorMixin:
         self._step_error_submit_allowed()
 
     def cb_step_error_btn_submit_clicked(self, *args):
+        infobar = self.builder.get_object('infobar_scanqrcode')
+        infobar.hide()
+
         text = self.get_object("text").get_buffer().get_text()
         self.state["bridge"]["bridges"] = TorConnectionConfig.parse_bridge_lines([text])
         # If the user is selecting any bridge, encode it properly
