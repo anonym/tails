@@ -67,7 +67,7 @@ In order to efficiently help users download Tails images and upgrades, you need:
 
 - sufficiently privileged access to a **HTTPS** web server
 
-- ability to also serve the content over either Rsync or FTP
+- ability to also serve the content over Rsync
 
 - **unfiltered access** to your web server (no GeoIP blocking, no IP bans, no
   CAPTCHAs, etc.): we want people everywhere to be able to download Tails
@@ -90,7 +90,7 @@ that contains per-version sub-directories (such as
 `https://yourdomain.org/pub/tails/stable/tails-i386-lenny-0.6.2/`).
 
 Our automated server-side redirector periodically checks each mirrors' health
-(using either Rsync or FTP) and is able to redirect users to the nearest mirror
+(using Rsync) and is able to redirect users to the nearest mirror
 based on IP geolocation data.
 
 Alongside our mirror pool redirecting to mirrors using their own domain, we maintain
@@ -243,8 +243,8 @@ See the documentation on top of
 Go wild: ask for your mirror to be added to the pool
 ----------------------------------------------------
 
-As soon as your web and rsync/FTP servers are ready, please email us the HTTP and either Rsync
-or FTP URLs so that we can add your mirror to the pool.
+As soon as your web and Rsync servers are ready, please email us the HTTP and Rsync
+URLs so that we can add your mirror to the pool.
 
 <div class="note">
 
