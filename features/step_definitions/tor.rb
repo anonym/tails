@@ -543,6 +543,20 @@ def feed_qr_code_video_to_virtual_webcam(qrcode_image)
   )
 end
 
+def setup_qrcode_bridges_on_webcam(bridges)
+  $vm.execute_successfully('modprobe v4l2loopback')
+  qrcode_image = save_qrcode(
+    '[' + \
+    bridges.map { |bridge| "'" + bridge[:line] + "'" }
+      .join(', ') + \
+    ']'
+  )
+  $vm.file_copy_local(qrcode_image, '/tmp/qrcode.jpg')
+  feed_qr_code_video_to_virtual_webcam('/tmp/qrcode.jpg')
+  # Give ffmpeg time to start pushing frames to the virtual webcam
+  sleep 5
+end
+
 When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in the Tor Connection Assistant(?: in (easy|hide) mode)?( without connecting|)$/ do |persistent, bridge_type, qr_code, mode, connect|
   # If the "mode" isn't specified we pick one that makes sense for
   # what is requested.
@@ -579,19 +593,9 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
                               .click
     else
       if qr_code
-        $vm.execute_successfully('modprobe v4l2loopback')
         # We currently support only 1 bridge
         qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
-        qrcode_image = save_qrcode(
-          '[' + \
-          qr_code_bridges.map { |bridge| "'" + bridge[:line] + "'" }
-            .join(', ') + \
-          ']'
-        )
-        $vm.file_copy_local(qrcode_image, '/tmp/qrcode.jpg')
-        feed_qr_code_video_to_virtual_webcam('/tmp/qrcode.jpg')
-        # Give ffmpeg time to start pushing frames to the virtual webcam
-        sleep 5
+        setup_qrcode_bridges_on_webcam(qr_code_bridges)
         tor_connection_assistant.child('_Ask for a bridge by email',
                                        roleName: 'radio button')
                                 .click
