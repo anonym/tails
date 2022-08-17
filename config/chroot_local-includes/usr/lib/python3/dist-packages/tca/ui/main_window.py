@@ -358,11 +358,18 @@ class StepChooseBridgeMixin:
     def cb_step_bridge_btn_back_clicked(self, *args):
         self.change_box("hide")
 
+    def cb_step_bridge_infobar_scanqrcode_close(self, *args):
+        infobar = self.get_object('infobar_scanqrcode')
+        infobar.hide()
+
     def scan_qrcode(self):
         # yes, the *exactly* same code is run, no matter if you are calling
         # this from "bridge" step or from "error" step
 
+        infobar = self.get_object('infobar_scanqrcode')
         step_called_from = self.state['step']
+
+        infobar.hide()
 
         def on_qrcode_scanned(gjsonrpcclient, res, error):
             if self.state['step'] != step_called_from:
@@ -370,17 +377,12 @@ class StepChooseBridgeMixin:
                          res.get('returncode', -1) if res else -1)
                 return
 
+            infobar_heading = self.get_object('infobar_scanqrcode_heading')
+            infobar_text = self.get_object('infobar_scanqrcode_text')
             if not res or res.get("returncode", 1) != 0:
-                dialog = Gtk.MessageDialog(
-                        transient_for=self,
-                        flags=0,
-                        message_type=Gtk.MessageType.ERROR,
-                        buttons=Gtk.ButtonsType.OK,
-                        text=_("Could not acquire QR code"),
-                        )
-                dialog.format_secondary_text(_("Maybe you have no supported webcam?"))
-                dialog.run()
-                dialog.destroy()
+                infobar_heading.set_text(_("Failed to detect a webcam"))
+                infobar_text.set_text(_("Maybe your webcam is too old"))
+                infobar.show_all()
                 return
 
             raw_content = res.get('stdout', '').strip()
@@ -389,25 +391,18 @@ class StepChooseBridgeMixin:
                 # to be really sure, we should use zbarcam --xml;
                 # however, do "empty" QR codes even exists?
 
-                # If the user closed window by themself, they don't need to be informed
+                infobar_heading.set_text(_("Failed to scan QR code"))
+                infobar_text.set_text(_("Try with more light or closer to the camera"))
+                infobar.show_all()
                 return
 
             try:
                 self.last_scanned_qrcode = TorConnectionConfig.parse_qr_content(raw_content)
             except Exception:
-                dialog = Gtk.MessageDialog(
-                        transient_for=self,
-                        flags=0,
-                        message_type=Gtk.MessageType.ERROR,
-                        buttons=Gtk.ButtonsType.OK,
-                        text=_("Invalid QR code"),
-                        )
-                dialog.format_secondary_text(_(
-                    "Try sending another email and scanning again."
-                ))
-                dialog.run()
-
-                dialog.destroy()
+                infobar_heading.set_text(_("Invalid QR code"))
+                infobar_text.set_text(_("Try sending another email and scanning again"))
+                infobar.show_all()
+                return
             else:
                 self._step_bridge_set_actives()
                 self._step_bridge_set_state_from_view()

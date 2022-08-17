@@ -62,6 +62,51 @@
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
+
+    <child>
+        <object class="GtkInfoBar" id="step_bridge_infobar_scanqrcode">
+            <property name="message-type">error</property>
+            <property name="show-close-button">True</property>
+            <signal name="response" handler="cb_step_bridge_infobar_scanqrcode_close" swapped="no"/>
+            <child internal-child="content_area">
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                        <object class="GtkLabel" id="step_bridge_infobar_scanqrcode_heading">
+                            <attributes>
+                                <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+                            </attributes>
+                        </object>
+                        <packing>
+                            <property name="position">10</property>
+                        </packing>
+                    </child>
+                    <child>
+                        <object class="GtkLabel" id="step_bridge_infobar_scanqrcode_text">
+                        </object>
+                        <packing>
+                            <property name="position">20</property>
+                        </packing>
+                    </child>
+                </object>
+            </child>
+            <child internal-child="action_area">
+                <object class="GtkBox">
+                    <child>
+                        <object class="GtkButton" id="step_bridge_infobar_scanqrcode_btn_scanagain">
+                            <property name="label" translatable="yes">Scan again</property>
+                            <property name="visible">True</property>
+                            <signal name="clicked" handler="cb_step_bridge_btn_scanqrcode_clicked" swapped="no"/>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+        <packing>
+            <property name="position">0</property>
+        </packing>
+    </child>
+
     <child>
       <object class="GtkLabel" id="step_bridge_box_heading">
         <property name="visible">True</property>
@@ -83,9 +128,10 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">0</property>
+        <property name="position">10</property>
       </packing>
     </child>
+
     <child>
       <object class="GtkLabel">
         <property name="visible">True</property>
@@ -98,9 +144,10 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">1</property>
+        <property name="position">20</property>
       </packing>
     </child>
+
     <child>
       <object class="GtkLabel">
         <property name="visible">True</property>
@@ -115,9 +162,10 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">2</property>
+        <property name="position">30</property>
       </packing>
     </child>
+
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -186,9 +234,10 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="position">40</property>
           </packing>
         </child>
+
         <child>
           <placeholder/>
         </child>
@@ -546,6 +595,7 @@
         <property name="position">5</property>
       </packing>
     </child>
+
     <child>
       <object class="GtkButtonBox">
         <property name="visible">True</property>
@@ -592,9 +642,10 @@
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="pack-type">end</property>
-        <property name="position">6</property>
+        <property name="position">60</property>
       </packing>
     </child>
+
     <accessibility>
       <relation type="labelled-by" target="step_bridge_box_heading"/>
     </accessibility>
