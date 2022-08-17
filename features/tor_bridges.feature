@@ -31,6 +31,18 @@ Feature: Using Tor bridges and pluggable transports
     And available upgrades have been checked
     And all Internet traffic has only flowed through the configured bridges
 
+  Scenario: TCA can scan QR code after a connection failure
+    Given the Tor network and default bridges are blocked
+    When I unsuccessfully configure a direct connection in the Tor Connection Assistant
+    Then the Tor Connection Assistant reports that it failed to connect
+    And tca.conf is empty
+    Given I scan a QR code from the error page in Tor Connection Assistant
+    And I retry connecting to Tor
+    Then I wait until Tor is ready
+    And tca.conf includes the configured bridges
+    And available upgrades have been checked
+    And all Internet traffic has only flowed through the configured bridges or connectivity check service
+
   @supports_real_tor
   Scenario: Default Tor bridges
     When I configure the default bridges in the Tor Connection Assistant
