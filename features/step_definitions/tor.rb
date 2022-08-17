@@ -578,16 +578,13 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
                                      roleName: 'radio button')
                               .click
     else
-      btn = tor_connection_assistant.child(
-        '_Enter a bridge that you already know',
-        roleName: 'radio button'
-      )
-      btn.click
       if qr_code
         $vm.execute_successfully('modprobe v4l2loopback')
+        # We currently support only 1 bridge
+        qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
         qrcode_image = save_qrcode(
           '[' + \
-          chutney_bridges(bridge_type).map { |bridge| "'" + bridge[:line] + "'" }
+          qr_code_bridges.map { |bridge| "'" + bridge[:line] + "'" }
             .join(', ') + \
           ']'
         )
@@ -595,11 +592,25 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
         feed_qr_code_video_to_virtual_webcam('/tmp/qrcode.jpg')
         # Give ffmpeg time to start pushing frames to the virtual webcam
         sleep 5
+        tor_connection_assistant.child('_Ask for a bridge by email',
+                                       roleName: 'radio button')
+                                .click
         tor_connection_assistant.child('Scan QR code',
                                        roleName: 'push button')
                                 .click
-        try_for(30) { !tor_connection_assistant.textentry('').text.empty? }
+        try_for(30) do
+          all_labels = tor_connection_assistant.children(roleName: 'label')
+          label = all_labels.find do |node|
+            node.text.start_with? "Scanned #{bridge_type} bridge"
+          end
+          !label.nil?
+        end
       else
+        btn = tor_connection_assistant.child(
+          '_Enter a bridge that you already know',
+          roleName: 'radio button'
+        )
+        btn.click
         tor_connection_assistant.textentry('').click
         chutney_bridges(bridge_type).each do |bridge|
           @screen.paste(bridge[:line])
