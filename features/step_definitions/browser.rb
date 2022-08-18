@@ -153,10 +153,10 @@ Then /^"([^"]+)" has loaded in the Tor Browser$/ do |title|
   page_has_loaded_in_the_tor_browser(title)
 end
 
-def xul_app_shared_lib_check(pid, chroot, expected_absent_tbb_libs = [])
+def xul_app_shared_lib_check(pid, expected_absent_tbb_libs = [])
   absent_tbb_libs = []
   unwanted_native_libs = []
-  tbb_libs = $vm.execute_successfully("ls -1 #{chroot}${TBB_INSTALL}/*.so",
+  tbb_libs = $vm.execute_successfully("ls -1 ${TBB_INSTALL}/*.so",
                                       libs: 'tor-browser').stdout.split
   firefox_pmap_info = $vm.execute("pmap --show-path #{pid}").stdout
   tbb_libs.each do |lib|
@@ -186,7 +186,7 @@ Then /^the (.*) uses all expected TBB shared libraries$/ do |application|
   ).stdout.chomp
   pid = pid.scan(/\d+/).first
   assert_match(/\A\d+\z/, pid, "It seems like #{application} is not running")
-  xul_app_shared_lib_check(pid, info[:chroot], info[:unused_tbb_libs])
+  xul_app_shared_lib_check(pid, info[:unused_tbb_libs])
 end
 
 Then /^the (.*) chroot is torn down$/ do |browser|
