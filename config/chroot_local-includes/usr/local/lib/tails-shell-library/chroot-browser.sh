@@ -18,6 +18,11 @@ fi
 try_cleanup_browser_chroot () {
     local chroot="${1}"
     local cow="${2}"
+    for bus in a11y ibus; do
+        sudo -u "${SUDO_USER}" \
+             env DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
+             systemctl --global stop "tails-${bus}-proxy-netns@clearnet.service"
+    done
     # findmnt sorts submounts so we just have to revert the list to
     # have the proper umount order. We use `tail` to suppress the
     # "TARGET" column header.
@@ -290,6 +295,12 @@ run_browser_in_chroot () {
         ip netns exec clearnet ip link set veth-clearnet up
         ip netns exec clearnet ip route add default via 10.123.42.1
     fi
+    for bus in a11y ibus; do
+        systemctl --global enable "tails-${bus}-proxy-netns@clearnet.service"
+        sudo -u "${SUDO_USER}" \
+             env DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
+             systemctl --global start "tails-${bus}-proxy-netns@clearnet.service"
+    done
     # XXX: we could probably lock the iptables rules down more,
     # e.g. DNS + TCP only.
     # XXX: these rules must be made persistent, otherwise NAT will
@@ -302,10 +313,13 @@ run_browser_in_chroot () {
 
     systemd-nspawn --directory="${chroot}" \
                    --bind=/tmp/.X11-unix \
+                   --bind=/tmp/netns-specific/clearnet/ \
                    --network-namespace-path=/var/run/netns/clearnet \
                    --user="${chroot_user}" \
                    --setenv=TOR_TRANSPROXY=1 \
                    --setenv=DISPLAY=$DISPLAY \
+                   --setenv="AT_SPI_BUS_ADDRESS=unix:path=/tmp/netns-specific/clearnet/at.sock" \
+                   --setenv="IBUS_ADDRESS=unix:path=/tmp/netns-specific/clearnet/ibus.sock" \
                    /bin/sh -c \
         ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
          exec_unconfined_firefox --class='${wm_class}' \
