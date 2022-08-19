@@ -61,7 +61,7 @@ class WhisperBack(object):
             #XXX use a better exception
             raise ValueError(_("Invalid contact email: %s" % email))
 
-    #pylint: disable=W0212
+    # pylint: disable=W0212
     contact_email = property(lambda self: self._contact_email,
                              set_contact_email)
 
@@ -77,14 +77,14 @@ class WhisperBack(object):
             gpgkey is ''):
             self._contact_gpgkey = gpgkey
         else:
-            #XXX use a better exception
+            # XXX use a better exception
             if len(gpgkey.splitlines()) <= 1:
                 message = _("Invalid contact OpenPGP key: %s" % gpgkey)
             else:
                 message = _("Invalid contact OpenPGP public key block")
             raise ValueError(message)
 
-    #pylint: disable=W0212
+    # pylint: disable=W0212
     contact_gpgkey = property(lambda self: self._contact_gpgkey,
                               set_contact_gpgkey)
 
@@ -146,7 +146,7 @@ class WhisperBack(object):
         finally:
             if f:
                 f.close()
-        #pylint: disable=W0122
+        # pylint: disable=W0122
         exec(code, self.__dict__)  # nosec exec_used
 
     def __get_debug_info(self, raw_debug, prefix=''):
@@ -230,10 +230,10 @@ class WhisperBack(object):
         @param polling_freq       (optional) the interal between polling
                                   iterations (in ms).
         """
-        #pylint: disable=C0111
+        # pylint: disable=C0111
         def save_exception(func, args):
             try:
-                #pylint: disable=W0142
+                # pylint: disable=W0142
                 func(*args)
             except Exception as e:
                 self.__error_output = e

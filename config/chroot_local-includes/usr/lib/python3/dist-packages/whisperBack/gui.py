@@ -52,7 +52,7 @@ import whisperBack.utils
 
 LOG = logging.getLogger(__name__)
 
-#pylint: disable=R0902
+# pylint: disable=R0902
 class WhisperBackUI(object):
     """
     This class provides a window containing the GTK+ user interface.
@@ -107,7 +107,7 @@ class WhisperBackUI(object):
 
         underline = lambda str: str + "\n" + len(str) * '-'
 
-        #pylint: disable=C0301
+        # pylint: disable=C0301
         self.message.get_buffer().insert_with_tags(
             self.message.get_buffer().get_start_iter(),
             underline(_("Name of the affected software"))
@@ -168,7 +168,7 @@ class WhisperBackUI(object):
 
         self.progression_dialog.set_title(_("Sending mail..."))
         self.progression_main_text.set_text(_("Sending mail"))
-        #pylint: disable=C0301
+        # pylint: disable=C0301
         self.progression_secondary_text.set_text(_("This could take a while..."))
         self.progression_dialog.set_transient_for(self.main_window)
         self.progression_dialog.show()
@@ -194,11 +194,11 @@ class WhisperBackUI(object):
         if not self.include_appended_details.get_active():
             self.backend.appended_data = ""
 
-        #pylint: disable=C0111
+        # pylint: disable=C0111
         def cb_update_progress():
             self.progression_progressbar.pulse()
 
-        #pylint: disable=C0111
+        # pylint: disable=C0111
         def cb_finished_progress(e):
             if isinstance(e, Exception):
                 if isinstance(e, smtplib.SMTPException):
@@ -243,7 +243,7 @@ If it does not work, you will be offered to save the bug report."), e)
         @param close_callback   An alternative callback to use on closing
         @param buttons          Buttons to display
         """
-        #pylint: disable=C0111
+        # pylint: disable=C0111
         def cb_save_response(widget, event, data=None):
             if event == Gtk.ResponseType.ACCEPT:
                 try:
@@ -254,7 +254,7 @@ If it does not work, you will be offered to save the bug report."), e)
             widget.hide()
             self.main_window.set_sensitive(True)
 
-        #pylint: disable=C0111
+        # pylint: disable=C0111
         def cb_response(widget, event, data=None):
             widget.hide()
             if event == Gtk.ResponseType.YES:
@@ -355,7 +355,7 @@ Do you want to save the bug report to a file?") % self.backend.to_address
         """
         LOG.debug("Show gpg dialog")
         if self.backend.contact_gpgkey:
-            #pylint: disable=C0301
+            # pylint: disable=C0301
             self.gpg_keyblock.get_buffer().set_text(str(self.backend.contact_gpgkey))
         else:
             self.gpg_keyblock.get_buffer().set_text("")
@@ -366,7 +366,7 @@ Do you want to save the bug report to a file?") % self.backend.to_address
 
         """
         try:
-            #pylint: disable=C0301
+            # pylint: disable=C0301
             self.backend.contact_gpgkey = self.gpg_keyblock.get_buffer().get_text(
                 self.gpg_keyblock.get_buffer().get_start_iter(),
                 self.gpg_keyblock.get_buffer().get_end_iter(),
@@ -384,7 +384,7 @@ Do you want to save the bug report to a file?") % self.backend.to_address
         """
         self.gpg_dialog.hide()
 
-    #pylint: disable=R0201
+    # pylint: disable=R0201
     def close_application(self):
         """
         Closes the application
