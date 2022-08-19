@@ -114,10 +114,6 @@ class WhisperBack(object):
         # Load the python configuration file "config.py" from diffrents locations
         # XXX: this is an absolute path, bad !
         self.__load_conf(os.path.join("/", "etc", "whisperback", "config.py"))
-        self.__load_conf(os.path.join(os.path.expanduser('~'),
-                                      ".whisperback",
-                                      "config.py"))
-        self.__load_conf(os.path.join(os.getcwd(), "config.py"))
         self.__check_conf()
 
         # Get additional info through the callbacks and sanitize it
