@@ -147,7 +147,7 @@ class WhisperBack(object):
             if f:
                 f.close()
         #pylint: disable=W0122
-        exec(code, self.__dict__)
+        exec(code, self.__dict__)  # nosec exec_used
 
     def __get_debug_info(self, raw_debug, prefix=''):
         """ Deserializes the dicts from raw_debug and creates a string
