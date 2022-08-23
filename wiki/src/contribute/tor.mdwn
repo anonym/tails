@@ -5,8 +5,8 @@ source package.
 
 # Background
 
-Tails is built using a combination of snapshots of APT
-repositories and overlay APT suites. This document assumes a good
+We build Tails using snapshots of APT repositories.
+This document assumes a good
 understanding of this [[somewhat complex system|contribute/APT_repository]].
 
 We generally install packages built from the `tor` source package from
@@ -31,19 +31,17 @@ the upgrade:
    `NNNNN-tor-X.Y+force-all-tests`.
 2. On that branch, bump `config/APT_snapshots.d/torproject/serial` to a snapshot
    that's recent enough to include the relevant new version of `tor`.
-3. Push this new branch to our CI.
-5. Compare the Jenkins build and test results to the ones for our
-   `stable` branch. What follows assumes that these CI results look good.
-   If they don't, more work is needed.
-6. [[Bump the expiration
+3. [[Bump the expiration
    date|contribute/APT_repository/time-based_snapshots/#bump-expiration-date]]
    for the snapshot of the `torproject` archive that you've switched the
    branch _to_. Set the same expiration date as the one for the snapshot
    of the `torproject` archive that you've switched the branch _from_.
    See tip below.
-7. State on the tracking issue that you've bumped the expiration
-   date of the snapshot.
-8. Submit your branch for review via our [[usual
+4. Push this new branch to our CI.
+5. Compare the Jenkins build and test results to the ones for our
+   `stable` branch. What follows assumes that these CI results look good.
+   If they don't, more work is needed.
+6. Submit your branch for review via our [[usual
    process|contribute/merge_policy#submit]].
 
 

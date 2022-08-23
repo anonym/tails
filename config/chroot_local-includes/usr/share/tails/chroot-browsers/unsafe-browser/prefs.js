@@ -33,3 +33,8 @@ user_pref("browser.privatebrowsing.autostart", false);
 // in fact, when they are enabled, the browser will fetch data from relevant websites
 // (ie: securedrop.org), which will hint any attacker that this is a Tails.
 user_pref("browser.urlbar.onionRewrites.enabled", false);
+
+// the HTTPS-only mode is relevant for securely visiting websites,
+// but makes captive portal looks unnecessarily fishy just because
+// they are in HTTP
+user_pref("dom.security.https_only_mode", false);
