@@ -54,23 +54,26 @@ and see if the desired version is available. If it's not, and you want to
 "poll", you can use this:
 
   - copy the URLs above in `/tmp/tbb-urls.txt`
-  - run this snippet (bash only!), changing 11.0.10 with the TBB version you
-    are expecting
+  - `export TBB_VERSION=1.2.3.4`
+  - run this snippet (bash only!)
 
     ```sh
-    typeset -a tbbUrls
-    mapfile -t tbbUrls < <(grep -F https: < /tmp/tbb-urls.txt |sed -e 's+^ *++;s+ *$++')
-    while true
-    do
-        if (for u in "${tbbUrls[@]}"; do
-            elinks -no-numbering -no-references -dump "$u" | sed -e "s+^+[${u//+/ }]+" ; done
-            )| grep -F -e "${TBB_VERSION}" -e "$(date +%F)"  -e "$(date +%F -d yesterday)" --color
-        then
-            echo FOUND
-            notify-send "Release dir" 'found'
-        fi
-        sleep 10m
-    done
+    (
+        set -eu
+        typeset -a tbbUrls
+        mapfile -t tbbUrls < <(grep -F --no-filename https: /tmp/tbb-urls.txt |sed -e 's+^ *++;s+ *$++')
+        while true
+        do
+            if (for u in "${tbbUrls[@]}"; do
+                elinks -no-numbering -no-references -dump "$u" | sed -e "s+^+[${u//+/ }]+" ; done
+                )| grep -F -e "${TBB_VERSION?}" -e "$(date +%F)"  -e "$(date +%F -d yesterday)" --color=always
+            then
+                echo FOUND
+                notify-send "Release dir" 'found'
+            fi
+            sleep 10m
+        done
+    )
     ```
 
 
