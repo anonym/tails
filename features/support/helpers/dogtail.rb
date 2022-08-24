@@ -41,6 +41,7 @@ module Dogtail
     :open,
     :press,
     :select,
+    :toggle,
   ].freeze
   private_constant :TREE_API_NODE_AT_SPI_ACTIONS
 

@@ -467,7 +467,7 @@ When(/^I look at the hide mode but then I go back$/) do
       roleName: 'push button'
     )
     assert_equal('True', btn.get_field('sensitive'))
-    btn.press
+    btn.click
   end
 end
 
@@ -590,7 +590,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
           roleName: 'toggle button'
         )
         assert(!toggle_button.checked)
-        toggle_button.click
+        toggle_button.toggle
         try_for(10) { toggle_button.checked }
       end
     end
@@ -604,7 +604,7 @@ When /^I disable saving bridges to Persistent Storage$/ do
     roleName: 'toggle button'
   )
   assert(toggle_button.checked)
-  toggle_button.click
+  toggle_button.toggle
   try_for(10) { !toggle_button.checked }
 end
 
@@ -704,8 +704,11 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   time_dialog = tor_connection_assistant.child('Tor Connection - Fix Clock',
                                                roleName:    'dialog',
                                                showingOnly: true)
-  tz_label = time_dialog.child('UTC (Greenwich time)', roleName: 'label')
-  tz_label.click
+  # We'd like to click the time zone label to open the selection
+  # prompt, but labels expose no actions to Dogtail. Luckily it is
+  # selected by default so we can activate it by pressing the Space
+  # key.
+  @screen.press('Space')
 
   def get_visible_results(dialog)
     table = dialog.child(roleName: 'tree table')
@@ -727,7 +730,7 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   @screen.press('Return')
 
   try_for(5) do
-    time_dialog.child('Apply', roleName: 'push button').press
+    time_dialog.child('Apply', roleName: 'push button').click
     true
   end
 

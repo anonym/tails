@@ -607,7 +607,7 @@ When /^I start the Tor Browser( in offline mode)?$/ do |offline|
                    .button('Start Tor Browser Offline', showingOnly: true)
     # Sometimes this click is lost. Maybe the dialog is not fully setup yet?
     sleep 2
-    start_button.press
+    start_button.click
   end
   step 'the Tor Browser has started'
   if offline

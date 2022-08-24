@@ -131,13 +131,18 @@ Then /^I connect to an SFTP server on the Internet$/ do
     step 'I start "Nautilus" via GNOME Activities Overview'
     nautilus = Dogtail::Application.new('org.gnome.Nautilus')
     nautilus.child(roleName: 'frame')
-    nautilus.child('Other Locations', roleName: 'label').click
+    # Here we'd like to click on "Other Locations", but it is a label
+    # that doesn't have a click action, so Dogtail cannot interact
+    # with it.
+    @screen.press('ctrl', 'l')
+    @screen.type('other-locations:///')
+    @screen.press('Enter')
     connect_bar = nautilus.child('Connect to Server', roleName: 'label').parent
     connect_bar
       .child(roleName: 'filler', recursive: false)
       .child(roleName: 'text', recursive: false)
       .text = 'sftp://' + @sftp_username + '@' + @sftp_host + ':' + @sftp_port
-    connect_bar.button('Connect', recursive: false).press
+    connect_bar.button('Connect', recursive: false).click
     step 'I verify the SSH fingerprint for the SFTP server'
   end
 end
