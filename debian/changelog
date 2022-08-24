@@ -1,9 +1,81 @@
 tails (5.4) UNRELEASED; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade Tor Browser to 11.5.2 (tails/tails!908)
 
- -- intrigeri <intrigeri@debian.org>  Tue, 02 Aug 2022 13:53:51 +0000
+    Closes issues:
+      - Upgrade to Tor Browser based on 91.13 (tails/tails#19073)
 
+    Commits:
+      - automatic redirect to HTTPS, here we meet again
+      - Upgrade Tor Browser to UNVERIFIED 11.5.2-build1
+
+  * Upgrade Linux packages to 5.10.0-17, currently at version 5.10.136
+    (tails/tails!900)
+
+    Closes issues:
+      - Handle CVE-2022-2585 (POSIX CPU timer UAF) (tails/tails#19081)
+
+    Commits:
+      - Upgrade Linux packages to 5.10.0-17, currnetly at version 5.10.136
+
+  * Disable HTTPS-only mode in Unsafe Browser (tails/tails!906)
+
+    Closes issues:
+      - Disable HTTPS-only mode in Unsafe Browser (tails/tails#19095)
+
+    Commits:
+      - disable HTTPS-only mode for unsafe browser
+
+  * Upgrade tor to 0.4.7.10 (tails/tails!903)
+
+    Closes issues:
+      - Upgrade to tor 0.4.7.10 (tails/tails#19083)
+
+    Commits:
+      - Don't mention irrelevant implementation detail
+      - Avoid initially pushed branch failing its pipeline
+      - Drop obsolete step
+      - Upgrade tor to 0.4.7.10
+
+  * Resolve "Some time sync related automated tests fail when run on a system whose
+    system clock is not in UTC" (tails/tails!902)
+
+    Closes issues:
+      - Some time sync related automated tests fail when run on a system whose system
+        clock is not in UTC (tails/tails#19070)
+
+    Commits:
+      - uses UTC time even on non-UTC systems
+
+  * Misc kernel hardening (tails/tails!899)
+
+    Closes issues:
+      - Kernel hardening: restricts loading TTY line disciplines (tails/tails#18302)
+      - Enable page allocator freelist randomization (tails/tails#18886)
+      - Consider dropping slub_debug=P and page_poison=1 options and let init_on_free
+        wipe slab and page allocations (tails/tails#18858)
+
+    Commits:
+      - Kernel hardening: restricts loading TTY line disciplines
+      - Kernel: enable page allocator freelist randomization
+      - Remove obsolete kernel command line options
+
+  * Actually stop NetworkManager before applying an upgrade (tails/tails!896)
+
+    Commits:
+      - Remove obsolete comment
+      - Use systemctl(1) instead of service(8)
+      - Actually stop NetworkManager before applying an upgrade
+
+  * Test suite: fix Unsafe Browser localization tests (tails/tails!867)
+
+    Commits:
+      - testing unsafebrowser is more deterministic
+      - add spanish start page image for unsafe browser
+      - add portuguese start page image for unsafe browser
+      - debug unsafe browser errors
+
+ -- Tails developers <tails@boum.org>  Wed, 24 Aug 2022 09:38:28 +0000
 tails (5.3.1) unstable; urgency=medium
 
   * Upgrade Linux to 5.10.127-2 (DSA-5191)
