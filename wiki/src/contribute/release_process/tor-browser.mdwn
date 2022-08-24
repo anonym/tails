@@ -87,6 +87,13 @@ Browser version, for example:
 <div class="caution">
 Ensure you include the "-buildN" part. Add it if it's missing.
 </div>
+<div class="caution">
+Unfortunately, some of the servers that the Tor project uses will automatically redirect
+to HTTPS, and our build system does _not_ support that.
+`https://tb-build-05.torproject.org/` is one of those.
+When this happens, you must put those tarballs on a server that allows us to use plain HTTP.
+Unfortunately, we have no standardized procedure for that, and every RM is going freestyle.
+</div>
 
 Set `TBB_TAILS_TICKET` to the number of the ticket about updating Tor
 Browser, and `TBB_IMPORT_BRANCH` to the branch we'll work on, which
