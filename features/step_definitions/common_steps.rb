@@ -655,17 +655,12 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
   step 'the Tor Browser shows the ' \
        '"The proxy server is refusing connections" error'
   @screen.press('ctrl', 'd')
-  @screen.wait('TorBrowserBookmarkPrompt.png', 10)
+  prompt = @torbrowser.child('Add bookmark', roleName: 'panel')
+  prompt.click
   @screen.paste(url)
-  # The new default location for bookmarks is "Bookmarks Toolbar", but our test
-  # expects the new entry is available in "Bookmark Menu", that's why we need
-  # to select the location explicitly.
-  @screen.wait('TorBrowserBookmarkLocation.png', 10).click
-  @screen.wait('TorBrowserBookmarkLocationBookmarksMenu.png', 10).click
-  # Need to sleep here, otherwise the changed Bookmark location is not taken
-  # into account and we end up creating a bookmark in "Other Bookmark" location.
-  sleep 1
-  @screen.press('Return')
+  prompt.child('Location', roleName: 'combo box').open
+  prompt.child('Bookmarks Menu', roleName: 'menu item').click
+  prompt.button('Save').press
 end
 
 Given /^the Tor Browser has a bookmark to eff.org$/ do

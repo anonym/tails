@@ -38,6 +38,7 @@ module Dogtail
   TREE_API_NODE_AT_SPI_ACTIONS = [
     :activate,
     :click,
+    :open,
     :press,
     :select,
   ].freeze
