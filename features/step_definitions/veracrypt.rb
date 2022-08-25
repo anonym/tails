@@ -202,7 +202,10 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
          .grabFocus
   when 'file container'
     @screen.wait('GnomeDisksApplicationsMenuButton.png', 10).click
-    disks.child('Attach Disk Image… (.iso, .img)', roleName: 'push button').press
+    # Clicking this button using Dogtail works, but afterwards the
+    # GNOME Disks GUI becomes inaccessible.
+    disks.child('Attach Disk Image… (.iso, .img)', roleName: 'push button').grabFocus
+    @screen.press('Return')
     # Otherwise Disks is sometimes minimized, for some reason I don't understand
     sleep 2
     attach_dialog = disks.child('Select Disk Image to Attach',
@@ -211,7 +214,7 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
                         roleName: 'check box').click
     filter = attach_dialog.child('Disk Images (*.img, *.iso)',
                                  roleName: 'combo box')
-    filter.click
+    filter.press
     try_for(5) do
       filter.child('All Files', roleName: 'menu item').click
       true
@@ -235,7 +238,7 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
   end
   disks.child('', roleName:    'panel',
                   description: 'Unlock selected encrypted partition')
-       .child('Unlock', roleName: 'push button').press
+       .child('Unlock', roleName: 'push button').click
   unlock_dialog = disks.dialog('Set options to unlock')
   unlock_dialog.child('', roleName: 'password text').grabFocus
   @screen.paste(
@@ -280,7 +283,7 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
     disks.child('', roleName: 'panel',
                 description: 'Mount selected partition', showingOnly: true)
          .child('Mount', roleName: 'push button')
-         .press
+         .click
     true
   rescue Dogtail::Failure
     # we probably did something too early, which triggered a Dogtail error
