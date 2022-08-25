@@ -34,6 +34,42 @@ h1.step:before {
   height: auto;
 }
 
+/* Success notes */
+
+div.success {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px 30px;
+  border: 8px solid #af97c7;
+  border-radius: 30px;
+  padding: 10px 30px 0px 30px;
+}
+
+div.success video {
+  height: 200px;
+  width: 200px;
+}
+
+div.success p.big {
+  font-size: 36px;
+  color: #8f4299;
+  font-weight: bold;
+  line-height: 42px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+div.success p {
+  max-width: 600px;
+}
+
+@media (max-width: 700px) {
+  div.success {
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+}
+
 /* Trophy */
 
 div.trophy {
@@ -54,12 +90,6 @@ div.trophy p {
 
 div.trophy img {
   margin: 10px;
-}
-
-.state-image {
-  margin-top: 0px;
-  text-align: center;
-  margin-bottom: 1em;
 }
 
 /* Recommendations */
