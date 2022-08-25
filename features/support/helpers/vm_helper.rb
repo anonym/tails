@@ -505,7 +505,7 @@ class VM
   end
 
   def host_to_guest_time_sync
-    host_time = DateTime.now.strftime('%F %T').to_s
+    host_time = Time.now.utc.strftime('%F %T')
     execute_successfully("timedatectl set-time '#{host_time}'")
   end
 
