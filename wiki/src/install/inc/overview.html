@@ -2,24 +2,37 @@
 
 <h2>You need</h2>
 
+<!-- RAM also for cloning -->
+
 <div id="needs">
 
-  <div class="windows upgrade-windows">
-    [[!img install/inc/icons/laptop.png link="no" alt=""]]
-    <p>2 GB of RAM</p>
-    <p class="small"><a href="https://support.microsoft.com/en-us/windows/32-bit-and-64-bit-windows-frequently-asked-questions-c6ca9541-8dce-4d48-0415-94a3faa2e13d">64-bit</a></p>
+  <div class="windows linux mac expert pc-clone mac-clone">
+    [[!img install/inc/icons/usb.png link="no" alt=""]]
+    <p>1 USB stick</p>
+    <p class="small">Only for Tails!</p>
+    <p class="small">8 GB minimum</p>
   </div>
 
-  <div class="mac upgrade-mac">
-    [[!img install/inc/icons/laptop.png link="no" alt=""]]
-    <p>Intel processor</p>
-    <p class="small">not Apple M1</p>
+  <div class="upgrade-clone upgrade-tails upgrade-os">
+    [[!img install/inc/icons/usb.png link="no" alt=""]]
+    <p>Your Tails</p>
   </div>
 
-  <div class="linux upgrade-linux expert">
-    [[!img install/inc/icons/laptop.png link="no" alt=""]]
-    <p>2 GB of RAM</p>
-    <p class="small"><a href="https://www.howtogeek.com/198615/how-to-check-if-your-linux-system-is-32-bit-or-64-bit/">64-bit</a></p>
+  <div class="upgrade-tails upgrade-os">
+    [[!img install/inc/icons/usb.png link="no" alt=""]]
+    <p>1 USB stick</p>
+    <p class="small">8 GB minimum</p>
+    <p class="small">All data will be lost!</p>
+    <p class="small">[[!toggle id="why_extra" text="Why?"]]</p>
+    <div class="floating-toggleable">
+    [[!toggleable id="why_extra" text="""
+    [[!toggle id="why_extra" text="X"]]
+    <p>It is currently impossible to manually upgrade a Tails USB stick
+    while running from itself. This scenario requires creating an
+    intermediary Tails on another USB stick, from which to upgrade your
+    Tails.</p>
+    """]]
+    </div>
   </div>
 
   <div class="windows upgrade-windows">
@@ -49,33 +62,28 @@
     <p class="small">or another derivative</p>
   </div>
 
-  <div class="upgrade-clone upgrade-tails upgrade-os">
-    [[!img install/inc/icons/usb.png link="no" alt=""]]
-    <p>Your Tails</p>
+  <div class="pc-clone mac-clone upgrade-clone">
+    [[!img install/inc/icons/tails.png link="no" alt=""]]
+    <p>another Tails</p>
+    <p class="small">USB stick or DVD</p>
   </div>
 
-  <div class="windows linux mac expert pc-clone mac-clone">
-    [[!img install/inc/icons/usb.png link="no" alt=""]]
-    <p>1 USB stick</p>
-    <p class="small">Only for Tails!</p>
-    <p class="small">8 GB minimum</p>
+  <div class="windows upgrade-windows">
+    [[!img install/inc/icons/laptop.png link="no" alt=""]]
+    <p>2 GB of RAM</p>
+    <p class="small"><a href="https://support.microsoft.com/en-us/windows/32-bit-and-64-bit-windows-frequently-asked-questions-c6ca9541-8dce-4d48-0415-94a3faa2e13d">64-bit</a></p>
   </div>
 
-  <div class="upgrade-tails upgrade-os">
-    [[!img install/inc/icons/usb.png link="no" alt=""]]
-    <p>1 USB stick</p>
-    <p class="small">8 GB minimum</p>
-    <p class="small">All data will be lost!</p>
-    <p class="small">[[!toggle id="why_extra" text="Why?"]]</p>
-    <div class="floating-toggleable">
-    [[!toggleable id="why_extra" text="""
-    [[!toggle id="why_extra" text="X"]]
-    <p>It is currently impossible to manually upgrade a Tails USB stick
-    while running from itself. This scenario requires creating an
-    intermediary Tails on another USB stick, from which to upgrade your
-    Tails.</p>
-    """]]
-    </div>
+  <div class="mac upgrade-mac">
+    [[!img install/inc/icons/laptop.png link="no" alt=""]]
+    <p>Intel processor</p>
+    <p class="small">not Apple M1</p>
+  </div>
+
+  <div class="linux upgrade-linux expert">
+    [[!img install/inc/icons/laptop.png link="no" alt=""]]
+    <p>2 GB of RAM</p>
+    <p class="small"><a href="https://www.howtogeek.com/198615/how-to-check-if-your-linux-system-is-32-bit-or-64-bit/">64-bit</a></p>
   </div>
 
   <div>
@@ -83,13 +91,6 @@
     <p>a smartphone</p>
     <p class="small">or a printer<br />
     to follow the instructions</p>
-  </div>
-
-
-  <div class="pc-clone mac-clone upgrade-clone">
-    [[!img install/inc/icons/tails.png link="no" alt=""]]
-    <p>another Tails</p>
-    <p class="small">USB stick or DVD</p>
   </div>
 
   <div>
