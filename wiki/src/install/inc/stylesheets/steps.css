@@ -34,58 +34,39 @@ h1.step:before {
   height: auto;
 }
 
-/* Trophy */
+/* Success notes */
 
-div.trophy {
-  border: 5px solid #56347C;
-  font-size: 17px;
-  margin-top: 30px;
-  padding-top: 20px;
-  padding-bottom: 0px;
-  padding-right: 20px;
-  position: relative;
-  background-color: white;
+div.success {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px 30px;
+  border: 8px solid #af97c7;
+  border-radius: 30px;
+  padding: 10px 30px 0px 30px;
 }
 
-div.trophy p {
-  color: black;
-  font-family: "Source Sans Pro Regular", "DejaVu Sans", "Verdana", "sans-serif";
+div.success video {
+  padding-bottom: 10px;
 }
 
-div.trophy img {
-  margin: 10px;
+div.success p.big {
+  font-size: 36px;
+  color: #8f4299;
+  font-weight: bold;
+  line-height: 42px;
+  margin-top: 10px;
+  margin-bottom: 30px;
 }
 
-.state-image {
-  margin-top: 0px;
-  text-align: center;
-  margin-bottom: 1em;
+div.success p {
+  max-width: 600px;
 }
 
-/* Recommendations */
-
-#recommendations div.warning, #recommendations div.help {
-  background-color: #9f73d2;
-  border: 1px solid #56347C;
-  border-radius: 4px;
-  padding: 1.5em 6px 0em;
-  background-position: 1em 50%;
-  background-repeat: no-repeat;
-  padding-left: 80px;
-  margin: 1.5em 0;
-}
-
-#recommendations div.warning {
-  background-image: url(../../../lib/dialog-warning.png);
-}
-
-#recommendations div.help {
-  background-image: url(../../../lib/apps/help-browser.png);
-}
-
-#recommendations div a {
-  color: black;
-  border-bottom: 1px solid black;
+@media (max-width: 700px) {
+  div.success {
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
 }
 
 /* Toggleable */
@@ -95,15 +76,6 @@ div.toggleable .hide {
 }
 
 /* Small Devices, Tablets */
-@media only screen and (max-width : 768px) {
-
-  div.trophy {
-    background-position: center 0.5em;
-    padding: 60px 1em 1em;
-  }
-
-}
-
 @media print {
   /* from http://www.alsacreations.com/astuce/lire/1160-une-feuille-de-styles-de-base-pour-le-media-print.html */
 
