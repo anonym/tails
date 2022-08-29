@@ -274,6 +274,16 @@ Then(/^the screen keyboard works in Thunderbird$/) do
     osk_key = 'ScreenKeyboardKeyPersian.png'
     thunderbird_x = 'ThunderbirdXPersian.png'
   end
+  # Due to tails/tails#19101 the Screen Keyboard won't show unless we
+  # click the text entry manually. But due to limitations in Dogtail
+  # in Wayland we cannot click it, so we work around all this by
+  # manually opening the Screen Keyboard.
+  $vm.execute_successfully(
+    "gdbus call --session --dest org.gnome.Shell " \
+    "--object-path /org/gnome/Shell " \
+    "--method org.gnome.Shell.Eval " \
+    "'Main.keyboard.open(Main.layoutManager.bottomIndex)'",
+    user: LIVE_USER)
   @screen.wait('ScreenKeyboard.png', 10)
   @screen.wait(osk_key, 20).click
   @screen.wait(thunderbird_x, 20)

@@ -333,6 +333,9 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   end
   step 'I start the Tor Browser'
   step 'I open a new tab in the Tor Browser'
+  # This extra click is needed to show the Screeb Keyboard due to
+  # tails/tails#19101
+  @screen.wait_any(xul_application_info('Tor Browser')[:address_bar_images], 10)[:match].click
   @screen.wait('ScreenKeyboard.png', 10)
   @screen.wait(osk_key, 10).click
   @screen.wait(browser_bar_x, 20)
