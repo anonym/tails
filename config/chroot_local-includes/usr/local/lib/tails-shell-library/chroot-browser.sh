@@ -317,7 +317,7 @@ run_browser_in_chroot () {
                    --network-namespace-path=/var/run/netns/clearnet \
                    --user="${chroot_user}" \
                    --setenv=TOR_TRANSPROXY=1 \
-                   --setenv=DISPLAY=$DISPLAY \
+                   --setenv="DISPLAY=${DISPLAY}" \
                    --setenv="AT_SPI_BUS_ADDRESS=unix:path=/tmp/netns-specific/clearnet/at.sock" \
                    --setenv="IBUS_ADDRESS=unix:path=/tmp/netns-specific/clearnet/ibus.sock" \
                    /bin/sh -c \
