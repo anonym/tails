@@ -275,8 +275,7 @@ run_browser_in_chroot () {
     local chroot="${1}"
     local browser_name="${2}"
     local chroot_user="${3}"
-    local local_user="${4}"
-    local wm_class="${5}"
+    local wm_class="${4}"
     local profile
     profile="$(browser_profile_dir "${browser_name}" "${chroot_user}")"
 
