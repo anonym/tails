@@ -1397,6 +1397,23 @@ You probably already know how to do that, but keep this in mind:
    The default lives in `/tmp/`, which might lead to unpleasant surprises if,
    for whatever reasons, you need to turn off your computer.
 
+ - if you are running this and going AFK for long time (ie: overnight) you might want to
+   keep your CPU busy by rerunning failed scenarios
+
+So here is a good example of how you can do this. Run this *as root* and with *bash*:
+
+```
+(
+args=(--tmpdir "../release/${VERSION}" --keep-snapshots --capture --view --iso yourpathto/tails-amd64-${VERSION}.iso --old-iso previous_version.iso)
+./run_test_suite "${args[@]}"
+
+while true; do
+    sudo ./run_test_suite "${args[@]}" "@$(find /tmp/TailsToaster/ -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|head -n1)"
+    sleep 3
+done
+)
+```
+
 
 Public testing
 ==============
