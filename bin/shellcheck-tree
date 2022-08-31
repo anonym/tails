@@ -20,7 +20,7 @@ def mimetype(f):
 
 
 def is_shell_script(f):
-    return mimetype(f) == "text/x-shellscript"
+    return f.endswith('.sh') or mimetype(f) == "text/x-shellscript"
 
 
 shell_scripts = [

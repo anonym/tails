@@ -20,7 +20,7 @@ def mimetype(f):
 
 
 def is_python_file(f):
-    return mimetype(f) == "text/x-script.python"
+    return f.endswith('.py') or mimetype(f) == "text/x-script.python"
 
 
 python_files = [
