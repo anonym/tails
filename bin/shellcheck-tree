@@ -9,7 +9,7 @@ from pathlib import Path
 
 def is_excluded(f: str) -> bool:
     return re.match(r"^([.]git|config/chroot_local-includes/usr/share/doc/tails/website|submodules|tmp|wiki/src)/",
-                    f) or Path(f).is_dir()
+                    f) is not None or Path(f).is_dir()
 
 
 def mimetype(f: str) -> str:
