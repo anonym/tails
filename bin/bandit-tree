@@ -7,19 +7,19 @@ import sys
 from pathlib import Path
 
 
-def is_excluded(f):
+def is_excluded(f: str) -> bool:
     return re.match(r"^([.]git|config/chroot_local-includes/usr/share/doc/tails/website|submodules|tmp|wiki/src)/",
                     f) or Path(f).is_dir()
 
 
-def mimetype(f):
+def mimetype(f: str) -> str:
     return subprocess.run(['file', '--brief', '--mime-type', f],
                           stdout=subprocess.PIPE,
                           universal_newlines=True,
                           check=True).stdout.rstrip()
 
 
-def is_python_file(f):
+def is_python_file(f: str) -> bool:
     return f.endswith('.py') or mimetype(f) == "text/x-script.python"
 
 
