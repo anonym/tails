@@ -381,7 +381,7 @@ class StepChooseBridgeMixin:
             infobar_text = self.builder.get_object('infobar_scanqrcode_text')
             if not res or res.get("returncode", 1) != 0:
                 infobar_heading.set_text(_("Failed to detect a webcam"))
-                infobar_text.set_text(_("Maybe your webcam is too old"))
+                infobar_text.set_text(_("Maybe your webcam is too old."))
                 infobar.show_all()
                 return
 
@@ -392,7 +392,7 @@ class StepChooseBridgeMixin:
                 # however, do "empty" QR codes even exists?
 
                 infobar_heading.set_text(_("Failed to scan QR code"))
-                infobar_text.set_text(_("Try with more light or closer to the camera"))
+                infobar_text.set_text(_("Try with more light or closer to the camera."))
                 infobar.show_all()
                 return
 
@@ -400,7 +400,7 @@ class StepChooseBridgeMixin:
                 self.last_scanned_qrcode = TorConnectionConfig.parse_qr_content(raw_content)
             except Exception:
                 infobar_heading.set_text(_("Invalid QR code"))
-                infobar_text.set_text(_("Try sending another email and scanning again"))
+                infobar_text.set_text(_("Try sending another email and scanning again."))
                 infobar.show_all()
                 return
             else:
@@ -996,7 +996,7 @@ class TCAMainWindow(
 
         bridge_info = value[0].split()[1]  # IP address
         bridge_type = value[0].split()[0]
-        informative_message = _("Scanned {bridge_type} bridge: <b>{bridge_info}</b>")
+        informative_message = _("Scanned {bridge_type} bridge: <b>{bridge_info}</b>.")
 
         label_scanresult = self.builder.get_object("step_bridge_label_scanresult")
         label_scanresult.set_text(
