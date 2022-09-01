@@ -11,7 +11,7 @@ def feedback_deadline(final_date: datetime) -> datetime:
 
 
 def call_for_testing_contents(args) -> str:
-    jinja2_env = jinja2.Environment(
+    jinja2_env = jinja2.Environment(  # nosec jinja2_autoescape_false
         loader=jinja2.FileSystemLoader('config/release_management/templates'))
 
     return (jinja2_env.get_template('call_for_testing.mdwn').render(

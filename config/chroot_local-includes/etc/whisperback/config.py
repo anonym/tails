@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-#
 # Tails configuration file for WhisperBack
 # ==========================================
 #
