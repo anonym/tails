@@ -722,6 +722,8 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="valign">center</property>
+            <property name="margin-bottom">12</property>
+            <property name="vexpand">False</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel">
@@ -791,6 +793,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="valign">center</property>
+            <property name="margin-bottom">12</property>
             <property name="vexpand">False</property>
             <property name="orientation">vertical</property>
             <child>
@@ -862,6 +865,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="valign">center</property>
+            <property name="margin-bottom">12</property>
             <property name="vexpand">False</property>
             <property name="orientation">vertical</property>
             <child>
@@ -933,6 +937,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="valign">center</property>
+            <property name="margin-bottom">12</property>
             <property name="vexpand">False</property>
             <property name="orientation">vertical</property>
             <child>
@@ -940,7 +945,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">• Bridge over email</property>
+                <property name="label" translatable="yes">• Bridge by email</property>
                 <attributes>
                   <attribute name="weight" value="semibold"/>
                 </attributes>
@@ -960,12 +965,9 @@
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="margin-top">6</property>
-                <property name="label" translatable="yes">To request new Tor bridges, you can also:
-
-            1. Send an empty email to &lt;tt&gt;bridges@torproject.org&lt;/tt&gt; from a Gmail or Riseup email address.
-
-              2. Either type below one of the bridges that you received by email, or scan the QR code.</property>
+                <property name="label" translatable="yes">Send an empty email to &lt;tt&gt;bridges@torproject.org&lt;/tt&gt; from a Gmail or Riseup email address with your phone and scan the QR code that is attached to the automatic reply.</property>
                 <property name="use-markup">True</property>
+                <property name="wrap">True</property>
                 <style>
                   <class name="step-error-section-description"/>
                 </style>
@@ -981,17 +983,18 @@
                 <property name="name">step_error_box_bridges</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-start">3</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkEntry" id="step_error_text">
-                    <property name="name">step_error_text</property>
+                  <object class="GtkButton" id="step_error_btn_scanqrcode">
+                    <property name="label" translatable="yes">Scan QR code</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
-                    <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
+                    <property name="receives-default">True</property>
+                    <property name="margin-top">6</property>
+                    <signal name="clicked" handler="cb_step_error_btn_scanqrcode_clicked" swapped="no"/>
                     <accessibility>
-                      <relation type="controlled-by" target="step_error_btn_scanqrcode"/>
-                      <relation type="described-by" target="step_error_label_warning"/>
+                      <relation type="controller-for" target="step_error_text"/>
                     </accessibility>
                   </object>
                   <packing>
@@ -1001,14 +1004,16 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="step_error_btn_scanqrcode">
-                    <property name="label" translatable="yes">Scan QR code</property>
+                  <object class="GtkEntry" id="step_error_text">
+                    <property name="name">step_error_text</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="receives-default">True</property>
-                    <signal name="clicked" handler="cb_step_error_btn_scanqrcode_clicked" swapped="no"/>
+                    <property name="margin-top">6</property>
+                    <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
+                    <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
                     <accessibility>
-                      <relation type="controller-for" target="step_error_text"/>
+                      <relation type="controlled-by" target="step_error_btn_scanqrcode"/>
+                      <relation type="described-by" target="step_error_label_warning"/>
                     </accessibility>
                   </object>
                   <packing>
