@@ -1400,12 +1400,20 @@ You probably already know how to do that, but keep this in mind:
  - if you are running this and going AFK for long time (ie: overnight) you might want to
    keep your CPU busy by rerunning failed scenarios
 
+ - if the following conditions are met:
+    - you are making out an emergency release OR you still feel the need to make the release as soon as
+      possible for security reasons
+    - you are *not* running test overnight, so skipping tests will reduce the lead time
+   then, feel free to skip testing `@not_release_blocker`, setting
+   `what=(--tag ~@not_release_blocker)` in the following example.
+
 So here is a good example of how you can do this. Run this *as root* and with *bash*:
 
 ```
 (
+what=()
 args=(--tmpdir "../release/${VERSION}" --keep-snapshots --capture --view --iso yourpathto/tails-amd64-${VERSION}.iso --old-iso previous_version.iso)
-./run_test_suite "${args[@]}"
+./run_test_suite "${args[@]}" "${what[@]}"
 
 while true; do
     sudo ./run_test_suite "${args[@]}" "@$(find /tmp/TailsToaster/ -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|head -n1)"
