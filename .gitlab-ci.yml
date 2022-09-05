@@ -35,6 +35,20 @@ lint-latest-po:
     - ./import-translations
     - /tmp/jenkins-tools/slaves/lint_po po/*.po
 
+bandit:
+  script:
+  - apt-get -qy install python3-bandit file
+  - bandit --version
+  - './bin/bandit-tree --configfile .bandit.yml
+                       -ll
+                       --format xml
+                       --output bandit.xml
+                       .'
+  artifacts:
+    when: always
+    reports:
+      junit: bandit.xml
+
 check-po-msgfmt:
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^master|stable|testing|devel$/'

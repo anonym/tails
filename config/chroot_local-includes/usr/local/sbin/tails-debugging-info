@@ -71,7 +71,7 @@ def main():
                 shell = _args['shell']
             else:
                 shell = False
-            info.append(debug_command(args=_args['args'], shell=shell))
+            info.append(debug_command(args=_args['args'], shell=shell))  # nosec any_other_function_with_shell_equals_true
         elif _type == 'directory':
             info.append(debug_directory(_args['user'], _args['path']))
         else:
@@ -87,7 +87,7 @@ def debug_command(args: list, shell=False):
     {...'key': 'echo foo'...}
     """
     if shell:
-        command_output = subprocess.check_output(' '.join(args), shell=True)
+        command_output = subprocess.check_output(' '.join(args), shell=True)  # nosec any_other_function_with_shell_equals_true
     else:
         command_output = subprocess.check_output(args)
     command_output = command_output.decode('UTF-8').strip().split('\n')
