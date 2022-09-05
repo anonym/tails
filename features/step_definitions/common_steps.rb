@@ -916,6 +916,16 @@ Then /^persistence for "([^"]+)" is (|not )enabled$/ do |app, enabled|
   end
 end
 
+def language_has_non_latin_input_source(language)
+  # Note: we'll have to update the list when fixing #12638 or #18076
+  ['Persian', 'Russian'].include?(language)
+end
+
+def switch_input_source
+  @screen.press('super', 'space')
+  sleep 1
+end
+
 Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   # Search disambiguations: below we assume that there is only one
   # result, since multiple results introduces a race that leads to a
@@ -939,7 +949,16 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     # Let's implement this once one of the callers needs this.
     @screen.wait(app_name, 20).click
   else
-    @screen.wait('GnomeActivitiesOverviewSearch.png', 20)
+    pic = if RTL_LANGUAGES.include?($language)
+            'GnomeActivitiesOverviewSearchRTL.png'
+          else
+            'GnomeActivitiesOverviewSearch.png'
+          end
+    @screen.wait(pic, 20)
+    if language_has_non_latin_input_source($language)
+      # Temporarily switch to en_US keyboard layout to type the name of the app
+      switch_input_source
+    end
     # Trigger startup of search providers
     @screen.type(app_name[0])
     # Give search providers some time to start (#13469#note-5) otherwise
@@ -949,6 +968,10 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     @screen.type(app_name[1..-1])
     sleep 4
     @screen.press('ctrl', 'Return')
+    if language_has_non_latin_input_source($language)
+      # Switch back to $language's default keyboard layout
+      switch_input_source
+    end
   end
 end
 

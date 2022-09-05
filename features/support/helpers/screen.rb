@@ -76,6 +76,13 @@ class Keymaps
     }
   )
 
+  FR_KEYMAP = COMMON_KEYMAP.merge(
+    {
+      'a' => [0x10],
+      'w' => [0x2c],
+    }
+  )
+
   US_KEYMAP = COMMON_KEYMAP.merge(
     {
       '-' => [0x0c], '=' => [0x0d], ';' => [0x27], "'" => [0x28],
@@ -92,6 +99,7 @@ class Keymaps
   )
 
   public_constant :DE_KEYMAP
+  public_constant :FR_KEYMAP
   public_constant :US_KEYMAP
   public_constant :COMMON_KEYMAP
 end
@@ -232,6 +240,8 @@ class Screen
       keymap = case $language
                when ''
                  Keymaps::US_KEYMAP
+               when 'French'
+                 Keymaps::FR_KEYMAP
                when 'German'
                  Keymaps::DE_KEYMAP
                else

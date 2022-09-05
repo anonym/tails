@@ -1,13 +1,21 @@
 When /^I (?:try to )?start the Unsafe Browser$/ do
+  # XXX:Bookworm: switch to "gio launch" and drop the whole
+  # language_has_non_latin_input_source / switch_input_source system.
   step 'I start "Unsafe Browser" via GNOME Activities Overview'
 end
 
-When /^I successfully start the Unsafe Browser$/ do
+When /^I successfully start the Unsafe Browser(?: in "([^"]+)")?$/ do |lang_code|
   step 'I start the Unsafe Browser'
   step 'I see and accept the Unsafe Browser start verification'
-  step 'I see the "Starting the Unsafe Browser..." notification ' \
-       'after at most 60 seconds'
-  step 'the Unsafe Browser has started'
+  if lang_code && lang_code == 'en'
+    step 'I see the "Starting the Unsafe Browser..." notification ' \
+         'after at most 60 seconds'
+  end
+  if lang_code && lang_code != 'en'
+    step "the Unsafe Browser has started in \"#{lang_code}\""
+  else
+    step 'the Unsafe Browser has started'
+  end
 end
 
 # This step works reliably only when there's no more than one tab:
