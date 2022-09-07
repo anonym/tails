@@ -212,13 +212,13 @@ def step_impl(context: TestContext, mount_operand: str, user: str):
 @then('mount activation fails with OSError {errno_name}')
 def step_impl(context: TestContext, errno_name: str):
     assert isinstance(context.mount_exception, OSError)
-    assert context.mount_exception.errno == eval(f"errno.{errno_name}")
+    assert context.mount_exception.errno == eval(f"errno.{errno_name}")  # nosec blacklist
     # Unset the exception so that it doesn't affect other scenarios
     context.mount_exception = None
 
 @then('mount activation fails with a {exception}')
 def step_impl(context: TestContext, exception: str):
-    assert isinstance(context.mount_exception, eval(exception))
+    assert isinstance(context.mount_exception, eval(exception))  # nosec blacklist
     # Unset the exception so that it doesn't affect other scenarios
     context.mount_exception = None
 
