@@ -3,7 +3,7 @@
 import os
 import subprocess
 
-from tailslib.utils import launch_x_application
+from tailslib.utils import launch_x_application, spawn_x_application
 
 
 PERSISTENCE_DIR = "/live/persistence/TailsData_unlocked"
@@ -54,3 +54,9 @@ def launch_tps_frontend(*args):
     """Launch tps-frontend and wait for its completion."""
     launch_x_application("/usr/local/bin/tps-frontend-wrapper",
                          *args)
+
+
+def spawn_tps_frontend(*args):
+    """Launch tps-frontend, don't wait for its completion."""
+    spawn_x_application("/usr/local/bin/tps-frontend-wrapper",
+                        *args)

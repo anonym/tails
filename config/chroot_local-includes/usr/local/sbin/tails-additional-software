@@ -28,7 +28,7 @@ from tailslib.persistence import (
     has_unlocked_persistence,
     has_persistence,
     is_tails_media_writable,
-    launch_tps_frontend,
+    spawn_tps_frontend,
     PERSISTENCE_DIR)
 
 from tailslib.utils import launch_x_application
@@ -395,9 +395,9 @@ def create_persistence_and_setup_additional_packages(packages):
     packages should be a list of packages names.
     """
     logging.info("Creating new persistent volume")
-    # TODO: start tps-frontend in the background and don't wait for it
-    # to exit (which may never happen)
-    launch_tps_frontend()
+    # We start tps-frontend in the background and don't wait for it
+    # to exit, which may or may not ever happen.
+    spawn_tps_frontend()
     logging.info("Waiting for Persistent Storage to be ready")
     # This can take a while: tps is copying the APT lists and packages
     # to the newly created Persistent Storage.

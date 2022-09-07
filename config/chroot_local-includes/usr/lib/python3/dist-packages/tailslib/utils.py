@@ -39,3 +39,13 @@ def launch_x_application(command, *args):
         for line in e.stderr.splitlines():
             logging.error(line)
         raise
+
+
+def spawn_x_application(command, *args):
+    """Launch an X application as LIVE_USERNAME without blocking."""
+    cmdline = ["sudo", "-u", LIVE_USERNAME, command]
+    cmdline.extend(args)
+    subprocess.Popen(cmdline,
+                     stderr=subprocess.PIPE,
+                     env=X_ENV,
+                     universal_newlines=True)
