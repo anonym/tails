@@ -3,7 +3,6 @@
 import contextlib
 import os
 import logging
-import pwd
 import subprocess
 
 from tailslib import LIVE_USERNAME
@@ -24,21 +23,9 @@ def chdir(path):
         os.chdir(curdir)
 
 
-def launch_x_application(username, command, *args):
-    """Launch an X application and wait for its completion."""
-    live_user_uid = pwd.getpwnam(LIVE_USERNAME).pw_uid
-
-    xhost_cmd = ["xhost", "+SI:localuser:" + username]
-    if os.geteuid() != live_user_uid:
-        xhost_cmd = ["sudo", "-u", LIVE_USERNAME] + xhost_cmd
-    subprocess.run(
-        xhost_cmd,
-        stderr=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        env=X_ENV,
-        check=True)
-
-    cmdline = ["sudo", "-u", username, command]
+def launch_x_application(command, *args):
+    """Launch an X application as LIVE_USERNAME and wait for its completion."""
+    cmdline = ["sudo", "-u", LIVE_USERNAME, command]
     cmdline.extend(args)
     try:
         subprocess.run(cmdline,
@@ -52,13 +39,3 @@ def launch_x_application(username, command, *args):
         for line in e.stderr.splitlines():
             logging.error(line)
         raise
-    finally:
-        xhost_cmd = ["xhost", "-SI:localuser:" + username]
-        if os.geteuid() != live_user_uid:
-            xhost_cmd = ["sudo", "-u", LIVE_USERNAME] + xhost_cmd
-        subprocess.run(
-            xhost_cmd,
-            stderr=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            env=X_ENV,
-            check=True)

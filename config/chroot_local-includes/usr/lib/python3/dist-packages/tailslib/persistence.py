@@ -3,7 +3,6 @@
 import os
 import subprocess
 
-from tailslib import LIVE_USERNAME
 from tailslib.utils import launch_x_application
 
 
@@ -53,6 +52,5 @@ def is_tails_media_writable():
 
 def launch_tps_frontend(*args):
     """Launch tps-frontend and wait for its completion."""
-    launch_x_application(LIVE_USERNAME,
-                         "/usr/local/bin/tps-frontend-wrapper",
+    launch_x_application("/usr/local/bin/tps-frontend-wrapper",
                          *args)
