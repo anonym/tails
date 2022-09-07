@@ -44,9 +44,6 @@ for bus in a11y ibus; do
 done
 
 # Use socket activation only, to delay the startup of cupsd.
-# In practice, this means that cupsd is started during
-# the initialization of the GNOME session, which is fine: by then,
-# the persistent /etc/cups has been mounted.
 systemctl disable cups.service
 systemctl enable  cups.socket
 
