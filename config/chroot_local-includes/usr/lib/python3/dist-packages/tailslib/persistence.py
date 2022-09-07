@@ -3,7 +3,7 @@
 import os
 import subprocess
 
-from tailslib.utils import launch_x_application, spawn_x_application
+from tailslib.utils import spawn_x_application
 
 
 PERSISTENCE_DIR = "/live/persistence/TailsData_unlocked"
@@ -48,12 +48,6 @@ def is_tails_media_writable():
     """Return true iff tails is started from a writable media."""
     return not subprocess.run(
         "/usr/local/lib/tails-boot-device-can-have-persistence").returncode
-
-
-def launch_tps_frontend(*args):
-    """Launch tps-frontend and wait for its completion."""
-    launch_x_application("/usr/local/bin/tps-frontend-wrapper",
-                         *args)
 
 
 def spawn_tps_frontend(*args):
