@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+"""Miscelaneous Tails Python utilities."""
 
 import contextlib
 import os
