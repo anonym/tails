@@ -41,16 +41,6 @@ Then /^I create a persistent storage and activate the Additional Software featur
   gnome_shell.child('Create Persistent Storage', roleName: 'push button').click
   step 'I create a persistent partition for Additional Software'
   assert_additional_software_persistent_storage_feature_is_enabled
-  # FIXME: The rest of this step definition workarounds the fact
-  # tails-additional-software waits for tps-frontend to complete,
-  # before it writes the correct contents to live-additional-software.conf
-  @screen.press('alt', 'F4')
-  tps_frontend_process = 'python3 /usr/local/lib/tps-frontend'
-  try_for(10, msg: 'tps-frontend could not be closed') do
-    $vm.execute("pgrep -af --exact '#{tps_frontend_process}'").failure?
-  end
-  # Wait for tails-additional-software to fill live-additional-software.conf
-  sleep 5
 end
 
 def assert_additional_software_persistent_storage_feature_is_enabled
