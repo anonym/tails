@@ -60,3 +60,10 @@ def spawn_tps_frontend(*args):
     """Launch tps-frontend, don't wait for its completion."""
     spawn_x_application("/usr/local/bin/tps-frontend-wrapper",
                         *args)
+
+
+def additional_software_persistence_feature_is_active() -> bool:
+    """Return True iff the AdditionalSoftware feature is active."""
+    return subprocess.run(
+        ["/usr/local/lib/tpscli", "is-active", "AdditionalSoftware"]
+    ).returncode == 0

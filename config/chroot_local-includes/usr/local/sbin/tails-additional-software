@@ -25,6 +25,7 @@ from tailslib.additionalsoftware import (
     remove_additional_packages)
 
 from tailslib.persistence import (
+    additional_software_persistence_feature_is_active,
     has_unlocked_persistence,
     has_persistence,
     is_tails_media_writable,
@@ -371,14 +372,6 @@ def handle_removed_packages(packages):
             _notify_failure(_("The configuration of your additional "
                               "software failed."))
             raise e
-
-
-def additional_software_persistence_feature_is_active() -> bool:
-    """Return True iff. the AdditionalSoftware persistent storage feature
-    is active."""
-    return subprocess.run(
-        ["/usr/local/lib/tpscli", "is-active", "AdditionalSoftware"]
-    ).returncode == 0
 
 
 def setup_additional_packages():
