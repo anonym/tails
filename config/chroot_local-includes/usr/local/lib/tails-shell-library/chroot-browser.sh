@@ -279,38 +279,6 @@ run_browser_in_chroot () {
     local profile
     profile="$(browser_profile_dir "${browser_name}" "${chroot_user}")"
 
-    # Here we set up a network namespace, linking it with the host
-    # network namespace via two virtual interfaces, and we enable NAT
-    # so we can reach the clearnet.
-    # XXX: we'll use 10.123.42.0/24 for the two devices, with the hope
-    # that nothing else will interfere with this range.
-    if [ ! -e /var/run/netns/clearnet ]; then
-        ip netns add clearnet
-        ip netns exec clearnet ip link set lo up
-        ip link add veth-host type veth peer name veth-clearnet
-        ip link set veth-clearnet netns clearnet
-        ip addr add 10.123.42.1/24 dev veth-host
-        ip netns exec clearnet ip addr add 10.123.42.2/24 dev veth-clearnet
-        ip link set veth-host up
-        ip netns exec clearnet ip link set veth-clearnet up
-        ip netns exec clearnet ip route add default via 10.123.42.1
-    fi
-    for bus in a11y ibus; do
-        systemctl --global enable "tails-${bus}-proxy-netns@clearnet.service"
-        sudo -u "${SUDO_USER}" \
-             env DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
-             systemctl --global start "tails-${bus}-proxy-netns@clearnet.service"
-    done
-    # XXX: we could probably lock the iptables rules down more,
-    # e.g. DNS + TCP only.
-    # XXX: these rules must be made persistent, otherwise NAT will
-    # break if an interface is up:ed while the Unsafe Browser is
-    # running due to the 00-firewall.sh NetworkManager hook.
-    iptables -A FORWARD -i veth-host -j ACCEPT
-    iptables -A FORWARD -o veth-host -j ACCEPT
-    iptables -t nat -A POSTROUTING -s 10.123.42.2/24 -j MASQUERADE
-    sysctl net.ipv4.ip_forward=1
-
     python3 <<EOF
 import tailslib.netnsdrop
 tailslib.netnsdrop.run_in_netns(
