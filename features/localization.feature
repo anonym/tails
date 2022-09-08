@@ -20,7 +20,7 @@ Feature: Localization
     When the network is plugged
     And Tor is ready
     Then DuckDuckGo is the default search engine
-    And I successfully start the Unsafe Browser in "<code>"
+    And I successfully start the Unsafe Browser in "<lang_code>"
     And I kill the Unsafe Browser
     When I enable the screen keyboard
     Then the screen keyboard works in Tor Browser
@@ -34,7 +34,7 @@ Feature: Localization
     #  - Not all localized layouts exist in the GNOME screen keyboard: #8444
     #  - Arabic's layout should be "ara": #12638
     Examples:
-      | language   | layout | osk_layout | code |
+      | language   | layout | osk_layout | lang_code |
       | Arabic     | us     | us         | ar   |
       | Chinese    | cn     | us         | zh   |
       | English    | us     | us         | en   |
