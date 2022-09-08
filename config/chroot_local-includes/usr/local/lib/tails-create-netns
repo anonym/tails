@@ -55,12 +55,9 @@ expose_all() {
     netmask=30
 
     ip netns exec "${ns}" ip route add default via "${hostAddress}"
-    # XXX: these rules must be made persistent, otherwise NAT will
-    # break if an interface is up:ed while the Unsafe Browser is
-    # running due to the 00-firewall.sh NetworkManager hook.
-    iptables -A FORWARD -i "${hostVeth}" -j ACCEPT
-    iptables -A FORWARD -o "${hostVeth}" -j ACCEPT
-    iptables -t nat -A POSTROUTING -s "${guestAddress}/${netmask}" -j MASQUERADE
+    tails-add-session-firewall-rule --apply -A FORWARD -i "${hostVeth}" -j ACCEPT
+    tails-add-session-firewall-rule --apply -A FORWARD -o "${hostVeth}" -j ACCEPT
+    tails-add-session-firewall-rule --apply -t nat -A POSTROUTING -s "${guestAddress}/${netmask}" -j MASQUERADE
     sysctl net.ipv4.ip_forward=1
     sysctl "net.ipv4.conf.${hostVeth}.forwarding=1"
 }
