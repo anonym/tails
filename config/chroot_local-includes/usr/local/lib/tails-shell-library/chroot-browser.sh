@@ -311,18 +311,22 @@ run_browser_in_chroot () {
     iptables -t nat -A POSTROUTING -s 10.123.42.2/24 -j MASQUERADE
     sysctl net.ipv4.ip_forward=1
 
-    systemd-nspawn --directory="${chroot}" \
-                   --bind=/tmp/.X11-unix \
-                   --bind=/tmp/netns-specific/clearnet/ \
-                   --network-namespace-path=/var/run/netns/clearnet \
-                   --user="${chroot_user}" \
-                   --setenv=TOR_TRANSPROXY=1 \
-                   --setenv="DISPLAY=${DISPLAY}" \
-                   --setenv="AT_SPI_BUS_ADDRESS=unix:path=/tmp/netns-specific/clearnet/at.sock" \
-                   --setenv="IBUS_ADDRESS=unix:path=/tmp/netns-specific/clearnet/ibus.sock" \
-                   /bin/sh -c \
-        ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
-         exec_unconfined_firefox --class='${wm_class}' \
-                                 --name '${wm_class}' \
-                                 -profile '${profile}'"
+    python3 <<EOF
+import tailslib.netnsdrop
+tailslib.netnsdrop.run_in_netns(
+    "/bin/sh", "-c",
+    ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
+     export TOR_TRANSPROXY=1 && \
+     export DISPLAY=${DISPLAY} && \
+     exec_unconfined_firefox --class='${wm_class}' \
+                             --name '${wm_class}' \
+                             --profile '${profile}'",
+    netns="clearnet",
+    bind_mounts=[
+        ("${chroot}/home", "/home"),
+        ("/etc/resolv-over-clearnet.conf", "/etc/resolv.conf"),
+        ("${chroot}/${TBB_INSTALL}", "${TBB_INSTALL}"),
+    ]
+)
+EOF
 }
