@@ -279,6 +279,16 @@ run_browser_in_chroot () {
     local profile
     profile="$(browser_profile_dir "${browser_name}" "${chroot_user}")"
 
+    # XXX: this should not be needed, for some reason these services
+    # shutdown when the Unsafe Browser exits, despite us overriding
+    # with StopWhenUnneeded=false
+    for bus in a11y ibus; do
+        systemctl --global enable "tails-${bus}-proxy-netns@clearnet.service"
+        sudo -u "${SUDO_USER}" \
+             env DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
+             systemctl --user start "tails-${bus}-proxy-netns@clearnet.service"
+    done
+
     python3 <<EOF
 import tailslib.netnsdrop
 tailslib.netnsdrop.run_in_netns(
