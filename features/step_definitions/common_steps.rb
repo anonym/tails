@@ -921,6 +921,10 @@ def language_has_non_latin_input_source(language)
   ['Persian', 'Russian'].include?(language)
 end
 
+# In the situations where we call this method
+# (language_has_non_latin_input_source), we have exactly 2 input
+# sources, so calling this method switches back and forth
+# between them.
 def switch_input_source
   @screen.press('super', 'space')
   sleep 1
