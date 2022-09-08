@@ -83,7 +83,7 @@ class FeaturesView(View):
         # noinspection PyArgumentList
         icon_theme = Gtk.IconTheme.get_default()  # type: Gtk.IconTheme
         icon_theme.append_search_path(
-            '/usr/share/seahorse/icons/hicolor/48x48/apps')
+            '/usr/share/pixmaps/cryptui/48x48')
 
         # Set listbox header functions. This is required to add
         # separators between listboxrows.
