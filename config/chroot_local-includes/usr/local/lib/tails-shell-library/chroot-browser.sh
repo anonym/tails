@@ -317,7 +317,7 @@ tailslib.netnsdrop.run_in_netns(
     "/bin/sh", "-c",
     ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
      export TOR_TRANSPROXY=1 && \
-     export DISPLAY=${DISPLAY} && \
+     export MOZ_ENABLE_WAYLAND=1 && \
      exec_unconfined_firefox --class='${wm_class}' \
                              --name '${wm_class}' \
                              --profile '${profile}'",
