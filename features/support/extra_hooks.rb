@@ -148,6 +148,7 @@ AfterConfiguration do |config|
     ['Cucumber::Formatter::Pretty', "#{ARTIFACTS_DIR}/pretty.log"],
     ['Cucumber::Formatter::Json', "#{ARTIFACTS_DIR}/cucumber.json"],
     ['ExtraFormatters::PrettyDebug', "#{ARTIFACTS_DIR}/debug.log"],
+    ['Cucumber::Formatter::Rerun', "#{ARTIFACTS_DIR}/rerun.txt"],
   ]
   extra_hooks.each do |hook|
     config.formats << hook unless config.formats.include?(hook)

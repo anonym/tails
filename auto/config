@@ -168,6 +168,14 @@ if git rev-list HEAD >/dev/null 2>&1; then
 fi
 # os-release
 cat >> config/chroot_local-includes/etc/os-release <<EOF
+NAME="Tails"
+ID="tails"
+ID_LIKE="debian"
+PRETTY_NAME="Tails"
+VERSION="$AMNESIA_VERSION"
+HOME_URL="https://tails.boum.org/"
+SUPPORT_URL="https://tails.boum.org/support/"
+BUG_REPORT_URL="https://tails.boum.org/doc/first_steps/bug_reporting/"
 TAILS_PRODUCT_NAME="Tails"
 TAILS_VERSION_ID="$AMNESIA_VERSION"
 TAILS_DISTRIBUTION="$TAILS_DISTRIBUTION"
