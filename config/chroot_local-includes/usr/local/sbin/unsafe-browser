@@ -148,11 +148,6 @@ configure_chroot_browser "${CHROOT}" "${BROWSER_USER}" "${BROWSER_NAME}" \
     "${TBB_EXT}"/langpack-*.xpi \
     /usr/share/tails/chroot-browsers/unsafe-browser/extensions/*.xpi || \
         error "$(gettext "Failed to configure browser.")"
-# If /etc/resolv-over-clearnet.conf file is empty or doesn't exist, we
-# have no clearnet DNS server.
-if grep --quiet "^nameserver\s" /etc/resolv-over-clearnet.conf; then
-    mount --bind -o ro /etc/resolv-over-clearnet.conf "${CHROOT}"/etc/resolv.conf
-fi
 if ! nm_is_connected; then
     error "$(gettext "You are not connected to a local network yet.\n\nTo be able to start the Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile network.")"
 fi
