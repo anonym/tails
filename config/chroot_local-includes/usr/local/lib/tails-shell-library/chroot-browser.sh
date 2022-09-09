@@ -300,6 +300,7 @@ tailslib.netnsdrop.run_in_netns(
                              --name '${wm_class}' \
                              --profile '${profile}'",
     netns="clearnet",
+    tmpfs=["/tmp"],
     bind_mounts=[
         ("${chroot}/home", "/home"),
         ("/etc/resolv-over-clearnet.conf", "/etc/resolv.conf"),
