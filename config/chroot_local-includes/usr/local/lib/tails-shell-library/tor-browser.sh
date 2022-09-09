@@ -54,10 +54,6 @@ exec_firefox() {
     exec_firefox_helper firefox.real "${@}"
 }
 
-exec_unconfined_firefox() {
-    exec_firefox_helper firefox-unconfined "${@}"
-}
-
 guess_best_tor_browser_locale() {
     local long_locale short_locale similar_locale
     long_locale="$(echo "${LANG}" | sed -e 's/\..*$//' -e 's/_/-/')"

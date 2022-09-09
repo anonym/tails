@@ -296,9 +296,10 @@ tailslib.netnsdrop.run_in_netns(
     ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
      export TOR_TRANSPROXY=1 && \
      export MOZ_ENABLE_WAYLAND=1 && \
-     exec_unconfined_firefox --class='${wm_class}' \
-                             --name '${wm_class}' \
-                             --profile '${profile}'",
+     exec_firefox_helper firefox.unsafe-browser \
+         --class='${wm_class}' \
+         --name '${wm_class}' \
+         --profile '${profile}'",
     netns="clearnet",
     tmpfs=["/tmp"],
     bind_mounts=[
