@@ -311,7 +311,6 @@ tailslib.netnsdrop.run_in_netns(
          --profile '${profile}'",
     netns="clearnet",
     root="${chroot}",
-    tmpfs=["/tmp"],
     bind_mounts=[
         ("/home", "/home"),
         ("${chroot}/${profile}", "${profile}"),
