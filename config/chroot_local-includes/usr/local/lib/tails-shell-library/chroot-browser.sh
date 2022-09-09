@@ -303,7 +303,7 @@ tailslib.netnsdrop.run_in_netns(
     netns="clearnet",
     tmpfs=["/tmp"],
     bind_mounts=[
-        ("${chroot}/home", "/home"),
+        ("${chroot}/${profile}", "${profile}"),
         ("/etc/resolv-over-clearnet.conf", "/etc/resolv.conf"),
         ("${chroot}/${TBB_INSTALL}", "${TBB_INSTALL}"),
     ]
