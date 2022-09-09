@@ -250,6 +250,7 @@ configure_chroot_browser () {
     # to extensions to enable.
     local best_locale
     best_locale="$(guess_best_tor_browser_locale)"
+    local browser_user_uid="$(id --user "${browser_user}")"
 
     if ! chroot "${chroot}" id -a "${browser_user}" 2>/dev/null; then
         chroot "${chroot}" addgroup --quiet --gid 1000 "${browser_user}"
@@ -268,6 +269,13 @@ configure_chroot_browser () {
         'https-everywhere'
     set_chroot_browser_permissions "${chroot}" "${browser_name}" \
         "${browser_user}"
+    # Later we'll instruct bwrap to mount certain files within
+    # /run/user/$uid/ but it does not handle the mixed permissions in
+    # the path and will fail to create the $uid folder, so we do it
+    # manually here instead.
+    mkdir -p "${chroot}/run/user/${browser_user_uid}"
+    chown "${browser_user}:${browser_user}" \
+          "${chroot}/run/user/${browser_user_uid}"
 }
 
 # Start the browser in the chroot
@@ -278,6 +286,7 @@ run_browser_in_chroot () {
     local wm_class="${4}"
     local profile
     profile="$(browser_profile_dir "${browser_name}" "${chroot_user}")"
+    local chroot_user_uid="$(id --user "${chroot_user}")"
 
     # XXX: this should not be needed, for some reason these services
     # shutdown when the Unsafe Browser exits, despite us overriding
@@ -301,11 +310,17 @@ tailslib.netnsdrop.run_in_netns(
          --name '${wm_class}' \
          --profile '${profile}'",
     netns="clearnet",
+    root="${chroot}",
     tmpfs=["/tmp"],
     bind_mounts=[
+        ("/home", "/home"),
         ("${chroot}/${profile}", "${profile}"),
         ("/etc/resolv-over-clearnet.conf", "/etc/resolv.conf"),
         ("${chroot}/${TBB_INSTALL}", "${TBB_INSTALL}"),
+        ("/run/user/${chroot_user_uid}/pipewire-0", "/run/user/${chroot_user_uid}/pipewire-0"),
+        ("/run/user/${chroot_user_uid}/pulse", "/run/user/${chroot_user_uid}/pulse"),
+        ("/run/user/${chroot_user_uid}/wayland-0", "/run/user/${chroot_user_uid}/wayland-0"),
+        ("/sys", "/sys"),
     ]
 )
 EOF
