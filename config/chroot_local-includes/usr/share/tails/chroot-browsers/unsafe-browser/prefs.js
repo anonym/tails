@@ -38,3 +38,8 @@ user_pref("browser.urlbar.onionRewrites.enabled", false);
 // but makes captive portal looks unnecessarily fishy just because
 // they are in HTTP
 user_pref("dom.security.https_only_mode", false);
+
+// Don't ask confirmation when quitting with CTRL+q: the user is not
+// supposed to be doing meaningful work in the Unsafe Browser, that we
+// should avoid losing. This makes our test suite simpler.
+user_pref("browser.warnOnQuitShortcut", false);
