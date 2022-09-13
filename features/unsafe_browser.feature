@@ -5,7 +5,7 @@ Feature: Browsing the web using the Unsafe Browser
   I should have direct access to the web
 
   Scenario: The Unsafe Browser can access the LAN
-    Given I have started Tails from DVD and logged in with the Unsafe Browser enabled and the network is connected
+    Given I have started Tails from DVD and logged in and the network is connected
     And a web server is running on the LAN
     When I successfully start the Unsafe Browser
     And I open a page on the LAN web server in the Unsafe Browser
