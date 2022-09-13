@@ -233,13 +233,7 @@ When /^I download some file in the Tor Browser$/ do
   step "I open the address \"#{some_url}\" in the Tor Browser"
 end
 
-Then /^I get the browser download dialog$/ do
-  @screen.wait('BrowserDownloadDialog.png', 60)
-  @screen.wait('BrowserDownloadDialogSaveAsButton.png', 10)
-end
-
 When /^I save the file to the default Tor Browser download directory$/ do
-  @screen.click('BrowserDownloadDialogSaveAsButton.png')
   @screen.wait('Gtk3SaveFileDialog.png', 10)
   @screen.press('Return')
 end

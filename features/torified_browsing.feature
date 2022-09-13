@@ -31,8 +31,7 @@ Feature: Browsing the web using the Tor Browser
     When I start the Tor Browser
     Then the Tor Browser loads the startup page
     When I download some file in the Tor Browser
-    Then I get the browser download dialog
-    When I save the file to the default Tor Browser download directory
+    And I save the file to the default Tor Browser download directory
     Then the file is saved to the default Tor Browser download directory
 
   @check_tor_leaks
