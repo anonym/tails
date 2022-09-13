@@ -26,5 +26,7 @@ sed \
   -e 's@[.]tor-browser/@.unsafe-browser/@g' \
   -e "s@${TBB_INSTALL}/firefox[.]real@${TBB_INSTALL}/firefox.unsafe-browser@g" \
   -e 's@deny /etc/resolv.conf r,@/etc/resolv.conf r,@g' \
+  -e 's@deny /etc/hosts r,@/etc/hosts r,@g' \
+  -e 's@deny /etc/nsswitch.conf r,@/etc/nsswitch.conf r,@g' \
   -e 's@^}$@\n  /usr/share/tails/chroot-browsers/unsafe-browser/extensions/* r,\n}@g' \
   /etc/apparmor.d/torbrowser.Browser.firefox > /etc/apparmor.d/unsafe-browser
