@@ -79,12 +79,17 @@ def xul_application_info(application)
   default_address_bar_images =
     [
       "BrowserAddressBar#{$language}.png",
-      "BrowserAddressBar#{$language}Alt.png"
+      "BrowserAddressBar#{$language}Alt.png",
     ]
-      .select { |n| File.exist?("#{GIT_DIR}/features/images/#{n}") }
+    .select { |n| File.exist?("#{GIT_DIR}/features/images/#{n}") }
   defaults = {
     address_bar_images: default_address_bar_images,
-    unused_tbb_libs:    ['libnssdbm3.so', 'libmozavcodec.so', 'libmozavutil.so'],
+    unused_tbb_libs:    [
+      'libnssdbm3.so',
+      'libmozavcodec.so',
+      'libmozavutil.so',
+      'libipcclientcerts.so',
+    ],
   }
   case application
   when 'Tor Browser'
