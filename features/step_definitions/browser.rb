@@ -86,7 +86,7 @@ end
 When /^I open a new tab in the (.*)$/ do |browser|
   info = xul_application_info(browser)
   @screen.click(info[:new_tab_button_image])
-  @screen.wait_any(info[:address_bar_images], 10)
+  @screen.wait_any(info[:address_bar_images], 15)
 end
 
 When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser|
