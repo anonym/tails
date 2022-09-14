@@ -1187,8 +1187,6 @@ Given /^I set all Greeter options to non-default values$/ do
   # miss it.
   step 'I disable networking in Tails Greeter'
   sleep 2
-  step 'I allow the Unsafe Browser to be started'
-  sleep 2
   step 'I disable MAC spoofing in Tails Greeter'
   sleep 2
   step 'I set an administration password'
@@ -1209,7 +1207,6 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_LOCALE_NAME=de_DE
       TAILS_MACSPOOF_ENABLED=false
       TAILS_NETWORK=false
-      TAILS_UNSAFE_BROWSER_ENABLED=true
       TAILS_XKBLAYOUT=de
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=
@@ -1228,7 +1225,6 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_LOCALE_NAME=en_US
       TAILS_MACSPOOF_ENABLED=true
       TAILS_NETWORK=true
-      TAILS_UNSAFE_BROWSER_ENABLED=false
       TAILS_XKBLAYOUT=us
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=
