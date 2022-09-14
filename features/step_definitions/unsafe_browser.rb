@@ -72,12 +72,13 @@ Then /^the Unsafe Browser has only Firefox's default bookmarks configured$/ do
   @screen.wait('UnsafeBrowserExportBookmarksButtonSelected.png', 20)
   @screen.wait('UnsafeBrowserExportBookmarksMenuEntry.png', 20).click
   @screen.wait('UnsafeBrowserExportBookmarksSavePrompt.png', 20)
-  path = "/home/#{info[:user]}/bookmarks"
-  @screen.paste(path)
+  path = "/home/#{info[:user]}/Tor Browser/bookmarks.json"
+  # The .json extension is automatically added in this prompt so we
+  # avoid adding it again.
+  @screen.paste(path.sub(/[.]json$/, ''))
   @screen.press('Return')
-  chroot_path = "#{info[:chroot]}/#{path}.json"
-  try_for(10) { $vm.file_exist?(chroot_path) }
-  dump = JSON.parse($vm.file_content(chroot_path))
+  try_for(10) { $vm.file_exist?(path) }
+  dump = JSON.parse($vm.file_content(path))
 
   def check_bookmarks_helper(bookmarks_children)
     mozilla_uris_counter = 0
