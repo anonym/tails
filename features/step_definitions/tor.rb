@@ -167,6 +167,17 @@ Then /^the firewall's NAT rules only redirect traffic for Tor's TransPort and DN
       assert(bad_rules.empty?,
              "The NAT table's OUTPUT chain contains some unexpected " \
              "rules:\n#{bad_rules}")
+    elsif name == 'POSTROUTING'
+      assert_equal(1, rules.size)
+      rule = rules.first
+      source = try_xml_element_text(rule, 'conditions/match/s')
+      # This is the IP address of veth-clearnet, the interface used in
+      # the clearnet network namespace that grants the Unsafe Browser
+      # full access to the Internet.
+      assert_equal('10.200.1.16/30', source)
+      actions = rule.get_elements('actions/*')
+      assert_equal(1, actions.size)
+      assert_equal('MASQUERADE', actions.first.name)
     else
       assert(rules.empty?,
              "The NAT table contains unexpected rules for the #{name} " \
