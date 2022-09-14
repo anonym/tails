@@ -315,7 +315,6 @@ tailslib.netnsdrop.run_in_netns(
         ("/home", "/home"),
         ("${chroot}/${profile}", "${profile}"),
         ("/etc/resolv-over-clearnet.conf", "/etc/resolv.conf"),
-        ("${chroot}/${TBB_INSTALL}", "${TBB_INSTALL}"),
         ("/run/user/${chroot_user_uid}/pipewire-0", "/run/user/${chroot_user_uid}/pipewire-0"),
         ("/run/user/${chroot_user_uid}/pulse", "/run/user/${chroot_user_uid}/pulse"),
         ("/run/user/${chroot_user_uid}/wayland-0", "/run/user/${chroot_user_uid}/wayland-0"),
