@@ -182,6 +182,9 @@ set_chroot_browser_name () {
        sed --regexp-extended -i \
            "s/-brand-(full|short|shorter|product)-name = .*$/-brand-\1-name = ${human_readable_name}/" \
 	   "${torbutton_locale_dir}/branding/brand.ftl"
+       sed --regexp-extended -i \
+           "s/^brand(Full|Product|Short|Shorter)Name=.*$/brand\1Name=${human_readable_name}/" \
+           "${torbutton_locale_dir}/brand.properties"
        7z u -tzip "${pack}" .
     )
     chmod a+r "${pack}"
