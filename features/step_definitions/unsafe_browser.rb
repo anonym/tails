@@ -72,6 +72,11 @@ Then /^the Unsafe Browser has only Firefox's default bookmarks configured$/ do
   @screen.wait('UnsafeBrowserExportBookmarksButtonSelected.png', 20)
   @screen.wait('UnsafeBrowserExportBookmarksMenuEntry.png', 20).click
   @screen.wait('UnsafeBrowserExportBookmarksSavePrompt.png', 20)
+  # This prompt defaults to $HOME/Desktop which is inaccessible due to
+  # AppArmor confinement, so there is a permission error message that
+  # we have to close.
+  @screen.press('Escape')
+  sleep 1
   path = "/home/#{info[:user]}/Tor Browser/bookmarks.json"
   # The .json extension is automatically added in this prompt so we
   # avoid adding it again.
