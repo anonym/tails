@@ -131,9 +131,44 @@ echo "* Starting Unsafe Browser"
 # if WM_CLASS were localized then not only string encoding problems
 # would happen, but GNOME would pick the wrong icon. It is also passed
 # as the value for the --name Firefox option.
-run_browser_in_chroot "${CHROOT}" "${BROWSER_NAME}" "${BROWSER_USER}" \
-    'Unsafe Browser' || \
-    error "$(gettext "Failed to run browser.")"
+WM_CLASS='Unsafe Browser'
+PROFILE="$(browser_profile_dir "${BROWSER_NAME}" "${BROWSER_USER}")"
+CHROOT_USER_UID="$(id --user "${BROWSER_USER}")"
+
+# XXX: this should not be needed, for some reason these services
+# shutdown when the Unsafe Browser exits, despite us overriding
+# with StopWhenUnneeded=false
+for bus in a11y ibus; do
+    systemctl --global enable "tails-${bus}-proxy-netns@clearnet.service"
+    sudo -u "${SUDO_USER}" \
+         env DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
+         systemctl --user start "tails-${bus}-proxy-netns@clearnet.service"
+done
+
+(python3 || error "$(gettext "Failed to run browser.")") <<EOF
+import tailslib.netnsdrop
+tailslib.netnsdrop.run_in_netns(
+    "/bin/sh", "-c",
+    ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
+     export TOR_TRANSPROXY=1 && \
+     export MOZ_ENABLE_WAYLAND=1 && \
+     exec_firefox_helper firefox.unsafe-browser \
+         --class '${WM_CLASS}' \
+         --name '${WM_CLASS}' \
+         --profile '${PROFILE}'",
+    netns="clearnet",
+    root="${CHROOT}",
+    bind_mounts=[
+        ("/home", "/home"),
+        ("${CHROOT}/${PROFILE}", "${PROFILE}"),
+        ("/etc/resolv-over-clearnet.conf", "/etc/resolv.conf"),
+        ("/run/user/${CHROOT_USER_UID}/pipewire-0", "/run/user/${CHROOT_USER_UID}/pipewire-0"),
+        ("/run/user/${CHROOT_USER_UID}/pulse", "/run/user/${CHROOT_USER_UID}/pulse"),
+        ("/run/user/${CHROOT_USER_UID}/wayland-0", "/run/user/${CHROOT_USER_UID}/wayland-0"),
+        ("/sys", "/sys"),
+    ]
+)
+EOF
 
 echo "* Exiting the Unsafe Browser"
 show_shutdown_notification
