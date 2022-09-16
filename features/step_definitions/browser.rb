@@ -68,9 +68,14 @@ def unsafe_browser_application_info(defaults)
 end
 
 def xul_application_info(application)
+  default_address_bar_images =
+    [
+      "BrowserAddressBar#{$language}.png",
+      "BrowserAddressBar#{$language}Alt.png"
+    ]
+      .select { |n| File.exist?("#{GIT_DIR}/features/images/#{n}") }
   defaults = {
-    address_bar_images: ["BrowserAddressBar#{$language}.png",
-                         "BrowserAddressBar#{$language}Alt.png",],
+    address_bar_images: default_address_bar_images,
     unused_tbb_libs:    ['libnssdbm3.so', 'libmozavcodec.so', 'libmozavutil.so'],
   }
   case application
