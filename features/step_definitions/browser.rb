@@ -94,9 +94,10 @@ When /^I open a new tab in the (.*)$/ do |browser|
   @screen.wait_any(info[:address_bar_images], 10)
 end
 
-When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser|
-  step "I open a new tab in the #{browser}"
-  info = xul_application_info(browser)
+When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
+  step "I open a new tab in the #{browser_name}"
+  browser = Dogtail::Application.new('Firefox')
+  info = xul_application_info(browser_name)
   open_address = proc do
     @screen.find_any(info[:address_bar_images])[:match].click
     # This static here since we have no reliable visual indicators
@@ -113,15 +114,17 @@ When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser|
     @screen.wait_vanish(info[:browser_stop_button_image], 3)
     open_address.call
   end
-  retry_method = if browser == 'Tor Browser'
+  retry_method = if browser_name == 'Tor Browser'
                    method(:retry_tor)
                  else
                    proc { |p, &b| retry_action(10, recovery_proc: p, &b) }
                  end
   open_address.call
   retry_method.call(recovery_on_failure) do
-    @screen.wait_vanish(info[:browser_stop_button_image], 120)
-    @screen.wait(info[:browser_reload_button_image], 120)
+    try_for(120) do
+      !browser.child?('Stop', roleName: 'push button', retry: false) &&
+        browser.child?('Reload', roleName: 'push button', retry: false)
+    end
   end
 end
 
