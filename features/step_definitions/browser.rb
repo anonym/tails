@@ -95,10 +95,10 @@ When /^I open a new tab in the (.*)$/ do |browser|
 end
 
 When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
-  step "I open a new tab in the #{browser_name}"
   browser = Dogtail::Application.new('Firefox')
   info = xul_application_info(browser_name)
   open_address = proc do
+    step "I open a new tab in the #{browser_name}"
     @screen.find_any(info[:address_bar_images])[:match].click
     # This static here since we have no reliable visual indicators
     # that we can watch to know when typing is "safe".
