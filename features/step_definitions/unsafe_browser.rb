@@ -152,10 +152,10 @@ Then /^I can start the Unsafe Browser again$/ do
 end
 
 When /^I configure the Unsafe Browser to use a local proxy$/ do
-  socksport_lines =
+  socksports =
     $vm.execute_successfully('grep -w "^SocksPort" /etc/tor/torrc').stdout
-  assert(socksport_lines.size >= 4, 'We got fewer than four Tor SocksPorts')
-  proxy = socksport_lines.scan(/^SocksPort\s([^:]+):(\d+)/).sample
+  assert(socksports.lines.size >= 3, 'We too few Tor SocksPorts')
+  proxy = socksports.scan(/^SocksPort\s([^:]+):(\d+)/).sample
   proxy_host = proxy[0]
   proxy_port = proxy[1]
 
