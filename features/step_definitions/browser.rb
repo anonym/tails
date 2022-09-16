@@ -112,15 +112,14 @@ When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
   recovery_on_failure = proc do
     @screen.press('Escape')
     @screen.wait_vanish(info[:browser_stop_button_image], 3)
-    open_address.call
   end
   retry_method = if browser_name == 'Tor Browser'
                    method(:retry_tor)
                  else
                    proc { |p, &b| retry_action(10, recovery_proc: p, &b) }
                  end
-  open_address.call
   retry_method.call(recovery_on_failure) do
+    open_address.call
     try_for(120) do
       !browser.child?('Stop', roleName: 'push button', retry: false) &&
         browser.child?('Reload', roleName: 'push button', retry: false)
