@@ -599,7 +599,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
         tor_connection_assistant.child('_Ask for a bridge by email',
                                        roleName: 'radio button')
                                 .click
-        tor_connection_assistant.child('Scan QR code',
+        tor_connection_assistant.child('Scan QR Code',
                                        roleName: 'push button')
                                 .click
         try_for(30) do
@@ -659,7 +659,7 @@ When /^I scan a QR code from the error page in Tor Connection Assistant$/ do
 
   qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
   setup_qrcode_bridges_on_webcam(qr_code_bridges)
-  tor_connection_assistant.child('Scan QR code', roleName: 'push button').click
+  tor_connection_assistant.child('Scan QR Code', roleName: 'push button').click
 
   try_for(30) do
     !tor_connection_assistant.textentry('').text.empty?
