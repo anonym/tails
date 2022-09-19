@@ -391,7 +391,7 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
                  else
                    'TailsGreeterLoginButton.png'
                  end
-  login_button_region = @screen.wait(login_button, 10)
+  login_button_region = @screen.wait(login_button, 15)
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -1399,6 +1399,6 @@ def gnome_disks_app
   # coordinates returned by Screen#wait are obsolete by the time we
   # run Screen#click, which makes us click on the minimize
   # button instead.
-  @screen.wait('GnomeWindowActionsButtons.png', 5)
+  @screen.wait('GnomeWindowActionsButtons.png', 10)
   disks_app
 end
