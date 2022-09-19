@@ -327,22 +327,22 @@ div.header { /* override style.css */
 
 /* Banner */
 
-.banner {
-  background: #56347c url(lib/logo.svg) no-repeat 30px 10px;
-  padding-bottom: 10px;
+#banner {
+  background: #56347c;
   margin: 0 auto;
   max-width: 986px;
   border: none;
   position: relative;
 }
 
-.banner a span {
-  display: none;
-}
-
-.banner .tails {
+#tails-logo a, #tails-logo .selflink {
+  background: url(lib/logo.svg) no-repeat 30px 10px;
   display: block;
   height: 110px;
+  font-size: 0;
+  color: transparent;
+  text-indent: -9999px;
+  max-width: 330px;
 }
 
 /* Search box and Donate button */
@@ -351,6 +351,7 @@ div.header { /* override style.css */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding-bottom: 10px;
 }
 
 #searchform {
@@ -379,6 +380,7 @@ div.header { /* override style.css */
   border-top-right-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
   box-shadow: 1px 1px 1px #170036, 1px 1px 4px #280a4d, inset 1px 1px 1px #a8ffa0;
+  cursor: pointer;
 }
 
 #searchform button span {
@@ -394,7 +396,7 @@ label[for="searchbox"]{
   width: 100%;
 }
 
-.donate a {
+#donate a {
   background: #53b351;
   color: black !important;
   font-size: 13px;
@@ -408,11 +410,11 @@ label[for="searchbox"]{
   height: 28px;
 }
 
-.donate {
+#donate {
   margin: 10px auto 0 auto;
 }
 
-.donate a span {
+#donate a span {
   background: url(lib/heart.svg) no-repeat top 40% left 0 !important;
   display: block;
   padding-left: 18px;
@@ -424,12 +426,15 @@ label[for="searchbox"]{
     margin: 10px 30px 0 30px;
     gap: 30px;
   }
-  #searchform, .donate {
+  #searchform, #donate {
     margin: 0;
   }
 }
 
 @media (min-width: 600px) {
+  #tails-logo a, #tails-logo .selflink {
+    height: 120px;
+  }
   #search-and-donate {
     flex-direction: column;
     justify-content: space-evenly;
@@ -437,16 +442,17 @@ label[for="searchbox"]{
     top: 0;
     right: 0;
     margin-top: 0;
+    padding-bottom: 0;
     height: 120px;
     gap: 0;
   }
-  #searchform, .donate a {
+  #searchform, #donate a {
     width: 240px;
   }
   #searchform input {
     width: 200px;
   }
-  #searchform input, .donate a {
+  #searchform input, #donate a {
     font-size: 16px;
   }
 }
@@ -465,7 +471,8 @@ label[for="searchbox"]{
   margin: 0;
   max-width: 100%;
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 0 20px;
 }
 
 .topbar ul li {

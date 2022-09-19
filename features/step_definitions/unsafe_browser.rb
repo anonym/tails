@@ -3,62 +3,6 @@ When /^I see and accept the Unsafe Browser start verification$/ do
   @screen.type(['Tab'], ['Return'])
 end
 
-def supported_torbrowser_locales
-  localization_descriptions =
-    "#{Dir.pwd}/config/chroot_local-includes/" \
-    'usr/share/tails/browser-localization/descriptions'
-  supported_locales = $vm.file_content(
-    '/usr/share/tails/greeter/supported_languages'
-  ).split
-  File.read(localization_descriptions).split("\n").map do |line|
-    # The line will be of the form "xx:YY" or "xx-YY:YY"
-    locale = line.split(':').first.sub('-', '_')
-    language = locale.split('_').first
-    next unless supported_locales.include?(language)
-
-    "#{locale}.utf8"
-  end.compact
-end
-
-Then /^I start the Unsafe Browser in the "([^"]+)" locale$/ do |loc|
-  step "I run \"LANG=#{loc} LC_ALL=#{loc} sudo unsafe-browser\" " \
-       'in GNOME Terminal'
-  step 'I see and accept the Unsafe Browser start verification'
-end
-
-Then /^I can start the Unsafe Browser in (a few|all) supported languages$/ do |languages|
-  failed = []
-  # We always want the locale which we verify the startup page warning
-  # for, and one RTL locale ...
-  locales = ['fr_FR.UTF-8', 'fa_IR.UTF-8']
-
-  additional = supported_torbrowser_locales - locales - ['en_US.utf8']
-  locales += if languages == 'a few' # ... we just pick one *other* random non-English locale.
-               additional.sample(1)
-             else # test every locale
-               additional
-             end
-
-  locales.each do |lang|
-    step "I start the Unsafe Browser in the \"#{lang}\" locale"
-    begin
-      step "the Unsafe Browser has started in the \"#{lang}\" locale"
-    rescue StandardError => e
-      debug_log("Error while running Unsafe Browser in #{lang} locale: #{e.to_s}")
-      failed << lang
-    end
-    begin
-      step 'I kill the Unsafe Browser'
-    rescue ExecutionFailedInVM
-      # The Unsafe Browser wasn't running
-    end
-    step 'the Unsafe Browser chroot is torn down'
-  end
-  assert(failed.empty?,
-         'Unsafe Browser failed to launch in the following locale(s): ' +
-         failed.join(', '))
-end
-
 Then /^the Unsafe Browser has no add-ons installed$/ do
   step 'I open the address "about:addons" in the Unsafe Browser'
   step 'I see "UnsafeBrowserNoAddons.png" after at most 30 seconds'
@@ -111,12 +55,11 @@ Then /^the Unsafe Browser has a red theme$/ do
   @screen.wait('UnsafeBrowserRedTheme.png', 10)
 end
 
-Then /^the Unsafe Browser shows a warning as its start page(?: in the "([^"]+)" locale)?$/ do |locale|
-  case locale
-  # Use localized image for languages that have a translated version
-  # of the Unsafe Browser homepage.
-  when /\A([a-z]+)/
-    localized_image = "UnsafeBrowserStartPage.#{Regexp.last_match(1)}.png"
+Then /^the Unsafe Browser shows a warning as its start page(?: in "([^"]+)")?$/ do |lang_code|
+  if lang_code
+    # Use localized image for languages that have a translated version
+    # of the Unsafe Browser homepage.
+    localized_image = "UnsafeBrowserStartPage.#{lang_code}.png"
     start_page_image = if File.exist?("#{OPENCV_IMAGE_PATH}/#{localized_image}")
                          localized_image
                        else
@@ -128,10 +71,10 @@ Then /^the Unsafe Browser shows a warning as its start page(?: in the "([^"]+)" 
   @screen.wait(start_page_image, 60)
 end
 
-Then /^the Unsafe Browser has started(?: in the "([^"]+)" locale)?$/ do |locale|
-  if locale
-    step 'the Unsafe Browser shows a warning as its start page in the ' \
-         "\"#{locale}\" locale"
+Then /^the Unsafe Browser has started(?: in "([^"]+)")?$/ do |lang_code|
+  if lang_code
+    step 'the Unsafe Browser shows a warning as its start page in ' \
+         "\"#{lang_code}\""
   else
     step 'the Unsafe Browser shows a warning as its start page'
   end
