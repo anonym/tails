@@ -264,7 +264,7 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
   # outside of the button)
   @screen.wait('Gtk3UnlockButton.png', 10)
   @screen.press('alt', 'u') # "Unlock" button
-  try_for(10, msg: 'Failed to mount the unlocked volume') do
+  try_for(30, msg: 'Failed to mount the unlocked volume') do
     unlocked_volume = disks.child("#{size} VeraCrypt/TrueCrypt",
                                   roleName: 'panel', showingOnly: true)
     unlocked_volume.click
