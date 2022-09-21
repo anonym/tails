@@ -186,7 +186,7 @@ Given(/^I plug and mount a USB drive containing a Tails USB image$/) do
 end
 
 def enable_all_persistence_presets
-  assert persistent_storage_main_frame.child('Personal Data', roleName: 'label')
+  assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   switches = persistent_storage_main_frame.children(roleName: 'toggle button')
   switches.each do |switch|
     if switch.checked
@@ -203,7 +203,7 @@ end
 
 When /^I disable the first persistence preset$/ do
   step 'I start "Persistent Storage" via GNOME Activities Overview'
-  assert persistent_storage_main_frame.child('Personal Data', roleName: 'label')
+  assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   persistent_folder_switch = persistent_storage_main_frame.child(
     'Activate Persistent Folder',
     roleName: 'toggle button'
@@ -232,7 +232,7 @@ Given /^I create a persistent partition( with the default settings| for Addition
     .typeText(@persistence_password)
   persistent_storage_main_frame.button('_Create Persistent Storage').click
   try_for(300) do
-    persistent_storage_main_frame.child('Personal Data', roleName: 'label')
+    persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   end
   enable_all_persistence_presets unless default_settings
 end

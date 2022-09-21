@@ -44,7 +44,7 @@ Then /^I create a persistent storage and activate the Additional Software featur
 end
 
 def assert_additional_software_persistent_storage_feature_is_enabled
-  assert persistent_storage_main_frame.child('Personal Data', roleName: 'label')
+  assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   additional_software_switch = persistent_storage_main_frame.child(
     'Activate Additional Software',
     roleName: 'toggle button'
