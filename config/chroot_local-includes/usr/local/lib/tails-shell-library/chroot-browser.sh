@@ -18,11 +18,6 @@ fi
 try_cleanup_browser_chroot () {
     local chroot="${1}"
     local cow="${2}"
-    for bus in a11y ibus; do
-        sudo -u "${SUDO_USER}" \
-             env DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
-             systemctl --global stop "tails-${bus}-proxy-netns@clearnet.service"
-    done
     # findmnt sorts submounts so we just have to revert the list to
     # have the proper umount order. We use `tail` to suppress the
     # "TARGET" column header.
