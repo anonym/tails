@@ -100,6 +100,9 @@ class Pidgin(Feature):
 class SSHClient(Feature):
     Id = "SSHClient"
     Mounts = [Mount("openssh-client", "/home/amnesia/.ssh")]
+    conflicting_apps = [
+        ConflictingApp(name="SSH", process_names=["ssh"]),
+    ]
 
 
 class Dotfiles(Feature):
