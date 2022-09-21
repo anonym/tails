@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
+<!-- Generated with glade 3.40.0 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <requires lib="libhandy" version="0.0"/>
   <object class="GtkBox" id="box">
     <property name="visible">True</property>
+    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkScrolledWindow">
@@ -19,9 +20,11 @@
         <child>
           <object class="GtkViewport">
             <property name="visible">True</property>
+            <property name="can-focus">False</property>
             <child>
               <object class="HdyClamp">
                 <property name="visible">True</property>
+                <property name="can-focus">False</property>
                 <property name="margin-start">12</property>
                 <property name="margin-end">12</property>
                 <property name="margin-top">32</property>
@@ -29,16 +32,19 @@
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
+                    <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
                         <property name="spacing">10</property>
                         <child>
                           <object class="GtkImage">
                             <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="icon-name">tails-unlocked</property>
                             <property name="icon_size">6</property>
                           </object>
@@ -51,6 +57,7 @@
                         <child>
                           <object class="GtkLabel">
                             <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Your Persistent Storage is unlocked.
 
 Its content will be available until you shut down Tails.
@@ -77,6 +84,7 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
                         <property name="margin-top">18</property>
                         <property name="label" translatable="yes">Turn on the features of the Persistent Storage for the data that you want to save to your Tails USB stick.</property>
                         <property name="wrap">True</property>
@@ -92,6 +100,7 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkLabel" id="personal_data_label">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
                         <property name="label" translatable="yes">Personal Data</property>
@@ -111,13 +120,17 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkFrame">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label-xalign">0</property>
                         <child>
                           <object class="GtkListBox" id="personal_data_list_box">
                             <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="selection-mode">none</property>
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">Persistent Folder</property>
                                 <property name="icon-name">stock_folder</property>
                                 <child>
@@ -131,6 +144,7 @@ Its content will be available until you shut down Tails.
                                     <child>
                                       <object class="GtkImage">
                                         <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
                                         <property name="icon-name">folder-open-symbolic</property>
                                       </object>
                                     </child>
@@ -159,6 +173,7 @@ Its content will be available until you shut down Tails.
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title">Tor Browser Bookmarks</property>
                                 <property name="icon-name">user-bookmarks</property>
                                 <child>
@@ -191,6 +206,7 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkLabel" id="system_settings_label">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
                         <property name="label" translatable="yes">System Settings</property>
@@ -210,13 +226,17 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkFrame">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label-xalign">0</property>
                         <child>
                           <object class="GtkListBox" id="system_settings_list_box">
                             <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="selection-mode">none</property>
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title">Welcome Screen</property>
                                 <property name="icon-name">preferences-system</property>
                                 <child>
@@ -237,6 +257,7 @@ Its content will be available until you shut down Tails.
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title">Printers</property>
                                 <property name="icon-name">printer</property>
                                 <child>
@@ -269,6 +290,7 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkLabel" id="network_label">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
                         <property name="label" translatable="yes">Network</property>
@@ -288,13 +310,17 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkFrame">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label-xalign">0</property>
                         <child>
                           <object class="GtkListBox" id="network_list_box">
                             <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="selection-mode">none</property>
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">Network Connections</property>
                                 <property name="icon-name">network-wired</property>
                                 <child>
@@ -315,6 +341,7 @@ Its content will be available until you shut down Tails.
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">Tor Bridge</property>
                                 <property name="icon-name">tor-connection</property>
                                 <child>
@@ -347,6 +374,7 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkLabel" id="applications_label">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
                         <property name="label" translatable="yes">Applications</property>
@@ -366,13 +394,17 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkFrame">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label-xalign">0</property>
                         <child>
                           <object class="GtkListBox" id="applications_list_box">
                             <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="selection-mode">none</property>
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">Electrum Bitcoin Wallet</property>
                                 <property name="icon-name">electrum</property>
                                 <child>
@@ -393,6 +425,7 @@ Its content will be available until you shut down Tails.
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">Thunderbird Email Client</property>
                                 <property name="icon-name">thunderbird</property>
                                 <child>
@@ -413,6 +446,7 @@ Its content will be available until you shut down Tails.
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">GnuPG</property>
                                 <property name="icon-name">seahorse-key</property>
                                 <child>
@@ -433,6 +467,7 @@ Its content will be available until you shut down Tails.
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">Pidgin Internet Messenger</property>
                                 <property name="icon-name">pidgin</property>
                                 <child>
@@ -453,6 +488,7 @@ Its content will be available until you shut down Tails.
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">SSH Client</property>
                                 <property name="icon-name">seahorse-key-ssh</property>
                                 <child>
@@ -485,6 +521,7 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkLabel" id="advanced_settings_label">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
                         <property name="margin-top">18</property>
                         <property name="label" translatable="yes">Advanced Settings</property>
@@ -504,13 +541,17 @@ Its content will be available until you shut down Tails.
                     <child>
                       <object class="GtkFrame">
                         <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label-xalign">0</property>
                         <child>
                           <object class="GtkListBox" id="advanced_settings_list_box">
                             <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="selection-mode">none</property>
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">Additional Software</property>
                                 <property name="icon-name">package-x-generic</property>
                                 <child>
@@ -524,6 +565,7 @@ Its content will be available until you shut down Tails.
                                     <child>
                                       <object class="GtkImage">
                                         <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
                                         <property name="icon-name">emblem-system-symbolic</property>
                                       </object>
                                     </child>
@@ -552,6 +594,7 @@ Its content will be available until you shut down Tails.
                             <child>
                               <object class="HdyActionRow">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="title" translatable="yes">Dotfiles</property>
                                 <property name="icon-name">preferences-desktop</property>
                                 <child>
@@ -583,11 +626,13 @@ Its content will be available until you shut down Tails.
                     </child>
                     <child>
                       <object class="GtkBox" id="custom_features_box">
+                        <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">10</property>
                         <child>
                           <object class="GtkLabel" id="custom_features_label">
                             <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="halign">start</property>
                             <property name="margin-top">18</property>
                             <property name="label" translatable="yes">Custom</property>
@@ -607,6 +652,7 @@ Its content will be available until you shut down Tails.
                         <child>
                           <object class="GtkLabel">
                             <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">To add or remove custom features, modify /live/persistence/TailsData_unlocked/persistence.conf.</property>
                             <property name="selectable">True</property>
@@ -619,9 +665,12 @@ Its content will be available until you shut down Tails.
                         </child>
                         <child>
                           <object class="GtkFrame" id="custom_features_frame">
+                            <property name="can-focus">False</property>
+                            <property name="label-xalign">0</property>
                             <child>
                               <object class="GtkListBox" id="custom_features_list_box">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="selection-mode">none</property>
                                 <accessibility>
                                   <relation type="labelled-by" target="custom_features_label"/>
@@ -658,11 +707,13 @@ Its content will be available until you shut down Tails.
   </object>
   <object class="HdyActionRow" id="custom_feature_row">
     <property name="visible">True</property>
+    <property name="can-focus">False</property>
     <property name="icon-name">dialog-question</property>
     <child>
       <object class="GtkSwitch" id="custom_feature_switch">
         <property name="visible">True</property>
         <property name="sensitive">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">end</property>
         <property name="valign">center</property>
         <property name="active">True</property>
