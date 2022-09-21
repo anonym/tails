@@ -16,5 +16,6 @@ if ! grep --silent --no-messages --line-regexp --fixed-strings -- "${RULE}" /var
 fi
 
 if [ "${APPLY}" = yes ]; then
+    # shellcheck disable=SC2086
     iptables ${RULE}
 fi

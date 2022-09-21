@@ -11,7 +11,8 @@ fi
 /usr/sbin/ferm /etc/ferm/ferm.conf
 
 if [ -e /var/lib/iptables/session-rules ]; then
-    while read rule; do
+    while read -r rule; do
+        # shellcheck disable=SC2086
         iptables ${rule}
     done < /var/lib/iptables/session-rules
 fi

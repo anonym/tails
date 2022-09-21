@@ -245,7 +245,8 @@ configure_chroot_browser () {
     # to extensions to enable.
     local best_locale
     best_locale="$(guess_best_tor_browser_locale)"
-    local browser_user_uid="$(id --user "${browser_user}")"
+    local browser_user_uid
+    browser_user_uid="$(id --user "${browser_user}")"
 
     if ! chroot "${chroot}" id -a "${browser_user}" 2>/dev/null; then
         chroot "${chroot}" addgroup --quiet --gid 1000 "${browser_user}"
