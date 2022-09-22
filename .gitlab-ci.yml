@@ -14,6 +14,16 @@ before_script:
   - apt-get -qy install git i18nspector
   - git clone https://gitlab.tails.boum.org/tails/jenkins-tools.git /tmp/jenkins-tools
 
+build-website:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+    - changes:
+        - .gitlab-ci.yml
+  script:
+    - apt-get -qy install ikiwiki po4a libyaml-perl libyaml-libyaml-perl libyaml-syck-perl perlmagick
+    - ./build-website
+
 lint-po:
   image: debian:testing
   rules:
