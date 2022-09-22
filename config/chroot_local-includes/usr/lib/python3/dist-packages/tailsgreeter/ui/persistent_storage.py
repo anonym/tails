@@ -72,7 +72,7 @@ class PersistentStorage(object):
             self.persistent_storage_create_updateui()
 
             self.button_storagecreate_create.connect(
-                    "clicked", self.cb_persistent_storage_create)
+                    "activate", self.cb_persistent_storage_create)
 
     @staticmethod
     def passphrase_changed(editable):
@@ -225,9 +225,9 @@ class PersistentStorage(object):
         self.label_storagecreate_explain.set_visible(not p.exists())
         self.label_storagecreate_after.set_visible(p.exists())
         if p.exists():
-            label = "Don't Create Persistent Storage"
+            label = "Don't _Create Persistent Storage"
         else:
-            label = "Create Persistent Storage"
+            label = "_Create a Persistent Storage"
         self.button_storagecreate_create.set_label(_(label))
 
         style = self.button_storagecreate_create.get_style_context()
@@ -235,6 +235,7 @@ class PersistentStorage(object):
             style.remove_class('suggested-action')
         else:
             style.add_class('suggested-action')
+        self.button_storagecreate_create.set_use_underline(True)
 
     def cb_persistent_storage_create(self, widget):
         p = Path(persistence_create_file)
