@@ -69,6 +69,8 @@ class PersistentStorage(object):
             self.box_storage.set_visible(False)
             self.box_storagecreate.set_visible(True)
 
+            self.persistent_storage_create_updateui()
+
             self.button_storagecreate_create.connect(
                     "clicked", self.cb_persistent_storage_create)
 
@@ -218,14 +220,21 @@ class PersistentStorage(object):
     def cb_checkbutton_storage_show_passphrase_toggled(self, widget):
         self.entry_storage_passphrase.set_visibility(widget.get_active())
 
-    def cb_persistent_storage_create(self, widget):
+    def persistent_storage_create_updateui(self):
         p = Path(persistence_create_file)
         self.label_storagecreate_explain.set_visible(not p.exists())
         self.label_storagecreate_after.set_visible(p.exists())
-        if not p.exists():
+        if p.exists():
             label = "Don't Create Persistent Storage"
-            p.touch()
         else:
             label = "Create Persistent Storage"
-            p.unlink()
         self.button_storagecreate_create.set_label(_(label))
+        # XXX: keep/remove suggested-action on self.button_storagecreate_create
+
+    def cb_persistent_storage_create(self, widget):
+        p = Path(persistence_create_file)
+        if not p.exists():
+            p.touch()
+        else:
+            p.unlink()
+        self.persistent_storage_create_updateui()
