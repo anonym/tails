@@ -229,7 +229,12 @@ class PersistentStorage(object):
         else:
             label = "Create Persistent Storage"
         self.button_storagecreate_create.set_label(_(label))
-        # XXX: keep/remove suggested-action on self.button_storagecreate_create
+
+        style = self.button_storagecreate_create.get_style_context()
+        if p.exists():
+            style.remove_class('suggested-action')
+        else:
+            style.add_class('suggested-action')
 
     def cb_persistent_storage_create(self, widget):
         p = Path(persistence_create_file)
