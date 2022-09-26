@@ -6,7 +6,7 @@ set -u
 EXCLUDE_LANGS=''
 TAILS_PO_DIR='po'
 SCRIPT_DIR=$(readlink -f "$(dirname "$0")")
-TOR_TRANSLATION_REMOTE='https://git.torproject.org/translation.git'
+TOR_TRANSLATION_REMOTE='https://gitlab.torproject.org/tpo/translation.git'
 TOR_TRANSLATION_DIR="$SCRIPT_DIR/tmp/tor-translation"
 GIT_IN_TOR_TRANSLATION_DIR="git \
 	--work-tree=\"$TOR_TRANSLATION_DIR\" \
@@ -43,6 +43,7 @@ fi
 
 # Clone or update the translation repository
 if [ -d "$TOR_TRANSLATION_DIR" ]; then
+	eval "$GIT_IN_TOR_TRANSLATION_DIR remote set-url origin ${TOR_TRANSLATION_REMOTE}"
 	eval "$GIT_IN_TOR_TRANSLATION_DIR fetch origin"
 else
 	mkdir -p "$SCRIPT_DIR/tmp"
