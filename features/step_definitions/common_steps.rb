@@ -1344,13 +1344,6 @@ When /^I disable the (.*) (system|user) unit$/ do |unit, scope|
   $vm.execute_successfully("systemctl #{options} disable '#{unit}'")
 end
 
-# Since the Unsafe Browser is disabled in most snapshots, this is
-# a little "cheat" to enable it any way.
-Given /^I magically allow the Unsafe Browser to be started$/ do
-  $vm.file_overwrite('/var/lib/live/config/tails.unsafe-browser',
-                     'TAILS_UNSAFE_BROWSER_ENABLED=true')
-end
-
 def git_on_a_tag
   system('git describe --tags --exact-match HEAD >/dev/null 2>&1')
 end

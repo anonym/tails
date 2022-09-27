@@ -119,8 +119,7 @@ Feature: Upgrading an old Tails USB installation
     And Tor is ready
     Then the Upgrader considers the system as up-to-date
     # Regression test on #8158 (i.e. the IUK's filesystem is not part of the Unsafe Browser's chroot)
-    Given I magically allow the Unsafe Browser to be started
-    Then I successfully start the Unsafe Browser
+    And I successfully start the Unsafe Browser
     And the file system changes introduced in version 2.3~testoverlayfsng are present in the Unsafe Browser's chroot
 
   @automatic_upgrade

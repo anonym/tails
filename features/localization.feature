@@ -15,7 +15,6 @@ Feature: Localization
   Scenario Outline: Tails is localized for every tier-1 language
     Given I have started Tails from DVD without network and stopped at Tails Greeter's login screen
     When I log in to a new session in <language>
-    And I magically allow the Unsafe Browser to be started
     Then the keyboard layout is set to "<layout>"
     When the network is plugged
     And Tor is ready
