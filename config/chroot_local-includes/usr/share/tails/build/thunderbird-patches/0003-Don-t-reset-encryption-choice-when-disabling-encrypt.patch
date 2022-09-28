@@ -1,4 +1,4 @@
-From dd268cb370a2051c75c08192b9f190ea36eb05b4 Mon Sep 17 00:00:00 2001
+From e3199a0259834d85802bd58b0f65124d6c63f0af Mon Sep 17 00:00:00 2001
 From: anonym <anonym@riseup.net>
 Date: Tue, 3 Nov 2020 12:13:10 +0100
 Subject: [PATCH 3/3] Don't reset encryption choice when disabling encryption
@@ -10,23 +10,24 @@ no matter the desired default.
 
 https://bugzilla.mozilla.org/show_bug.cgi?id=1674995
 ---
- comm/mail/extensions/am-e2e/am-e2e.js | 3 ---
- 1 file changed, 3 deletions(-)
+ comm/mail/extensions/am-e2e/am-e2e.js | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/comm/mail/extensions/am-e2e/am-e2e.js b/comm/mail/extensions/am-e2e/am-e2e.js
-index 4e350a1136e..56ba623770f 100644
+index ff717553450..2cfa62a724b 100644
 --- a/comm/mail/extensions/am-e2e/am-e2e.js
 +++ b/comm/mail/extensions/am-e2e/am-e2e.js
-@@ -451,9 +451,6 @@ function smimeSelectCert(smime_cert) {
+@@ -431,8 +431,8 @@ function smimeSelectCert(smime_cert) {
+ }
+ 
  function enableEncryptionControls(do_enable) {
-   gRequireEncrypt.disabled = !do_enable;
-   gDoNotEncrypt.disabled = !do_enable;
--  if (!do_enable) {
--    gEncryptionChoices.value = 0;
--  }
-   // If we have a certificate or key configured that allows encryption,
-   // then we are able to encrypt drafts, too.
-   gEncryptDrafts.disabled = !do_enable;
+-  gDisableEncryption.disabled = !do_enable;
+-  gEnableEncryption.disabled = !do_enable;
++  gRequireEncrypt.disabled = !do_enable;
++  gDoNotEncrypt.disabled = !do_enable;
+   if (!do_enable) {
+     gEncryptionChoices.value = 0;
+   }
 -- 
-2.34.1
+2.37.2
 
