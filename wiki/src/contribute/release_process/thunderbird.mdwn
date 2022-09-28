@@ -43,7 +43,7 @@ the Tails images build process.
 
 1. Let's update our branch to the new version:
 
-        git checkout tails/buster && git merge origin/tails/buster && \
+        git checkout tails/bullseye && git merge origin/tails/bullseye && \
         git merge --no-edit "${TAG:?}"
 
 1. Let's ensure our patches still apply cleanly:
@@ -82,14 +82,14 @@ the Tails images build process.
 
          For example: `git format-patch upstream/91.5.0..secure_account_creation-91`
 
-      3. On the `tails/buster` branch, replace the contents of
+      3. On the `tails/bullseye` branch, replace the contents of
          `debian/patches/secure-account-creation/` with these updated patches.
 
       4. Update `debian/patches/series`.
 
 1. Git push:
 
-        git push --follow-tags origin tails/buster
+        git push --follow-tags origin tails/bullseye
 
 1. Set variables according to your local environment:
 
