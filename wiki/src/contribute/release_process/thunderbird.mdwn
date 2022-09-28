@@ -90,7 +90,15 @@ the Tails images build process.
 
       5. Commit
 
-      6. Push. For example:
+      6. Verify that the updated patches apply cleanly:
+
+             quilt push -a
+
+      7. Regardless of whether our patches applied cleanly, clean up:
+
+             quilt pop -a && rm -rf .pc
+
+      8. Push. For example:
 
                  git push -u origin secure_account_creation-91
 
