@@ -64,24 +64,24 @@ the Tails images build process.
          - If that branch already exists: rebase our own commits onto the
            `upstream/X.Y.Z` branch you are upgrading to. For example:
 
-                 git checkout secure_account_creation-91
+                 git checkout secure_account_creation-102
                  git pull
-                 git rebase -i --onto upstream/91.42.0 upstream/91.5.0
+                 git rebase -i --onto upstream/102.42.0 upstream/102.3.0
 
          - Else, if that branch does not exist yet, that's probably because you're
            upgrading to a major new Thunderbird release. In that case, fork the
            branch off our most recent such branch, then rebase our own commits
            onto the `upstream/X.Y.Z` branch you are upgrading to. For example:
 
-                 git checkout -b secure_account_creation-91 secure_account_creation-78
-                 git rebase -i --onto upstream/91.5.0 upstream/78.9.0
+                 git checkout -b secure_account_creation-102 secure_account_creation-91
+                 git rebase -i --onto upstream/102.42.0 upstream/91.5.0
 
          Either way, if a particular commit is not trivial to update,
          see [[!tails_ticket 6156]]: it might be OK to drop that patch.
 
       2. Use `git format-patch` to save our commits to files.
 
-         For example: `git format-patch upstream/91.5.0..secure_account_creation-91`
+         For example: `git format-patch upstream/102.42.0..secure_account_creation-102`
 
       3. On the `tails/bullseye` branch, replace the contents of
          `debian/patches/secure-account-creation/` with these updated patches.
@@ -100,7 +100,7 @@ the Tails images build process.
 
       8. Push. For example:
 
-                 git push --follow-tags -u origin secure_account_creation-91
+                 git push --follow-tags -u origin secure_account_creation-102
 
 1. Git push:
 
