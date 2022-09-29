@@ -336,6 +336,16 @@ pref("geo.enabled", false);
 // JavaScript is enabled, but not inside email messages.
 pref("javascript.enabled", true);
 
+// JavaScript hardening. Source https://gitweb.torproject.org/torbutton.git/tree/src/modules/security-prefs.js
+// (we are applying the "high" profile)
+pref("javascript.options.ion", false);
+pref("javascript.options.baselinejit", false);
+pref("javascript.options.native_regexp", false);
+pref("media.webaudio.enabled", false);
+pref("mathml.disabled", true);
+pref("gfx.font_rendering.opentype_svg.enabled",  false);
+pref("svg.disabled",  true);
+
 // Disable WebM, WAV, Ogg, PeerConnection.
 pref("media.navigator.enabled", false);
 pref("media.peerconnection.enabled", false);
