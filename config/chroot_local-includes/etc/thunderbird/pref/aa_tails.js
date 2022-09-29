@@ -333,8 +333,8 @@ pref("webgl.disabled", true);
 // Disable Geolocation.
 pref("geo.enabled", false);
 
-// Disable JavaScript (email).
-pref("javascript.enabled", false);
+// JavaScript is enabled, but not inside email messages.
+pref("javascript.enabled", true);
 
 // Disable WebM, WAV, Ogg, PeerConnection.
 pref("media.navigator.enabled", false);
