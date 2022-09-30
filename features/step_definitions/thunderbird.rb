@@ -235,8 +235,10 @@ Then /^I can find the email I sent to myself in my inbox$/ do
     filter.typeText(@subject)
     hit_counter = thunderbird_main.child('1 message')
     inbox_view = hit_counter.parent
-    message_list = inbox_view.child(roleName: 'table')
-    the_message = message_list.child(@subject, roleName: 'table cell')
+    all_rows = inbox_view.children(roleName: 'table row')
+    relevant_rows = all_rows.filter { |r| r.name.include?(@subject) }
+    message_row = relevant_rows.first
+    the_message = message_row.child(@subject, roleName: 'table cell')
     assert_not_nil(the_message)
     # Let's clean up
     the_message.click
