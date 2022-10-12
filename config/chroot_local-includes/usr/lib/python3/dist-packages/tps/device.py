@@ -44,6 +44,13 @@ class BootDevice(object):
         self.udisks_object = udisks_object
         self.partition_table = \
             udisks_object.get_partition_table() # type: UDisks.PartitionTable
+        partition_table_type = self.partition_table.props.type
+        if partition_table_type != 'gpt':
+            logger.debug(f"Partition table type: {partition_table_type}")
+            raise InvalidBootDeviceError(
+                "You can only create a Persistent Storage on a USB stick "
+                "installed with a USB image or Tails Installer."
+            )
         self.block = self.udisks_object.get_block()
         if not self.block:
             raise InvalidBootDeviceError("Device is not a block device")
