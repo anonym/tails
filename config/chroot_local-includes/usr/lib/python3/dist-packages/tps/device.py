@@ -77,6 +77,13 @@ class BootDevice(object):
         if not partition:
             msg = f"Boot device {block.props.device} is not a partition"
             raise InvalidBootDeviceError(msg)
+        partition_name = partition.props.name
+        if partition_name != 'Tails':
+            logger.debug(f"Partition name: {partition_name}")
+            raise InvalidBootDeviceError(
+                "You can only create a Persistent Storage on a USB stick "
+                "installed with a USB image or Tails Installer."
+            )
 
         return BootDevice(udisks.get_object(partition.props.table))
 
