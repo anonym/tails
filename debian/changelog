@@ -1,9 +1,167 @@
 tails (5.5) UNRELEASED; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade to Tor Browser 11.5.4 (ESR 91.13 + ESR 102.3 backports)
+    (tails/tails!930)
 
- -- boyska <boyska@riseup.net>  Thu, 25 Aug 2022 11:13:56 +0200
+    Closes issues:
+      - Upgrade to Tor Browser 11.5.4 (ESR 91.13 + ESR 102.3 backports)
+        (tails/tails#19125)
 
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.5.4-build2
+
+  * Upgrade to Thunderbird 102 (tails/tails!928)
+
+    Closes issues:
+      - Upgrade to Thunderbird 102 (tails/tails#19156)
+
+    Commits:
+      - adapt test suite to new UI
+      - JS hardening in Thunderbird
+      - Enable OAuth2
+      - Update Thunderbird patches from
+        tails/thunderbird@4efe2ce285c552c1808120d54a11f4be9e57527f
+      - Update Thunderbird patches from
+        tails/thunderbird@4efe2ce285c552c1808120d54a11f4be9e57527f
+      - Thunderbird patches update doc: update examples
+      - Thunderbird patches update doc: push upstream tags too
+      - Thunderbird patches update doc: document how to verify
+      - Thunderbird patches update doc: add missing commit and push steps
+      - Thunderbird patches update doc: don't suggest we're still trying to upstream
+        patches
+      - Thunderbird patches update doc: adjust to Bullseye
+      - Drop useless step
+
+  * import-translations: use new remote (tails/tails!927)
+
+    Closes issues:
+      - App translations supported by Tor Project moving from Transifex to weblate
+        (tails/tails#19150)
+
+    Commits:
+      - import-translations: drop support for standalone WhisperBack project
+      - import-translations: use new remote
+
+  * GitLab CI: ensure all website core pages exist (tails/tails!926)
+
+    Commits:
+      - Make code more readable
+      - GitLab CI: ensure all website core pages exist
+
+  * GitLab CI: build our website on master and branches targeting master
+    (tails/tails!924)
+
+    Commits:
+      - GitLab CI: build our website on master and branches targeting master
+      - build-website: remove check now done in GitLab CI
+
+  * Test suite: remove Cucumber test scenarios and build website checks that are
+    now covered by GitLab CI (tails/tails!923)
+
+    Closes issues:
+      - Remove Cucumber test scenarios that are now covered by GitLab CI
+        (tails/tails#17992)
+
+    Commits:
+      - build-website: remove check now done in GitLab CI
+      - Test suite: remove Cucumber test scenarios that are now covered by GitLab CI
+
+  * Upgrade to Bullseye 11.5 and Linux 5.10.140 (tails/tails!920)
+
+    Closes issues:
+      - Upgrade Linux to 5.10.140 (tails/tails#19127)
+      - Upgrade to Bullseye 11.5 (tails/tails#19082)
+
+    Commits:
+      - Test suite: relax timeouts
+      - Test suite: bump timeout
+      - Refresh patch
+      - Upgrade to Bullseye 11.5 and Linux 5.10.140
+
+  * Test suite: fix virt-viewer active?() check to work with all versions
+    (tails/tails!919)
+
+    Closes issues:
+      - virt-viewer 11.0 breaks our test suite (tails/tails#19064)
+
+    Commits:
+      - Test suite: fix virt-viewer active?() check to work with all versions
+
+  * Fix screen lock keyboard shortcut (tails/tails!918)
+
+    Closes issues:
+      - Super+L sometimes starts the screensaver when it should ask for a screen lock
+        password (tails/tails#19090)
+
+    Commits:
+      - Fix screen lock keyboard shortcut
+
+  * Test suite: make localized Unsafe Browser tests faster and easier to maintain
+    (tails/tails!917)
+
+    Closes issues:
+      - Localized Unsafe Browser tests are slow and hard to maintain
+        (tails/tails#19041)
+
+    Commits:
+      - Test suite: add comment
+      - Make Gherkin scenario outline placeholder more descriptive
+      - Test suite: make localized Unsafe Browser tests faster and easier to maintain
+      - Test suite: remove dead code
+
+  * Add standard fields to /etc/os-release (tails/tails!914)
+
+    Commits:
+      - Add standard fields to /etc/os-release
+
+  * Build system: make our website cache volume smaller (tails/tails!913)
+
+    Commits:
+      - Build system: make our website cache volume smaller
+
+  * Use "torsocks --isolate" everywhere we use torsocks (tails/tails!912)
+
+    Commits:
+      - Use "torsocks --isolate" everywhere we use torsocks
+
+  * Fix devel FTBFS with uBlock 1.44.0+dfsg-1 (tails/tails!910)
+
+    Commits:
+      - Refresh patch
+
+  * Post-release doc updates (tails/tails!907)
+
+    Commits:
+      - call for testers has meaningful date
+      - warning: tb-build-05 not serving files over HTTP
+      - cleanup script that waits for new TBB release
+
+  * GitLab CI: run the Bandit security oriented static analyzer for Python
+    (tails/tails!904)
+
+    Commits:
+      - Check re.match's return value in a way that always returns a boolean
+      - Add typing information
+      - GitLab CI: also check shell and Python files that have no shebang
+      - GitLab CI: run the Bandit security oriented static analyzer for Python
+      - Lint comments format
+      - Ignore Bandit false positives
+      - Remove obsolete Emacs "coding: UTF-8" configuration
+      - WhisperBack: only load global configuration file
+      - Add configuration for the Bandit security oriented static analyzer for Python
+
+  * Make it easy to re-run failed test suite scenarios (tails/tails!901)
+
+    Closes issues:
+      - run_test_suite wrapper that retries failed tests (tails/tails#19072)
+
+    Commits:
+      - RM tip: run all test scenarios
+      - RM tip: multiple test suite runs overnight
+      - set rerun file from ruby
+
+ -- Tails developers <tails@boum.org>  Thu, 13 Oct 2022 08:42:40 +0000
 tails (5.4) unstable; urgency=medium
 
   * Upgrade Tor Browser to 11.5.2 (tails/tails!908)
