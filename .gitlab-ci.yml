@@ -59,6 +59,11 @@ bandit:
     reports:
       junit: bandit.xml
 
+check-website-core-pages:
+  script:
+    - apt-get -qy install git
+    - ./bin/check-core-pages
+
 check-po-msgfmt:
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^master|stable|testing|devel$/'
