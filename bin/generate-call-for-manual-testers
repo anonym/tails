@@ -1,16 +1,24 @@
 #! /usr/bin/python3
 
 import jinja2
+import datetime
+from subprocess import check_output
 
+def end_date() -> str:
+    when = 'now + 24 hours'
+    cmd = ['env', 'TZ=UTC', 'date', '-d' , when,  '+%A %H:00 %Z']
+    return check_output(cmd).decode('utf8').strip()
 
 def call_for_testing_contents(args) -> str:
-    jinja2_env = jinja2.Environment(
+    jinja2_env = jinja2.Environment(  # nosec jinja2_autoescape_false
         loader=jinja2.FileSystemLoader('config/release_management/templates'))
 
     return (jinja2_env.get_template('call_for_manual_testers.mdwn').render(
         dist=args.dist,
         pad=args.pad,
-        version=args.version))
+        version=args.version,
+        end=end_date(),
+        ))
 
 
 if __name__ == '__main__':

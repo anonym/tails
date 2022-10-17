@@ -391,7 +391,7 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
                  else
                    'TailsGreeterLoginButton.png'
                  end
-  login_button_region = @screen.wait(login_button, 10)
+  login_button_region = @screen.wait(login_button, 15)
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -916,6 +916,20 @@ Then /^persistence for "([^"]+)" is (|not )enabled$/ do |app, enabled|
   end
 end
 
+def language_has_non_latin_input_source(language)
+  # Note: we'll have to update the list when fixing #12638 or #18076
+  ['Persian', 'Russian'].include?(language)
+end
+
+# In the situations where we call this method
+# (language_has_non_latin_input_source), we have exactly 2 input
+# sources, so calling this method switches back and forth
+# between them.
+def switch_input_source
+  @screen.press('super', 'space')
+  sleep 1
+end
+
 Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   # Search disambiguations: below we assume that there is only one
   # result, since multiple results introduces a race that leads to a
@@ -939,7 +953,16 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     # Let's implement this once one of the callers needs this.
     @screen.wait(app_name, 20).click
   else
-    @screen.wait('GnomeActivitiesOverviewSearch.png', 20)
+    pic = if RTL_LANGUAGES.include?($language)
+            'GnomeActivitiesOverviewSearchRTL.png'
+          else
+            'GnomeActivitiesOverviewSearch.png'
+          end
+    @screen.wait(pic, 20)
+    if language_has_non_latin_input_source($language)
+      # Temporarily switch to en_US keyboard layout to type the name of the app
+      switch_input_source
+    end
     # Trigger startup of search providers
     @screen.type(app_name[0])
     # Give search providers some time to start (#13469#note-5) otherwise
@@ -949,6 +972,10 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     @screen.type(app_name[1..-1])
     sleep 4
     @screen.press('ctrl', 'Return')
+    if language_has_non_latin_input_source($language)
+      # Switch back to $language's default keyboard layout
+      switch_input_source
+    end
   end
 end
 
@@ -1399,6 +1426,6 @@ def gnome_disks_app
   # coordinates returned by Screen#wait are obsolete by the time we
   # run Screen#click, which makes us click on the minimize
   # button instead.
-  @screen.wait('GnomeWindowActionsButtons.png', 5)
+  @screen.wait('GnomeWindowActionsButtons.png', 10)
   disks_app
 end

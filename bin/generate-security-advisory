@@ -18,7 +18,7 @@ def advisory_date() -> datetime:
 
 
 def security_advisory_contents(args) -> str:
-    jinja2_env = jinja2.Environment(
+    jinja2_env = jinja2.Environment(  # nosec jinja2_autoescape_false
         loader=jinja2.FileSystemLoader('config/release_management/templates'))
 
     return (jinja2_env.get_template('security_advisory.mdwn').render(

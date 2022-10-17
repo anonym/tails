@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: UTF-8 -*-
 
 ########################################################################
 # WhisperBack - Send feedback in an encrypted mail
@@ -95,7 +94,7 @@ def is_valid_link(candidate):
     """
     LOG.debug("Validating link %s", candidate)
     parseresult = urllib.parse.urlparse(candidate)
-    #pylint: disable=E1101
+    # pylint: disable=E1101
     if (re.search(r'^(ht|f)tp(s)?$', parseresult.scheme) and
         re.search(r'^(\w{1,}\.){1,}\w{1,}$', parseresult.hostname)):
         return True
@@ -112,7 +111,7 @@ def is_valid_pgp_block(candidate):
               and ends with `-----END PGP PUBLIC KEY BLOCK-----`
     """
     LOG.debug("Validating pgp block %s", candidate)
-    #pylint: disable=C0301
+    # pylint: disable=C0301
     if re.search(r"-----BEGIN PGP PUBLIC KEY BLOCK-----\n(?:.*\n)+-----END PGP PUBLIC KEY BLOCK-----",
             candidate):
         return True
@@ -128,7 +127,7 @@ def is_valid_pgp_id(candidate):
     @returns  true if candidate is either an 8 or 16 digit hex number or a 40
               digit hex fingerprint
     """
-    #pylint: disable=C0301
+    # pylint: disable=C0301
     LOG.debug("Validating pgp id %s", candidate)
     if re.search(r"(?:^(?:0x)?(?:[0-9a-fA-F]{8}){1,2}$)|(?:^(?:[0-9f-zA-F]{4} {0,2}){10}$)",
             candidate):

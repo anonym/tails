@@ -125,7 +125,7 @@ def ignore_merge_request(mr) -> bool:
 
 
 def changelog_entry(version: str, date: datetime, changes: dict):
-    jinja2_env = jinja2.Environment(
+    jinja2_env = jinja2.Environment(  # nosec jinja2_autoescape_false
         loader=jinja2.FileSystemLoader('config/release_management/templates'),
         trim_blocks=True,
         lstrip_blocks=True,

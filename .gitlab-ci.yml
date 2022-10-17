@@ -45,6 +45,20 @@ lint-latest-po:
     - ./import-translations
     - /tmp/jenkins-tools/slaves/lint_po po/*.po
 
+bandit:
+  script:
+  - apt-get -qy install python3-bandit file
+  - bandit --version
+  - './bin/bandit-tree --configfile .bandit.yml
+                       -ll
+                       --format xml
+                       --output bandit.xml
+                       .'
+  artifacts:
+    when: always
+    reports:
+      junit: bandit.xml
+
 check-website-core-pages:
   script:
     - apt-get -qy install git

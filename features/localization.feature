@@ -11,19 +11,17 @@ Feature: Localization
     When I double-click on the Report an Error launcher on the desktop
     Then the support documentation page opens in Tor Browser
 
-  Scenario: I can start the Unsafe Browser in all supported languages
-    Given I have started Tails from DVD and logged in and the network is connected
-    And I magically allow the Unsafe Browser to be started
-    Then I can start the Unsafe Browser in all supported languages
-
   @slow @not_release_blocker
   Scenario Outline: Tails is localized for every tier-1 language
     Given I have started Tails from DVD without network and stopped at Tails Greeter's login screen
     When I log in to a new session in <language>
+    And I magically allow the Unsafe Browser to be started
     Then the keyboard layout is set to "<layout>"
     When the network is plugged
     And Tor is ready
     Then DuckDuckGo is the default search engine
+    And I successfully start the Unsafe Browser in "<lang_code>"
+    And I kill the Unsafe Browser
     When I enable the screen keyboard
     Then the screen keyboard works in Tor Browser
     And the screen keyboard works in Thunderbird
@@ -36,18 +34,18 @@ Feature: Localization
     #  - Not all localized layouts exist in the GNOME screen keyboard: #8444
     #  - Arabic's layout should be "ara": #12638
     Examples:
-      | language   | layout | osk_layout |
-      | Arabic     | us     | us         |
-      | Chinese    | cn     | us         |
-      | English    | us     | us         |
-      | French     | fr     | fr         |
-      | German     | de     | de         |
+      | language   | layout | osk_layout | lang_code |
+      | Arabic     | us     | us         | ar   |
+      | Chinese    | cn     | us         | zh   |
+      | English    | us     | us         | en   |
+      | French     | fr     | fr         | fr   |
+      | German     | de     | de         | de   |
     # Tests disabled due to #18076
-    # | Hindi      | in     | us         |
-    # | Indonesian | id     | us         |
-      | Italian    | it     | us         |
-      | Persian    | ir     | ir         |
-      | Portuguese | pt     | us         |
-      | Russian    | ru     | ru         |
-      | Spanish    | es     | us         |
-      | Turkish    | tr     | us         |
+    # | Hindi      | in     | us         | hi   |
+    # | Indonesian | id     | us         | id   |
+      | Italian    | it     | us         | it   |
+      | Persian    | ir     | ir         | fa   |
+      | Portuguese | pt     | us         | pt   |
+      | Russian    | ru     | ru         | ru   |
+      | Spanish    | es     | us         | es   |
+      | Turkish    | tr     | us         | tr   |

@@ -138,7 +138,7 @@ class CopyAndVerify:
         for source_version_url in [
                 source_version_index_url + '/' + link.get('href')
                 for link in BeautifulSoup(
-                    urlopen(Request(source_version_index_url)),
+                    urlopen(Request(source_version_index_url)),  # nosec B310
                     'html.parser').find_all(href=re.compile('^[1-9]'))
         ]:
             axis_label_index_url = source_version_url + "axis-label_exp/"
@@ -150,7 +150,7 @@ class CopyAndVerify:
             log.debug("Looking at %s", axis_label_index_url)
             label_urls = [
                 axis_label_index_url + link.get('href').removesuffix(sort_query)
-                for link in BeautifulSoup(urlopen(Request(request_url)),
+                for link in BeautifulSoup(urlopen(Request(request_url)),  # nosec B310
                                           'html.parser').find_all(
                                               href=re.compile('^[a-z]'))
             ]
@@ -165,7 +165,7 @@ class CopyAndVerify:
                 jenkins_build_id) + '/archive/'
             log.debug("Looking at %s", artifacts_index_url)
             try:
-                page = BeautifulSoup(urlopen(Request(artifacts_index_url)), 'html.parser')
+                page = BeautifulSoup(urlopen(Request(artifacts_index_url)), 'html.parser')  # nosec B310
             except urllib.error.HTTPError as exc:
                 if self.ignore_404 and exc.code == 404:
                     log.info("Error %d on %s, skipping", exc.code, artifacts_index_url)
