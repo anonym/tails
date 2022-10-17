@@ -5,12 +5,36 @@
 
 <h1 id="changes">Changes and updates</h1>
 
-This section will be updated soon. Sorry for the inconvenience!
+- Update *Thunderbird* to [102.3.0](https://www.thunderbird.net/en-US/thunderbird/102.3.0/releasenotes/).
+
+  *Thunderbird* 102 is a major update with [many changes to the navigation,
+folder icons, and address
+book](https://blog.thunderbird.net/2022/06/thunderbird-102-released-a-serious-upgrade-to-your-communication/).
+
+  *Thunderbird* 102 also includes important usability improvements to the
+  OpenPGP feature. When composing an email, you can now see whether it will be
+  encrypted or not. If encryption is impossible, a key assistant helps you
+  solve key issues.
+
+  [[!img thunderbird_102.png link="no" alt="Thunderbird composer window with encryption turned on and notification about a missing key and how to resolve the issue."]]
+
+- Update *Tor Browser* to [11.5.4](https://blog.torproject.org/new-release-tor-browser-1154).
+
+- Update the *Linux* kernel to 5.10.140. This should improve the support for newer
+  hardware: graphics, Wi-Fi, and so on.
+
+- Make the `wget` command line utility use a different Tor circuit every time.
+
+<h1 id="fixes">Fixed problems</h1>
+
+- Always ask to configure a screen locking password when pressing Ctrl+L and no
+  administration pasword was set. ([[!tails_ticket 19090]])
+
+- Add standard fields to `/etc/os-release`. ([[!tails_ticket 12372]])
 
 <h1 id="issues">Known issues</h1>
 
-Recently, a [serious kernel vulnerability](https://lwn.net/Articles/911062/) has been discovered in the Linux
-kernel. This is currently exploitable in Tails.
+None specific to this release.
 
 See the list of [[long-standing issues|support/known_issues]].
 
