@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-24 11:27+0200\n"
+"POT-Creation-Date: 2022-10-13 10:32+0200\n"
 "PO-Revision-Date: 2013-07-25 09:07+0000\n"
 "Last-Translator: Liljana Ackovska <liljanagjurova@gmail.com>, 2020,2022\n"
 "Language-Team: Macedonian (http://www.transifex.com/otf/torproject/language/"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
 
-#: config/chroot_local-includes/etc/whisperback/config.py:69
+#: config/chroot_local-includes/etc/whisperback/config.py:67
 #, python-format
 msgid ""
 "<h1>Help us fix your bug!</h1>\n"
@@ -1136,7 +1136,7 @@ msgid "Could not open device for writing."
 msgstr "Уредот не можеше да биде отворен за впишување."
 
 #: config/chroot_local-includes/usr/local/bin/keepassxc:19
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
 "<b><big>Do you want to rename your <i>KeePassXC</i> database?</big></b>\n"
 "\n"
@@ -1150,15 +1150,13 @@ msgstr ""
 "<b><big>Дали сакате да ја преименувате вашата <i>KeePassXC</i> база на "
 "податоци?</big></b>\n"
 "\n"
-"Имате <i>KeePassXC</i> база на податоци во вашата <i>Постојана</i>папка:\n"
+"Имате <i>KeePassXC</i> база на податоци во вашата <i>Постојана</i> "
+"датотека:\n"
 "\n"
 "<i>${filename}</i>\n"
 "\n"
-"<i>KeePassXC</i> го промени стандардното име на базата со податоци во "
-"<i>Passwords.kdbx</i>. \n"
-"\n"
-"Преименувањето на вашата база на податоци во <i>Passwords.kdbx</i>ќе дозволи "
-"<i>KeePassXC</i> да биде отворано автоматски во иднина."
+"Преименувањето на вашата база на податоци во <i>${default_filename}</i> ќе "
+"ви овозможи <i>KeePassXC</i> да се отвора автоматски во иднина."
 
 #: config/chroot_local-includes/usr/local/bin/keepassxc:28
 msgid "Rename"
@@ -1386,7 +1384,7 @@ msgstr "GnuPG"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:180
 msgid "OpenPGP keys in GnuPG and Kleopatra"
-msgstr ""
+msgstr "OpenPGP клучеви во GnuPG и Kleopatra"
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Configuration/Presets.pm:193
 msgid "Bitcoin Client"
@@ -1501,9 +1499,8 @@ msgstr ""
 "стартувате Tails."
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Setup.pm:723
-#, fuzzy
 msgid "Tails is configuring your Persistent Storage. Please wait..."
-msgstr "Не успеа кофигурирањето на вашиот Постојан склад."
+msgstr "Tails го конфигурира вашиот Постојан склад. Ве молиме почекајте..."
 
 #: config/chroot_local-includes/usr/src/persistence-setup/lib/Tails/Persistence/Setup.pm:731
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
@@ -1959,7 +1956,7 @@ msgstr "Не успеа кофигурирањето на вашиот Пост�
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:389
 msgid "Synchronizing the system's clock…"
-msgstr ""
+msgstr " Синхронизација со часовникот на системот..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:438
 msgid "Connecting to Tor without bridges…"
@@ -1975,9 +1972,8 @@ msgid "Connecting to Tor with a custom bridge…"
 msgstr "Поврзување на Tor со прилагоден мост..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:560
-#, fuzzy
 msgid "Connected to Tor successfully with bridges"
-msgstr "Успешно поврзувањето на Tor"
+msgstr "Успешно поврзување на Tor преку мостови"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:562
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1764
@@ -2278,15 +2274,16 @@ msgid "_Restart"
 msgstr "_Повторно стартувај"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:63
-#, fuzzy
 msgid "_Cancel"
-msgstr "Откажи"
+msgstr "_Исклучи"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:64
 msgid ""
 "Do you really want to restart Tails now?\\n\\nAll your current work will be "
 "lost."
 msgstr ""
+"Дали навистина сакате повторно да го стартувате Tails сега?\\n\\nЦелата ваша "
+"моментална работа ќе биде загубена."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
 msgid "Failed to restart the system."
@@ -2348,65 +2345,65 @@ msgstr ""
 msgid "Failed to run browser."
 msgstr "Прелистувачот не се стартуваше."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/exceptions.py:41
-#, python-format
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/exceptions.py:40
+#, fuzzy, python-format
 msgid ""
-"The %s variable was not found in any of the configuration files /etc/"
-"whisperback/config.py, ~/.whisperback/config.py, or ./config.py"
+"The %s variable was not found in the configuration file: /etc/whisperback/"
+"config.py"
 msgstr ""
 "%sваријаблата не беше пронајдена во ниту една од датотеките за "
 "конфигурација /etc/whisperback/config.py, ~/.whisperback/config.py, or ./"
 "config.py"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:114
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:113
 msgid "Name of the affected software"
 msgstr "Име на погодениот софтвер"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:116
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:115
 msgid "Exact steps to reproduce the error"
 msgstr "Точни чекори за репродуцирање на грешката"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:118
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:117
 msgid "Actual result and description of the error"
 msgstr "Вистински резултат и опис на грешката"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:120
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:119
 msgid "Desired result"
 msgstr "Посакуван резултат"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:133
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:132
 msgid "Unable to load a valid configuration."
 msgstr "Не може да се вчита валидна конфигурација."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:170
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:169
 msgid "Sending mail..."
 msgstr "Испраќање на е-пошта..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:171
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:170
 msgid "Sending mail"
 msgstr "Испраќање на е-пошта"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:173
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:172
 msgid "This could take a while..."
 msgstr "Ова може да потрае..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:189
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:188
 msgid "The contact email address doesn't seem valid."
 msgstr "Адресата на е-поштата за контакт изгеда невалидна."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:206
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:205
 msgid "Unable to send the mail: SMTP error."
 msgstr " Е-поштата не може да биде испратена: SMTP грешка."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:208
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:207
 msgid "Unable to connect to the server."
 msgstr "Не може да се поврзе со серверот."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:210
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:209
 msgid "Unable to create or to send the mail."
 msgstr "Е-поштата не можеше да се создаде или да се испрати."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:213
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:212
 msgid ""
 "\n"
 "\n"
@@ -2423,20 +2420,20 @@ msgstr ""
 "\n"
 "Ако ова не работи, ќе ви биде понудено да го зачувате извештајот за грешката."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:226
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:225
 msgid "Your message has been sent."
 msgstr "Вашата порака е пратена."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:233
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:232
 msgid "An error occured during encryption."
 msgstr "Се случи грешка за време на енкрипцијата."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:253
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:252
 #, python-format
 msgid "Unable to save %s."
 msgstr "Не може да се зачува %s."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:276
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:275
 #, python-format
 msgid ""
 "The bug report could not be sent, likely due to network problems.\n"
@@ -2461,43 +2458,43 @@ msgstr ""
 "\n"
 "Дали сакате да го зачувате извештајот за грешка во датотека?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:338
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:337
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:280
 msgid "WhisperBack"
 msgstr "ШепотиНазад"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:339
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:338
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:12
 msgid "Send feedback in an encrypted mail."
 msgstr "Испрати повраратна информација преку енкриптирана е-пошта."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:342
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:341
 msgid "Copyright © 2009-2018 Tails developers (tails@boum.org)"
 msgstr "Авторски права © 2009-2018 Tails развивачи (tails@boum.org)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:343
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:342
 msgid "Tails developers <tails@boum.org>"
 msgstr "Tails развивачи <tails@boum.org>"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:344
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:343
 msgid "translator-credits"
 msgstr "Преведувачи: Лилјана Ацковска, Жарко Ѓуров."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:377
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:376
 msgid "This doesn't seem to be a valid URL or OpenPGP key."
 msgstr "Ова не изгледа како да е валидна URL или OpenPGP клуч."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:63
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:62
 #, python-format
 msgid "Invalid contact email: %s"
 msgstr "Невалидна е–пошта за контакт: %s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:83
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:82
 #, python-format
 msgid "Invalid contact OpenPGP key: %s"
 msgstr "Невалиден контакт OpenPGP клуч: %s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:85
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:84
 msgid "Invalid contact OpenPGP public key block"
 msgstr "Невалиден контакт за OpenPGP јавен клуч блок"
 
@@ -3404,40 +3401,3 @@ msgstr "Декември"
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:368
 msgid "Clock"
 msgstr "Часовник"
-
-#~ msgid "OpenPGP keys outside of Thunderbird"
-#~ msgstr "OpenPGP клучеви надвор од Thunderbird"
-
-#~ msgid "Import Failed"
-#~ msgstr "Увозот беше неуспешен"
-
-#, python-brace-format
-#~ msgid ""
-#~ "Failed to import keys from {path}:\n"
-#~ "{error}"
-#~ msgstr ""
-#~ "Не успеа увезувањето на клучеви од {path}:\n"
-#~ "{error}"
-
-#~ msgid "Key Imported"
-#~ msgid_plural "Keys Imported"
-#~ msgstr[0] "Клучот е увезен"
-#~ msgstr[1] "Клучевите се увезени"
-
-#, python-brace-format
-#~ msgid "Imported a key for {uids}"
-#~ msgid_plural "Imported keys for {uids}"
-#~ msgstr[0] "Увезен клуч за {uids}"
-#~ msgstr[1] "Увезени клучеви за {uids}"
-
-#~ msgid ""
-#~ "Connected to Tor successfully!\n"
-#~ "\n"
-#~ "You can now browse the Internet anonymously and uncensored."
-#~ msgstr ""
-#~ "Успешно поврзување на Tor!\n"
-#~ "\n"
-#~ "Сега можете да прелистувате на Интернет анонимно и нецензурирано."
-
-#~ msgid "_Close"
-#~ msgstr "_Затвори"

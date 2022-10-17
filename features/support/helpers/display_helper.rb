@@ -7,11 +7,11 @@ class Display
   end
 
   def active?
-    p = IO.popen(['xprop', '-display', @x_display,
-                  '-name', "#{@domain} (1) - Virt Viewer",
-                  err: ['/dev/null', 'w'],])
-    Process.wait(p.pid)
-    $CHILD_STATUS.success?
+    xlsclients_p = IO.popen(['xlsclients', '-display', @x_display,
+                             err: ['/dev/null', 'w'],])
+    x_clients = xlsclients_p.readlines.map { |l| l.split(/\s+/)[1] }
+    Process.wait(xlsclients_p.pid)
+    x_clients.any? { |c| c == 'virt-viewer' }
   end
 
   def start
