@@ -97,7 +97,7 @@ end
 When /^I configure the Unsafe Browser to use a local proxy$/ do
   socksports =
     $vm.execute_successfully('grep -w "^SocksPort" /etc/tor/torrc').stdout
-  assert(socksports.lines.size >= 3, 'We too few Tor SocksPorts')
+  assert(socksports.lines.size >= 3, 'We got too few Tor SocksPorts')
   proxy = socksports.scan(/^SocksPort\s([^:]+):(\d+)/).sample
   proxy_host = proxy[0]
   proxy_port = proxy[1]
