@@ -269,7 +269,6 @@ configure_chroot_browser () {
     # /run/user/$uid/ but it does not handle the mixed permissions in
     # the path and will fail to create the $uid folder, so we do it
     # manually here instead.
-    mkdir -p "${chroot}/run/user/${browser_user_uid}"
-    chown "${browser_user}:${browser_user}" \
-          "${chroot}/run/user/${browser_user_uid}"
+    install --directory --owner="${browser_user}" --group="${browser_user}" \
+       "${chroot}/run/user/${browser_user_uid}"
 }
