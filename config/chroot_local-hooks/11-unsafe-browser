@@ -22,6 +22,7 @@ OUTPUT="${INPUT}.lz4"
 # Create an AppArmor profile for the Unsafe Browser
 cp -a "${TBB_INSTALL}/firefox.real" "${TBB_INSTALL}/firefox.unsafe-browser"
 sed \
+  --regexp-extended \
   -e 's@torbrowser_firefox@unsafebrowser_firefox@g' \
   -e 's@[.]tor-browser/@.unsafe-browser/@g' \
   -e "s@${TBB_INSTALL}/firefox[.]real@${TBB_INSTALL}/firefox.unsafe-browser@g" \
