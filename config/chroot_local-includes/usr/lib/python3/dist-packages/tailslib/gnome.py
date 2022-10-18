@@ -30,8 +30,8 @@ def gnome_env() -> dict:
         if xauths := glob.glob('/run/user/1000/.mutter-Xwaylandauth.*'):
             env['XAUTHORITY'] = xauths[0]
     if 'WAYLAND_DISPLAY' not in env:
-        if display := glob.glob('/run/user/1000/wayland-*'):
-            env['WAYLAND_DISPLAY'] = display[0]
+        if displays := glob.glob('/run/user/1000/wayland-*'):
+            env['WAYLAND_DISPLAY'] = displays[0]
     return env
 
 
