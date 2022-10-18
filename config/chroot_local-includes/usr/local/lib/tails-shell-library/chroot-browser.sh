@@ -36,9 +36,6 @@ setup_chroot_for_browser () {
     local chroot="${1}"
     local cow="${2}"
 
-    # FIXME: When LXC matures to the point where it becomes a viable option
-    # for creating isolated jails, the chroot can be used as its rootfs.
-
     local cleanup_cmd="try_cleanup_browser_chroot \"${chroot}\" \"${cow}\""
     # shellcheck disable=SC2064
     trap "${cleanup_cmd}" INT EXIT
