@@ -208,7 +208,7 @@ Then /^I install "(.+)" using Synaptic$/ do |package_name|
       package_entry.get_field("selected")
     end
     @screen.press('Return')
-    # Now we have makred the package for installation and we have to
+    # Now we have marked the package for installation and we have to
     # wait for the Apply button to become available
     try_for(10) { @synaptic.button('Apply').get_field("sensitive") }
     # This button is also problematic when clicking with Dogtail
