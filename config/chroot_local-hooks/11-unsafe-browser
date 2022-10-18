@@ -24,10 +24,10 @@ cp -a "${TBB_INSTALL}/firefox.real" "${TBB_INSTALL}/firefox.unsafe-browser"
 sed \
   --regexp-extended \
   -e 's@torbrowser_firefox@unsafebrowser_firefox@g' \
-  -e 's@[.]tor-browser/@.unsafe-browser/@g' \
-  -e "s@${TBB_INSTALL}/firefox[.]real@${TBB_INSTALL}/firefox.unsafe-browser@g" \
-  -e 's@deny /etc/resolv.conf r,@/etc/resolv.conf r,@g' \
-  -e 's@deny /etc/hosts r,@/etc/hosts r,@g' \
-  -e 's@deny /etc/nsswitch.conf r,@/etc/nsswitch.conf r,@g' \
-  -e 's@^}$@\n  /usr/share/tails/chroot-browsers/unsafe-browser/extensions/* r,\n}@g' \
+  -e 's@[.]tor-browser/@.unsafe-browser/@' \
+  -e "s@${TBB_INSTALL}/firefox[.]real@${TBB_INSTALL}/firefox.unsafe-browser@" \
+  -e 's@deny /etc/resolv.conf r,@/etc/resolv.conf r,@' \
+  -e 's@deny /etc/hosts r,@/etc/hosts r,@' \
+  -e 's@deny /etc/nsswitch.conf r,@/etc/nsswitch.conf r,@' \
+  -e 's@^}$@\n  /usr/share/tails/chroot-browsers/unsafe-browser/extensions/* r,\n}@' \
   /etc/apparmor.d/torbrowser.Browser.firefox > /etc/apparmor.d/unsafe-browser
