@@ -134,30 +134,12 @@ WM_CLASS='Unsafe Browser'
 PROFILE="$(browser_profile_dir "${BROWSER_NAME}" "${BROWSER_USER}")"
 CHROOT_USER_UID="$(id --user "${BROWSER_USER}")"
 
-(python3 || error "$(gettext "Failed to run browser.")") <<EOF
-import tailslib.netnsdrop
-tailslib.netnsdrop.run_in_netns(
-    "/bin/sh", "-c",
-    ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
-     export TOR_TRANSPROXY=1 && \
-     export MOZ_ENABLE_WAYLAND=1 && \
-     exec_firefox_helper firefox.unsafe-browser \
-         --class '${WM_CLASS}' \
-         --name '${WM_CLASS}' \
-         --profile '${PROFILE}'",
-    netns="clearnet",
-    root="${CHROOT}",
-    bind_mounts=[
-        ("/home", "/home"),
-        ("${CHROOT}/${PROFILE}", "${PROFILE}"),
-        ("/etc/resolv-over-clearnet.conf", "/etc/resolv.conf"),
-        ("/run/user/${CHROOT_USER_UID}/pipewire-0", "/run/user/${CHROOT_USER_UID}/pipewire-0"),
-        ("/run/user/${CHROOT_USER_UID}/pulse", "/run/user/${CHROOT_USER_UID}/pulse"),
-        ("/run/user/${CHROOT_USER_UID}/wayland-0", "/run/user/${CHROOT_USER_UID}/wayland-0"),
-        ("/sys", "/sys"),
-    ]
-)
-EOF
+/usr/local/lib/unsafe-browser \
+    --chroot "$CHROOT" \
+    --profile "$PROFILE" \
+    --chroot-user-uid "$CHROOT_USER_UID" \
+    --wm-class "$WM_CLASS" \
+    || error "$(gettext "Failed to run browser.")"
 
 echo "* Exiting the Unsafe Browser"
 show_shutdown_notification
