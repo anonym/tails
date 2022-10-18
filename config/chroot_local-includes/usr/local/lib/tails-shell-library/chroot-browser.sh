@@ -56,12 +56,11 @@ setup_chroot_for_browser () {
     # Remove the trailing colon
     lowerdirs=${lowerdirs%?}
 
-    mkdir -p "${cow}" "${chroot}" && \
-    mount -t tmpfs tmpfs "${cow}" && \
-    mkdir "${cow}/rw" "${cow}/work" && \
-    mount -t overlay -o "noatime,lowerdir=${lowerdirs},upperdir=${cow}/rw,workdir=${cow}/work" overlay "${chroot}" && \
-    chmod 755 "${chroot}" || \
-        return 1
+    mkdir -p "${cow}" "${chroot}"
+    mount -t tmpfs tmpfs "${cow}"
+    mkdir "${cow}/rw" "${cow}/work"
+    mount -t overlay -o "noatime,lowerdir=${lowerdirs},upperdir=${cow}/rw,workdir=${cow}/work" overlay "${chroot}"
+    chmod 755 "${chroot}"
 }
 
 browser_conf_dir () {
