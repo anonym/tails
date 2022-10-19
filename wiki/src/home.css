@@ -89,13 +89,13 @@ span.highlight {
   padding: 1em;
   margin-bottom: 2em;
   padding-left: 140px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
 }
 
-#donate-year-end p {
-  width: 68%;
-}
-
-#donate-year-end p+p {
+#donate-year-end p+p, #donate-year-end .qrcode p {
   margin-bottom: 0;
 }
 
@@ -103,4 +103,20 @@ span.highlight {
   color: black !important;
   font-weight: bold;
   border-bottom: 2px solid black !important;
+}
+
+#donate-year-end .text {
+  max-width: 550px;
+}
+
+#donate-year-end .qrcode {
+  text-align: center;
+  width: 165px;
+  min-width: 165px;
+}
+
+@media (max-width: 800px) {
+  #donate-year-end {
+    flex-wrap: wrap;
+  }
 }
