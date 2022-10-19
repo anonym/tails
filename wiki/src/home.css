@@ -1,33 +1,16 @@
-/* "Tor check" button */
+/* Tor check */
 
-#content {
-  position: relative;
-  top: -4em;
-}
-
-#tor_check {
-  display: block;
-  height: 80px;
-  width: 270px;
-  margin-bottom: 1em;
-}
-
-#tor_check a {
-  background: #53b351 !important;
-  border-radius: 0.5em;
-  padding: 15px;
-  color: black !important;
-  font-size: 2em;
+#tor-check {
   position: absolute;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  line-height: 1em;
+  right: 30px;
+  width: auto;
+  margin: 0;
 }
 
-#tor_check a img {
-  margin-right: 15px;
+#tor-check a {
+  background: #53b351 url('home/onion.png') no-repeat 20px center !important;
+  padding-left: 60px;
+  padding-right: 30px !important;
 }
 
 /* Random message box */
@@ -73,20 +56,51 @@
   width: 100%;
 }
 
-/* Donate message outside of the campaign */
+/* Donate message outside of the year-end campaign */
 
-#donate {
+#donate-random {
   background-color: #eee !important;
-  background-image: url(donate/banner/godzilla.png) !important;
+  background-image: url(donate/year-end/godzilla.png) !important;
   background-repeat: no-repeat !important;
   background-size: 275px !important;
   background-position: -35px bottom !important;
   padding-left: 140px !important;
   border: 1px solid #ddd !important;
   font-size: 14px;
+}
+
+#donate-random p {
   width: 68%;
 }
 
 span.highlight {
   background-color: white;
+}
+
+/* Donate message during the year-end campaign */
+
+#donate-year-end {
+  background-color: #ffd500;
+  background-image: url(donate/year-end/godzilla.png);
+  background-repeat: no-repeat;
+  background-size: 275px;
+  background-position: -35px bottom;
+  overflow: auto;
+  padding: 1em;
+  margin-bottom: 2em;
+  padding-left: 140px;
+}
+
+#donate-year-end p {
+  width: 68%;
+}
+
+#donate-year-end p+p {
+  margin-bottom: 0;
+}
+
+#donate-year-end a {
+  color: black !important;
+  font-weight: bold;
+  border-bottom: 2px solid black !important;
 }

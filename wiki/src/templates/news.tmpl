@@ -20,7 +20,10 @@
 <TMPL_IF LOCAL_CSS>
 <link rel="stylesheet" href="<TMPL_VAR BASEURL><TMPL_VAR LOCAL_CSS>" type="text/css" />
 <TMPL_ELSE>
-<link rel="stylesheet" href="<TMPL_VAR BASEURL>local.css?reload-2022-01-12" type="text/css" />
+<link rel="stylesheet" href="<TMPL_VAR BASEURL>local.css?reload-2022-10-17" type="text/css" />
+</TMPL_IF>
+<TMPL_IF YEAR-END>
+<link rel="stylesheet" href="<TMPL_VAR BASEURL>donate/year-end.css?reload-2022-10-17" type="text/css" />
 </TMPL_IF>
 
 <script src="<TMPL_VAR BASEURL>lib/js/local.js" type="text/javascript"></script>
@@ -52,7 +55,13 @@
 <body>
 </TMPL_IF>
 
+<header id="banner" role="banner">
 <TMPL_VAR BANNER>
+</header>
+
+<TMPL_IF YEAR-END>
+<TMPL_VAR YEAR-END>
+</TMPL_IF>
 
 <TMPL_UNLESS DYNAMIC>
 <TMPL_IF SIDEBAR>
@@ -118,7 +127,7 @@
 <TMPL_IF HTML5></nav><TMPL_ELSE></div></TMPL_IF>
 </TMPL_IF>
 
-<TMPL_IF HTML5><header class="header"><TMPL_ELSE><div class="header"></TMPL_IF>
+<TMPL_IF HTML5><header class="title"><TMPL_ELSE><div class="title"></TMPL_IF>
 <span class="title">
 <TMPL_VAR TITLE>
 </span>
