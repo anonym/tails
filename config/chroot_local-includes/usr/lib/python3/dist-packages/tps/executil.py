@@ -25,12 +25,16 @@ def check_output(cmd: List, *args, **kwargs) -> str:
 
 
 def execute_hooks(hooks_dir: Union[str, PathLike]):
-    """Execute all regular files in the specified directory"""
+    """
+    Execute all regular files in the specified directory, in (locale) lexicographic order.
+
+    If any of these runs fails, the execution is stopped, and an exception is raised immediately.
+    """
     hooks_dir = Path(hooks_dir)
     if not hooks_dir.exists():
         return
 
-    for file in hooks_dir.iterdir():
+    for file in sorted(hooks_dir.iterdir()):
         if file.is_dir():
             continue
         logger.debug(f"Executing hook {file}")
