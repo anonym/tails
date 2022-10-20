@@ -18,7 +18,7 @@ def read_and_validate_ssh_config(srv_type)
     end
   rescue NoMethodError
     raise(
-      "Your #{srv_type} config is incorrect or missing from your local" \
+      "Your #{srv_type} config is incorrect or missing from your local " \
       "configuration file (#{LOCAL_CONFIG_FILE}). " \
       'See wiki/src/contribute/release_process/test/usage.mdwn for the format.'
     )
