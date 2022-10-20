@@ -112,7 +112,7 @@ def step_impl(context: TestContext):
 @given('the path to the destination directory contains a broken symlink')
 def step_impl(context: TestContext):
     # Create the destination directory as a symlink
-    context.mount.dest.symlink_to(context.tmpdir, "nonexistent")
+    context.mount.dest.symlink_to(Path(context.tmpdir, "nonexistent"))
     # Change the destination to a file below the old destination
     context.mount.dest = Path(context.mount.dest, "foo")
 
