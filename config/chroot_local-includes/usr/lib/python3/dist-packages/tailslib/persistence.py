@@ -10,7 +10,7 @@ PERSISTENCE_DIR = "/live/persistence/TailsData_unlocked"
 PERSISTENCE_PARTITION = "/dev/disk/by-partlabel/TailsData"
 
 
-def get_persistence_path(return_nonexistent=False):
+def get_persistence_path(return_nonexistent=False) -> str:
     """Return the path of the (newly created) persistence.
 
     Return PERSISTENCE_DIR if it exists.
