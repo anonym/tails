@@ -15,6 +15,7 @@ Feature: Thunderbird email client
     And I open the Extensions tab
     Then I see that no add-ons are enabled in Thunderbird
 
+  @skip_by_default
   Scenario: I can send emails, and receive emails over IMAP
     When I enter my email credentials into the autoconfiguration wizard
     Then the autoconfiguration wizard's choice for the incoming server is secure IMAP
