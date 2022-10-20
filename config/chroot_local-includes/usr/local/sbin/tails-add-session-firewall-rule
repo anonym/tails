@@ -6,6 +6,8 @@ set -u
 if [ "${1}" = --apply ]; then
     APPLY=yes
     shift
+else
+    APPLY=no
 fi
 
 RULE="${*}"
