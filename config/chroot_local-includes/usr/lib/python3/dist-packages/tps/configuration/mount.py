@@ -109,8 +109,13 @@ class Mount(object):
                                     f"Persistent Storage mount point: {self}")
 
     def __str__(self):
-        """The string representation of a mount. This is in the format
-        of a persistence.conf line."""
+        """The string representation of a mount."""
+        return self.to_persistenceconf_line()
+
+    def to_persistenceconf_line(self) -> str:
+        """
+        Representation of this mount as a persistence.conf line
+        """
         options = ','.join(shlex.quote(option) for option in self.options)
         return shlex.quote(str(self.dest_orig)) + '\t' + options
 
