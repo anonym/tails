@@ -131,7 +131,7 @@ Then /^I connect to an SFTP server on the Internet$/ do
     step 'I start "Nautilus" via GNOME Activities Overview'
     nautilus = Dogtail::Application.new('org.gnome.Nautilus')
     nautilus.child(roleName: 'frame')
-    # "Other Locations" has no click action, so Dogtail cannot interact # with it.
+    # "Other Locations" has no click action, so Dogtail cannot interact with it.
     @screen.click('NautilusOtherLocations.png')
     connect_bar = nautilus.child('Connect to Server', roleName: 'label').parent
     connect_bar
