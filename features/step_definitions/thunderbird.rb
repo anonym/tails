@@ -278,7 +278,7 @@ Then(/^the screen keyboard works in Thunderbird$/) do
   end
   # We have to click to activate the screen keyboard (#19101),
   # but we cannot do it with Dogtail so we have to use a picture.
-  @screen.click('ThunderbirdFullNameEntry.png')
+  @screen.click('ThunderbirdTextEntry.png')
   @screen.wait('ScreenKeyboard.png', 10)
   @screen.wait(osk_key, 20).click
   @screen.wait(thunderbird_x, 20)
