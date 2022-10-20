@@ -38,10 +38,6 @@ pref("mailnews.auto_config.guess.sslOnly", true);
 pref("mailnews.auto_config.fetchFromExchange.enabled", false);
 pref("mailnews.auto_config.mx.enabled", false);
 
-// Drop auto-fetched configurations using Oauth2 -- they do not work
-// since we disable needed functionality (like JavaScript and cookies)
-// in the embedded browser.
-pref("mailnews.auto_config.account_constraints.allow_oauth2", false);
 // The timeout (in seconds) for each guess
 pref("mailnews.auto_config.guess.timeout", 30);
 
@@ -333,8 +329,18 @@ pref("webgl.disabled", true);
 // Disable Geolocation.
 pref("geo.enabled", false);
 
-// Disable JavaScript (email).
-pref("javascript.enabled", false);
+// JavaScript is enabled, but not inside email messages.
+pref("javascript.enabled", true);
+
+// JavaScript hardening. Source https://gitweb.torproject.org/torbutton.git/tree/src/modules/security-prefs.js
+// (we are applying the "high" profile)
+pref("javascript.options.ion", false);
+pref("javascript.options.baselinejit", false);
+pref("javascript.options.native_regexp", false);
+pref("media.webaudio.enabled", false);
+pref("mathml.disabled", true);
+pref("gfx.font_rendering.opentype_svg.enabled",  false);
+pref("svg.disabled",  true);
 
 // Disable WebM, WAV, Ogg, PeerConnection.
 pref("media.navigator.enabled", false);
