@@ -138,7 +138,7 @@ Then /^the firewall is configured to only allow the (.+) users? to connect direc
          'access to the network')
 end
 
-Then /^the firewall's NAT rules only redirect traffic for Tor's TransPort and DNSPort$/ do
+Then /^the firewall's NAT rules only redirect traffic for the Unsafe Browser, Tor's TransPort, and DNSPort$/ do
   loopback_address = '127.0.0.1/32'
   tor_onion_addr_space = '127.192.0.0/10'
   tor_trans_port = '9040'

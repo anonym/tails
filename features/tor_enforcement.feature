@@ -9,7 +9,7 @@ Feature: The Tor enforcement is effective
     Given I have started Tails from DVD and logged in and the network is connected
     Then the firewall's policy is to drop all IPv4 traffic
     And the firewall is configured to only allow the clearnet and debian-tor users to connect directly to the Internet over IPv4
-    And the firewall's NAT rules only redirect traffic for Tor's TransPort and DNSPort
+    And the firewall's NAT rules only redirect traffic for the Unsafe Browser, Tor's TransPort, and DNSPort
     And the firewall is configured to block all external IPv6 traffic
 
   Scenario: Anti test: Detecting TCP leaks from the Unsafe Browser with the firewall leak detector
