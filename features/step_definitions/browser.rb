@@ -33,7 +33,7 @@ When(/^I kill the ((?:Tor|Unsafe) Browser)$/) do |browser|
   end
 
   # ugly fix to #18568; in my local testing, 3 seconds are always needed. Let's add some more.
-  # a better solution would be to wait until gnome "received" the fact that TorBrowser has gone away.
+  # a better solution would be to wait until GNOME "received" the fact that Tor Browser has gone away.
   sleep 5
 end
 
