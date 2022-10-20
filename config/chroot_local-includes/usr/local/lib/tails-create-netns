@@ -62,6 +62,13 @@ expose_all() {
     sysctl "net.ipv4.conf.${hostVeth}.forwarding=1"
 }
 
+forbid_incoming() {
+    ns="$1"
+    ip netns exec "$ns" iptables -P INPUT DROP
+    ip netns exec "$ns" iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+    ip netns exec "$ns" iptables -A INPUT -i lo -j ACCEPT
+
+}
 
 delete_netns() {
     # $1 = netns basename
@@ -152,5 +159,8 @@ then
     expose onionshare 9050 9050
     expose onionshare 9051 9051
     expose_all clearnet
+    # We consider applications inside the clearnet namespace particularly untrusted:
+    # therefore, we also forbid them from receiving any external connection
+    forbid_incoming clearnet
 fi
 
