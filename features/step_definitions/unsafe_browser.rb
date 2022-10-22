@@ -108,7 +108,7 @@ When /^I configure the Unsafe Browser to use a local proxy$/ do
   prefs = '/usr/share/tails/chroot-browsers/unsafe-browser/prefs.js'
   $vm.file_append(prefs, 'user_pref("network.proxy.type", 1);' + "\n")
   $vm.file_append(prefs,
-                  "user_pref(\"network.proxy.socks\", \"#{proxy_host})\";\n")
+                  "user_pref(\"network.proxy.socks\", \"#{proxy_host}\");\n")
   $vm.file_append(prefs,
                   "user_pref(\"network.proxy.socks_port\", #{proxy_port});\n")
   $vm.execute_successfully("sed -i -E '/^\s*export TOR_TRANSPROXY=1/d' " \
