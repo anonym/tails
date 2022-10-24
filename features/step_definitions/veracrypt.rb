@@ -161,15 +161,16 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with Unlock Ver
     @screen.wait('Gtk3UnlockButton.png', 10).click
   when 'file container'
     @screen.wait('UnlockVeraCryptVolumesAddButton.png', 10).click
-    @screen.wait('Gtk3FileChooserDesktopButton.png', 10)
+    @screen.wait('Gtk3FileChooserDocumentsButton.png', 10)
     @screen.paste(@veracrypt_shared_dir_in_guest + '/' + $veracrypt_volume_name,
                   app: :gtk_file_chooser)
     sleep 2 # avoid ENTER being eaten by the auto-completion system
     @screen.press('Return')
   end
   @screen.wait('VeraCryptUnlockDialog.png', 10)
-  @screen.type(
-    @veracrypt_is_hidden ? $veracrypt_hidden_passphrase : $veracrypt_passphrase
+  @screen.paste(
+    @veracrypt_is_hidden ? $veracrypt_hidden_passphrase : $veracrypt_passphrase,
+    app: :gtk_file_chooser
   )
   if @veracrypt_needs_pim
     # Go back to the PIM entry text field
@@ -201,7 +202,10 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
          .grabFocus
   when 'file container'
     @screen.wait('GnomeDisksApplicationsMenuButton.png', 10).click
-    disks.child('Attach Disk Image… (.iso, .img)', roleName: 'push button').click
+    # Clicking this button using Dogtail works, but afterwards the
+    # GNOME Disks GUI becomes inaccessible.
+    disks.child('Attach Disk Image… (.iso, .img)', roleName: 'push button').grabFocus
+    @screen.press('Return')
     # Otherwise Disks is sometimes minimized, for some reason I don't understand
     sleep 2
     attach_dialog = disks.child('Select Disk Image to Attach',
@@ -210,7 +214,7 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
                         roleName: 'check box').click
     filter = attach_dialog.child('Disk Images (*.img, *.iso)',
                                  roleName: 'combo box')
-    filter.click
+    filter.press
     try_for(5) do
       filter.child('All Files', roleName: 'menu item').click
       true
@@ -233,49 +237,53 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
     end
   end
   disks.child('', roleName:    'panel',
-                  description: 'Unlock selected encrypted partition').click
+                  description: 'Unlock selected encrypted partition')
+       .child('Unlock', roleName: 'push button').click
   unlock_dialog = disks.dialog('Set options to unlock')
-  passphrase_field = unlock_dialog.child('', roleName: 'password text')
-  passphrase_field.grabFocus
-  passphrase_field.typeText(
-    @veracrypt_is_hidden ? $veracrypt_hidden_passphrase : $veracrypt_passphrase
+  unlock_dialog.child('', roleName: 'password text').grabFocus
+  @screen.paste(
+    @veracrypt_is_hidden ? $veracrypt_hidden_passphrase : $veracrypt_passphrase,
+    app: :gtk_file_chooser
   )
   if @veracrypt_needs_pim
-    pim_field = unlock_dialog.child('PIM', roleName: 'label').labelee
-    pim_field.grabFocus
-    pim_field.typeText($veracrypt_pim)
+    unlock_dialog.child('PIM', roleName: 'label').labelee.grabFocus
+    @screen.paste(
+      $veracrypt_pim,
+      app: :gtk_file_chooser
+    )
   end
   if @veracrypt_needs_keyfile
     # XXX:Bullseye: port to Dogtail, as #15952 was fixed in GNOME Disks 3.35.2
     @screen.wait('GnomeDisksUnlockDialogKeyfileComboBox.png', 5)
     @screen.click('GnomeDisksUnlockDialogKeyfileComboBox.png')
-    @screen.wait('Gtk3FileChooserDesktopButton.png', 10)
+    @screen.wait('Gtk3FileChooserDocumentsButton.png', 10)
     $vm.file_overwrite('/tmp/keyfile', 'asdf')
     @screen.paste('/tmp/keyfile',
                   app: :gtk_file_chooser)
     @screen.press('Return')
-    @screen.wait_vanish('Gtk3FileChooserDesktopButton.png', 10)
+    @screen.wait_vanish('Gtk3FileChooserDocumentsButton.png', 10)
   end
   if @veracrypt_is_hidden
     @screen.wait('GnomeDisksUnlockDialogHiddenVolumeLabel.png', 10).click
   end
   # Clicking is robust neither with Dogtail (no visible effect) nor
-  # with imaget matching (that sometimes clicks just a little bit
+  # with image matching (that sometimes clicks just a little bit
   # outside of the button)
   @screen.wait('Gtk3UnlockButton.png', 10)
   @screen.press('alt', 'u') # "Unlock" button
   try_for(30, msg: 'Failed to mount the unlocked volume') do
-    unlocked_volume = disks.child("#{size} VeraCrypt/TrueCrypt",
-                                  roleName: 'panel', showingOnly: true)
-    unlocked_volume.click
+    disks.child("#{size} VeraCrypt/TrueCrypt",
+                roleName: 'panel', showingOnly: true)
+         .grabFocus
     # Move the focus down to the "Filesystem\n107 MB FAT" item (that Dogtail
     # is not able to find) using the 'Down' arrow, in order to display
     # the "Mount selected partition" button.
-    unlocked_volume.grabFocus
     sleep 0.5 # otherwise the following key press is sometimes lost
-    disks.pressKey('Down')
+    @screen.press('down')
     disks.child('', roleName: 'panel',
-                description: 'Mount selected partition', showingOnly: true).click
+                description: 'Mount selected partition', showingOnly: true)
+         .child('Mount', roleName: 'push button')
+         .click
     true
   rescue Dogtail::Failure
     # we probably did something too early, which triggered a Dogtail error

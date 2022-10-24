@@ -59,6 +59,9 @@ enigmail_migration() {
 
 start_thunderbird() {
     export GNOME_ACCESSIBILITY=1
+    # Enabling Wayland support to make (among other things) the GNOME
+    # on-screen keyboard work.
+    export MOZ_ENABLE_WAYLAND=1
     unset SESSION_MANAGER
     reconfigure_profile
     enigmail_migration

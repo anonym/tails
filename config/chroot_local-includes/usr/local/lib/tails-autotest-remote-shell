@@ -33,6 +33,7 @@
 
 import base64
 import fcntl
+import glob
 import json
 import os
 import pwd
@@ -42,6 +43,8 @@ import sys
 import systemd.daemon
 import textwrap
 import traceback
+
+from tailslib.gnome import gnome_env
 
 REMOTE_SHELL_DEV = '/dev/virtio-ports/org.tails.remote_shell.0'
 
@@ -63,15 +66,14 @@ def get_user_env(user):
     # setting up the GNOME shell environment, and extracting the
     # environment via `env`; not that we will run `env` unconditionally
     # since the former command could fail, e.g. if GNOME is not running.
-    env_cmd = '. /usr/local/lib/tails-shell-library/gnome.sh && ' + \
-              'export_gnome_env ; ' + \
-              'env'
-    wrapped_env_cmd = "su -c '{}' {}".format(env_cmd, user)
+    wrapped_env_cmd = "su -c env {}".format(user)
     pipe = subprocess.Popen(wrapped_env_cmd,
                             stdout=subprocess.PIPE,
                             shell=True)  # nosec subprocess_popen_with_shell_equals_true
     env_data = pipe.communicate()[0].decode('utf-8')
-    return dict((line.split('=', 1) for line in env_data.splitlines()))
+    env_dict = dict((line.split('=', 1) for line in env_data.splitlines()))
+    env_dict.update(gnome_env())
+    return env_dict
 
 
 # Dogtail does not seem to support the root user interacting with
@@ -89,6 +91,12 @@ class PythonSession:
         if not user:
             user = pwd.getpwuid(os.getuid()).pw_name
         env = get_user_env(user)
+        # If WAYLAND_DISPLAY is set, Dogtail breaks for non-amnesia
+        # users. It is not needed for Dogtail even when run as
+        # amnesia, so we can just unset it as long as this class is
+        # used solely for Dogtail.
+        if 'WAYLAND_DISPLAY' in env:
+            del(env['WAYLAND_DISPLAY'])
         cwd = env.get('HOME', '/')
         self.process = subprocess.Popen(
             ["python3", "-u", "-c", interactive_shell_code],

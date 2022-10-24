@@ -39,8 +39,10 @@ systemctl --global enable tails-wait-until-tor-has-bootstrapped.service
 # OnionCircuits has no text input area so it does not need an IBus proxy
 systemctl --global enable "tails-a11y-proxy-netns@onioncircs.service"
 
-for bus in a11y ibus; do
-    systemctl --global enable "tails-$bus-proxy-netns@tbb.service"
+for netns in tbb clearnet; do
+    for bus in a11y ibus; do
+        systemctl --global enable "tails-${bus}-proxy-netns@${netns}.service"
+    done
 done
 
 # Use socket activation only, to delay the startup of cupsd.

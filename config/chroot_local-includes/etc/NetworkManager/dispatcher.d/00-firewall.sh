@@ -9,3 +9,10 @@ fi
 
 [ -x /usr/sbin/ferm ] || exit 2
 /usr/sbin/ferm /etc/ferm/ferm.conf
+
+if [ -e /var/lib/iptables/session-rules ]; then
+    while read -r rule; do
+        # shellcheck disable=SC2086
+        iptables ${rule}
+    done < /var/lib/iptables/session-rules
+fi

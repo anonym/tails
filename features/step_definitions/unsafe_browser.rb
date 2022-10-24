@@ -16,12 +16,18 @@ Then /^the Unsafe Browser has only Firefox's default bookmarks configured$/ do
   @screen.wait('UnsafeBrowserExportBookmarksButtonSelected.png', 20)
   @screen.wait('UnsafeBrowserExportBookmarksMenuEntry.png', 20).click
   @screen.wait('UnsafeBrowserExportBookmarksSavePrompt.png', 20)
-  path = "/home/#{info[:user]}/bookmarks"
-  @screen.paste(path)
+  # This prompt defaults to $HOME/Desktop which is inaccessible due to
+  # AppArmor confinement, so there is a permission error message that
+  # we have to close.
+  @screen.press('Escape')
+  sleep 1
+  path = "/home/#{info[:user]}/Tor Browser/bookmarks.json"
+  # The .json extension is automatically added in this prompt so we
+  # avoid adding it again.
+  @screen.paste(path.sub(/[.]json$/, ''))
   @screen.press('Return')
-  chroot_path = "#{info[:chroot]}/#{path}.json"
-  try_for(10) { $vm.file_exist?(chroot_path) }
-  dump = JSON.parse($vm.file_content(chroot_path))
+  try_for(10) { $vm.file_exist?(path) }
+  dump = JSON.parse($vm.file_content(path))
 
   def check_bookmarks_helper(bookmarks_children)
     mozilla_uris_counter = 0
@@ -89,10 +95,10 @@ Then /^I can start the Unsafe Browser again$/ do
 end
 
 When /^I configure the Unsafe Browser to use a local proxy$/ do
-  socksport_lines =
+  socksports =
     $vm.execute_successfully('grep -w "^SocksPort" /etc/tor/torrc').stdout
-  assert(socksport_lines.size >= 4, 'We got fewer than four Tor SocksPorts')
-  proxy = socksport_lines.scan(/^SocksPort\s([^:]+):(\d+)/).sample
+  assert(socksports.lines.size >= 3, 'We got too few Tor SocksPorts')
+  proxy = socksports.scan(/^SocksPort\s([^:]+):(\d+)/).sample
   proxy_host = proxy[0]
   proxy_port = proxy[1]
 
@@ -102,12 +108,11 @@ When /^I configure the Unsafe Browser to use a local proxy$/ do
   prefs = '/usr/share/tails/chroot-browsers/unsafe-browser/prefs.js'
   $vm.file_append(prefs, 'user_pref("network.proxy.type", 1);' + "\n")
   $vm.file_append(prefs,
-                  "user_pref(\"network.proxy.socks\", \"#{proxy_host})\";\n")
+                  "user_pref(\"network.proxy.socks\", \"#{proxy_host}\");\n")
   $vm.file_append(prefs,
                   "user_pref(\"network.proxy.socks_port\", #{proxy_port});\n")
-
-  lib = '/usr/local/lib/tails-shell-library/chroot-browser.sh'
-  $vm.execute_successfully("sed -i -E '/^\s*export TOR_TRANSPROXY=1/d' #{lib}")
+  $vm.execute_successfully("sed -i -E '/^\s*export TOR_TRANSPROXY=1/d' " \
+                           "'/usr/local/sbin/unsafe-browser'")
 end
 
 Then /^I am told I cannot start the Unsafe Browser when I am offline$/ do
@@ -115,14 +120,6 @@ Then /^I am told I cannot start the Unsafe Browser when I am offline$/ do
     Dogtail::Application.new('zenity')
     .child(roleName: 'label')
     .text['You are not connected to a local network']
-  )
-end
-
-Then /^the Unsafe Browser complains that it is disabled$/ do
-  assert_not_nil(
-    Dogtail::Application.new('zenity')
-    .child(roleName: 'label')
-    .text['The Unsafe Browser was not enabled in the Welcome Screen']
   )
 end
 

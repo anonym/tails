@@ -18,7 +18,7 @@ def read_and_validate_ssh_config(srv_type)
     end
   rescue NoMethodError
     raise(
-      "Your #{srv_type} config is incorrect or missing from your local" \
+      "Your #{srv_type} config is incorrect or missing from your local " \
       "configuration file (#{LOCAL_CONFIG_FILE}). " \
       'See wiki/src/contribute/release_process/test/usage.mdwn for the format.'
     )
@@ -131,7 +131,8 @@ Then /^I connect to an SFTP server on the Internet$/ do
     step 'I start "Nautilus" via GNOME Activities Overview'
     nautilus = Dogtail::Application.new('org.gnome.Nautilus')
     nautilus.child(roleName: 'frame')
-    nautilus.child('Other Locations', roleName: 'label').click
+    # "Other Locations" has no click action, so Dogtail cannot interact with it.
+    @screen.click('NautilusOtherLocations.png')
     connect_bar = nautilus.child('Connect to Server', roleName: 'label').parent
     connect_bar
       .child(roleName: 'filler', recursive: false)

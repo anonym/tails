@@ -157,7 +157,11 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
             else
               action.capitalize
             end
-    @installer.button(label).click
+    # Despite being a normal "push button" this button doesn't respond
+    # to the "press" action. It has a "click" action, which works, but
+    # after that the installer is inaccessible for Dogtail.
+    @installer.button(label).grabFocus
+    @screen.press('Enter')
     unless action == 'upgrade'
       confirmation_label = if persistence_exists?(name)
                              'Delete Persistent Storage and Reinstall'
@@ -1111,22 +1115,29 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
                                roleName:    'dialog',
                                showingOnly: true)
   # Open the file chooser
-  disks.pressKey('Enter')
+  @screen.press('Enter')
   select_disk_image_dialog = disks.child('Select Disk Image to Restore',
                                          roleName:    'file chooser',
                                          showingOnly: true)
-  disks.typeText(@usb_image_path)
+  @screen.paste(
+    @usb_image_path,
+    app: :gtk_file_chooser
+  )
   sleep 2 # avoid ENTER being eaten by the auto-completion system
-  disks.pressKey('Enter')
+  @screen.press('Enter')
   try_for(10) do
     !select_disk_image_dialog.showing
   end
+  # Clicking this button using Dogtail works, but afterwards GNOME
+  # Disks becomes inaccessible.
   restore_dialog.child('Start Restoring…',
                        roleName:    'push button',
-                       showingOnly: true).click
+                       showingOnly: true).grabFocus
+  @screen.press('Return')
   disks.child('Information', roleName: 'alert', showingOnly: true)
        .child('Restore', roleName: 'push button', showingOnly: true)
-       .click
+       .grabFocus
+  @screen.press('Return')
   # Wait until the restoration job is finished
   job = disks.child('Job', roleName: 'label', showingOnly: true)
   try_for(60) do
@@ -1140,8 +1151,6 @@ Given /^I set all Greeter options to non-default values$/ do
   # has been readjusted, so while we try to click it, it moves so we
   # miss it.
   step 'I disable networking in Tails Greeter'
-  sleep 2
-  step 'I allow the Unsafe Browser to be started'
   sleep 2
   step 'I disable MAC spoofing in Tails Greeter'
   sleep 2
@@ -1163,7 +1172,6 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_LOCALE_NAME=de_DE
       TAILS_MACSPOOF_ENABLED=false
       TAILS_NETWORK=false
-      TAILS_UNSAFE_BROWSER_ENABLED=true
       TAILS_XKBLAYOUT=de
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=
@@ -1182,7 +1190,6 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_LOCALE_NAME=en_US
       TAILS_MACSPOOF_ENABLED=true
       TAILS_NETWORK=true
-      TAILS_UNSAFE_BROWSER_ENABLED=false
       TAILS_XKBLAYOUT=us
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=

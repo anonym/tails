@@ -18,10 +18,48 @@ def xmpp_account(account_name)
   account
 end
 
+# Only works for XWayland apps due to use of xdotool
+def select_virtual_desktop(desktop_number, user: LIVE_USER)
+  assert(desktop_number >= 0 && desktop_number <= 3,
+         'Only values between 0 and 1 are valid virtual desktop numbers')
+  $vm.execute_successfully(
+    "xdotool set_desktop '#{desktop_number}'",
+    user: user
+  )
+end
+
+# Only works for XWayland apps due to use of xdotool
+def focus_window(window_title, user: LIVE_USER)
+  do_focus = lambda do
+    $vm.execute_successfully(
+      "xdotool search --name '#{window_title}' windowactivate --sync",
+      user: user
+    )
+  end
+
+  begin
+    do_focus.call
+  rescue ExecutionFailedInVM
+    # Often when xdotool fails to focus a window it'll work when retried
+    # after redrawing the screen.  Switching to a new virtual desktop then
+    # back seems to be a reliable way to handle this.
+    # Sadly we have to rely on a lot of sleep() here since there's
+    # little on the screen etc that we truly can rely on.
+    sleep 5
+    select_virtual_desktop(1)
+    sleep 5
+    select_virtual_desktop(0)
+    sleep 5
+    do_focus.call
+  end
+rescue StandardError
+  # noop
+end
+
 def wait_and_focus(img, window, time = 10)
   @screen.wait(img, time)
 rescue FindFailed
-  $vm.focus_window(window)
+  focus_window(window)
   @screen.wait(img, time)
 end
 
@@ -111,7 +149,7 @@ Then /^Pidgin automatically enables my XMPP account$/ do
   try_for(3 * 60) do
     pidgin_account_connected?(jid, 'prpl-jabber')
   end
-  $vm.focus_window('Buddy List')
+  focus_window('Buddy List')
   @screen.wait('PidginAvailableStatus.png', 60 * 3)
 end
 
@@ -127,12 +165,12 @@ Given /^my XMPP friend goes online( and joins the multi-user chat)?$/ do |join_c
   )
   @chatbot.start
   add_after_scenario_hook { @chatbot.stop }
-  $vm.focus_window('Buddy List')
+  focus_window('Buddy List')
   @screen.wait('PidginFriendOnline.png', 60)
 end
 
 When /^I start a conversation with my friend$/ do
-  $vm.focus_window('Buddy List')
+  focus_window('Buddy List')
   # Clicking the middle, bottom of this image should query our
   # friend, given it's the only subscribed user that's online, which
   # we assume.
@@ -149,10 +187,10 @@ end
 And /^I say (.*) to my friend( in the multi-user chat)?$/ do |msg, multi_chat|
   msg = 'ping' if msg == 'something'
   if multi_chat
-    $vm.focus_window(@chat_room_jid.split('@').first)
+    focus_window(@chat_room_jid.split('@').first)
     msg = @friend_name + ': ' + msg
   else
-    $vm.focus_window(@friend_name)
+    focus_window(@friend_name)
   end
   @screen.paste(msg)
   @screen.press('Return')
@@ -160,9 +198,9 @@ end
 
 Then /^I receive a response from my friend( in the multi-user chat)?$/ do |multi_chat|
   if multi_chat
-    $vm.focus_window(@chat_room_jid.split('@').first)
+    focus_window(@chat_room_jid.split('@').first)
   else
-    $vm.focus_window(@friend_name)
+    focus_window(@friend_name)
   end
   try_for(60) do
     if @screen.exists('PidginServerMessage.png')
@@ -176,7 +214,7 @@ end
 # up messages/events from other users with the ones we expect from the
 # bot.
 When /^I join some empty multi-user chat$/ do
-  $vm.focus_window('Buddy List')
+  focus_window('Buddy List')
   @screen.click('PidginBuddiesMenu.png')
   @screen.wait('PidginBuddiesMenuJoinChat.png', 10).click
   @screen.wait('PidginJoinChatWindow.png', 10).click
@@ -209,7 +247,7 @@ When /^I join some empty multi-user chat$/ do
   if image_found == 'PidginCreateNewRoomPrompt.png'
     @screen.wait('PidginCreateNewRoomAcceptDefaultsButton.png', 15).click
   end
-  $vm.focus_window(@chat_room_jid)
+  focus_window(@chat_room_jid)
   @screen.wait('PidginChat1UserInRoom.png', 10)
 end
 
@@ -217,13 +255,13 @@ end
 # it's safer to clear it so we do not get false positives from old
 # messages when looking for a particular response, or similar.
 When /^I clear the multi-user chat's scrollback$/ do
-  $vm.focus_window(@chat_room_jid)
+  focus_window(@chat_room_jid)
   @screen.click('PidginConversationMenu.png')
   @screen.wait('PidginConversationMenuClearScrollback.png', 10).click
 end
 
 Then /^I can see that my friend joined the multi-user chat$/ do
-  $vm.focus_window(@chat_room_jid)
+  focus_window(@chat_room_jid)
   @screen.wait('PidginChat2UsersInRoom.png', 60)
 end
 
@@ -288,7 +326,7 @@ When /^I close Pidgin's account manager window$/ do
 end
 
 When /^I close Pidgin$/ do
-  $vm.focus_window('Buddy List')
+  focus_window('Buddy List')
   @screen.press('ctrl', 'q')
   @screen.wait_vanish('PidginAvailableStatus.png', 10)
 end
@@ -328,7 +366,7 @@ Then /^Pidgin successfully connects to the "([^"]+)" account$/ do |account|
   end
   retry_tor(recovery_on_failure) do
     begin
-      $vm.focus_window('Buddy List')
+      focus_window('Buddy List')
     rescue ExecutionFailedInVM
       # Sometimes focusing the window with xdotool will fail with the
       # conversation window right on top of it. We'll try to close the
@@ -344,7 +382,7 @@ Then /^Pidgin successfully connects to the "([^"]+)" account$/ do |account|
 end
 
 Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, server|
-  $vm.focus_window('Buddy List')
+  focus_window('Buddy List')
   @screen.wait('PidginBuddiesMenu.png', 20).click
   @screen.wait('PidginBuddiesMenuJoinChat.png', 10).click
   @screen.wait('PidginJoinChatWindow.png', 10).click
@@ -356,7 +394,7 @@ Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, server|
   @screen.paste(server)
   @screen.click('PidginJoinChatButton.png')
   @chat_room_jid = channel + '@' + server
-  $vm.focus_window(@chat_room_jid)
+  focus_window(@chat_room_jid)
   @screen.hide_cursor
   try_for(60) do
     begin
@@ -393,7 +431,7 @@ def pidgin_add_certificate_from(cert_file)
   # Here, we need a certificate that is not already in the NSS database
   step "I copy \"#{src}\" to \"#{cert_file}\" as user \"amnesia\""
 
-  $vm.focus_window('Buddy List')
+  focus_window('Buddy List')
   @screen.wait('PidginToolsMenu.png', 10).click
   @screen.wait('PidginCertificatesMenuItem.png', 10).click
   @screen.wait('PidginCertificateManagerDialog.png', 10)
