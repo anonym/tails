@@ -776,9 +776,7 @@ Given /^I kill the process "([^"]+)"$/ do |process|
 end
 
 Then /^Tails eventually (shuts down|restarts)$/ do |mode|
-  # In the Additional Software feature, we need to wait enough for
-  # tails-synchronize-data-to-new-persistent-volume to complete.
-  try_for(6 * 60) do
+  try_for(3 * 60) do
     if mode == 'restarts'
       @screen.find('TailsGreeter.png')
       true
@@ -941,6 +939,10 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     # "Terminal" and "Root Terminal" search results, so let's use a
     # keyword only found in the former's .desktop file.
     app_name = 'commandline'
+  when 'Persistent Storage'
+    # "Persistent Storage" also matches "Back Up Persistent Storage"
+    # (tails-backup.desktop).
+    app_name = 'Configure which files'
   end
   @screen.wait("GnomeApplicationsMenu#{$language}.png", 10)
   @screen.press('super')

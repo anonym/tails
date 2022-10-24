@@ -17,11 +17,14 @@ export TEXTDOMAIN
 # and run_browser_in_chroot().
 . /usr/local/lib/tails-shell-library/chroot-browser.sh
 
-# Import unsafe_browser_is_enabled and persistence_is_enabled
+# Import unsafe_browser_is_enabled
 . /usr/local/lib/tails-shell-library/tails-greeter.sh
 
 # Import nm_is_connected
 . /usr/local/lib/tails-shell-library/network.sh
+
+# Import tps_is_unlocked
+. /usr/local/lib/tails-shell-library/libtps.sh
 
 error () {
     local cli_text dialog_text
@@ -55,7 +58,7 @@ exit_because_disabled() {
 To <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and enable \
 the Unsafe Browser in the additional settings of the Welcome Screen.")"
     # Only mention the Persistent Storage if there is one (see #18551)
-    if persistence_is_enabled; then
+    if tps_is_unlocked; then
 	msg="${msg}""$(gettext "\n\nTo always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
     fi
 

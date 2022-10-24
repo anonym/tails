@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -eu
+
+FILE="/live/persistence/TailsData_unlocked/live-additional-software.conf"
+USER="tails-persistent-storage"
+
+create() {
+  if ! install --owner "${USER}" \
+             --group "${USER}" \
+             --mode 644 \
+             /dev/null \
+             "${FILE}"
+then
+  echo >&2 "Failed to create empty ${FILE}: $?"
+  exit 1
+fi
+}
+
+# Create the config file if it doesn't exist
+if ! [ -f "${FILE}" ]; then
+  create
+else
+  # Ensure that the config file has the correct permissions
+  chown "${USER}:${USER}" "${FILE}"
+  chmod 644 "${FILE}"
+  setfacl --remove-all "${FILE}"
+fi

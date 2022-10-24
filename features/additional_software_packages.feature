@@ -29,13 +29,11 @@ Feature: Additional software
     And I update APT using apt
     And I install "popularity-contest" using apt
     Then I am proposed to add the "popularity-contest" package to my Additional Software
-    And I create a persistent storage and activate the Additional Software feature
-    And I accept the persistence wizard's offer to restart Tails
-    And the computer reboots Tails
-    And the network is unplugged
-    And I enable persistence
-    And I log in to a new session
-    And Additional Software is correctly configured for package "popularity-contest"
+    When I create a persistent storage and activate the Additional Software feature
+    Then Additional Software is correctly configured for package "popularity-contest"
+    When I shutdown Tails and wait for the computer to power off
+    And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
+    Then Additional Software is correctly configured for package "popularity-contest"
     And the package "popularity-contest" is installed after Additional Software has been started
 
   # Depends on scenario: I set up Additional Software when installing a package without persistent partition and the package is installed next time I start Tails

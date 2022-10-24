@@ -45,7 +45,7 @@ class TCAApplication(Gtk.Application):
             flags=Gio.ApplicationFlags.FLAGS_NONE,
         )
         self.log = logging.getLogger(self.__class__.__name__)
-        self.config_buf, self.state_buf, portal_sock = recover_fd_from_parent()
+        self.state_buf, portal_sock = recover_fd_from_parent()
         self.controller = controller = Controller.from_port(port=9051)
         controller.set_caching(False)
         controller.authenticate(password=None)
@@ -56,19 +56,18 @@ class TCAApplication(Gtk.Application):
         set_tor_sandbox_fn = functools.partial(
             self.portal.call_async, "set-tor-sandbox"
         )
+        read_config_fn = functools.partial(
+            self.portal.call_async, "read-tca-config"
+        )
+        write_config_fn = functools.partial(
+            self.portal.call_async, "write-tca-config"
+        )
         self.configurator = TorLauncherUtils(
-            controller,
-            self.config_buf,
+            self.controller,
+            read_config_fn,
+            write_config_fn,
             self.state_buf,
             set_tor_sandbox_fn,
-        )
-        if self.has_been_started_already():
-            self.configurator.load_conf_from_tor()
-        else:
-            self.configurator.load_conf_from_file()
-        self.log.debug(
-            "Tor connection config: %s",
-            self.configurator.tor_connection_config.to_dict(),
         )
         self.netutils = TorLauncherNetworkUtils()
         self.args = args
@@ -85,6 +84,15 @@ class TCAApplication(Gtk.Application):
             self.has_persistence,
             self.has_unlocked_persistence,
         )
+
+    def load_configuration(self):
+        """Load our configuration, possibly asynchronously."""
+        if self.has_been_started_already():
+            # synchronous
+            self.configurator.load_conf_from_tor()
+        else:
+            # asynchronous
+            self.configurator.load_conf_from_file()
 
     def has_been_started_already(self):
         return self.configurator.read_tca_state() != {}
@@ -166,9 +174,35 @@ class TCAApplication(Gtk.Application):
             else:
                 GLib.timeout_add(100, wait_window)
 
-    def do_startup(self):
-        Gtk.Application.do_startup(self)
+    def finish_startup_if_configuration_has_been_loaded(self):
+        """If configuration has been loaded, finish startup of the app."""
+        if self.configurator.tor_connection_config is None:
+            self.log.debug(
+                "Our configuration was not loaded yet, let's wait some more"
+            )
+            return True
+        else:
+            self.log.debug(
+                "Tor connection config: %s",
+                self.configurator.tor_connection_config.to_dict(),
+            )
 
+            GLib.idle_add(self.finish_startup)
+
+            # Destroy the timer that called this method so it's not
+            # called again
+            return False
+
+    def finish_startup(self):
+        """Finish starting the application.
+
+        Set up everything that's still needed before we can say the
+        application is ready, then tell systemd we're ready and
+        display our main window.
+
+        In this method, we can assume the configuration has been
+        loaded already.
+        """
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
@@ -185,6 +219,30 @@ class TCAApplication(Gtk.Application):
             systemd.daemon.notify("READY=1")
         except OSError:  # not run as a systemd service
             pass
+
+        # We're now ready to finish initializing our main window
+        # and to display it on screen
+        GLib.idle_add(self.window.finish_init)
+
+    def do_startup(self):
+        """Set up the application when we received the `startup` signal."""
+        Gtk.Application.do_startup(self)
+
+        self.log.debug("Loading our configuration…")
+        # Note: in some cases, loading the configuration is
+        # asynchronous, so we have no guaranteed that the
+        # configuration has been loaded once this method exits, so
+        # we'll wait below using a timer before we do anything that
+        # needs the configuration.
+        self.load_configuration()
+
+        self.log.debug("Waiting for our configuration to be loaded…")
+        # Note: GLib does not start timers immediately when we're
+        # handling the `startup` signal: it really starts them only
+        # once we've created the main window, which we do in
+        # do_activate (i.e. when we're handling the `activate`
+        # signal).
+        GLib.timeout_add(100, self.finish_startup_if_configuration_has_been_loaded)
 
     def do_fetch_nm_state(self):
         def handle_hello_error(*args, **kwargs):
@@ -225,13 +283,18 @@ class TCAApplication(Gtk.Application):
         self.portal.call_async("get-network-time", on_get_network_time)
 
     def do_activate(self):
-        # We only allow a single window and raise any existing ones
+        """Handle the `activate` signal."""
         if self.window is None:
             # Windows are associated with the application
             # when the last one is closed the application shuts down
             self.window = TCAMainWindow(self)
 
-        self.window.show()
+        # Show the window if, and only if, we're not the primary
+        # instance of the application: for the primary instance,
+        # finish_startup_if_configuration_has_been_loaded takes care
+        # of it at a more appropriate time.
+        if self.get_is_remote():
+            self.window.show()
 
     def on_quit(self, action, param):
         self.full_quit()
@@ -293,9 +356,8 @@ if __name__ == "__main__":
     # stem is a really really noisy logger. set it to debug only if really needed
     logging.getLogger("stem").setLevel(logging.DEBUG)
 
-    _ = gettext.gettext
     GLib.set_prgname(tca.config.APPLICATION_TITLE)
-    GLib.set_application_name(_(tca.config.APPLICATION_TITLE))
+    GLib.set_application_name(tca.config.LOCALIZED_APPLICATION_TITLE)
 
     application = TCAApplication(args)
     application.run([sys.argv[0]])
