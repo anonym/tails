@@ -112,7 +112,7 @@ When /^I configure the Unsafe Browser to use a local proxy$/ do
   $vm.file_append(prefs,
                   "user_pref(\"network.proxy.socks_port\", #{proxy_port});\n")
   $vm.execute_successfully("sed -i -E '/^\s*export TOR_TRANSPROXY=1/d' " \
-                           "'/usr/local/sbin/unsafe-browser'")
+                           "'/usr/local/lib/unsafe-browser'")
 end
 
 Then /^I am told I cannot start the Unsafe Browser when I am offline$/ do
