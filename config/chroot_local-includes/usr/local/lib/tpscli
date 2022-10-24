@@ -1,0 +1,37 @@
+#!/bin/dash
+
+set -eu
+
+# shellcheck source=tails-shell-library/libtps.sh
+. /usr/local/lib/tails-shell-library/libtps.sh
+
+[ $# = 2 ] || exit 2
+
+SUBCOMMAND="$1"
+FEATURE_NAME="$2"
+
+case "$SUBCOMMAND" in
+    activate)
+	# This will fail if the feature is already active,
+	# so in some cases ensure-is-active is better suited.
+	tps_activate_feature "${FEATURE_NAME}"
+	;;
+    deactivate)
+	# This will fail if the feature is already inactive,
+	# so in some cases ensure-is-active is better suited.
+	tps_deactivate_feature "${FEATURE_NAME}"
+	;;
+    is-active)
+	tps_feature_is_active "${FEATURE_NAME}"
+	;;
+    ensure-is-active)
+	tps_ensure_feature_is_active "${FEATURE_NAME}"
+	;;
+    ensure-is-inactive)
+	tps_ensure_feature_is_inactive "${FEATURE_NAME}"
+	;;
+    *)
+	echo "Sub-command ${SUBCOMMAND} is not supported" >&2
+	exit 4
+	;;
+esac

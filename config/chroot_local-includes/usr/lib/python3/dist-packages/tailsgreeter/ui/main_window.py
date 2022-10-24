@@ -26,7 +26,6 @@ import sh
 import tailsgreeter                                             # NOQA: E402
 import tailsgreeter.config                                      # NOQA: E402
 from tailsgreeter.config import settings_dir, persistent_settings_dir, admin_password_path
-import tailsgreeter.utils                                       # NOQA: E402
 from tailsgreeter.settings import SettingNotFoundError
 from tailsgreeter.translatable_window import TranslatableWindow
 from tailsgreeter.ui.popover import Popover
@@ -44,7 +43,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gtk
 
 if TYPE_CHECKING:
-    from tailsgreeter.settings.persistence import PersistenceSettings
+    from tailsgreeter.settings.persistence import PersistentStorageSettings
     from tailsgreeter.ui.settings_collection import GreeterSettingsCollection
 
 
@@ -58,7 +57,7 @@ locale.bindtextdomain(TRANSLATION_DOMAIN, tailsgreeter.config.system_locale_dir)
 
 
 class GreeterMainWindow(Gtk.Window, TranslatableWindow):
-    def __init__(self, greeter, persistence_setting: "PersistenceSettings", settings: "GreeterSettingsCollection"):
+    def __init__(self, greeter, persistence_setting: "PersistentStorageSettings", settings: "GreeterSettingsCollection"):
         Gtk.Window.__init__(self, title=_(tailsgreeter.APPLICATION_TITLE))
         TranslatableWindow.__init__(self, self)
         self.greeter = greeter

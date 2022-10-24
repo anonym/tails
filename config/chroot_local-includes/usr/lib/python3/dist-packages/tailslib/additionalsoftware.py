@@ -9,7 +9,7 @@ import re
 
 import atomicwrites
 
-from tailslib import PERSISTENCE_SETUP_USERNAME
+from tailslib import PERSISTENT_STORAGE_USERNAME
 from tailslib.persistence import get_persistence_path
 
 
@@ -25,11 +25,11 @@ class ASPDataError(ASPError):
     pass
 
 
-def _write_config(packages, search_new_persistence=False):
-    config_file_owner_uid = pwd.getpwnam(PERSISTENCE_SETUP_USERNAME).pw_uid
-    config_file_owner_gid = grp.getgrnam(PERSISTENCE_SETUP_USERNAME).gr_gid
+def _write_config(packages):
+    config_file_owner_uid = pwd.getpwnam(PERSISTENT_STORAGE_USERNAME).pw_uid
+    config_file_owner_gid = grp.getgrnam(PERSISTENT_STORAGE_USERNAME).gr_gid
 
-    packages_list_path = get_packages_list_path(search_new_persistence)
+    packages_list_path = get_packages_list_path()
     try:
         os.setegid(config_file_owner_gid)
         os.seteuid(config_file_owner_uid)
@@ -48,26 +48,20 @@ def filter_package_details(pkg):
     return re.split("[/:=]", pkg)[0]
 
 
-def get_packages_list_path(search_new_persistence=False,
-                           return_nonexistent=False):
+def get_packages_list_path(return_nonexistent=False):
     """Return the package list file path in current or new persistence.
 
-    The search_new_persistence and return_nonexistent arguments are passed to
-    get_persistence_path.
+    The return_nonexistent arguments is passed to get_persistence_path.
     """
-    persistence_dir = get_persistence_path(search_new_persistence,
-                                           return_nonexistent)
+    persistence_dir = get_persistence_path(return_nonexistent)
     return os.path.join(persistence_dir, PACKAGES_LIST_FILE)
 
 
-def get_additional_packages(search_new_persistence=False):
-    """Return the list of all additional packages configured.
-
-    The search_new_persistence argument is passed to get_persistence_path.
-    """
+def get_additional_packages():
+    """Return the list of all additional packages configured."""
     packages = set()
     try:
-        with open(get_packages_list_path(search_new_persistence)) as f:
+        with open(get_packages_list_path()) as f:
             for line in f:
                 line = line.strip()
                 if line:
@@ -78,35 +72,33 @@ def get_additional_packages(search_new_persistence=False):
     return packages
 
 
-def add_additional_packages(new_packages, search_new_persistence=False):
+def add_additional_packages(new_packages):
     """Add packages to additional packages configuration.
 
     Add the packages to additional packages configuration.
 
     The new_packages argument should be a list of packages names.
-    The search_new_persistence argument is passed to get_persistence_path.
     """
     logging.info("Adding to additional packages list: %s" % new_packages)
-    packages = get_additional_packages(search_new_persistence)
+    packages = get_additional_packages()
     # The list of packages was initially provided by apt after installing them,
     # so we don't check the names.
     packages |= new_packages
 
-    _write_config(packages, search_new_persistence)
+    _write_config(packages)
 
 
-def remove_additional_packages(old_packages, search_new_persistence=False):
+def remove_additional_packages(old_packages):
     """Remove packages from additional packages configuration.
 
     Removes the packages from additional packages configuration.
 
     The old_packages argument should be a list of packages names.
-    The search_new_persistence argument is passed to get_persistence_path.
     """
     logging.info("Removing from additional packages list: %s" % old_packages)
-    packages = get_additional_packages(search_new_persistence)
+    packages = get_additional_packages()
     # The list of packages was initially provided by apt after removing them,
     # so we don't check the names.
     packages -= old_packages
 
-    _write_config(packages, search_new_persistence)
+    _write_config(packages)

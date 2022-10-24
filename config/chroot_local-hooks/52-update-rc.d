@@ -12,11 +12,10 @@ systemctl enable memlockd.service
 systemctl enable initramfs-shutdown.service
 systemctl enable onion-grater.service
 systemctl enable tails-allow-external-TailsData-access.service
-systemctl enable tails-synchronize-data-to-new-persistent-volume-on-shutdown.service
-systemctl enable tails-synchronize-tor-configuration-to-persistent-storage-on-shutdown.service
 systemctl enable tails-autotest-broken-Xorg.service
 systemctl enable tails-autotest-remote-shell.service
 systemctl enable tails-create-netns.service
+systemctl enable tails-persistent-storage.service
 systemctl enable tails-remove-overlayfs-dirs.service
 systemctl enable tails-set-wireless-devices-state.service
 systemctl enable tails-shutdown-on-media-removal.service
@@ -45,9 +44,6 @@ for bus in a11y ibus; do
 done
 
 # Use socket activation only, to delay the startup of cupsd.
-# In practice, this means that cupsd is started during
-# the initialization of the GNOME session, which is fine: by then,
-# the persistent /etc/cups has been mounted.
 systemctl disable cups.service
 systemctl enable  cups.socket
 
