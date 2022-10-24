@@ -38,10 +38,6 @@ pref("mailnews.auto_config.guess.sslOnly", true);
 pref("mailnews.auto_config.fetchFromExchange.enabled", false);
 pref("mailnews.auto_config.mx.enabled", false);
 
-// Drop auto-fetched configurations using Oauth2 -- they do not work
-// since we disable needed functionality (like JavaScript and cookies)
-// in the embedded browser.
-pref("mailnews.auto_config.account_constraints.allow_oauth2", false);
 // The timeout (in seconds) for each guess
 pref("mailnews.auto_config.guess.timeout", 30);
 
