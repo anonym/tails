@@ -40,8 +40,8 @@ Feature: Using persistent Tor bridges and pluggable transports
     When I choose to connect to Tor automatically
     And I accept Tor Connection's offer to use my persistent bridges
     And I disable saving bridges to Persistent Storage
-    And I click "Connect to Tor"
+    And I configure a direct connection in the Tor Connection Assistant
     Then I wait until Tor is ready
-    And tca.conf includes the configured bridges
+    And tca.conf includes no bridge
     And /var/lib/tca is not configured to persist
-    And all Internet traffic has only flowed through the configured bridges or connectivity check service
+    And all Internet traffic has only flowed through Tor or connectivity check service
