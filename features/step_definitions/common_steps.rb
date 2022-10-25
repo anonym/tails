@@ -672,8 +672,13 @@ Given /^all notifications have disappeared$/ do
     @screen.press('super', 'v') # Show the notification list
     @screen.wait('GnomeDoNotDisturb.png', 5)
     begin
-      gnome_shell.child('Clear', roleName:    'push button',
-                                 showingOnly: true).press
+      @screen.click(
+        *gnome_shell.child(
+          'Clear',
+          roleName:    'push button',
+          showingOnly: true
+        ).position
+      )
     rescue StandardError
       # Ignore exceptions: there might be no notification to clear, in
       # which case there will be a "No Notifications" label instead of
