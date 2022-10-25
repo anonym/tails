@@ -50,7 +50,7 @@ When /^I configure APT to use non-onion sources$/ do
   s{apow7mjfryruh65chtdydfmqfpj5btws7nbocgtaovhvezgccyjazpqd[.]onion}{deb.torproject.org};
   s{umjqavufhoix3smyq6az2sx4istmuvsgmz4bq5u5x56rnayejoo6l2qd[.]onion}{deb.tails.boum.org};
   SCRIPT
-  # VMCommand:s cannot handle newlines, and they're irrelevant in the
+  # RemoteShell::ShellCommand cannot handle newlines, and they're irrelevant in the
   # above perl script any way
   script.delete!("\n")
   $vm.execute_successfully(

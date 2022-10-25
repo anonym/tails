@@ -148,43 +148,6 @@ test-perl5lib:
   - dzil authordebs --install
   - dzil test --all
 
-test-persistence-setup:
-  rules:
-    - if: '$CI_COMMIT_BRANCH != "master"'
-  script:
-  - apt-get -qy install apt-file
-  - apt-get update -qq # Take into account APT configuration added by apt-file
-  - 'cat config/chroot_local-packageslists/tails-perl5lib.list
-         config/chroot_local-packageslists/tails-persistence-setup.list
-       | grep -E -v "^#"
-       | xargs apt-get -qy install'
-  - 'apt-get -qy install
-       libdist-zilla-plugin-test-notabs-perl
-       libdist-zilla-plugin-test-perl-critic-perl
-       libdist-zilla-app-command-authordebs-perl
-       libmodule-build-perl
-       libtest-most-perl
-       libtest-spec-perl
-       libtest-bdd-cucumber-perl
-       liblwp-online-perl
-       libdata-dumper-concise-perl
-       libtest-fatal-perl
-       libsys-statistics-linux-perl
-       seahorse-daemon
-       sudo
-       xvfb'
-  # Otherwise, apt-get called by "dzil authordebs --install" asks confirmation
-  - echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/yes
-  - cd $CI_PROJECT_DIR/config/chroot_local-includes/usr/src/perl5lib
-  - dzil authordebs --install
-  - cd $CI_PROJECT_DIR/config/chroot_local-includes/usr/src/persistence-setup
-  - dzil authordebs --install
-  - >
-    PERL5LIB=$CI_PROJECT_DIR/config/chroot_local-includes/usr/src/perl5lib/lib
-    TAILS_GIT_CHECKOUT=$CI_PROJECT_DIR
-    LC_ALL=C.UTF-8
-    xvfb-run --auto-servernum dzil test --all
-
 shellcheck:
   image: debian:testing
   script:
@@ -197,6 +160,11 @@ shellcheck:
     when: always
     reports:
       junit: shellcheck.xml
+
+test-persistent-storage-config-file:
+  script:
+    - apt-get -qy install python3 python3-gi acl
+    - config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/config_file_test.py
 
 test-python-doctest:
   script:

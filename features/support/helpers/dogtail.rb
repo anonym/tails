@@ -28,7 +28,9 @@ module Dogtail
   private_constant :TREE_API_NODE_SEARCH_FIELDS
 
   TREE_API_NODE_ACTIONS = [
+    :click,
     :doActionNamed,
+    :doubleClick,
     :grabFocus,
     :keyCombo,
     :point,

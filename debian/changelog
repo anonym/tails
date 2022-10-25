@@ -1,8 +1,65 @@
-tails (5.6) UNRELEASED; urgency=medium
+tails (5.8) UNRELEASED; urgency=medium
 
   * Dummy entry for next release.
 
- -- boyska <boyska@riseup.net>  Mon, 17 Oct 2022 12:15:32 +0200
+ -- boyska <boyska@riseup.net>  Mon, 17 Oct 2022 12:18:41 +0200
+
+tails (5.6) unstable; urgency=medium
+
+  * Upgrade Linux to 5.10.149 (tails/tails!935)
+
+    Closes issues:
+      - Fix beacown (tails/tails#19210)
+
+    Commits:
+      - Release process: bring back test that we can run locally, but not on Jenkins
+      - Really disable broken Thunderbird test
+      - Upgrade Linux to 5.10.149-1
+
+  * Disable broken Thunderbird test (tails/tails!934)
+
+    Commits:
+      - Disable broken Thunderbird test
+
+  * Upgrade Tor Browser to 11.5.5 (tails/tails!936)
+
+    Closes issues:
+      - Upgrade to Tor Browser 11.5.5 (ESR 91.13 + ESR 102.4 backports)
+        (tails/tails#19178)
+
+    Commits:
+      - Upgrade Tor Browser to 11.5.5
+
+  * post-release misc updates (tails/tails!932)
+
+    Commits:
+      - easier transmission-remote instructions
+      - avoid re-downloading if restarting
+      - better instructions for automated test suite
+
+  * Thunderbird: remove obsolete oauth2 pref (tails/tails!929)
+
+    Commits:
+      - Thunderbird: remove obsolete oauth2 pref
+
+  * Upgrader: when a manual upgrade is needed, point to the news & manual upgrade
+    doc without specifying a (probably incorrect) version (tails/tails!915)
+
+    Closes issues:
+      - Tails Upgrader recommends manual upgrades to deprecated versions
+        (tails/tails#17069)
+
+    Commits:
+      - Make /latest inline the translated version of the release notes
+      - Rewrite in Markdown
+      - Move latest release notes out of /news
+      - Improve phrasing
+      - Point to release notes of latest version only
+      - Upgrader: when a manual upgrade is needed, point to the news & manual upgrade
+        doc without specifying a version
+
+ -- Tails developers <tails@boum.org>  Mon, 24 Oct 2022 08:06:36 +0000
+>>>>>>> stable
 
 tails (5.5) unstable; urgency=medium
 
@@ -168,6 +225,7 @@ tails (5.5) unstable; urgency=medium
       - set rerun file from ruby
 
  -- Tails developers <tails@boum.org>  Thu, 13 Oct 2022 11:55:08 +0200
+>>>>>>> stable
 
 tails (5.4) unstable; urgency=medium
 
@@ -247,6 +305,7 @@ tails (5.4) unstable; urgency=medium
       - debug unsafe browser errors
 
  -- Tails developers <tails@boum.org>  Wed, 24 Aug 2022 13:18:27 +0200
+>>>>>>> stable
 
 tails (5.3.1) unstable; urgency=medium
 

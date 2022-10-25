@@ -418,6 +418,10 @@ end
 
 def tca_configure(mode, connect: true, &block)
   step 'the Tor Connection Assistant is running'
+  # this is the default, so why bother setting it?
+  # Some scenario switch back from bridges to direct connection, so we need to reset the value of this
+  # variable
+  @user_wants_pluggable_transports = (mode == :hide)
   case mode
   when :easy
     radio_button_label = '<b>Connect to Tor _automatically (easier)</b>'
@@ -924,12 +928,5 @@ Then /^tca.conf includes the configured bridges$/ do
                     end.split(':')
       { address: bridge_info[0], port: bridge_info[1].to_i }
     end
-  )
-end
-
-# Workaround for #18926
-When /^I apply a workaround to make sure Tor bridges are copied to persistence$/ do
-  $vm.execute_successfully(
-    '/usr/local/lib/tails-synchronize-tor-configuration-to-persistent-storage'
   )
 end

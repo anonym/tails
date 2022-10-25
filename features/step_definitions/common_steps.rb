@@ -13,7 +13,7 @@ end
 def post_snapshot_restore_hook(snapshot_name)
   $vm.wait_until_remote_shell_is_up
   unless snapshot_name.end_with?('tails-greeter')
-    @screen.wait("GnomeApplicationsMenu#{$language}.png", 10)
+    @screen.wait("GnomeApplicationsMenu#{$language}.png", 20)
   end
   post_vm_start_hook
 
@@ -621,7 +621,12 @@ end
 Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ do |page|
   case page
   when 'startup page'
-    titles = ['Tails', 'Tails - Trying a testing version of Tails', 'Tails - Welcome to Tails!']
+    titles = [
+      'Tails',
+      'Tails - Trying a testing version of Tails',
+      'Tails - Welcome to Tails!',
+      'Tails - Dear Tails user,',
+    ]
   when 'Tails homepage'
     titles = ['Tails']
   when 'Tails GitLab'
@@ -749,9 +754,7 @@ Given /^I kill the process "([^"]+)"$/ do |process|
 end
 
 Then /^Tails eventually (shuts down|restarts)$/ do |mode|
-  # In the Additional Software feature, we need to wait enough for
-  # tails-synchronize-data-to-new-persistent-volume to complete.
-  try_for(6 * 60) do
+  try_for(3 * 60) do
     if mode == 'restarts'
       @screen.find('TailsGreeter.png')
       true
@@ -917,6 +920,10 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     # "Terminal" and "Root Terminal" search results, so let's use a
     # keyword only found in the former's .desktop file.
     app_name = 'commandline'
+  when 'Persistent Storage'
+    # "Persistent Storage" also matches "Back Up Persistent Storage"
+    # (tails-backup.desktop).
+    app_name = 'Configure which files'
   end
   @screen.wait("GnomeApplicationsMenu#{$language}.png", 10)
   @screen.press('super')

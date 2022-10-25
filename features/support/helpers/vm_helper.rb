@@ -395,6 +395,10 @@ class VM
     !disk_xml_desc(name).nil?
   end
 
+  def persistent_storage_dev_on_disk(name)
+    disk_dev(name) + '2'
+  end
+
   def set_disk_boot(name, type)
     raise 'boot settings can only be set for inactive vms' if running?
 

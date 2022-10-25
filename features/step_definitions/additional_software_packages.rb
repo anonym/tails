@@ -51,19 +51,16 @@ end
 Then /^I create a persistent storage and activate the Additional Software feature$/ do
   click_gnome_shell_notification_button('Create Persistent Storage')
   step 'I create a persistent partition for Additional Software'
-  step 'The Additional Software persistence option is enabled'
-  save_persistence_settings
+  assert_additional_software_persistent_storage_feature_is_enabled
 end
 
-Then /^The Additional Software persistence option is enabled$/ do
-  @screen.wait('PersistenceWizardPresets.png', 60)
-  begin
-    @screen.find('ASPPersistenceSetupOptionEnabled.png')
-  rescue FindFailed
-    # We might have to scroll down to find it
-    @screen.press('Page_Down')
-    @screen.wait('ASPPersistenceSetupOptionEnabled.png', 10)
-  end
+def assert_additional_software_persistent_storage_feature_is_enabled
+  assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
+  additional_software_switch = persistent_storage_main_frame.child(
+    'Activate Additional Software',
+    roleName: 'toggle button'
+  )
+  assert additional_software_switch.checked
 end
 
 Then /^Additional Software is correctly configured for package "([^"]*)"$/ do |package|

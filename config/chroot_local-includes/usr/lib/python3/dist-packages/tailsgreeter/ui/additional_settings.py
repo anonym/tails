@@ -2,7 +2,6 @@ import gi
 
 from tailsgreeter import TRANSLATION_DOMAIN
 import tailsgreeter.config
-import tailsgreeter.utils
 from tailsgreeter.settings import SettingNotFoundError
 from tailsgreeter.ui import _
 from tailsgreeter.ui.setting import GreeterSetting

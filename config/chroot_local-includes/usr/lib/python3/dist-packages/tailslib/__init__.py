@@ -2,5 +2,5 @@
 #
 CLEARNET_USERNAME = "clearnet"
 LIVE_USERNAME = "amnesia"
-PERSISTENCE_SETUP_USERNAME = "tails-persistence-setup"
-PERSISTENCE_CONF_FILE = '/live/persistence/TailsData_unlocked/persistence.conf'
+LIVE_USER_UID = 1000
+PERSISTENT_STORAGE_USERNAME = "tails-persistent-storage"
