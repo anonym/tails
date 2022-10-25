@@ -4,12 +4,18 @@
 # https://gitlab.gnome.org/GNOME/gnome-music
 # Licensed under GPLv2 by the GNOME Music developers
 
+import os
+from tailslib.gnome import gnome_env
+
+for key, value in gnome_env().items():
+    os.environ[key] = value
+
+# NOQA:E402
 import argparse
 import locale
 import logging
 import gettext
 import gi
-import os
 from pathlib import Path
 import signal
 import sys
