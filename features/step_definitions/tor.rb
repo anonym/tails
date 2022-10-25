@@ -648,6 +648,7 @@ else
 end
 
 When /^I accept Tor Connection's offer to use my persistent bridges$/ do
+  @user_wants_pluggable_transports = true
   assert(
     tor_connection_assistant.child('Configure a Tor bridge',
                                    roleName: 'check box')
