@@ -719,8 +719,15 @@ end
 
 When /^I delete the persistent partition$/ do
   step 'I start "Persistent Storage" via GNOME Activities Overview'
-  assert persistent_storage_main_frame.button('Delete Persistent Storage')
-  persistent_storage_main_frame.button('Delete Persistent Storage').click
+
+  delete_btn = persistent_storage_main_frame.button('Delete Persistent Storage')
+  assert delete_btn
+
+  # If we just do delete_btn.click, then dogtail won't find tps-frontend anymore.
+  # That's probably a bug somewhere, and this is a simple workaround
+  delete_btn.grabFocus
+  @screen.press('Return')
+
   persistent_storage_frontend
     .child('Warning', roleName: 'alert')
     .button('Delete Persistent Storage').click
