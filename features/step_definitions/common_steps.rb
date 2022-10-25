@@ -13,7 +13,7 @@ end
 def post_snapshot_restore_hook(snapshot_name)
   $vm.wait_until_remote_shell_is_up
   unless snapshot_name.end_with?('tails-greeter')
-    @screen.wait("GnomeApplicationsMenu#{$language}.png", 10)
+    @screen.wait("GnomeApplicationsMenu#{$language}.png", 20)
   end
   post_vm_start_hook
 
@@ -621,7 +621,12 @@ end
 Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ do |page|
   case page
   when 'startup page'
-    titles = ['Tails', 'Tails - Trying a testing version of Tails', 'Tails - Welcome to Tails!']
+    titles = [
+      'Tails',
+      'Tails - Trying a testing version of Tails',
+      'Tails - Welcome to Tails!',
+      'Tails - Dear Tails user,',
+    ]
   when 'Tails homepage'
     titles = ['Tails']
   when 'Tails GitLab'
