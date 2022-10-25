@@ -30,7 +30,6 @@ from tailsgreeter.settings.localization_settings import LocalisationSettings
 from tailsgreeter.settings.macspoof import MacSpoofSetting
 from tailsgreeter.settings.network import NetworkSetting
 from tailsgreeter.settings.persistence import PersistentStorageSettings
-from tailsgreeter.settings.unsafe_browser import UnsafeBrowserSetting
 from tailsgreeter.translatable_window import TranslatableWindow
 from tailsgreeter.ui.additional_settings import AdminSettingUI, MACSpoofSettingUI, NetworkSettingUI, ObsoleteUnsafeBrowserSettingUI, ObsoleteNetworkSettingUI
 from tailsgreeter.ui.main_window import GreeterMainWindow
