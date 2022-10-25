@@ -418,6 +418,10 @@ end
 
 def tca_configure(mode, connect: true, &block)
   step 'the Tor Connection Assistant is running'
+  # this is the default, so why bother setting it?
+  # Some scenario switch back from bridges to direct connection, so we need to reset the value of this
+  # variable
+  @user_wants_pluggable_transports = (mode == :hide)
   case mode
   when :easy
     radio_button_label = '<b>Connect to Tor _automatically (easier)</b>'
