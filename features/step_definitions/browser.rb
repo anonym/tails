@@ -340,8 +340,8 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   end
   step 'I start the Tor Browser'
   step 'I open a new tab in the Tor Browser'
-  @screen.wait('ScreenKeyboard.png', 10)
-  @screen.wait(osk_key, 10).click
+  @screen.wait('ScreenKeyboard.png', 20)
+  @screen.wait(osk_key, 20).click
   @screen.wait(browser_bar_x, 20)
   step 'I kill the Tor Browser'
 end
