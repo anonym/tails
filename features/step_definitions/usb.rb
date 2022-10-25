@@ -213,7 +213,7 @@ When /^I disable the first persistence preset$/ do
     roleName: 'toggle button'
   )
   assert persistent_folder_switch.checked
-  persistent_folder_switch.click
+  persistent_folder_switch.toggle
   try_for(10) { !persistent_folder_switch.checked }
   @screen.press('alt', 'F4')
 end
