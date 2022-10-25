@@ -269,7 +269,7 @@ Then(/^the screen keyboard works in Thunderbird$/) do
     osk_key = 'ScreenKeyboardKeyPersian.png'
     thunderbird_x = 'ThunderbirdXPersian.png'
   end
-  @screen.wait('ScreenKeyboard.png', 10)
+  @screen.wait('ScreenKeyboard.png', 20)
   @screen.wait(osk_key, 20).click
   @screen.wait(thunderbird_x, 20)
 end
