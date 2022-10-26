@@ -44,7 +44,7 @@ exec_firefox_helper() {
     # fontconfig above.
     cd "${TBB_INSTALL}"
 
-    # From start-tor-browser:
+    # From start-browser:
     unset SESSION_MANAGER
 
     exec "${TBB_INSTALL}"/"${binary}" "${@}"

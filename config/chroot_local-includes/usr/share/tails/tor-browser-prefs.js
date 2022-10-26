@@ -1,4 +1,4 @@
-// As suggested in TBB's start-tor-browser script for system-wide Tor
+// As suggested in TBB's start-browser script for system-wide Tor
 // instances.
 // Warning: when updating this, also update
 // config/chroot_local-includes/etc/thunderbird/pref/thunderbird.js

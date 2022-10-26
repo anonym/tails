@@ -349,6 +349,7 @@ download_and_verify_files "${TBB_TARBALLS_BASE_URL}" "${TBB_TARBALLS}" "${TMP}"
 install_tor_browser "${TMP}/${MAIN_TARBALL}" "${TBB_INSTALL}"
 
 # sometime (?) this get added to a tor browser tarball; let's clean that
+rm -f /usr/local/lib/tor-browser/start-browser.orig
 rm -f /usr/local/lib/tor-browser/start-tor-browser.orig
 
 apply_prefs_hacks "${TBB_INSTALL}" "${TBB_TIMESTAMP}"
