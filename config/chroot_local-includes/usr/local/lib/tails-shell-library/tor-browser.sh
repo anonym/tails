@@ -26,12 +26,8 @@ exec_firefox_helper() {
     export FONTCONFIG_FILE="fonts.conf"
     export GNOME_ACCESSIBILITY=1
 
-    # Since Tor Browser 9.0 it has become integrated into the browser,
-    # so let's make it the responsibility of callers to explicitly set
-    # this variable to 0 if they want to enable Tor Launcher.
-    if [ -z "${TOR_SKIP_LAUNCH:-}" ]; then
-        export TOR_SKIP_LAUNCH=1
-    fi
+    # Don't let Tor Browser manage the tor daemon: we do it ourselves.
+    export TOR_SKIP_LAUNCH=1
     # New in 9.5: Avoid overwriting user's dconf values. Fixes #27903.
     export GSETTINGS_BACKEND=memory
 
