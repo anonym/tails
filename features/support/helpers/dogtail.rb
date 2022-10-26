@@ -74,7 +74,7 @@ module Dogtail
 
     def initialize(app_name, **opts)
       @var = "node#{@@node_counter += 1}"
-      @app_name = translate(app_name, **opts)
+      @app_name = app_name
       @opts = opts
       @opts[:user] ||= LIVE_USER
       @find_code = "dogtail.tree.root.application('#{@app_name}')"
