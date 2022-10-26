@@ -76,15 +76,9 @@ def unsafe_browser_application_info(defaults)
 end
 
 def xul_application_info(application)
-  default_address_bar_images =
-    [
-      "BrowserAddressBar#{$language}.png",
-      "BrowserAddressBar#{$language}Alt.png",
-    ]
-    .select { |n| File.exist?("#{GIT_DIR}/features/images/#{n}") }
   defaults = {
-    address_bar_images: default_address_bar_images,
-    unused_tbb_libs:    [
+    address_bar_image: "BrowserAddressBar#{$language}.png",
+    unused_tbb_libs:   [
       'libnssdbm3.so',
       'libmozavcodec.so',
       'libmozavutil.so',
@@ -104,7 +98,7 @@ end
 When /^I open a new tab in the (.*)$/ do |browser|
   info = xul_application_info(browser)
   @screen.click(info[:new_tab_button_image])
-  @screen.wait_any(info[:address_bar_images], 15)
+  @screen.wait(info[:address_bar_image], 15)
 end
 
 When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
@@ -112,7 +106,7 @@ When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
   info = xul_application_info(browser_name)
   open_address = proc do
     step "I open a new tab in the #{browser_name}"
-    @screen.find_any(info[:address_bar_images])[:match].click
+    @screen.click(info[:address_bar_image])
     # This static here since we have no reliable visual indicators
     # that we can watch to know when typing is "safe".
     sleep 5
