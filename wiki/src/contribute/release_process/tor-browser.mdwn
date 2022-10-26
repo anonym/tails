@@ -131,11 +131,8 @@ when the tarballs are fetched:
 
     (
         grep --color=never -E \
-            "\stor-browser-linux64-[0-9].*_en-US\.tar\.xz$" \
-            sha256sums-unsigned-build.txt \
-        && grep --color=never -E \
-            "\slangpacks-tor-browser-linux64-.*\.tar\.xz$" \
-            sha256sums-unsigned-build.txt \
+            "\stor-browser-linux64-([0-9]|tbb-nightly).*_ALL\.tar\.xz$" \
+            sha256sums-unsigned-build.txt
     ) > config/chroot_local-includes/usr/share/tails/tbb-sha256sums.txt
 
 Set download url
