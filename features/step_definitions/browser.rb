@@ -152,7 +152,7 @@ def page_has_loaded_in_the_tor_browser(page_titles)
     reload_action = 'Reload'
     separator = '—'
   end
-  try_for(180) do
+  try_for(180, delay: 3) do
     # The 'Reload' button (graphically shown as a looping arrow)
     # is only shown when a page has loaded, so once we see the
     # expected title *and* this button has appeared, then we can be sure
