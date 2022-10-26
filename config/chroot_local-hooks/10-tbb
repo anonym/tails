@@ -318,10 +318,6 @@ TBB_TARBALLS_BASE_URL="$(cat "${TBB_DIST_URL_FILE}")"
 TBB_TARBALLS="$(grep "\<tor-browser-linux64-.*\.tar.xz$" "${TBB_SHA256SUMS_FILE}")"
 
 MAIN_TARBALL="$(echo "${TBB_TARBALLS}" | grep -o "tor-browser-linux64-.*_ALL\.tar\.xz")"
-NIGHTLY_BUILD=
-if echo "${TBB_TARBALLS}" | grep --quiet 'tor-browser-linux64-tbb-nightly'; then
-    NIGHTLY_BUILD=yes
-fi
 
 TMP="$(mktemp -d)"
 download_and_verify_files "${TBB_TARBALLS_BASE_URL}" "${TBB_TARBALLS}" "${TMP}"
