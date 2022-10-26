@@ -138,7 +138,7 @@ Then /^the firewall is configured to only allow the (.+) users? to connect direc
          'access to the network')
 end
 
-Then /^the firewall's NAT rules only redirect traffic for Tor's TransPort and DNSPort$/ do
+Then /^the firewall's NAT rules only redirect traffic for the Unsafe Browser, Tor's TransPort, and DNSPort$/ do
   loopback_address = '127.0.0.1/32'
   tor_onion_addr_space = '127.192.0.0/10'
   tor_trans_port = '9040'
@@ -167,6 +167,17 @@ Then /^the firewall's NAT rules only redirect traffic for Tor's TransPort and DN
       assert(bad_rules.empty?,
              "The NAT table's OUTPUT chain contains some unexpected " \
              "rules:\n#{bad_rules}")
+    elsif name == 'POSTROUTING'
+      assert_equal(1, rules.size)
+      rule = rules.first
+      source = try_xml_element_text(rule, 'conditions/match/s')
+      # This is the IP address of veth-clearnet, the interface used in
+      # the clearnet network namespace that grants the Unsafe Browser
+      # full access to the Internet.
+      assert_equal('10.200.1.16/30', source)
+      actions = rule.get_elements('actions/*')
+      assert_equal(1, actions.size)
+      assert_equal('MASQUERADE', actions.first.name)
     else
       assert(rules.empty?,
              "The NAT table contains unexpected rules for the #{name} " \
@@ -573,7 +584,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
       # btn.labelee is the widget "labelled by" btn.
       # For details, see label-for and labelled-by accessibility relations
       # in main.ui.in, aka. "Label For" and "Labeled By" in Glade.
-      btn.labelee.click
+      btn.labelee.grabFocus
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
         @screen.paste(bridge[:line])
@@ -594,7 +605,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
           roleName: 'toggle button'
         )
         assert(!toggle_button.checked)
-        toggle_button.click
+        toggle_button.toggle
         try_for(10) { toggle_button.checked }
       end
     end
@@ -608,7 +619,7 @@ When /^I disable saving bridges to Persistent Storage$/ do
     roleName: 'toggle button'
   )
   assert(toggle_button.checked)
-  toggle_button.click
+  toggle_button.toggle
   try_for(10) { !toggle_button.checked }
 end
 
@@ -637,6 +648,7 @@ else
 end
 
 When /^I accept Tor Connection's offer to use my persistent bridges$/ do
+  @user_wants_pluggable_transports = true
   assert(
     tor_connection_assistant.child('Configure a Tor bridge',
                                    roleName: 'check box')
@@ -708,8 +720,11 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   time_dialog = tor_connection_assistant.child('Tor Connection - Fix Clock',
                                                roleName:    'dialog',
                                                showingOnly: true)
-  tz_label = time_dialog.child('UTC (Greenwich time)', roleName: 'label')
-  tz_label.click
+  # We'd like to click the time zone label to open the selection
+  # prompt, but labels expose no actions to Dogtail. Luckily it is
+  # selected by default so we can activate it by pressing the Space
+  # key.
+  @screen.press('Space')
 
   def get_visible_results(dialog)
     table = dialog.child(roleName: 'tree table')

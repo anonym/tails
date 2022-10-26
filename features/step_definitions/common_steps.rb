@@ -13,29 +13,9 @@ end
 def post_snapshot_restore_hook(snapshot_name)
   $vm.wait_until_remote_shell_is_up
   unless snapshot_name.end_with?('tails-greeter')
-    @screen.wait('DesktopTailsDocumentation.png', 20)
+    @screen.wait("GnomeApplicationsMenu#{$language}.png", 20)
   end
   post_vm_start_hook
-
-  # When restoring from a snapshot while the Greeter is running, on
-  # X.Org we encounter a (SPICE? GTK? QXL?) bug that makes its window
-  # invisible until redrawn. So as a workaround we move this window,
-  # to force a full redraw.
-  # This problem does not happen on Wayland so we can remove this hack
-  # when we switch to Wayland (#19042).
-  if snapshot_name.end_with?('tails-greeter')
-    unless @screen.exists('TailsGreeter.png')
-      # We cannot do this using "user: LIVE_USER" due to #19049
-      $vm.execute_successfully(
-        "env $(tr '\\0' '\\n' " \
-        '< /proc/$(pgrep --newest --euid Debian-gdm gnome-shell)/environ ' \
-        '| grep -E ' \
-        "'(DBUS_SESSION_BUS_ADDRESS|DISPLAY|XAUTHORITY|XDG_RUNTIME_DIR)') " \
-        'sudo -u Debian-gdm ' \
-        "xdotool search --onlyvisible 'Welcome to Tails!' windowmove --sync 0 0"
-      )
-    end
-  end
 
   # Increase the chances that by the time we leave this function, if
   # the click in post_vm_start_hook() has opened the Applications menu
@@ -433,13 +413,6 @@ Given /^I set an administration password$/ do
   @screen.wait('TailsGreeterLoginButton.png', 10)
 end
 
-Given /^I allow the Unsafe Browser to be started$/ do
-  open_greeter_additional_settings
-  @screen.wait('TailsGreeterUnsafeBrowser.png', 20).click
-  @screen.wait('TailsGreeterUnsafeBrowserEnable.png', 20).click
-  @screen.wait('TailsGreeterAdditionalSettingsAdd.png', 10).click
-end
-
 Given /^the Tails desktop is ready$/ do
   desktop_started_picture = "GnomeApplicationsMenu#{$language}.png"
   @screen.wait(desktop_started_picture, 180)
@@ -470,6 +443,11 @@ Given /^the Tails desktop is ready$/ do
   $vm.execute_successfully(
     'gsettings set org.gnome.desktop.interface toolkit-accessibility true',
     user: LIVE_USER
+  )
+  # And also for the root user for applications that run with
+  # sudo/pkexec under XWayland.
+  $vm.execute_successfully(
+    'DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/0/bus gsettings set org.gnome.desktop.interface toolkit-accessibility true'
   )
   # Optimize upgrade check: avoid 30 second sleep
   $vm.execute_successfully(
@@ -660,8 +638,8 @@ Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ d
 end
 
 When /^I request a new identity using Torbutton$/ do
-  @torbrowser.child('Tor Browser', roleName: 'push button').click
-  @torbrowser.child('New Identity', roleName: 'push button').click
+  @torbrowser.child('Tor Browser', roleName: 'push button').press
+  @torbrowser.child('New Identity', roleName: 'push button').press
 end
 
 When /^I acknowledge Torbutton's New Identity confirmation prompt$/ do
@@ -675,17 +653,12 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
   step 'the Tor Browser shows the ' \
        '"The proxy server is refusing connections" error'
   @screen.press('ctrl', 'd')
-  @screen.wait('TorBrowserBookmarkPrompt.png', 10)
+  prompt = @torbrowser.child('Add bookmark', roleName: 'panel')
+  prompt.click
   @screen.paste(url)
-  # The new default location for bookmarks is "Bookmarks Toolbar", but our test
-  # expects the new entry is available in "Bookmark Menu", that's why we need
-  # to select the location explicitly.
-  @screen.wait('TorBrowserBookmarkLocation.png', 10).click
-  @screen.wait('TorBrowserBookmarkLocationBookmarksMenu.png', 10).click
-  # Need to sleep here, otherwise the changed Bookmark location is not taken
-  # into account and we end up creating a bookmark in "Other Bookmark" location.
-  sleep 1
-  @screen.press('Return')
+  prompt.child('Location', roleName: 'combo box').open
+  prompt.child('Bookmarks Menu', roleName: 'menu item').click
+  prompt.button('Save').press
 end
 
 Given /^the Tor Browser has a bookmark to eff.org$/ do
@@ -699,8 +672,13 @@ Given /^all notifications have disappeared$/ do
     @screen.press('super', 'v') # Show the notification list
     @screen.wait('GnomeDoNotDisturb.png', 5)
     begin
-      gnome_shell.child('Clear', roleName:    'push button',
-                                 showingOnly: true).click
+      @screen.click(
+        *gnome_shell.child(
+          'Clear',
+          roleName:    'push button',
+          showingOnly: true
+        ).position
+      )
     rescue StandardError
       # Ignore exceptions: there might be no notification to clear, in
       # which case there will be a "No Notifications" label instead of
@@ -797,10 +775,13 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
 end
 
 def open_gnome_menu(name, menu_item)
+  menu_position = Dogtail::Application.new('gnome-shell')
+                                      .child(name, roleName: 'menu')
+                                      .position
   # On Bullseye the top bar menus are problematic: we generally have
   # to click several times for them to open.
   retry_action(20) do
-    Dogtail::Application.new('gnome-shell').child(name, roleName: 'menu').click
+    @screen.click(*menu_position)
     # Wait for the menu to be open and to have settled: sometimes menu
     # components appear too fast, before the menu has settled down to
     # its final size and the button we want to click is in its final
@@ -1005,7 +986,7 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   bookmark += ' (persistent)' if persistent_or_not == 'persistent'
   open_gnome_places_menu
   Dogtail::Application.new('gnome-shell').child(bookmark, roleName: 'label', showingOnly: true)
-  Dogtail::Application.new('gnome-shell').child('Places', roleName: 'menu').click
+  @screen.press('Escape')
 end
 
 def pulseaudio_sink_inputs
@@ -1067,7 +1048,7 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                  "/home/#{LIVE_USER}/Tor Browser"
                end
   @screen.press('ctrl', 'p')
-  @torbrowser.child('Save', roleName: 'push button').click
+  @torbrowser.child('Save', roleName: 'push button').press
   @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it
@@ -1373,13 +1354,6 @@ end
 When /^I disable the (.*) (system|user) unit$/ do |unit, scope|
   options = scope == 'system' ? '' : '--global'
   $vm.execute_successfully("systemctl #{options} disable '#{unit}'")
-end
-
-# Since the Unsafe Browser is disabled in most snapshots, this is
-# a little "cheat" to enable it any way.
-Given /^I magically allow the Unsafe Browser to be started$/ do
-  $vm.file_overwrite('/var/lib/live/config/tails.unsafe-browser',
-                     'TAILS_UNSAFE_BROWSER_ENABLED=true')
 end
 
 def git_on_a_tag

@@ -33,7 +33,7 @@ When(/^I kill the ((?:Tor|Unsafe) Browser)$/) do |browser|
   end
 
   # ugly fix to #18568; in my local testing, 3 seconds are always needed. Let's add some more.
-  # a better solution would be to wait until gnome "received" the fact that TorBrowser has gone away.
+  # a better solution would be to wait until GNOME "received" the fact that Tor Browser has gone away.
   sleep 5
 end
 
@@ -57,12 +57,12 @@ def tor_browser_application_info(defaults)
 end
 
 def unsafe_browser_application_info(defaults)
-  user = 'clearnet'
+  user = LIVE_USER
   binary = $vm.execute_successfully(
-    'echo ${TBB_INSTALL}/firefox.real', libs: 'tor-browser'
+    'echo ${TBB_INSTALL}/firefox.unsafe-browser', libs: 'tor-browser'
   ).stdout.chomp
   cmd_regex = "#{binary} .* " \
-              "-profile /home/#{user}/\.unsafe-browser/profile\.default"
+              "--profile /home/#{user}/\.unsafe-browser/profile\.default"
   defaults.merge(
     {
       user:                        user,
@@ -76,9 +76,14 @@ def unsafe_browser_application_info(defaults)
 end
 
 def xul_application_info(application)
+  default_address_bar_images =
+    [
+      "BrowserAddressBar#{$language}.png",
+      "BrowserAddressBar#{$language}Alt.png"
+    ]
+      .select { |n| File.exist?("#{GIT_DIR}/features/images/#{n}") }
   defaults = {
-    address_bar_images: ["BrowserAddressBar#{$language}.png",
-                         "BrowserAddressBar#{$language}Alt.png",],
+    address_bar_images: default_address_bar_images,
     unused_tbb_libs:    ['libnssdbm3.so', 'libmozavcodec.so', 'libmozavutil.so'],
   }
   case application
@@ -97,10 +102,11 @@ When /^I open a new tab in the (.*)$/ do |browser|
   @screen.wait_any(info[:address_bar_images], 15)
 end
 
-When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser|
-  step "I open a new tab in the #{browser}"
-  info = xul_application_info(browser)
+When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
+  browser = Dogtail::Application.new('Firefox')
+  info = xul_application_info(browser_name)
   open_address = proc do
+    step "I open a new tab in the #{browser_name}"
     @screen.find_any(info[:address_bar_images])[:match].click
     # This static here since we have no reliable visual indicators
     # that we can watch to know when typing is "safe".
@@ -114,17 +120,18 @@ When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser|
   recovery_on_failure = proc do
     @screen.press('Escape')
     @screen.wait_vanish(info[:browser_stop_button_image], 3)
-    open_address.call
   end
-  retry_method = if browser == 'Tor Browser'
+  retry_method = if browser_name == 'Tor Browser'
                    method(:retry_tor)
                  else
                    proc { |p, &b| retry_action(10, recovery_proc: p, &b) }
                  end
-  open_address.call
   retry_method.call(recovery_on_failure) do
-    @screen.wait_vanish(info[:browser_stop_button_image], 120)
-    @screen.wait(info[:browser_reload_button_image], 120)
+    open_address.call
+    try_for(120) do
+      !browser.child?('Stop', roleName: 'push button', retry: false) &&
+        browser.child?('Reload', roleName: 'push button', retry: false)
+    end
   end
 end
 
@@ -161,19 +168,20 @@ Then /^"([^"]+)" has loaded in the Tor Browser$/ do |title|
   page_has_loaded_in_the_tor_browser(title)
 end
 
-def xul_app_shared_lib_check(pid, chroot, expected_absent_tbb_libs = [])
+def xul_app_shared_lib_check(pid, expected_absent_tbb_libs = [])
   absent_tbb_libs = []
   unwanted_native_libs = []
-  tbb_libs = $vm.execute_successfully("ls -1 #{chroot}${TBB_INSTALL}/*.so",
+  tbb_libs = $vm.execute_successfully("ls -1 ${TBB_INSTALL}/*.so",
                                       libs: 'tor-browser').stdout.split
   firefox_pmap_info = $vm.execute("pmap --show-path #{pid}").stdout
+  native_libs = $vm.execute_successfully(
+    'find /usr/lib /lib -name "*.so"'
+  ).stdout.split
   tbb_libs.each do |lib|
     lib_name = File.basename lib
     absent_tbb_libs << lib_name unless /\W#{lib}$/.match(firefox_pmap_info)
-    native_libs = $vm.execute_successfully(
-      "find /usr/lib /lib -name \"#{lib_name}\""
-    ).stdout.split
     native_libs.each do |native_lib|
+      next unless native_lib.end_with?("/#{lib_name}")
       if /\W#{native_lib}$"/.match(firefox_pmap_info)
         unwanted_native_libs << lib_name
       end
@@ -194,7 +202,7 @@ Then /^the (.*) uses all expected TBB shared libraries$/ do |application|
   ).stdout.chomp
   pid = pid.scan(/\d+/).first
   assert_match(/\A\d+\z/, pid, "It seems like #{application} is not running")
-  xul_app_shared_lib_check(pid, info[:chroot], info[:unused_tbb_libs])
+  xul_app_shared_lib_check(pid, info[:unused_tbb_libs])
 end
 
 Then /^the (.*) chroot is torn down$/ do |browser|
@@ -340,6 +348,7 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   end
   step 'I start the Tor Browser'
   step 'I open a new tab in the Tor Browser'
+  @screen.wait_any(xul_application_info('Tor Browser')[:address_bar_images], 10)[:match].click
   @screen.wait('ScreenKeyboard.png', 20)
   @screen.wait(osk_key, 20).click
   @screen.wait(browser_bar_x, 20)
