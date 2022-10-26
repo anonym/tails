@@ -655,13 +655,8 @@ Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ d
 end
 
 When /^I request a new identity using Torbutton$/ do
-  @torbrowser.child('Tor Browser', roleName: 'push button').press
   @torbrowser.child('New Identity', roleName: 'push button').press
-end
-
-When /^I acknowledge Torbutton's New Identity confirmation prompt$/ do
-  @screen.wait('GnomeQuestionDialogIcon.png', 30)
-  @screen.press('y')
+  @torbrowser.child('Restart Tor Browser', roleName: 'push button').press
 end
 
 Given /^I add a bookmark to eff.org in the Tor Browser$/ do

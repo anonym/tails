@@ -99,7 +99,6 @@ Feature: Browsing the web using the Tor Browser
     And I open the Tails homepage in the Tor Browser
     Then the Tor Browser loads the Tails homepage
     When I request a new identity using Torbutton
-    And I acknowledge Torbutton's New Identity confirmation prompt
     Then the Tor Browser loads the startup page
 
   Scenario: WebRTC is disabled in Tor Browser
