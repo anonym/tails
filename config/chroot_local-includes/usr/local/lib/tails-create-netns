@@ -47,6 +47,29 @@ expose() {
 
 }
 
+expose_all() {
+    ns="$1"
+    hostAddress="$(get_netns_host_address "$ns")"
+    guestAddress="$(get_netns_guest_address "$ns")"
+    hostVeth="veth-${ns}"
+    netmask=30
+
+    ip netns exec "${ns}" ip route add default via "${hostAddress}"
+    tails-add-session-firewall-rule --apply -A FORWARD -i "${hostVeth}" -j ACCEPT
+    tails-add-session-firewall-rule --apply -A FORWARD -o "${hostVeth}" -j ACCEPT
+    tails-add-session-firewall-rule --apply -t nat -A POSTROUTING -s "${guestAddress}/${netmask}" -j MASQUERADE
+    sysctl net.ipv4.ip_forward=1
+    sysctl "net.ipv4.conf.${hostVeth}.forwarding=1"
+}
+
+forbid_incoming() {
+    ns="$1"
+    ip netns exec "$ns" iptables -P INPUT DROP
+    ip netns exec "$ns" iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+    ip netns exec "$ns" iptables -A INPUT -i lo -j ACCEPT
+
+}
+
 delete_netns() {
     # $1 = netns basename
     basename="$1"
@@ -97,8 +120,6 @@ create_netns() {
 
     ip netns exec "$nsName" iptables -t nat -A POSTROUTING -j MASQUERADE
 
-    sysctl net.ipv4.ip_forward=0
-    sysctl net.ipv4.conf.all.forwarding=0
     sysctl "net.ipv4.conf.${hostVeth}.forwarding=0"
 }
 
@@ -114,6 +135,7 @@ then
     delete_netns onioncircs
     delete_netns tca
     delete_netns onionshare
+    delete_netns clearnet
     exit
 fi
 
@@ -127,6 +149,7 @@ then
     create_netns onioncircs "${netBase}.5"
     create_netns tca "${netBase}.9"
     create_netns onionshare "${netBase}.13"
+    create_netns clearnet "${netBase}.17"
 
     # Exposing specific services to applications confined in netns
     expose tbb 9050 9050
@@ -135,5 +158,9 @@ then
     expose tca 9051 9051
     expose onionshare 9050 9050
     expose onionshare 9051 9051
+    expose_all clearnet
+    # We consider applications inside the clearnet namespace particularly untrusted:
+    # therefore, we also forbid them from receiving any external connection
+    forbid_incoming clearnet
 fi
 

@@ -395,6 +395,10 @@ class VM
     !disk_xml_desc(name).nil?
   end
 
+  def persistent_storage_dev_on_disk(name)
+    disk_dev(name) + '2'
+  end
+
   def set_disk_boot(name, type)
     raise 'boot settings can only be set for inactive vms' if running?
 
@@ -521,42 +525,6 @@ class VM
 
   def pidof(process)
     execute("pidof -x -o '%PPID' " + process).stdout.chomp.split
-  end
-
-  def select_virtual_desktop(desktop_number, user = LIVE_USER)
-    assert(desktop_number >= 0 && desktop_number <= 3,
-           'Only values between 0 and 1 are valid virtual desktop numbers')
-    execute_successfully(
-      "xdotool set_desktop '#{desktop_number}'",
-      user: user
-    )
-  end
-
-  def focus_window(window_title, user = LIVE_USER)
-    do_focus = lambda do
-      execute_successfully(
-        "xdotool search --name '#{window_title}' windowactivate --sync",
-        user: user
-      )
-    end
-
-    begin
-      do_focus.call
-    rescue ExecutionFailedInVM
-      # Often when xdotool fails to focus a window it'll work when retried
-      # after redrawing the screen.  Switching to a new virtual desktop then
-      # back seems to be a reliable way to handle this.
-      # Sadly we have to rely on a lot of sleep() here since there's
-      # little on the screen etc that we truly can rely on.
-      sleep 5
-      select_virtual_desktop(1)
-      sleep 5
-      select_virtual_desktop(0)
-      sleep 5
-      do_focus.call
-    end
-  rescue StandardError
-    # noop
   end
 
   def file_exist?(file)

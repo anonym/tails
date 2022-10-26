@@ -17,7 +17,7 @@ unset HTTP_PROXY
 unset https_proxy
 unset HTTPS_PROXY
 
-exec torsocks /usr/lib/wget/wget --passive-ftp "$@"
+exec torsocks --isolate /usr/lib/wget/wget --passive-ftp "$@"
 EOF
 
 chmod 755 /usr/bin/wget

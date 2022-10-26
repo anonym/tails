@@ -10,6 +10,7 @@ import pwd
 import shutil
 import subprocess
 import sys
+import time
 
 import apt.cache
 
@@ -24,10 +25,11 @@ from tailslib.additionalsoftware import (
     remove_additional_packages)
 
 from tailslib.persistence import (
+    additional_software_persistence_feature_is_active,
     has_unlocked_persistence,
     has_persistence,
     is_tails_media_writable,
-    launch_persistence_setup,
+    spawn_tps_frontend,
     PERSISTENCE_DIR)
 
 from tailslib.utils import launch_x_application
@@ -226,14 +228,13 @@ def _format_iterable(iterable):
         return str(iterable)
 
 
-def has_additional_packages_list(search_new_persistence=False):
+def has_additional_packages_list():
     """Return true iff a packages list file is found in a persistence.
 
     Log warnings in syslog.
-    The search_new_persistence argument is passed to get_persistence_path.
     """
     try:
-        packages_list_path = get_packages_list_path(search_new_persistence)
+        packages_list_path = get_packages_list_path()
     except FileNotFoundError as e:
         logging.warning("Warning: {}".format(e))
         return False
@@ -284,7 +285,7 @@ def handle_installed_packages(packages):
     actually add them if requested.
     """
     logging.info("New packages manually installed: %s" % packages)
-    if has_unlocked_persistence(search_new_persistence=True):
+    if has_unlocked_persistence():
         # Translators: Don't translate {packages}, it's a placeholder and will
         # be replaced.
         if _notify(_("Add {packages} to your additional software?").format(
@@ -296,7 +297,7 @@ def handle_installed_packages(packages):
                    urgent=True):
             try:
                 setup_additional_packages()
-                add_additional_packages(packages, search_new_persistence=True)
+                add_additional_packages(packages)
             except Exception as e:
                 _notify_failure(_("The configuration of your additional "
                                   "software failed."))
@@ -366,7 +367,7 @@ def handle_removed_packages(packages):
                _("Cancel"),
                urgent=True):
         try:
-            remove_additional_packages(packages, search_new_persistence=True)
+            remove_additional_packages(packages)
         except Exception as e:
             _notify_failure(_("The configuration of your additional "
                               "software failed."))
@@ -375,9 +376,7 @@ def handle_removed_packages(packages):
 
 def setup_additional_packages():
     """Enable additional software in persistence."""
-    launch_persistence_setup("--no-gui",
-                             "--no-display_finished_message",
-                             "--force_enable_preset", "AdditionalSoftware")
+    subprocess.check_call(["/usr/local/lib/tpscli", "ensure-is-active", "AdditionalSoftware"])
 
 
 def create_persistence_and_setup_additional_packages(packages):
@@ -389,26 +388,26 @@ def create_persistence_and_setup_additional_packages(packages):
     packages should be a list of packages names.
     """
     logging.info("Creating new persistent volume")
-    launch_persistence_setup("--step", "bootstrap",
-                             "--no-display_finished_message",
-                             "--force_enable_preset", "AdditionalSoftware")
-    add_additional_packages(packages, search_new_persistence=True)
-    # show persistence configuration
-    launch_persistence_setup()
-    # APT lists and APT archive cache will be synchronized by
-    # tails-synchronize-data-to-new-persistent-volume
+    # We start tps-frontend in the background and don't wait for it
+    # to exit, which may or may not ever happen.
+    spawn_tps_frontend()
+    logging.info("Waiting for Persistent Storage to be ready")
+    # This can take a while: tps is copying the APT lists and packages
+    # to the newly created Persistent Storage.
+    while not additional_software_persistence_feature_is_active():
+        time.sleep(2)
+    logging.info("Persistent Storage is ready, setting up additional packages")
+    add_additional_packages(packages)
 
 
 def show_configuration_window():
     """Show additional packages configuration window."""
-    launch_x_application(LIVE_USERNAME,
-                         "/usr/local/bin/tails-additional-software-config")
+    launch_x_application("/usr/local/bin/tails-additional-software-config")
 
 
 def show_system_log():
     """Show additional packages configuration window."""
-    launch_x_application(LIVE_USERNAME,
-                         "/usr/bin/gedit",
+    launch_x_application("/usr/bin/gedit",
                          ASP_LOG_FILE)
 
 
@@ -481,7 +480,7 @@ def apt_hook_post():
 
     additional_packages_names = {
         filter_package_details(pkg) for pkg in
-        get_additional_packages(search_new_persistence=True)
+        get_additional_packages()
     }
 
     apt_cache = apt.cache.Cache()

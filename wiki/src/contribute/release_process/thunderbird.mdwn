@@ -1,7 +1,8 @@
 [[!meta title="Updating Thunderbird patches"]]
 
-Until we have
+We have partially
 [[!tails_ticket 6156 desc="upstreamed our secure autoconfiguration patches"]]
+and eventually gave up, so
 we have to maintain a patch series for Thunderbird ourselves, that we apply
 while building Tails images.
 
@@ -9,7 +10,7 @@ We need to follow the following instructions whenever the patch series
 we have exported to tails.git does not apply anymore, therefore breaking
 the Tails images build process.
 
-1. Create, checkout and push a branch in `tails.git`.
+1. On `tails/tails`, checkout a new topic branch.
 
 1. The first time you do this requires some additional steps (WARNING!
    this will download almost 2 GiB of data):
@@ -43,7 +44,7 @@ the Tails images build process.
 
 1. Let's update our branch to the new version:
 
-        git checkout tails/buster && git merge origin/tails/buster && \
+        git checkout tails/bullseye && git merge origin/tails/bullseye && \
         git merge --no-edit "${TAG:?}"
 
 1. Let's ensure our patches still apply cleanly:
@@ -63,33 +64,47 @@ the Tails images build process.
          - If that branch already exists: rebase our own commits onto the
            `upstream/X.Y.Z` branch you are upgrading to. For example:
 
-                 git checkout secure_account_creation-91
+                 git checkout secure_account_creation-102
                  git pull
-                 git rebase -i --onto upstream/91.42.0 upstream/91.5.0
+                 git rebase -i --onto upstream/102.42.0 upstream/102.3.0
 
          - Else, if that branch does not exist yet, that's probably because you're
            upgrading to a major new Thunderbird release. In that case, fork the
            branch off our most recent such branch, then rebase our own commits
            onto the `upstream/X.Y.Z` branch you are upgrading to. For example:
 
-                 git checkout -b secure_account_creation-91 secure_account_creation-78
-                 git rebase -i --onto upstream/91.5.0 upstream/78.9.0
+                 git checkout -b secure_account_creation-102 secure_account_creation-91
+                 git rebase -i --onto upstream/102.42.0 upstream/91.5.0
 
          Either way, if a particular commit is not trivial to update,
          see [[!tails_ticket 6156]]: it might be OK to drop that patch.
 
       2. Use `git format-patch` to save our commits to files.
 
-         For example: `git format-patch upstream/91.5.0..secure_account_creation-91`
+         For example: `git format-patch upstream/102.42.0..secure_account_creation-102`
 
-      3. On the `tails/buster` branch, replace the contents of
+      3. On the `tails/bullseye` branch, replace the contents of
          `debian/patches/secure-account-creation/` with these updated patches.
 
       4. Update `debian/patches/series`.
 
+      5. Commit
+
+      6. Verify that the updated patches apply cleanly:
+
+             quilt push -a
+
+      7. Regardless of whether our patches applied cleanly, clean up:
+
+             quilt pop -a && rm -rf .pc
+
+      8. Push. For example:
+
+                 git push --follow-tags -u origin secure_account_creation-102
+
 1. Git push:
 
-        git push --follow-tags origin tails/buster
+        git push --follow-tags origin tails/bullseye
 
 1. Set variables according to your local environment:
 

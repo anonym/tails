@@ -18,9 +18,6 @@ fi
 try_cleanup_browser_chroot () {
     local chroot="${1}"
     local cow="${2}"
-    local user="${3}"
-    try_for 10 "pkill -u ${user} 1>/dev/null 2>&1" 0.1 || \
-        pkill -9 -u "${user}" || :
     # findmnt sorts submounts so we just have to revert the list to
     # have the proper umount order. We use `tail` to suppress the
     # "TARGET" column header.
@@ -38,12 +35,8 @@ try_cleanup_browser_chroot () {
 setup_chroot_for_browser () {
     local chroot="${1}"
     local cow="${2}"
-    local user="${3}"
 
-    # FIXME: When LXC matures to the point where it becomes a viable option
-    # for creating isolated jails, the chroot can be used as its rootfs.
-
-    local cleanup_cmd="try_cleanup_browser_chroot \"${chroot}\" \"${cow}\" \"${user}\""
+    local cleanup_cmd="try_cleanup_browser_chroot \"${chroot}\" \"${cow}\""
     # shellcheck disable=SC2064
     trap "${cleanup_cmd}" INT EXIT
 
@@ -63,15 +56,11 @@ setup_chroot_for_browser () {
     # Remove the trailing colon
     lowerdirs=${lowerdirs%?}
 
-    mkdir -p "${cow}" "${chroot}" && \
-    mount -t tmpfs tmpfs "${cow}" && \
-    mkdir "${cow}/rw" "${cow}/work" && \
-    mount -t overlay -o "noatime,lowerdir=${lowerdirs},upperdir=${cow}/rw,workdir=${cow}/work" overlay "${chroot}" && \
-    chmod 755 "${chroot}" && \
-    mount -t proc proc "${chroot}/proc" && \
-    mount --bind "/dev" "${chroot}/dev" && \
-    mount -t tmpfs -o rw,nosuid,nodev tmpfs "${chroot}/dev/shm" || \
-        return 1
+    mkdir -p "${cow}" "${chroot}"
+    mount -t tmpfs tmpfs "${cow}"
+    mkdir "${cow}/rw" "${cow}/work"
+    mount -t overlay -o "noatime,lowerdir=${lowerdirs},upperdir=${cow}/rw,workdir=${cow}/work" overlay "${chroot}"
+    chmod 755 "${chroot}"
 }
 
 browser_conf_dir () {
@@ -252,7 +241,13 @@ configure_chroot_browser () {
     # to extensions to enable.
     local best_locale
     best_locale="$(guess_best_tor_browser_locale)"
+    local browser_user_uid
+    browser_user_uid="$(id --user "${browser_user}")"
 
+    if ! chroot "${chroot}" id -a "${browser_user}" 2>/dev/null; then
+        chroot "${chroot}" addgroup --quiet --gid 1000 "${browser_user}"
+        chroot "${chroot}" adduser  --quiet --disabled-password --gecos "" --uid 1000 --gid 1000 "${browser_user}"
+    fi
     configure_chroot_browser_profile "${chroot}" "${browser_name}" \
         "${browser_user}" "${home_page}" "${@}"
     set_chroot_browser_locale "${chroot}" "${browser_name}" "${browser_user}" \
@@ -266,24 +261,10 @@ configure_chroot_browser () {
         'https-everywhere'
     set_chroot_browser_permissions "${chroot}" "${browser_name}" \
         "${browser_user}"
-}
-
-# Start the browser in the chroot
-run_browser_in_chroot () {
-    local chroot="${1}"
-    local browser_name="${2}"
-    local chroot_user="${3}"
-    local local_user="${4}"
-    local wm_class="${5}"
-    local profile
-    profile="$(browser_profile_dir "${browser_name}" "${chroot_user}")"
-
-    sudo -u "${local_user}" xhost "+SI:localuser:${chroot_user}"
-    chroot "${chroot}" sudo -u "${chroot_user}" /bin/sh -c \
-        ". /usr/local/lib/tails-shell-library/tor-browser.sh && \
-         export TOR_TRANSPROXY=1 && \
-         exec_firefox --class='${wm_class}' \
-                      --name '${wm_class}' \
-                      -profile '${profile}'"
-    sudo -u "${local_user}" xhost "-SI:localuser:${chroot_user}"
+    # Later we'll instruct bwrap to mount certain files within
+    # /run/user/$uid/ but it does not handle the mixed permissions in
+    # the path and will fail to create the $uid folder, so we do it
+    # manually here instead.
+    install --directory --owner="${browser_user}" --group="${browser_user}" \
+       "${chroot}/run/user/${browser_user_uid}"
 }

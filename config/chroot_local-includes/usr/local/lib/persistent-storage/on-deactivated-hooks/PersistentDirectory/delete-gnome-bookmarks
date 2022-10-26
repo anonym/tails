@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+set -u
+
+PERSISTENT_DIR='/home/amnesia/Persistent'
+TOR_BROWSER_PERSISTENT_DIR='/home/amnesia/Persistent/Tor Browser'
+sudo -u amnesia /usr/local/lib/remove-GNOME-bookmark "${PERSISTENT_DIR}" || true
+sudo -u amnesia /usr/local/lib/remove-GNOME-bookmark \
+     "${TOR_BROWSER_PERSISTENT_DIR}" "Tor Browser (persistent)" || true

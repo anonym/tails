@@ -363,7 +363,6 @@ After('@product') do |scenario|
           command: 'ls -lA --full-time /live/persistence/TailsData_unlocked',
           id:      'persistent_volume'
         )
-        save_vm_file_content('/var/log/live-persist')
         save_vm_file_content('/run/live-additional-software/log')
       end
     end

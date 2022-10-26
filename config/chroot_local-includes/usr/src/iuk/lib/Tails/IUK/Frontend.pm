@@ -516,14 +516,13 @@ method run () {
     else {
         exit(0) unless($self->dialog(
             __x(
-                "<b>You should do a manual upgrade to {name} {version}.</b>\n\n".
+                "<b>You should do a manual upgrade to the latest version of {name}.</b>\n\n".
                 "For more information about this new version, go to {details_url}\n\n".
-                "It is not possible to automatically upgrade ".
-                "your device to this new version: {explanation}.\n\n".
+                "It is impossible to do an automatic upgrade of ".
+                "your Tails to this new version.\n\n".
                 "To learn how to do a manual upgrade, go to {manual_upgrade_url}",
-                details_url        => $upgrade_path->{'details-url'},
+                details_url        => q{https://tails.boum.org/latest},
                 name               => $upgrade_description->product_name,
-                version            => $upgrade_path->{version},
                 explanation        => $self->no_incremental_explanation($no_incremental_reason),
                 manual_upgrade_url => 'https://tails.boum.org/doc/upgrade/#manual',
             ),

@@ -1400,15 +1400,28 @@ You probably already know how to do that, but keep this in mind:
  - if you are running this and going AFK for long time (ie: overnight) you might want to
    keep your CPU busy by rerunning failed scenarios
 
-So here is a good example of how you can do this. Run this *as root* and with *bash*:
+ - if the following conditions are met:
+    - you are making out an emergency release OR you still feel the need to make the release as soon as
+      possible for security reasons
+    - you are *not* running test overnight, so skipping tests will reduce the lead time
+   then, feel free to skip testing `@not_release_blocker`, setting
+   `what=(--tag ~@not_release_blocker)` in the following example.
+
+So here is a good example of how you can do this. Tweak it to adapt it to your directory structure.
+Run this *as root* and with *bash*:
 
 ```
 (
-args=(--tmpdir "../release/${VERSION}" --keep-snapshots --capture --view --iso yourpathto/tails-amd64-${VERSION}.iso --old-iso previous_version.iso)
-./run_test_suite "${args[@]}"
+tmpdir="$HOME/tails/release/test-results/${VERSION:?}"
+what=()
+args=(--tmpdir "$tmpdir" --keep-snapshots --capture --view
+        --iso ${ISOS:?}/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.iso
+        --old-iso ${ISOS:?}/tails-amd64-${PREVIOUS_VERSION:?}/tails-amd64-${PREVIOUS_VERSION:?}.iso
+    )
+./run_test_suite "${args[@]}" "${what[@]}"
 
 while true; do
-    sudo ./run_test_suite "${args[@]}" "@$(find /tmp/TailsToaster/ -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|head -n1)"
+    ./run_test_suite "${args[@]}" "@$(find "${tmpdir:?}" -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|head -n1)"
     sleep 3
 done
 )
@@ -1820,10 +1833,11 @@ If you just released a final release
 
          ssh bittorrent.lizard transmission-remote --list | grep --fixed-strings "tails-amd64-${PREVIOUS_VERSION:?}-i"
 
-     Then delete them with:
+     Then delete them with (`PREVIOUS_VERSION_TRANSMISSION_IDS` must be a
+     comma-separated list of IDs, based on the previous commnad):
 
          ssh bittorrent.lizard transmission-remote \
-             -t "${PREVIOUS_VERSION_TRANSMISSION_ID:?}" --remove-and-delete
+             -t "${PREVIOUS_VERSION_TRANSMISSION_IDS:?}" --remove-and-delete
 
      Finally, check that everything looks good:
 

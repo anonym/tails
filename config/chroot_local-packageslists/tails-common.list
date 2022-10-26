@@ -31,8 +31,13 @@ inotify-tools
 libnotify-bin
 # needed by tails-documentation
 libgtk-3-bin
-# needed by live-persist
+# needed by the Persistent Storage service
 acl
+libblockdev-crypto2
+# needed by the Persistent Storage frontend
+gir1.2-handy-1
+gnome-icon-theme
+libpwquality-tools
 # needed by the Unsafe Browser
 zenity
 # Needed by tails-htp-notify-user and others
@@ -258,16 +263,6 @@ b43-fwcutter
 firmware-b43-installer
 firmware-b43legacy-installer
 
-### Xorg
-xorg
-xserver-xorg-input-all
-xserver-xorg-legacy
-xserver-xorg-video-all
-xserver-xorg-video-cirrus
-xserver-xorg-video-intel
-xserver-xorg-video-modesetting
-xserver-xorg-video-amdgpu
-
 ### Input methods
 ibus-gtk
 ibus-gtk3
@@ -356,9 +351,8 @@ pciutils
 libccid
 pcscd
 
-### Spice and QXL
+### Spice
 spice-vdagent
-xserver-xorg-video-qxl
 
 ### Wireless regulation
 crda

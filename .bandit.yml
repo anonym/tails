@@ -1,0 +1,8 @@
+skips:
+ - B101  # We don't compile Python code so our `assert`s won't be optimized out
+ - B322  # We only use Python 3, where input() is safe
+ - B404  # We are aware of the security implications associated with subprocess
+exclude_dirs:
+ - submodules/chutney
+ - submodules/live-build
+ - submodules/torbrowser-launcher
