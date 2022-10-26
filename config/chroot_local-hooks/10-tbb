@@ -74,7 +74,7 @@ install_tor_browser() {
     # https://gitlab.torproject.org/tpo/applications/tor-browser-build/-/blob/main/projects/firefox/abicheck.cc
     # cp "${prep}"/TorBrowser/Tor/libstdc++/libstdc++.so.6 "${prep}"
 
-    # We don't need the Tor binary, the shared libraries Tor needs
+    # We don't need the tor binary, the shared libraries tor needs
     # (but Firefox doesn't) and documentation shipped in the TBB.
     rm -r "${prep}"/TorBrowser/Tor "${prep}"/TorBrowser/Docs
 
