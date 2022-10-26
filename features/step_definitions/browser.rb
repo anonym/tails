@@ -266,19 +266,19 @@ def page_has_heading(page_title, heading)
 end
 
 Then /^the Tor Browser shows the "([^"]+)" error$/ do |error|
-  try_for(60) do
+  try_for(60, delay: 3) do
     page_has_heading('Problem loading page — Tor Browser', error)
   end
 end
 
 Then /^Tor Browser displays a "([^"]+)" heading on the "([^"]+)" page$/ do |heading, page_title|
-  try_for(60) do
+  try_for(60, delay: 3) do
     page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
 
 Then /^Tor Browser displays a '([^']+)' heading on the "([^"]+)" page$/ do |heading, page_title|
-  try_for(60) do
+  try_for(60, delay: 3) do
     page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
