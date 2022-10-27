@@ -614,7 +614,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
         tor_connection_assistant.child('_Ask for a bridge by email',
                                        roleName: 'radio button')
                                 .click
-        tor_connection_assistant.child('Scan QR Code',
+        tor_connection_assistant.child('Scan QR code',
                                        roleName: 'push button')
                                 .click
         try_for(30) do
