@@ -61,7 +61,7 @@ Vagrant.configure('2') do |config|
     end
     if ENV['TAILS_WEBSITE_CACHE'] == '1'
       domain.storage(
-        :file, size: '2G', allow_existing: true,
+        :file, size: '3G', allow_existing: true,
         path: 'tails-website-cache.qcow2'
       )
     end
