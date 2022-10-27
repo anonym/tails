@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# No "set -e" because we need to capture the exit status of gdm-wayland-session.real
+set -u
+
+# To test this functionality:
+# - Either pass autotest_broken_gnome_shell on the kernel command line.
+# - Or prevent the kernel from loading the DRM module needed to
+#   properly support the graphics card on your test system.
+#   For example, for a VM using QXL graphics, add module_blacklist=qxl
+#   to the kernel command line.
+
+/usr/libexec/gdm-wayland-session.real "$@"
+
+RET=$?
+
+if [ $RET -ne 0 ] ; then
+    # Trigger OnFailure=tails-gdm-failed-to-start.service
+    echo "gdm-wayland-session failed, stopping GDM"
+    sudo -n /bin/systemctl kill --signal=9 gdm
+fi
+
+exit $RET

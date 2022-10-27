@@ -1,8 +1,8 @@
 [Unit]
 Description=Guide the user when GDM fails to start
-# GDM normally runs "plymouth --quit" when it fails to start the X server
+# GDM normally runs "plymouth --quit" when it fails to start GNOME Shell
 # (see on_display_status_changed that calls plymouth_quit_without_transition).
-# But when this happens we kill -9 GDM in our gdm-x-session wrapper, so it
+# But when this happens we kill -9 GDM in our gdm-wayland-session wrapper, so it
 # might not have time to quit plymouth yet. Therefore we ensure plymouth
 # has quit before we start: we run after plymouth-quit.service (which is started
 # by gdm.service's default OnFailure=), we have plymouth-quit-wait.service start,
@@ -11,7 +11,7 @@ After=plymouth-quit.service
 Requires=plymouth-quit-wait.service
 After=plymouth-quit-wait.service
 
-# for instructions on how to test this unit, see config/chroot_local-includes/usr/lib/gdm3/gdm-x-session.tails
+# for instructions on how to test this unit, see config/chroot_local-includes/usr/libexec/gdm-wayland-session.tails
 
 [Service]
 Type=oneshot
