@@ -16,48 +16,23 @@ def thunderbird_inbox
   folder_view.child(/^Inbox( .*)?$/, roleName: 'table row', recursive: false)
 end
 
-def enable_thunderbird_mozilla_cfg
-  $vm.file_overwrite(
-    '/usr/share/thunderbird/defaults/pref/autoconfig.js',
-    <<~PREFS
-      // This file must start with a comment or something
-      pref("general.config.filename", "mozilla.cfg");
-      pref("general.config.obscure_value", 0);
-    PREFS
-  )
-end
-
 def thunderbird_install_host_snakeoil_ssl_cert
   # Inspiration:
   # * https://wiki.mozilla.org/CA:AddRootToFirefox
   # * https://mike.kaply.com/2015/02/10/installing-certificates-into-firefox/
   debug_log('Installing host snakeoil SSL certificate')
-  enable_thunderbird_mozilla_cfg
-  cert = File.read('/etc/ssl/certs/ssl-cert-snakeoil.pem')
-             .split("\n")
-             .reject { |line| /^-----(BEGIN|END) CERTIFICATE-----$/.match(line) }
-             .join
-  $vm.file_overwrite(
-    '/usr/lib/thunderbird/mozilla.cfg',
-    <<~JS
-      // This file must start with a comment or something
-      var observer = {
-        observe: function observe(aSubject, aTopic, aData) {
-          var certdb = Components.classes["@mozilla.org/security/x509certdb;1"].getService(Components.interfaces.nsIX509CertDB);
-          var certdb2 = certdb;
-          try {
-            certdb2 = Components.classes["@mozilla.org/security/x509certdb;1"].getService(Components.interfaces.nsIX509CertDB2);
-          } catch (e) {}
+  local_cert_path = '/etc/ssl/certs/ssl-cert-snakeoil.pem'
+  vm_db_path = "/home/#{LIVE_USER}/.thunderbird/profile.default/cert9.db"
+  local_db_path = './cert9.db'
+  local_db_uri = "sql:#{File.dirname(local_db_path)}"
+  File.unlink(local_db_path) if File.exist?(local_db_path)
 
-          cert = "#{cert}";
+  cmd_helper(['certutil', '-d', local_db_uri, '-A', '-i', local_cert_path, '-n', 'snakeoil', '-t', 'TCu,TCu,TCu'])
 
-          certdb2.addCertFromBase64(cert, "TCu,TCu,TCu", "");
-        }
-      }
-      Components.utils.import("resource://gre/modules/Services.jsm");
-      Services.obs.addObserver(observer, "profile-after-change", false);
-    JS
-  )
+  $vm.execute_successfully("mkdir -p #{File.dirname(vm_db_path)}")
+  assert File.exist?(local_db_path)
+  $vm.file_copy_local(local_db_path, vm_db_path)
+  $vm.execute_successfully("chown -R #{LIVE_USER}. /home/#{LIVE_USER}/.thunderbird/")
 end
 
 When /^I start Thunderbird$/ do
