@@ -541,7 +541,38 @@ end
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 
-When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?( without connecting|)$/ do |persistent, bridge_type, mode, connect|
+def feed_qr_code_video_to_virtual_webcam(qrcode_image)
+  white_image = '/usr/share/tails/test_suite/white.jpg'
+  # Display a white picture for 15s, then slide in the QR code from
+  # the right in 5s, and leave it there for another 10s.
+  #
+  # How to hack:
+  #
+  #  - The parameters are managed in this part: ((t-15)*w/5). That -15
+  #    tells to start after 15s, that /5 is the speed (the highest
+  #    the divider, the slowest is the transition).
+  #  - We believe the -t 30 and -t 15 play a role, too.
+  $vm.spawn(
+    "ffmpeg -nostdin -re -loop 1 -t 30 -i #{white_image} -loop 1 -t 15 -i #{qrcode_image} -filter_complex \"[0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:#FFFFFF@1[v0]; [1:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:#FFFFFF@1,setpts=PTS-STARTPTS[v1]; [v0][v1] overlay=x='max(w-((t-15)*w/5)\,0)'[vv0]; [vv0] format=yuv420p [video]\" -map \"[video]\" -f v4l2 /dev/video0",
+    user: LIVE_USER
+  )
+end
+
+def setup_qrcode_bridges_on_webcam(bridges)
+  $vm.execute_successfully('modprobe v4l2loopback')
+  qrcode_image = save_qrcode(
+    '[' + \
+    bridges.map { |bridge| "'" + bridge[:line] + "'" }
+      .join(', ') + \
+    ']'
+  )
+  $vm.file_copy_local(qrcode_image, '/tmp/qrcode.jpg')
+  feed_qr_code_video_to_virtual_webcam('/tmp/qrcode.jpg')
+  # Give ffmpeg time to start pushing frames to the virtual webcam
+  sleep 5
+end
+
+When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in the Tor Connection Assistant(?: in (easy|hide) mode)?( without connecting|)$/ do |persistent, bridge_type, qr_code, mode, connect|
   # If the "mode" isn't specified we pick one that makes sense for
   # what is requested.
   config_mode = if mode.nil?
@@ -576,18 +607,41 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
                                      roleName: 'radio button')
                               .click
     else
-      btn = tor_connection_assistant.child(
-        '_Enter a bridge that you already know',
-        roleName: 'radio button'
-      )
-      btn.click
-      # btn.labelee is the widget "labelled by" btn.
-      # For details, see label-for and labelled-by accessibility relations
-      # in main.ui.in, aka. "Label For" and "Labeled By" in Glade.
-      btn.labelee.grabFocus
+      if qr_code
+        # We currently support only 1 bridge
+        qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
+        setup_qrcode_bridges_on_webcam(qr_code_bridges)
+        tor_connection_assistant.child('_Ask for a bridge by email',
+                                       roleName: 'radio button')
+                                .click
+        tor_connection_assistant.child('Scan QR code',
+                                       roleName: 'push button')
+                                .click
+        try_for(30) do
+          all_labels = tor_connection_assistant.children(roleName: 'label')
+          label = all_labels.find do |node|
+            node.text.start_with? "Scanned #{bridge_type} bridge"
+          end
+          !label.nil?
+        end
+      else
+        btn = tor_connection_assistant.child(
+          '_Enter a bridge that you already know',
+          roleName: 'radio button'
+        )
+        btn.click
+        # we'd like to use btn.labelee, which is the semantic way to reach the text entry
+        # (for details, see label-for and labelled-by accessibility relations
+        # in main.ui.in, aka. "Label For" and "Labeled By" in Glade)
+        # however, this doesn't seem to work anymore
+        tor_connection_assistant.child(roleName: 'text').grabFocus
+        chutney_bridges(bridge_type).each do |bridge|
+          @screen.paste(bridge[:line])
+          break # We currently support only 1 bridge
+        end
+      end
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
-        @screen.paste(bridge[:line])
         @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
         break # We currently support only 1 bridge
       end
@@ -611,6 +665,24 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
     end
   end
   # rubocop:enable Metrics/BlockLength
+end
+
+When /^I scan a QR code from the error page in Tor Connection Assistant$/ do
+  bridge_type = 'obfs4'
+
+  @bridge_hosts = []
+  chutney_bridges(bridge_type).each do |bridge|
+    @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
+    break # We currently support only 1 bridge
+  end
+
+  qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
+  setup_qrcode_bridges_on_webcam(qr_code_bridges)
+  tor_connection_assistant.child('Scan QR Code', roleName: 'push button').click
+
+  try_for(30) do
+    !tor_connection_assistant.textentry('').text.empty?
+  end
 end
 
 When /^I disable saving bridges to Persistent Storage$/ do
