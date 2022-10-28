@@ -391,7 +391,7 @@ if __name__ == "__main__":
             )
             continue
 
-        events = user_obj.events.list()
+        events = user_obj.events.list(all=True)
         contribution_events = [
             e
             for e in events
