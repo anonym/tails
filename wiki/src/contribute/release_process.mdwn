@@ -1484,7 +1484,7 @@ Lead the internal manual testing to conclusion
 
    1. Wait until all mirrors in the DNS pool have the new version:
 
-        IPS=$(host -t A dl.amnesia.boum.org | perl -pE 's/\Adl[.]amnesia[.]boum[.]org has address (.*)/$1/')
+        IPS=$(host -t A download.tails.net | perl -pE 's/\Adl[.]amnesia[.]boum[.]org has address (.*)/$1/')
         for ip in $(echo $IPS) ; do
             ./check-mirrors.rb --channel ${DIST:?} \
                --allow-multiple --fast \
