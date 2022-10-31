@@ -1,9 +1,3 @@
-// As suggested in TBB's start-browser script for system-wide Tor
-// instances.
-// Warning: when updating this, also update
-// config/chroot_local-includes/etc/thunderbird/pref/thunderbird.js
-pref("network.security.ports.banned", "631,6136,4444,4445,6668,7656,7657,7658,7659,7660,8998,9040,9050,9062,9150,9051");
-
 // Tails-specific configuration below
 
 // Since the slider notification will be shown everytime at each Tails
