@@ -94,10 +94,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     else if (result === "failed") {
       show(document.getElementById("verification-failed"));
-      // Try again with different mirrors
-      toggleDisplay(document.getElementsByClassName("use-mirror-pool"), "hide");
-      toggleDisplay(document.getElementsByClassName("use-mirror-pool-on-retry"), "show");
-      replaceUrlPrefixWithRandomMirror(document.querySelectorAll(".use-mirror-pool-on-retry"));
     }
     else if (result === "error-file") {
       show(document.getElementById("verification-error-file"));
@@ -201,9 +197,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Direct download
   document.getElementById("download-img").onclick = function(e) { download(e, this); }
-  document.getElementById("download-img-retry").onclick = function(e) { download(e, this); }
   document.getElementById("download-iso").onclick = function(e) { download(e, this); }
-  document.getElementById("download-iso-retry").onclick = function(e) { download(e, this); }
 
   function download(e, elm) {
     toggleJavaScriptBitTorrent("javascript");
