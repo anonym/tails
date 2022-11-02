@@ -253,7 +253,7 @@ if __name__ == "__main__":
             # Disambiguate between groups whose names share a common prefix
             if g.full_path == args.not_in_group
         ][0]
-        group_members_ids = [m.id for m in group.members.all(all=True)]
+        group_members_ids = [m.id for m in group.members_all.list(get_all=True)]
     else:
         group_members_ids = []
     log.debug("Group members: %s", group_members_ids)
@@ -391,7 +391,7 @@ if __name__ == "__main__":
             )
             continue
 
-        events = user_obj.events.list()
+        events = user_obj.events.list(all=True)
         contribution_events = [
             e
             for e in events
