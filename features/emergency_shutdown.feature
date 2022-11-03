@@ -48,7 +48,7 @@ Feature: Emergency shutdown
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And I prepare Tails for memory erasure tests
     And I fill a 128 MiB file with a known pattern on the persistent filesystem
-    And patterns cover at least 128 MiB in the guest's memory
+    And patterns cover at least 120 MiB in the guest's memory
     When I eject the boot medium
     And I wait for Tails to finish wiping the memory
     Then I find very few patterns in the guest's memory
