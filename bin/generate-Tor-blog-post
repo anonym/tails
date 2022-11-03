@@ -7,24 +7,38 @@ error () {
     exit 1
 }
 
-USAGE="Usage: $(basename "$0") VERSION RELEASE_DATE"
+USAGE="Usage: $(basename "$0") VERSION TAG DIST RELEASE_DATE"
 
-[ $# -eq 2 ] || error "$USAGE"
+[ $# -eq 4 ] || error "$USAGE"
 
 export VERSION="$1"
-export RELEASE_DATE="$2"
+export TAG="$2"
+export DIST="$3"
+export RELEASE_DATE="$4"
 
 MARKDOWN_TMPFILE=$(mktemp /tmp/tor-blog-post-XXXXXX.md)
+
+case "$DIST" in
+    stable)
+	MARKDOWN_SOURCE="wiki/src/news/version_${VERSION:?}.mdwn"
+	;;
+    alpha)
+	MARKDOWN_SOURCE="wiki/src/news/test_${TAG:?}.mdwn"
+	;;
+    *)
+	error "Unsupported DIST: '${DIST}'\n${USAGE}"
+	;;
+esac
 
 html_body() {
     ikiwiki --setup ikiwiki.setup \
             --libdir lib/perl5 \
-            --render "wiki/src/news/version_${VERSION:?}.mdwn" \
+            --render "$MARKDOWN_SOURCE" \
         | tidy --quiet yes \
            --mute MISSING_ENDTAG_BEFORE,INSERTING_TAG,DISCARDING_UNEXPECTED,UNKNOWN_ENTITY,MISSING_ATTRIBUTE,TRIM_EMPTY_ELEMENT,STRING_CONTENT_LOOKS \
            --wrap 99999 \
-        | sed '0,/^<div id="content" role="main">$/d' \
-        | sed '/^<div id="footer" class="pagefooter" role="contentinfo">$/,$d' \
+        | sed '0,/^<section id="content" role="main">$/d' \
+        | sed '/^<footer id="footer" class="pagefooter" role="contentinfo">$/,$d' \
         | sed '/^<div class="toc">$/,+7d'\
         | sed '/^<p><img [^<>]*\/><\/p>$/d' \
         | sed '/^<div[^<>]*\>/d' \
