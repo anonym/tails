@@ -83,9 +83,6 @@ class DBusObject(object, metaclass=ABCMeta):
     def emit_signal(self, connection: Gio.DBusConnection,
                     signal_name: str,
                     values: Dict[str, Any]):
-        if self.signals is None:
-            return
-
         signal = self.signals[signal_name]
         parameters = []
         for arg_name, arg_signature in signal['args'].items():
