@@ -245,33 +245,6 @@ class Feature(object):
             self.cancellable.cancel()
             self.switch.set_active(self.old_state)
 
-    @staticmethod
-    def _get_app_for_pid(pid: int) -> Union[Gio.AppInfo, None]:
-        try:
-            p = psutil.Process(pid)
-        except psutil.NoSuchProcess as e:
-            logger.warning(e)
-            return None
-        executable = os.path.basename(p.exe())
-        # noinspection PyArgumentList
-        apps = Gio.AppInfo.get_all()  # type: List[Gio.AppInfo]
-        # We only compare the basenames here because sometimes we
-        # replace an application's executable with a wrapper script
-        # which exits early and then starts the real executable.
-        # In that case, the executable of the running process will be
-        # different than the one in the app info. By comparing the
-        # basename, we catch those cases in which the wrapper has the
-        # same name as the original executable.
-        apps_for_pid = [a for a in apps
-                        if os.path.basename(a.get_executable()) == executable]
-        if len(apps_for_pid) == 0:
-            logger.info(f"Found no app for executable {executable}")
-            return None
-        if len(apps_for_pid) > 1:
-            logger.warning(f"Found multiple apps for executable {executable}:"
-                           f"{apps_for_pid}")
-        return apps_for_pid[0]
-
     def get_conflicting_apps_message(self, apps: Dict[str, List[int]]):
         app_reprs = [self.app_repr_string(app, apps[app]) for app in apps]
         # Translators: Don't translate {applications}, it's a placeholder
