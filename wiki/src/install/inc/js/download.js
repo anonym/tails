@@ -58,11 +58,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
 
-  function showAnotherMirror() {
-    hide(document.getElementById("bittorrent"));
-    show(document.getElementById("try-another-mirror"));
-  }
-
   function showVerifyButton() {
     hide(document.getElementById("verifying-download"));
     show(document.getElementById("verify-button"));
@@ -202,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function() {
   function download(e, elm) {
     toggleJavaScriptBitTorrent("javascript");
     resetVerificationResult();
-    showAnotherMirror();
   }
 
   // BitTorrent download
