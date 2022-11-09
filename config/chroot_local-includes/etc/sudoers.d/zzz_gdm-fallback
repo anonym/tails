@@ -1,0 +1,5 @@
+# This is used by /usr/libexec/gdm-x-session.tails
+# The security aspects should be negligible: clearly Debian-gdm can DoS
+# the GDM session.
+Debian-gdm   ALL = NOPASSWD: /bin/systemctl kill --signal=9 gdm
+
