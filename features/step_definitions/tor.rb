@@ -424,7 +424,7 @@ def tca_configure(mode, connect: true, &block)
   @user_wants_pluggable_transports = (mode == :hide)
   case mode
   when :easy
-    radio_button_label = '<b>Connect to Tor _automatically (easier)</b>'
+    radio_button_label = '<b>Connect to Tor _automatically</b>'
     # If we run the step "I make sure time sync before Tor connects cannot work",
     # @allowed_dns_queries is already initialized, and the corresponding add_extra_allowed_hosts have already been
     # called
@@ -437,7 +437,7 @@ def tca_configure(mode, connect: true, &block)
     add_dns_to_extra_allowed_host
   when :hide
     @user_wants_pluggable_transports = true
-    radio_button_label = '<b>Hide to my local network that I\'m connecting to Tor (safer)</b>'
+    radio_button_label = '<b>Hide to my local network that I\'m connecting to Tor</b>'
   else
     raise "bad TCA configuration mode '#{mode}'"
   end
