@@ -69,7 +69,8 @@ Feature: Additional software
 
   # Depends on scenario: My Additional Software list is configurable through a GUI or through notifications when I install or remove packages with APT or Synaptic
   # See https://tails.boum.org/blueprint/additional_software_packages/offline_mode/#incomplete-online-upgrade for high level logic
-  @not_release_blocker
+  #19233
+  @not_release_blocker @fragile
   Scenario: Recovering in offline mode after Additional Software previously failed to upgrade and then succeed to upgrade when online
     Given a computer
     And I start Tails from USB drive "__internal" and I login with persistence enabled and an administration password
@@ -115,7 +116,8 @@ Feature: Additional software
     And the installed version of package "cowsay" is newer than "3.03+dfsg2-1"
 
   # Depends on scenario: Recovering in offline mode after Additional Software previously failed to upgrade and then succeed to upgrade when online
-  @not_release_blocker_inherited
+  #19233
+  @not_release_blocker_inherited @fragile
   Scenario: I am notified when Additional Software fails to install a package
     Given a computer
     And I start Tails from USB drive "__internal" with network unplugged
