@@ -20,10 +20,11 @@ Requirements
 * It must be hard to mistake for the Torified browser.
 * It must be configured to use the DNS provided by DHCP (which is required
   by some captive portals).
-* It must be granted full access to the network so that any captive
-  portals can be reached.
-* It should be restricted access to as much information from the
-  system as possible in case of leaks or compromise.
+* It must be able to reach captive portals
+* We want to apply the Principle of Least Privilege: we consider this
+  application very sensitive because it can easily deanonymize users
+* It must be difficult for an attacker to leverage the Unsafe Browser as a way
+  to gain unrestricted access to the network (and, thus, deanonymize users).
 
 Implementation
 ==============
@@ -76,7 +77,41 @@ the chroot the DNS server obtained through DNS is configured as the
 system resolver, which would be dangerous if used in the outside
 system.
 
-Code
+### Attack scenarios and known issues
+
+#### XWayland
+
+UnsafeBrowser used (pre-5.8) to be run as an X.Org application. This was
+knowingly insecure. The switch to Wayland gave us better security properties.
+Can an amnesia-level attacker force UnsafeBrowser to run as an XWayland
+application?
+XXX: point to the code and explain why the answer is no
+
+#### Opening the Unsafe Browser
+
+Opening the Unsafe Browser requires arbitrary code execution as `amnesia`: all
+of the most-sensitive applications we ship have an AppArmor profile which
+disables spawning the Unsafe Browser (XXX: ensure this is true!).
+
+This means that making the Unsafe Browser a setting in the Tails Greeter
+doesn't actually improve security as of now: if the user doesn't want to use
+Unsafe Browser, they just will avoid to, and no practical attacker can easily
+run it.
+
+
+#### accessibility bus
+
+An attacker with access to the accessibility bus can trivially exploit an
+_already-open_ Unsafe Browser to phone home and deanonymize users.
+
+XXX: exaplain why we consider this acceptable and not a regression compared to
+pre-5.8 status quo.
+
+ACTION: check if the end-user doc clearly says that it's better to close the
+Unsafe Browser as soon as you're done with what you needed to do.
+
+
+
 ----
 
 * [[!tails_gitweb config/chroot_local-includes/usr/local/sbin/unsafe-browser]]
