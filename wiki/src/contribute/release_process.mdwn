@@ -459,9 +459,13 @@ Update the Changelog entry for the release you're preparing:
 	git checkout "${RELEASE_BRANCH:?}" && \
 	./bin/update-changelog --version "${MILESTONE:?}"
 
-If you're preparing a release candidate, set the version for the new entry in
-`debian/changelog` to `$VERSION`: the above code has incorrectly set it to
-`$MILESTONE`.
+If you're preparing a release candidate:
+
+ - Set the version for the new entry in `debian/changelog` to `$VERSION`: the
+   above code has incorrectly set it to `$MILESTONE`.
+ - For each merge request listed in the new Changelog entry,
+   copy the "Closes: #NNNNNN" string from the MR description into the relevant
+   section of the Changelog.
 
 Then, gather other useful information from the diff between the previous
 version's `.packages` file and the one from the to-be-released images:
@@ -1404,8 +1408,8 @@ You probably already know how to do that, but keep this in mind:
     - you are making out an emergency release OR you still feel the need to make the release as soon as
       possible for security reasons
     - you are *not* running test overnight, so skipping tests will reduce the lead time
-   then, feel free to skip testing `@not_release_blocker`, setting
-   `what=(--tag ~@not_release_blocker)` in the following example.
+      then, feel free to skip testing `@not_release_blocker`, setting
+      `what=(--tag ~@not_release_blocker)` in the following example.
 
 So here is a good example of how you can do this. Tweak it to adapt it to your directory structure.
 Run this *as root* and with *bash*:
@@ -1636,7 +1640,7 @@ Feel free to skip this if you are not preparing a major release.
 
 - Generate the draft blog post:
 
-        ./bin/generate-Tor-blog-post "${VERSION:?}" "${RELEASE_DATE:?}"
+        ./bin/generate-Tor-blog-post "${VERSION:?}" "${TAG:?}" "${DIST:?}" "${RELEASE_DATE:?}"
 
 - Copy the introduction sentences of the body into the `summary` section of the
   draft blog post

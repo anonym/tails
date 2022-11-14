@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-14 17:40+0000\n"
+"POT-Creation-Date: 2022-11-04 18:21+0000\n"
 "PO-Revision-Date: 2021-06-23 19:05+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,34 +43,25 @@ msgstr ""
 "différentes cartes graphiques."
 
 #. type: Plain text
-#, no-wrap
-msgid "<div class=\"tip\">\n"
+#, fuzzy, no-wrap
+#| msgid "<div class=\"tip\">\n"
+msgid "<div class=\"bug\">\n"
 msgstr "<div class=\"tip\">\n"
 
 #. type: Plain text
 #, no-wrap
-msgid ""
-"<p>The <span class=\"guilabel\">Troubleshooting Mode</span> of the Boot Loader disables some features of the\n"
-"Linux kernel and might work better on some computers. You can try this option if you\n"
-"think you are experiencing hardware compatibility errors while\n"
-"starting Tails.</p>\n"
+msgid "<p>It is currently impossible to change boot options permanently.</p>\n"
 msgstr ""
-"<p>Le <span class=\"guilabel\">Mode sans échec</span> du chargeur d'amorçage "
-"désactive des fonctionnalités du\n"
-"noyau Linux et peut mieux fonctionner sur certains ordinateurs. Vous pouvez "
-"essayer cette option si vous\n"
-"pensez que vous rencontrez des erreurs de compatibilité matérielle au\n"
-"démarrage de Tails.</p>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<p>See [[!tails_ticket 18268]] for workarounds.</p>\n"
+msgstr ""
 
 #. type: Plain text
 #, no-wrap
 msgid "</div>\n"
 msgstr "</div>\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "[[!toc levels=1]]\n"
-msgstr "[[!toc levels=1]]\n"
 
 #. type: Plain text
 msgid ""
@@ -79,6 +70,11 @@ msgid ""
 msgstr ""
 "Selon votre ordinateur, le chargeur d'amorçage peut être *GRUB* ou "
 "*SYSLINUX*."
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!toc levels=1]]\n"
+msgstr "[[!toc levels=1]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -158,8 +154,7 @@ msgid ""
 "   To add a boot option, press <span class=\"keycap\">Space</span> and type the boot option that you\n"
 "   want to add.\n"
 msgstr ""
-"   Pour ajouter une option de démarrage, appuyez sur <span class=\"keycap\""
-">Espace</span> et écrivez l'option de démarrage que vous\n"
+"   Pour ajouter une option de démarrage, appuyez sur <span class=\"keycap\">Espace</span> et écrivez l'option de démarrage que vous\n"
 "   voulez ajouter.\n"
 
 #. type: Plain text
@@ -195,8 +190,7 @@ msgid ""
 "[[!img install/inc/screenshots/grub.png link=\"no\" alt=\"Black screen ('GNU GRUB') with Tails\n"
 "logo and 2 options: 'Tails' and 'Tails (Troubleshooting Mode)'.\"]]\n"
 msgstr ""
-"[[!img install/inc/screenshots/grub.png link=\"no\" alt=\"Écran noir ('GNU "
-"GRUB') avec le logo\n"
+"[[!img install/inc/screenshots/grub.png link=\"no\" alt=\"Écran noir ('GNU GRUB') avec le logo\n"
 "Tails et deux options : 'Tails' et 'Tails (Troubleshooting Mode)'.\"]]\n"
 
 #. type: Plain text
@@ -205,10 +199,8 @@ msgid ""
 "<p>If your Boot Loader looks different, refer to our instructions on\n"
 "modifying the boot options [[using SYSLINUX|boot_options#syslinux]] above.</p>\n"
 msgstr ""
-"<p>Si votre chargeur de démarrage semble différent, consultez nos "
-"instructions ci-dessus\n"
-"sur les modifications des options de démarrage [[en utilisant "
-"SYSLINUX|boot_options#syslinux]].</p>\n"
+"<p>Si votre chargeur de démarrage semble différent, consultez nos instructions ci-dessus\n"
+"sur les modifications des options de démarrage [[en utilisant SYSLINUX|boot_options#syslinux]].</p>\n"
 
 #. type: Plain text
 msgid "To modify the boot options in *GRUB*:"
@@ -240,13 +232,23 @@ msgid ""
 "   Type the boot option that you want to add. The line is most likely\n"
 "   wrapped and displayed on several lines but it is a single configuration line.\n"
 msgstr ""
-"   Pour ajouter une option de démarrage, naviguer à la fin de la ligne qui "
-"commence par\n"
+"   Pour ajouter une option de démarrage, naviguer à la fin de la ligne qui commence par\n"
 "   <span class=\"code\">linux</span> avec les flèches du clavier .\n"
-"   Tapez l'option de démarrage que vous voulez ajouter. La ligne s'affiche "
-"très probablement\n"
+"   Tapez l'option de démarrage que vous voulez ajouter. La ligne s'affiche très probablement\n"
 "   sur plusieurs lignes mais il s'agit d'une seule ligne de configuration.\n"
 
 #. type: Bullet: '1. '
 msgid "Press **Ctrl+X**, **F10**, or **Fn+F10** to start Tails."
 msgstr "Appuyez sur **Ctrl+X**, **F10** ou **Fn+F10** pour démarrer Tails."
+
+#, no-wrap
+#~ msgid ""
+#~ "<p>The <span class=\"guilabel\">Troubleshooting Mode</span> of the Boot Loader disables some features of the\n"
+#~ "Linux kernel and might work better on some computers. You can try this option if you\n"
+#~ "think you are experiencing hardware compatibility errors while\n"
+#~ "starting Tails.</p>\n"
+#~ msgstr ""
+#~ "<p>Le <span class=\"guilabel\">Mode sans échec</span> du chargeur d'amorçage désactive des fonctionnalités du\n"
+#~ "noyau Linux et peut mieux fonctionner sur certains ordinateurs. Vous pouvez essayer cette option si vous\n"
+#~ "pensez que vous rencontrez des erreurs de compatibilité matérielle au\n"
+#~ "démarrage de Tails.</p>\n"

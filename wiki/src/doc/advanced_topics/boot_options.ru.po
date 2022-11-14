@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-14 17:40+0000\n"
+"POT-Creation-Date: 2022-11-04 18:21+0000\n"
 "PO-Revision-Date: 2021-12-23 20:05+0000\n"
 "Last-Translator: Алексей Коломенцев <Themanwhosoldtheworld2021@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,15 +14,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
-"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.11.3\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Modifying the boot options using the Boot Loader\"]]\n"
-msgstr ""
-"[[!meta title=\"Изменение параметров загрузки с помощью загрузчика\"]]\n"
+msgstr "[[!meta title=\"Изменение параметров загрузки с помощью загрузчика\"]]\n"
 
 #. type: Plain text
 msgid "The Boot Loader is the first screen that appears when Tails starts."
@@ -42,34 +41,25 @@ msgstr ""
 "graphics]] есть параметры загрузки для разных видеокарт."
 
 #. type: Plain text
-#, no-wrap
-msgid "<div class=\"tip\">\n"
+#, fuzzy, no-wrap
+#| msgid "<div class=\"tip\">\n"
+msgid "<div class=\"bug\">\n"
 msgstr "<div class=\"tip\">\n"
 
 #. type: Plain text
 #, no-wrap
-msgid ""
-"<p>The <span class=\"guilabel\">Troubleshooting Mode</span> of the Boot Loader disables some features of the\n"
-"Linux kernel and might work better on some computers. You can try this option if you\n"
-"think you are experiencing hardware compatibility errors while\n"
-"starting Tails.</p>\n"
+msgid "<p>It is currently impossible to change boot options permanently.</p>\n"
 msgstr ""
-"<p>Режим <span class=\"guilabel\">Troubleshooting Mode</span> загрузчика "
-"отключает некоторые функции ядра\n"
-"Linux и может работать лучше на некоторых компьютерах. Попробуйте этот "
-"вариант, если\n"
-"считаете, что при запуске Tails возникают ошибки совместимости "
-"оборудования.</p>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<p>See [[!tails_ticket 18268]] for workarounds.</p>\n"
+msgstr ""
 
 #. type: Plain text
 #, no-wrap
 msgid "</div>\n"
 msgstr "</div>\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "[[!toc levels=1]]\n"
-msgstr "[[!toc levels=1]]\n"
 
 #. type: Plain text
 msgid ""
@@ -78,6 +68,11 @@ msgid ""
 msgstr ""
 "В зависимости от компьютера загрузчиком может быть либо *GRUB*, либо "
 "*SYSLINUX*."
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!toc levels=1]]\n"
+msgstr "[[!toc levels=1]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -99,10 +94,8 @@ msgid ""
 "[[!img install/inc/screenshots/syslinux.png link=\"no\" alt=\"Black screen ('SYSLINUX') with Tails\n"
 "logo and 2 options: 'Tails' and 'Tails (Troubleshooting Mode)'.\"]]\n"
 msgstr ""
-"[[!img install/inc/screenshots/syslinux.png link=\"no\" alt=\"Чёрный экран "
-"('SYSLINUX') с\n"
-"логотипом Tails и двумя опциями: 'Tails' and 'Tails (Troubleshooting Mode)'."
-"\"]]\n"
+"[[!img install/inc/screenshots/syslinux.png link=\"no\" alt=\"Чёрный экран ('SYSLINUX') с\n"
+"логотипом Tails и двумя опциями: 'Tails' and 'Tails (Troubleshooting Mode)'.\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -115,8 +108,7 @@ msgid ""
 "<p>If your Boot Loader looks different, refer to our instructions below on\n"
 "modifying the boot options [[using GRUB|boot_options#grub]].</p>\n"
 msgstr ""
-"<p>Если ваш загрузчик выглядит иначе, обратитесь к дальнейшим инструкциям "
-"по\n"
+"<p>Если ваш загрузчик выглядит иначе, обратитесь к дальнейшим инструкциям по\n"
 "изменению параметров загрузки [[с помощью GRUB|boot_options#grub]].</p>\n"
 
 #. type: Plain text
@@ -126,9 +118,7 @@ msgstr "Ниже описаны шаги для изменения параме�
 #. type: Plain text
 #, no-wrap
 msgid "<!-- Keep in sync with install/inc/steps/restart_first_time.inline.mdwn. -->\n"
-msgstr ""
-"<!-- Keep in sync with install/inc/steps/restart_first_time.inline.mdwn. -->"
-"\n"
+msgstr "<!-- Keep in sync with install/inc/steps/restart_first_time.inline.mdwn. -->\n"
 
 #. type: Bullet: '1. '
 msgid "Press **Tab** when *SYSLINUX* appears."
@@ -161,9 +151,7 @@ msgstr "Внесите нужные вам изменения в парамет�
 msgid ""
 "   To add a boot option, press <span class=\"keycap\">Space</span> and type the boot option that you\n"
 "   want to add.\n"
-msgstr ""
-"   Для добавления загрузочной опции нажмите клавишу <span class=\"keycap\""
-">Пробел</span> и введите эту опцию.\n"
+msgstr "   Для добавления загрузочной опции нажмите клавишу <span class=\"keycap\">Пробел</span> и введите эту опцию.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -198,10 +186,8 @@ msgid ""
 "[[!img install/inc/screenshots/grub.png link=\"no\" alt=\"Black screen ('GNU GRUB') with Tails\n"
 "logo and 2 options: 'Tails' and 'Tails (Troubleshooting Mode)'.\"]]\n"
 msgstr ""
-"[[!img install/inc/screenshots/grub.png link=\"no\" alt=\"Чёрный экран ('GNU "
-"GRUB') с\n"
-"логотипом Tails и двумя опциями: 'Tails' и 'Tails (Troubleshooting Mode)'.\""
-"]]\n"
+"[[!img install/inc/screenshots/grub.png link=\"no\" alt=\"Чёрный экран ('GNU GRUB') с\n"
+"логотипом Tails и двумя опциями: 'Tails' и 'Tails (Troubleshooting Mode)'.\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -210,8 +196,7 @@ msgid ""
 "modifying the boot options [[using SYSLINUX|boot_options#syslinux]] above.</p>\n"
 msgstr ""
 "<p>Если ваш загрузчик выглядит иначе, обратитесь к инструкциям по\n"
-"изменению параметров загрузки [[с помощью SYSLINUX|boot_options#syslinux]] "
-"выше.</p>\n"
+"изменению параметров загрузки [[с помощью SYSLINUX|boot_options#syslinux]] выше.</p>\n"
 
 #. type: Plain text
 msgid "To modify the boot options in *GRUB*:"
@@ -243,14 +228,22 @@ msgid ""
 "   Type the boot option that you want to add. The line is most likely\n"
 "   wrapped and displayed on several lines but it is a single configuration line.\n"
 msgstr ""
-"   Чтобы добавить опцию загрузки, перейдите с помощью стрелок клавиатуры к "
-"концу строки, которая\n"
+"   Чтобы добавить опцию загрузки, перейдите с помощью стрелок клавиатуры к концу строки, которая\n"
 "начинается с <span class=\"code\">linux</span>.\n"
-"Введите параметр загрузки, который хотите добавить. Возможно, строка "
-"окажется\n"
-"перенесена и будет выглядеть как несколько строк, но это всё-таки одна "
-"строка конфигурации.\n"
+"Введите параметр загрузки, который хотите добавить. Возможно, строка окажется\n"
+"перенесена и будет выглядеть как несколько строк, но это всё-таки одна строка конфигурации.\n"
 
 #. type: Bullet: '1. '
 msgid "Press **Ctrl+X**, **F10**, or **Fn+F10** to start Tails."
 msgstr "Нажмите **Ctrl+X**, **F10** или **Fn+F10** для запуска Tails."
+
+#, no-wrap
+#~ msgid ""
+#~ "<p>The <span class=\"guilabel\">Troubleshooting Mode</span> of the Boot Loader disables some features of the\n"
+#~ "Linux kernel and might work better on some computers. You can try this option if you\n"
+#~ "think you are experiencing hardware compatibility errors while\n"
+#~ "starting Tails.</p>\n"
+#~ msgstr ""
+#~ "<p>Режим <span class=\"guilabel\">Troubleshooting Mode</span> загрузчика отключает некоторые функции ядра\n"
+#~ "Linux и может работать лучше на некоторых компьютерах. Попробуйте этот вариант, если\n"
+#~ "считаете, что при запуске Tails возникают ошибки совместимости оборудования.</p>\n"

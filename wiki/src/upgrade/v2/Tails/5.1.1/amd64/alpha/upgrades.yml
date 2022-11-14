@@ -3,3 +3,13 @@ build-target: amd64
 channel: alpha
 initial-install-version: 5.1.1
 product-name: Tails
+upgrades:
+- details-url: https://tails.boum.org/news/test_5.8-beta1/
+  type: major
+  upgrade-paths:
+  - target-files:
+    - sha256: a3416a3d7223dfaf78ff6127d82867a75bf72da187af05244b861d33a15068b9
+      size: 1324271616
+      url: http://dl.amnesia.boum.org/tails/alpha/tails-amd64-5.8~beta1/tails-amd64-5.8~beta1.iso
+    type: full
+  version: 5.8~beta1
