@@ -28,7 +28,7 @@ Feature: Browsing the web using the Unsafe Browser
     And the Unsafe Browser has a red theme
     And the Unsafe Browser shows a warning as its start page
     And the Unsafe Browser has no add-ons installed
-    And the Unsafe Browser has only Firefox's default bookmarks configured
+    And the Unsafe Browser has no bookmarks
     And the Unsafe Browser uses all expected TBB shared libraries
 
   Scenario: The Unsafe Browser can load a web page from the Internet

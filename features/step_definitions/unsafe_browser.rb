@@ -8,7 +8,7 @@ Then /^the Unsafe Browser has no add-ons installed$/ do
   step 'I see "UnsafeBrowserNoAddons.png" after at most 30 seconds'
 end
 
-Then /^the Unsafe Browser has only Firefox's default bookmarks configured$/ do
+Then /^the Unsafe Browser has no bookmarks$/ do
   info = xul_application_info('Unsafe Browser')
   # "Show all bookmarks"
   @screen.press('shift', 'ctrl', 'o')
@@ -30,30 +30,19 @@ Then /^the Unsafe Browser has only Firefox's default bookmarks configured$/ do
   dump = JSON.parse($vm.file_content(path))
 
   def check_bookmarks_helper(bookmarks_children)
-    mozilla_uris_counter = 0
     bookmarks_children.each do |h|
       h.each_pair do |k, v|
         if k == 'children'
-          mozilla_uris_counter += check_bookmarks_helper(v)
+          check_bookmarks_helper(v)
         elsif k == 'uri'
           uri = v
-          # rubocop:disable Style/GuardClause
-          if uri.match("^https://(?:support|www)\.mozilla\.org/")
-            mozilla_uris_counter += 1
-          else
-            raise "Unexpected Unsafe Browser bookmark for '#{uri}'"
-          end
-          # rubocop:enable Style/GuardClause
+          raise "Unexpected Unsafe Browser bookmark for '#{uri}'"
         end
       end
     end
-    mozilla_uris_counter
   end
 
-  mozilla_uris_counter = check_bookmarks_helper(dump['children'])
-  assert_equal(5, mozilla_uris_counter,
-               "Unexpected number (#{mozilla_uris_counter}) of mozilla " \
-               'bookmarks')
+  check_bookmarks_helper(dump['children'])
   @screen.press('alt', 'F4')
 end
 
