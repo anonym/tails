@@ -234,6 +234,13 @@ delete_chroot_browser_embedded_extensions_in_omni_ja () {
     chmod a+r "${pack}"
 }
 
+delete_chroot_browser_bookmarks() {
+    local chroot="${1}"
+    local pack="${chroot}/${TBB_INSTALL}/browser/omni.ja"
+    7z d -tzip "${pack}" chrome/browser/content/browser/default-bookmarks.html
+    chmod a+r "${pack}"
+}
+
 configure_chroot_browser () {
     local chroot="${1}" ; shift
     local browser_user="${1}" ; shift
@@ -262,6 +269,7 @@ configure_chroot_browser () {
     delete_chroot_browser_embedded_extensions_in_omni_ja "${chroot}" \
         'uBlock0@raymondhill.net' \
         'https-everywhere'
+    delete_chroot_browser_bookmarks "${chroot}"
     set_chroot_browser_permissions "${chroot}" "${browser_name}" \
         "${browser_user}"
     # Later we'll instruct bwrap to mount certain files within
