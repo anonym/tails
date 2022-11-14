@@ -83,9 +83,13 @@ system.
 
 UnsafeBrowser used (pre-5.8) to be run as an X.Org application. This was
 knowingly insecure. The switch to Wayland gave us better security properties.
-Can an amnesia-level attacker force UnsafeBrowser to run as an XWayland
+
+However, can an amnesia-level attacker force UnsafeBrowser to run as an XWayland
 application?
-XXX: point to the code and explain why the answer is no
+
+It cannot. In fact, the Unsafe Browser is not allowed to access XWayland, because it runs in a different
+network namespace (see [[!tails_gitweb config/chroot_local-includes/usr/local/lib/unsafe-browser]]), and we
+don't setup any way (like bind mounts) to make it possible to access it.
 
 #### Opening the Unsafe Browser
 
