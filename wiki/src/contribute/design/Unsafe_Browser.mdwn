@@ -104,12 +104,20 @@ run it.
 An attacker with access to the accessibility bus can trivially exploit an
 _already-open_ Unsafe Browser to phone home and deanonymize users.
 
-XXX: exaplain why we consider this acceptable and not a regression compared to
-pre-5.8 status quo.
+This is a serious attack surface, however:
 
-ACTION: check if the end-user doc clearly says that it's better to close the
+ - this only applies to an already-open Unsafe Browser. This is strictly harder then the previous "enable
+   Unsafe Browser" that Tails had on X.Org. In fact, the mere fact of having it *enabled* was enough to
+   deanonymize you. Therefore, users who would have not enabled the Unsafe Browser before Tails 5.8, can now
+   just avoid opening it.
+
+ - For this attack to be possible at all, it's necessary that the user manually enabled accessibility
+   features. Most applications cannot enable accessibility on their own. So for all users that don't have
+   accessibility features enabled, this attack is unfeasible. We acknowledge that a11y is a feature which many
+   users just can't disable.
+
+XXX: check if the end-user doc clearly says that it's better to close the
 Unsafe Browser as soon as you're done with what you needed to do.
-
 
 
 ----
