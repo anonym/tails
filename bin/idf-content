@@ -20,7 +20,7 @@ def to_json(data):
 def target_file_url(channel, filename):
     basename = PurePath(filename).name
     return '%(baseurl)s/%(channel)s/%(subdir)s/%(basename)s' % {
-        'baseurl':  'http://dl.amnesia.boum.org/tails',
+        'baseurl':  'https://download.tails.net/tails',
         'channel':  channel,
         'subdir':   PurePath(basename).stem,
         'basename': basename,
