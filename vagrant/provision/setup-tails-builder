@@ -90,6 +90,12 @@ echo "I: Current APT sources are:"
 cat /etc/apt/sources.list /etc/apt/sources.list.d/*
 
 if ! already_provisioned; then
+    # These packages are irrelevant since we'll never reboot, and can
+    # only cause potential issues and useless bandwidth usage.
+    echo "I: Remove boot-dependant packages..."
+    apt-get -y remove 'grub*' 'linux-image-*'
+    apt-get -y autoremove
+
     echo "I: Upgrading system..."
     apt-key add /amnesia.git/config/chroot_sources/tails.binary.gpg
     apt-get update
