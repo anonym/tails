@@ -1,4 +1,4 @@
-[[!meta title="Removing metadata using mat2"]]
+[[!meta title="Removing metadata from files"]]
 
 [[!toc levels=1]]
 
@@ -25,26 +25,47 @@ Examples of metadata include:
 To learn more about how metadata can be used to identify and reveal personal information, see
 [Behind the Data: Investigating metadata](https://exposingtheinvisible.org/en/guides/behind-the-data-metadata-investigations/).
 
-Removing metadata from files
-==========================
+<div class="caution">
+
+<p>It is impossible to reliably find and remove all metadata in complex file
+formats. For example, <i>Microsoft Office</i> documents can contain embedded images,
+audio, and other files containing their own metadata that Tails cannot
+remove.</p>
+
+<p>You should remove metadata on any files before you embed them into another
+document.</p>
+
+<p>Also, you should save files in simpler formats whenever possible.
+For example, instead of saving a text document as a .docx file,
+you can save the document as a plain .txt file.</p>
+
+</div>
+
+Removing metadata using *Metadata Cleaner*
+==========================================
 
 Tails includes
-<a href="https://0xacab.org/jvoisin/mat2"><span class="application">mat2</span></a>
+[*Metadata Cleaner*](https://metadatacleaner.romainvigier.fr/)
 so you can remove metadata from files before you publish or share them.
 
-<span class="application">mat2</span> works on many file formats, including:
+*Metadata Cleaner* works on many file formats, including:
 
-- image files, such as .jpeg, .png, and .gif
-- <span class="application">LibreOffice</span> files, such as .odt and .ods
-- <span class="application">Microsoft Office</span> documents, such as .docx, .xlsx, and .pptx
-- audio files, such as .mp3, .flac, and .ogg
-- video files, such as .mp4 and .avi
-- archive files, such as .zip and .tar
+- Image files, such as .jpeg, .png, and .gif
+- *LibreOffice* files, such as .odt and .ods
+- *Microsoft Office* documents, such as .docx, .xlsx, and .pptx
+- Audio files, such as .mp3, .flac, and .ogg
+- Video files, such as .mp4 and .avi
+- Archive files, such as .zip and .tar
 
-To use <span class="application">mat2</span> to remove metadata from your
-files:
+To open *Metadata Cleaner* choose **Applications**&nbsp;▸
+**Accessories** &nbsp;▸ **Metadata Cleaner**.
 
-1. Open the <span class="application">Files</span> browser.
+Removing metadata from the *Files* browser
+==========================================
+
+You can also remove metadata directly from the *Files* browser:
+
+1. Open the *Files* browser.
 
 1. Navigate to the folder containing the files that you want to remove
    metadata from.
@@ -52,20 +73,13 @@ files:
 1. Select the files that you want to remove metadata from.
 
 1. Right-click (on Mac, click with two fingers) on the files and choose
-   <span class="guimenuitem">Remove metadata</span>.
+   **Remove metadata**.
 
-<div class="caution">
+<div class="note">
 
-<p>It is impossible to reliably find and remove all metadata in complex file
-formats. For example, <i>Microsoft Office</i> documents can contain embedded images,
-audio, and other files containing their own metadata that <i>mat2</i> cannot
-remove.</p>
-
-<p>You should run <i>mat2</i> on any files before you embed them into another
-document.</p>
-
-<p>Also, you should save files in simpler formats whenever possible.
-For example, instead of saving a text document as a .docx file,
-you can save the document as a plain .txt file.</p>
+<p>Both techniques rely on the <a
+href="https://0xacab.org/jvoisin/mat2">mat2</a> toolkit to remove
+metadata, so they work on the same file formats and remove the same
+metadata.</p>
 
 </div>
