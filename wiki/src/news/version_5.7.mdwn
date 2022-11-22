@@ -27,30 +27,30 @@ cleaning.
 
 - Update *tor* to 0.4.7.11.
 
-- Remove `pdf-redact-tools`, which was broken in Tails. ([[!tails_ticket 19250]])
+- Remove `pdf-redact-tools`, which was broken. ([[!tails_ticket 19250]])
 
 <h1 id="fixes">Fixed problems</h1>
 
-We fixed 2 usability issues in *Tor Connection* that were identified during [usability tests in Brazil](https://lists.autistici.org/message/20221012.140611.7e58f067.en.html):
+We fixed 2 small usability issues in *Tor Connection*:
 
-- Explain better how to use the *Unsafe Browser* to sign in to a local network. [[!tails_ticket 19168]]
+- Explain better how to use the *Unsafe Browser* to sign in to a local network. ([[!tails_ticket 19168]])
 
-- Remove the *(easier)* and *(safer)* comments in the first screen. [[!tails_ticket 19166]]
+- Remove the *(easier)* and *(safer)* comments in the first screen. ([[!tails_ticket 19166]])
 
 For more details, read our [[!tails_gitweb debian/changelog desc="changelog"]].
 
 <h1 id="issues">Known issues</h1>
 
-## Progress bar of Tor Connection getting stuck at 50%
+## Progress bar of Tor Connection getting stuck around 50%
 
 When using a custom Tor `obfs4` bridge, the progress bar of *Tor Connection*
-can get stuck at 50% and become extremelly slow. ([[!tails_ticket 19173]])
+sometimes gets stuck halfway through and becomes extremelly slow. ([[!tails_ticket 19173]])
 
 To fix this, you can either:
 
-- Try to close and reopen *Tor Connection* speed up the initial connection.
+- Close and reopen *Tor Connection* to speed up the initial connection.
 
-- Try using a different `obfs4` bridge.
+- Try a different `obfs4` bridge.
 
   We believe that this issue should not happen with an up-to-date bridge
   running `obfs4proxy` version 0.0.12 or later.
