@@ -39,7 +39,7 @@ verify_start () {
     local dialog_msg launch exit
     dialog_msg="<b><big>$(gettext "Launch the Unsafe Browser?")</big></b>
 
-$(gettext "The Unsafe Browser is not anonymous and the websites that you visit can see your real IP address.\n\nOnly use the Unsafe Browser to sign in to a network using a captive portal.")"
+$(gettext "The Unsafe Browser is not anonymous and the websites that you visit can see your real IP address.\n\nOnly use the Unsafe Browser to sign in to a network, then close it.")"
     launch="$(gettext "_Launch")"
     exit="$(gettext "_Exit")"
     if ! sudo -u "${SUDO_USER}" \
@@ -51,7 +51,7 @@ $(gettext "The Unsafe Browser is not anonymous and the websites that you visit c
 
 exit_because_disabled() {
     local msg restart cancel confirm_msg confirm_button
-    msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
+    msg="$(gettext "Only use the Unsafe Browser to sign in to a network, then close it.\n\nThe Unsafe Browser is disabled by default for security.\n\n\
 To <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and enable \
 the Unsafe Browser in the additional settings of the Welcome Screen.")"
     # Only mention the Persistent Storage if there is one (see #18551)
