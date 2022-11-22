@@ -4,19 +4,18 @@ import cv2
 import os
 import sys
 import traceback
-from PIL import Image
+
 
 class FindFailed(RuntimeError):
     pass
 
+
 def match(image, candidate, sensitivity, show_match=False):
-    """
-    Returns the pos of candidate inside image, or raises if no match
-    """
+    "Return the pos of candidate inside image, or raises if no match."
     assert(sensitivity < 1.0)
-    image_rgb = cv2.imread(image, 1)
+    image_rgb = cv2.imread(image, cv2.IMREAD_COLOR)
     image_gray = cv2.cvtColor(image_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread(candidate, 0)
+    template = cv2.imread(candidate, cv2.IMREAD_GRAYSCALE)
     w, h = template.shape[::-1]
     res = cv2.matchTemplate(image_gray, template, cv2.TM_CCOEFF_NORMED)
     _, val, _, pos = cv2.minMaxLoc(res)
@@ -31,7 +30,12 @@ def match(image, candidate, sensitivity, show_match=False):
         cv2.waitKey(0)
     return [x, y, w, h]
 
+
 def main():
+    if len(sys.argv) < 3:
+        print("error: first argument must be the screen and the second the " +
+              "image to find inside the screen", file=sys.stderr)
+        sys.exit(2)
     try:
         try:
             sensitivity = float(sys.argv[3])
@@ -45,13 +49,10 @@ def main():
                      sensitivity, show_match))
     except FindFailed:
         sys.exit(1)
-    except IndexError:
-        print("error: first argument must be the screen and the second the " +
-              "image to find inside the screen", file=sys.stderr)
-        sys.exit(2)
     except:
         traceback.print_exc()
         sys.exit(127)
+
 
 if __name__ == "__main__":
     main()

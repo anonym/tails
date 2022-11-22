@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-03-25 08:30+0000\n"
+"POT-Creation-Date: 2022-06-04 08:38+0200\n"
 "PO-Revision-Date: 2020-12-25 17:45+0000\n"
 "Last-Translator: emmapeel <emma.peel@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -767,24 +767,45 @@ msgid "<h2 id=\"htp\">Why does Tails automatically connect to several websites w
 msgstr ""
 
 #. type: Plain text
+msgid "The clock of the computer needs to be set at the correct time to both:"
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Be able to connect to the Tor network in the first place"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
 msgid ""
-"Tor requires the system clock to be well synchronized in order to work "
-"properly. When starting Tails, a notification is displayed while the clock "
-"is being synchronized."
+"   The computer clock is fixed a first time, approximately, before connecting\n"
+"   to Tor, either [[automatically|doc/anonymous_internet/tor#automatic]] or\n"
+"   [[manually|doc/anonymous_internet/tor/troubleshoot#clock]].\n"
+msgstr ""
+
+#. type: Bullet: '2. '
+msgid "Protect your anonymity while using Tor"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   The computer clock is fixed a second time, precisely, to prevent a website\n"
+"   from identifying you by analyzing minor differences of your computer clock\n"
+"   with the correct time.\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   This second synchronization is made by sending HTTPS queries through Tor to several\n"
+"   websites and deducing a correct time from their answers. You can see the\n"
+"   list of websites that Tails can connect to in *[[!tails_gitweb config/chroot_local-includes/etc/default/htpdate.pools desc=\"/etc/default/htpdate.pools\"]]*.\n"
 msgstr ""
 
 #. type: Plain text
 msgid ""
-"This synchronization is made by sending HTTPS queries through Tor to several "
-"websites and deducing a correct time from their answers. The list of "
-"websites that could be queried in this process can be found in `/etc/default/"
-"htpdate`."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"See also our [[design document|contribute/design/Time_syncing]] on this "
-"topic."
+"See also our [[design document on time synchronization|contribute/design/"
+"Time_syncing]]."
 msgstr ""
 
 #. type: Plain text
@@ -1053,7 +1074,7 @@ msgstr ""
 
 #. type: Bullet: '- '
 msgid ""
-"[*Mumble*](https://www.mumble.com/) is the only voice chat application that "
+"[*Mumble*](https://www.mumble.info/) is the only voice chat application that "
 "we know works from Tails. You can use the [[Additional Software|doc/"
 "first_steps/persistence#additional_software]] feature to add *Mumble* to "
 "your Tails."
@@ -1065,42 +1086,6 @@ msgid ""
 "  [*Wahay*](https://wahay.org/) is a decentralized voice chat application based\n"
 "  on *Mumble*. If you are a Debian developer, please help us\n"
 "  [[!tails_ticket 17617 desc=\"get *Wahay* in Debian\"]].\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<h1 id=\"desktop\">Desktop environment</h1>\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"timezone\">Why is the time set wrong?</h2>\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"When Tails starts, the system timezone is set to UTC (Greenwich time). So, "
-"this time might be a few hours in the future if you are west of the United "
-"Kingdom, or in the past if you are east of the UK. The minutes should be "
-"accurate."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"We do this for anonymity reasons: if some application reveals your actual "
-"timezone, it might help identifying who you are."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"Having all Tails users set to the same timezone, makes it more difficult to "
-"distinguish you amongst all the other Tails users."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"We are working on a custom clock applet with configurable timezone. See [[!"
-"tails_ticket 6284]]."
 msgstr ""
 
 #. type: Plain text

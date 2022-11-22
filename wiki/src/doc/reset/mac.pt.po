@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2020-04-12 16:10+0200\n"
-"PO-Revision-Date: 2022-02-23 11:29+0000\n"
-"Last-Translator: drebs <drebs@riseup.net>\n"
+"POT-Creation-Date: 2022-05-31 09:30+0200\n"
+"PO-Revision-Date: 2022-06-13 12:40+0000\n"
+"Last-Translator: Lucas710 <lucaspb710@protonmail.com>\n"
 "Language-Team: Portuguese <http://translate.tails.boum.org/projects/tails/"
 "reset_mac/pt/>\n"
 "Language: pt\n"
@@ -40,8 +40,8 @@ msgid ""
 "<strong>You might overwrite any hard disk on the computer.</strong> If at some\n"
 "point you are not sure about which device to choose, stop proceeding.\n"
 msgstr ""
-"<strong>Você pode sobrescrever qualquer disco rígido no seu computador.</strong> Se em algum\n"
-"ponto você não tiver certeza de qual dispositivo escolher, interrompa o procedimento.\n"
+"<strong>Qualquer disco rígido conectado ao seu computador pode ser sobrescrito.</strong> Se em algum\n"
+"momento você não tiver certeza de qual dispositivo escolher, não prossiga.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -69,7 +69,7 @@ msgstr ""
 
 #. type: Bullet: '3.  '
 msgid "Plug the USB stick that you want to reset."
-msgstr "Conecte o pen drive que você quer resetar."
+msgstr "Conecte o pendrive USB que você quer resetar."
 
 #. type: Plain text
 #, no-wrap
@@ -77,8 +77,7 @@ msgid ""
 "    A new device appears in the list of storage devices. This new device\n"
 "    corresponds to the USB stick that you plugged in. Click on it.\n"
 msgstr ""
-"    Um novo dispositivo aparecerá na lista de dispositivos de armazenamento. "
-"Este novo dispositivo\n"
+"    Um novo dispositivo aparecerá na lista de dispositivos de armazenamento. Este novo dispositivo\n"
 "    corresponde ao pen drive que você acabou de conectar. Clique nele.\n"
 
 #. type: Bullet: '4.  '
@@ -100,6 +99,10 @@ msgid ""
 "    in the right pane, click on it and then click on the <span class=\"bold\">\n"
 "    Erase</span> button on the bottom right\n"
 msgstr ""
+"    a. Se tiver uma aba <span class=\"guilabel\">Apagar</span>\n"
+"    no painel direito, clique nele e depois clique no botão<span class=\"bold"
+"\">\n"
+"    Apagar</span> no canto inferior direito\n"
 
 #. type: Plain text
 #, no-wrap
@@ -107,12 +110,16 @@ msgid ""
 "    b. If there is an <span class=\"bold\">\n"
 "    Erase</span> button on the top middle, click on it.\n"
 msgstr ""
+"    b. Se tiver um botão<span class=\"bold\">\n"
+"    Apagar</span> centralizado no topo, clique nele.\n"
 
 #. type: Bullet: '6.  '
 msgid ""
 "In the confirmation dialog, click on the <span class=\"bold\">Erase</span> "
 "button to confirm."
 msgstr ""
+"No dialogo de confirmação, clique no botão de <span class=\"bold\">Apagar</"
+"span> para confirmar."
 
 #. type: Plain text
 #, no-wrap
@@ -125,6 +132,8 @@ msgid ""
 "<p>If the erase process fails, try [[!toggle id=\"format\"\n"
 "text=\"formatting the USB stick using the command line\"]] first.</p>\n"
 msgstr ""
+"<p>Se o processo de apagamento falhar , tente [[!toggle id=\"format\"\n"
+"text=\"formatar o pendrive USB usando linha de comando\"]] primeiro.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -144,16 +153,16 @@ msgstr "Solução de problemas"
 #. type: Title -
 #, no-wrap
 msgid "Format using the command line"
-msgstr ""
+msgstr "Formate usando linha de comando"
 
 #. type: Plain text
 #, no-wrap
 msgid "<!-- Note for translators: This section is very similar to /install/mac/usb. -->\n"
-msgstr ""
+msgstr "<!-- Nota para tradutores: Esta seção é muito similar a /install/mac/usb. -->\n"
 
 #. type: Bullet: '1. '
 msgid "Unplug the USB stick from the computer."
-msgstr ""
+msgstr "Desconecte o pendrive USB do computador."
 
 #. type: Plain text
 #, no-wrap
@@ -166,9 +175,9 @@ msgid ""
 msgstr ""
 "1. Abra o <span class=\"application\">Terminal</span> a partir de\n"
 "   <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">Aplicações</span>&nbsp;▸\n"
+"     <span class=\"guimenu\">Aplicativos</span>&nbsp;▸\n"
 "     <span class=\"guisubmenu\">Utilitários</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Terminal</span></span>.\n"
+"     <span class=\"guimenuitem\">Terminal.app</span></span>.\n"
 
 #. type: Bullet: '1. '
 msgid "Execute the following command:"
@@ -182,9 +191,7 @@ msgstr "       diskutil list\n"
 #. type: Plain text
 #, no-wrap
 msgid "   It returns a list of the storage devices on the system. For example:\n"
-msgstr ""
-"   Ele retorna uma lista dos dispositivos de armazenamento no sistema. Por "
-"exemplo:\n"
+msgstr "   Ele retorna uma lista dos dispositivos de armazenamento no sistema. Por exemplo:\n"
 
 #. type: Plain text
 #, no-wrap
@@ -198,10 +205,18 @@ msgid ""
 "         3:                      EFI              134.1 GB  disk0s3\n"
 "         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
 msgstr ""
+"       $ diskutil list\n"
+"       /dev/disk0\n"
+"         #:                     TYPE NAME         SIZE      IDENTIFIER\n"
+"         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
+"         1:                      EFI              209.7 MB  disk0s1\n"
+"         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
+"         3:                      EFI              134.1 GB  disk0s3\n"
+"         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
 
 #. type: Bullet: '1. '
 msgid "Plug the USB stick in the computer."
-msgstr ""
+msgstr "Conecte o pendrive USB no computador."
 
 #. type: Bullet: '1. '
 msgid "Execute again the same command:"
@@ -232,6 +247,18 @@ msgid ""
 "         0:   FDisk_partition_scheme             *8.0 GB    disk1\n"
 "         1:                Apple_HFS Untitled 1   8.0 GB    disk1s1\n"
 msgstr ""
+"       $ diskutil list\n"
+"       /dev/disk0\n"
+"         #:                     TIPO NOME         TAMANHO      IDENTIFICADOR\n"
+"         0:    GUID_partition_scheme             *500.1 GB  disk0\n"
+"         1:                      EFI              209.7 MB  disk0s1\n"
+"         2:                Apple_HFS MacDrive     250.0 GB  disk0s2\n"
+"         3:                      EFI              134.1 GB  disk0s3\n"
+"         4:     Microsoft Basic Data BOOTCAMP     115.5 GB  disk0s4\n"
+"       /dev/disk1\n"
+"         #:                     TIPO NOME         TAMANHO      IDENTIFICADOR\n"
+"         0:   FDisk_partition_scheme             *8.0 GB    disk1\n"
+"         1:                Apple_HFS Untitled 1   8.0 GB    disk1s1\n"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -239,9 +266,9 @@ msgid ""
 "stick is 8.0 GB and its device name is <span class=\"code\">/dev/disk1</"
 "span>.  Yours might be different."
 msgstr ""
-"Anote o *nome do dispositivo* do seu prendrive USB. Neste exemplo, o "
-"pendrive tem 8.0 GB e o seu nome de dispositivo é <span class=\"code\">/dev/"
-"disk1</span>.  Pode ser que o seu seja diferente."
+"Anote o *nome do dispositivo* do seu pendrive USB. Neste exemplo, o pendrive "
+"USB tem 8.0 GB e o seu nome de dispositivo é <span class=\"code\">/dev/"
+"disk1</span>. Pode ser que o seu seja diferente."
 
 #. type: Plain text
 #, no-wrap
@@ -252,10 +279,8 @@ msgid ""
 "   </div>\n"
 msgstr ""
 "   <div class=\"caution\">\n"
-"   <p>Se você não tiver certeza sobre o nome do seu dispositivo, você deverá "
-"parar o procedimento ou\n"
-"   <strong>estará correndo o risco de sobrescrever algum disco rígido do "
-"sistema</strong>.</p>\n"
+"   <p>Se você não tiver certeza sobre o nome do seu dispositivo, você deverá parar o procedimento ou\n"
+"   <strong>estará correndo o risco de sobrescrever algum disco rígido do sistema</strong>.</p>\n"
 "   </div>\n"
 
 #. type: Bullet: '1. '
@@ -263,25 +288,34 @@ msgid ""
 "Execute the following command to safely remove the USB stick. Replace <span "
 "class=\"code\">[device]</span> with the device name found in step 6."
 msgstr ""
+"Execute o seguinte comando para remover com segurança o seu pendrive USB. "
+"Substitua <span class=\"code\">[dispositivo]</span> pelo nome do dispositivo "
+"encontrado no passo 6."
 
 #. type: Plain text
 #, no-wrap
 msgid "       diskutil unmountDisk [device]\n"
-msgstr ""
+msgstr "       diskutil unmountDisk [dispositivo]\n"
 
 #. type: Bullet: '2. '
 msgid ""
-"Execute the following command to format the USB stick. Replace <span class="
-"\"code\">[device]</span> with the device name found in step 6."
+"Execute the following command to format the USB stick. Replace <span "
+"class=\"code\">[device]</span> with the device name found in step 6."
 msgstr ""
+"Execute o seguinte comando para formatar o pendrive USB. Substitua <span "
+"class=\"code\">[dispositivo]</span> pelo nome do dispositivo encontrado no "
+"passo 6."
 
 #. type: Plain text
 #, no-wrap
 msgid "       sudo fdisk -iy [device]\n"
-msgstr ""
+msgstr "       sudo fdisk -iy [dispositivo]\n"
 
 #. type: Bullet: '1. '
 msgid ""
-"You can try to reset the USB stick again using <span class=\"application"
-"\">Disk Utility</span> from the beginning of this page."
+"You can try to reset the USB stick again using <span "
+"class=\"application\">Disk Utility</span> from the beginning of this page."
 msgstr ""
+"Você pode tentar resetar seu pendrive USB novamente usando o <span "
+"class=\"application\">Utilitário de Disco</span> como explicado no início "
+"desta página."

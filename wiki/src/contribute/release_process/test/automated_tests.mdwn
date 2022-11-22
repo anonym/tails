@@ -429,3 +429,30 @@ We use the following Cucumber tags on scenarios and features:
 
 Our Jenkins setup uses these tags to decide which tests to run:
 [[contribute/working_together/roles/sysadmins/automated_tests_in_Jenkins]].
+
+# Tips and tricks
+
+## Iterate quickly with `--late-patch`
+
+Let's say that our test suite is reporting you an error. You want to make a fix and see if it makes the test
+suite happy again. Usually, you would be required to build the image again, which is slow.
+
+You can do better than this using `--late-patch`:
+ - create a file called, for example `late-patch-fix-foobar.txt`
+ - every line contains two filenames, a source one and a destination one.
+ - run the test suite using `--late-patch late-patch-fix-foobar.txt`
+
+Here is an example of a late-patch file that is well suited to iterate over _Tor Connection_:
+
+```
+# python files
+config/chroot_local-includes/usr/lib/python3/dist-packages/tca/application.py	/usr/lib/python3/dist-packages/tca/application.py
+config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py	/usr/lib/python3/dist-packages/tca/ui/main_window.py
+# UI
+config/chroot_local-includes/usr/share/tails/tca/main.ui.in	/usr/share/tails/tca/main.ui
+config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in	/usr/share/tails/tca/time-dialog.ui
+config/chroot_local-includes/usr/share/tails/tca/tca.css	/usr/share/tails/tca/tca.css
+# helpers
+config/chroot_local-includes/usr/local/lib/tca-portal	/usr/local/lib/tca-portal
+config/chroot_local-includes/usr/local/lib/tails-get-network-time	/usr/local/lib/tails-get-network-time
+```

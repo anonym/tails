@@ -44,9 +44,7 @@ IMG_SIDE: Dict[str, str] = {
 }
 
 TOR_BOOTSTRAP_STATUS_CONN_DONE = 10  # see tor.git:src/feature/control/control_events.h
-TOR_SIGNOFLIFE_TIMEOUT = (
-    10
-)  # this timeout means "time to wait for the first sign of life" which we define as bootstrap-phase=BOOTSTRAP_STATUS_CONN_DONE
+TOR_SIGNOFLIFE_TIMEOUT = 10  # this timeout means "time to wait for the first sign of life" which we define as bootstrap-phase=BOOTSTRAP_STATUS_CONN_DONE
 TOR_BOOTSTRAP_TIMEOUT = 600  # this is *summed* to the previous timeout
 
 # META {{{
@@ -82,28 +80,33 @@ class StepChooseHideMixin:
 
     def before_show_hide(self, coming_from):
         self.state.setdefault("hide", {})
+        first_time = self.state['hide'].get('first', True)
+        self.state['hide'].setdefault('first', False)
+
         self.builder.get_object("radio_unnoticed_none").set_active(True)
         self.builder.get_object("radio_unnoticed_yes").set_active(False)
         self.builder.get_object("radio_unnoticed_no").set_active(False)
         self.builder.get_object("radio_unnoticed_none").hide()
+        made_a_choice = self.user_wants_hide in (True, False)
         definitive = self.state.get("progress", {}).get("started", False)
         if definitive:
-            assert "hide" in self.state["hide"]
-            if self.state["hide"]["hide"]:
+            assert made_a_choice
+            if self.user_wants_hide:
                 self.builder.get_object("radio_unnoticed_no").set_sensitive(False)
                 self.builder.get_object("radio_unnoticed_yes").set_active(True)
             else:
                 self.builder.get_object("radio_unnoticed_yes").set_sensitive(False)
                 self.builder.get_object("radio_unnoticed_no").set_active(True)
-        elif (
-            "hide" in self.state["hide"]
-        ):  # the user is changing her mind before connecting to Tor
-            hide = self.state["hide"]["hide"]
+        elif made_a_choice:  # the user is changing their mind before connecting to Tor
+            hide = self.user_wants_hide
             self.builder.get_object("radio_unnoticed_yes").set_active(hide)
             self.builder.get_object("radio_unnoticed_no").set_active(not hide)
-        self.builder.get_object("radio_unnoticed_no_bridge").set_active(
-            self.state["hide"].get("bridge", False)
-        )
+
+        if first_time:
+            log.debug("Initialize easy-bridge widget based on data+config (first run)")
+            self.builder.get_object("radio_unnoticed_no_bridge").set_active(
+                    self.state["hide"].get("bridge", False)
+                    )
 
     def _step_hide_next(self):
         if self.state["hide"]["bridge"]:
@@ -171,7 +174,6 @@ class StepChooseBridgeMixin:
         else:
             self.builder.get_object("step_bridge_radio_default").grab_focus()
         self.get_object("radio_default").set_sensitive(not hide_mode)
-        self.get_object("label_explain_hide").set_visible(hide_mode)
 
         self.builder.get_object("step_bridge_radio_type").set_active(hide_mode)
         self.get_object(
@@ -202,9 +204,9 @@ class StepChooseBridgeMixin:
         if self.persistence_config_failed:
             sensitive = False
         for obj in [
-                "step_bridge_persistence_switch_box",
-                "step_bridge_persistence_help_box",
-                "step_bridge_persistence_error_box",
+            "step_bridge_persistence_switch_box",
+            "step_bridge_persistence_help_box",
+            "step_bridge_persistence_error_box",
         ]:
             self.builder.get_object(obj).set_sensitive(sensitive)
 
@@ -221,9 +223,9 @@ class StepChooseBridgeMixin:
             def cb_set_up_persistence_switch(gjsonrpcclient, res, error):
                 log.debug("Persistence enabled: %s", res)
                 active = res is not None and res.get("returncode", 1) == 0
-                self.builder.get_object(
-                    "step_bridge_persistence_switch"
-                ).set_active(active)
+                self.builder.get_object("step_bridge_persistence_switch").set_active(
+                    active
+                )
                 self.builder.get_object("step_bridge_persistence_switch_box").show()
 
             self.app.portal.call_async(
@@ -248,9 +250,9 @@ class StepChooseBridgeMixin:
                     "create a Persistent Storage</a> "
                     "on your Tails USB stick."
                 )
-            self.builder.get_object(
-                "step_bridge_persistence_help_label"
-            ).set_label(help_label)
+            self.builder.get_object("step_bridge_persistence_help_label").set_label(
+                help_label
+            )
             self.builder.get_object("step_bridge_persistence_help_box").show()
 
     def _step_bridge_is_text_valid(self, text: Optional[str] = None) -> bool:
@@ -285,10 +287,14 @@ class StepChooseBridgeMixin:
     def _step_bridge_set_actives(self):
         default = self.builder.get_object("step_bridge_radio_default").get_active()
         manual = self.builder.get_object("step_bridge_radio_type").get_active()
+        scan = self.builder.get_object("step_bridge_radio_scan").get_active()
         self.get_object("combo").set_sensitive(default)
         self.builder.get_object("step_bridge_text").set_sensitive(manual)
+        self.builder.get_object("step_bridge_btn_scanqrcode").set_sensitive(scan)
+        self.builder.get_object("step_bridge_label_scanresult").set_sensitive(scan)
         self.builder.get_object("step_bridge_btn_submit").set_sensitive(
             default or (manual and self._step_bridge_is_text_valid())
+            or (scan and self.get_object('label_scanresult').get_property('visible'))
         )
 
     def cb_step_bridge_radio_changed(self, *args):
@@ -307,8 +313,7 @@ class StepChooseBridgeMixin:
         disabled_widgets = ["step_bridge_text", "step_bridge_btn_back"]
         for widget in disabled_widgets:
             self.builder.get_object(widget).set_sensitive(False)
-        self.builder.get_object("step_bridge_persistence_spinner") \
-                    .set_visible(True)
+        self.builder.get_object("step_bridge_persistence_spinner").set_visible(True)
 
         def cb_persistence_config_changed(gjsonrpcclient, res, error):
             log.debug(
@@ -324,22 +329,21 @@ class StepChooseBridgeMixin:
                 self.builder.get_object(
                     "step_bridge_persistence_error_label"
                 ).set_label(_("Failed to configure your Persistent Storage"))
-                self.builder.get_object(
-                    "step_bridge_persistence_error_box"
-                ).show()
+                self.builder.get_object("step_bridge_persistence_error_box").show()
                 self.persistence_config_failed = True
 
             for widget in disabled_widgets:
                 self.builder.get_object(widget).set_sensitive(True)
             if btn_submit_initially_sensitive:
                 btn_submit.set_sensitive(True)
-            self.builder.get_object("step_bridge_persistence_spinner") \
-                        .set_visible(False)
+            self.builder.get_object("step_bridge_persistence_spinner").set_visible(
+                False
+            )
 
         if state:
-            portal_method = "enable-tor-configuration-persistence"
+            portal_method = "ensure-tor-configuration-is-persistent"
         else:
-            portal_method = "disable-tor-configuration-persistence"
+            portal_method = "ensure-tor-configuration-is-not-persistent"
         self.app.portal.call_async(
             portal_method,
             cb_persistence_config_changed,
@@ -347,8 +351,71 @@ class StepChooseBridgeMixin:
         return True  # disable the default handler
 
     def cb_step_bridge_btn_submit_clicked(self, *args):
+        self._step_bridge_set_state_from_view()
+
+        self.change_box("progress")
+
+    def cb_step_bridge_btn_back_clicked(self, *args):
+        self.change_box("hide")
+
+    def cb_infobar_scanqrcode_close(self, *args):
+        infobar = self.builder.get_object('infobar_scanqrcode')
+        infobar.hide()
+
+    def scan_qrcode(self):
+        # yes, the *exactly* same code is run, no matter if you are calling
+        # this from "bridge" step or from "error" step
+
+        infobar = self.builder.get_object('infobar_scanqrcode')
+        infobar.hide()
+        step_called_from = self.state['step']
+
+
+        def on_qrcode_scanned(gjsonrpcclient, res, error):
+            if self.state['step'] != step_called_from:
+                log.info("QR code scanned (exitcode: %d) too late, ignoring",
+                         res.get('returncode', -1) if res else -1)
+                return
+
+            infobar_heading = self.builder.get_object('infobar_scanqrcode_heading')
+            infobar_text = self.builder.get_object('infobar_scanqrcode_text')
+            if not res or res.get("returncode", 1) != 0:
+                infobar_heading.set_text(_("Failed to detect a webcam"))
+                infobar_text.set_text(_("Maybe your webcam is too old."))
+                infobar.show_all()
+                return
+
+            raw_content = res.get('stdout', '').strip()
+            if not raw_content:
+                # if the output is empty, we assume that the user closed the window by themself
+                # to be really sure, we should use zbarcam --xml;
+                # however, do "empty" QR codes even exists?
+
+                infobar_heading.set_text(_("Failed to scan QR code"))
+                infobar_text.set_text(_("Try with more light or closer to the camera."))
+                infobar.show_all()
+                return
+
+            try:
+                self.last_scanned_qrcode = TorConnectionConfig.parse_qr_content(raw_content)
+            except Exception:
+                infobar_heading.set_text(_("Invalid QR code"))
+                infobar_text.set_text(_("Try sending another email and scanning again."))
+                infobar.show_all()
+                return
+            else:
+                self._step_bridge_set_actives()
+                self._step_bridge_set_state_from_view()
+
+        self.app.portal.call_async("scan-qrcode", on_qrcode_scanned)
+
+    def cb_step_bridge_btn_scanqrcode_clicked(self, *args):
+        self.scan_qrcode()
+
+    def _step_bridge_set_state_from_view(self):
         default = self.builder.get_object("step_bridge_radio_default").get_active()
         manual = self.builder.get_object("step_bridge_radio_type").get_active()
+        scan = self.builder.get_object("step_bridge_radio_scan").get_active()
         self.state["hide"]["bridge"] = True
         if default:
             self.state["bridge"]["kind"] = "default"
@@ -362,40 +429,55 @@ class StepChooseBridgeMixin:
                 [text]
             )
             log.info("Bridges parsed: %s", self.state["bridge"]["bridges"])
-
-        self.change_box("progress")
-
-    def cb_step_bridge_btn_back_clicked(self, *args):
-        self.change_box("hide")
-
+        elif scan:
+            self.state["bridge"]["kind"] = "manual"
+            self.state["bridge"]["bridges"] = self.last_scanned_qrcode
 
 class StepConnectProgressMixin:
     def before_show_progress(self, coming_from):
         self.save_conf()
         self.state["progress"]["error"] = None
         self.builder.get_object("step_progress_box").show()
-        for obj in ['box_start', 'box_tortestok', 'box_internetok', 'box_internettest', 'box_tor_direct_fail']:
+        for obj in [
+            "box_start",
+            "box_tortestok",
+            "box_internetok",
+            "box_internettest",
+            "box_tor_direct_fail",
+        ]:
             self.get_object(obj).hide()
         self.connection_progress.set_fraction(0.0, allow_going_back=True)
+        self.show_connect_pbar()
         if not self.state["progress"]["success"]:
-            self.spawn_tor_connect()
+            if not self.state["hide"]["hide"]:
+                self.get_object("label_status").set_text(_("Synchronizing the system's clock…"))
+                self.app.set_time_from_network(self.cb_system_time_set_from_network)
+            else:
+                self.spawn_tor_connect()
         else:
             self._step_progress_success_screen()
 
+    def cb_system_time_set_from_network(self, result, error):
+        log.debug("System time set, let's spawn_tor_connect")
+        self.spawn_tor_connect()
+
     def spawn_internet_test(self):
+        # this is just a stub
         test_spawn = GAsyncSpawn()
         test_spawn.connect("process-done", self.cb_internet_test)
         test_spawn.run(["/bin/sh", "-c", "sleep 0.5; true"])
 
     def spawn_tor_test(self):
+        # this is just a stub
         test_spawn = GAsyncSpawn()
         test_spawn.connect("process-done", self.cb_tor_test)
         test_spawn.run(["/bin/sh", "-c", "sleep 0.5; true"])
 
-    def spawn_tor_connect(self):
+    def show_connect_pbar(self):
         self.builder.get_object("step_progress_box_torconnect").show()
         self.builder.get_object("step_progress_pbar_torconnect").show()
 
+    def spawn_tor_connect(self):
         def _apply_proxy():
             if not self.state["proxy"] or self.state["proxy"]["proxy_type"] == "no":
                 self.app.configurator.tor_connection_config.proxy = (
@@ -409,8 +491,8 @@ class StepConnectProgressMixin:
                 conf_obj = copy.copy(proxy_conf)
                 conf_obj["proxy_type"] += "Proxy"
                 assert proxy_conf["proxy_type"] != conf_obj["proxy_type"]
-                self.app.configurator.tor_connection_config.proxy = TorConnectionProxy.from_obj(
-                    conf_obj
+                self.app.configurator.tor_connection_config.proxy = (
+                    TorConnectionProxy.from_obj(conf_obj)
                 )
 
         def do_tor_connect_config():
@@ -457,7 +539,6 @@ class StepConnectProgressMixin:
             return True
 
         def do_tor_connect_apply():
-
             def error_handler(error):
                 self.connection_progress.set_fraction(0)
                 self.state["progress"]["error"] = "setconf"
@@ -538,12 +619,16 @@ class StepConnectProgressMixin:
         self.save_conf(successful_connect=True)
         self.get_object("box_torconnect").hide()
         self.get_object("box_tortestok").show()
-        self.get_object("label_status").set_text(
-            _(
-                "Connected to Tor successfully!\n\n"
-                "You can now browse the Internet anonymously and uncensored."
-            )
-        )
+
+        if self.app.is_tor_over_bridges:
+            status = _("Connected to Tor successfully with bridges")
+        else:
+            status = _("Connected to Tor successfully")
+
+        self.get_object("label_connected").set_text(status)
+        self.get_object("label_connected_explain").set_text(_(
+            "You can now browse the Internet anonymously and uncensored."
+        ))
         self.get_object("box_start").show()
 
     def cb_internet_test(self, spawn, retval):
@@ -588,11 +673,12 @@ class StepErrorMixin:
             "fix_attempt": False  # has the user done something to fix it?
         }
         if coming_from == "progress":
-            if self.state['hide']['bridge'] and self.state["bridge"].get("kind") == "manual":
+            if (
+                self.state["hide"]["bridge"]
+                and self.state["bridge"].get("kind") == "manual"
+            ):
                 bridge = self.state["bridge"]["bridges"][0]
-                self.get_object("text").get_buffer().set_text(
-                    bridge, len(bridge)
-                )
+                self.get_object("text").get_buffer().set_text(bridge, len(bridge))
         self.get_object("text").get_buffer().connect(
             "inserted_text", self.cb_step_error_text_changed
         )
@@ -627,7 +713,9 @@ class StepErrorMixin:
                     buttons=Gtk.ButtonsType.OK,
                     text="Error setting system time",
                 )
-                dialog.format_secondary_text("%s\n\nThis should not happen. Please report a bug." % error)
+                dialog.format_secondary_text(
+                    "%s\n\nThis should not happen. Please report a bug." % error
+                )
                 dialog.run()
                 dialog.destroy()
                 time_dialog.destroy()
@@ -641,8 +729,9 @@ class StepErrorMixin:
             self.save_conf()
             aware_dt = time_dialog.get_date()
             utc_dt = aware_dt.astimezone(pytz.utc)
+            timestr = utc_dt.isoformat("T", "seconds")
             self.app.portal.call_async(
-                "set-system-time", on_set_system_time, utc_dt.isoformat('T', 'minutes')
+                "set-system-time", on_set_system_time, timestr
             )
         else:
             time_dialog.destroy()
@@ -682,8 +771,12 @@ class StepErrorMixin:
                         )
                         return False
 
-            if not bridges and self.state['hide']['hide']:
-                set_warning(_("Setting a bridge is needed if you want to hide that you are using Tor"))
+            if not bridges and self.state["hide"]["hide"]:
+                set_warning(
+                    _(
+                        "Setting a bridge is needed if you want to hide that you are using Tor"
+                    )
+                )
                 return False
 
             if bridges:
@@ -697,16 +790,20 @@ class StepErrorMixin:
         self._step_error_submit_allowed()
 
     def cb_step_error_btn_submit_clicked(self, *args):
+        infobar = self.builder.get_object('infobar_scanqrcode')
+        infobar.hide()
+
         text = self.get_object("text").get_buffer().get_text()
-        self.state["bridge"]["bridges"] = TorConnectionConfig.parse_bridge_lines(
-            [text]
-        )
+        self.state["bridge"]["bridges"] = TorConnectionConfig.parse_bridge_lines([text])
         # If the user is selecting any bridge, encode it properly
         # If they are _not_, let's keep the previous settings, which could be default bridges
-        if self.state['bridge']['bridges']:
-            self.state['hide']['bridge'] = True
-            self.state['bridge']['kind'] = 'manual'
+        if self.state["bridge"]["bridges"]:
+            self.state["hide"]["bridge"] = True
+            self.state["bridge"]["kind"] = "manual"
         self.change_box("progress")
+
+    def cb_step_error_btn_scanqrcode_clicked(self, *args):
+        self.cb_step_bridge_btn_scanqrcode_clicked(*args)
 
 
 class StepProxyMixin:
@@ -812,15 +909,13 @@ class TCAMainWindow(
 
     def __init__(self, app):
         Gtk.ApplicationWindow.__init__(
-            self, title=tca.config.APPLICATION_TITLE, application=app
+            self,
+            title=tca.config.LOCALIZED_APPLICATION_TITLE,
+            application=app
         )
         self.app = app
-        self.set_role(tca.config.APPLICATION_WM_CLASS)
-        # set_wm_class is deprecated, but it's the only way I found to set taskbar title; see #18610
-        self.set_wmclass(
-            tca.config.APPLICATION_WM_CLASS, tca.config.APPLICATION_WM_CLASS
-        )
-        self.set_title(tca.config.APPLICATION_TITLE)
+
+    def finish_init(self):
         # self.state collects data from user interactions. Its main key is the step name
         self.state: Dict[str, Any] = {
             "hide": {},
@@ -873,7 +968,6 @@ class TCAMainWindow(
         builder.add_from_file(tca.config.data_path + MAIN_UI_FILE)
         builder.connect_signals(self)
 
-        self.main_container = builder.get_object("box_main_container_image_step")
         self.stack = builder.get_object("box_main_container_stack")
         for step in self.STEPS_ORDER:
             box = builder.get_object("step_{}_box".format(step))
@@ -882,9 +976,49 @@ class TCAMainWindow(
 
         self.connection_progress = ConnectionProgress(self)
         GLib.timeout_add(1000, self.connection_progress.tick)
-        self.add(self.main_container)
+        self.add(builder.get_object("box_main_container"))
         self.show()
         self.change_box(self.state["step"])
+
+    @property
+    def last_scanned_qrcode(self):
+        return self.state.get('bridges', {}).get('last_scanned_qrcode', [])
+
+    @last_scanned_qrcode.setter
+    def last_scanned_qrcode(self, value):
+        '''
+        When setting the QR code, we're also refreshing the relevant part of the UI: step_bridge_label_scanresult
+        '''
+        self.state.setdefault('bridges', {})
+        self.state['bridges']['last_scanned_qrcode'] = value
+
+        bridge_info = value[0].split()[1]  # IP address
+        bridge_type = value[0].split()[0]
+        informative_message = _("Scanned {bridge_type} bridge: <b>{bridge_info}</b>.")
+
+        label_scanresult = self.builder.get_object("step_bridge_label_scanresult")
+        label_scanresult.set_text(
+                informative_message.format(
+                    bridge_info=bridge_info,
+                    bridge_type=bridge_type,
+                    )
+                )
+        label_scanresult.set_property("use-markup", True)
+        label_scanresult.show()
+
+        content = str(value[0])
+        text = self.builder.get_object("step_error_text")
+        text.get_buffer().set_text(content, len(content))
+
+
+    @property
+    def user_wants_hide(self) -> Optional[bool]:
+        '''
+        If the user decided already: returns what they decided, as a boolean.
+
+        Else (first screen), returns None.
+        '''
+        return self.state.get('hide', {}).get('hide', None)
 
     def save_conf(self, successful_connect=False):
         log.info("Saving configuration (success=%s)", successful_connect)
@@ -978,7 +1112,7 @@ class TCAMainWindow(
     # Called from parent application
 
     def _move_to_right_step(self):
-        '''
+        """
         This method will make TCA interface move between different states.
 
         Its purpose is to "centralize" as much as possible the logic that allows tca to move between different
@@ -987,12 +1121,14 @@ class TCAMainWindow(
         However, this is currently only called when reacting to changes in extenral components: Tor and
         NetworkManager.
         Other state transitions happen when reacting to events such as clicking.
-        '''
-        disable_network = self.app.tor_info["DisableNetwork"] == '1'
+        """
+        disable_network = self.app.tor_info["DisableNetwork"] == "1"
         up = self.app.is_network_link_ok
         tor_working = self.app.is_tor_working
         step = self.state["step"]
-        log.info(f"Status: up={up} disable_network={disable_network}, working={tor_working}, step={step}")
+        log.info(
+            f"Status: up={up} disable_network={disable_network}, working={tor_working}, step={step}"
+        )
 
         def _get_right_step() -> Optional[str]:
             """
@@ -1024,7 +1160,9 @@ class TCAMainWindow(
                     log.warn("We are not connected to Tor anymore!")
                     return "error"
                 else:
-                    log.debug("Tor not working and we're in progress: just wait some more")
+                    log.debug(
+                        "Tor not working and we're in progress: just wait some more"
+                    )
                     return None
             else:
                 self.state["progress"]["success"] = True

@@ -29,13 +29,11 @@ Feature: Additional software
     And I update APT using apt
     And I install "popularity-contest" using apt
     Then I am proposed to add the "popularity-contest" package to my Additional Software
-    And I create a persistent storage and activate the Additional Software feature
-    And I accept the persistence wizard's offer to restart Tails
-    And the computer reboots Tails
-    And the network is unplugged
-    And I enable persistence
-    And I log in to a new session
-    And Additional Software is correctly configured for package "popularity-contest"
+    When I create a persistent storage and activate the Additional Software feature
+    Then Additional Software is correctly configured for package "popularity-contest"
+    When I shutdown Tails and wait for the computer to power off
+    And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
+    Then Additional Software is correctly configured for package "popularity-contest"
     And the package "popularity-contest" is installed after Additional Software has been started
 
   # Depends on scenario: I set up Additional Software when installing a package without persistent partition and the package is installed next time I start Tails
@@ -71,7 +69,8 @@ Feature: Additional software
 
   # Depends on scenario: My Additional Software list is configurable through a GUI or through notifications when I install or remove packages with APT or Synaptic
   # See https://tails.boum.org/blueprint/additional_software_packages/offline_mode/#incomplete-online-upgrade for high level logic
-  @not_release_blocker
+  #19233
+  @not_release_blocker @fragile
   Scenario: Recovering in offline mode after Additional Software previously failed to upgrade and then succeed to upgrade when online
     Given a computer
     And I start Tails from USB drive "__internal" and I login with persistence enabled and an administration password
@@ -117,7 +116,8 @@ Feature: Additional software
     And the installed version of package "cowsay" is newer than "3.03+dfsg2-1"
 
   # Depends on scenario: Recovering in offline mode after Additional Software previously failed to upgrade and then succeed to upgrade when online
-  @not_release_blocker_inherited
+  #19233
+  @not_release_blocker_inherited @fragile
   Scenario: I am notified when Additional Software fails to install a package
     Given a computer
     And I start Tails from USB drive "__internal" with network unplugged

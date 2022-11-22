@@ -14,11 +14,22 @@ before_script:
   - apt-get -qy install git i18nspector
   - git clone https://gitlab.tails.boum.org/tails/jenkins-tools.git /tmp/jenkins-tools
 
+build-website:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+    - changes:
+        - .gitlab-ci.yml
+  script:
+    - apt-get -qy install ikiwiki po4a libyaml-perl libyaml-libyaml-perl libyaml-syck-perl perlmagick
+    - ./build-website
+
 lint-po:
   image: debian:testing
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^master|stable|testing|devel$/'
     - changes:
+        - .gitlab-ci.yml
         - ./**.po
   script:
     - *prepare-lint-po
@@ -34,10 +45,30 @@ lint-latest-po:
     - ./import-translations
     - /tmp/jenkins-tools/slaves/lint_po po/*.po
 
+bandit:
+  script:
+  - apt-get -qy install python3-bandit file
+  - bandit --version
+  - './bin/bandit-tree --configfile .bandit.yml
+                       -ll
+                       --format xml
+                       --output bandit.xml
+                       .'
+  artifacts:
+    when: always
+    reports:
+      junit: bandit.xml
+
+check-website-core-pages:
+  script:
+    - apt-get -qy install git
+    - ./bin/check-core-pages
+
 check-po-msgfmt:
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^master|stable|testing|devel$/'
     - changes:
+        - .gitlab-ci.yml
         - ./**.po
   script:
     - apt-get -qy install python3 gettext
@@ -47,6 +78,7 @@ check-po-meta-date:
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^master|stable|testing|devel$/'
     - changes:
+        - .gitlab-ci.yml
         - ./**.po
   script:
     - apt-get -qy install git ruby
@@ -58,6 +90,8 @@ check-translatable-live-website-urls:
     - ./bin/check-translatable-live-website-urls po/tails.pot
 
 test-iuk:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
   - 'cat config/chroot_local-packageslists/tails-perl5lib.list
          config/chroot_local-packageslists/tails-iuk.list
@@ -94,6 +128,8 @@ test-iuk:
      dzil test --all'
 
 test-perl5lib:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
   - 'cat config/chroot_local-packageslists/tails-perl5lib.list
        | grep -E -v "^#"
@@ -112,41 +148,6 @@ test-perl5lib:
   - dzil authordebs --install
   - dzil test --all
 
-test-persistence-setup:
-  script:
-  - apt-get -qy install apt-file
-  - apt-get update -qq # Take into account APT configuration added by apt-file
-  - 'cat config/chroot_local-packageslists/tails-perl5lib.list
-         config/chroot_local-packageslists/tails-persistence-setup.list
-       | grep -E -v "^#"
-       | xargs apt-get -qy install'
-  - 'apt-get -qy install
-       libdist-zilla-plugin-test-notabs-perl
-       libdist-zilla-plugin-test-perl-critic-perl
-       libdist-zilla-app-command-authordebs-perl
-       libmodule-build-perl
-       libtest-most-perl
-       libtest-spec-perl
-       libtest-bdd-cucumber-perl
-       liblwp-online-perl
-       libdata-dumper-concise-perl
-       libtest-fatal-perl
-       libsys-statistics-linux-perl
-       seahorse-daemon
-       sudo
-       xvfb'
-  # Otherwise, apt-get called by "dzil authordebs --install" asks confirmation
-  - echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/yes
-  - cd $CI_PROJECT_DIR/config/chroot_local-includes/usr/src/perl5lib
-  - dzil authordebs --install
-  - cd $CI_PROJECT_DIR/config/chroot_local-includes/usr/src/persistence-setup
-  - dzil authordebs --install
-  - >
-    PERL5LIB=$CI_PROJECT_DIR/config/chroot_local-includes/usr/src/perl5lib/lib
-    TAILS_GIT_CHECKOUT=$CI_PROJECT_DIR
-    LC_ALL=C.UTF-8
-    xvfb-run --auto-servernum dzil test --all
-
 shellcheck:
   image: debian:testing
   script:
@@ -160,6 +161,11 @@ shellcheck:
     reports:
       junit: shellcheck.xml
 
+test-persistent-storage-config-file:
+  script:
+    - apt-get -qy install python3 python3-gi acl
+    - config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/config_file_test.py
+
 test-python-doctest:
   script:
     - apt-get -qy install python3 python3-sh
@@ -167,18 +173,34 @@ test-python-doctest:
     - env PYTHONPATH=config/chroot_local-includes/usr/lib/python3/dist-packages python3 config/chroot_local-includes/usr/local/bin/tails-documentation --doctest
 
 test-tca:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
     - 'cat config/chroot_local-packageslists/tor-connection-assistant.list
        | grep -E -v "^#"
        | xargs apt-get -qy install'
     - 'cd config/chroot_local-includes/usr/lib/python3/dist-packages ; find tca -name "*.py" -print0 | xargs -0 -L1 env PYTHONPATH=. python3 -m doctest'
 
+test-tca-portal:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
+  script:
+    - 'cat config/chroot_local-packageslists/tor-connection-assistant.list
+       | grep -E -v "^#"
+       | xargs apt-get -qy install'
+    - 'PYTHONPATH=config/chroot_local-includes/usr/lib/python3/dist-packages env python3 ./config/chroot_local-includes/usr/local/lib/tca-portal --doctest-only --log-level DEBUG'
+
+
 test-tailslib:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
     - apt-get -qy install python3 python3-atomicwrites python3-sh git
     - 'cd config/chroot_local-includes/usr/lib/python3/dist-packages ; find tailslib -name "*.py" -print0 | grep --null-data -v -e netnsdrop.py -e gnome.py | xargs -0 -L1 env PYTHONPATH=. python3 -m doctest'
 
 test-whisperback:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
   script:
     - 'cat config/chroot_local-packageslists/whisperback.list | grep -E -v "^#"
          | xargs apt-get -qy install'
@@ -198,5 +220,53 @@ apt-snapshots-expiry:
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^stable|testing|devel$/'
     - changes:
+        - .gitlab-ci.yml
         - config/APT_snapshots.d/*/serial
         - vagrant/definitions/tails-builder/config/APT_snapshots.d/*/serial
+
+.install-https-get-expired-build-deps: &install-https-get-expired-build-deps
+  - apt-get -qy install --no-install-recommends golang-go ca-certificates
+
+.build-https-get-expired: &build-https-get-expired
+  - go build -o ./https-get-expired config/chroot_local-includes/usr/src/https-get-expired.go
+
+.test-https-get-expired: &test-https-get-expired
+  - echo "Basic check:"
+  - ./https-get-expired -reject-expired https://tails.boum.org/
+  - echo "Let's pretend we are in the past. Then, this certificate is still good."
+  - ./https-get-expired -current-time 2000-01-01 -reject-expired https://tails.boum.org/
+  - echo "Let's pretend we are in the future. Then, this certificate is expired"
+  - "! ./https-get-expired -current-time 2090-01-01 -reject-expired https://tails.boum.org/"
+  - "! ./https-get-expired -reject-expired https://wrong.host.badssl.com/"
+  - "! ./https-get-expired -reject-expired https://self-signed.badssl.com/"
+  - "! ./https-get-expired -reject-expired https://untrusted-root.badssl.com/"
+  - "! ./https-get-expired -reject-expired https://expired.badssl.com/"
+  - echo "Invalid host"
+  - "! ./https-get-expired -reject-expired https://nxdomain.tails.boum.org/"
+  - "( . config/chroot_local-includes/etc/default/htpdate.pools; err=0; for url in $(echo $HTP_POOL_1 $HTP_POOL_2 $HTP_POOL_3 | tr ',' ' '); do echo $url; if ! ./https-get-expired -reject-expired https://$url; then echo ERROR on $url; err=1; fi; done; exit $err; )"
+
+https-get-expired:
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^stable|testing|devel$/'
+    - changes:
+        - .gitlab-ci.yml
+        - config/chroot_local-includes/usr/src/https-get-expired.go
+        - config/chroot_local-includes/etc/default/htpdate.pools
+  script:
+    - *install-https-get-expired-build-deps
+    - *build-https-get-expired
+    - *test-https-get-expired
+
+https-get-expired-sid:
+  # this job gives us results using a future version of Golang compared to the one we actually use
+  image: debian:sid
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "devel"'
+    - changes:
+        - .gitlab-ci.yml
+        - config/chroot_local-includes/usr/src/https-get-expired.go
+        - config/chroot_local-includes/etc/default/htpdate.pools
+  script:
+    - *install-https-get-expired-build-deps
+    - *build-https-get-expired
+    - *test-https-get-expired

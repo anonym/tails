@@ -43,9 +43,9 @@ Upgrade Tor Browser in Tails
 Have a look at
 
 * <https://archive.torproject.org/tor-package-archive/torbrowser/?C=M;O=D>
+* <https://tb-build-05.torproject.org/~richard/builds/release/unsigned/?C=M;O=D>
 * <https://www.torproject.org/dist/torbrowser/?C=M;O=D>
 * <https://people.torproject.org/~gk/builds/?C=M;O=D>
-* <https://people.torproject.org/~sysrqb/builds/?C=M;O=D>
 * <https://people.torproject.org/~boklm/builds/?C=M;O=D>
 * <https://people.torproject.org/~pierov/builds/?C=M;O=D>
 * <https://people.torproject.org/~richard/builds/tor-browser/?C=M;O=D>
@@ -54,21 +54,26 @@ and see if the desired version is available. If it's not, and you want to
 "poll", you can use this:
 
   - copy the URLs above in `/tmp/tbb-urls.txt`
-  - run this snippet (bash only!), changing 11.0.10 with the TBB version you
-    are expecting
+  - `export TBB_VERSION=1.2.3.4`
+  - run this snippet (bash only!)
 
     ```sh
-    typeset -a tbbUrls
-    mapfile -t tbbUrls < <(grep -F https: < /tmp/tbb-urls.txt |sed -e 's+^ *++;s+ *$++')
-    while true
-    do
-        if (for u in "${tbbUrls[@]}"; do elinks -no-numbering -no-references -dump "$u" | sed -e "s+^+[${u//+/ }]+" ; done)| grep -F 11.0.10
-        then
-            echo FOUND!
-            notify-send "Release dir" 'found'
-        fi
-        sleep 10m
-    done
+    (
+        set -eu
+        typeset -a tbbUrls
+        mapfile -t tbbUrls < <(grep -F --no-filename https: /tmp/tbb-urls.txt |sed -e 's+^ *++;s+ *$++')
+        while true
+        do
+            if (for u in "${tbbUrls[@]}"; do
+                elinks -no-numbering -no-references -dump "$u" | sed -e "s+^+[${u//+/ }]+" ; done
+                )| grep -F -e "${TBB_VERSION?}" -e "$(date +%F)"  -e "$(date +%F -d yesterday)" --color=always
+            then
+                echo FOUND
+                notify-send "Release dir" 'found'
+            fi
+            sleep 10m
+        done
+    )
     ```
 
 
@@ -77,10 +82,17 @@ Set `TBB_DIST_URL` to the chosen URL, and set `TBB_VERSION` to the desired Tor
 Browser version, for example:
 
     TBB_DIST_URL=https://people.torproject.org/~mikeperry/builds/4.5-build5/
-    TBB_VERSION="$(basename "${TBB_DIST_URL}")"
+    TBB_VERSION="$(basename "${TBB_DIST_URL:?}")"
 
 <div class="caution">
-Ensure you include the "-buildN" part.
+Ensure you include the "-buildN" part. Add it if it's missing.
+</div>
+<div class="caution">
+Unfortunately, some of the servers that the Tor project uses will automatically redirect
+to HTTPS, and our build system does _not_ support that.
+`https://tb-build-05.torproject.org/` is one of those.
+When this happens, you must put those tarballs on a server that allows us to use plain HTTP.
+Unfortunately, we have no standardized procedure for that, and every RM is going freestyle.
 </div>
 
 Set `TBB_TAILS_TICKET` to the number of the ticket about updating Tor
@@ -88,30 +100,31 @@ Browser, and `TBB_IMPORT_BRANCH` to the branch we'll work on, which
 must include the `+force-all-tests` suffix:
 
     TBB_TAILS_TICKET=123456
-    TBB_IMPORT_BRANCH=${TBB_TAILS_TICKET}-tor-browser-${TBB_VERSION%%-*}+force-all-tests
+    TBB_IMPORT_BRANCH=${TBB_TAILS_TICKET:?}-tor-browser-${TBB_VERSION%%-*}+force-all-tests
 
 Check out the new branch:
 
-    git checkout -b ${TBB_IMPORT_BRANCH} origin/stable
+    git checkout -b ${TBB_IMPORT_BRANCH:?} origin/stable
 
-Set `TBB_SIGNER` to the nickname of the Tor Browser developer who signed the
-`sha256sums-unsigned-build.txt` file; the detached signature at `$TBB_DIST_URL`
-is named `sha256sums-unsigned-build.txt.asc-${TBB_SIGNER}`:
+Set `TBB_SIGNER_SUFFIX` to the nickname of the Tor Browser developer who signed
+the `sha256sums-unsigned-build.txt` file, preceeded by a dash; the detached
+signature at `$TBB_DIST_URL` is named
+`sha256sums-unsigned-build.txt.asc${TBB_SIGNER_SUFFIX}`:
 
-    TBB_SIGNER=XXX
+    TBB_SIGNER_SUFFIX='-boklm'
 
-XXX: The detached signature may be called `sha256sums-unsigned-build.txt.asc`
-instead. If that's the case, adapt the instructions below accordingly.
+Note: sometimes, the detached signature is called `sha256sums-unsigned-build.txt.asc`, with no suffix.
+If that's the case, just set it to an empty string
 
 Fetch the version's hash file and its detached signature, and verify
 with GnuPG:
 
     (
         set -e
-        for f in sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},}; do
+        for f in sha256sums-unsigned-build.txt{.asc${TBB_SIGNER_SUFFIX?},}; do
             wget "${TBB_DIST_URL:?}/$f" -O "$f"
         done
-        gpg --verify sha256sums-unsigned-build.txt{.asc-${TBB_SIGNER},}
+        gpg --verify sha256sums-unsigned-build.txt{.asc${TBB_SIGNER_SUFFIX?},}
     )
 
 
@@ -264,13 +277,6 @@ Commit and push your changes
 	git annex copy --to origin -- "${TBB_VERSION:?}" && \
 	git annex sync
 
-Wait for the synchronization
-----------------------------
-
-Before you proceed with the next steps, wait for the tarballs to appear on
-<https://torbrowser-archive.tails.boum.org/?C=M&O=D>. This can take up to
-10 minutes.
-
 Adjust the URL in the main Git repository
 -----------------------------------------
 
@@ -286,7 +292,16 @@ Adjust the URL in the main Git repository
        git show
     done
 
-Once happy, push:
+Wait for the synchronization
+----------------------------
+
+Before you can build Tails using Tor Browser from our own archive,
+you need to wait for the tarballs to appear on
+<https://torbrowser-archive.tails.boum.org/?C=M&O=D>. This can take up to
+10 minutes.
+
+Push the updated branch
+-----------------------
 
 	git push -o merge_request.create --set-upstream \
 	   origin "${TBB_IMPORT_BRANCH:?}"
@@ -298,4 +313,5 @@ Clean up
 	git annex drop -- "${TBB_VERSION:?}" && \
     git annex sync && \
     rm -rf "${DL_DIR:?}" && \
-    rm -f "${TAILS_GIT_REPO:?}"/sha256sums-unsigned-build.txt{,.asc-${TBB_SIGNER}}
+    cd "${TAILS_GIT_REPO:?}" && \
+    rm -f sha256sums-unsigned-build.txt{,.asc${TBB_SIGNER_SUFFIX}}

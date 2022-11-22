@@ -6,35 +6,42 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-10-11 15:21+0000\n"
-"PO-Revision-Date: 2022-01-10 20:16+0000\n"
-"Last-Translator: _ignifugo <ignifugo@insicuri.net>\n"
+"POT-Creation-Date: 2022-08-30 19:28+0000\n"
+"PO-Revision-Date: 2022-07-09 18:08+0000\n"
+"Last-Translator: la_r_go* <largo@tracciabi.li>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.11.3\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Troubleshooting connecting to Tor\"]]\n"
+msgstr "[[!meta title=\"Risoluzione dei problemi di connessione a Tor\"]]\n"
+
+#. type: Plain text
+msgid ""
+"The sections below summarize the most common problems when [[connecting to "
+"Tor|tor]]."
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "The computer clock is set to an incorrect time zone"
+msgid "<h2 id=\"clock\">The computer clock is set to an incorrect time zone</h2>\n"
+msgstr "L'orologio del computer è impostato su un fuso orario errato"
+
+#. type: Plain text
+msgid "The clock of the computer needs to be correct to connect to Tor."
 msgstr ""
 
 #. type: Plain text
 msgid ""
-"The sections below summarize the most common problems when connecting to "
-"Tor."
-msgstr ""
-
-#. type: Title -
-#, no-wrap
-msgid "The computer clock is set to an incorrect time zone"
-msgstr "L'orologio del computer è impostato su un fuso orario errato"
-
-#. type: Plain text
-msgid "Your clock and time zone need to be correct to connect to Tor."
+"If you choose to [[hide that you are connecting to Tor|tor#hiding]], you "
+"might have to fix the clock manually if Tails fails to connect to Tor."
 msgstr ""
 
 #. type: Plain text
@@ -42,15 +49,95 @@ msgid ""
 "Choose **Fix Clock** in the error screen of the *Tor Connection* assistant "
 "to set the clock and time zone of your computer."
 msgstr ""
+"Scegli **Fix Clock** nella schermata di errore dell'assistente *Tor "
+"Connection* per impostare l'orologio e il fuso orario del tuo computer."
 
-#. type: Title -
+#. type: Plain text
+msgid ""
+"If you have problems fixing the clock, you can instead try to restart Tails "
+"and choose to [[connect to Tor automatically|tor#automatic]]. When "
+"connecting to Tails automatically, Tails fixes the clock automatically by "
+"connecting to the captive portal detection service of [Fedora](https://"
+"getfedora.org/) before connecting to Tor."
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "You did not enter the bridge correctly"
+msgid "<h2 id=\"portal\">You need to sign in to the network</h2>\n"
+msgstr "Non sei entrato correttamente nel ponte"
+
+#. type: Plain text
 #, no-wrap
-msgid "You did not enter the bridge correctly"
+msgid "[[!inline pages=\"doc/anonymous_internet/unsafe_browser/captive_portal.inline\" raw=\"yes\" sort=\"age\"]]\n"
+msgstr ""
+
+#. type: Plain text
+msgid "To sign in to a network using a captive portal:"
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Restart Tails."
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid ""
+"When the [[Welcome Screen|first_steps/welcome_screen]] appears, click on the "
+"**[[!img lib/list-add.png alt=\"Add Additional Setting\" class=\"symbolic\" "
+"link=\"no\"]]** button."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "   [[!img first_steps/welcome_screen/additional.png link=\"no\" alt=\"\"]]\n"
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Choose **Unsafe Browser** in the **Additional Settings** dialog."
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Select the **Enable the Unsafe Browser** option."
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Click **Start Tails**."
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid ""
+"Try connecting to the Tor network again using the *Tor Connection* assistant."
+msgstr ""
+
+#. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "Choose **Fix Clock** in the error screen of the *Tor Connection* "
+#| "assistant to set the clock and time zone of your computer."
+msgid ""
+"In the error screen of the *Tor Connection* assistant, choose **Try Signing "
+"in to the Network**."
+msgstr ""
+"Scegli **Fix Clock** nella schermata di errore dell'assistente *Tor "
+"Connection* per impostare l'orologio e il fuso orario del tuo computer."
+
+#. type: Bullet: '1. '
+msgid "In the warning, choose **Launch** to start the *Unsafe Browser*."
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Follow the instructions on the homepage of the *Unsafe Browser*."
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "You did not enter the bridge correctly"
+msgid "<h2 id=\"incorrect\">You did not enter the bridge correctly</h2>\n"
 msgstr "Non sei entrato correttamente nel ponte"
 
 #. type: Plain text
 msgid "Only obfs4 bridges can be used in Tails currently."
-msgstr ""
+msgstr "Solo i ponti obfs4 possono essere usati attualmente in Tails."
 
 #. type: Plain text
 msgid "An obfs4 bridge looks like:"
@@ -58,14 +145,8 @@ msgstr "Un ponte obfs4 si presenta così:"
 
 #. type: Plain text
 #, no-wrap
-msgid ""
-"    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 "
-"cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ "
-"iat-mode=0\n"
-msgstr ""
-"    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 "
-"cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ "
-"iat-mode=0\n"
+msgid "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
+msgstr "    obfs4 1.2.3.4:1234 B0E566C9031657EA7ED3FC9D248E8AC4F37635A4 cert=OYWq67L7MDApdJCctUAF7rX8LHvMxvIBPHOoAp0+YXzlQdsxhw6EapaMNwbbGICkpY8CPQ iat-mode=0\n"
 
 #. type: Plain text
 msgid ""
@@ -75,14 +156,15 @@ msgstr ""
 "Devi inserire l'intera linea, non solo la combinazione di indirizzo IP e "
 "porta."
 
-#. type: Title -
-#, no-wrap
-msgid "The bridge is no longer operational"
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "The bridge is no longer operational"
+msgid "<h2 id=\"broken\">The bridge is no longer operational</h2>\n"
 msgstr "Il ponte non è più operativo"
 
 #. type: Plain text
 msgid "It is possible that the bridge that you entered is no longer working."
-msgstr "È possibile che il ponte che hai inserito non funzioni più."
+msgstr "È possibile che il ponte che hai utilizzato non funzioni più."
 
 #. type: Plain text
 msgid "Try entering another bridge or requesting other bridges."

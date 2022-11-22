@@ -26,10 +26,12 @@ usernames = [user.username for user in gl.users.list(
     all=True, **user_filters
 )]
 
-env = Environment(loader=FileSystemLoader('config/gitlab-triage/templates'),
-                  block_start_string='[[%',
-                  block_end_string='%]]',
-                  variable_start_string='[[',
-                  variable_end_string=']]')
+env = Environment(  # nosec jinja2_autoescape_false
+    loader=FileSystemLoader('config/gitlab-triage/templates'),
+    block_start_string='[[%',
+    block_end_string='%]]',
+    variable_start_string='[[',
+    variable_end_string=']]'
+)
 
 print(env.get_template('stalled.yml').render(usernames=usernames))

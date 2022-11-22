@@ -76,6 +76,13 @@ class Keymaps
     }
   )
 
+  FR_KEYMAP = COMMON_KEYMAP.merge(
+    {
+      'a' => [0x10],
+      'w' => [0x2c],
+    }
+  )
+
   US_KEYMAP = COMMON_KEYMAP.merge(
     {
       '-' => [0x0c], '=' => [0x0d], ';' => [0x27], "'" => [0x28],
@@ -92,6 +99,7 @@ class Keymaps
   )
 
   public_constant :DE_KEYMAP
+  public_constant :FR_KEYMAP
   public_constant :US_KEYMAP
   public_constant :COMMON_KEYMAP
 end
@@ -110,7 +118,9 @@ class Screen
 
   def match_screen(image, sensitivity, show_image)
     screenshot = "#{$config['TMPDIR']}/screenshot.png"
+    debug_log('Screen[match_screen]: taking screenshot')
     $vm.display.screenshot(screenshot)
+    debug_log('Screen[match_screen]: matching template to screenshot')
     OpenCV.matchTemplate("#{OPENCV_IMAGE_PATH}/#{image}",
                          screenshot, sensitivity, show_image)
   end
@@ -137,8 +147,8 @@ class Screen
   def wait(pattern, timeout, **opts)
     opts[:log] = true if opts[:log].nil?
     debug_log("Screen: waiting for #{pattern}") if opts[:log]
-    try_for(timeout, delay: 0, log: false) do
-      return real_find(pattern, **opts.clone.update(log: false))
+    try_for(timeout, delay: 0) do
+      return real_find(pattern, **opts)
     end
   rescue Timeout::Error
     raise FindFailed, "cannot find #{pattern} on the screen"
@@ -146,7 +156,7 @@ class Screen
 
   def find(pattern, **opts)
     debug_log("Screen: trying to find #{pattern}") if opts[:log]
-    wait(pattern, 5, **opts.clone.update(log: false))
+    wait(pattern, 10, **opts.clone.update(log: false))
   end
 
   def exists(pattern, **opts)
@@ -230,6 +240,8 @@ class Screen
       keymap = case $language
                when ''
                  Keymaps::US_KEYMAP
+               when 'French'
+                 Keymaps::FR_KEYMAP
                when 'German'
                  Keymaps::DE_KEYMAP
                else
@@ -250,7 +262,7 @@ class Screen
     nil
   end
 
-  def type(*args)
+  def type(*args, **kwargs)
     args.each do |arg|
       if arg.instance_of?(String)
         debug_log("Keyboard: typing: #{arg}")
@@ -258,12 +270,30 @@ class Screen
           press(char, log: false)
         end
       elsif arg.instance_of?(Array)
-        press(*arg)
+        press(*arg, **kwargs)
       else
         raise("Unsupported type: #{arg.class}")
       end
     end
     nil
+  end
+
+  def paste(text, app: nil)
+    $vm.set_clipboard(text)
+    case app
+    when nil
+      press('ctrl', 'v')
+    when :terminal
+      sleep 0.5
+      press('ctrl', 'shift', 'v')
+    when :gtk_file_chooser
+      press('ctrl', 'l')
+      sleep 1
+      press('ctrl', 'v')
+    else
+      raise "Unsupported app: #{app}"
+    end
+    sleep 1 # Wait for the paste operation to register.
   end
 
   def mouse_location(**opts)
@@ -285,7 +315,7 @@ class Screen
     debug_log("Mouse: moving to (#{x}, #{y})") if opts[:log]
     stdout = xdotool('mousemove', x, y)
     assert(stdout.empty?, "xdotool reported an error:\n" + stdout)
-    try_for(10) { [x, y] == mouse_location }
+    try_for(10) { mouse_location == [x, y] }
     [x, y]
   end
 
@@ -322,7 +352,7 @@ end
 
 # This class is the same as Screen but with the image matching methods
 # wrapped so failures (FindFailed) are intercepted, and we enter an
-# interactive mode allowing images to be updated. Note that the the
+# interactive mode allowing images to be updated. Note that the
 # negative image matching methods (*_vanish()) are excepted (it
 # doesn't make sense for them).
 class ImageBumpingScreen
@@ -419,8 +449,8 @@ class ImageBumpingScreen
         end
       end
     else
-      define_method(m) do |*args|
-        return @screen.method(m).call(*args)
+      define_method(m) do |*args, **kwargs|
+        return @screen.method(m).call(*args, **kwargs)
       end
     end
   end

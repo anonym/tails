@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: UTF-8 -*-
 
 ########################################################################
 # WhisperBack - Send feedback in an encrypted mail
@@ -38,8 +37,8 @@ class MisconfigurationException(WhisperbackException):
     """
     def __init__(self, variable):
         WhisperbackException.__init__(self,
-            _("The %s variable was not found in any of the configuration files "
-            "/etc/whisperback/config.py, ~/.whisperback/config.py, or ./config.py")
+            _("The %s variable was not found in the configuration file: "
+            "/etc/whisperback/config.py")
             % variable)
 
 # Used in encryption.py

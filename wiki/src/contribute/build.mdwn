@@ -49,6 +49,7 @@ Then:
        sudo apt install \
            psmisc \
            git \
+           dpkg-dev \
            rake \
            libvirt-daemon-system \
            dnsmasq-base \
@@ -286,7 +287,7 @@ the following build options:
    machine but make it use the external HTTP proxy configured through
    the `http_proxy` environment variable.
 
- * **noproxy**: do not use any HTTP proxy.
+ * **noproxy**: do not use any HTTP proxy (broken: [[!tails_ticket 17075]]).
 
 Verify if the resulting images are reproducible
 ===============================================

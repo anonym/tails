@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-02-28 20:13+0000\n"
-"PO-Revision-Date: 2021-10-30 13:03+0000\n"
-"Last-Translator: Weblate Admin <tails-weblate@boum.org>\n"
+"POT-Creation-Date: 2022-08-30 21:51+0000\n"
+"PO-Revision-Date: 2022-06-14 08:08+0000\n"
+"Last-Translator: Benjamin Held <Benjamin.Held@protonmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.11.3\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #. type: Plain text
 #, no-wrap
@@ -26,28 +26,47 @@ msgstr "[[!meta robots=\"noindex\"]]\n"
 #. type: Plain text
 #, fuzzy, no-wrap
 #| msgid "<div class=\"trophy windows linux mac\">\n"
-msgid "<div class=\"trophy windows linux mac expert\">\n"
+msgid "<div class=\"windows linux mac expert\">\n"
 msgstr "<div class=\"trophy windows linux mac\">\n"
 
 #. type: Plain text
 #, fuzzy, no-wrap
-#| msgid "<div class=\"step-image\">[[!img install/inc/infography/switch-context.png link=\"no\" alt=\"\"]]</div>\n"
-msgid "<div class=\"state-image\">[[!img install/inc/infography/tails-usb.png link=\"no\" alt=\"Tails USB stick\"]]</div>\n"
-msgstr "<div class=\"step-image\">[[!img install/inc/infography/switch-context.png link=\"no\" alt=\"\"]]</div>\n"
+#| msgid "<div class=\"step-image\">\n"
+msgid "<div class=\"success\">\n"
+msgstr "<div class=\"step-image\">\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<p>Congratulations, you have installed Tails on your USB stick!</p>\n"
+msgid ""
+"<video autoplay loop muted width=\"200\" height=\"200\" poster=\"https://tails.boum.org/install/inc/success/install.png\">\n"
+"  <source src=\"https://tails.boum.org/install/inc/success/install.mp4\" type=\"video/mp4\" />\n"
+"</video>\n"
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
-msgid "<p>You will now restart your computer on this USB stick.</p>\n"
-msgstr ""
+#, fuzzy, no-wrap
+#| msgid "<div class=\"step-image\">\n"
+msgid ""
+"<div>\n"
+"  <p class=\"big\">Well done!</p>\n"
+msgstr "<div class=\"step-image\">\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<p>It might be a bit complicated or not work on your computer, so good luck!</p>\n"
+msgid "  <p>You have installed Tails on your USB stick.</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "Restart the computer on the first USB stick."
+msgid "  <p>In the next step, you will make your computer start on this USB stick.</p>\n"
+msgstr "Starten Sie den Computer mit dem ersten USB-Stick neu."
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"  <p>Tails might not work on your computer, so good luck!</p>\n"
+"</div>\n"
 msgstr ""
 
 #. type: Plain text
@@ -304,9 +323,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "<li class=\"windows upgrade-windows\">\n"
-"<p>If no Boot Menu appears, or if your USB stick is not listed in the Boot\n"
-"Menu, refer to the [[instructions on starting Tails using the Boot Menu\n"
-"key|doc/first_steps/start/pc#boot-menu-key]].</p>\n"
+"<p>If no Boot Menu appears, refer to the [[instructions on starting Tails using\n"
+"the Boot Menu key|doc/first_steps/start/pc#boot-menu-key]].</p>\n"
 "</li>\n"
 msgstr ""
 
@@ -314,10 +332,18 @@ msgstr ""
 #, no-wrap
 msgid ""
 "<li class=\"linux expert pc-clone upgrade-clone upgrade-tails upgrade-linux\">\n"
-"<p>If none of the possible Boot Menu keys from the previous technique work, or\n"
-"if your USB stick is not listed in the Boot Menu, refer to the\n"
-"[[troubleshooting instructions about Tails not starting at\n"
+"<p>If none of the possible Boot Menu keys from the previous technique work,\n"
+"refer to the [[troubleshooting instructions about Tails not starting at\n"
 "all|doc/first_steps/start/pc#not-at-all]].</p>\n"
+"</li>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<li class=\"windows upgrade-windows linux expert pc-clone upgrade-clone upgrade-tails upgrade-linux\">\n"
+"<p>If the Boot Menu appears but your USB stick is not listed in the Boot Menu,\n"
+"wait a few minutes and try again. Some USB sticks need some rest after installing.</p>\n"
 "</li>\n"
 msgstr ""
 
@@ -449,17 +475,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "   <div class=\"bug mac upgrade-mac\">\n"
-"   <!-- See #15652 -->\n"
-"   <p>If your keyboard, touchpad, or mouse doesn't work:</p>\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"   <ul>\n"
-"     <li>Please [[let us know|support/talk]].</li>\n"
-"     <li>Try using an external keyboard and mouse.</li>\n"
-"   </ul>\n"
+"   <p>If your keyboard or touchpad doesn't work, try using a USB keyboard or mouse.</p>\n"
 "   </div>\n"
 msgstr ""
 
@@ -472,6 +488,11 @@ msgstr "Nach 15&ndash;30 Sekunden erscheint der Desktop von Tails."
 #| msgid "   [[!img install/inc/screenshots/desktop.png link=\"no\"]]\n"
 msgid "   [[!img install/inc/screenshots/desktop.png link=\"no\" alt=\"Tails desktop\"]]\n"
 msgstr "   [[!img install/inc/screenshots/desktop.png link=\"no\"]]\n"
+
+#, fuzzy, no-wrap
+#~| msgid "<div class=\"step-image\">[[!img install/inc/infography/switch-context.png link=\"no\" alt=\"\"]]</div>\n"
+#~ msgid "<div class=\"state-image\">[[!img install/inc/infography/tails-usb.png link=\"no\" alt=\"Tails USB stick\"]]</div>\n"
+#~ msgstr "<div class=\"step-image\">[[!img install/inc/infography/switch-context.png link=\"no\" alt=\"\"]]</div>\n"
 
 #, no-wrap
 #~ msgid "   [[!img install/inc/qrcodes/tails_boum_org_install_clone_back_1.png class=\"install-clone qrcode\" link=\"no\" alt=\"\"]]\n"

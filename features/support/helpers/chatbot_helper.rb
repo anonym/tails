@@ -1,5 +1,3 @@
-require 'tempfile'
-
 class ChatBot
   def initialize(account, password, **opts)
     @account = account

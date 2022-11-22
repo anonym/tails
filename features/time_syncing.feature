@@ -8,24 +8,26 @@ Feature: Time syncing
     Given I have started Tails from DVD without network and logged in
     When the network is plugged
     And Tor is ready
-    Then Tails clock is less than 5 minutes incorrect
+    Then the system clock is less than 5 minutes incorrect
 
   Scenario: Clock with host's time while using bridges
     Given I have started Tails from DVD without network and logged in
     When the network is plugged
     And the Tor Connection Assistant autostarts
     And I configure some normal bridges in the Tor Connection Assistant
-    And Tor is ready
-    Then Tails clock is less than 5 minutes incorrect
+    And I wait until Tor is ready
+    Then the system clock is less than 5 minutes incorrect
 
-  Scenario: Clock is one day in the future while using bridges
+  Scenario: Clock is one day in the future while using obfs4 bridges
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+1 day"
+    And I capture all network traffic
     And the network is plugged
     And the Tor Connection Assistant autostarts
-    And I configure some normal bridges in the Tor Connection Assistant
-    And Tor is ready
-    Then Tails clock is less than 5 minutes incorrect
+    And I configure some obfs4 bridges in the Tor Connection Assistant in easy mode
+    And I wait until Tor is ready
+    Then the system clock is less than 5 minutes incorrect
+    And all Internet traffic has only flowed through the configured bridges or connectivity check service
 
   @not_release_blocker
   Scenario: The system time is not synced to the hardware clock
@@ -51,7 +53,34 @@ Feature: Time syncing
     And the computer boots Tails
     Then the system clock is just past Tails' source date
 
-  Scenario: I can connect to obfs4 bridges having a clock East of UTC
+  Scenario: On a clock with host's time, Tor Connection works even if time sync fails
+    Given I have started Tails from DVD without network and logged in
+    And I make sure time sync before Tor connects times out
+    When the network is plugged
+    And I successfully configure Tor
+    Then the system clock is less than 5 minutes incorrect
+
+  Scenario: I can manually recover from time sync failure when connecting automatically to obfs4 bridges with a clock East of UTC
+    Given I have started Tails from DVD without network and logged in
+    When I bump the system time with "+8 hours +15 minutes"
+    And all notifications have disappeared
+    And I capture all network traffic
+    And I make sure time sync before Tor connects fails
+    And the network is plugged
+    And the Tor Connection Assistant autostarts
+    When I configure the default bridges in the Tor Connection Assistant in easy mode without connecting
+    And I click "Connect to Tor"
+    And the Tor Connection Assistant fails to connect to Tor
+    # The "Fix Clock" button allows users to recover from this bug
+    Then I set the time zone in Tor Connection to "Asia/Shanghai"
+    Then the system clock is less than 20 minutes incorrect
+    When I click "Connect to Tor"
+    Then I wait until Tor is ready
+    And all Internet traffic has only flowed through the default bridges or fake connectivity check service
+    # check that htpdate has done its job
+    And the system clock is less than 5 minutes incorrect
+
+  Scenario: I can connect to obfs4 bridges having a clock East of UTC while hiding that I am using Tor
     Given I have started Tails from DVD without network and logged in
     When I bump the system time with "+8 hours +15 minutes"
     And all notifications have disappeared
@@ -59,13 +88,17 @@ Feature: Time syncing
     And the network is plugged
     And the Tor Connection Assistant autostarts
     # Anti-test: Users east of UTC can't connect to obfs4 bridges
-    When I unsuccessfully configure some obfs4 bridges in the Tor Connection Assistant
+    And I configure some obfs4 bridges in the Tor Connection Assistant in hide mode without connecting
+    And I click "Connect to Tor"
     Then the Tor Connection Assistant reports that it failed to connect
     # The "Fix Clock" button allows users to recover from this bug
     When I set the time zone in Tor Connection to "Asia/Shanghai"
-    Then Tails clock is less than 20 minutes incorrect
+    Then the system clock is less than 20 minutes incorrect
+    # "Asia/Shanghai" is UTC+08:00 all year long (no DST)
+    And the displayed clock is less than 20 minutes incorrect in "+08:00"
     When I click "Connect to Tor"
-    Then Tor is ready
+    Then I wait until Tor is ready
     And all Internet traffic has only flowed through the configured bridges
     # check that htpdate has done its job
-    And Tails clock is less than 5 minutes incorrect
+    And the system clock is less than 5 minutes incorrect
+    And the displayed clock is less than 5 minutes incorrect in "+08:00"

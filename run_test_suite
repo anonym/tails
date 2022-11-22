@@ -13,7 +13,6 @@ dnsmasq-base
 ffmpeg
 gawk
 git
-i18nspector
 imagemagick
 libcap2-bin
 libvirt-clients
@@ -28,9 +27,11 @@ python3-opencv
 python3-pil
 python3-slixmpp
 qemu-system-x86
+qrencode
 ruby-guestfs
 ruby-json
 ruby-libvirt
+ruby-net-dns
 ruby-packetfu
 ruby-rb-inotify
 ruby-rspec
@@ -85,12 +86,17 @@ Options for '@product' features:
   --disable-chutney  EXPERIMENTAL: All tests will be run using the real Tor
                      network, not a simulated one.
                      Expect this to break many test cases.
-  --live-patch FILE  Copies files into the VM before running the test suite.
+  --late-patch FILE  Copies files into the VM before running the test suite.
                      This often can avoid a rebuild.
                      FILE is a text file where each line contains tab-separated
                      source and destination.
                      lines without a tab are ignored.
                      lines with a leading \"#\" are ignored.
+  --early-patch      Boots the system with the \"early_patch=umount\" cmdline option.
+                     See wiki/src/contribute/build/early-patch.mdwn for details
+                     This is useful when you need something to be patched early
+                     in the boot process; or if you need to run arbitrary
+                     commands, not just copying files
   --tmpdir           Directory where various temporary files are written
                      during a test, e.g. VM snapshots and memory dumps,
                      failure screenshots, pcap files and disk images
@@ -175,7 +181,7 @@ test_suite_cleanup() {
 }
 
 start_xvfb() {
-    Xvfb "$TARGET_DISPLAY" -screen 0 1024x768x24+32 >/dev/null 2>&1 &
+    Xvfb "$TARGET_DISPLAY" -screen 0 1024x768x24+32 -noreset >/dev/null 2>&1 &
     XVFB_PID=$!
     # Wait for Xvfb to run on TARGET_DISPLAY
     until display_in_use "$TARGET_DISPLAY"; do
@@ -229,8 +235,9 @@ KEEP_CHUTNEY=
 KEEP_SNAPSHOTS=
 TAILS_ISO=
 OLD_TAILS_ISO=
+EARLY_PATCH=
 
-LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,disable-chutney,live-patch:,iso:,old-iso:,interactive-debugging,image-bumping-mode"
+LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,disable-chutney,late-patch:,early-patch,iso:,old-iso:,interactive-debugging,image-bumping-mode"
 OPTS=$(getopt -o "" --longoptions $LONGOPTS -n "${NAME}" -- "$@")
 eval set -- "$OPTS"
 while [ $# -gt 0 ]; do
@@ -284,14 +291,17 @@ while [ $# -gt 0 ]; do
         --disable-chutney)
             export DISABLE_CHUTNEY="yes"
             ;;
-        --live-patch)
+        --late-patch)
             shift
-            LIVE_PATCH="$(realpath -s "$1")"
-            if ! [[ -f "$LIVE_PATCH" ]]; then
-                echo "--live-patch requires a valid FILE as argument"
+            LATE_PATCH="$(realpath -s "$1")"
+            if ! [[ -f "$LATE_PATCH" ]]; then
+                echo "--late-patch requires a valid FILE as argument"
                 exit 2
             fi
-            export LIVE_PATCH
+            export LATE_PATCH
+            ;;
+        --early-patch)
+            export EARLY_PATCH="yes"
             ;;
         --tmpdir)
             shift

@@ -22,6 +22,7 @@ def assert_vmcommand_success(p, msg = nil) # rubocop:disable Naming/MethodParame
          if msg.nil?
            "Command failed: #{p.cmd}\n" \
            "error code: #{p.returncode}\n" \
+           "stdout: #{p.stdout}\n" \
            "stderr: #{p.stderr}"
          else
            msg
@@ -184,7 +185,7 @@ def retry_tor(recovery_proc = nil, &block)
                operation_name: 'Tor operation', &block)
 end
 
-def retry_action(max_retries, options = {}, &block)
+def retry_action(max_retries, **options, &block)
   assert(max_retries.is_a?(Integer), 'max_retries must be an integer')
   options[:recovery_proc] ||= nil
   options[:operation_name] ||= 'Operation'

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -eu
+set -x
+
+option="$(tr ' ' '\n' < /proc/cmdline | grep '^early_patch\b')"
+
+[ -n "$option" ] || exit 0
+
+for mod in fscache 9pnet 9pnet_virtio 9p; do
+    modprobe -vvv -d /root/ $mod
+done
+
+mountpoint=/root/mnt
+mkdir -p "$mountpoint"
+mount -t 9p src "$mountpoint"
+if [ -x "${mountpoint}/hook" ]
+then
+    "${mountpoint}/hook" /root || true
+fi
+
+# early_patch=umount will umount the filesystem immediately after running the hook
+# this is needed to have early_patch in the test suite.
+# In fact, qemu cannot do snapshots while this is mounted
+if echo "$option" | grep -qw umount
+then
+    umount "$mountpoint"
+fi

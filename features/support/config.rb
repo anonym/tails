@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'resolv'
 require 'yaml'
 require "#{Dir.pwd}/features/support/helpers/misc_helpers.rb"
 
@@ -43,7 +44,8 @@ GIT_DIR = ENV['PWD']
 KEEP_CHUTNEY = !ENV['KEEP_CHUTNEY'].nil?
 KEEP_SNAPSHOTS = !ENV['KEEP_SNAPSHOTS'].nil?
 DISABLE_CHUTNEY = !ENV['DISABLE_CHUTNEY'].nil?
-LIVE_PATCH = ENV['LIVE_PATCH']
+LATE_PATCH = ENV['LATE_PATCH']
+EARLY_PATCH = !ENV['EARLY_PATCH'].nil?
 LIVE_USER = cmd_helper(
   '. config/chroot_local-includes/etc/live/config.d/username.conf; ' \
   'echo ${LIVE_USERNAME}'
@@ -97,3 +99,11 @@ WEBM_VIDEO_URL = 'https://tails.boum.org/lib/test_suite/test.webm'.freeze
 
 # EFI System Partition
 ESP_GUID = 'c12a7328-f81f-11d2-ba4b-00a0c93ec93b'.freeze
+
+# Fedora connectivity check server, used by tails-get-network-time
+CONNECTIVITY_CHECK_HOSTNAME = 'fedoraproject.org'.freeze
+CONNECTIVITY_CHECK_HOSTS = Resolv.getaddresses(CONNECTIVITY_CHECK_HOSTNAME)
+CONNECTIVITY_CHECK_ALLOWED_NODES = (CONNECTIVITY_CHECK_HOSTS.map do |ip|
+  { address: ip, port: 80 }
+end).freeze
+FAKE_CONNECTIVITY_CHECK_HOSTNAME = 'httpbin.org'.freeze

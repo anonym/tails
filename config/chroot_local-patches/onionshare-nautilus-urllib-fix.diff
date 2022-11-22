@@ -1,0 +1,20 @@
+--- /usr/share/nautilus-python/extensions/onionshare-nautilus.py	2019-10-13 18:35:40.000000000 +0000
++++ /usr/share/nautilus-python/extensions/onionshare-nautilus.py	2022-05-26 08:35:15.744000000 +0000
+@@ -3,7 +3,7 @@
+ import json
+ import locale
+ import subprocess
+-import urllib
++import urllib.request
+ import gi
+ 
+ gi.require_version("Nautilus", "3.0")
+@@ -67,7 +67,7 @@
+     def url2path(self, url):
+         file_uri = url.get_activation_uri()
+         arg_uri = file_uri[7:]
+-        path = urllib.url2pathname(arg_uri)
++        path = urllib.request.url2pathname(arg_uri)
+         return path
+ 
+     def exec_onionshare(self, filenames):

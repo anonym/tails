@@ -95,6 +95,17 @@ class VM
       rexml.elements['domain/cpu/model'].add_attribute('fallback', 'allow')
     end
 
+    if $config['EARLY_PATCH']
+      rexml.elements['domain/devices'].add_element('filesystem')
+      rexml.elements['domain/devices/filesystem'].add_attribute('type', 'mount')
+      rexml.elements['domain/devices/filesystem'].add_attribute('accessmode', 'passthrough')
+      rexml.elements['domain/devices/filesystem'].add_element('source')
+      rexml.elements['domain/devices/filesystem'].add_element('target')
+      rexml.elements['domain/devices/filesystem'].add_element('readonly')
+      rexml.elements['domain/devices/filesystem/source'].add_attribute('dir', Dir.pwd)
+      rexml.elements['domain/devices/filesystem/target'].add_attribute('dir', 'src')
+    end
+
     update(xml: rexml.to_s)
     set_vcpu($config['VCPUS']) if $config['VCPUS']
     @display = Display.new(@domain_name, x_display)
@@ -384,6 +395,10 @@ class VM
     !disk_xml_desc(name).nil?
   end
 
+  def persistent_storage_dev_on_disk(name)
+    disk_dev(name) + '2'
+  end
+
   def set_disk_boot(name, type)
     raise 'boot settings can only be set for inactive vms' if running?
 
@@ -494,8 +509,8 @@ class VM
   end
 
   def host_to_guest_time_sync
-    host_time = DateTime.now.strftime('%s').to_s
-    execute("date -s '@#{host_time}'").success?
+    host_time = Time.now.utc.strftime('%F %T')
+    execute_successfully("timedatectl set-time '#{host_time}'")
   end
 
   def connected_to_network?
@@ -510,42 +525,6 @@ class VM
 
   def pidof(process)
     execute("pidof -x -o '%PPID' " + process).stdout.chomp.split
-  end
-
-  def select_virtual_desktop(desktop_number, user = LIVE_USER)
-    assert(desktop_number >= 0 && desktop_number <= 3,
-           'Only values between 0 and 1 are valid virtual desktop numbers')
-    execute_successfully(
-      "xdotool set_desktop '#{desktop_number}'",
-      user: user
-    )
-  end
-
-  def focus_window(window_title, user = LIVE_USER)
-    do_focus = lambda do
-      execute_successfully(
-        "xdotool search --name '#{window_title}' windowactivate --sync",
-        user: user
-      )
-    end
-
-    begin
-      do_focus.call
-    rescue ExecutionFailedInVM
-      # Often when xdotool fails to focus a window it'll work when retried
-      # after redrawing the screen.  Switching to a new virtual desktop then
-      # back seems to be a reliable way to handle this.
-      # Sadly we have to rely on a lot of sleep() here since there's
-      # little on the screen etc that we truly can rely on.
-      sleep 5
-      select_virtual_desktop(1)
-      sleep 5
-      select_virtual_desktop(0)
-      sleep 5
-      do_focus.call
-    end
-  rescue StandardError
-    # noop
   end
 
   def file_exist?(file)
@@ -606,15 +585,15 @@ class VM
       vm_path = fpath[1..-1]
       dir = File.dirname(vm_path)
 
-      execute_successfully("mkdir -p '#{dir}'")
+      execute_successfully("mkdir -p '#{File.join(vm_dir, dir)}'")
       file_copy_local(File.join(localdir, fpath), File.join(vm_dir, vm_path))
     end
   end
 
-  def live_patch(fname = nil)
-    fname = $config['LIVE_PATCH'] if fname.nil?
+  def late_patch(fname = nil)
+    fname = $config['LATE_PATCH'] if fname.nil?
     if fname.nil? || fname.empty?
-      debug_log('live_patch called but no filename found')
+      debug_log('late_patch called but no filename found')
       return
     end
 
@@ -623,7 +602,7 @@ class VM
 
       src, dest = line.strip.split("\t", 2)
       unless File.exist?(src)
-        debug_log("Error in --live-patch: #{src} does not exist")
+        debug_log("Error in --late-patch: #{src} does not exist")
         next
       end
       if File.file?(src)
@@ -631,7 +610,7 @@ class VM
       elsif File.directory?(src)
         $vm.file_copy_local_dir(src, dest)
       else
-        debug_log("Error in --live-patch: #{src} not a file or a dir")
+        debug_log("Error in --late-patch: #{src} not a file or a dir")
       end
     end
   end
@@ -644,6 +623,9 @@ class VM
   def set_clipboard(text)
     execute_successfully("echo -n '#{text}' | xsel --input --clipboard",
                          user: LIVE_USER)
+    try_for(5) do
+      get_clipboard == text
+    end
   end
 
   def get_clipboard
@@ -801,7 +783,18 @@ class VM
   end
 
   def power_off
-    @domain.destroy if running?
+    begin
+      @domain.destroy if running?
+    # We're sometimes running this code while Tails is shutting down (#18972),
+    # in which case the above statement is racy (TOCTOU). So we ignore
+    # the resulting failures:
+    rescue Guestfs::Error => e
+      raise e unless e.to_s == 'Call to virDomainDestroyFlags failed: ' \
+                               'Requested operation is not valid: ' \
+                               'domain is not running'
+
+      debug_log('Tried to destroy a domain that was already stopped, ignoring')
+    end
     @display.stop
   end
 

@@ -1,14 +1,24 @@
 [[!meta robots="noindex"]]
 
-<div class="trophy windows linux mac expert">
+<div class="windows linux mac expert">
 
-<div class="state-image">[[!img install/inc/infography/tails-usb.png link="no" alt="Tails USB stick"]]</div>
+<div class="success">
 
-<p>Congratulations, you have installed Tails on your USB stick!</p>
+<video autoplay loop muted width="200" height="200" poster="https://tails.boum.org/install/inc/success/install.png">
+  <source src="https://tails.boum.org/install/inc/success/install.mp4" type="video/mp4" />
+</video>
 
-<p>You will now restart your computer on this USB stick.</p>
+<div>
+  <p class="big">Well done!</p>
 
-<p>It might be a bit complicated or not work on your computer, so good luck!</p>
+  <p>You have installed Tails on your USB stick.</p>
+
+  <p>In the next step, you will make your computer start on this USB stick.</p>
+
+  <p>Tails might not work on your computer, so good luck!</p>
+</div>
+
+</div>
 
 </div>
 
@@ -85,16 +95,19 @@ the rest of the instructions afterwards, you can either:
 <ul>
 
 <li class="windows upgrade-windows">
-<p>If no Boot Menu appears, or if your USB stick is not listed in the Boot
-Menu, refer to the [[instructions on starting Tails using the Boot Menu
-key|doc/first_steps/start/pc#boot-menu-key]].</p>
+<p>If no Boot Menu appears, refer to the [[instructions on starting Tails using
+the Boot Menu key|doc/first_steps/start/pc#boot-menu-key]].</p>
 </li>
 
 <li class="linux expert pc-clone upgrade-clone upgrade-tails upgrade-linux">
-<p>If none of the possible Boot Menu keys from the previous technique work, or
-if your USB stick is not listed in the Boot Menu, refer to the
-[[troubleshooting instructions about Tails not starting at
+<p>If none of the possible Boot Menu keys from the previous technique work,
+refer to the [[troubleshooting instructions about Tails not starting at
 all|doc/first_steps/start/pc#not-at-all]].</p>
+</li>
+
+<li class="windows upgrade-windows linux expert pc-clone upgrade-clone upgrade-tails upgrade-linux">
+<p>If the Boot Menu appears but your USB stick is not listed in the Boot Menu,
+wait a few minutes and try again. Some USB sticks need some rest after installing.</p>
 </li>
 
 <li>
@@ -149,13 +162,7 @@ keyboard layout in the <span class="guilabel">Language & Region</span> section.
 Click <span class="bold">Start Tails</span>.
 
    <div class="bug mac upgrade-mac">
-   <!-- See #15652 -->
-   <p>If your keyboard, touchpad, or mouse doesn't work:</p>
-
-   <ul>
-     <li>Please [[let us know|support/talk]].</li>
-     <li>Try using an external keyboard and mouse.</li>
-   </ul>
+   <p>If your keyboard or touchpad doesn't work, try using a USB keyboard or mouse.</p>
    </div>
 
 1. After 15&ndash;30 seconds, the Tails desktop appears.

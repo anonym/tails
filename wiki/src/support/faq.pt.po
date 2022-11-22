@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-03-25 08:30+0000\n"
-"PO-Revision-Date: 2020-10-18 15:31+0000\n"
-"Last-Translator: emmapeel <emma.peel@riseup.net>\n"
+"POT-Creation-Date: 2022-06-04 08:38+0200\n"
+"PO-Revision-Date: 2022-11-09 15:17+0000\n"
+"Last-Translator: drebs <drebs@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.8\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #. type: Plain text
 #, no-wrap
@@ -30,6 +30,12 @@ msgid ""
 "[[documentation|doc]].  - For questions related to Tor, see also to the [Tor "
 "support pages](https://support.torproject.org/)."
 msgstr ""
+"- Para questões sobre compatibilidade de hardware, veja a página de [["
+"problemas conhecidos|support/known_issues]].\n"
+"- Para saber o que você pode fazer com Tails, veja nossa "
+"[[documentação|doc]].\n"
+"- Para questões relacionadas ao Tor, veja também as [páginas de suporte do "
+"Tor](https://support.torproject.org/)."
 
 #. type: Plain text
 #, no-wrap
@@ -771,8 +777,9 @@ msgstr ""
 
 #. type: Plain text
 msgid ""
-"groups/tails/-/issues?scope=all&utf8=✓&state=opened&label_name%5B%5D=C"
-"%3APersistence desc=\"list of issues about the Persistent Storage\"]]."
+"groups/tails/-/issues?"
+"scope=all&utf8=✓&state=opened&label_name%5B%5D=C%3APersistence desc=\"list "
+"of issues about the Persistent Storage\"]]."
 msgstr ""
 
 #. type: Plain text
@@ -1035,42 +1042,50 @@ msgid "<h2 id=\"htp\">Why does Tails automatically connect to several websites w
 msgstr "Por que o Tails se conecta automaticamente a diversos sítios web ao iniciar?\n"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "Tor and I2P require the system clock to be well synchronized in order to "
-#| "work properly. When starting Tails, a notification is displayed while the "
-#| "clock is being synchronized."
-msgid ""
-"Tor requires the system clock to be well synchronized in order to work "
-"properly. When starting Tails, a notification is displayed while the clock "
-"is being synchronized."
+msgid "The clock of the computer needs to be set at the correct time to both:"
 msgstr ""
-"Tor e I2P requerem que o relógio do sistema esteja bem sincronizado para que "
-"funcionem corretamente. Ao iniciar o Tails, uma notificação é mostrada "
-"enquanto o relógio do sistema está sendo sincronizado."
+
+#. type: Bullet: '1. '
+msgid "Be able to connect to the Tor network in the first place"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   The computer clock is fixed a first time, approximately, before connecting\n"
+"   to Tor, either [[automatically|doc/anonymous_internet/tor#automatic]] or\n"
+"   [[manually|doc/anonymous_internet/tor/troubleshoot#clock]].\n"
+msgstr ""
+
+#. type: Bullet: '2. '
+msgid "Protect your anonymity while using Tor"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   The computer clock is fixed a second time, precisely, to prevent a website\n"
+"   from identifying you by analyzing minor differences of your computer clock\n"
+"   with the correct time.\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "This synchronization is made by sending HTTPS queries through Tor to severals websites and deducing a correct time from their answers. The list of websites that could be queried in this process can be found in `/etc/default/htpdate`."
+msgid ""
+"   This second synchronization is made by sending HTTPS queries through Tor to several\n"
+"   websites and deducing a correct time from their answers. You can see the\n"
+"   list of websites that Tails can connect to in *[[!tails_gitweb config/chroot_local-includes/etc/default/htpdate.pools desc=\"/etc/default/htpdate.pools\"]]*.\n"
+msgstr "Esta sincronização é feita enviando requisições HTTPS através do Tor para diversos sítios web e deduzindo a hora correta a partir de suas respostas. A lista de sítos web que podem ser requisitados durante este processo pode ser encontrada em `/etc/default/htpdate`."
 
 #. type: Plain text
 #, fuzzy
 #| msgid ""
-#| "This synchronization is made by sending HTTPS queries through Tor to "
-#| "severals websites and deducing a correct time from their answers. The "
-#| "list of websites that could be queried in this process can be found in `/"
-#| "etc/default/htpdate`."
+#| "See also our [[design document|contribute/design/Time_syncing]] on this "
+#| "topic."
 msgid ""
-"This synchronization is made by sending HTTPS queries through Tor to several "
-"websites and deducing a correct time from their answers. The list of "
-"websites that could be queried in this process can be found in `/etc/default/"
-"htpdate`."
-msgstr ""
-"Esta sincronização é feita enviando requisições HTTPS através do Tor para "
-"diversos sítios web e deduzindo a hora correta a partir de suas respostas. A "
-"lista de sítos web que podem ser requisitados durante este processo pode ser "
-"encontrada em `/etc/default/htpdate`."
-
-#. type: Plain text
-msgid ""
-"See also our [[design document|contribute/design/Time_syncing]] on this "
-"topic."
+"See also our [[design document on time synchronization|contribute/design/"
+"Time_syncing]]."
 msgstr ""
 "Veja também nosso [[documento de projeto|contribute/design/Time_syncing]] "
 "sobre este tópico."
@@ -1415,7 +1430,7 @@ msgstr ""
 
 #. type: Bullet: '- '
 msgid ""
-"[*Mumble*](https://www.mumble.com/) is the only voice chat application that "
+"[*Mumble*](https://www.mumble.info/) is the only voice chat application that "
 "we know works from Tails. You can use the [[Additional Software|doc/"
 "first_steps/persistence#additional_software]] feature to add *Mumble* to "
 "your Tails."
@@ -1428,54 +1443,6 @@ msgid ""
 "  on *Mumble*. If you are a Debian developer, please help us\n"
 "  [[!tails_ticket 17617 desc=\"get *Wahay* in Debian\"]].\n"
 msgstr ""
-
-#. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "Desktop environment\n"
-msgid "<h1 id=\"desktop\">Desktop environment</h1>\n"
-msgstr "Ambiente de trabalho\n"
-
-#. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "Why is the time set wrong?\n"
-msgid "<h2 id=\"timezone\">Why is the time set wrong?</h2>\n"
-msgstr "Por que o horário está errado?\n"
-
-#. type: Plain text
-msgid ""
-"When Tails starts, the system timezone is set to UTC (Greenwich time). So, "
-"this time might be a few hours in the future if you are west of the United "
-"Kingdom, or in the past if you are east of the UK. The minutes should be "
-"accurate."
-msgstr ""
-"Quando Tails é iniciado, o fuso horário é configurado para UTC (horário de "
-"Greenwich). Assim, o horário pode estar algumas horas no futuro se você está "
-"a oeste do Reino Unido, ou no passado se você está a leste do Reino Unido. "
-"Os minutos devem estar exatos."
-
-#. type: Plain text
-msgid ""
-"We do this for anonymity reasons: if some application reveals your actual "
-"timezone, it might help identifying who you are."
-msgstr ""
-"Fazemos isto por razões de anonimidade: se algumas aplicações revelam seu "
-"fuso horário real isto pode ajudar a identificar quem você é."
-
-#. type: Plain text
-msgid ""
-"Having all Tails users set to the same timezone, makes it more difficult to "
-"distinguish you amongst all the other Tails users."
-msgstr ""
-"Ao ter todos os usuários do Tails usando o mesmo fuso horário, tornamos mais "
-"difícil distinguir você dentre todos os outros usuários de Tails."
-
-#. type: Plain text
-msgid ""
-"We are working on a custom clock applet with configurable timezone. See [[!"
-"tails_ticket 6284]]."
-msgstr ""
-"Estamos trabalhando em um relógio personalizado com fuso horário "
-"configurável. Veja [[!tails_ticket 6284]]."
 
 #. type: Plain text
 #, fuzzy, no-wrap
@@ -1657,9 +1624,65 @@ msgstr ""
 
 #. type: Plain text
 msgid ""
-"See the [[!wikipedia Linux_malware desc=\"Wikipedia page on Linux malware"
-"\"]] for further details."
+"See the [[!wikipedia Linux_malware desc=\"Wikipedia page on Linux "
+"malware\"]] for further details."
 msgstr ""
+
+#, fuzzy
+#~| msgid ""
+#~| "Tor and I2P require the system clock to be well synchronized in order to "
+#~| "work properly. When starting Tails, a notification is displayed while "
+#~| "the clock is being synchronized."
+#~ msgid ""
+#~ "Tor requires the system clock to be well synchronized in order to work "
+#~ "properly. When starting Tails, a notification is displayed while the "
+#~ "clock is being synchronized."
+#~ msgstr ""
+#~ "Tor e I2P requerem que o relógio do sistema esteja bem sincronizado para "
+#~ "que funcionem corretamente. Ao iniciar o Tails, uma notificação é "
+#~ "mostrada enquanto o relógio do sistema está sendo sincronizado."
+
+#, fuzzy, no-wrap
+#~| msgid "Desktop environment\n"
+#~ msgid "<h1 id=\"desktop\">Desktop environment</h1>\n"
+#~ msgstr "Ambiente de trabalho\n"
+
+#, fuzzy, no-wrap
+#~| msgid "Why is the time set wrong?\n"
+#~ msgid "<h2 id=\"timezone\">Why is the time set wrong?</h2>\n"
+#~ msgstr "Por que o horário está errado?\n"
+
+#~ msgid ""
+#~ "When Tails starts, the system timezone is set to UTC (Greenwich time). "
+#~ "So, this time might be a few hours in the future if you are west of the "
+#~ "United Kingdom, or in the past if you are east of the UK. The minutes "
+#~ "should be accurate."
+#~ msgstr ""
+#~ "Quando Tails é iniciado, o fuso horário é configurado para UTC (horário "
+#~ "de Greenwich). Assim, o horário pode estar algumas horas no futuro se "
+#~ "você está a oeste do Reino Unido, ou no passado se você está a leste do "
+#~ "Reino Unido. Os minutos devem estar exatos."
+
+#~ msgid ""
+#~ "We do this for anonymity reasons: if some application reveals your actual "
+#~ "timezone, it might help identifying who you are."
+#~ msgstr ""
+#~ "Fazemos isto por razões de anonimidade: se algumas aplicações revelam seu "
+#~ "fuso horário real isto pode ajudar a identificar quem você é."
+
+#~ msgid ""
+#~ "Having all Tails users set to the same timezone, makes it more difficult "
+#~ "to distinguish you amongst all the other Tails users."
+#~ msgstr ""
+#~ "Ao ter todos os usuários do Tails usando o mesmo fuso horário, tornamos "
+#~ "mais difícil distinguir você dentre todos os outros usuários de Tails."
+
+#~ msgid ""
+#~ "We are working on a custom clock applet with configurable timezone. See "
+#~ "[[!tails_ticket 6284]]."
+#~ msgstr ""
+#~ "Estamos trabalhando em um relógio personalizado com fuso horário "
+#~ "configurável. Veja [[!tails_ticket 6284]]."
 
 #, fuzzy
 #~| msgid "Does Tails collect information about its users?\n"
@@ -1860,8 +1883,8 @@ msgstr ""
 #, fuzzy
 #~| msgid "But you can already watch HTML5 videos with the Tor browser."
 #~ msgid ""
-#~ "But you can already watch HTML5 videos with <span class=\"application"
-#~ "\">Tor Browser</span>.\n"
+#~ "But you can already watch HTML5 videos with <span "
+#~ "class=\"application\">Tor Browser</span>.\n"
 #~ msgstr "Mas você já pode assistir vídeos em HTML5 com o navegador Tor."
 
 #, fuzzy
@@ -2312,13 +2335,13 @@ msgstr ""
 #~ "In our [[warning page|doc/about/warning#identities]] we advice to\n"
 #~ "restart Tails every time that you want to use a different contextual\n"
 #~ "identity. The\n"
-#~ "[[<span class=\"guilabel\">New Identity</span> feature of <span class="
-#~ "\"application\">Vidalia</span>|doc/anonymous_internet/vidalia#new-"
+#~ "[[<span class=\"guilabel\">New Identity</span> feature of <span "
+#~ "class=\"application\">Vidalia</span>|doc/anonymous_internet/vidalia#new-"
 #~ "identity]]\n"
 #~ "forces Tor to use new circuits but only for new connections and the\n"
-#~ "[[<span class=\"guilabel\">New Identity</span> of <span class="
-#~ "\"application\">Tor Browser</span>|doc/anonymous_internet/Tor_Browser#new-"
-#~ "identity]]\n"
+#~ "[[<span class=\"guilabel\">New Identity</span> of <span "
+#~ "class=\"application\">Tor Browser</span>|doc/anonymous_internet/"
+#~ "Tor_Browser#new-identity]]\n"
 #~ "is limited to the browser.\n"
 #~ msgstr ""
 #~ "Em nossa [[página de advertência|doc/about/warning#identities]] nos "

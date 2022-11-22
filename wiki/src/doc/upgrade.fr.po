@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-03-24 08:43+0000\n"
-"PO-Revision-Date: 2022-03-04 19:24+0000\n"
-"Last-Translator: nihei <nihei@disroot.org>\n"
+"POT-Creation-Date: 2022-05-31 09:31+0200\n"
+"PO-Revision-Date: 2022-06-24 13:08+0000\n"
+"Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: Tails translators <tails@boum.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,11 @@ msgid ""
 "package* is downloaded. The upgrade package contains all the changes made to "
 "Tails since Tails was first installed or was last manually upgraded."
 msgstr ""
+"Tails embarque un système de mise à jour automatique vers la dernière "
+"version de Tails pour les clés USB. Quand une mise à jour automatique est "
+"lancée, seul un *paquet de mise à jour* est téléchargé. Le paquet de mise à "
+"jour contient tous les changements de Tails depuis la première installation "
+"de Tails ou depuis la dernière fois qu'il a été mis à jour manuellement."
 
 #. type: Plain text
 msgid ""
@@ -51,6 +56,10 @@ msgid ""
 "<p>To learn how Tails implements automatic upgrades, see our\n"
 "[[design documentation about automatic upgrades|contribute/design/upgrades]].</p>\n"
 msgstr ""
+"<p>Pour apprendre comment Tails implémente les mises à jour automatiques, "
+"allez voir notre\n"
+"[[documentation de conception des mises à jour automatiques|contribute/"
+"design/upgrades]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -107,8 +116,7 @@ msgstr ""
 "<span class=\"menuchoice\">\n"
 "  <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
 "  <span class=\"guisubmenu\">Tails</span>&nbsp;▸\n"
-"  <span class=\"guimenuitem\">À propos de Tails</span>\n"
-"</span>\n"
+"  <span class=\"guimenuitem\">À propos de Tails</span></span>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -365,22 +373,19 @@ msgstr ""
 "cette version."
 
 #. type: Bullet: '  - '
-#, fuzzy
-#| msgid ""
-#| "The automatic upgrade is impossible for technical reasons (not enough "
-#| "memory, not enough free space on the USB stick, etc.)."
 msgid ""
 "The automatic upgrade is impossible for technical reasons (not enough "
 "memory, not enough free space on the USB stick, etc.). For example, if you "
 "get the following error message:"
 msgstr ""
 "La mise à jour automatique est impossible pour des raisons techniques (pas "
-"assez de mémoire, pas assez d'espace libre sur la clé USB, etc.)."
+"assez de mémoire, pas assez d'espace libre sur la clé USB, etc.). Par "
+"exemple, si vous obtenez le message d'erreur suivant :"
 
 #. type: Plain text
 #, no-wrap
 msgid "         there is not enough free space on the Tails system partition\n"
-msgstr ""
+msgstr "         il n'y a pas assez d'espace libre sur la partition système de Tails\n"
 
 #. type: Bullet: '  - '
 msgid "The automatic upgrade failed and you need to repair a Tails USB stick."
@@ -427,21 +432,16 @@ msgid "To do a manual upgrade, you can either:"
 msgstr "Pour effectuer une mise à jour manuelle, vous pouvez soit :"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "- [[Download and upgrade|doc/upgrade/#download]] (below)  - [[Upgrade by "
-#| "cloning from another Tails|doc/upgrade/#clone]] (below)  - [[Burn a new "
-#| "Tails DVD|install/dvd-download]] - [[Upgrade your virtual machine|install/"
-#| "vm-download]]"
 msgid ""
 "- [[Download and upgrade|doc/upgrade/#download]] (below)  - [[Upgrade by "
 "cloning from another Tails|doc/upgrade/#clone]] (below)  - [[Burn a new "
 "Tails DVD|install/dvd]] - [[Upgrade your virtual machine|install/vm]]"
 msgstr ""
-"- [[Télécharger et mettre à jour|doc/upgrade/#download]] (ci-dessous)  - "
-"[[Mettre à jour en clonant depuis un autre Tails |doc/upgrade/#clone]] (ci-"
-"dessous)  - [[Graver un nouveau DVD Tails|install/dvd-download]] - [[Mettre "
-"à jour votre machine virtuelle|install/vm-download]]"
+"- [[Télécharger et mettre à jour|doc/upgrade/#download]] (ci-dessous)\n"
+"- [[Mettre à jour en clonant depuis un autre Tails |doc/upgrade/#clone]] (ci-"
+"dessous)\n"
+"- [[Graver un nouveau DVD Tails|install/dvd]]\n"
+"- [[Mettre à jour votre machine virtuelle|install/vm]]"
 
 #. type: Plain text
 #, no-wrap
@@ -458,11 +458,11 @@ msgstr "Votre clé USB Tails"
 
 #. type: Bullet: '- '
 msgid ""
-"Another empty USB stick <small>(at least 8 GB)</small>&nbsp;[[!toggle id="
-"\"why_extra\" text=\"Why?\"]]"
+"Another empty USB stick <small>(at least 8 GB)</small>&nbsp;[[!toggle "
+"id=\"why_extra\" text=\"Why?\"]]"
 msgstr ""
-"Une autre clé USB vide <small>(au moins 8 Go)</small>&nbsp;[[!toggle id="
-"\"why_extra\" text=\"Pourquoi ?\"]]"
+"Une autre clé USB vide <small>(au moins 8 Go)</small>&nbsp;[[!toggle "
+"id=\"why_extra\" text=\"Pourquoi ?\"]]"
 
 #. type: Bullet: '- '
 msgid ""
@@ -474,6 +474,8 @@ msgstr ""
 "small>)"
 
 #. type: Bullet: '- '
+#, fuzzy
+#| msgid "½ hour to upgrade"
 msgid "½ hour to upgrade"
 msgstr "½ heure pour mettre à jour"
 
@@ -498,13 +500,6 @@ msgstr ""
 "Voir nos instructions sur comment effectuer une mise à niveau manuelle en :"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "- [[Downloading and upgrading from your Tails|upgrade/tails-overview]] "
-#| "(more secure)  - [[Downloading and upgrading from Windows|upgrade/win-"
-#| "overview]] (more convenient)  - [[Downloading and upgrading from macOS|"
-#| "upgrade/mac-overview]] (more convenient)  - [[Downloading and upgrading "
-#| "from Linux|upgrade/linux-overview]] (more convenient)"
 msgid ""
 "- [[Downloading and upgrading from your Tails|upgrade/tails]] (more secure)  "
 "- [[Downloading and upgrading from Windows|upgrade/windows]] (more "
@@ -512,11 +507,12 @@ msgid ""
 "convenient)  - [[Downloading and upgrading from Linux|upgrade/linux]] (more "
 "convenient)"
 msgstr ""
-"- [[Télécharger et mettre à jour depuis votre Tails|upgrade/tails-overview]] "
-"(plus sûr)  - [[Télécharger et mettre à jour depuis Windows|upgrade/win-"
-"overview]] (plus facile ) - [[Télécharger et mettre à jour depuis macOS|"
-"upgrade/mac-overview]] (plus facile)  - [[Télécharger et mettre à jour "
-"depuis Linux|upgrade/linux-overview]] (plus facile)"
+"- [[Télécharger et mettre à jour depuis votre Tails|upgrade/tails]] (plus "
+"sûr)\n"
+"- [[Télécharger et mettre à jour depuis Windows|upgrade/windows]] (plus "
+"facile)\n"
+"- [[Télécharger et mettre à jour depuis macOS|upgrade/mac]] (plus facile)\n"
+"- [[Télécharger et mettre à jour depuis Linux|upgrade/linux]] (plus facile)"
 
 #. type: Plain text
 #, no-wrap
@@ -549,8 +545,8 @@ msgstr ""
 #. type: Plain text
 #, fuzzy
 #| msgid ""
-#| "- Your Tails USB stick - Another up-to-date Tails (USB stick or DVD)  - ¼ "
-#| "hour to upgrade"
+#| "- Your Tails USB stick - Another up-to-date Tails (USB stick or DVD)  - "
+#| "Â¼ hour to upgrade"
 msgid ""
 "- Your Tails USB stick - Another up-to-date Tails (USB stick or DVD)  - ¼ "
 "hour to upgrade"
@@ -559,10 +555,8 @@ msgstr ""
 "heure pour mettre à jour"
 
 #. type: Plain text
-#, fuzzy
-#| msgid "- [[Cloning from another Tails|upgrade/clone-overview]]"
 msgid "- [[Cloning from another Tails|upgrade/clone]]"
-msgstr "- [[Cloner depuis un autre Tails|upgrade/clone-overview]]"
+msgstr "- [[Cloner depuis un autre Tails|upgrade/clone]]"
 
 #~ msgid "<a name=\"check-version\"></a>\n"
 #~ msgstr "<a name=\"check-version\"></a>\n"
@@ -676,8 +670,8 @@ msgstr "- [[Cloner depuis un autre Tails|upgrade/clone-overview]]"
 #~ "A Tails USB stick, installed using <span class=\"application\">Tails "
 #~ "Installer</span>."
 #~ msgstr ""
-#~ "Une clé USB Tails, installée avec l'<span class=\"application"
-#~ "\">Installeur de Tails</span>."
+#~ "Une clé USB Tails, installée avec l'<span "
+#~ "class=\"application\">Installeur de Tails</span>."
 
 #, fuzzy
 #~ msgid ""
@@ -756,19 +750,19 @@ msgstr "- [[Cloner depuis un autre Tails|upgrade/clone-overview]]"
 #~ "Choose the device from the <span class=\"guilabel\">Target Device</span> "
 #~ "drop-down list."
 #~ msgstr ""
-#~ "Choisissez le périphérique dans la liste déroulante des <span class="
-#~ "\"guilabel\">Périphériques cibles</span>."
+#~ "Choisissez le périphérique dans la liste déroulante des <span "
+#~ "class=\"guilabel\">Périphériques cibles</span>."
 
 #~ msgid ""
 #~ "To start the upgrade, click on the <span class=\"bold\">Install Tails</"
 #~ "span> button."
 #~ msgstr ""
-#~ "Pour commencer la mise à jour, cliquez sur le bouton <span class=\"bold"
-#~ "\">Installer Tails</span> ."
+#~ "Pour commencer la mise à jour, cliquez sur le bouton <span "
+#~ "class=\"bold\">Installer Tails</span> ."
 
 #~ msgid ""
-#~ "Read the warning message in the pop-up window. Click on the <span class="
-#~ "\"bold\">Yes</span> button to confirm."
+#~ "Read the warning message in the pop-up window. Click on the <span "
+#~ "class=\"bold\">Yes</span> button to confirm."
 #~ msgstr ""
 #~ "Lisez le message d'avertissement dans le champ de texte. Cliquez sur le "
 #~ "bouton <span class=\"bold\">Oui</span> pour confirmer."
@@ -806,8 +800,8 @@ msgstr "- [[Cloner depuis un autre Tails|upgrade/clone-overview]]"
 #~ msgstr ""
 #~ "   Si l'image ISO est sauvegardée sur un média différent, insérez-le si "
 #~ "nécessaire et cliquez sur\n"
-#~ "   le périphérique correspondant dans la colonne <span class=\"guilabel"
-#~ "\">Emplacements</span>.\n"
+#~ "   le périphérique correspondant dans la colonne <span "
+#~ "class=\"guilabel\">Emplacements</span>.\n"
 
 #~ msgid "   <div class=\"tip\">\n"
 #~ msgstr "   <div class=\"tip\">\n"

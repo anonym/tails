@@ -3,14 +3,11 @@ When /^I start Tails' custom backup tool$/ do
 end
 
 Then /^the backup tool displays "([^"]+)"$/ do |expected|
-  message = nil
   try_for(30) do
-    message = Dogtail::Application.new('zenity')
-                                  .child(roleName: 'label')
-                                  .text
-    true
+    Dogtail::Application.new('zenity')
+                        .children(roleName: 'label')
+                        .any? { |n| n.text.include?(expected) }
   end
-  assert(message.include?(expected))
 end
 
 When /^I click "([^"]+)" in the backup tool$/ do |node|
@@ -23,7 +20,7 @@ end
 
 Then /^the USB drive "([^"]+)" contains the same files as my persistent storage$/ do |disk_name|
   source_dir = '/live/persistence/TailsData_unlocked/'
-  backup_dev = $vm.disk_dev(disk_name) + '2'
+  backup_dev = $vm.persistent_storage_dev_on_disk(disk_name)
   luks_mapping = File.basename(backup_dev) + '_unlocked'
   luks_dev = "/dev/mapper/#{luks_mapping}"
   backup_dir = "/mnt/#{luks_mapping}"

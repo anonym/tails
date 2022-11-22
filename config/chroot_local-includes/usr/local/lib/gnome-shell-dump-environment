@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+
+'''
+This script is invoked before starting gnome-shell. It dumps its own environment, which is often useful to
+properly set the environment for many user-facing applications.
+
+How it works
+----------------
+
+First, it saves the environment in the home. Then, it asks root (with sudo) to move this environment to a
+root-owned directory which is readable, but not writable, by amnesia.
+
+Security
+----------
+
+Any amnesia-capable attacker could do that. However, the privileged part will abort if the file already
+exists. This means that it can only be run once.
+
+Environment
+---------------
+
+Please note that at the time this script will be run, gnome-shell has not started. Therefore, if gnome-shell
+was to ever change its running environment, this script could never catch those changes. This doesn't seem to
+be the case, so the environment of this script is indeed the one we need.
+
+'''
+
+
+import os
+import sys
+from pathlib import Path
+import subprocess
+
+SAVE_BIN = "/usr/local/lib/gnome-shell-save-environment"
+
+
+def main():
+    env_file = Path("~/.gnome-shell-environment").expanduser()
+    try:
+        env_file.touch(exist_ok=False)
+    except FileExistsError:
+        sys.exit(0)
+
+    # we are getting our own environment.
+    # It might be tempting to use "/proc/`pgrep -x gnome-shell`/environ", but
+    # this script is called before gnome-shell has even started
+    sys_environ = Path("/proc/%d/environ" % os.getpid())
+    with sys_environ.open("rb") as buf:
+        content = buf.read()
+    with env_file.open("wb") as buf:
+        buf.write(content)
+
+    subprocess.check_call(["sudo", "-n", SAVE_BIN])
+
+
+if __name__ == "__main__":
+    main()

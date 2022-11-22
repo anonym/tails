@@ -15,7 +15,7 @@ Feature: Using persistent Tor bridges and pluggable transports
     When the network is plugged
     And the Tor Connection Assistant autostarts
     And I configure some persistent obfs4 bridges in the Tor Connection Assistant
-    And Tor is ready
+    And I wait until Tor is ready
     Then tca.conf includes the configured bridges
     And /var/lib/tca is configured to persist
     When I cold reboot the computer
@@ -31,17 +31,17 @@ Feature: Using persistent Tor bridges and pluggable transports
     When I choose to connect to Tor automatically
     And I accept Tor Connection's offer to use my persistent bridges
     And I click "Connect to Tor"
-    Then Tor is ready
+    Then I wait until Tor is ready
     And tca.conf includes the configured bridges
     And /var/lib/tca is still configured to persist
-    And all Internet traffic has only flowed through the configured bridges
+    And all Internet traffic has only flowed through the configured bridges or connectivity check service
 
   Scenario: Disabling persistence of Tor bridges
     When I choose to connect to Tor automatically
     And I accept Tor Connection's offer to use my persistent bridges
     And I disable saving bridges to Persistent Storage
-    And I click "Connect to Tor"
-    Then Tor is ready
-    And tca.conf includes the configured bridges
+    And I configure a direct connection in the Tor Connection Assistant
+    Then I wait until Tor is ready
+    And tca.conf includes no bridge
     And /var/lib/tca is not configured to persist
-    And all Internet traffic has only flowed through the configured bridges
+    And all Internet traffic has only flowed through Tor or connectivity check service

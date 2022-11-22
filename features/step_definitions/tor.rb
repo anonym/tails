@@ -54,6 +54,17 @@ def ip4tables_packet_counter_sum(**filters)
   pkts
 end
 
+def iptables_filter_add(add, target, address, port)
+  manipulate = add ? 'I' : 'D'
+  command = "iptables -#{manipulate} OUTPUT " \
+    '-p tcp ' \
+    "--destination #{address} " \
+    "--destination-port #{port} " \
+    "-j #{target}"
+  $vm.execute_successfully(command)
+  command
+end
+
 def try_xml_element_text(element, xpath, default = nil)
   node = element.elements[xpath]
   node.nil? || !node.has_text? ? default : node.text
@@ -127,7 +138,7 @@ Then /^the firewall is configured to only allow the (.+) users? to connect direc
          'access to the network')
 end
 
-Then /^the firewall's NAT rules only redirect traffic for Tor's TransPort and DNSPort$/ do
+Then /^the firewall's NAT rules only redirect traffic for the Unsafe Browser, Tor's TransPort, and DNSPort$/ do
   loopback_address = '127.0.0.1/32'
   tor_onion_addr_space = '127.192.0.0/10'
   tor_trans_port = '9040'
@@ -156,6 +167,17 @@ Then /^the firewall's NAT rules only redirect traffic for Tor's TransPort and DN
       assert(bad_rules.empty?,
              "The NAT table's OUTPUT chain contains some unexpected " \
              "rules:\n#{bad_rules}")
+    elsif name == 'POSTROUTING'
+      assert_equal(1, rules.size)
+      rule = rules.first
+      source = try_xml_element_text(rule, 'conditions/match/s')
+      # This is the IP address of veth-clearnet, the interface used in
+      # the clearnet network namespace that grants the Unsafe Browser
+      # full access to the Internet.
+      assert_equal('10.200.1.16/30', source)
+      actions = rule.get_elements('actions/*')
+      assert_equal(1, actions.size)
+      assert_equal('MASQUERADE', actions.first.name)
     else
       assert(rules.empty?,
              "The NAT table contains unexpected rules for the #{name} " \
@@ -252,7 +274,7 @@ end
 
 STREAM_ISOLATION_INFO = {
   'htpdate'                        => {
-    grep_monitor_expr: 'users:(("curl"',
+    grep_monitor_expr: 'users:(("https-get-expir"',
     socksport:         9062,
     # htpdate is resolving names through the system resolver, not through socksport
     # (in order to have better error messages). Let it connect to local DNS!
@@ -285,13 +307,14 @@ end
 
 When /^I monitor the network connections of (.*)$/ do |application|
   @process_monitor_log = '/tmp/ss.log'
+  $vm.execute_successfully("rm -f #{@process_monitor_log}")
   info = stream_isolation_info(application)
   netns_wrapper = info[:netns].nil? ? '' : "ip netns exec #{info[:netns]}"
   $vm.spawn('while true; do ' \
             "  #{netns_wrapper} ss -taupen " \
-            "    | grep '#{info[:grep_monitor_expr]}'; " \
-            '  sleep 0.1; ' \
-            "done > #{@process_monitor_log}")
+            "    | grep --line-buffered '#{info[:grep_monitor_expr]}' " \
+            "    >> #{@process_monitor_log} ;" \
+            'done')
 end
 
 Then /^I see that (.+) is properly stream isolated(?: after (\d+) seconds)?$/ do |application, delay|
@@ -321,7 +344,7 @@ And /^I re-run tails-security-check$/ do
 end
 
 And /^I re-run htpdate$/ do
-  $vm.execute_successfully('service htpdate stop && ' \
+  $vm.execute_successfully('systemctl stop htpdate && ' \
                            'rm -f /run/htpdate/* && ' \
                            'systemctl --no-block start htpdate.service')
   step 'the time has synced'
@@ -371,6 +394,9 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
       done = tor_connection_assistant.child?(
         'Connected to Tor successfully', roleName: 'label',
         retry: false, showingOnly: true
+      ) || tor_connection_assistant.child?(
+        'Connected to Tor successfully with bridges', roleName: 'label',
+        retry: false, showingOnly: true
       )
     end
     done
@@ -378,14 +404,40 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
   raise TCAConnectionFailure, 'TCA failed to connect to Tor' if failure_reported
 end
 
+Then /^the Tor Connection Assistant fails to connect to Tor$/ do
+  step 'the Tor Connection Assistant connects to Tor'
+rescue TCAConnectionFailure
+  # Expected!
+  next
+rescue StandardError => e
+  raise 'Expected TCAConnectionFailure to be raised but got ' \
+        "#{e.class.name}: #{e}"
+else
+  raise 'TCA managed to connect to Tor but was expected to fail'
+end
+
 def tca_configure(mode, connect: true, &block)
   step 'the Tor Connection Assistant is running'
+  # this is the default, so why bother setting it?
+  # Some scenario switch back from bridges to direct connection, so we need to reset the value of this
+  # variable
+  @user_wants_pluggable_transports = (mode == :hide)
   case mode
   when :easy
-    radio_button_label = '<b>Connect to Tor _automatically (easier)</b>'
+    radio_button_label = '<b>Connect to Tor _automatically</b>'
+    # If we run the step "I make sure time sync before Tor connects cannot work",
+    # @allowed_dns_queries is already initialized, and the corresponding add_extra_allowed_hosts have already been
+    # called
+    unless @allowed_dns_queries && !@allowed_dns_queries.empty?
+      @allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME + '.']
+      Resolv.getaddresses(CONNECTIVITY_CHECK_HOSTNAME).each do |ip|
+        add_extra_allowed_host(ip, 80)
+      end
+    end
+    add_dns_to_extra_allowed_host
   when :hide
     @user_wants_pluggable_transports = true
-    radio_button_label = '<b>Hide to my local network that I\'m connecting to Tor (safer)</b>'
+    radio_button_label = '<b>Hide to my local network that I\'m connecting to Tor</b>'
   else
     raise "bad TCA configuration mode '#{mode}'"
   end
@@ -413,6 +465,25 @@ end
 
 When /^I configure a direct connection in the Tor Connection Assistant$/ do
   tca_configure(:easy)
+end
+
+When(/^I look at the hide mode but then I go back$/) do
+  tca_configure(:hide, connect: false) do
+    click_connect_to_tor
+
+    tor_connection_assistant.child(
+      'Configure a Tor bridge',
+      roleName:    'heading',
+      showingOnly: true
+    )
+
+    btn = tor_connection_assistant.child(
+      '_Back',
+      roleName: 'push button'
+    )
+    assert_equal('True', btn.get_field('sensitive'))
+    btn.click
+  end
 end
 
 # XXX: giving up on a few worst offenders for now
@@ -470,7 +541,38 @@ end
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 
-When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connection Assistant(?: in (easy|hide) mode)?$/ do |persistent, bridge_type, mode|
+def feed_qr_code_video_to_virtual_webcam(qrcode_image)
+  white_image = '/usr/share/tails/test_suite/white.jpg'
+  # Display a white picture for 15s, then slide in the QR code from
+  # the right in 5s, and leave it there for another 10s.
+  #
+  # How to hack:
+  #
+  #  - The parameters are managed in this part: ((t-15)*w/5). That -15
+  #    tells to start after 15s, that /5 is the speed (the highest
+  #    the divider, the slowest is the transition).
+  #  - We believe the -t 30 and -t 15 play a role, too.
+  $vm.spawn(
+    "ffmpeg -nostdin -re -loop 1 -t 30 -i #{white_image} -loop 1 -t 15 -i #{qrcode_image} -filter_complex \"[0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:#FFFFFF@1[v0]; [1:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:#FFFFFF@1,setpts=PTS-STARTPTS[v1]; [v0][v1] overlay=x='max(w-((t-15)*w/5)\,0)'[vv0]; [vv0] format=yuv420p [video]\" -map \"[video]\" -f v4l2 /dev/video0",
+    user: LIVE_USER
+  )
+end
+
+def setup_qrcode_bridges_on_webcam(bridges)
+  $vm.execute_successfully('modprobe v4l2loopback')
+  qrcode_image = save_qrcode(
+    '[' + \
+    bridges.map { |bridge| "'" + bridge[:line] + "'" }
+      .join(', ') + \
+    ']'
+  )
+  $vm.file_copy_local(qrcode_image, '/tmp/qrcode.jpg')
+  feed_qr_code_video_to_virtual_webcam('/tmp/qrcode.jpg')
+  # Give ffmpeg time to start pushing frames to the virtual webcam
+  sleep 5
+end
+
+When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in the Tor Connection Assistant(?: in (easy|hide) mode)?( without connecting|)$/ do |persistent, bridge_type, qr_code, mode, connect|
   # If the "mode" isn't specified we pick one that makes sense for
   # what is requested.
   config_mode = if mode.nil?
@@ -481,10 +583,11 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
   # Internally a "normal" bridge is called just "bridge" which we have
   # to respect below.
   bridge_type = 'bridge' if bridge_type == 'normal'
+  connect = (connect == '')
 
   # XXX: giving up on a few worst offenders for now
   # rubocop:disable Metrics/BlockLength
-  tca_configure(config_mode) do
+  tca_configure(config_mode, connect: connect) do
     @user_wants_pluggable_transports = bridge_type != 'bridge'
     debug_log('user_wants_pluggable_transports = '\
               "#{@user_wants_pluggable_transports}")
@@ -496,22 +599,49 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
     click_connect_to_tor
     if bridge_type == 'default'
       assert_equal(:easy, config_mode)
+      @bridge_hosts = chutney_bridges('obfs4', chutney_tag: 'defbr').map do |bridge|
+        { address: bridge[:address], port: bridge[:port] }
+      end
+
       tor_connection_assistant.child('Use a _default bridge',
                                      roleName: 'radio button')
                               .click
     else
-      btn = tor_connection_assistant.child(
-        '_Enter a bridge that you already know',
-        roleName: 'radio button'
-      )
-      btn.click
-      # btn.labelee is the widget "labelled by" btn.
-      # For details, see label-for and labelled-by accessibility relations
-      # in main.ui.in, aka. "Label For" and "Labeled By" in Glade.
-      btn.labelee.click
+      if qr_code
+        # We currently support only 1 bridge
+        qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
+        setup_qrcode_bridges_on_webcam(qr_code_bridges)
+        tor_connection_assistant.child('_Ask for a bridge by email',
+                                       roleName: 'radio button')
+                                .click
+        tor_connection_assistant.child('Scan QR code',
+                                       roleName: 'push button')
+                                .click
+        try_for(30) do
+          all_labels = tor_connection_assistant.children(roleName: 'label')
+          label = all_labels.find do |node|
+            node.text.start_with? "Scanned #{bridge_type} bridge"
+          end
+          !label.nil?
+        end
+      else
+        btn = tor_connection_assistant.child(
+          '_Enter a bridge that you already know',
+          roleName: 'radio button'
+        )
+        btn.click
+        # we'd like to use btn.labelee, which is the semantic way to reach the text entry
+        # (for details, see label-for and labelled-by accessibility relations
+        # in main.ui.in, aka. "Label For" and "Labeled By" in Glade)
+        # however, this doesn't seem to work anymore
+        tor_connection_assistant.child(roleName: 'text').grabFocus
+        chutney_bridges(bridge_type).each do |bridge|
+          @screen.paste(bridge[:line])
+          break # We currently support only 1 bridge
+        end
+      end
       @bridge_hosts = []
       chutney_bridges(bridge_type).each do |bridge|
-        @screen.type(bridge[:line])
         @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
         break # We currently support only 1 bridge
       end
@@ -529,12 +659,30 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges in the Tor Connectio
           roleName: 'toggle button'
         )
         assert(!toggle_button.checked)
-        toggle_button.click
+        toggle_button.toggle
         try_for(10) { toggle_button.checked }
       end
     end
   end
   # rubocop:enable Metrics/BlockLength
+end
+
+When /^I scan a QR code from the error page in Tor Connection Assistant$/ do
+  bridge_type = 'obfs4'
+
+  @bridge_hosts = []
+  chutney_bridges(bridge_type).each do |bridge|
+    @bridge_hosts << { address: bridge[:address], port: bridge[:port] }
+    break # We currently support only 1 bridge
+  end
+
+  qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
+  setup_qrcode_bridges_on_webcam(qr_code_bridges)
+  tor_connection_assistant.child('Scan QR Code', roleName: 'push button').click
+
+  try_for(30) do
+    !tor_connection_assistant.textentry('').text.empty?
+  end
 end
 
 When /^I disable saving bridges to Persistent Storage$/ do
@@ -543,7 +691,7 @@ When /^I disable saving bridges to Persistent Storage$/ do
     roleName: 'toggle button'
   )
   assert(toggle_button.checked)
-  toggle_button.click
+  toggle_button.toggle
   try_for(10) { !toggle_button.checked }
 end
 
@@ -556,7 +704,7 @@ rescue StandardError => e
   raise 'Expected TCAConnectionFailure to be raised but got ' \
         "#{e.class.name}: #{e}"
 else
-  raise 'TCA managed to connect to Tor with normal bridges in hide mode'
+  raise 'TCA managed to connect to Tor but was expected to fail'
 end
 
 When /^I try to configure some normal bridges in the Tor Connection Assistant in hide mode$/ do
@@ -572,6 +720,7 @@ else
 end
 
 When /^I accept Tor Connection's offer to use my persistent bridges$/ do
+  @user_wants_pluggable_transports = true
   assert(
     tor_connection_assistant.child('Configure a Tor bridge',
                                    roleName: 'check box')
@@ -587,6 +736,15 @@ When /^I accept Tor Connection's offer to use my persistent bridges$/ do
                             .text.chomp,
   ]
   assert(persistent_bridges_lines.size.positive?)
+end
+
+Then(/^Tor Connection does not propose me to use Tor bridges$/) do
+  assert_equal(
+    false,
+    tor_connection_assistant.child('Configure a Tor bridge',
+                                   roleName: 'check box')
+                            .checked
+  )
 end
 
 When /^I close the Tor Connection Assistant$/ do
@@ -634,8 +792,11 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   time_dialog = tor_connection_assistant.child('Tor Connection - Fix Clock',
                                                roleName:    'dialog',
                                                showingOnly: true)
-  tz_label = time_dialog.child('UTC (Greenwich time)', roleName: 'label')
-  tz_label.click
+  # We'd like to click the time zone label to open the selection
+  # prompt, but labels expose no actions to Dogtail. Luckily it is
+  # selected by default so we can activate it by pressing the Space
+  # key.
+  @screen.press('Space')
 
   def get_visible_results(dialog)
     table = dialog.child(roleName: 'tree table')
@@ -686,7 +847,7 @@ def bridges_to_ipport(file_content)
     .map { |ip, port| { address: ip, port: port.to_i } }
 end
 
-Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
+Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?:fake )?connectivity check service|)$/ do |flow_target, connectivity_check|
   case flow_target
   when 'Tor'
     allowed_hosts = allowed_hosts_under_tor_enforcement
@@ -708,6 +869,32 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
   else
     raise "Unsupported flow target '#{flow_target}'"
   end
+
+  # Note: many scenarios that use the network do not explicitly allow
+  # using the connectivity check service. They pass because we're
+  # restoring a snapshot where time sync has already happened (most
+  # often "I have started Tails from DVD and logged in and the network
+  # is connected").
+  if !connectivity_check.empty?
+    # Allow connections to the local DNS resolver, used by
+    # tails-get-network-time
+    allowed_hosts << { address: $vmnet.bridge_ip_addr, port: 53 }
+
+    conn_host, conn_nodes = if connectivity_check.include? 'fake'
+                              host = FAKE_CONNECTIVITY_CHECK_HOSTNAME
+                              nodes = Resolv.getaddresses(host).map do |ip|
+                                { address: ip, port: 80 }
+                              end
+                              [host, nodes]
+                            else
+                              [CONNECTIVITY_CHECK_HOSTNAME, CONNECTIVITY_CHECK_ALLOWED_NODES]
+                            end
+    allowed_hosts += conn_nodes
+    allowed_dns_queries = [conn_host + '.']
+  else
+    allowed_dns_queries = []
+  end
+
   flow_target_s = flow_target.delete_prefix('the ')
   allowed_hosts_s = allowed_hosts
                     .map { |address| "#{address[:address]}:#{address[:port]}" }
@@ -716,6 +903,12 @@ Then /^all Internet traffic has only flowed through (.*)$/ do |flow_target|
   assert_all_connections(@sniffer.pcap_file) do |c|
     allowed_hosts.include?({ address: c.daddr, port: c.dport })
   end
+
+  debug_log("Allowed hosts: #{allowed_hosts}")
+  debug_log("Allowed DNS queries: #{allowed_dns_queries}")
+
+  assert_no_leaks(@sniffer.pcap_file, allowed_hosts, allowed_dns_queries)
+  debug_useless_dns_exceptions(@sniffer.pcap_file, allowed_dns_queries)
 end
 
 Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |default_bridges, unblock|
@@ -737,12 +930,10 @@ Given /^the Tor network( and default bridges)? (?:is|are) (un)?blocked$/ do |def
     end
   end
   relays.each do |address, port|
-    command = "iptables -#{unblock ? 'D' : 'I'} OUTPUT " \
-              '-p tcp ' \
-              "--destination #{address} " \
-              "--destination-port #{port} " \
-              '-j REJECT --reject-with icmp-port-unreachable'
-    $vm.execute_successfully(command)
+    command = iptables_filter_add(!unblock,
+                                  'REJECT --reject-with icmp-port-unreachable',
+                                  address,
+                                  port)
     unless unblock
       $vm.file_append('/etc/NetworkManager/dispatcher.d/00-firewall.sh',
                       command + "\n")

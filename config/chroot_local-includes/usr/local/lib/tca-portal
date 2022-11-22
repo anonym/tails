@@ -18,7 +18,7 @@ import socketserver
 from logging import getLogger
 import socket
 import time
-from subprocess import Popen
+from subprocess import Popen, PIPE
 import multiprocessing
 from typing import List, Optional
 
@@ -31,10 +31,13 @@ import systemd.daemon
 from tailslib.logutils import configure_logging
 from tailslib.gnome import gnome_env_vars
 from tailslib import (
+    CLEARNET_USERNAME,
     LIVE_USERNAME,
-    PERSISTENCE_CONF_FILE,
-    PERSISTENCE_SETUP_USERNAME,
+    PERSISTENT_STORAGE_USERNAME
 )
+from tca.config import CONFIG_FILE as TCA_CONFIG_FILE
+
+TPS_TOR_CONFIG_FEATURE_NAME = "TorConfiguration"
 
 log = getLogger("tca-portal")
 
@@ -87,6 +90,9 @@ class BaseCommand:
     def __init__(self, cmd: List[str], arguments: bool):
         self.cmd = cmd
         self.arguments = arguments
+        # See WriteFileCommand.run for an example of how to use this
+        # in a child class.
+        self.stdin = None
 
     def validate_request(self, request: RPCRequest) -> None:
         '''
@@ -94,9 +100,9 @@ class BaseCommand:
         '''
         self.full_command(request)
 
-    def validate_args(self, args: list) -> list:
+    def validate_args(self, args: tuple) -> tuple:
         '''
-        Validate or update the command arguments.
+        Validate and update the command arguments.
 
         Raise an InvalidRequestError if the arguments are not valid
 
@@ -106,14 +112,14 @@ class BaseCommand:
             raise InvalidArgsError("Arguments are not accepted for this command")
         return args
 
-    def full_command(self, request: RPCRequest) -> list:
-        cmd = self.cmd + self.validate_args(request.args)
+    def full_command(self, request: RPCRequest) -> tuple:
+        cmd = (*self.cmd, *self.validate_args(request.args))
         return cmd
 
     def run(self, request: RPCRequest):
         cmd = self.full_command(request)
         log.debug("Running %s", cmd)
-        return Popen(cmd)
+        return Popen(cmd, stdin=PIPE, stdout=PIPE, universal_newlines=True)
 
 
 class RootCommand(BaseCommand):
@@ -121,40 +127,103 @@ class RootCommand(BaseCommand):
 
 
 class UserCommand(BaseCommand):
-    def full_command(self, request: RPCRequest) -> list:
-        drop = ["runuser", "-u", LIVE_USERNAME]
-        env = ["env", *gnome_env_vars()]
+    def full_command(self, request: RPCRequest) -> tuple:
+        drop = ("/sbin/runuser", "-u", LIVE_USERNAME)
+        env = ("/usr/bin/env", *gnome_env_vars())
 
-        args = [*drop, "--", *env, *(super().full_command(request))]
+        args = (*drop, "--", *env, *(super().full_command(request)))
         return args
 
 
-class PersistenceSetupCommand(BaseCommand):
-    def full_command(self, request: RPCRequest) -> list:
-        drop = ["runuser", "-u", PERSISTENCE_SETUP_USERNAME]
-        env = ["env", *gnome_env_vars()]
+class PersistentStorageCommand(BaseCommand):
+    def full_command(self, request: RPCRequest) -> tuple:
+        drop = ("/sbin/runuser", "-u", PERSISTENT_STORAGE_USERNAME)
+        env = ("/usr/bin/env", *gnome_env_vars())
 
-        args = [*drop, "--", *env, *(super().full_command(request))]
+        args = (*drop, "--", *env, *(super().full_command(request)))
+        return args
+
+
+class GetNetworkTimeCommand(BaseCommand):
+    def __init__(self):
+        super().__init__(['/usr/local/lib/tails-get-network-time', '--log-target=syslog'], False)
+
+    def full_command(self, request: RPCRequest) -> list:
+        drop = ["runuser", "-u", CLEARNET_USERNAME]
+        args = [*drop, "--", *(super().full_command(request))]
         return args
 
 
 class SetTimeCommand(RootCommand):
-    def __init__(self):
-        super().__init__(['/usr/local/lib/tails-set-date'], True)
-        # we know our argument is an ISO8601 date whose separator is a T, and with no microseconds
-        self.re = re.compile(r'[0-9+:T-]*')
+    """
+    >>> c = SetTimeCommand()
 
-    def validate_args(self, args: list) -> list:
+    >>> c.validate_args(('2021-08-06T17:38:12+00:00',))
+    ('2021-08-06T17:38:12+00:00',)
+
+    Empty time is refused before even trying to check the exact format:
+    >>> c.validate_args(('',))
+    Traceback (most recent call last):
+        ...
+    InvalidArgsError: Datestring too short
+
+    Format mismatch is refused, even if tails-set-date itself would accept it:
+    >>> c.validate_args(('2021-08-06 -123456seconds',))
+    Traceback (most recent call last):
+        ...
+    InvalidArgsError: Datestring has invalid format
+
+    """
+    def __init__(self):
+        super().__init__(('/usr/local/lib/tails-set-date',), True)
+        # we know our argument is an ISO8601 date whose separator is a T,
+        # and with no microseconds
+        # example: 2021-08-06T17:38:49+00:00
+        regexp = (
+                # date
+                r'^\d{4}-\d\d-\d\d'
+                # time
+                r'T\d\d:\d\d:\d\d'
+                # timezone offset
+                r'[+-]\d\d:\d\d$'
+                )
+        self.re = re.compile(regexp)
+
+    def validate_args(self, args: tuple) -> tuple:
         if len(args) != 1:
             raise InvalidArgsError("Invalid number of arguments")
-        # args[0] should be sth like 2021-08-06T17:38+00:00
         datestring = args[0]
-        if len(datestring) > 22:
+        max_len = 25
+        min_len = 25
+        if len(datestring) > max_len:
             raise InvalidArgsError("Datestring too long")
+        if len(datestring) < min_len:
+            raise InvalidArgsError("Datestring too short")
         if not self.re.fullmatch(datestring):
-            raise InvalidArgsError("Datestring has invalid characters")
+            raise InvalidArgsError("Datestring has invalid format")
         return args
 
+
+class WriteFileCommand(RootCommand):
+    def __init__(self, dest_file: str):
+        super().__init__(["/bin/dd", "status=none", f"of={dest_file}"], True)
+
+    def validate_args(self, args: tuple) -> tuple:
+        if len(args) != 1:
+            raise InvalidArgsError("Invalid number of arguments")
+        config_str = args[0]
+        max_len = 4096
+        if len(config_str) > max_len:
+            raise InvalidArgsError("Configuration string is too long")
+        return args
+
+    def full_command(self, request: RPCRequest) -> tuple:
+        cmd = (*self.cmd,)
+        return cmd
+
+    def run(self, request: RPCRequest):
+        self.stdin = self.validate_args(request.args)[0]
+        return super().run(request)
 
 class Handler(socketserver.StreamRequestHandler):
     """
@@ -168,33 +237,37 @@ class Handler(socketserver.StreamRequestHandler):
      - server-initiated messages (ie: signals)
     """
 
-    MAX_LINESIZE = 1024
+    MAX_LINESIZE = 4096
 
     spawn_commands = {  # some commands just mean "run this specified commands as LIVE_USERNAME, please"
-        "open-unsafebrowser": UserCommand(["gtk-launch", "unsafe-browser"], False),
-        "open-tbb": UserCommand(["gtk-launch", "tor-browser"], False),
+        "scan-qrcode": UserCommand(("/usr/bin/zbarcam", "--raw", "--oneshot"), False),
+        "open-unsafebrowser": UserCommand(("/usr/bin/gtk-launch", "unsafe-browser"), False),
+        "open-tbb": UserCommand(("/usr/bin/gtk-launch", "tor-browser"), False),
         "open-networkmonitor": UserCommand(
-            ["gnome-system-monitor", "--show-resources-tab"], False
+            ("/usr/bin/gnome-system-monitor", "--show-resources-tab"), False
         ),
-        "open-onioncircuits": UserCommand(["gtk-launch", "onioncircuits"], False),
-        "open-documentation": UserCommand(["tails-documentation"], True),
-        "open-wifi-config": UserCommand(['systemctl', '--user', 'start', 'gnome-wifi-panel'], False),
-        "set-tor-sandbox": RootCommand(['/usr/local/lib/tor-pt-configuration-helper'], True),
+        "open-onioncircuits": UserCommand(("/usr/bin/gtk-launch", "onioncircuits"), False),
+        "open-documentation": UserCommand(("/usr/local/bin/tails-documentation"), True),
+        "open-wifi-config": UserCommand(('/bin/systemctl', '--user', 'start', 'gnome-wifi-panel'), False),
+        "set-tor-sandbox": RootCommand(('/usr/local/lib/tor-pt-configuration-helper', ), True),
         # It would be nicer to do this in Python without calling out
         # to external processes, but it would require either implementing
         # the Popen interface that the portal assumes, or refactoring
         # the Handler.run and Command.run code a fair bit:
         # https://gitlab.tails.boum.org/tails/tails/-/merge_requests/544#note_174919
-        "is-tor-configuration-persistent?": PersistenceSetupCommand(
-            ["/usr/local/lib/tails-tor-config-persistence", "is-enabled"],
+        "is-tor-configuration-persistent?": UserCommand(
+            ("/usr/local/lib/tpscli", "is-active", TPS_TOR_CONFIG_FEATURE_NAME),
             False),
-        "enable-tor-configuration-persistence": PersistenceSetupCommand(
-            ["/usr/local/lib/tails-tor-config-persistence", "enable"],
+        "ensure-tor-configuration-is-persistent": PersistentStorageCommand(
+            ("/usr/local/lib/tpscli", "ensure-is-active", TPS_TOR_CONFIG_FEATURE_NAME),
             False),
-        "disable-tor-configuration-persistence": PersistenceSetupCommand(
-            ["/usr/local/lib/tails-tor-config-persistence", "disable"],
+        "ensure-tor-configuration-is-not-persistent": PersistentStorageCommand(
+            ("/usr/local/lib/tpscli", "ensure-is-inactive", TPS_TOR_CONFIG_FEATURE_NAME),
             False),
+        "get-network-time": GetNetworkTimeCommand(),
         "set-system-time": SetTimeCommand(),
+        "read-tca-config": RootCommand(["/bin/cat", TCA_CONFIG_FILE], False),
+        "write-tca-config": WriteFileCommand(TCA_CONFIG_FILE),
     }
     valid_commands = set(spawn_commands.keys())
 
@@ -202,10 +275,14 @@ class Handler(socketserver.StreamRequestHandler):
 
     def handle_line(self, line: bytes) -> Optional[RPCResponse]:
         """
-        Parse the line and do what's appropriate.
+        This will handle bytes that we believe might form a valid request (i.e.: a not-too-long sequence of
+        bytes with no newline in between; see Handler.reader) and check if they actually do.
+        If the bytes do not form a syntactically valid request, an RPCResponse is returned.
 
-        Return an RPCResponse only if there is some error.
-        Otherwise, will spawn a dedicated process. the outcome of it will be pushed to outgoing_q
+        If `line` is indeed a syntactically valid request, job is passed to Handler.handle_request, which will
+        perform additional validation and spawn a dedicated process to handle the request.
+
+        If every validation passes, None is returned.
         """
         try:
             req = self.protocol.parse_request(line)
@@ -226,6 +303,15 @@ class Handler(socketserver.StreamRequestHandler):
             return req.error_respond(error="Server error")
 
     def handle_request(self, req: RPCRequest) -> Optional[RPCResponse]:
+        """
+        This will handle a request from the client.
+
+        It will perform high-level validation: check that the request refers to a valid command, and validate
+        the arguments to that command.
+        If the validation fails, a RPCResponse will be returned.
+
+        After that, a process will be spawned; the outcome of it will be pushed to outgoing_q
+        """
         if req.method not in self.valid_commands:
             return req.error_respond(error="Invalid method")
         if req.method not in self.spawn_commands:
@@ -244,9 +330,10 @@ class Handler(socketserver.StreamRequestHandler):
         this method is intended to be run in a dedicated Process
         """
         process = cmd.run(req)
-        process.communicate()
+        # stdout and stderr from the process
+        stdout, _ = process.communicate(cmd.stdin)
         if process.returncode == 0:
-            response = req.respond(result={"returncode": process.returncode})
+            response = req.respond(result={"returncode": process.returncode, "stdout": stdout})
         else:
             # The library we use doesn't seem to support adding the optional "data" parameter to error
             # responses. We could definitely implement our own subclass, if we ever need that.
@@ -264,8 +351,8 @@ class Handler(socketserver.StreamRequestHandler):
         """
         Read from the socket. This method is intended to be run as a dedicated process.
 
-        It reads from the socket, process the data accordingly, and pass it to handle_line (which will spawn
-        dedicated processes for it).
+        It reads from the socket, process the data accordingly, and pass it to handle_line (which will deal
+        with parsing, validating, and spawning dedicated processes for it).
         """
         log = getLogger("traffic")
         while True:
@@ -302,13 +389,15 @@ def main():
         print("%s must be run as root" % sys.argv[0], file=sys.stderr)
         sys.exit(1)
     p = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
-    p.add_argument(
+    socket_parser = p.add_mutually_exclusive_group(required=False)
+    socket_parser.add_argument(
         "--systemd-socket",
         action="store_true",
         default=False,
-        help="use systemd-activated socket",
+        help="use systemd-activated socket; "
+        "you **MUST** set it in production. Not doing so is considered insecure!",
     )
-    p.add_argument(
+    socket_parser.add_argument(
         "--listen",
         metavar="SOCKET-PATH",
         default="/run/tca-portal.sock",
@@ -317,15 +406,30 @@ def main():
     p.add_argument(
         "--log-level",
         metavar="LEVEL",
-        choices=["DEBUG", "INFO", "WARNING", "CRITICAL"],
+        choices=("DEBUG", "INFO", "WARNING", "CRITICAL"),
         default="INFO",
     )
+    p.add_argument("--doctest-only",
+        action="store_true",
+        default=False,
+        )
+
     args = p.parse_args()
 
     log_conf = {'level': args.log_level}
     configure_logging(hint='syslog', ident='tca-portal', **log_conf)
 
+    if args.doctest_only:
+        import doctest
+        failures, tests = doctest.testmod(verbose=(args.log_level == 'DEBUG'))
+        sys.exit(1 if failures > 0 else 0)
+
     if not args.systemd_socket:
+        # Yes, this is probably unsafe, because TOCTOU. However:
+        #  - this code path is just there for development. We always use --systemd-socket in practice
+        #  - the default path, /run/tca-portal.sock, is in a directory which is only writable by root
+        #  - even if an attacker manages to put a file they own in args.listen, this will lead to
+        #    ForkingUnixServer failing later, i.e.: a denial of service.
         if os.path.exists(args.listen) and stat.S_ISSOCK(os.stat(args.listen).st_mode):
             os.remove(args.listen)
     if args.systemd_socket:

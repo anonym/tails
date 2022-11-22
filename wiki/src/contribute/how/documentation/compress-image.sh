@@ -3,8 +3,8 @@
 set -e
 set -u
 
-if [ ! -x /usr/bin/trimage ]; then
-    echo "Please install the \"trimage\" package." >&2
+if [ ! -x /usr/bin/zopflipng ]; then
+    echo "Please install the \"zopfli\" package." >&2
     exit 1
 fi
 
@@ -15,6 +15,7 @@ fi
 
 for image in "${@}" ; do
     mat2 "${image}"
-    trimage -f "${image}"
-    mv "${image%.*}.cleaned.${image##*.}" "${image}"
+    cleaned_image="${image%.*}.cleaned.${image##*.}"
+    zopflipng --filters=0me -m -y "${cleaned_image}" "${image}"
+    rm "${cleaned_image}"
 done

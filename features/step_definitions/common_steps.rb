@@ -1,38 +1,22 @@
 require 'fileutils'
+require 'tempfile'
 
 def post_vm_start_hook
-  $vm.live_patch if $config['LIVE_PATCH']
+  $vm.late_patch if $config['LATE_PATCH']
 
   # Sometimes the first click is lost (presumably it's used to give
   # focus to virt-viewer or similar) so we do that now rather than
   # having an important click lost. The point we click should be
   # somewhere where no clickable elements generally reside.
   @screen.click(@screen.w - 1, @screen.h / 2)
-  sleep 1
 end
 
 def post_snapshot_restore_hook(snapshot_name)
   $vm.wait_until_remote_shell_is_up
-  post_vm_start_hook
-
-  # When restoring from a snapshot while the Greeter is running, on
-  # X.Org we encounter a (SPICE? GTK? QXL?) bug that makes its window
-  # invisible until redrawn. So as a workaround we move this window,
-  # to force a full redraw.
-  # This problem does not happen on Wayland so we can remove this hack
-  # when we switch to Wayland: #18120, !322.
-  if snapshot_name.end_with?('tails-greeter')
-    unless @screen.exists('TailsGreeter.png')
-      $vm.execute_successfully(
-        "env $(tr '\\0' '\\n' " \
-        '< /proc/$(pgrep --newest --euid Debian-gdm gnome-shell)/environ ' \
-        '| grep -E ' \
-        "'(DBUS_SESSION_BUS_ADDRESS|DISPLAY|XAUTHORITY|XDG_RUNTIME_DIR)') " \
-        'sudo -u Debian-gdm ' \
-        "xdotool search --onlyvisible 'Welcome to Tails!' windowmove --sync 0 0"
-      )
-    end
+  unless snapshot_name.end_with?('tails-greeter')
+    @screen.wait("GnomeApplicationsMenu#{$language}.png", 20)
   end
+  post_vm_start_hook
 
   # Increase the chances that by the time we leave this function, if
   # the click in post_vm_start_hook() has opened the Applications menu
@@ -42,20 +26,28 @@ def post_snapshot_restore_hook(snapshot_name)
   # Activities Overview would fail (SUPER has no effect when the
   # Applications menu is still opened).
   @screen.press('Escape')
+  # Wait for the menu to be closed
+  sleep 1
 
-  # The guest's Tor's circuits' states are likely to get out of sync
-  # with the other relays, so we ensure that we have fresh circuits.
-  # Time jumps and incorrect clocks also confuses Tor in many ways.
+  # The guest's Tor circuits are likely to get out of sync
+  # with our Chutney network, so we ensure that we have fresh circuits.
+  # Time jumps and incorrect clocks also confuse Tor in many ways.
+  already_synced_time_host_to_guest = false
   if $vm.connected_to_network?
-    if $vm.execute('systemctl --quiet is-active tor@default.service').success?
+    # tor@default.service is always active, so we need to check if Tor
+    # was configured in the snapshot we are using: for example,
+    # with-network-logged-in-unsafe-browser connects to the LAN
+    # but did not configure Tor.
+    if $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
+       check_disable_network != '1'
       $vm.execute('systemctl stop tor@default.service')
       $vm.host_to_guest_time_sync
+      already_synced_time_host_to_guest = true
       $vm.execute('systemctl start tor@default.service')
       wait_until_tor_is_working
     end
-  else
-    $vm.host_to_guest_time_sync
   end
+  $vm.host_to_guest_time_sync unless already_synced_time_host_to_guest
 end
 
 Given /^a computer$/ do
@@ -221,21 +213,28 @@ When /^I cold reboot the computer$/ do
   step 'I start the computer'
 end
 
-def boot_menu_cmdline_image
+def boot_menu_cmdline_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuKernelCmdlineUEFI.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuKernelCmdlineUEFI_Bullseye.png.
+    [
+      'TailsBootMenuKernelCmdlineUEFI_Bullseye.png',
+      'TailsBootMenuKernelCmdlineUEFI_Bookworm.png',
+    ]
   else
-    'TailsBootMenuKernelCmdline.png'
+    ['TailsBootMenuKernelCmdline.png']
   end
 end
 
-def boot_menu_image
+def boot_menu_images
   case @os_loader
   when 'UEFI'
-    'TailsBootMenuGRUB.png'
+    # XXX: Once we require Bookworm or newer to run the test suite,
+    # drop TailsBootMenuGRUB_Bullseye.png.
+    ['TailsBootMenuGRUB_Bullseye.png', 'TailsBootMenuGRUB_Bookworm.png']
   else
-    'TailsBootMenuSyslinux.png'
+    ['TailsBootMenuSyslinux.png']
   end
 end
 
@@ -291,7 +290,7 @@ def enter_boot_menu_cmdline
   try_for(boot_timeout) do
     begin
       _up_spammer_job, kill_up_spammer = start_up_spammer($vm.domain_name)
-      @screen.wait(boot_menu_image, 15)
+      @screen.wait_any(boot_menu_images, 15)
       kill_up_spammer.call
 
       # Navigate to the end of the kernel command-line
@@ -303,7 +302,7 @@ def enter_boot_menu_cmdline
       else
         @screen.press('Tab')
       end
-      @screen.wait(boot_menu_cmdline_image, 5)
+      @screen.wait_any(boot_menu_cmdline_images, 5)
     rescue FindFailed => e
       debug_log('We missed the boot menu before we could deal with it, ' \
                 'resetting...')
@@ -320,9 +319,10 @@ end
 Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_apt_sources|
   enter_boot_menu_cmdline
   boot_key = @os_loader == 'UEFI' ? 'F10' : 'Return'
+  early_patch = $config['EARLY_PATCH'] ? ' early_patch=umount' : ''
   @screen.type(' autotest_never_use_this_option' \
                ' blacklist=psmouse' \
-               " #{@boot_options}",
+               " #{early_patch} #{@boot_options}",
                [boot_key])
   @screen.wait('TailsGreeter.png', 5 * 60)
   # When enter_boot_menu_cmdline has rebooted the system after the Greeter
@@ -364,14 +364,15 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
-  login_button_region = if RTL_LANGUAGES.include?(lang)
-                          # If we select a RTL language below, the
-                          # login and shutdown buttons will
-                          # swap place.
-                          @screen.find('TailsGreeterShutdownButton.png')
-                        else
-                          @screen.find('TailsGreeterLoginButton.png')
-                        end
+  login_button = if RTL_LANGUAGES.include?(lang)
+                   # If we select a RTL language below, the
+                   # login and shutdown buttons will
+                   # swap place.
+                   'TailsGreeterShutdownButton.png'
+                 else
+                   'TailsGreeterLoginButton.png'
+                 end
+  login_button_region = @screen.wait(login_button, 15)
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -408,13 +409,9 @@ Given /^I set an administration password$/ do
   @screen.press('Tab')
   @screen.type(@sudo_password)
   @screen.press('Return')
-end
-
-Given /^I allow the Unsafe Browser to be started$/ do
-  open_greeter_additional_settings
-  @screen.wait('TailsGreeterUnsafeBrowser.png', 20).click
-  @screen.wait('TailsGreeterUnsafeBrowserEnable.png', 20).click
-  @screen.wait('TailsGreeterAdditionalSettingsAdd.png', 10).click
+  # Wait for the Administration Password dialog to be closed,
+  # otherwise the next step can fail.
+  @screen.wait('TailsGreeterLoginButton.png', 10)
 end
 
 Given /^the Tails desktop is ready$/ do
@@ -448,6 +445,11 @@ Given /^the Tails desktop is ready$/ do
     'gsettings set org.gnome.desktop.interface toolkit-accessibility true',
     user: LIVE_USER
   )
+  # And also for the root user for applications that run with
+  # sudo/pkexec under XWayland.
+  $vm.execute_successfully(
+    'DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/0/bus gsettings set org.gnome.desktop.interface toolkit-accessibility true'
+  )
   # Optimize upgrade check: avoid 30 second sleep
   $vm.execute_successfully(
     'sed -i "s/^ExecStart=.*$/& --no-wait/" /usr/lib/systemd/user/tails-upgrade-frontend.service'
@@ -467,6 +469,30 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
 end
 
 Given /^Tor is ready$/ do
+  # deprecated: please choose between "I successfully configure Tor" and "I wait until Tor is ready"
+  step 'I successfully configure Tor'
+end
+
+##
+# this is a #18293-aware version of `tor_variable get --type=conf DisableNetwork`
+def check_disable_network
+  disable_network = nil
+  # Gather debugging information for #18557
+  try_for(10) do
+    disable_network = $vm.execute_successfully(
+      '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
+    ).stdout.chomp
+    if disable_network == ''
+      debug_log('Tor claims DisableNetwork is an empty string')
+      false
+    else
+      true
+    end
+  end
+  disable_network
+end
+
+Given /^I successfully configure Tor$/ do
   # First we wait for tor's control port to be ready...
   try_for(60) do
     $vm.execute_successfully('/usr/local/lib/tor_variable get --type=info version')
@@ -480,22 +506,7 @@ Given /^Tor is ready$/ do
   # case, where it is not important for the test scenario that we go
   # through the extra hassle and use bridges, so we simply attempt a
   # direct connection.
-  disable_network = nil
-  # Gather debugging information for #18293
-  try_for(10) do
-    $vm.execute('pidof tor')
-    $vm.execute('fuser --namespace tcp 9052')
-    $vm.execute('systemctl status tor@default.service')
-    disable_network = $vm.execute_successfully(
-      '/usr/local/lib/tor_variable get --type=conf DisableNetwork'
-    ).stdout.chomp
-    if disable_network == ''
-      debug_log('Tor reported claims DisableNetwork is an empty string')
-      false
-    else
-      true
-    end
-  end
+  disable_network = check_disable_network
   if disable_network == '1'
     # This variable is initialized to false in each scenario, and only
     # ever set to true in some previously run step that configures tor
@@ -508,6 +519,10 @@ Given /^Tor is ready$/ do
     step 'I configure a direct connection in the Tor Connection Assistant'
   end
 
+  step 'I wait until Tor is ready'
+end
+
+Then /^I wait until Tor is ready$/ do
   # Here we actually check that Tor is ready
   step 'Tor has built a circuit'
   step 'the time has synced'
@@ -607,7 +622,12 @@ end
 Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ do |page|
   case page
   when 'startup page'
-    titles = ['Tails', 'Tails - Trying a testing version of Tails', 'Tails - Welcome to Tails!']
+    titles = [
+      'Tails',
+      'Tails - Trying a testing version of Tails',
+      'Tails - Welcome to Tails!',
+      'Tails - Dear Tails user,',
+    ]
   when 'Tails homepage'
     titles = ['Tails']
   when 'Tails GitLab'
@@ -619,13 +639,13 @@ Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ d
 end
 
 When /^I request a new identity using Torbutton$/ do
-  @torbrowser.child('Tor Browser', roleName: 'push button').click
-  @torbrowser.child('New Identity', roleName: 'push button').click
+  @torbrowser.child('Tor Browser', roleName: 'push button').press
+  @torbrowser.child('New Identity', roleName: 'push button').press
 end
 
 When /^I acknowledge Torbutton's New Identity confirmation prompt$/ do
   @screen.wait('GnomeQuestionDialogIcon.png', 30)
-  step 'I type "y"'
+  @screen.press('y')
 end
 
 Given /^I add a bookmark to eff.org in the Tor Browser$/ do
@@ -634,17 +654,12 @@ Given /^I add a bookmark to eff.org in the Tor Browser$/ do
   step 'the Tor Browser shows the ' \
        '"The proxy server is refusing connections" error'
   @screen.press('ctrl', 'd')
-  @screen.wait('TorBrowserBookmarkPrompt.png', 10)
-  @screen.type(url)
-  # The new default location for bookmarks is "Bookmarks Toolbar", but our test
-  # expects the new entry is available in "Bookmark Menu", that's why we need
-  # to select the location explicitly.
-  @screen.wait('TorBrowserBookmarkLocation.png', 10).click
-  @screen.wait('TorBrowserBookmarkLocationBookmarksMenu.png', 10).click
-  # Need to sleep here, otherwise the changed Bookmark location is not taken
-  # into account and we end up creating a bookmark in "Other Bookmark" location.
-  sleep 1
-  @screen.press('Return')
+  prompt = @torbrowser.child('Add bookmark', roleName: 'panel')
+  prompt.click
+  @screen.paste(url)
+  prompt.child('Location', roleName: 'combo box').open
+  prompt.child('Bookmarks Menu', roleName: 'menu item').click
+  prompt.button('Save').press
 end
 
 Given /^the Tor Browser has a bookmark to eff.org$/ do
@@ -653,20 +668,22 @@ Given /^the Tor Browser has a bookmark to eff.org$/ do
 end
 
 Given /^all notifications have disappeared$/ do
-  # These magic coordinates always locates GNOME's clock in the top
-  # bar, which when clicked opens the calendar.
-  x = 512
-  y = 10
   gnome_shell = Dogtail::Application.new('gnome-shell')
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
-    @screen.click(x, y)
+    @screen.press('super', 'v') # Show the notification list
+    @screen.wait('GnomeDoNotDisturb.png', 5)
     begin
-      gnome_shell.child('Clear All', roleName:    'push button',
-                                     showingOnly: true).click
+      @screen.click(
+        *gnome_shell.child(
+          'Clear',
+          roleName:    'push button',
+          showingOnly: true
+        ).position
+      )
     rescue StandardError
       # Ignore exceptions: there might be no notification to clear, in
       # which case there will be a "No Notifications" label instead of
-      # a "Clear All" button.
+      # a "Clear" button.
     end
     gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
   end
@@ -743,9 +760,7 @@ Given /^I kill the process "([^"]+)"$/ do |process|
 end
 
 Then /^Tails eventually (shuts down|restarts)$/ do |mode|
-  # In the Additional Software feature, we need to wait enough for
-  # tails-synchronize-data-to-new-persistent-volume to complete.
-  try_for(6 * 60) do
+  try_for(3 * 60) do
     if mode == 'restarts'
       @screen.find('TailsGreeter.png')
       true
@@ -760,12 +775,14 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-def open_gnome_menu(menu_button, menu_item)
+def open_gnome_menu(name, menu_item)
+  menu_position = Dogtail::Application.new('gnome-shell')
+                                      .child(name, roleName: 'menu')
+                                      .position
   # On Bullseye the top bar menus are problematic: we generally have
   # to click several times for them to open.
-  retry_action(10, delay: 2) do
-    @screen.hide_cursor
-    @screen.wait(menu_button, 10).click
+  retry_action(20) do
+    @screen.click(*menu_position)
     # Wait for the menu to be open and to have settled: sometimes menu
     # components appear too fast, before the menu has settled down to
     # its final size and the button we want to click is in its final
@@ -777,11 +794,11 @@ def open_gnome_menu(menu_button, menu_item)
 end
 
 def open_gnome_places_menu
-  open_gnome_menu('GnomePlaces.png', 'GnomePlacesHome.png')
+  open_gnome_menu('Places', 'GnomePlacesHome.png')
 end
 
 def open_gnome_system_menu
-  open_gnome_menu('GnomeSystemMenuButton.png', 'TailsEmergencyShutdownHalt.png')
+  open_gnome_menu('System', 'TailsEmergencyShutdownHalt.png')
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|
@@ -831,18 +848,15 @@ Given /^I switch to the "([^"]+)" NetworkManager connection$/ do |con_name|
   end
 end
 
-When /^I start and focus GNOME Terminal$/ do
-  step 'I start "GNOME Terminal" via GNOME Activities Overview'
-  @screen.wait('GnomeTerminalWindow.png', 40)
-end
-
 When /^I run "([^"]+)" in GNOME Terminal$/ do |command|
   if !$vm.process_running?('gnome-terminal-server')
-    step 'I start and focus GNOME Terminal'
+    step 'I start "GNOME Terminal" via GNOME Activities Overview'
+    @screen.wait('GnomeTerminalWindow.png', 40)
   else
     @screen.wait('GnomeTerminalWindow.png', 20).click
   end
-  @screen.type(command, ['Return'])
+  @screen.paste(command, app: :terminal)
+  @screen.press('Return')
 end
 
 When /^the file "([^"]+)" exists(?:| after at most (\d+) seconds)$/ do |file, timeout|
@@ -887,6 +901,20 @@ Then /^persistence for "([^"]+)" is (|not )enabled$/ do |app, enabled|
   end
 end
 
+def language_has_non_latin_input_source(language)
+  # Note: we'll have to update the list when fixing #12638 or #18076
+  ['Persian', 'Russian'].include?(language)
+end
+
+# In the situations where we call this method
+# (language_has_non_latin_input_source), we have exactly 2 input
+# sources, so calling this method switches back and forth
+# between them.
+def switch_input_source
+  @screen.press('super', 'space')
+  sleep 1
+end
+
 Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   # Search disambiguations: below we assume that there is only one
   # result, since multiple results introduces a race that leads to a
@@ -898,6 +926,10 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     # "Terminal" and "Root Terminal" search results, so let's use a
     # keyword only found in the former's .desktop file.
     app_name = 'commandline'
+  when 'Persistent Storage'
+    # "Persistent Storage" also matches "Back Up Persistent Storage"
+    # (tails-backup.desktop).
+    app_name = 'Configure which files'
   end
   @screen.wait("GnomeApplicationsMenu#{$language}.png", 10)
   @screen.press('super')
@@ -905,12 +937,21 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   # really needed, e.g. to avoid having to encode lots of keymaps
   # to be able to type the name correctly:
   if app_name.match(/[.]png$/)
-    @screen.wait('GnomeActivitiesOverviewLaunchersReady.png', 10)
+    @screen.wait('GnomeActivitiesOverviewLaunchersReady.png', 20)
     # This should be ctrl + click, to ensure we open a new window.
-    # Let's implement this once once of the callers needs this.
-    @screen.wait(app_name, 10).click
+    # Let's implement this once one of the callers needs this.
+    @screen.wait(app_name, 20).click
   else
-    @screen.wait('GnomeActivitiesOverviewSearch.png', 10)
+    pic = if RTL_LANGUAGES.include?($language)
+            'GnomeActivitiesOverviewSearchRTL.png'
+          else
+            'GnomeActivitiesOverviewSearch.png'
+          end
+    @screen.wait(pic, 20)
+    if language_has_non_latin_input_source($language)
+      # Temporarily switch to en_US keyboard layout to type the name of the app
+      switch_input_source
+    end
     # Trigger startup of search providers
     @screen.type(app_name[0])
     # Give search providers some time to start (#13469#note-5) otherwise
@@ -920,11 +961,11 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
     @screen.type(app_name[1..-1])
     sleep 4
     @screen.press('ctrl', 'Return')
+    if language_has_non_latin_input_source($language)
+      # Switch back to $language's default keyboard layout
+      switch_input_source
+    end
   end
-end
-
-When /^I type "([^"]+)"$/ do |string|
-  @screen.type(string)
 end
 
 When /^I press the "([^"]+)" key$/ do |key|
@@ -942,14 +983,10 @@ Then /^the (amnesiac|persistent) Tor Browser directory (exists|does not exist)$/
 end
 
 Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser directory$/ do |persistent_or_not|
-  case persistent_or_not
-  when 'amnesiac'
-    bookmark_image = 'TorBrowserAmnesicFilesBookmark.png'
-  when 'persistent'
-    bookmark_image = 'TorBrowserPersistentFilesBookmark.png'
-  end
+  bookmark = 'Tor Browser'
+  bookmark += ' (persistent)' if persistent_or_not == 'persistent'
   open_gnome_places_menu
-  @screen.wait(bookmark_image, 40)
+  Dogtail::Application.new('gnome-shell').child(bookmark, roleName: 'label', showingOnly: true)
   @screen.press('Escape')
 end
 
@@ -988,12 +1025,13 @@ When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) dire
   elsif output_dir == 'default downloads'
     output_dir = "/home/#{LIVE_USER}/Tor Browser"
   else
-    @screen.type(output_dir + '/')
+    @screen.paste(output_dir + '/')
   end
   # Only the part of the filename before the .html extension can be easily
   # replaced so we have to remove it before typing it into the arget filename
   # entry widget.
-  @screen.type(output_file.sub(/[.]html$/, ''), ['Return'])
+  @screen.paste(output_file.sub(/[.]html$/, ''))
+  @screen.press('Return')
   if should_work
     try_for(20,
             msg: "The page was not saved to #{output_dir}/#{output_file}") do
@@ -1011,12 +1049,11 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                  "/home/#{LIVE_USER}/Tor Browser"
                end
   @screen.press('ctrl', 'p')
-  @torbrowser.child('Save', roleName: 'push button').click
+  @torbrowser.child('Save', roleName: 'push button').press
   @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it
-  $vm.set_clipboard(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
-  @screen.press('ctrl', 'v')
+  @screen.paste(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
   @screen.press('Return')
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do
@@ -1320,13 +1357,6 @@ When /^I disable the (.*) (system|user) unit$/ do |unit, scope|
   $vm.execute_successfully("systemctl #{options} disable '#{unit}'")
 end
 
-# Since the Unsafe Browser is disabled in most snapshots, this is
-# a little "cheat" to enable it any way.
-Given /^I magically allow the Unsafe Browser to be started$/ do
-  $vm.file_overwrite('/var/lib/live/config/tails.unsafe-browser',
-                     'TAILS_UNSAFE_BROWSER_ENABLED=true')
-end
-
 def git_on_a_tag
   system('git describe --tags --exact-match HEAD >/dev/null 2>&1')
 end
@@ -1367,4 +1397,30 @@ end
 
 Given /^I write a file (\S+) with contents "([^"]*)"$/ do |path, content|
   $vm.file_overwrite(path, content)
+end
+
+def gnome_disks_app
+  disks_app = Dogtail::Application.new('gnome-disks')
+  # Give GNOME Shell some time to draw the minimize/maximize/close
+  # buttons in the title bar, to ensure the other title bar buttons we
+  # will later click, such as GnomeDisksDriveMenuButton.png, have
+  # stopped moving. Otherwise, we sometimes lose the race: the
+  # coordinates returned by Screen#wait are obsolete by the time we
+  # run Screen#click, which makes us click on the minimize
+  # button instead.
+  @screen.wait('GnomeWindowActionsButtons.png', 10)
+  disks_app
+end
+
+def save_qrcode(str)
+  # Generate a QR code similar enough to BridgeDB's:
+  # https://gitlab.torproject.org/tpo/anti-censorship/bridgedb/-/blob/main/bridgedb/qrcodes.py
+  qrencode_output_file = Tempfile.create('qrcode', $config['TMPDIR'])
+  qrencode_output_file.close
+  output_file = qrencode_output_file.path + '.jpg'
+  cmd_helper(['qrencode', '-o', qrencode_output_file.path, '--size=5', '--margin=5', str])
+  assert(File.exist?(qrencode_output_file.path))
+  cmd_helper(['convert', qrencode_output_file.path, output_file])
+  assert(File.exist?(output_file))
+  output_file
 end

@@ -31,8 +31,13 @@ inotify-tools
 libnotify-bin
 # needed by tails-documentation
 libgtk-3-bin
-# needed by live-persist
+# needed by the Persistent Storage service
 acl
+libblockdev-crypto2
+# needed by the Persistent Storage frontend
+gir1.2-handy-1
+gnome-icon-theme
+libpwquality-tools
 # needed by the Unsafe Browser
 zenity
 # Needed by tails-htp-notify-user and others
@@ -150,6 +155,7 @@ lvm2
 macchanger
 mat2
 mesa-utils
+metadata-cleaner
 nautilus
 nautilus-extension-gnome-terminal
 nautilus-wipe
@@ -258,16 +264,6 @@ b43-fwcutter
 firmware-b43-installer
 firmware-b43legacy-installer
 
-### Xorg
-xorg
-xserver-xorg-input-all
-xserver-xorg-legacy
-xserver-xorg-video-all
-xserver-xorg-video-cirrus
-xserver-xorg-video-intel
-xserver-xorg-video-modesetting
-xserver-xorg-video-amdgpu
-
 ### Input methods
 ibus-gtk
 ibus-gtk3
@@ -283,6 +279,8 @@ ibus-hangul
 ibus-unikey
 
 ### l10n, i18n
+## Translation files for Qt
+qttranslations5-l10n
 ## Hebrew support
 culmus
 libfribidi0
@@ -354,9 +352,8 @@ pciutils
 libccid
 pcscd
 
-### Spice and QXL
+### Spice
 spice-vdagent
-xserver-xorg-video-qxl
 
 ### Wireless regulation
 crda
@@ -408,8 +405,9 @@ libimobiledevice-utils
 usbmuxd
 
 # Requested by SecureDrop for their air-gapped machines (#17178)
-pdf-redact-tools
 tesseract-ocr
+# On top of SecureDrop, needed by our test suite
+# (feed_qr_code_video_to_virtual_webcam)
 ffmpeg
 
 # U2F support (i.e. in TorBrowser)

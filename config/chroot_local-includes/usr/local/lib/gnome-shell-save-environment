@@ -1,0 +1,50 @@
+#!/usr/bin/python3
+
+'''
+This is the privileged part for gnome-shell-dump-environment.
+
+The core security feature is that it can only be run once: the next time it is called, it will be a noop.
+
+It trusts the file in amnesia's home; this could seem risky. However, the first (and only!) time this will
+happen is at boot time. If an attacker is already there, it means we have already lost.
+'''
+
+import shutil
+import sys
+from pathlib import Path
+
+from tailslib import LIVE_USERNAME
+
+
+def main():
+    destdir = Path('/run/gnome-shell-environment/')
+    dest = destdir / 'environ'
+    try:
+        # the exist_ok parameter is critical in this block
+
+        # what exist_ok does here is check the returncode of mkdir function
+        destdir.mkdir(mode=0o755, exist_ok=False)
+
+        # since we are setting exist_ok=False, this will result in
+        #   openat(..., O_WRONLY|O_CREAT|O_EXCL|O_CLOEXEC)
+        # so if pathname already exists, it will fail with the error EEXIST
+        #    (see openat(2))
+        # which in turn would raise a Python exception
+        # thus, this creates a file only if it doesn't exist, in a non-racy way
+        dest.touch(mode=0o640, exist_ok=False)
+    except FileExistsError:
+        sys.exit(0)
+    dest.chmod(0o440)
+
+    src = Path('/home/%s/.gnome-shell-environment' % LIVE_USERNAME)
+    with src.open('rb') as buf:
+        content = buf.read()
+    with dest.open('wb') as buf:
+        buf.write(content)
+    src.unlink()
+
+    shutil.chown(str(dest), group=LIVE_USERNAME)
+
+
+if __name__ == '__main__':
+    main()
