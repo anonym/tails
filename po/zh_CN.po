@@ -20,6 +20,7 @@
 # jack will, 2021
 # James David, 2019
 # Meng San, 2014
+# khi, 2022
 # Kishin Sagume, 2022
 # Lafrenze Laurant, 2018
 # leungsookfan <leung.sookfan@riseup.net>, 2014
@@ -45,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-24 08:12+0200\n"
+"POT-Creation-Date: 2022-11-21 09:23+0100\n"
 "PO-Revision-Date: 2013-07-25 09:07+0000\n"
 "Last-Translator: Kishin Sagume, 2022\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/otf/torproject/"
@@ -106,9 +107,9 @@ msgstr "在 Tails 启动时会从永久存储中安装下列附加软件。"
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:171
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
 "要添加更多附加软件，可以使用 <a href=\"synaptic.desktop\">新立得软件包管理器"
 "</a> 或<a href=\"org.gnome.Terminal.desktop\">通过终端使用 APT</a>。"
@@ -231,10 +232,10 @@ msgstr "如需调试信息，请执行命令：sudo tails-debugging-info"
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:290
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
 "<b>当更新密钥时出现了一个错误。</b>\\n\\n<b>这将无法通过我们的网站确定是否有"
 "可用更新。</b>\\n\\n检查您的网络连接状态，重启Tails并再次尝试更新。\\n\\n如果"
@@ -381,7 +382,7 @@ msgid "Upgrade later"
 msgstr "稍后升级"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:519
-#, fuzzy, perl-brace-format
+#, perl-brace-format
 msgid ""
 "<b>You should do a manual upgrade to the latest version of {name}.</b>\n"
 "\n"
@@ -392,13 +393,6 @@ msgid ""
 "\n"
 "To learn how to do a manual upgrade, go to {manual_upgrade_url}"
 msgstr ""
-"<b>您应该手动升级到 {name} {version}。</b>\n"
-"\n"
-"有关此版本的更多信息请见 {details_url}。\n"
-"\n"
-"不能自动升级您的设备到新版本：{explanation}。\n"
-"\n"
-"关于如何进行手动升级，请见 {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:529
 msgid "New version available"
@@ -555,9 +549,9 @@ msgid ""
 "instructions at file:///usr/share/doc/tails/website/doc/upgrade/error/"
 "install.en.html"
 msgstr ""
-"<b>安装更新时出现错误</b>\\n\\n您的Tails设备需要修复，并且可能无法重"
-"启。\\n\\n请查看以下说明：file:///usr/share/doc/tails/website/doc/upgrade/"
-"error/install.en.html"
+"<b>安装更新时出现错误</b>\\n\\n您的Tails设备需要修复，并且可能无法重启。\\n"
+"\\n请查看以下说明：file:///usr/share/doc/tails/website/doc/upgrade/error/"
+"install.en.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:894
 msgid "Error while installing the upgrade"
@@ -2165,20 +2159,23 @@ msgid "Launch the Unsafe Browser?"
 msgstr "确认启动不安全的浏览器？"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:42
+#, fuzzy
 msgid ""
 "The Unsafe Browser is not anonymous and the websites that you visit can see "
 "your real IP address.\\n\\nOnly use the Unsafe Browser to sign in to a "
-"network using a captive portal."
+"network, then close it."
 msgstr ""
 "不安全的浏览器不是匿名的，您访问的网站可以看见您的真实IP地址。\\n\\n只使用不"
 "安全的浏览器登陆强制主页。"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:54
+#, fuzzy
 msgid ""
-"The Unsafe Browser was not enabled in the Welcome Screen.\\n\\nTo <a "
-"href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
-"unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and "
-"enable the Unsafe Browser in the additional settings of the Welcome Screen."
+"Only use the Unsafe Browser to sign in to a network, then close it.\\n\\nThe "
+"Unsafe Browser is disabled by default for security.\\n\\nTo <a href='file:///"
+"usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en."
+"html#use'>use the Unsafe Browser</a>, restart Tails and enable the Unsafe "
+"Browser in the additional settings of the Welcome Screen."
 msgstr ""
 "不安全的浏览器没有在欢迎页面中启用。\\n\\n要<a href='file:///usr/share/doc/"
 "tails/website/doc/anonymous_internet/unsafe_browser.en.html#use'>使用不安全浏"
@@ -2868,7 +2865,7 @@ msgstr "请求一个新网桥(_R)"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:260
 msgid "_Enter a bridge that you already know"
-msgstr "输入一个你已知的网桥(E)"
+msgstr "输入一个一个你已知的网桥(E)"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:283
 msgid ""
@@ -2922,9 +2919,10 @@ msgid "• Public network"
 msgstr "• 公共网络"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:698
+#, fuzzy
 msgid ""
 "If you are in a shop, hotel, or airport, you might need to sign in to the "
-"local network using a captive portal."
+"local network using the Unsafe Browser."
 msgstr "如果您在商店、酒店或机场，您可能需要使用强制门户登录本地网络。"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:711
@@ -2988,7 +2986,8 @@ msgstr ""
 "Tor 中继是由世界各地的不同组织和志愿者运营的服务器。"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1046
-msgid "<b>Connect to Tor _automatically (easier)</b>"
+#, fuzzy
+msgid "<b>Connect to Tor _automatically</b>"
 msgstr "<b>自动连接至 Tor（更简单）</b>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1096
@@ -3031,7 +3030,8 @@ msgstr ""
 "才能从本地网络连接到 Tor。"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1236
-msgid "<b>_Hide to my local network that I'm connecting to Tor (safer)</b>"
+#, fuzzy
+msgid "<b>_Hide to my local network that I'm connecting to Tor</b>"
 msgstr "<b>隐藏到我连接到 Tor 的本地网络（更安全）(_H)</b>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1286

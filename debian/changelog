@@ -403,6 +403,112 @@ tails (5.8~beta1) unstable; urgency=medium
 
  -- Tails developers <tails@boum.org>  Wed, 02 Nov 2022 09:47:35 +0000
 
+tails (5.7) unstable; urgency=medium
+
+  * fix FTBFS: don't remove, just hold (tails/tails!960)
+
+    Closes issues:
+      - Tails FTBFS: grub-pc is not configured (tails/tails#19290)
+
+    Commits:
+      - don't remove, just hold
+
+  * Resolve "Upgrade to Tor Browser 11.5.8" (tails/tails!962)
+
+    Closes issues:
+      - Upgrade to Tor Browser 11.5.8 (tails/tails#19295)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 11.5.8-build1
+
+  * Add Metadata Cleaner (#18101) (tails/tails!959)
+
+    Closes issues:
+      - Mention MAT and metadata on /about (tails/tails#19206)
+      - Add Metadata Cleaner (tails/tails#18101)
+
+    Commits:
+      - Mention Metadata Cleaner from /about (#19206)
+      - Document Metadata Cleaner (#18101)
+      - Add Metadata Cleaner (#18101)
+
+  * WhisperBack debugging info: have df ignore filesystems of type fuse.portal
+    (tails/tails!958)
+
+    Closes issues:
+      - Can't start WhisperBack when /root/.cache/doc is mounted (tails/tails#19282)
+
+    Commits:
+      - WhisperBack debugging info: have df ignore filesystems of type fuse.portal
+
+  * Update htpdate pool: secure.flickr.com → flickr.com (tails/tails!954)
+
+    Commits:
+      - Update htpdate pool: secure.flickr.com → flickr.com
+
+  * Update tor to 0.4.7.11 (tails/tails!953)
+
+    Closes issues:
+      - Upgrade to tor 0.4.7.11 (tails/tails#19276)
+
+    Commits:
+      - Update tor to 0.4.7.11
+
+  * Remove broken pdf-redact-tools (tails/tails!950)
+
+    Closes issues:
+      - pdf-redact-tools broken (tails/tails#19250)
+
+    Commits:
+      - Remove broken pdf-redact-tools
+
+  * Resolve "Explain better the Unsafe Browser from Tor Connection"
+    (tails/tails!949)
+
+    Commits:
+      - Test suite: update wrt. new UI strings
+      - Insist on signing in, then closing (#19168)
+      - Be more clear (#19168)
+
+  * Remove (easier) and (safer) label from consent question (#19166)
+    (tails/tails!948)
+
+    Closes issues:
+      - Remove (easier) and (safer) label from consent question (tails/tails#19166)
+
+    Commits:
+      - Test suite: update wrt. new UI strings
+      - Remove (easier) and (safer) label from consent question (#19166)
+
+  * fix snakeoil certificates in Thunderbird test suite (tails/tails!943)
+
+    Closes issues:
+      - Fix and re-enable "I can send emails, and receive emails over IMAP" automated
+        test: Certificate handling on Jenkins needs updating for Thunderbird 102
+        (tails/tails#19193)
+
+    Commits:
+      - add snakeoil to thunderbird using certutil
+      - reneable test by default
+      - Revert "Really disable broken Thunderbird test"
+
+  * extend validity time check for OpenPGP keys (tails/tails!939)
+
+    Closes issues:
+      - Extend period for "The included OpenPGP keys are up-to-date"
+        (tails/tails#19219)
+
+    Commits:
+      - extend validity time check for OpenPGP keys
+
+  * Fetch Tor Browser from our own archive (tails/tails!938)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+
+ -- Tails developers <tails@boum.org>  Mon, 21 Nov 2022 11:13:06 +0100
+
 tails (5.6) unstable; urgency=medium
 
   * Upgrade Linux to 5.10.149 (tails/tails!935)

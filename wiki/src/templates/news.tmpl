@@ -179,13 +179,5 @@
 
 <TMPL_IF HTML5></footer><TMPL_ELSE></div></TMPL_IF>
 
-<script type="text/javascript">
-  var linkelements = document.querySelectorAll('.use-mirror-pool');
-  // Avoid a traceback if mirror-dispatcher.js is not available.
-  if (typeof replaceUrlPrefixWithRandomMirror !== "undefined" && linkelements.length > 0) {
-    replaceUrlPrefixWithRandomMirror(linkelements);
-  }
-</script>
-
 </body>
 </html>

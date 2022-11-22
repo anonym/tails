@@ -1,43 +1,50 @@
 [[!meta title="HTTP mirror pool"]]
 
+[[!toc levels=2]]
+
 # Big picture
 
-The Tails downloads are served using two different mirror pools,
-depending on the use case:
+The Tails downloads are served using two different mirror pools
+([[HTTP|mirrors#http-pool]] and [[DNS|mirrors#dns-pool]]), depending on the use
+case.
 
-### JSON pool
+<a id="http-pool"></a>
 
-A dispatcher code in JavaScript dynamically modifies the
-hostname in the URL of our ISO image,
-so that each user is pointed to random mirror.
+## HTTP pool
 
-- The code is deployed live: <https://tails.boum.org/lib/js/mirror-dispatcher.js>
-- The list of mirrors is loaded from a JSON file on our
-  website: <https://tails.boum.org/mirrors.json><br/>
-  See [[the configuration section|mirrors#configuration]]
-  for details.
-- [[!tails_gitweb_repo mirror-pool-dispatcher desc="Git repository"]]
-- Vanilla JS (no frameworks)
-- The library code has two consumers:
-  * our website, primarily on our [[download page|installation_instructions#download]] but also on announcements of
-    release candidates
-  * Tails Upgrader, that runs the library code with Node.js
+A web service redirects clients to the nearest mirror based on IP
+geolocation data:
 
-### DNS pool
+- The list of mirrors is automatically and periodically loaded from [a JSON
+  file on our website](https://tails.boum.org/mirrors.json). See the [[Mirror
+  pool configuration|mirrors#configuration]] section below for details.
+- IP geolocation data is automatically and periodically updated from [MaxMind's
+  GeoLite2](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data?lang=en)
+  databases.
+- Downloads are served under the `download.tails.net` domain (see [mirror
+  statistics](https://download.tails.net/tails?mirrorstats)).
+- [Mirrorbits](https://github.com/etix/mirrorbits) performs the actual
+  redirections according to its own internal score system, which is based on
+  mirrors' weights (imported from `mirrors.json`) and IP geolocation data
+  (Autonomous Systems, countries and calculated distances).
+- The server-side code can be found in [[!tails_gitlab
+  tails/puppet-tails/-/blob/master/manifests/profile/mirrorbits.pp]]
+
+<a id="dns-pool"></a>
+
+## DNS pool
 
 A DNS Round Robin pool points to a few (3-7) fast and
 reliable mirrors. It is the fallback for some use cases. So we still
 have a DNS dynamic update system, re-purposed from the one we already had
-(`dl.amnesia.boum.org`). This fallback DNS pool is used:
-
-- by people who do not use JS, when downloading from our website;
-- for the [[wget download option|install/expert]].
+(`dl.amnesia.boum.org`). This fallback DNS pool is used as a fallback
+by *Tails Upgrader*.
 
 <a id="configuration"></a>
 
 # Mirror pool configuration
 
-The client dispatcher code fetches the mirror pool configuration file
+The server-side redirector fetches the mirror pool configuration file
 from our website: <https://tails.boum.org/mirrors.json>
 
 The configuration file is written in JSON, to avoid the
@@ -57,23 +64,22 @@ to the website itself.
 The configuration file is essentially a list of mirrors, and for each
 of them we need a few values:
 
- * url_prefix: whatever needs to be pre-pended to the path to an ISO
+ * `url_prefix`: whatever needs to be pre-pended to the path to an ISO
    (e.g. `/stable/tails-i386-2.0/tails-i386-2.0.iso`) that is shared
    between all mirrors, to form a complete URL to that ISO; for
-   example:
-   - in the old mirror pool design, this would be
-     `http://dl.amnesia.boum.org/tails`
-   - in the new mirror pool design, this could be e.g.
-     `https://mirrors.kernel.org/tails`
+   example `https://mirrors.wikimedia.org/tails/`
 
- * weight: the probability this mirror has to be picked by the
+ * `rsync_url`: this URL is used by the server-side redirector to periodically
+   check each mirror's health.
+
+ * `weight`: the probability this mirror has to be picked by the
    dispatcher code, expressed as a non-negative integer; weight
    0 means that the mirror is currently disabled, and will never be
    redirected to
 
- * email (optional): the email address of the mirror's operator
+ * `email` (optional): the email address of the mirror's operator
 
- * notes (optional): various additional notes that can be useful to
+ * `notes` (optional): various additional notes that can be useful to
    the managers of the mirror pool
 
 For a more formal, and probably more up-to-date definition of the data
