@@ -66,6 +66,7 @@ pref("spellchecker.dictionary_path", "/usr/share/hunspell");
 pref("network.proxy.type", 1);
 // Block direct connections to localhost
 pref("network.proxy.allow_hijacking_localhost", true);
+pref("network.proxy.failover_direct", false);
 // Connections to localhost are blocked by
 // setting network.proxy.allow_hijacking_localhost = true,
 // so we don't need to ban specific ports, which can be fingerprinted.
