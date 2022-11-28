@@ -599,9 +599,16 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
     click_connect_to_tor
     if bridge_type == 'default'
       assert_equal(:easy, config_mode)
-      @bridge_hosts = chutney_bridges('obfs4', chutney_tag: 'defbr').map do |bridge|
-        { address: bridge[:address], port: bridge[:port] }
-      end
+
+      @bridge_hosts = if $config['DISABLE_CHUTNEY']
+                        bridges_to_ipport(
+                          $vm.file_content('/usr/share/tails/tca/default_bridges.txt')
+                        )
+                      else
+                        chutney_bridges('obfs4', chutney_tag: 'defbr').map do |bridge|
+                          { address: bridge[:address], port: bridge[:port] }
+                        end
+                      end
 
       tor_connection_assistant.child('Use a _default bridge',
                                      roleName: 'radio button')
