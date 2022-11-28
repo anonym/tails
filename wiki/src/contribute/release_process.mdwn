@@ -1013,7 +1013,30 @@ Make sure that Jenkins has finished building the images so you have set
         --matching-jenkins-images-build-id "${MATCHING_JENKINS_IMAGES_BUILD_ID:?}"
 
 Then, wait (a few minutes, `*/15` crontab) until the images appear
-on <https://iso-history.tails.boum.org/?C=M&O=D>.
+on <https://iso-history.tails.boum.org/?C=M&O=D>:
+
+
+    (
+        dirurl="https://iso-history.tails.boum.org/tails-amd64-${VERSION:?}/"
+        isourl="${dirurl}tails-amd64-${VERSION:?}.iso"
+        isopath="$ISOS/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.iso"
+        while ! curl --silent --fail --head "$isourl" > /dev/null; do
+            sleep 10
+        done
+        echo "Dir created: ${dirurl}"
+        expected_size="$(stat -c %s "${isopath}")"
+        while true
+        do
+            size=$(curl --silent --head "${isourl}" | grep -iPo '^content-length:\s*\K\d+')
+            echo "FOUND: ${size}bytes"
+            if [ "$size" -eq "${expected_size}" ]; then
+                echo 'FOUND: ready'
+                notify-send "Image published" 'found in ISO history'
+                exit 0
+            fi
+            sleep 10
+        done
+    )
 
 <a id="build-iuks-on-jenkins"></a>
 
@@ -1665,7 +1688,16 @@ Go wild!
 Wait for the HTTP mirrors to catch up
 -------------------------------------
 
-Test downloading the ISO, USB image, and one of the new IUKs over HTTP.
+Look at the mirror status. Wait for each of these pages to include at least one
+working mirror:
+
+    (
+      base='https://download.tails.net/tails/stable'
+      echo \
+        "${base}/iuk/v2/Tails_amd64_${PREVIOUS_STABLE_VERSION:?}_to_${VERSION:?}.iuk?mirrorlist" \
+        "${base}/iuk/v2/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.iso?mirrorlist" \
+        "${base}/iuk/v2/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.img?mirrorlist" \
+    )
 
 Check if every active mirror in the pool has the new version:
 
@@ -1686,7 +1718,7 @@ Sanity checks
 -------------
 
 * Check for any feedback in the _Internal testing_ pad.
-* Check for any feedback on [tails-testers@boum.org](https://lists.autistici.org/list/tails-testers.html).
+* Check for any feedback on [tails-testers@boum.org](https://lists.autistici.org/mindex/tails-testers@20380101.000000.00000000.en.html)
 * Verify once more that the Tor Browser we ship is still the most recent (see
   above).
 
@@ -1724,13 +1756,17 @@ website:
 Wait for the release to be fully published, that is for the website to have been
 fully refreshed. To do so:
 
- - If you're publishing a final release, wait until all these conditions are met:
-   - <https://tails.boum.org/news/> includes the release notes
-   - <https://tails.boum.org/news/index.de.html> includes the release notes
-   - <https://tails.boum.org/torrents/files/> includes the files
-     for the new release
+### If you're publishing a final release,
 
- - Else: wait until <https://tails.boum.org/news/test_$TAG/> is live.
+wait until all these conditions are met:
+ - <https://tails.boum.org/news/> includes the release notes
+ - <https://tails.boum.org/news/index.de.html> includes the release notes
+ - <https://tails.boum.org/torrents/files/> includes the files
+   for the new release
+
+### Else
+
+wait until <https://tails.boum.org/news/test_$TAG/> is live.
 
 Bug tracker
 -----------
@@ -1760,7 +1796,7 @@ Skip this part if preparing a release candidate.
 4. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to
    close the just-released [[!tails_gitlab groups/tails/-/milestones
    desc="milestone"]]. See this as an example:
-   [[!tails_gitlab tails/gitlab-config/-/merge_requests/18 desc="tails/gitlab-config!18"]]
+   [[!tails_gitlab tails/gitlab-config/-/merge_requests/18/diffs desc="tails/gitlab-config!18"]]
    
    A cheap way to do this, could be to use [Gitlab web interface to create the
 MR](https://gitlab.tails.boum.org/tails/gitlab-config/-/edit/master/main.yml)
