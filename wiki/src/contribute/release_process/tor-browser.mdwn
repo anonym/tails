@@ -40,6 +40,9 @@ AppArmor profile: [[tor-browser/AppArmor_policy]].
 Upgrade Tor Browser in Tails
 ============================
 
+Wait
+------------
+
 Have a look at
 
 * <https://archive.torproject.org/tor-package-archive/torbrowser/?C=M;O=D>
@@ -76,7 +79,8 @@ and see if the desired version is available. If it's not, and you want to
     )
     ```
 
-
+Verify
+------------
 
 Set `TBB_DIST_URL` to the chosen URL, and set `TBB_VERSION` to the desired Tor
 Browser version, for example:
@@ -86,13 +90,6 @@ Browser version, for example:
 
 <div class="caution">
 Ensure you include the "-buildN" part. Add it if it's missing.
-</div>
-<div class="caution">
-Unfortunately, some of the servers that the Tor project uses will automatically redirect
-to HTTPS, and our build system does _not_ support that.
-`https://tb-build-05.torproject.org/` is one of those.
-When this happens, you must put those tarballs on a server that allows us to use plain HTTP.
-Unfortunately, we have no standardized procedure for that, and every RM is going freestyle.
 </div>
 
 Set `TBB_TAILS_TICKET` to the number of the ticket about updating Tor
@@ -141,6 +138,11 @@ when the tarballs are fetched:
             sha256sums-unsigned-build.txt \
     ) > config/chroot_local-includes/usr/share/tails/tbb-sha256sums.txt
 
+Set download url
+---------------------
+
+### If `TBB_DIST_URL` supports http
+
 Then update the URL to the one chosen above:
 
     echo "${TBB_DIST_URL:?}" | sed "s,^https://,http://," > \
@@ -154,6 +156,49 @@ MitM'ing connections. However, it is of no consequence since
 we verify the checksum file.
 </p>
 </div>
+
+### Else
+
+Nowadays (since 2022) it is common that tarballs are put on a webserver that doesn't support http: it will
+redirect to https.
+ `https://tb-build-05.torproject.org/` is one of those.
+
+If this is the case, you must put those tarballs on a server that allows us to use plain HTTP.
+
+We cannot use such a server directly, so we need to (at least temporarily) self-host this.
+
+#### If you can access torbrowser-archive.git
+
+    echo "${TBB_DIST_URL:?}" > \
+         config/chroot_local-includes/usr/share/tails/tbb-dist-url.txt
+    git commit config/chroot_local-includes/usr/share/tails/tbb-*.txt \
+        -m "Upgrade Tor Browser to ${TBB_VERSION:?}" && \
+    git show
+
+Please refer to [Self-hosted Tor Browser tarballs archive|#self-host]] section.
+
+#### If you can't access it
+
+Download the relevant files:
+
+```sh
+ (
+    grep --color=never -Eo \
+        '\stor-browser-linux64-[0-9].*_en-US\.tar\.xz$' \
+        sha256sums-unsigned-build.txt \
+    && grep --color=never -Eo \
+        '\slangpacks-tor-browser-linux64-.*\.tar\.xz$' \
+        sha256sums-unsigned-build.txt \
+) | sed -re "s@^\s*@${TBB_DIST_URL:?}@" | xargs wget -c
+```
+
+Now, put them on some webserver that you can control. Let's say you uploaded them to
+`http://myserver.net/misc/tbb/`. Put *that* URL in `config/chroot_local-includes/usr/share/tails/tbb-dist-url.txt`
+
+
+
+Commit
+-----------
 
 Lastly, commit:
 
@@ -191,6 +236,8 @@ Then apply any relevant change, e.g. to:
  - required libstdc++6 version bumps; if there's been any change upstream,
    look for `abicheck` in `config/chroot_local-hooks/10-tbb` and adjust
    that hook as needed.
+
+<a id="self-host">
 
 Self-hosted Tor Browser tarballs archive
 ========================================
