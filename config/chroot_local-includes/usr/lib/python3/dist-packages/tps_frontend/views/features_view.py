@@ -121,9 +121,11 @@ class FeaturesView(View):
                              for c in get_feature_classes()]
         # Show the change passphrase button
         self.window.change_passphrase_button.show()
+        self.window.delete_button.show()
 
     def on_hide(self):
         self.window.change_passphrase_button.hide()
+        self.window.delete_button.hide()
 
     def add_separator(self, row, before):
         if not before:
