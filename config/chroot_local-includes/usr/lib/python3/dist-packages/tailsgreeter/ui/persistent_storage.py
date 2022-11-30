@@ -18,7 +18,7 @@ from gi.repository import GLib, Gtk, GdkPixbuf
 if TYPE_CHECKING:
     from tailsgreeter.settings.persistence import PersistentStorageSettings
 
-IMG_PERSISTENT_STORAGE = '/usr/share/doc/tails/website/about/persistent-storage.svg'
+IMG_PERSISTENT_STORAGE = '/usr/share/icons/hicolor/scalable/actions/tails-locked.svg'
 
 class PersistentStorage(object):
     def __init__(self, persistence_setting: "PersistentStorageSettings",
@@ -63,7 +63,7 @@ class PersistentStorage(object):
             # but nothing is implemented to do so currently. So let's
             # hide the whole thing for now.
 
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(IMG_PERSISTENT_STORAGE, 200, 200)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(IMG_PERSISTENT_STORAGE, 80, 80)
             builder.get_object("image_storagecreate_bag").set_from_pixbuf(pixbuf)
 
             self.box_storage.set_visible(False)
