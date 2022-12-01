@@ -63,8 +63,8 @@ class PersistentStorage(object):
             # but nothing is implemented to do so currently. So let's
             # hide the whole thing for now.
 
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(IMG_PERSISTENT_STORAGE, 80, 80)
-            builder.get_object("image_storagecreate_bag").set_from_pixbuf(pixbuf)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(IMG_PERSISTENT_STORAGE, 40, 40)
+            builder.get_object("image_storagecreate").set_from_pixbuf(pixbuf)
 
             self.box_storage.set_visible(False)
             self.box_storagecreate.set_visible(True)
