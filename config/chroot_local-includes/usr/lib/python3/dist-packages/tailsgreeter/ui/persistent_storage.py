@@ -59,10 +59,6 @@ class PersistentStorage(object):
             self.entry_storage_passphrase.set_visible(True)
             self.spinner_storage_unlock.set_visible(False)
         else:
-            # XXX-future: We have a nice button to configure the persistence
-            # but nothing is implemented to do so currently. So let's
-            # hide the whole thing for now.
-
             pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(IMG_PERSISTENT_STORAGE, 40, 40)
             builder.get_object("image_storagecreate").set_from_pixbuf(pixbuf)
 
@@ -72,7 +68,7 @@ class PersistentStorage(object):
             self.persistent_storage_create_updateui()
 
             self.button_storagecreate_create.connect(
-                    "activate", self.cb_persistent_storage_create)
+                    "clicked", self.cb_persistent_storage_create)
 
     @staticmethod
     def passphrase_changed(editable):
