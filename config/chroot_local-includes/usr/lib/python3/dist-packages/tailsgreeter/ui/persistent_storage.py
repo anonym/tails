@@ -5,20 +5,18 @@ import os
 import sh
 import threading
 from typing import TYPE_CHECKING, Callable
-from pathlib import Path
 
 from tailsgreeter.ui import _
-from tailsgreeter.config import settings_dir, persistent_settings_dir, persistence_create_file
+from tailsgreeter.config import settings_dir, persistent_settings_dir
 from tailsgreeter.errors import PersistentStorageError
 
 gi.require_version('GLib', '2.0')
 gi.require_version('Gtk', '3.0')
-from gi.repository import GLib, Gtk, GdkPixbuf
+from gi.repository import GLib, Gtk
 
 if TYPE_CHECKING:
     from tailsgreeter.settings.persistence import PersistentStorageSettings
 
-IMG_PERSISTENT_STORAGE = '/usr/share/icons/hicolor/scalable/actions/tails-locked.svg'
 
 class PersistentStorage(object):
     def __init__(self, persistence_setting: "PersistentStorageSettings",
@@ -27,12 +25,8 @@ class PersistentStorage(object):
         self.load_settings_cb = load_settings_cb
         self.apply_settings_cb = apply_settings_cb
 
-        self.box_storagecreate = builder.get_object('box_storagecreate')
-        self.label_storagecreate_explain = builder.get_object('label_storagecreate_explain')
-        self.label_storagecreate_after = builder.get_object('label_storagecreate_after')
-        self.button_storagecreate_create = builder.get_object('button_storagecreate_create')
-
         self.box_storage = builder.get_object('box_storage')
+        self.box_storagecreate = builder.get_object('box_storagecreate')
         self.box_storage_unlock = builder.get_object('box_storage_unlock')
         self.box_storage_unlocked = builder.get_object('box_storage_unlocked')
         self.button_storage_unlock = builder.get_object('button_storage_unlock')
@@ -52,23 +46,16 @@ class PersistentStorage(object):
             self.box_storage_unlocked,
             self.checkbutton_storage_show_passphrase])
 
+        has_persistence = self.persistence_setting.has_persistence()
+        self.box_storagecreate.set_visible(not has_persistence)
+        self.box_storage.set_visible(has_persistence)
+
         if self.persistence_setting.has_persistence():
             self.box_storage_unlock.set_visible(True)
             self.checkbutton_storage_show_passphrase.set_visible(True)
             self.image_storage_state.set_visible(True)
             self.entry_storage_passphrase.set_visible(True)
             self.spinner_storage_unlock.set_visible(False)
-        else:
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(IMG_PERSISTENT_STORAGE, 40, 40)
-            builder.get_object("image_storagecreate").set_from_pixbuf(pixbuf)
-
-            self.box_storage.set_visible(False)
-            self.box_storagecreate.set_visible(True)
-
-            self.persistent_storage_create_updateui()
-
-            self.button_storagecreate_create.connect(
-                    "clicked", self.cb_persistent_storage_create)
 
     @staticmethod
     def passphrase_changed(editable):
@@ -215,23 +202,3 @@ class PersistentStorage(object):
 
     def cb_checkbutton_storage_show_passphrase_toggled(self, widget):
         self.entry_storage_passphrase.set_visibility(widget.get_active())
-
-    def persistent_storage_create_updateui(self):
-        p = Path(persistence_create_file)
-        self.label_storagecreate_explain.set_visible(not p.exists())
-        self.label_storagecreate_after.set_visible(p.exists())
-        if p.exists():
-            label = "Don't _Create Persistent Storage"
-        else:
-            label = "_Create a Persistent Storage"
-        self.button_storagecreate_create.set_label(_(label))
-
-        self.button_storagecreate_create.set_use_underline(True)
-
-    def cb_persistent_storage_create(self, widget):
-        p = Path(persistence_create_file)
-        if not p.exists():
-            p.touch()
-        else:
-            p.unlink()
-        self.persistent_storage_create_updateui()

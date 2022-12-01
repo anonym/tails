@@ -60,4 +60,4 @@ macspoof_setting_path = os.path.join(settings_dir, 'tails.macspoof')
 persistence_state_file = '/var/lib/live/config/tails.persistence'
 
 # World-readable file which represents the intent to create Tails persistence after login
-persistence_create_file = '/var/lib/live/config/tails.create-persistence'
+persistence_create_file = os.path.join(settings_dir, 'tails.create-persistence')
