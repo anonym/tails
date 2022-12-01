@@ -230,11 +230,6 @@ class PersistentStorage(object):
             label = "_Create a Persistent Storage"
         self.button_storagecreate_create.set_label(_(label))
 
-        style = self.button_storagecreate_create.get_style_context()
-        if p.exists():
-            style.remove_class('suggested-action')
-        else:
-            style.add_class('suggested-action')
         self.button_storagecreate_create.set_use_underline(True)
 
     def cb_persistent_storage_create(self, widget):
