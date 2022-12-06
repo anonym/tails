@@ -341,16 +341,6 @@ rm -r "${TMP}"
 # Let's put all the extensions from TBB in the global extensions
 # directory...
 mkdir -p "${TBB_EXT}"
-# 1. langpacks
-for xpi in "${TBB_INSTALL}"/TorBrowser/Data/Browser/profile.default/extensions/langpack-*@firefox.mozilla.org.xpi; do
-    locale="$(basename "${xpi}" @firefox.mozilla.org.xpi | sed --regexp-extended 's/^langpack-//')"
-    if supported_locale "$locale"; then
-        mv "${xpi}" "${TBB_EXT}/"
-    else
-        rm "${xpi}"
-    fi
-done
-# 2. non-langpack extensions
 mv "${TBB_INSTALL}"/TorBrowser/Data/Browser/profile.default/extensions/* "${TBB_EXT}"
 rmdir "${TBB_INSTALL}"/TorBrowser/Data/Browser/profile.default/extensions
 
