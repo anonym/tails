@@ -414,10 +414,10 @@ Given /^I set an administration password$/ do
   @screen.wait('TailsGreeterLoginButton.png', 10)
 end
 
-Given /^I allow the Unsafe Browser to be started$/ do
+Given /^I disable the Unsafe Browser$/ do
   open_greeter_additional_settings
   @screen.wait('TailsGreeterUnsafeBrowser.png', 20).click
-  @screen.wait('TailsGreeterUnsafeBrowserEnable.png', 20).click
+  @screen.wait('TailsGreeterUnsafeBrowserDisable.png', 20).click
   @screen.wait('TailsGreeterAdditionalSettingsAdd.png', 10).click
 end
 
