@@ -19,7 +19,7 @@ export PATH="/usr/sbin:${PATH}"
 POLKIT=/etc/polkit-1/localauthority.conf.d/52-tails-greeter.conf
 SUDOERS=/etc/sudoers.d/tails-greeter
 NO_PASSWORD_LECTURE=/etc/sudoers.d/tails-greeter-no-password-lecture
-GREETER_EXPORTED_SETTINGS="tails.macspoof tails.network tails.unsafe-browser tails.create-persistence"
+GREETER_EXPORTED_SETTINGS="tails.macspoof tails.network tails.unsafe-browser"
 
 log() {
     echo "$1" >&2
@@ -68,6 +68,15 @@ for setting in ${GREETER_EXPORTED_SETTINGS}; do
         "/var/lib/gdm3/settings/$setting" \
         "/var/lib/live/config/$setting"
 done
+
+if grep -F 'CREATE_PERSISTENT_STORAGE=true' /var/lib/gdm3/settings/tails.create-persistence
+then
+	touch /var/lib/live/config/tails.create-persistence
+else
+	# why should it be there in the first place?
+	# well, if you are debugging, you might want to run systemctl restart gdm
+	rm -f /var/lib/live/config/tails.create-persistence
+fi
 
 ### Gather general configuration
 
