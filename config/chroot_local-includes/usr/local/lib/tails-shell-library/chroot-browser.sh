@@ -7,7 +7,7 @@ if [ "$(whoami)" != "root" ]; then
     exit 1
 fi
 
-# Import the TBB_INSTALL and TBB_EXT variables
+# Import the TBB_INSTALL variable
 . /usr/local/lib/tails-shell-library/tor-browser.sh
 
 # Import try_for().

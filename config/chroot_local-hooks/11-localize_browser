@@ -4,7 +4,7 @@ set -e
 
 echo "Localize each supported browser locale"
 
-# Import the TBB_INSTALL and TBB_EXT variables and
+# Import the TBB_INSTALL variable and
 # supported_tor_browser_locales(), locale_is_supported_by_tor_browser()
 . /usr/local/lib/tails-shell-library/tor-browser.sh
 
@@ -98,5 +98,4 @@ done < "${DESCRIPTIONS_FILE}"
 rm -r "${BROWSER_LOCALIZATION_DIR}"
 
 # All generated and modified files must remain world-readable.
-chmod -R a+rX "${LOCALE_PROFILES_DIR}" \
-              "${TBB_EXT}"
+chmod -R a+rX "${LOCALE_PROFILES_DIR}"
