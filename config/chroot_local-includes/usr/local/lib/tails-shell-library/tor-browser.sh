@@ -3,6 +3,7 @@
 TBB_INSTALL=/usr/local/lib/tor-browser
 # shellcheck disable=SC2034
 TBB_PROFILE=/etc/tor-browser/profile
+# shellcheck disable=SC2034
 TBB_EXT=/usr/local/share/tor-browser-extensions
 
 # For strings it's up to the caller to add double-quotes ("") around
