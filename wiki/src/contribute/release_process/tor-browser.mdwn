@@ -183,9 +183,6 @@ Download the relevant files:
     grep --color=never -Eo \
         '\stor-browser-linux64-[0-9].*_en-US\.tar\.xz$' \
         sha256sums-unsigned-build.txt \
-    && grep --color=never -Eo \
-        '\slangpacks-tor-browser-linux64-.*\.tar\.xz$' \
-        sha256sums-unsigned-build.txt \
 ) | sed -re "s@^\s*@${TBB_DIST_URL:?}@" | xargs wget -c
 ```
 
