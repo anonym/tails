@@ -45,3 +45,7 @@ pref("extensions.pocket.enabled", false);
 // Set the hunspell directory. This shouldn't be required anymore in
 // Tor Browser based on Firefox 68
 pref("spellchecker.dictionary_path", "/usr/share/hunspell");
+
+// Suppress the "Tor Browser has set your display language to
+// $language based on your system’s language" prompt.
+pref("intl.language_notification.shown", true);

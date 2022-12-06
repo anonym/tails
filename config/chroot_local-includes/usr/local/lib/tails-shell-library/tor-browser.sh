@@ -50,18 +50,18 @@ guess_best_tor_browser_locale() {
     local long_locale short_locale similar_locale
     long_locale="$(echo "${LANG}" | sed -e 's/\..*$//' -e 's/_/-/')"
     short_locale="$(echo "${long_locale}" | cut -d"-" -f1)"
-    if [ -e "${TBB_EXT}/langpack-${long_locale}@firefox.mozilla.org.xpi" ]; then
+    if locale_is_supported_by_tor_browser "$long_locale"; then
         echo "${long_locale}"
         return
-    elif [ -e "${TBB_EXT}/langpack-${short_locale}@firefox.mozilla.org.xpi" ]; then
+    elif locale_is_supported_by_tor_browser "$short_locale"; then
         echo "${short_locale}"
         return
     fi
-    # If we use locale xx-YY and there is no langpack for xx-YY nor xx
+    # If we use locale xx-YY and Tor Browser supports neither xx-YY nor xx,
     # there may be a similar locale xx-ZZ that we should use instead.
     # shellcheck disable=SC2012
-    similar_locale="$(ls -1 "${TBB_EXT}" | \
-        sed -n "s,^langpack-\(${short_locale}-[A-Z]\+\)@firefox.mozilla.org.xpi$,\1,p" | \
+    similar_locale="$(supported_tor_browser_locales | \
+        sed -n "s,^\(${short_locale}-[A-Z]\+\)$,\1,p" | \
         head -n 1)" || :
     if [ -n "${similar_locale:-}" ]; then
         echo "${similar_locale}"
@@ -71,31 +71,26 @@ guess_best_tor_browser_locale() {
     echo 'en-US'
 }
 
-configure_xulrunner_app_locale() {
-    local profile locale
-    profile="${1}"
-    locale="${2}"
-    mkdir -p "${profile}"/preferences
-    set_mozilla_pref "${profile}"/prefs.js \
-                     "intl.locale.requested" "\"${locale}\"" \
-                     "user_pref"
-}
-
 configure_best_tor_browser_locale() {
     local profile best_locale
     profile="${1}"
     best_locale="$(guess_best_tor_browser_locale)"
-    configure_xulrunner_app_locale "${profile}" "${best_locale}"
     cat "/etc/tor-browser/locale-profiles/${best_locale}.js" \
         >> "${profile}/prefs.js"
 }
 
 supported_tor_browser_locales() {
-    # The default is always supported
-    echo en-US
-    for langpack in "${TBB_EXT}"/langpack-*@firefox.mozilla.org.xpi; do
-        basename "${langpack}" | sed 's,^langpack-\([^@]\+\)@.*$,\1,'
-    done
+    7z e -tzip -- "${TBB_INSTALL}/omni.ja" res/multilocale.txt >/dev/null
+    tr ',' "\n" < multilocale.txt
+    rm multilocale.txt
+}
+
+locale_is_supported_by_tor_browser() {
+    local mozilla_locale
+    mozilla_locale="${1}"
+
+    supported_tor_browser_locales \
+        | grep --quiet --fixed-strings --line-regexp "$mozilla_locale"
 }
 
 set_firefox_content_process_count() {

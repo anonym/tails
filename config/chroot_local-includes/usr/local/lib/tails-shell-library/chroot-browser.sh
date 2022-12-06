@@ -7,8 +7,7 @@ if [ "$(whoami)" != "root" ]; then
     exit 1
 fi
 
-# Import the TBB_INSTALL and TBB_EXT variables, and
-# configure_xulrunner_app_locale().
+# Import the TBB_INSTALL and TBB_EXT variables
 . /usr/local/lib/tails-shell-library/tor-browser.sh
 
 # Import try_for().
@@ -149,16 +148,6 @@ configure_chroot_browser_profile () {
     set_chroot_browser_permissions "${chroot}" "${browser_name}" "${browser_user}"
 }
 
-set_chroot_browser_locale () {
-    local chroot="${1}"
-    local browser_name="${2}"
-    local browser_user="${3}"
-    local locale="${4}"
-    local browser_profile
-    browser_profile="$(chroot_browser_profile_dir "${chroot}" "${browser_name}" "${browser_user}")"
-    configure_xulrunner_app_locale "${browser_profile}" "${locale}"
-}
-
 set_chroot_browser_name () {
     local chroot="${1}"
     local human_readable_name="${2}"
@@ -260,8 +249,6 @@ configure_chroot_browser () {
     fi
     configure_chroot_browser_profile "${chroot}" "${browser_name}" \
         "${browser_user}" "${home_page}" "${@}"
-    set_chroot_browser_locale "${chroot}" "${browser_name}" "${browser_user}" \
-        "${best_locale}"
     set_chroot_browser_name "${chroot}" "${human_readable_name}"  \
         "${browser_name}" "${browser_user}" "${best_locale}"
     delete_chroot_browser_searchplugins "${chroot}"
