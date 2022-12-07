@@ -219,7 +219,7 @@ When /^I disable the first persistence preset$/ do
 end
 
 Given(/^I enable persistence creation in Tails Greeter$/) do
-  @screen.press('alt', 'c')
+  @screen.wait('TailsGreeterPersistenceCreate.png', 10).click
 end
 
 Given /^I create a persistent partition( with the default settings| for Additional Software)?( using the wizard that was already open)?$/ do |mode, dontrun|
