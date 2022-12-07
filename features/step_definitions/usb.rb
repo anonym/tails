@@ -220,9 +220,6 @@ end
 
 Given(/^I enable persistence creation in Tails Greeter$/) do
   @screen.press('alt', 'c')
-  try_for(5) do
-    $vm.file_exist?('/var/lib/live/config/tails.create-persistence')
-  end
 end
 
 Given /^I create a persistent partition( with the default settings| for Additional Software)?( using the wizard that was already open)?$/ do |mode, dontrun|
