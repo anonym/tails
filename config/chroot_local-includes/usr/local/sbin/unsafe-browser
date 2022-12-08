@@ -70,12 +70,12 @@ $(gettext "The Unsafe Browser is not anonymous and the websites that you visit c
 
 exit_because_disabled() {
     local msg restart cancel confirm_msg confirm_button
-    msg="$(gettext "The Unsafe Browser was not enabled in the Welcome Screen.\n\n\
-To <a href='file:///usr/share/doc/tails/website/doc/anonymous_internet/unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and enable \
-the Unsafe Browser in the additional settings of the Welcome Screen.")"
-    # Only mention the Persistent Storage if there is one (see #18551)
+    msg="$(gettext "The Unsafe Browser was disabled in the Welcome Screen.\n\n")"
+    # People with a Persistent Storage might have the Unsafe Browser disabled by default
     if persistence_is_enabled; then
-	msg="${msg}""$(gettext "\n\nTo always enable the Unsafe Browser, turn on the Welcome Screen feature of the Persistent Storage.")"
+       msg="${msg}""$(gettext "To use the Unsafe Browser, restart Tails and make sure that the Unsafe Browser is enabled in the additional settings of the Welcome Screen.")"
+    else
+       msg="${msg}""$(gettext "To use the Unsafe Browser, restart Tails.")"
     fi
 
     restart="$(gettext "_Restart")"
