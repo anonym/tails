@@ -33,8 +33,12 @@ function _getWindows() {
     return global.get_window_actors().map(a => a.meta_window).filter(w => !w.is_skip_taskbar());
 }
 
-function centerEveryWindow() {
-    for (const window of this._getWindows()) {
+function centerGreeter() {
+    for (const window of this._getWindows()) { // window is a Meta.Window object
+        if (window.get_title() != 'Welcome to Tails!') {
+            continue;
+        }
+
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         let screenWidth = workArea.width
         let screenHeight = workArea.height
@@ -45,10 +49,13 @@ function centerEveryWindow() {
         // we need to decide the top-left corner, so to make it centered compared to screen
         let x = (screenWidth/2 - winWidth/2)
         let y = (screenHeight/2 - winHeight/2)
-        window.move_resize_frame(true, x, y, rect.width, rect.height);
-        rect = window.get_frame_rect()
-        global.log(`${EXTENSION_LOG_NAME} moved: ${rect.x}-${rect.y}+${rect.width}x${rect.height}`);
+        if(x != rect.x || y != rect.y) {
+            global.log(`${EXTENSION_LOG_NAME} move Greeter to: ${x},${y}+${rect.width}x${rect.height}`);
+            window.move_resize_frame(true, x, y, rect.width, rect.height);
+        }
+        return true;
     }
+    return false;
 }
 
 let _interval;
@@ -58,10 +65,13 @@ function init() {
 
 
 function enable() {
-    centerEveryWindow();
-    // XXX: this timer is incredibly fast, because that's the easiest way to have a snappy UI
-    // as a "mitigation" for the high CPU cost, we only run it a few times
-    // a better solution would be stopping as soon as the only relevant window has been found and moved
+    global.log(`${EXTENSION_LOG_NAME} starting`);
+
+    centerGreeter();
+    // XXX: this timer is incredibly fast, because that's the easiest way to have a snappy UI.
+    // As a "mitigation" for the high CPU cost, we only run it for the first few seconds;
+    // a better solution would be stopping as soon as the only relevant window has been found and moved;
+    // however, this would not be (easily) resilient to screen size changes which happens early.
     let intervalMS = 50;
     let totalTime = 3000;
     let refreshCount=totalTime / intervalMS;
@@ -69,13 +79,18 @@ function enable() {
         intervalMS, /* milliseconds */
         () => {
             refreshCount-=1;
-            centerEveryWindow();
-            if (refreshCount<=0) return GLib.SOURCE_REMOVE;
+            centerGreeter();
+            if (refreshCount<=0) {
+                global.log(`${EXTENSION_LOG_NAME} quitting`);
+                return GLib.SOURCE_REMOVE;
+            }
             else return GLib.SOURCE_CONTINUE;
         });
 }
 
 function disable() {
-    if (_interval)
+    if (_interval) {
+        global.log(`${EXTENSION_LOG_NAME} shutting down`);
         GLib.source_remove(_interval);
+    }
 }
