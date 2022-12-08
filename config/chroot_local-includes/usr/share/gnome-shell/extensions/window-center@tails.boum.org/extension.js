@@ -69,11 +69,11 @@ function enable() {
 
     centerGreeter();
     // XXX: this timer is incredibly fast, because that's the easiest way to have a snappy UI.
-    // As a "mitigation" for the high CPU cost, we only run it for the first few seconds;
+    // As a "mitigation" for the high CPU cost, we only run it for the first 30 seconds;
     // a better solution would be stopping as soon as the only relevant window has been found and moved;
     // however, this would not be (easily) resilient to screen size changes which happens early.
     let intervalMS = 50;
-    let totalTime = 3000;
+    let totalTime = 30000;
     let refreshCount=totalTime / intervalMS;
     _interval = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
         intervalMS, /* milliseconds */
