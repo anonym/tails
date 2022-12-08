@@ -67,6 +67,14 @@ function init() {
 function enable() {
     global.log(`${EXTENSION_LOG_NAME} starting`);
 
+    let [ok, out] = GLib.spawn_sync(null,
+        ['/usr/bin/pgrep', '--uid', 'amnesia', '--count', '--exact', 'systemd'],
+        null, GLib.SpawnFlags.DEFAULT, null);
+    if (out.toString().trim() !== '0') {
+        global.log(`${EXTENSION_LOG_NAME} we're not in GDM: quitting immediately`);
+        return;
+    }
+
     centerGreeter();
     // XXX: this timer is incredibly fast, because that's the easiest way to have a snappy UI.
     // As a "mitigation" for the high CPU cost, we only run it for the first 30 seconds;
