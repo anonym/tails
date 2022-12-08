@@ -235,18 +235,18 @@ class Screen
     # because the Shift wasn't released *immediately* after the "A".
     opts[:holdtime] ||= 0.010
     debug_log("Keyboard: pressing: #{sequence.join('+')}") if opts[:log]
+    keymap = case $language
+             when ''
+               Keymaps::US_KEYMAP
+             when 'French'
+               Keymaps::FR_KEYMAP
+             when 'German'
+               Keymaps::DE_KEYMAP
+             else
+               Keymaps::COMMON_KEYMAP
+             end
     codes = []
     sequence.each do |key|
-      keymap = case $language
-               when ''
-                 Keymaps::US_KEYMAP
-               when 'French'
-                 Keymaps::FR_KEYMAP
-               when 'German'
-                 Keymaps::DE_KEYMAP
-               else
-                 Keymaps::COMMON_KEYMAP
-               end
       # We use lower-case to make it easier to get the keycodes right.
       code = keymap[('A'..'Z').include?(key) ? key : key.downcase]
       if code.nil?
