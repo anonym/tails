@@ -296,7 +296,7 @@ class Screen
     sleep 1 # Wait for the paste operation to register.
   end
 
-  def mouse_location(**opts)
+  def mouse_location
     xdotool('getmouselocation').split[0..1].map { |s| s.split(':').last.to_i }
   end
 
