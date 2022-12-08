@@ -127,7 +127,7 @@ Then /^the Unsafe Browser complains that it is disabled$/ do
   assert_not_nil(
     Dogtail::Application.new('zenity')
     .child(roleName: 'label')
-    .text['The Unsafe Browser was not enabled in the Welcome Screen']
+    .text['The Unsafe Browser was disabled in the Welcome Screen']
   )
 end
 
