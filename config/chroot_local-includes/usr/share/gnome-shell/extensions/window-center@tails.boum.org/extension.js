@@ -47,8 +47,8 @@ function centerGreeter() {
         let winHeight = rect.height
 
         // we need to decide the top-left corner, so to make it centered compared to screen
-        let x = (screenWidth/2 - winWidth/2)
-        let y = (screenHeight/2 - winHeight/2)
+        let x = Math.floor(screenWidth/2 - winWidth/2)
+        let y = Math.floor(screenHeight/2 - winHeight/2)
         if(x != rect.x || y != rect.y) {
             global.log(`${EXTENSION_LOG_NAME} move Greeter to: ${x},${y}+${rect.width}x${rect.height}`);
             window.move_resize_frame(true, x, y, rect.width, rect.height);
