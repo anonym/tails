@@ -1159,13 +1159,15 @@ Given /^I set all Greeter options to non-default values$/ do
   # otherwise we might detect the + button or language entry before it
   # has been readjusted, so while we try to click it, it moves so we
   # miss it.
+  step 'I disable the Unsafe Browser'
+  sleep 2
   step 'I disable networking in Tails Greeter'
   sleep 2
   step 'I disable MAC spoofing in Tails Greeter'
   sleep 2
+  # Administration password needs to be done last because its image has blue background (selected)
+  # while the others have no such background.
   step 'I set an administration password'
-  sleep 2
-  step 'I disable the Unsafe Browser'
   sleep 2
   # We do this one last so we don't have to worry about translations
   # for the above steps.
