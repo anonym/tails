@@ -401,7 +401,7 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         if enabled:
             label = "Don't _Create Persistent Storage"
         else:
-            label = "_Create a Persistent Storage"
+            label = "_Create Persistent Storage"
         self.button_storagecreate_create.set_label(_(label))
 
 
