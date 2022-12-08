@@ -48,9 +48,7 @@ function centerEveryWindow() {
         window.move_resize_frame(true, x, y, rect.width, rect.height);
         rect = window.get_frame_rect()
         global.log(`${EXTENSION_LOG_NAME} moved: ${rect.x}-${rect.y}+${rect.width}x${rect.height}`);
-        return true;
     }
-    return false;
 }
 
 let _interval;
@@ -61,6 +59,9 @@ function init() {
 
 function enable() {
     centerEveryWindow();
+    // XXX: this timer is incredibly fast, because that's the easiest way to have a snappy UI
+    // as a "mitigation" for the high CPU cost, we only run it a few times
+    // a better solution would be stopping as soon as the only relevant window has been found and moved
     let intervalMS = 50;
     let totalTime = 3000;
     let refreshCount=totalTime / intervalMS;
@@ -68,11 +69,9 @@ function enable() {
         intervalMS, /* milliseconds */
         () => {
             refreshCount-=1;
-            if (centerEveryWindow() || refreshCount < 0) {
-                global.log(`${EXTENSION_LOG_NAME} leaving`);
-                return GLib.SOURCE_REMOVE;
-            }
-            return GLib.SOURCE_CONTINUE;
+            centerEveryWindow();
+            if (refreshCount<=0) return GLib.SOURCE_REMOVE;
+            else return GLib.SOURCE_CONTINUE;
         });
 }
 
