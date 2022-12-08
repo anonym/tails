@@ -76,23 +76,23 @@ function enable() {
     }
 
     centerGreeter();
-    // XXX: this timer is incredibly fast, because that's the easiest way to have a snappy UI.
-    // As a "mitigation" for the high CPU cost, we only run it for the first 30 seconds;
-    // a better solution would be stopping as soon as the only relevant window has been found and moved;
-    // however, this would not be (easily) resilient to screen size changes which happens early.
+    // this timer is incredibly fast, because that's the easiest way to have a snappy UI.
+    // This might have high CPU cost, but it only happens until a window is found. While it may make sense to
+    // stop as soon as a window is found and move, it sometimes doesn't work because the screen is resizing.
+    // We wait for more moves to happen, hoping this position is good.
     let intervalMS = 50;
-    let totalTime = 30000;
-    let refreshCount=totalTime / intervalMS;
+    let movesBeforeQuitting = 10;
     _interval = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
         intervalMS, /* milliseconds */
         () => {
-            refreshCount-=1;
-            centerGreeter();
-            if (refreshCount<=0) {
-                global.log(`${EXTENSION_LOG_NAME} quitting`);
+            if(centerGreeter()) {
+                movesBeforeQuitting-=1;
+            }
+            if (movesBeforeQuitting <= 0) {
+                global.log(`${EXTENSION_LOG_NAME} did its job: quitting`);
                 return GLib.SOURCE_REMOVE;
             }
-            else return GLib.SOURCE_CONTINUE;
+            return GLib.SOURCE_CONTINUE;
         });
 }
 
