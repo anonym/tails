@@ -101,7 +101,7 @@ When /^I open a new tab in the (.*)$/ do |browser|
   @screen.wait(info[:address_bar_image], 15)
 end
 
-When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
+When /^I open the address "([^"]*)" in the (.* Browser)( without waiting)?$/ do |address, browser_name, non_blocking|
   browser = Dogtail::Application.new('Firefox')
   info = xul_application_info(browser_name)
   open_address = proc do
@@ -127,9 +127,11 @@ When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
                  end
   retry_method.call(recovery_on_failure) do
     open_address.call
-    try_for(120) do
-      !browser.child?('Stop', roleName: 'push button', retry: false) &&
-        browser.child?('Reload', roleName: 'push button', retry: false)
+    unless non_blocking
+      try_for(120) do
+        !browser.child?('Stop', roleName: 'push button', retry: false) &&
+          browser.child?('Reload', roleName: 'push button', retry: false)
+      end
     end
   end
 end
@@ -229,11 +231,11 @@ end
 When /^I download some file in the Tor Browser$/ do
   @some_file = 'tails-signing.key'
   some_url = "https://tails.boum.org/#{@some_file}"
-  step "I open the address \"#{some_url}\" in the Tor Browser"
+  step "I open the address \"#{some_url}\" in the Tor Browser without waiting"
 end
 
 When /^I save the file to the default Tor Browser download directory$/ do
-  @screen.wait('Gtk3SaveFileDialog.png', 10)
+  @screen.wait('Gtk3SaveFileDialog.png', 20)
   @screen.press('Return')
 end
 
