@@ -234,7 +234,7 @@ class Screen
     # e.g. type("A9f") actually results in "A(F" (with a US layout)
     # because the Shift wasn't released *immediately* after the "A".
     # The default in libvirt/QEMU is 10 ms.
-    opts[:holdtime] ||= 0.010
+    opts[:holdtime] ||= 0.020
     debug_log("Keyboard: pressing: #{sequence.join('+')}") if opts[:log]
     codes = []
     sequence.each do |key|
