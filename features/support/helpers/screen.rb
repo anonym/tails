@@ -237,7 +237,7 @@ class Screen
     # because the Shift wasn't released *immediately* after the "A".
     # If we ever see this problem again, this should probably be solved
     # with a longer opts[:delay], rather than by tweaking holdtime.
-    opts[:holdtime] ||= 0.020
+    opts[:holdtime] ||= 0.040
     debug_log("Keyboard: pressing: #{sequence.join('+')}") if opts[:log]
     codes = []
     sequence.each do |key|
