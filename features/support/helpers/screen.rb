@@ -225,8 +225,10 @@ class Screen
     opts[:log] = true if opts[:log].nil?
     # This is the minimum time (in seconds) between invocations of
     # this method. This helps preventing repeated calls to this method
-    # interfering with each other.
-    opts[:delay] ||= 0.060
+    # interfering with each other, and increases the chances the keys
+    # have reached the UI before we proceed with the
+    # following operations.
+    opts[:delay] ||= 0.120
     # How long the key(s) are held (in seconds).
     # The default in libvirt/QEMU is 10 ms.
     #
