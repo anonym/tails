@@ -223,11 +223,10 @@ class Screen
 
   def press(*sequence, **opts)
     opts[:log] = true if opts[:log].nil?
-    # This is the minimum time (in seconds) between key presses;
-    # repeatedly calling this method will ensure that key presses are
-    # emitted with this minimum interval. This helps preventing
-    # repeated calls interfering with each other.
-    opts[:delay] ||= 0.060 # Sikuli used 60ms delay.
+    # This is the minimum time (in seconds) between invocations of
+    # this method. This helps preventing repeated calls to this method
+    # interfering with each other.
+    opts[:delay] ||= 0.060
     # How long the key(s) are held (in seconds).
     # The default in libvirt/QEMU is 10 ms.
     #
