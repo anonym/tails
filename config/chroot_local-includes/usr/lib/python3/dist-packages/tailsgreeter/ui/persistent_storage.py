@@ -50,7 +50,7 @@ class PersistentStorage(object):
         self.box_storagecreate.set_visible(not has_persistence)
         self.box_storage.set_visible(has_persistence)
 
-        if self.persistence_setting.has_persistence():
+        if has_persistence:
             self.box_storage_unlock.set_visible(True)
             self.checkbutton_storage_show_passphrase.set_visible(True)
             self.image_storage_state.set_visible(True)
