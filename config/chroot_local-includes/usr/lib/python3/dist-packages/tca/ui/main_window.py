@@ -211,9 +211,10 @@ class StepChooseBridgeMixin:
             self.builder.get_object(obj).set_sensitive(sensitive)
 
     def _step_bridge_update_persistence_ui(self):
-        # Enable this UI iff. we're using custom bridges
+        # Enable this UI iff. we're using scanned or custom bridges
         self._step_bridge_set_persistence_sensitivity(
             self.builder.get_object("step_bridge_radio_type").get_active()
+            or self.builder.get_object("step_bridge_radio_scan").get_active()
         )
 
         # Unlocked persistence
@@ -299,8 +300,10 @@ class StepChooseBridgeMixin:
 
     def cb_step_bridge_radio_changed(self, *args):
         self._step_bridge_set_actives()
-        manual = self.builder.get_object("step_bridge_radio_type").get_active()
-        self._step_bridge_set_persistence_sensitivity(manual)
+        can_persist = \
+            self.builder.get_object("step_bridge_radio_type").get_active() \
+            or self.builder.get_object("step_bridge_radio_scan").get_active()
+        self._step_bridge_set_persistence_sensitivity(can_persist)
 
     def cb_step_bridge_text_changed(self, *args):
         self._step_bridge_set_actives()
