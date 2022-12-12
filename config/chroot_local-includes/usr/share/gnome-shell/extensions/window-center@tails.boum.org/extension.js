@@ -35,6 +35,11 @@ function _getWindows() {
 
 function centerGreeter() {
     for (const window of this._getWindows()) { // window is a Meta.Window object
+
+        /* We only want to move relevant windows.
+         * This matching method might seem to be incompatible with localization.
+         * However, this is run before the user has a chance to set their preferred language,
+         * which means we can be sure the title is in English. */
         if (window.get_title() != 'Welcome to Tails!') {
             continue;
         }
@@ -67,6 +72,9 @@ function init() {
 function enable() {
     global.log(`${EXTENSION_LOG_NAME} starting`);
 
+    /* This extension is not supposed to be run in amnesia session.
+     * While we could just avoid enabling it in the first place (and we *are* doing that),
+     * we add this as a safeguard to avoid an error ever happening. */
     let [ok, out] = GLib.spawn_sync(null,
         ['/usr/bin/whoami'],
         null, GLib.SpawnFlags.DEFAULT, null);
@@ -76,10 +84,10 @@ function enable() {
     }
 
     centerGreeter();
-    // this timer is incredibly fast, because that's the easiest way to have a snappy UI.
-    // This might have high CPU cost, but it only happens until a window is found. While it may make sense to
-    // stop as soon as a window is found and moved, it sometimes doesn't work because the screen is resizing.
-    // We wait for more moves to happen, hoping this position is good.
+    /* this timer is incredibly fast, because that's the easiest way to have a snappy UI.
+     * This might have high CPU cost, but it only happens until a window is found. While it may make sense to
+     * stop as soon as a window is found and moved, it sometimes doesn't work because the screen is resizing.
+     * We wait for more moves to happen, hoping this position is good. */
     let intervalMS = 50;
     let movesBeforeQuitting = 10;
     _interval = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
