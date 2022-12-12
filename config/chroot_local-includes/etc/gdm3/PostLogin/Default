@@ -71,10 +71,13 @@ done
 
 if grep -F 'CREATE_PERSISTENT_STORAGE=true' /var/lib/gdm3/settings/tails.create-persistence
 then
+    # The other settings are files in which the *content* is relevant: in this case, the *existence* is
+    # relevant.
+    # This style will give better systemd integration, allowing the use of ConditionPathExists=
     touch /var/lib/live/config/tails.create-persistence
 else
-    # why should it be there in the first place?
-    # well, if you are debugging, you might want to run systemctl restart gdm
+    # You might wonder why should the file be there at all:
+    # if you are debugging, you might want to run systemctl restart gdm
     rm -f /var/lib/live/config/tails.create-persistence
 fi
 
