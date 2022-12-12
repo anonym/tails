@@ -43,14 +43,14 @@ grep_n_set() {
     grep -qs "$1" "$2" || FCHK=no
     if [ -n "$4" ] ; then
         if [ "$FCHK" = "no" ] ; then
-	    echo "$3" >> "$2"
-	fi
+        echo "$3" >> "$2"
+    fi
     else
-	if [ "$FCHK" = "no" ] ; then
-	    echo "$1=$3" >> "$2"
-	else
-	    force_set "$1" "$2" "$3"
-	fi
+    if [ "$FCHK" = "no" ] ; then
+        echo "$1=$3" >> "$2"
+    else
+        force_set "$1" "$2" "$3"
+    fi
     fi
 }
 
@@ -71,11 +71,11 @@ done
 
 if grep -F 'CREATE_PERSISTENT_STORAGE=true' /var/lib/gdm3/settings/tails.create-persistence
 then
-	touch /var/lib/live/config/tails.create-persistence
+    touch /var/lib/live/config/tails.create-persistence
 else
-	# why should it be there in the first place?
-	# well, if you are debugging, you might want to run systemctl restart gdm
-	rm -f /var/lib/live/config/tails.create-persistence
+    # why should it be there in the first place?
+    # well, if you are debugging, you might want to run systemctl restart gdm
+    rm -f /var/lib/live/config/tails.create-persistence
 fi
 
 ### Gather general configuration
