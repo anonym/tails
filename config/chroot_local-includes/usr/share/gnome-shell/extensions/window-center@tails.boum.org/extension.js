@@ -68,9 +68,9 @@ function enable() {
     global.log(`${EXTENSION_LOG_NAME} starting`);
 
     let [ok, out] = GLib.spawn_sync(null,
-        ['/usr/bin/pgrep', '--uid', 'amnesia', '--count', '--exact', 'systemd'],
+        ['/usr/bin/whoami'],
         null, GLib.SpawnFlags.DEFAULT, null);
-    if (out.toString().trim() !== '0') {
+    if (out.toString().trim() !== 'Debian-gdm') {
         global.log(`${EXTENSION_LOG_NAME} we're not in GDM: quitting immediately`);
         return;
     }
