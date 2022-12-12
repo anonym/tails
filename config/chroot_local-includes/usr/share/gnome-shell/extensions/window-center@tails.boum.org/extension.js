@@ -78,7 +78,7 @@ function enable() {
     centerGreeter();
     // this timer is incredibly fast, because that's the easiest way to have a snappy UI.
     // This might have high CPU cost, but it only happens until a window is found. While it may make sense to
-    // stop as soon as a window is found and move, it sometimes doesn't work because the screen is resizing.
+    // stop as soon as a window is found and moved, it sometimes doesn't work because the screen is resizing.
     // We wait for more moves to happen, hoping this position is good.
     let intervalMS = 50;
     let movesBeforeQuitting = 10;
