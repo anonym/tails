@@ -1159,10 +1159,14 @@ Given /^I set all Greeter options to non-default values$/ do
   # otherwise we might detect the + button or language entry before it
   # has been readjusted, so while we try to click it, it moves so we
   # miss it.
+  step 'I disable the Unsafe Browser'
+  sleep 2
   step 'I disable networking in Tails Greeter'
   sleep 2
   step 'I disable MAC spoofing in Tails Greeter'
   sleep 2
+  # Administration password needs to be done last because its image has blue background (selected)
+  # while the others have no such background.
   step 'I set an administration password'
   sleep 2
   # We do this one last so we don't have to worry about translations
@@ -1181,6 +1185,7 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_LOCALE_NAME=de_DE
       TAILS_MACSPOOF_ENABLED=false
       TAILS_NETWORK=false
+      TAILS_UNSAFE_BROWSER_ENABLED=false
       TAILS_XKBLAYOUT=de
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=
@@ -1199,6 +1204,7 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_LOCALE_NAME=en_US
       TAILS_MACSPOOF_ENABLED=true
       TAILS_NETWORK=true
+      TAILS_UNSAFE_BROWSER_ENABLED=true
       TAILS_XKBLAYOUT=us
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=

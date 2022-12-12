@@ -328,10 +328,10 @@ class ObsoleteNetworkSettingUI(AdditionalSetting):
         self.hide_button_add = True
 
 
-class ObsoleteUnsafeBrowserSettingUI(AdditionalSetting):
+class UnsafeBrowserSettingUI(AdditionalSetting):
     @property
     def id(self) -> str:
-        return "obsolete_unsafe_browser"
+        return "unsafe_browser"
 
     @property
     def title(self) -> str:
@@ -343,12 +343,55 @@ class ObsoleteUnsafeBrowserSettingUI(AdditionalSetting):
 
     @property
     def value_for_display(self) -> str:
-        return _("Obsolete")
+        if self.unsafe_browser_enabled:
+            return _("Enabled (default)")
+        else:
+            return _("Disabled")
 
-    def __init__(self):
+    def __init__(self, unsafe_browser_setting):
+        self._unsafe_browser_setting = unsafe_browser_setting
+        self.unsafe_browser_enabled = True
         super().__init__()
         self.accel_key = Gdk.KEY_u
-        self.hide_button_add = True
+        self.listbox_unsafe_browser_controls = self.builder.get_object('listbox_unsafe_browser_controls')
+        self.listbox_unsafe_browser_controls.connect('button-press-event', self.cb_listbox_button_press)
+        self.listbox_unsafe_browser_controls.connect('row-activated', self.cb_listbox_unsafe_browser_row_activated)
+        self.listboxrow_unsafe_browser_off = self.builder.get_object('listboxrow_unsafe_browser_off')
+        self.listboxrow_unsafe_browser_on = self.builder.get_object('listboxrow_unsafe_browser_on')
+        self.icon_unsafe_browser_off = self.builder.get_object('image_unsafe_browser_off')
+        self.icon_unsafe_browser_on = self.builder.get_object('image_unsafe_browser_on')
+        self.label_unsafe_browser_value = self.builder.get_object('label_unsafe_browser_value')
+
+    def apply(self):
+        self._unsafe_browser_setting.save(self.unsafe_browser_enabled)
+        super().apply()
+
+    def load(self) -> bool:
+        try:
+            value = self._unsafe_browser_setting.load()
+        except SettingNotFoundError:
+            raise
+
+        # Select the correct listboxrow (used in the popover)
+        if value:
+            self.listbox_unsafe_browser_controls.select_row(self.listboxrow_unsafe_browser_on)
+        else:
+            self.listbox_unsafe_browser_controls.select_row(self.listboxrow_unsafe_browser_off)
+
+        if self.unsafe_browser_enabled == value:
+            return False
+
+        self.unsafe_browser_enabled = value
+        return True
+
+    def cb_listbox_unsafe_browser_row_activated(self, listbox, row, user_data=None):
+        self.unsafe_browser_enabled = row == self.listboxrow_unsafe_browser_on
+        self.icon_unsafe_browser_on.set_visible(self.unsafe_browser_enabled)
+        self.icon_unsafe_browser_off.set_visible(not self.unsafe_browser_enabled)
+
+        if self.has_popover() and self.popover.is_open():
+            self.popover.close(Gtk.ResponseType.YES)
+        return False
 
 
 def get_on_off_string(value, default=None) -> str:

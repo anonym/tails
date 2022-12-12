@@ -496,7 +496,7 @@ If you want to work offline, enable the Offline Mode in the additional settings.
       </packing>
     </child>
   </object>
-  <object class="GtkBox" id="box_obsolete_unsafe_browser_popover">
+  <object class="GtkBox" id="box_unsafe_browser_popover">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="margin_left">18</property>
@@ -506,7 +506,7 @@ If you want to work offline, enable the Offline Mode in the additional settings.
     <property name="orientation">vertical</property>
     <property name="spacing">18</property>
     <child>
-      <object class="GtkLabel" id="label_obsolete_unsafe_browser_title">
+      <object class="GtkLabel" id="label_unsafe_browser_title">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">Unsafe Browser</property>
@@ -522,12 +522,16 @@ If you want to work offline, enable the Offline Mode in the additional settings.
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label_obsolete_unsafe_browser_description">
+      <object class="GtkLabel" id="label_unsafe_browser_description">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Since Tails 5.8 (December 2022), the Unsafe Browser is always enabled and this option is obsolete.
+        <property name="label" translatable="yes">The Unsafe Browser allows you to sign in to a network using a captive portal.
 
-In Tails 5.8, we fixed the security vulnerabilities that made us disable the Unsafe Browser by default in Tails 4.8 (June 2020).</property>
+A captive portal is a web page that is displayed before you can access the Internet. Captive portals usually require you to log in to the network or enter information such as an email address.
+
+The Unsafe Browser is not anonymous and can deanonymize you. Use it only to sign in to networks.
+
+The Unsafe Browser is enabled by default again since Tails 5.8 (December 2022), after we fixed the security vulnerabilities that made us disable it by default in Tails 4.8 (June 2020).</property>
         <property name="justify">fill</property>
         <property name="wrap">True</property>
         <property name="width_chars">50</property>
@@ -538,6 +542,120 @@ In Tails 5.8, we fixed the security vulnerabilities that made us disable the Uns
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkFrame" id="frame_unsafe_browser">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="margin_bottom">18</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkListBox" id="listbox_unsafe_browser_controls">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="selection_mode">browse</property>
+            <child>
+              <object class="GtkListBoxRow" id="listboxrow_unsafe_browser_on">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <child>
+                  <object class="GtkBox" id="box_unsafe_browser_on">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">6</property>
+                    <property name="margin_right">6</property>
+                    <property name="margin_top">6</property>
+                    <property name="margin_bottom">6</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkLabel" id="label_unsafe_browser_on">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Enable the Unsafe Browser (default)</property>
+                        <property name="justify">fill</property>
+                        <property name="wrap">True</property>
+                        <property name="max_width_chars">45</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="image_unsafe_browser_on">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">emblem-ok-symbolic</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkListBoxRow" id="listboxrow_unsafe_browser_off">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <child>
+                  <object class="GtkBox" id="box_unsafe_browser_off">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">6</property>
+                    <property name="margin_right">6</property>
+                    <property name="margin_top">6</property>
+                    <property name="margin_bottom">6</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkLabel" id="label_unsafe_browser_off">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Disable the Unsafe Browser</property>
+                        <property name="wrap">True</property>
+                        <property name="max_width_chars">45</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="image_unsafe_browser_off">
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">emblem-ok-symbolic</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label_item">
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
       </packing>
     </child>
   </object>
