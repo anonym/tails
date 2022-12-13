@@ -136,33 +136,52 @@ class Window(Gtk.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def on_delete_button_clicked(self, button: Gtk.Button):
-        dialog = Gtk.MessageDialog(self,
-                                   Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                   Gtk.MessageType.WARNING,
-                                   Gtk.ButtonsType.NONE,
-                                   _("Delete Persistent Storage"))
-        dialog.format_secondary_text(_(
-            "Are you sure that you want to delete your Persistent Storage? "
-            "This action cannot be undone."
-        ))
-        dialog.add_button(_("_Cancel"), Gtk.ResponseType.CANCEL)
-        dialog.add_button(_("_Delete Persistent Storage"), Gtk.ResponseType.OK)
-        dialog.set_default_response(Gtk.ResponseType.CANCEL)
-        button = dialog.get_widget_for_response(Gtk.ResponseType.OK)
-        style_context = button.get_style_context()
-        style_context.add_class("destructive-action")
-        result = dialog.run()
-        dialog.destroy()
-        if result == Gtk.ResponseType.OK:
-            self.spinner_view.show()
-            self.service_proxy.call(
-                method_name="Delete",
-                parameters=None,
-                flags=Gio.DBusCallFlags.NONE,
-                timeout_msec=GLib.MAXINT,
-                cancellable=None,
-                callback=self.on_delete_call_finished,
-            )
+        if self.active_view == self.locked_view:
+            dialog = Gtk.MessageDialog(self,
+                                       Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                       Gtk.MessageType.WARNING,
+                                       Gtk.ButtonsType.NONE,
+                                       _("Delete Persistent Storage"))
+            dialog.format_secondary_text(_(
+                "Are you sure that you want to delete your Persistent Storage? "
+                "This action cannot be undone."
+            ))
+            dialog.add_button(_("_Cancel"), Gtk.ResponseType.CANCEL)
+            dialog.add_button(_("_Delete Persistent Storage"), Gtk.ResponseType.OK)
+            dialog.set_default_response(Gtk.ResponseType.CANCEL)
+            button = dialog.get_widget_for_response(Gtk.ResponseType.OK)
+            style_context = button.get_style_context()
+            style_context.add_class("destructive-action")
+            result = dialog.run()
+            dialog.destroy()
+            if result == Gtk.ResponseType.OK:
+                self.spinner_view.show()
+                self.spinner_view.status_label.set_label(
+                    _("Deleting your Persistent Storage")
+                )
+                self.service_proxy.call(
+                    method_name="Delete",
+                    parameters=None,
+                    flags=Gio.DBusCallFlags.NONE,
+                    timeout_msec=GLib.MAXINT,
+                    cancellable=None,
+                    callback=self.on_delete_call_finished,
+                )
+        else:
+            dialog = Gtk.MessageDialog(self,
+                                       Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                       Gtk.MessageType.INFO,
+                                       Gtk.ButtonsType.NONE,
+                                       _("Delete Persistent Storage"))
+            dialog.format_secondary_text(_(
+                "To delete the Persistent Storage, restart Tails without "
+                "unlocking the Persistent Storage and open "
+                "the Persistent Storage settings again."
+            ))
+            dialog.add_button(_("_OK"), Gtk.ResponseType.OK)
+            dialog.set_default_response(Gtk.ResponseType.OK)
+            dialog.run()
+            dialog.destroy()
 
     @Gtk.Template.Callback()
     def on_close(self, window: Gtk.Window, event: "Gdk.Event"):

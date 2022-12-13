@@ -4,6 +4,15 @@ Feature: Browsing the web using the Unsafe Browser
   when I browse the web using the Unsafe Browser
   I should have direct access to the web
 
+  Scenario: The Unsafe Browser can be disabled
+    Given I have started Tails from DVD without network and stopped at Tails Greeter's login screen
+    And I disable the Unsafe Browser
+    And I log in to a new session
+    And the network is plugged
+    And all notifications have disappeared
+    When I try to start the Unsafe Browser
+    Then the Unsafe Browser complains that it is disabled
+
   Scenario: The Unsafe Browser can access the LAN
     Given I have started Tails from DVD and logged in and the network is connected
     And a web server is running on the LAN

@@ -123,6 +123,14 @@ Then /^I am told I cannot start the Unsafe Browser when I am offline$/ do
   )
 end
 
+Then /^the Unsafe Browser complains that it is disabled$/ do
+  assert_not_nil(
+    Dogtail::Application.new('zenity')
+    .child(roleName: 'label')
+    .text['The Unsafe Browser was disabled in the Welcome Screen']
+  )
+end
+
 Then /^I configure the Unsafe Browser to check for updates more frequently$/ do
   prefs = '/usr/share/tails/chroot-browsers/unsafe-browser/prefs.js'
   $vm.file_append(prefs, 'pref("app.update.idletime", 1);')
