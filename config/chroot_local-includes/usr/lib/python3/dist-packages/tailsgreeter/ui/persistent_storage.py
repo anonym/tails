@@ -26,6 +26,7 @@ class PersistentStorage(object):
         self.apply_settings_cb = apply_settings_cb
 
         self.box_storage = builder.get_object('box_storage')
+        self.box_storagecreate = builder.get_object('box_storagecreate')
         self.box_storage_unlock = builder.get_object('box_storage_unlock')
         self.box_storage_unlocked = builder.get_object('box_storage_unlocked')
         self.button_storage_unlock = builder.get_object('button_storage_unlock')
@@ -45,17 +46,16 @@ class PersistentStorage(object):
             self.box_storage_unlocked,
             self.checkbutton_storage_show_passphrase])
 
-        if self.persistence_setting.has_persistence():
+        has_persistence = self.persistence_setting.has_persistence()
+        self.box_storagecreate.set_visible(not has_persistence)
+        self.box_storage.set_visible(has_persistence)
+
+        if has_persistence:
             self.box_storage_unlock.set_visible(True)
             self.checkbutton_storage_show_passphrase.set_visible(True)
             self.image_storage_state.set_visible(True)
             self.entry_storage_passphrase.set_visible(True)
             self.spinner_storage_unlock.set_visible(False)
-        else:
-            # XXX-future: We have a nice button to configure the persistence
-            # but nothing is implemented to do so currently. So let's
-            # hide the whole thing for now.
-            self.box_storage.set_visible(False)
 
     @staticmethod
     def passphrase_changed(editable):

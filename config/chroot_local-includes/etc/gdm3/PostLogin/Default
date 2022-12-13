@@ -43,14 +43,14 @@ grep_n_set() {
     grep -qs "$1" "$2" || FCHK=no
     if [ -n "$4" ] ; then
         if [ "$FCHK" = "no" ] ; then
-	    echo "$3" >> "$2"
-	fi
+        echo "$3" >> "$2"
+    fi
     else
-	if [ "$FCHK" = "no" ] ; then
-	    echo "$1=$3" >> "$2"
-	else
-	    force_set "$1" "$2" "$3"
-	fi
+    if [ "$FCHK" = "no" ] ; then
+        echo "$1=$3" >> "$2"
+    else
+        force_set "$1" "$2" "$3"
+    fi
     fi
 }
 
@@ -68,6 +68,18 @@ for setting in ${GREETER_EXPORTED_SETTINGS}; do
         "/var/lib/gdm3/settings/$setting" \
         "/var/lib/live/config/$setting"
 done
+
+if grep -F 'CREATE_PERSISTENT_STORAGE=true' /var/lib/gdm3/settings/tails.create-persistence
+then
+    # The other settings are files in which the *content* is relevant: in this case, the *existence* is
+    # relevant.
+    # This style will give better systemd integration, allowing the use of ConditionPathExists=
+    touch /var/lib/live/config/tails.create-persistence
+else
+    # You might wonder why should the file be there at all:
+    # if you are debugging, you might want to run systemctl restart gdm
+    rm -f /var/lib/live/config/tails.create-persistence
+fi
 
 ### Gather general configuration
 

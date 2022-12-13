@@ -40,7 +40,7 @@ from tailsgreeter.ui.persistent_storage import PersistentStorage
 
 gi.require_version('Gdk', '3.0')
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk, Gtk
+from gi.repository import Gdk, Gtk, GdkPixbuf
 
 if TYPE_CHECKING:
     from tailsgreeter.settings.persistence import PersistentStorageSettings
@@ -52,7 +52,7 @@ CSS_FILE = 'greeter.css'
 ICON_DIR = 'icons/'
 PREFERRED_WIDTH = 620
 PREFERRED_HEIGHT = 470
-
+IMG_PERSISTENT_STORAGE = '/usr/share/icons/hicolor/scalable/actions/tails-locked.svg'
 locale.bindtextdomain(TRANSLATION_DOMAIN, tailsgreeter.config.system_locale_dir)
 
 
@@ -108,6 +108,11 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         self.box_storage_unlock = builder.get_object('box_storage_unlock')
         self.box_storage_unlocked = builder.get_object('box_storage_unlocked')
         self.entry_storage_passphrase = builder.get_object('entry_storage_passphrase')
+        self.button_storagecreate_create = builder.get_object('button_storagecreate_create')
+        self.image_storagecreate = builder.get_object('image_storagecreate')
+        self.label_storagecreate_explain = builder.get_object('label_storagecreate_explain')
+        self.label_storagecreate_after =  builder.get_object('label_storagecreate_after')
+
         self.frame_language = builder.get_object('frame_language')
         self.infobar_settings_loaded = builder.get_object('infobar_settings_loaded')
         self.label_settings_default = builder.get_object('label_settings_default')
@@ -135,6 +140,12 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
 
         # Persistent storage
         self.persistent_storage = PersistentStorage(self.persistence_setting, self.load_settings, self.apply_settings, builder)
+
+        # Persistent storage creation
+        self.image_storagecreate.set_from_pixbuf(
+                GdkPixbuf.Pixbuf.new_from_file_at_size(IMG_PERSISTENT_STORAGE, 40, 40)
+                )
+        self._storagecreate_updateui()
 
         # Add children to ApplicationWindow
         self.add(self.box_main)
@@ -378,6 +389,25 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         allow_start = not bool(editable.get_text())
         self.button_start.set_sensitive(allow_start)
         return False
+
+
+    def _storagecreate_updateui(self, enabled=None):
+        if enabled is None:
+            enabled = self.greeter.persistent_storage_create.load()
+
+        self.label_storagecreate_explain.set_visible(not enabled)
+        self.label_storagecreate_after.set_visible(enabled)
+
+        if enabled:
+            label = "Don't _Create Persistent Storage"
+        else:
+            label = "_Create Persistent Storage"
+        self.button_storagecreate_create.set_label(_(label))
+
+
+    def cb_button_storagecreate_create_clicked(self, widget, user_data=None):
+        enabled = self.greeter.persistent_storage_create.toggle()
+        self._storagecreate_updateui(enabled)
 
     def cb_infobar_close(self, infobar, user_data=None):
         infobar.set_visible(False)

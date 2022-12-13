@@ -1,0 +1,14 @@
+[Unit]
+Description=Create a persistent storage (if the user chose to do so in the Welcome Screen)
+ConditionUser=1000
+ConditionPathExists=/var/lib/live/config/tails.create-persistence
+
+[Service]
+Type=oneshot
+Restart=no
+
+StandardError=journal
+ExecStart=/usr/local/bin/tps-frontend-wrapper
+
+[Install]
+WantedBy=desktop.target

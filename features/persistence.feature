@@ -50,6 +50,12 @@ Feature: Tails persistence
     And the 1st network device has a spoofed MAC address configured
     And no network device leaked the real MAC address
 
+  Scenario: Creating persistence from the Welcome Screen
+    Given I have started Tails without network from a USB drive without a persistent partition and stopped at Tails Greeter's login screen
+    And I enable persistence creation in Tails Greeter
+    And I log in to a new session
+    Then I create a persistent partition with the default settings using the wizard that was already open
+
   Scenario: Persistent Greeter options
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
     When I enable persistence

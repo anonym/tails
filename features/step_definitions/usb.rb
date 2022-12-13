@@ -218,11 +218,15 @@ When /^I disable the first persistence preset$/ do
   @screen.press('alt', 'F4')
 end
 
-Given /^I create a persistent partition( with the default settings| for Additional Software)?$/ do |mode|
+Given(/^I enable persistence creation in Tails Greeter$/) do
+  @screen.wait('TailsGreeterPersistenceCreate.png', 10).click
+end
+
+Given /^I create a persistent partition( with the default settings| for Additional Software)?( using the wizard that was already open)?$/ do |mode, dontrun|
   # XXX: the wording here could be misleading. Pay attention when reading it! (or, please improve it)
   default_settings = mode
   asp = mode == ' for Additional Software'
-  unless asp
+  unless asp || dontrun
     step 'I start "Persistent Storage" via GNOME Activities Overview'
   end
   persistent_storage_main_frame.button('Co_ntinue').click
