@@ -61,9 +61,11 @@ guess_best_tor_browser_locale() {
     # If we use locale xx-YY and Tor Browser supports neither xx-YY nor xx,
     # there may be a similar locale xx-ZZ that we should use instead.
     # shellcheck disable=SC2012
-    similar_locale="$(supported_tor_browser_locales | \
-        sed -n "s,^\(${short_locale}-[A-Z]\+\)$,\1,p" | \
-        head -n 1)" || :
+    similar_locale=$(
+        supported_tor_browser_locales | \
+	    grep --max-count=1 --extended-regexp --line-regexp \
+		 "${short_locale}-[A-Z]+" \
+    ) || :
     if [ -n "${similar_locale:-}" ]; then
         echo "${similar_locale}"
         return
