@@ -241,7 +241,7 @@ class StepChooseBridgeMixin:
                 help_label = _(
                     "To save your bridge, "
                     '<a href="doc/first_steps/persistence">'
-                    "unlock you Persistent Storage</a>."
+                    "unlock your Persistent Storage</a>."
                 )
             # No persistence
             else:
