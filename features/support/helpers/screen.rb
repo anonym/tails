@@ -240,18 +240,18 @@ class Screen
     # with a longer opts[:delay], rather than by tweaking holdtime.
     opts[:holdtime] ||= 0.040
     debug_log("Keyboard: pressing: #{sequence.join('+')}") if opts[:log]
+    keymap = case $language
+             when ''
+               Keymaps::US_KEYMAP
+             when 'French'
+               Keymaps::FR_KEYMAP
+             when 'German'
+               Keymaps::DE_KEYMAP
+             else
+               Keymaps::COMMON_KEYMAP
+             end
     codes = []
     sequence.each do |key|
-      keymap = case $language
-               when ''
-                 Keymaps::US_KEYMAP
-               when 'French'
-                 Keymaps::FR_KEYMAP
-               when 'German'
-                 Keymaps::DE_KEYMAP
-               else
-                 Keymaps::COMMON_KEYMAP
-               end
       # We use lower-case to make it easier to get the keycodes right.
       code = keymap[('A'..'Z').include?(key) ? key : key.downcase]
       if code.nil?
@@ -301,7 +301,7 @@ class Screen
     sleep 1 # Wait for the paste operation to register.
   end
 
-  def mouse_location(**opts)
+  def mouse_location
     xdotool('getmouselocation').split[0..1].map { |s| s.split(':').last.to_i }
   end
 

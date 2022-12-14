@@ -76,15 +76,14 @@ def unsafe_browser_application_info(defaults)
 end
 
 def xul_application_info(application)
-  default_address_bar_images =
-    [
-      "BrowserAddressBar#{$language}.png",
-      "BrowserAddressBar#{$language}Alt.png"
-    ]
-      .select { |n| File.exist?("#{GIT_DIR}/features/images/#{n}") }
   defaults = {
-    address_bar_images: default_address_bar_images,
-    unused_tbb_libs:    ['libnssdbm3.so', 'libmozavcodec.so', 'libmozavutil.so'],
+    address_bar_image: "BrowserAddressBar#{$language}.png",
+    unused_tbb_libs:   [
+      'libnssdbm3.so',
+      'libmozavcodec.so',
+      'libmozavutil.so',
+      'libipcclientcerts.so',
+    ],
   }
   case application
   when 'Tor Browser'
@@ -99,15 +98,15 @@ end
 When /^I open a new tab in the (.*)$/ do |browser|
   info = xul_application_info(browser)
   @screen.click(info[:new_tab_button_image])
-  @screen.wait_any(info[:address_bar_images], 15)
+  @screen.wait(info[:address_bar_image], 15)
 end
 
-When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
+When /^I open the address "([^"]*)" in the (.* Browser)( without waiting)?$/ do |address, browser_name, non_blocking|
   browser = Dogtail::Application.new('Firefox')
   info = xul_application_info(browser_name)
   open_address = proc do
     step "I open a new tab in the #{browser_name}"
-    @screen.find_any(info[:address_bar_images])[:match].click
+    @screen.click(info[:address_bar_image])
     # This static here since we have no reliable visual indicators
     # that we can watch to know when typing is "safe".
     sleep 5
@@ -128,9 +127,11 @@ When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser_name|
                  end
   retry_method.call(recovery_on_failure) do
     open_address.call
-    try_for(120) do
-      !browser.child?('Stop', roleName: 'push button', retry: false) &&
-        browser.child?('Reload', roleName: 'push button', retry: false)
+    unless non_blocking
+      try_for(120) do
+        !browser.child?('Stop', roleName: 'push button', retry: false) &&
+          browser.child?('Reload', roleName: 'push button', retry: false)
+      end
     end
   end
 end
@@ -147,7 +148,7 @@ def page_has_loaded_in_the_tor_browser(page_titles)
     reload_action = 'Reload'
     separator = '—'
   end
-  try_for(180) do
+  try_for(180, delay: 3) do
     # The 'Reload' button (graphically shown as a looping arrow)
     # is only shown when a page has loaded, so once we see the
     # expected title *and* this button has appeared, then we can be sure
@@ -230,17 +231,11 @@ end
 When /^I download some file in the Tor Browser$/ do
   @some_file = 'tails-signing.key'
   some_url = "https://tails.boum.org/#{@some_file}"
-  step "I open the address \"#{some_url}\" in the Tor Browser"
-end
-
-Then /^I get the browser download dialog$/ do
-  @screen.wait('BrowserDownloadDialog.png', 60)
-  @screen.wait('BrowserDownloadDialogSaveAsButton.png', 10)
+  step "I open the address \"#{some_url}\" in the Tor Browser without waiting"
 end
 
 When /^I save the file to the default Tor Browser download directory$/ do
-  @screen.click('BrowserDownloadDialogSaveAsButton.png')
-  @screen.wait('Gtk3SaveFileDialog.png', 10)
+  @screen.wait('Gtk3SaveFileDialog.png', 20)
   @screen.press('Return')
 end
 
@@ -267,19 +262,19 @@ def page_has_heading(page_title, heading)
 end
 
 Then /^the Tor Browser shows the "([^"]+)" error$/ do |error|
-  try_for(60) do
+  try_for(60, delay: 3) do
     page_has_heading('Problem loading page — Tor Browser', error)
   end
 end
 
 Then /^Tor Browser displays a "([^"]+)" heading on the "([^"]+)" page$/ do |heading, page_title|
-  try_for(60) do
+  try_for(60, delay: 3) do
     page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
 
 Then /^Tor Browser displays a '([^']+)' heading on the "([^"]+)" page$/ do |heading, page_title|
-  try_for(60) do
+  try_for(60, delay: 3) do
     page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
@@ -348,7 +343,7 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   end
   step 'I start the Tor Browser'
   step 'I open a new tab in the Tor Browser'
-  @screen.wait_any(xul_application_info('Tor Browser')[:address_bar_images], 10)[:match].click
+  @screen.wait(xul_application_info('Tor Browser')[:address_bar_image], 10).click
   @screen.wait('ScreenKeyboard.png', 20)
   @screen.wait(osk_key, 20).click
   @screen.wait(browser_bar_x, 20)

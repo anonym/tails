@@ -171,8 +171,8 @@ end
 
 # This will retry the block up to MAX_NEW_TOR_CIRCUIT_RETRIES
 # times. The block must raise an exception for a run to be considered
-# as a failure. After a failure recovery_proc will be called (if
-# given) and the intention with it is to bring us back to the state
+# a failure. After a failure recovery_proc will be called (if
+# given); that method must bring us back to the state
 # expected by the block, so it can be retried.
 def retry_tor(recovery_proc = nil, &block)
   tor_recovery_proc = proc do

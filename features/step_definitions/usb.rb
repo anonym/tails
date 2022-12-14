@@ -1153,7 +1153,7 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   @screen.press('Return')
   # Wait until the restoration job is finished
   job = disks.child('Job', roleName: 'label', showingOnly: true)
-  try_for(60) do
+  try_for(120) do
     !job.showing
   end
 end

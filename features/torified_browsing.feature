@@ -31,8 +31,7 @@ Feature: Browsing the web using the Tor Browser
     When I start the Tor Browser
     Then the Tor Browser loads the startup page
     When I download some file in the Tor Browser
-    Then I get the browser download dialog
-    When I save the file to the default Tor Browser download directory
+    And I save the file to the default Tor Browser download directory
     Then the file is saved to the default Tor Browser download directory
 
   @check_tor_leaks
@@ -100,7 +99,6 @@ Feature: Browsing the web using the Tor Browser
     And I open the Tails homepage in the Tor Browser
     Then the Tor Browser loads the Tails homepage
     When I request a new identity using Torbutton
-    And I acknowledge Torbutton's New Identity confirmation prompt
     Then the Tor Browser loads the startup page
 
   Scenario: WebRTC is disabled in Tor Browser

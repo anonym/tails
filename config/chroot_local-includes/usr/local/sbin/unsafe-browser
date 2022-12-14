@@ -7,9 +7,6 @@ set -u
 TEXTDOMAIN="tails"
 export TEXTDOMAIN
 
-# Import the TBB_EXT variable.
-. /usr/local/lib/tails-shell-library/tor-browser.sh
-
 # Import localized_tails_doc_page().
 . /usr/local/lib/tails-shell-library/localization.sh
 
@@ -144,7 +141,6 @@ setup_chroot_for_browser "${CHROOT}" "${COW}" "${BROWSER_USER}" || \
 echo "* Configuring chroot"
 configure_chroot_browser "${CHROOT}" "${BROWSER_USER}" "${BROWSER_NAME}" \
     "${HUMAN_READABLE_NAME}" "${HOME_PAGE}" \
-    "${TBB_EXT}"/langpack-*.xpi \
     /usr/share/tails/chroot-browsers/unsafe-browser/extensions/*.xpi || \
         error "$(gettext "Failed to configure browser.")"
 if ! nm_is_connected; then

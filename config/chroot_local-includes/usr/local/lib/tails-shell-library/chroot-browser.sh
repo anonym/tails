@@ -7,8 +7,7 @@ if [ "$(whoami)" != "root" ]; then
     exit 1
 fi
 
-# Import the TBB_INSTALL and TBB_EXT variables, and
-# configure_xulrunner_app_locale().
+# Import the TBB_INSTALL variable
 . /usr/local/lib/tails-shell-library/tor-browser.sh
 
 # Import try_for().
@@ -149,16 +148,6 @@ configure_chroot_browser_profile () {
     set_chroot_browser_permissions "${chroot}" "${browser_name}" "${browser_user}"
 }
 
-set_chroot_browser_locale () {
-    local chroot="${1}"
-    local browser_name="${2}"
-    local browser_user="${3}"
-    local locale="${4}"
-    local browser_profile
-    browser_profile="$(chroot_browser_profile_dir "${chroot}" "${browser_name}" "${browser_user}")"
-    configure_xulrunner_app_locale "${browser_profile}" "${locale}"
-}
-
 set_chroot_browser_name () {
     local chroot="${1}"
     local human_readable_name="${2}"
@@ -182,6 +171,9 @@ set_chroot_browser_name () {
        sed --regexp-extended -i \
            "s/-brand-(full|short|shorter|product)-name = .*$/-brand-\1-name = ${human_readable_name}/" \
 	   "${torbutton_locale_dir}/branding/brand.ftl"
+       sed --regexp-extended -i \
+           "s/^brand(Full|Product|Short|Shorter)Name=.*$/brand\1Name=${human_readable_name}/" \
+           "${torbutton_locale_dir}/brand.properties"
        7z u -tzip "${pack}" .
     )
     chmod a+r "${pack}"
@@ -231,6 +223,13 @@ delete_chroot_browser_embedded_extensions_in_omni_ja () {
     chmod a+r "${pack}"
 }
 
+delete_chroot_browser_bookmarks() {
+    local chroot="${1}"
+    local pack="${chroot}/${TBB_INSTALL}/browser/omni.ja"
+    7z d -tzip "${pack}" chrome/browser/content/browser/default-bookmarks.html
+    chmod a+r "${pack}"
+}
+
 configure_chroot_browser () {
     local chroot="${1}" ; shift
     local browser_user="${1}" ; shift
@@ -250,8 +249,6 @@ configure_chroot_browser () {
     fi
     configure_chroot_browser_profile "${chroot}" "${browser_name}" \
         "${browser_user}" "${home_page}" "${@}"
-    set_chroot_browser_locale "${chroot}" "${browser_name}" "${browser_user}" \
-        "${best_locale}"
     set_chroot_browser_name "${chroot}" "${human_readable_name}"  \
         "${browser_name}" "${browser_user}" "${best_locale}"
     delete_chroot_browser_searchplugins "${chroot}"
@@ -259,6 +256,7 @@ configure_chroot_browser () {
     delete_chroot_browser_embedded_extensions_in_omni_ja "${chroot}" \
         'uBlock0@raymondhill.net' \
         'https-everywhere'
+    delete_chroot_browser_bookmarks "${chroot}"
     set_chroot_browser_permissions "${chroot}" "${browser_name}" \
         "${browser_user}"
     # Later we'll instruct bwrap to mount certain files within

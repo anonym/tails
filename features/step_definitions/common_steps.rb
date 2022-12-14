@@ -588,15 +588,24 @@ Given /^available upgrades have been checked$/ do
   try_for(300) { $vm.file_exist?('/run/tails-upgrader/checked_upgrades') }
 end
 
-def tor_browser_is_alpha
+def tbb_version
   tbb_dist_url_file = "#{GIT_DIR}/config/chroot_local-includes/usr/share/tails/tbb-dist-url.txt"
-  tbb_version = File.read(tbb_dist_url_file).chomp.split('/').last
+  File.read(tbb_dist_url_file).chomp.split('/').last
+end
+
+def tor_browser_is_alpha
   /^[0-9.]+a[0-9]+(?:-build[0-9]+)?$/ =~ tbb_version
+end
+
+def tor_browser_is_nightly
+  /^nightly/ =~ tbb_version
 end
 
 When /^I start the Tor Browser( in offline mode)?$/ do |offline|
   overview_icon = if tor_browser_is_alpha
                     'TorBrowserOverviewIconAlpha.png'
+                  elsif tor_browser_is_nightly
+                    'TorBrowserOverviewIconNightly.png'
                   else
                     'TorBrowserOverviewIcon.png'
                   end
@@ -646,13 +655,8 @@ Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ d
 end
 
 When /^I request a new identity using Torbutton$/ do
-  @torbrowser.child('Tor Browser', roleName: 'push button').press
   @torbrowser.child('New Identity', roleName: 'push button').press
-end
-
-When /^I acknowledge Torbutton's New Identity confirmation prompt$/ do
-  @screen.wait('GnomeQuestionDialogIcon.png', 30)
-  @screen.press('y')
+  @torbrowser.child('Restart Tor Browser', roleName: 'push button').press
 end
 
 Given /^I add a bookmark to eff.org in the Tor Browser$/ do
