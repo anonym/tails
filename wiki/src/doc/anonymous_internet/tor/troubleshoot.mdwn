@@ -47,6 +47,32 @@ To sign in to a network using a captive portal:
 
 1. Follow the instructions on the homepage of the *Unsafe Browser*.
 
+<h2 id="stuck">The progress bar gets stuck around 50%</h2>
+
+When using a custom Tor obfs4 bridge, the progress bar of *Tor Connection*
+sometimes gets stuck halfway through and becomes extremelly slow.
+
+[[!img stuck.png link="no" alt=""]]
+
+To fix this, you can either:
+
+- Close and reopen *Tor Connection* to speed up the initial connection.
+
+- Try a different obfs4 bridge.
+
+<div class="bug">
+
+<p>This issue only affects outdated obfs4 bridges and does not happen with
+obfs4 bridges that run version 0.0.12 or later. ([[!tails_ticket 19173]])</p>
+
+</div>
+
+<h2 id="broken">The bridge is no longer operational</h2>
+
+It is possible that the bridge that you entered is no longer working.
+
+Try entering another bridge or requesting other bridges.
+
 <h2 id="incorrect">You did not enter the bridge correctly</h2>
 
 Only obfs4 bridges can be used in Tails currently.
@@ -57,9 +83,3 @@ An obfs4 bridge looks like:
 
 You need to enter the entire line, not just the IP address and port
 combination.
-
-<h2 id="broken">The bridge is no longer operational</h2>
-
-It is possible that the bridge that you entered is no longer working.
-
-Try entering another bridge or requesting other bridges.
