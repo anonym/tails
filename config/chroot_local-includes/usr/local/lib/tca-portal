@@ -247,7 +247,7 @@ class Handler(socketserver.StreamRequestHandler):
             ("/usr/bin/gnome-system-monitor", "--show-resources-tab"), False
         ),
         "open-onioncircuits": UserCommand(("/usr/bin/gtk-launch", "onioncircuits"), False),
-        "open-documentation": UserCommand(("/usr/local/bin/tails-documentation"), True),
+        "open-documentation": UserCommand(("/usr/local/bin/tails-documentation", ), True),
         "open-wifi-config": UserCommand(('/bin/systemctl', '--user', 'start', 'gnome-wifi-panel'), False),
         "set-tor-sandbox": RootCommand(('/usr/local/lib/tor-pt-configuration-helper', ), True),
         # It would be nicer to do this in Python without calling out
