@@ -241,7 +241,7 @@ class StepChooseBridgeMixin:
                 help_label = _(
                     "To save your bridge, "
                     '<a href="doc/first_steps/persistence">'
-                    "unlock you Persistent Storage</a>."
+                    "unlock your Persistent Storage</a>."
                 )
             # No persistence
             else:
@@ -361,18 +361,18 @@ class StepChooseBridgeMixin:
     def cb_step_bridge_btn_back_clicked(self, *args):
         self.change_box("hide")
 
-    def cb_infobar_scanqrcode_close(self, *args):
-        infobar = self.builder.get_object('infobar_scanqrcode')
-        infobar.hide()
-
     def scan_qrcode(self):
         # yes, the *exactly* same code is run, no matter if you are calling
         # this from "bridge" step or from "error" step
 
-        infobar = self.builder.get_object('infobar_scanqrcode')
-        infobar.hide()
+        error_box = self.builder.get_object('step_bridge_box_scanerror')
+        error_label = self.builder.get_object('step_bridge_label_scanerror')
+        error_box.hide()
         step_called_from = self.state['step']
 
+        def set_error(msg):
+            error_label.set_label(msg)
+            error_box.show_all()
 
         def on_qrcode_scanned(gjsonrpcclient, res, error):
             if self.state['step'] != step_called_from:
@@ -380,12 +380,10 @@ class StepChooseBridgeMixin:
                          res.get('returncode', -1) if res else -1)
                 return
 
-            infobar_heading = self.builder.get_object('infobar_scanqrcode_heading')
-            infobar_text = self.builder.get_object('infobar_scanqrcode_text')
             if not res or res.get("returncode", 1) != 0:
-                infobar_heading.set_text(_("Failed to detect a webcam"))
-                infobar_text.set_text(_("Maybe your webcam is too old."))
-                infobar.show_all()
+                set_error(_(
+                    "Failed to detect a webcam. Maybe your webcam is too old."
+                ))
                 return
 
             raw_content = res.get('stdout', '').strip()
@@ -393,18 +391,15 @@ class StepChooseBridgeMixin:
                 # if the output is empty, we assume that the user closed the window by themself
                 # to be really sure, we should use zbarcam --xml;
                 # however, do "empty" QR codes even exists?
-
-                infobar_heading.set_text(_("Failed to scan QR code"))
-                infobar_text.set_text(_("Try with more light or closer to the camera."))
-                infobar.show_all()
+                set_error(_("Failed to scan QR code. Try with more light or closer to the camera."))
                 return
 
             try:
                 self.last_scanned_qrcode = TorConnectionConfig.parse_qr_content(raw_content)
             except Exception:
-                infobar_heading.set_text(_("Invalid QR code"))
-                infobar_text.set_text(_("Try sending another email and scanning again."))
-                infobar.show_all()
+                set_error(_(
+                    "Invalid QR code. Try sending another email and scanning again."
+                ))
                 return
             else:
                 self._step_bridge_set_actives()
@@ -793,9 +788,6 @@ class StepErrorMixin:
         self._step_error_submit_allowed()
 
     def cb_step_error_btn_submit_clicked(self, *args):
-        infobar = self.builder.get_object('infobar_scanqrcode')
-        infobar.hide()
-
         text = self.get_object("text").get_buffer().get_text()
         self.state["bridge"]["bridges"] = TorConnectionConfig.parse_bridge_lines([text])
         # If the user is selecting any bridge, encode it properly
