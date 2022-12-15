@@ -7,4 +7,6 @@ rm -rf /var/lib/tca/ /run/tca/
 systemctl stop tor@default.service
 echo DisableNetwork 1 >> /etc/tor/torrc
 systemctl start tor@default.service
-/usr/local/lib/systemctl-user amnesia start tca.service
+if [ "$(nmcli --terse --fields STATE general status)" = connected ]; then
+    /usr/local/lib/systemctl-user amnesia start tca.service
+fi
