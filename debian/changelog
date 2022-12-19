@@ -1,8 +1,299 @@
 tails (5.8) UNRELEASED; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade Thunderbird to 102.6.0-1~deb11u1
 
- -- intrigeri <intrigeri@debian.org>  Thu, 03 Nov 2022 11:22:40 +0000
+  * Fix FTBFS: refresh patch (tails/tails!965)
+
+    Closes #19297
+  
+    Commits:
+      - Fix FTBFS: refresh patch
+
+  * Update tor browser to 12.0.1 (tails/tails!979)
+
+    Closes #19313
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0.1-build1
+
+  * Enable bullseye-proposed-updates (to test Bullseye 11.6 before it's released),
+    upgrade to Linux 5.10.158 (tails/tails!975)
+
+    Closes #19301, #19293
+
+    Commits:
+      - After disabling the Tor Configuration persistence feature, only start Tor
+        Connection if we're connected to a local network
+      - Also consider the Linux kernel from bullseye-updates
+      - Install the Linux kernel from bullseye-proposed-updates, if that suite is
+        enabled
+      - Test suite: remove unused image
+      - Upgrade to Linux 5.10.158-1
+      - Enable bullseye-proposed-updates, to test Bullseye 11.6 before it's released
+      - Bump snapshot of the Debian archive to 2022121302, so we can use proposed-
+        updates for Bullseye 11.6
+
+  * Test suite: make keyboard input more reliable (tails/tails!971)
+
+    Commits:
+      - Test suite: increase sleep time at the end of Screen#type
+      - Test suite: correct comment
+      - Test suite: keep keys pressed for 40 ms
+      - Test suite: improve comment
+      - Test suite: keep keys pressed for 20 ms instead of 10 ms
+      - Test suite: update comment
+
+  * Fix Dotfiles access for non-root users (tails/tails!968)
+
+    Closes #19278
+
+    Commits:
+      - Fix dotfiles access for non-root users
+
+  * Adapt to Wayland our error reporting mechanism when GDM fails to start
+    (tails/tails!951)
+
+    Closes #19227
+
+    Commits:
+      - resorting to X.Org → crash → better UX!
+      - Adapt to Wayland our error reporting mechanism when GDM fails to start
+
+  * Switch from bullseye-proposed-updates to Bullseye 11.6 (tails/tails!978)
+
+    Closes #19315
+
+    Commits:
+      - Revert "Enable bullseye-proposed-updates, to test Bullseye 11.6 before it's
+        released"
+      - Bump APT snapshots
+
+  * Tor Connection UI improvements (tails/tails!977)
+
+    Closes #19238, #19256, #19169, #19172
+
+    Commits:
+      - Tor Connection: fix window size
+      - Fix links from Tor Connection to the offline documentation
+      - Tor Connection: fix typo in string
+      - Tor Connection: display QR code scanning error below the scanning button
+      - Add label to bridge line
+
+  * Persistent Storage: use new icon (tails/tails!976)
+
+    Commits:
+      - Use the new Persistent Storage icon on the Welcome Screen when the Persistent
+        Storage does not exist yet
+      - Persistent Storage: use new icon
+
+  * Allow persisting bridge scanned from QR code, take 1 (tails/tails!973)
+
+    Closes #19281
+
+    Commits:
+      - Allow persisting bridge scanned from QR code, take 1
+
+  * Update tor to 0.4.7.12 (tails/tails!972)
+
+    Closes #19310
+
+    Commits:
+      - Update tor to 0.4.7.12
+
+  * fix window centering (tails/tails!970)
+
+    Closes #19045
+
+    Commits:
+      - Ensure extension description matches what it actually does
+      - gdm-tails is a GDM session, with extension support
+      - more comments to clarify subtleties
+      - check which session we're in is more to the point
+      - not really needed
+      - Apply 1 suggestion(s) to 1 file(s)
+      - stop "when it's done" , not predefined time
+      - window-centering only runs in GDM
+      - increase timeout
+      - rounding is needed to avoid false moves
+      - better comments and log messages
+      - Revert "avoid useless CPU work"
+      - avoid useless CPU work
+      - extensions are disabled in GDM: workaround
+      - window centering in Greeter
+
+  * Remove static suggestion of diceware passphrase (tails/tails!969)
+
+    Closes #19305
+
+    Commits:
+      - Remove static suggestion of diceware passphrase
+
+  * Allow disabling the Unsafe Browser (tails/tails!967)
+
+    Closes #19289
+
+    Commits:
+      - fix "I disable the Unsafe Browser" in corner cases
+      - adapt Greeter options persistence
+      - fix test suite for new wording
+      - Adjust to the Unsafe Browser being disabled by default
+      - Update tests
+      - Enable Unsafe Browser by default
+      - Revert "Welcome Screen: always enable the Unsafe Browser and make the setting
+        obsolete"
+
+  * Misc Persistent Storage fixes for 5.8 (tails/tails!966)
+
+    Closes #19220, #19279, #19280, #19148, #19294
+
+    Commits:
+      - Don't run OnionShare as a native Wayland app
+      - Run Qt applications as native Wayland by default
+      - Allow running Qt applications as native Wayland
+      - Remove Dasher (broken on Wayland)
+      - Tell the user what's going on while deleting Persistent Storage
+      - When Persistent Storage is unlocked, instruct how to delete it
+      - Persistent Storage: add missing link to doc on the features screen
+
+  * FIX --disable-chutney (tails/tails!961)
+
+    Commits:
+      - FIX --disable-chutney
+
+  * Tor Connection: select "Ask for a bridge by email" by default when "Hiding"
+    (tails/tails!957)
+
+    Closes #19167
+
+    Commits:
+      - Make it easier to scan a QR code
+      - Tor Connection: select "Ask for a bridge by email" by default when "Hiding"
+
+  * Tor Connection: display percentage on the connection progress bar
+    (tails/tails!955)
+
+    Commits:
+      - Tor Connection: display percentage on the connection progress bar
+
+  * TPS explanation strings, and more (tails/tails!947)
+
+    Closes #18759
+
+    Commits:
+      - remove vague comment
+      - remove dead code
+      - remove dead code
+      - explanation strings for relevant TPS features
+
+  * Additional Software: ensure APT is not broken after being interrupted
+    (tails/tails!946)
+
+    Closes #18657
+
+    Commits:
+      - Additional Software: ensure APT is not broken after being interrupted
+
+  * Test suite: relax our expectations for coverage of the known pattern in memory
+    (tails/tails!944)
+
+    Commits:
+      - Test suite: relax our expectations for coverage of the known pattern in memory
+
+  * create persistent storage from the greeter (tails/tails!922)
+
+    Closes #15586
+
+    Commits:
+      - change wording following the new style
+      - comment to explain flag files
+      - tabs → spaces
+      - Apply 3 suggestion(s) to 3 file(s)
+      - Fix labels
+      - greeter test suite code refactor
+      - checking early is useless and ineffective
+      - FIX look at the actual value
+      - big code refactoring
+      - actually handle button
+      - better size and margins for padlock
+      - make label the same in glade and python
+      - remove suggested-action
+      - Reorder in greeter
+      - Better real estate use
+      - draft: automated tests
+      - "don't create" is not a suggested-action
+      - Clearer state management in UI
+      - actually start persistent storage setup
+      - draft: create persistent storage from greeter
+
+  * Upgrade Tor Browser to 12.0 (tails/tails!921)
+
+    Closes #19135, #19085
+
+    Commits:
+      - Test suite: bump timeout
+      - Make code more readable
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0
+      - Test suite: fix "Downloading files with the Tor Browser" scenario with Tor
+        Browser 12 on Wayland
+      - Test suite: improve comment phrasing
+      - Test suite: only compute keymap once in Screen#press
+      - Test suite (mouse_location): remove unused method parameters
+      - Fix buggy (invisible) conflict resolution from rebase
+      - Turn off shellcheck false positive
+      - Drop obsolete mentions of $TBB_EXT
+      - Drop import of library that's not needed anymore
+      - Update handling of Tor Browser locales
+      - Fix location for Burmese
+      - Declare newly added Tor Browser locales
+      - Don't try to install non-existing langpacks
+      - Tor Browser update process: there's no langpacks anymore
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0a5
+      - Upgrade Tor Browser to nightly.2022.11.22
+      - Thunderbird: avoid proxy bypass, same as Tor Browser
+      - Test suite: Unsafe Browser has no bookmarks at all anymore
+      - Unsafe Browser: delete default bookmarks
+      - Test suite: update expected images
+      - Test suite: update expected images
+      - Upgrade Tor Browser to 12.0a4
+      - Thunderbird: replace network.security.ports.banned pref with
+        network.proxy.allow_hijacking_localhost
+      - Tor Browser: remove network.security.ports.banned pref, which does more harm
+        than good
+      - Update AppArmor policy for Tor Browser 12
+      - Test suite: update expected images for Tor Browser 12
+      - Test suite: update expected Unsafe Browser images for Tor Browser 12
+      - Lint
+      - Remove unused variable
+      - Test suite: update expected images for Tor Browser 12
+      - Test suite: remove obsolete complexity
+      - Test suite: update for new "New Identity" UX in Tor Browser 12
+      - Test suite: spam Tor Browser less intensively
+      - Test suite: refactoring (DRY)
+      - Test suite: update expected image
+      - Test suite: spam Tor Browser less intensively
+      - Test suite: add support for Tor Browser nightly builds
+      - Clarify comment
+      - Fix indentation
+      - Drop unused flexibility
+      - Remove obsolete variable
+      - Adjust to multilingual Tor Browser tarball
+      - Adjust to script being renamed upstream
+      - Upgrade Tor Browser to nightly.2022.10.19
+      - Tor Browser upgrade doc: support nightly builds, assume multilingual tarball
+      - Upgrade Tor Browser to 12.0a3
+      - Unsafe Browser: also apply branding to brand.properties
+      - Fix grammar in comment
+      - Unsafe Browser: don't ask confirmation when quitting with CTRL+q
+      - Test suite: update Unsafe Browser images
+      - Test suite: add expected unused Tor Browser library
+      - Test suite: adjust to Tor Browser 12's (Firefox 102) new download flow
+      - Upgrade Tor Browser to 12.0a2
+      - Clarify wording
+
+ -- Tails developers <tails@boum.org>  Mon, 19 Dec 2022 01:44:51 +0000
 
 tails (5.8~beta1) unstable; urgency=medium
 
