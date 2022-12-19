@@ -1,0 +1,56 @@
+[[!meta title="Creating the Persistent Storage"]]
+
+To create the Persistent Storage, choose
+**Applications**&nbsp;▸ **Tails**&nbsp;▸ **Configure persistent volume**.
+
+[[!img creation.png link="no" alt=""]]
+
+<div class="note">
+
+<p>If you receive the error message <em>Device was not created using a USB
+image or Tails installer</em>, then you need to reinstall Tails either by:</p>
+
+<ul>
+  <li>Installing using our [[USB image|install/download]] instead of our ISO image</li>
+  <li>[[Installing from another Tails|install/clone]]</li>
+</ul>
+
+<p>If you receive the error message while running Tails using
+<i>virt-manager</i>, then you need to
+[[run Tails from our USB image|doc/advanced_topics/virtualization/virt-manager#usb_image]]
+instead of our ISO image.</p>
+
+</div>
+
+<div class="note">
+
+<!-- We should improve this error message in #10048 and get rid of this note. -->
+
+<p>The error message <em>Error, Persistence volume is not
+unlocked.</em> means that the Persistent Storage was not unlocked in
+the Welcome Screen. You cannot use or configure your Persistent Storage
+but you can delete it and create a new one.</p>
+
+<p>To change the configuration of your Persistent Storage, restart Tails,
+unlock the Persistent Storage, and choose <strong>Applications</strong>&nbsp;▸
+<strong>Tails</strong>&nbsp;▸ <strong>Configure persistent volume</strong>
+again.</p>
+
+</div>
+
+<div class="bug">
+
+<p>There is currently no visible way to close the
+<b>Configure persistent volume</b> application when no changes have been made.</p>
+
+<p>To close the <b>Configure persistent volume</b> application,
+press <span class="keycap">Esc</span>.</p>
+
+</div>
+
+When run for the first time, or after [[deleting the Persistent
+Storage|delete]], an assistant allows you to create a Persistent Storage in
+the free space left on the USB stick. Refer to our [[installation
+instructions|install/clone#create-persistence]] for more guidance on
+creating the Persistent Storage.
+
