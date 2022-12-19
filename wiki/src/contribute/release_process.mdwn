@@ -1405,16 +1405,18 @@ You probably already know how to do that, but keep this in mind:
    for whatever reasons, you need to turn off your computer.
 
  - if you are running this and going AFK for long time (ie: overnight) you might want to
-   keep your CPU busy by rerunning failed scenarios
+   keep your CPU busy by rerunning failed scenarios. See the "Automatically re-run failures" section.
 
  - if the following conditions are met:
-    - you are making out an emergency release OR you still feel the need to make the release as soon as
+    - you are making out an emergency release *OR* you still feel the need to make the release as soon as
       possible for security reasons
-    - you are *not* running test overnight, so skipping tests will reduce the lead time
-      then, feel free to skip testing `@not_release_blocker`, setting
+    - *and* you are *not* running test overnight, so skipping tests will reduce the lead time
+    - *then*, feel free to skip testing `@not_release_blocker`, setting
       `what=(--tag ~@not_release_blocker)` in the following example.
 
 
+Automatically re-run failures
+--------------------------------
 
 So here is a good example of how you can do this. Save this code on a file named `test-rerun.sh`, tweaking it
 (especially the `tmpdir`) to adapt it to your directory structure.
