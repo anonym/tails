@@ -521,6 +521,14 @@ Expect this to take 5-15 minutes.
 While the website is building, if this is not a good time for taking a break,
 you can follow the "Enable OpenPGP signing" instructions.
 
+Ignored versions for automatic upgrades
+---------------------------------------
+
+Add to `$IGNORED_TAGS`, in `./bin/iuk-source-versions`, any recent alpha or beta
+release that gets no security support, and as such, shall not get automatic
+upgrades. Here is a useful heuristics: if we did not do our manual test suite on
+a release, it does not get security support.
+
 Enable OpenPGP signing
 ======================
 
@@ -939,11 +947,6 @@ Check that you have the correct version of `squashfs-tools-ng` and `libsquashfs1
     [ "$(dpkg-query --showformat '${Version}\n' --show libsquashfs1)" \
       = '1.0.4-1' \
     ] || echo 'ERROR! Your libsquashfs1 is not the required version, so any generated IUKs will *not* be reproducible!'
-
-Add to `$IGNORED_TAGS`, in `./bin/iuk-source-versions`, any recent alpha or beta
-release that gets no security support, and as such, shall not get automatic
-upgrades. Here is a useful heuristics: if we did not do our manual test suite on
-a release, it does not get security support.
 
 Build the Incremental Upgrade Kits locally
 ------------------------------------------
