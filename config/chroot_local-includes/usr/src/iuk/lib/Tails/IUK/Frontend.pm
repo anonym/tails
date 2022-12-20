@@ -519,7 +519,7 @@ method run () {
                 "<b>You should do a manual upgrade to the latest version of {name}.</b>\n\n".
                 "For more information about this new version, go to {details_url}\n\n".
                 "It is impossible to do an automatic upgrade of ".
-                "your Tails to this new version.\n\n".
+                "your Tails to this new version: {explanation}.\n\n".
                 "To learn how to do a manual upgrade, go to {manual_upgrade_url}",
                 details_url        => q{https://tails.boum.org/latest},
                 name               => $upgrade_description->product_name,
