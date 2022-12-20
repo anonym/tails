@@ -279,7 +279,7 @@ class TCAApplication(Gtk.Application):
                     self.get_network_time_result["reason"] = "captive-portal"
                     self.log.info("Detected captive portal")
                 else:
-                    self.log.warning("Unspecified error: %s", error)
+                    self.log.warning("get-network-time failed: %s", error)
                 GLib.idle_add(callback, result, error)
             else:
                 self.get_network_time_result["status"] = "success"
