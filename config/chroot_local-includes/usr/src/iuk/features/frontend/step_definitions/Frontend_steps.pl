@@ -496,7 +496,7 @@ Then qr{^I should be proposed to download this full upgrade$}, fun ($c) {
     like($c->{stash}->{scenario}->{output}, qr{^New version available$}m); # dialog title
     like(
         $c->{stash}->{scenario}->{output},
-        qr{You should do a manual upgrade to Tails 0[.]12[.]1}
+        qr{You should do a manual upgrade to}
     );
 };
 
