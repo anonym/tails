@@ -29,7 +29,8 @@ from tailsgreeter.settings.admin import AdminSetting
 from tailsgreeter.settings.localization_settings import LocalisationSettings
 from tailsgreeter.settings.macspoof import MacSpoofSetting
 from tailsgreeter.settings.network import NetworkSetting
-from tailsgreeter.settings.persistence import PersistenceSettings
+from tailsgreeter.settings.persistence import PersistentStorageSettings
+from tailsgreeter.settings.persistent_storage_create import PersistentStorageCreateSetting
 from tailsgreeter.settings.unsafe_browser import UnsafeBrowserSetting
 from tailsgreeter.translatable_window import TranslatableWindow
 from tailsgreeter.ui.additional_settings import AdminSettingUI, MACSpoofSettingUI, NetworkSettingUI, UnsafeBrowserSettingUI, ObsoleteNetworkSettingUI
@@ -72,10 +73,11 @@ class GreeterApplication(object):
         # Load models
         self.gdmclient = GdmClient(session_opened_cb=self.close_app)
 
-        persistence = PersistenceSettings()
+        persistence = PersistentStorageSettings()
         self.localisationsettings = LocalisationSettings(
             usermanager_loaded_cb=self.usermanager_loaded,
         )
+        self.persistent_storage_create = PersistentStorageCreateSetting()
         self.admin_setting = AdminSetting()
         self.macspoof_setting = MacSpoofSetting()
         self.network_setting = NetworkSetting()

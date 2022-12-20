@@ -89,7 +89,7 @@ Packages
 
 To release Tails you'll need some packages installed:
 
-* `gitlab-cli j2cli jq tidy mktorrent podman python3-bs4 python3-debian python3-gitlab python3-jinja2 python3-html2text python3-voluptuous transmission-cli`
+* `gitlab-cli j2cli jq tidy libnotify-bin mktorrent podman python3-bs4 python3-debian python3-gitlab python3-jinja2 python3-html2text python3-voluptuous transmission-cli`
   - Note: if the Debian version you are running does not include all required
     Go packages, such as [[!debpts podman]], you should be able to install
     them from a more recent Debian release with APT pinning.
@@ -463,6 +463,9 @@ If you're preparing a release candidate:
 
  - Set the version for the new entry in `debian/changelog` to `$VERSION`: the
    above code has incorrectly set it to `$MILESTONE`.
+
+If you're preparing a release candidate or a major release:
+
  - For each merge request listed in the new Changelog entry,
    copy the "Closes: #NNNNNN" string from the MR description into the relevant
    section of the Changelog.
@@ -520,6 +523,14 @@ Included website
 Expect this to take 5-15 minutes.
 While the website is building, if this is not a good time for taking a break,
 you can follow the "Enable OpenPGP signing" instructions.
+
+Ignored versions for automatic upgrades
+---------------------------------------
+
+Add to `$IGNORED_TAGS`, in `./bin/iuk-source-versions`, any recent alpha or beta
+release that gets no security support, and as such, shall not get automatic
+upgrades. Here is a useful heuristics: if we did not do our manual test suite on
+a release, it does not get security support.
 
 Enable OpenPGP signing
 ======================
@@ -939,11 +950,6 @@ Check that you have the correct version of `squashfs-tools-ng` and `libsquashfs1
     [ "$(dpkg-query --showformat '${Version}\n' --show libsquashfs1)" \
       = '1.0.4-1' \
     ] || echo 'ERROR! Your libsquashfs1 is not the required version, so any generated IUKs will *not* be reproducible!'
-
-Add to `$IGNORED_TAGS`, in `./bin/iuk-source-versions`, any recent alpha or beta
-release that gets no security support, and as such, shall not get automatic
-upgrades. Here is a useful heuristics: if we did not do our manual test suite on
-a release, it does not get security support.
 
 Build the Incremental Upgrade Kits locally
 ------------------------------------------
@@ -1539,8 +1545,7 @@ technical writers who have likely prepared release notes:
 	   git fetch && \
 	   git merge "origin/${WEBSITE_RELEASE_BRANCH?:}"
 
-If no release notes where prepared, we add one with placeholders that
-the technical writes can update post-release:
+If no release notes where prepared, create one with placeholders:
 
     cp wiki/src/news/version_${PREVIOUS_STABLE_VERSION:?}.mdwn \
        wiki/src/news/version_${VERSION:?}.mdwn &&
@@ -1554,6 +1559,8 @@ Make sure to:
    e.g. "This section will be updated soon. Sorry for the
    inconvenience!".
 4. add any known issues to the "Known issues" section.
+
+The technical writers will update the release notes after the release.
 
 If preparing a major or a bugfix release
 -------------------------------------------
@@ -1695,8 +1702,8 @@ working mirror:
       base='https://download.tails.net/tails/stable'
       echo \
         "${base}/iuk/v2/Tails_amd64_${PREVIOUS_STABLE_VERSION:?}_to_${VERSION:?}.iuk?mirrorlist" \
-        "${base}/iuk/v2/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.iso?mirrorlist" \
-        "${base}/iuk/v2/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.img?mirrorlist" \
+        "${base}/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.iso?mirrorlist" \
+        "${base}/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.img?mirrorlist" \
     )
 
 Check if every active mirror in the pool has the new version:

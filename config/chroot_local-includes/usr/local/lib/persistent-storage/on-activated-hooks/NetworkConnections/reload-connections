@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -eu
+
+# At tailsgreeter time, NetworkManager is not active, so nmcli would fail
+if systemctl is-active NetworkManager; then
+    nmcli connection reload
+fi

@@ -223,30 +223,35 @@ class Screen
 
   def press(*sequence, **opts)
     opts[:log] = true if opts[:log].nil?
-    # This is the minimum time (in seconds) between key presses;
-    # repeatedly calling this method will ensure that key presses are
-    # emitted with this minimum interval. This helps preventing
-    # repeated calls interfering with each other.
-    opts[:delay] ||= 0.060 # Sikuli used 60ms delay.
-    # How long the key(s) are held (in seconds). With holdtime = 0
-    # (like virsh does it) we have seen issues, in particular with key
+    # This is the minimum time (in seconds) between invocations of
+    # this method. This helps preventing repeated calls to this method
+    # interfering with each other, and increases the chances the keys
+    # have reached the UI before we proceed with the
+    # following operations.
+    opts[:delay] ||= 0.120
+    # How long the key(s) are held (in seconds).
+    # The default in libvirt/QEMU is 10 ms.
+    #
+    # With holdtime = 0 we have seen issues, in particular with key
     # modifiers like Shift bleeding over to subsequent invocations, so
     # e.g. type("A9f") actually results in "A(F" (with a US layout)
     # because the Shift wasn't released *immediately* after the "A".
-    opts[:holdtime] ||= 0.010
+    # If we ever see this problem again, this should probably be solved
+    # with a longer opts[:delay], rather than by tweaking holdtime.
+    opts[:holdtime] ||= 0.040
     debug_log("Keyboard: pressing: #{sequence.join('+')}") if opts[:log]
+    keymap = case $language
+             when ''
+               Keymaps::US_KEYMAP
+             when 'French'
+               Keymaps::FR_KEYMAP
+             when 'German'
+               Keymaps::DE_KEYMAP
+             else
+               Keymaps::COMMON_KEYMAP
+             end
     codes = []
     sequence.each do |key|
-      keymap = case $language
-               when ''
-                 Keymaps::US_KEYMAP
-               when 'French'
-                 Keymaps::FR_KEYMAP
-               when 'German'
-                 Keymaps::DE_KEYMAP
-               else
-                 Keymaps::COMMON_KEYMAP
-               end
       # We use lower-case to make it easier to get the keycodes right.
       code = keymap[('A'..'Z').include?(key) ? key : key.downcase]
       if code.nil?
@@ -296,7 +301,7 @@ class Screen
     sleep 1 # Wait for the paste operation to register.
   end
 
-  def mouse_location(**opts)
+  def mouse_location
     xdotool('getmouselocation').split[0..1].map { |s| s.split(':').last.to_i }
   end
 

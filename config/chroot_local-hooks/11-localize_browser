@@ -4,8 +4,8 @@ set -e
 
 echo "Localize each supported browser locale"
 
-# Import the TBB_INSTALL and TBB_EXT variables and
-# supported_tor_browser_locales()
+# Import the TBB_INSTALL variable and
+# supported_tor_browser_locales(), locale_is_supported_by_tor_browser()
 . /usr/local/lib/tails-shell-library/tor-browser.sh
 
 # Import language_code_from_locale()
@@ -42,6 +42,12 @@ while IFS=: read -r MOZILLA_LOCALE LOCATION; do
         echo "Something is wrong with ${DESCRIPTIONS_FILE}" >&2
         echo "Description: ${MOZILLA_LOCALE}:${LOCATION}" >&2
        exit 1
+    fi
+
+    if ! locale_is_supported_by_tor_browser "$MOZILLA_LOCALE"; then
+        echo "- Skipping localization of ${MOZILLA_LOCALE} for browsers:" \
+             "not supported by Tor Browser"
+	continue
     fi
 
     echo "- Localizing ${MOZILLA_LOCALE} for browsers..."
@@ -92,5 +98,4 @@ done < "${DESCRIPTIONS_FILE}"
 rm -r "${BROWSER_LOCALIZATION_DIR}"
 
 # All generated and modified files must remain world-readable.
-chmod -R a+rX "${LOCALE_PROFILES_DIR}" \
-              "${TBB_EXT}"
+chmod -R a+rX "${LOCALE_PROFILES_DIR}"

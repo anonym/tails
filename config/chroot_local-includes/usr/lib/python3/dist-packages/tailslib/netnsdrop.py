@@ -15,9 +15,11 @@ from tailslib.gnome import gnome_env_vars
 from tailslib import LIVE_USERNAME
 
 
-def run_in_netns(*args, netns, user="amnesia"):
+def run_in_netns(*args, netns, user="amnesia", root="/", bind_mounts=[]):
     # base bwrap sharing most of the system
-    bwrap = ["bwrap", "--bind", "/", "/", "--proc", "/proc", "--dev", "/dev"]
+    bwrap = ["bwrap", "--bind", root, "/", "--proc", "/proc", "--dev", "/dev"]
+    for src, dest in bind_mounts:
+        bwrap += ["--bind", src, dest]
     # passes data to us
     bwrap += [
         "--bind",

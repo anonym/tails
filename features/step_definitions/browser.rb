@@ -33,7 +33,7 @@ When(/^I kill the ((?:Tor|Unsafe) Browser)$/) do |browser|
   end
 
   # ugly fix to #18568; in my local testing, 3 seconds are always needed. Let's add some more.
-  # a better solution would be to wait until gnome "received" the fact that TorBrowser has gone away.
+  # a better solution would be to wait until GNOME "received" the fact that Tor Browser has gone away.
   sleep 5
 end
 
@@ -57,12 +57,12 @@ def tor_browser_application_info(defaults)
 end
 
 def unsafe_browser_application_info(defaults)
-  user = 'clearnet'
+  user = LIVE_USER
   binary = $vm.execute_successfully(
-    'echo ${TBB_INSTALL}/firefox.real', libs: 'tor-browser'
+    'echo ${TBB_INSTALL}/firefox.unsafe-browser', libs: 'tor-browser'
   ).stdout.chomp
   cmd_regex = "#{binary} .* " \
-              "-profile /home/#{user}/\.unsafe-browser/profile\.default"
+              "--profile /home/#{user}/\.unsafe-browser/profile\.default"
   defaults.merge(
     {
       user:                        user,
@@ -77,9 +77,13 @@ end
 
 def xul_application_info(application)
   defaults = {
-    address_bar_images: ["BrowserAddressBar#{$language}.png",
-                         "BrowserAddressBar#{$language}Alt.png",],
-    unused_tbb_libs:    ['libnssdbm3.so', 'libmozavcodec.so', 'libmozavutil.so'],
+    address_bar_image: "BrowserAddressBar#{$language}.png",
+    unused_tbb_libs:   [
+      'libnssdbm3.so',
+      'libmozavcodec.so',
+      'libmozavutil.so',
+      'libipcclientcerts.so',
+    ],
   }
   case application
   when 'Tor Browser'
@@ -94,14 +98,15 @@ end
 When /^I open a new tab in the (.*)$/ do |browser|
   info = xul_application_info(browser)
   @screen.click(info[:new_tab_button_image])
-  @screen.wait_any(info[:address_bar_images], 15)
+  @screen.wait(info[:address_bar_image], 15)
 end
 
-When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser|
-  step "I open a new tab in the #{browser}"
-  info = xul_application_info(browser)
+When /^I open the address "([^"]*)" in the (.* Browser)( without waiting)?$/ do |address, browser_name, non_blocking|
+  browser = Dogtail::Application.new('Firefox')
+  info = xul_application_info(browser_name)
   open_address = proc do
-    @screen.find_any(info[:address_bar_images])[:match].click
+    step "I open a new tab in the #{browser_name}"
+    @screen.click(info[:address_bar_image])
     # This static here since we have no reliable visual indicators
     # that we can watch to know when typing is "safe".
     sleep 5
@@ -114,17 +119,20 @@ When /^I open the address "([^"]*)" in the (.*)$/ do |address, browser|
   recovery_on_failure = proc do
     @screen.press('Escape')
     @screen.wait_vanish(info[:browser_stop_button_image], 3)
-    open_address.call
   end
-  retry_method = if browser == 'Tor Browser'
+  retry_method = if browser_name == 'Tor Browser'
                    method(:retry_tor)
                  else
                    proc { |p, &b| retry_action(10, recovery_proc: p, &b) }
                  end
-  open_address.call
   retry_method.call(recovery_on_failure) do
-    @screen.wait_vanish(info[:browser_stop_button_image], 120)
-    @screen.wait(info[:browser_reload_button_image], 120)
+    open_address.call
+    unless non_blocking
+      try_for(120) do
+        !browser.child?('Stop', roleName: 'push button', retry: false) &&
+          browser.child?('Reload', roleName: 'push button', retry: false)
+      end
+    end
   end
 end
 
@@ -140,7 +148,7 @@ def page_has_loaded_in_the_tor_browser(page_titles)
     reload_action = 'Reload'
     separator = '—'
   end
-  try_for(180) do
+  try_for(180, delay: 3) do
     # The 'Reload' button (graphically shown as a looping arrow)
     # is only shown when a page has loaded, so once we see the
     # expected title *and* this button has appeared, then we can be sure
@@ -161,19 +169,20 @@ Then /^"([^"]+)" has loaded in the Tor Browser$/ do |title|
   page_has_loaded_in_the_tor_browser(title)
 end
 
-def xul_app_shared_lib_check(pid, chroot, expected_absent_tbb_libs = [])
+def xul_app_shared_lib_check(pid, expected_absent_tbb_libs = [])
   absent_tbb_libs = []
   unwanted_native_libs = []
-  tbb_libs = $vm.execute_successfully("ls -1 #{chroot}${TBB_INSTALL}/*.so",
+  tbb_libs = $vm.execute_successfully("ls -1 ${TBB_INSTALL}/*.so",
                                       libs: 'tor-browser').stdout.split
   firefox_pmap_info = $vm.execute("pmap --show-path #{pid}").stdout
+  native_libs = $vm.execute_successfully(
+    'find /usr/lib /lib -name "*.so"'
+  ).stdout.split
   tbb_libs.each do |lib|
     lib_name = File.basename lib
     absent_tbb_libs << lib_name unless /\W#{lib}$/.match(firefox_pmap_info)
-    native_libs = $vm.execute_successfully(
-      "find /usr/lib /lib -name \"#{lib_name}\""
-    ).stdout.split
     native_libs.each do |native_lib|
+      next unless native_lib.end_with?("/#{lib_name}")
       if /\W#{native_lib}$"/.match(firefox_pmap_info)
         unwanted_native_libs << lib_name
       end
@@ -194,7 +203,7 @@ Then /^the (.*) uses all expected TBB shared libraries$/ do |application|
   ).stdout.chomp
   pid = pid.scan(/\d+/).first
   assert_match(/\A\d+\z/, pid, "It seems like #{application} is not running")
-  xul_app_shared_lib_check(pid, info[:chroot], info[:unused_tbb_libs])
+  xul_app_shared_lib_check(pid, info[:unused_tbb_libs])
 end
 
 Then /^the (.*) chroot is torn down$/ do |browser|
@@ -222,17 +231,11 @@ end
 When /^I download some file in the Tor Browser$/ do
   @some_file = 'tails-signing.key'
   some_url = "https://tails.boum.org/#{@some_file}"
-  step "I open the address \"#{some_url}\" in the Tor Browser"
-end
-
-Then /^I get the browser download dialog$/ do
-  @screen.wait('BrowserDownloadDialog.png', 60)
-  @screen.wait('BrowserDownloadDialogSaveAsButton.png', 10)
+  step "I open the address \"#{some_url}\" in the Tor Browser without waiting"
 end
 
 When /^I save the file to the default Tor Browser download directory$/ do
-  @screen.click('BrowserDownloadDialogSaveAsButton.png')
-  @screen.wait('Gtk3SaveFileDialog.png', 10)
+  @screen.wait('Gtk3SaveFileDialog.png', 20)
   @screen.press('Return')
 end
 
@@ -259,19 +262,19 @@ def page_has_heading(page_title, heading)
 end
 
 Then /^the Tor Browser shows the "([^"]+)" error$/ do |error|
-  try_for(60) do
+  try_for(60, delay: 3) do
     page_has_heading('Problem loading page — Tor Browser', error)
   end
 end
 
 Then /^Tor Browser displays a "([^"]+)" heading on the "([^"]+)" page$/ do |heading, page_title|
-  try_for(60) do
+  try_for(60, delay: 3) do
     page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
 
 Then /^Tor Browser displays a '([^']+)' heading on the "([^"]+)" page$/ do |heading, page_title|
-  try_for(60) do
+  try_for(60, delay: 3) do
     page_has_heading("#{page_title} — Tor Browser", heading)
   end
 end
@@ -340,6 +343,7 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   end
   step 'I start the Tor Browser'
   step 'I open a new tab in the Tor Browser'
+  @screen.wait(xul_application_info('Tor Browser')[:address_bar_image], 10).click
   @screen.wait('ScreenKeyboard.png', 20)
   @screen.wait(osk_key, 20).click
   @screen.wait(browser_bar_x, 20)

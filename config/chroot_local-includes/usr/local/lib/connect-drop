@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''
+"""
 
 General description
 ======================
@@ -37,7 +37,7 @@ We *don't* want it to:
     - connect to an IP that only root can connect to (because of iptables -m
       owner rules)
     - connect to a UNIX domain socket that only root can connect to
-'''
+"""
 from argparse import ArgumentParser, ArgumentTypeError
 from pathlib import Path
 import logging
@@ -45,19 +45,26 @@ import pwd
 import os
 import socket
 import sys
-import time
+
+import gi  # noqa:F401
+from gi.repository import Gio
 
 try:
     import prctl
 except ImportError:
-    print("WARNING: you don't have prctl package installed, this might be insecure!!!", file=sys.stderr)
+    print(
+        "WARNING: you don't have prctl package installed, this might be insecure!!!",
+        file=sys.stderr,
+    )
     PRCTL = False
 else:
     PRCTL = True
 
+
 def get_parser():
     p = ArgumentParser()
-    p.add_argument(
+    connection = p.add_argument_group("Connection")
+    connection.add_argument(
         "--connect",
         "-c",
         action="append",
@@ -67,7 +74,24 @@ def get_parser():
         help="This can be something like TCP:example.com:80 or "
         "UNIX:/path/to/my.sock or TCP6:example.org:25",
     )
-    p.add_argument("-u", "--user")
+    connection.add_argument(
+        "--dbus",
+        action="append_const",
+        const=DbusSocketSpec(),
+        dest="connections",
+        help="like --connect, but connect to dbus",
+    )
+
+    child = p.add_argument_group("Child")
+    child.add_argument(
+        "--env-keep",
+        action="store_true",
+        default=False,
+        dest="env_keep",
+        help="Run the process keeping the previous environment",
+    )
+
+    child.add_argument("-u", "--user")
     p.add_argument("cmd")
 
     return p
@@ -132,6 +156,38 @@ class SocketSpec:
     def is_file(self):
         return self.family == "FILE"
 
+    def initialize(self):
+        return
+
+
+class DbusSocketSpec(SocketSpec):
+    def __init__(self):
+        # We get the address of the D-Bus system bus the same way
+        # systemd and Gio.dbus_address_get_for_bus do, which is to
+        # use the value of the DBUS_SYSTEM_BUS_ADDRESS env var if its
+        # set, else unix:path=/var/run/dbus/system_bus_socket.
+        address = os.getenv("DBUS_SYSTEM_BUS_ADDRESS")
+        if not address:
+            address = "unix:path=/var/run/dbus/system_bus_socket"
+        if not address.startswith("unix:path="):
+            raise RuntimeError("Unexpected D-Bus path %s" % address)
+        address = address.replace("unix:path=", "UNIX:")
+        logging.debug("DBus address: %s", address)
+        super().__init__(address)
+
+    def initialize(self):
+        logging.debug("Authenticating to DBus")
+        # even if we don't use self.dbus, we'll still keep it to avoid GC
+        socket = Gio.Socket.new_from_fd(fd=self.fd)
+        socket_connection = socket.connection_factory_create_connection()
+        self.dbus = Gio.DBusConnection.new_sync(
+            socket_connection,
+            None,
+            Gio.DBusConnectionFlags.AUTHENTICATION_CLIENT,
+            None,
+            None,
+        )  # type: Gio.DBusConnection
+
 
 def main():
     # Parsing arguments require a little hack to work around argparse annoying issue:
@@ -140,7 +196,7 @@ def main():
     # This hack allows to get the currect behaviour for a well-formed argument list, at the expense of good
     # error handling when an invalid cmdline is passed to connect-drop.
     args, cmd_args = get_parser().parse_known_args()
-    if cmd_args and cmd_args[0] == '--':
+    if cmd_args and cmd_args[0] == "--":
         del cmd_args[0]
     args.cmd_args = cmd_args
 
@@ -150,6 +206,7 @@ def main():
         s = addr.create()
         if not addr.is_file():
             s.connect(addr.address)
+        addr.initialize()
         os.set_inheritable(s.fileno(), True)
         logging.debug("fd=%d [%s]", s.fileno(), addr)
         sockets.append(s)
@@ -175,16 +232,17 @@ def main():
     else:
         home = str(Path.home())
 
-    os.execvpe(
-        args.cmd,
-        [args.cmd] + args.cmd_args,
-        env=dict(
+    proc_environ = dict(os.environ) if args.env_keep else {}
+    proc_environ.update(
+        dict(
             # Yes, the child process could enumerate the open fd, but this is probably clearer
             # especially, we don't want to rely on the fact that FD always start from 3 and are incremental
             INHERIT_FD=",".join(str(s.fileno()) for s in sockets),
             HOME=home,
-        ),
+        )
     )
+
+    os.execvpe(args.cmd, [args.cmd] + args.cmd_args, env=proc_environ)
 
 
 if __name__ == "__main__":
