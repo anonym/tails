@@ -1545,8 +1545,7 @@ technical writers who have likely prepared release notes:
 	   git fetch && \
 	   git merge "origin/${WEBSITE_RELEASE_BRANCH?:}"
 
-If no release notes where prepared, we add one with placeholders that
-the technical writes can update post-release:
+If no release notes where prepared, create one with placeholders:
 
     cp wiki/src/news/version_${PREVIOUS_STABLE_VERSION:?}.mdwn \
        wiki/src/news/version_${VERSION:?}.mdwn &&
@@ -1560,6 +1559,8 @@ Make sure to:
    e.g. "This section will be updated soon. Sorry for the
    inconvenience!".
 4. add any known issues to the "Known issues" section.
+
+The technical writers will update the release notes after the release.
 
 If preparing a major or a bugfix release
 -------------------------------------------
