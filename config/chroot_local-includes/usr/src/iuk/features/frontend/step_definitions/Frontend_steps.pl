@@ -27,14 +27,8 @@ use Test::Util;
 use Test::WebServer::Static::SSL;
 
 my $bindir = path(__FILE__)->parent->parent->parent->parent->child('bin')->absolute;
-use Env qw{@PATH @NODE_PATH};
+use Env qw{@PATH};
 unshift @PATH, $bindir;
-unshift @PATH,
-    path($ENV{TAILS_GIT_CHECKOUT}, qw{submodules mirror-pool-dispatcher bin})
-    ->absolute;
-unshift @NODE_PATH,
-    path($ENV{TAILS_GIT_CHECKOUT}, qw{submodules mirror-pool-dispatcher lib js})
-    ->absolute;
 
 my $t_dir  = path(__FILE__)->parent->parent->parent->parent->child('t')->absolute;
 my $pristine_dev_gnupg_homedir = path($t_dir, 'data', 'dev_gnupg_homedir');
