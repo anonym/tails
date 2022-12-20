@@ -998,7 +998,7 @@ We only modify this Tor Browser installation slightly:
   Origin](https://github.com/gorhill/uBlock/) extension.
   We add a mandatory signing exception for this add-on.
 * We use the myspell/hunspell dictionaries provided by Debian.
-* We ship all langpacks and select the UI language depending on
+* We ship all languages supported by Tor Browser, which will select the UI language depending on
   the locale chosen by the user in our Welcome Screen.
 * Tails does not install the Tor Launcher extension as part of the
   browser.
@@ -1006,7 +1006,7 @@ We only modify this Tor Browser installation slightly:
 * We modify preferences in `browser/omni.ja` to slightly adjust the UI.
 * We append Tails-specific preferences to `browser/omni.ja`.
 
-In Tails we do not use the `start-tor-browser` script, since it does a
+In Tails we do not use the `start-browser` script, since it does a
 lot of stuff not needed in Tails (error checking mainly) and isn't
 flexible since it looks for the browser profile in a specific
 place. Our custom script makes use of the global installation and also

@@ -26,6 +26,8 @@ _ = translation.gettext
 HOME_DIR = os.environ['HOME']
 CONF_DIR = os.path.join(HOME_DIR, '.electrum')
 
+TPS_FEATURE_NAME="Electrum"
+
 
 def main(*args):
     if not electrum_config_is_persistent():
@@ -48,10 +50,16 @@ def electrum_config_is_persistent():
     False
     """
 
-    filesystem = sh.findmnt('--noheadings',
-                            '--output', 'SOURCE',
-                            '--target', CONF_DIR).stdout.decode().strip()
-    return filesystem == '/dev/mapper/TailsData_unlocked[/electrum]'
+    try:
+        subprocess.run(
+            ["/usr/local/lib/tpscli", "is-active", TPS_FEATURE_NAME],
+            check=True,
+        )
+        return True
+    except subprocess.CalledProcessError as e:
+        if e.returncode != 1:
+            raise
+        return False
 
 
 def verify_start():

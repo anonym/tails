@@ -1,0 +1,12 @@
+[tool.mypy]
+mypy_path = "config/chroot_local-includes/usr/lib/python3/dist-packages"
+warn_no_return = true
+warn_return_any = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "gi",
+    "gi.repository",
+]
+ignore_missing_imports = true

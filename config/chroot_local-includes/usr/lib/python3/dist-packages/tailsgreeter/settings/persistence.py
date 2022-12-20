@@ -15,155 +15,87 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-"""Persistence handling
-
-"""
+"""Persistent Storage handling"""
 import logging
 import os
 
 import gettext
 _ = gettext.gettext
 
+from gi.repository import Gio, GLib
+
+from tps.dbus.errors import IncorrectPassphraseError
+
 import tailsgreeter         # NOQA: E402
 import tailsgreeter.config  # NOQA: E402
 import tailsgreeter.errors  # NOQA: E402
-import tailsgreeter.utils   # NOQA: E402
 
 
-class PersistenceSettings(object):
-    """Controller for settings related to persistence
+BUS_NAME = "org.boum.tails.PersistentStorage"
+OBJECT_PATH = "/org/boum/tails/PersistentStorage"
+INTERFACE_NAME = "org.boum.tails.PersistentStorage"
 
-    """
+
+class PersistentStorageSettings(object):
+    """Controller for settings related to Persistent Storage"""
     def __init__(self):
         self.is_unlocked = False
-        self.containers = []
         self.cleartext_name = 'TailsData_unlocked'
         self.cleartext_device = '/dev/mapper/' + self.cleartext_name
+        self.service_proxy = Gio.DBusProxy.new_sync(
+            Gio.bus_get_sync(Gio.BusType.SYSTEM, None),
+            Gio.DBusProxyFlags.NONE, None,
+            BUS_NAME, OBJECT_PATH, INTERFACE_NAME, None,
+        )  # type: Gio.DBusProxy
+        device_variant = self.service_proxy.get_cached_property("Device")  # type: GLib.Variant
+        self.device = device_variant.get_string() if device_variant else "/"
 
     def has_persistence(self):
-        # FIXME: list_containers may raise exceptions. Deal with that.
-        self.containers = [
-            {"path": container, "locked": True}
-            for container in self.list_containers()
-            ]
-        return len(self.containers)
+        return self.service_proxy.\
+            get_cached_property("IsCreated")
 
-    def unlock(self, passphrase):
-        """Ask the backend to activate persistence and handle errors
+    def unlock(self, passphrase) -> bool:
+        """Unlock the Persistent Storage partition
 
         Returns: True if everything went fine, False if the user should try
         again."""
-        logging.debug("Unlocking persistence")
-        for container in self.containers:
-            try:
-                self.activate_container(
-                    device=container['path'],
-                    password=passphrase)
-                self.is_unlocked = True
-                return True
-            except tailsgreeter.errors.WrongPassphraseError:
-                pass
-        return False
-
-    def lock(self):
-        logging.debug("Locking persistence")
-        try:
-            self.unmount_persistence()
-            self.lock_device()
-            self.is_unlocked = False
-            return True
-        except tailsgreeter.errors.LivePersistError as e:
-            logging.exception(e)
-            return False
-
-    @staticmethod
-    def list_containers():
-        """Returns a list of persistence containers we might want to unlock."""
-        args = [
-            "/usr/bin/sudo", "-n", "/usr/local/sbin/live-persist",
-            "--log-file=/var/log/live-persist",
-            "--encryption=luks",
-            "list", "TailsData"
-            ]
-        out = tailsgreeter.utils.check_output_and_error(
-            args,
-            exception=tailsgreeter.errors.LivePersistError,
-            error_message=_("live-persist failed with return code "
-                            "{returncode}:\n"
-                            "{stderr}")
-            )
-        containers = str.splitlines(out)
-        logging.debug("found containers: %s", containers)
-        return containers
-
-    def activate_container(self, device, password):
-        cleartext_device = self.unlock_device(device, password)
-        logging.debug("unlocked cleartext_device: %s", cleartext_device)
-        self.setup_persistence(cleartext_device)
-        # This file must be world-readable so that software running
-        # as LIVE_USERNAME or tails-persistence-setup can read it.
-        with open(tailsgreeter.config.persistence_state_file, 'w') as f:
-            os.chmod(tailsgreeter.config.persistence_state_file, 0o644)
-            f.write('TAILS_PERSISTENCE_ENABLED=true\n')
-
-    def unlock_device(self, device, password):
-        """Unlock the LUKS persistent device"""
-        if not os.path.exists(self.cleartext_device):
-            args = [
-                "/usr/bin/sudo", "-n",
-                "/sbin/cryptsetup", "luksOpen",
-                "--tries", "1",
-                device, self.cleartext_name
-                ]
-            tailsgreeter.utils.check_output_and_error(
-                args,
-                stdin="{password}\n".format(password=password),
-                exception=tailsgreeter.errors.WrongPassphraseError,
-                error_message=_("cryptsetup failed with return code "
-                                "{returncode}:\n"
-                                "{stdout}\n{stderr}"))
-            logging.debug("crytpsetup success")
-        return self.cleartext_device
-
-    def lock_device(self):
-        """Unlock the LUKS persistent device"""
+        logging.debug("Unlocking Persistent Storage")
         if os.path.exists(self.cleartext_device):
-            args = [
-                "/usr/bin/sudo", "-n",
-                "/sbin/cryptsetup", "luksClose",
-                self.cleartext_name
-                ]
-            tailsgreeter.utils.check_output_and_error(
-                args,
-                exception=tailsgreeter.errors.LivePersistError,
-                error_message=_("cryptsetup failed with return code "
-                                "{returncode}:\n"
-                                "{stdout}\n{stderr}")
-                )
+            logging.warning(f"Cleartext device {self.cleartext_device} already"
+                            f"exists")
+            return True
 
-    @staticmethod
-    def setup_persistence(cleartext_device):
-        args = ["/usr/bin/sudo", "-n", "/usr/local/sbin/live-persist"]
-        args.append('--log-file=/var/log/live-persist')
-        args.append('activate')
-        args.append(cleartext_device)
-        tailsgreeter.utils.check_output_and_error(
-            args,
-            exception=tailsgreeter.errors.LivePersistError,
-            error_message=_("live-persist failed with return code "
-                            "{returncode}:\n"
-                            "{stdout}\n{stderr}")
+        try:
+            self.service_proxy.call_sync(
+                method_name="Unlock",
+                parameters=GLib.Variant("(s)", (passphrase,)),
+                flags=Gio.DBusCallFlags.NONE,
+                # -1 means the default timeout of 25 seconds is used,
+                # which should be enough.
+                timeout_msec=-1,
+            )
+        except GLib.GError as err:
+            if IncorrectPassphraseError.is_instance(err):
+                return False
+            raise tailsgreeter.errors.PersistentStorageError(
+                _("Error unlocking Persistent Storage: {}").format(err)
             )
 
-    def unmount_persistence(self):
-        args = [
-            "/usr/bin/sudo", "-n",
-            "/bin/umount", "-A",
-            self.cleartext_device
-            ]
-        tailsgreeter.utils.check_output_and_error(
-            args,
-            exception=tailsgreeter.errors.LivePersistError,
-            error_message=_("umount failed with return code {returncode}:\n"
-                            "{stdout}\n{stderr}")
-                            )
+        self.is_unlocked = True
+        return True
+
+    def activate_persistent_storage(self):
+        """Activate the already unlocked Persistent Storage"""
+        try:
+            self.service_proxy.call_sync(
+                method_name="Activate",
+                parameters=None,
+                flags=Gio.DBusCallFlags.NONE,
+                # -1 means the default timeout of 25 seconds is used,
+                # which should be enough.
+                timeout_msec=-1,
+            )
+        except GLib.GError as err:
+            raise tailsgreeter.errors.PersistentStorageError(
+                _("Error activating Persistent Storage: {}").format(err)
+            )

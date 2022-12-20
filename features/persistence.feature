@@ -3,6 +3,12 @@ Feature: Tails persistence
   As a Tails user
   I want to use Tails persistence feature
 
+  Scenario: Tails Persistent Storage behave tests
+    Given I have started Tails from DVD and logged in with an administration password and the network is connected
+    And I update APT using apt
+    And I install "python3-behave" using apt
+    Then the Tails Persistent Storage behave tests pass
+
   Scenario: Booting Tails from a USB drive with a disabled persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
     When I log in to a new session
@@ -43,6 +49,12 @@ Feature: Tails persistence
     And I switch to the "persistent-con-current" NetworkManager connection
     And the 1st network device has a spoofed MAC address configured
     And no network device leaked the real MAC address
+
+  Scenario: Creating persistence from the Welcome Screen
+    Given I have started Tails without network from a USB drive without a persistent partition and stopped at Tails Greeter's login screen
+    And I enable persistence creation in Tails Greeter
+    And I log in to a new session
+    Then I create a persistent partition with the default settings using the wizard that was already open
 
   Scenario: Persistent Greeter options
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen

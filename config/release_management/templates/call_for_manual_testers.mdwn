@@ -24,7 +24,22 @@ the time you spent on these tests: you can get paid for them.
 
 Meanwhile, you can get an idea of what will be in Tails {{version}} in:
 
-    https://nightly.tails.boum.org/build_Tails_ISO_{{dist}}/
+{% if dist == 'stable' %}
+    https://nightly.tails.boum.org/build_Tails_ISO_stable/
+{% elif dist == 'alpha' %}
+**FIXME**:
+
+  - for the first release candidate, use devel (you just created the testing
+    branch and there's no build of testing yet):
+
+    https://nightly.tails.boum.org/build_Tails_ISO_devel/
+
+  - for subsequent release candidates, use testing:
+
+    https://nightly.tails.boum.org/build_Tails_ISO_testing/
+{% else %}
+    **ERROR**: unsupported dist variable: {{dist}}
+{% endif %}
 
 Thanks a lot in advance,
 cheers!

@@ -29,13 +29,23 @@ module Dogtail
 
   TREE_API_NODE_ACTIONS = [
     :click,
+    :doActionNamed,
     :doubleClick,
     :grabFocus,
     :keyCombo,
     :point,
-    :typeText,
   ].freeze
   private_constant :TREE_API_NODE_ACTIONS
+
+  TREE_API_NODE_AT_SPI_ACTIONS = [
+    :activate,
+    :click,
+    :open,
+    :press,
+    :select,
+    :toggle,
+  ].freeze
+  private_constant :TREE_API_NODE_AT_SPI_ACTIONS
 
   TREE_API_APP_SEARCHES = TREE_API_NODE_SEARCHES + [
     :dialog,
@@ -64,7 +74,7 @@ module Dogtail
 
     def initialize(app_name, **opts)
       @var = "node#{@@node_counter += 1}"
-      @app_name = translate(app_name, **opts)
+      @app_name = app_name
       @opts = opts
       @opts[:user] ||= LIVE_USER
       @find_code = "dogtail.tree.root.application('#{@app_name}')"
@@ -72,7 +82,6 @@ module Dogtail
         'import dogtail.config',
         'import dogtail.tree',
         'import dogtail.predicate',
-        'import dogtail.rawinput',
         'dogtail.config.logDebugToFile = False',
         'dogtail.config.logDebugToStdOut = False',
         'dogtail.config.blinkOnActions = True',
@@ -228,21 +237,6 @@ module Dogtail
       get_field('showing') == 'True'
     end
 
-    # Note: pressKey and typeText are global Dogtail actions,
-    # which should probably live
-    # elsewhere than in our Application class, but currently we lack
-    # the infrastructure to do that: the Ruby plumbing that generates
-    # and runs Python code lives in the Application class.
-    def pressKey(key)
-      # Dogtail will prefix the value of key with 'KEY_'
-      # and the result must be a valid Gdk key symbol such as Gdk.KEY_Down
-      run("dogtail.rawinput.pressKey('#{key}')")
-    end
-
-    def typeText(text)
-      run("dogtail.rawinput.typeText('#{text}')")
-    end
-
     TREE_API_APP_SEARCHES.each do |method|
       define_method(method) do |*args, **kwargs|
         args[0] = translate(args[0], **@opts) if args[0].class == String
@@ -302,9 +296,19 @@ module Dogtail
       end
     end
 
-    def right_click
-      method_call = "click(button=#{RIGHT_CLICK})"
-      run("#{@var}.#{method_call}")
+    # Custom methods that use at-spi actions instead of actions
+    # that rely on rawinput (which don't work on Wayland)
+    TREE_API_NODE_AT_SPI_ACTIONS.each do |action|
+      define_method(action) { doActionNamed(action.to_s) }
+    end
+
+    def doubleClick
+      doActionNamed('click')
+      doActionNamed('click')
+    end
+
+    def position
+      get_field('position')[1...-1].split(', ').map { |str| str.to_i }
     end
   end
 end

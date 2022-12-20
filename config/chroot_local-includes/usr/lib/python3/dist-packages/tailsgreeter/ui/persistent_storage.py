@@ -7,24 +7,26 @@ import threading
 from typing import TYPE_CHECKING, Callable
 
 from tailsgreeter.ui import _
-from tailsgreeter.config import settings_dir, persistent_settings_dir, unsafe_browser_setting_filename
+from tailsgreeter.config import settings_dir, persistent_settings_dir
+from tailsgreeter.errors import PersistentStorageError
 
 gi.require_version('GLib', '2.0')
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gtk
 
 if TYPE_CHECKING:
-    from tailsgreeter.settings.persistence import PersistenceSettings
+    from tailsgreeter.settings.persistence import PersistentStorageSettings
 
 
 class PersistentStorage(object):
-    def __init__(self, persistence_setting: "PersistenceSettings",
+    def __init__(self, persistence_setting: "PersistentStorageSettings",
                  load_settings_cb, apply_settings_cb: Callable, builder):
         self.persistence_setting = persistence_setting
         self.load_settings_cb = load_settings_cb
         self.apply_settings_cb = apply_settings_cb
 
         self.box_storage = builder.get_object('box_storage')
+        self.box_storagecreate = builder.get_object('box_storagecreate')
         self.box_storage_unlock = builder.get_object('box_storage_unlock')
         self.box_storage_unlocked = builder.get_object('box_storage_unlocked')
         self.button_storage_unlock = builder.get_object('button_storage_unlock')
@@ -44,17 +46,16 @@ class PersistentStorage(object):
             self.box_storage_unlocked,
             self.checkbutton_storage_show_passphrase])
 
-        if self.persistence_setting.has_persistence():
+        has_persistence = self.persistence_setting.has_persistence()
+        self.box_storagecreate.set_visible(not has_persistence)
+        self.box_storage.set_visible(has_persistence)
+
+        if has_persistence:
             self.box_storage_unlock.set_visible(True)
             self.checkbutton_storage_show_passphrase.set_visible(True)
             self.image_storage_state.set_visible(True)
             self.entry_storage_passphrase.set_visible(True)
             self.spinner_storage_unlock.set_visible(False)
-        else:
-            # XXX-future: We have a nice button to configure the persistence
-            # but nothing is implemented to do so currently. So let's
-            # hide the whole thing for now.
-            self.box_storage.set_visible(False)
 
     @staticmethod
     def passphrase_changed(editable):
@@ -72,23 +73,21 @@ class PersistentStorage(object):
         passphrase = self.entry_storage_passphrase.get_text()
 
         # Let's execute the unlocking in a thread
-        def do_unlock_storage(unlock_method, passphrase, unlocked_cb,
-                              failed_cb):
-            if unlock_method(passphrase):
-                GLib.idle_add(unlocked_cb)
-            else:
-                GLib.idle_add(failed_cb)
+        def do_unlock_storage():
+            try:
+                if self.persistence_setting.unlock(passphrase):
+                    GLib.idle_add(self.cb_unlocked)
+                else:
+                    GLib.idle_add(self.cb_unlock_failed_with_incorrect_passphrase)
+            except PersistentStorageError as e:
+                logging.error(e)
+                GLib.idle_add(self.unlock_failed)
+                return
 
-        unlocking_thread = threading.Thread(
-                target=do_unlock_storage,
-                args=(self.persistence_setting.unlock,
-                      passphrase,
-                      self.cb_unlocked,
-                      self.cb_unlock_failed)
-                )
+        unlocking_thread = threading.Thread(target=do_unlock_storage)
         unlocking_thread.start()
 
-    def cb_unlock_failed(self):
+    def cb_unlock_failed_with_incorrect_passphrase(self):
         logging.debug("Storage unlock failed")
         self.entry_storage_passphrase.set_sensitive(True)
         self.button_storage_unlock.set_sensitive(True)
@@ -105,17 +104,43 @@ class PersistentStorage(object):
                 'dialog-warning-symbolic')
         self.entry_storage_passphrase.grab_focus()
 
+    def unlock_failed(self):
+        self.button_storage_unlock.set_label(_("Unlock"))
+        self.image_storage_state.set_visible(True)
+        self.spinner_storage_unlock.set_visible(False)
+        self.label_infobar_persistence.set_label(
+            _("Failed to unlock the Persistent Storage. "
+              "Please start Tails and send an error report."))
+        self.infobar_persistence.set_visible(True)
+        self.button_start.set_sensitive(True)
+
+    def activation_failed(self):
+        self.button_storage_unlock.set_label(_("Unlock"))
+        self.image_storage_state.set_visible(True)
+        self.spinner_storage_unlock.set_visible(False)
+        self.label_infobar_persistence.set_label(
+            _("Failed to activate the Persistent Storage. "
+              "Please start Tails and send an error report."))
+        self.infobar_persistence.set_visible(True)
+        self.button_start.set_sensitive(True)
+
     def cb_unlocked(self):
         logging.debug("Storage unlocked")
+
+        # Activate the Persistent Storage
+        try:
+            self.persistence_setting.activate_persistent_storage()
+        except PersistentStorageError as e:
+            logging.error(e)
+            self.activation_failed()
+            return
+
         self.spinner_storage_unlock.set_visible(False)
         self.entry_storage_passphrase.set_visible(False)
         self.button_storage_unlock.set_visible(False)
         self.infobar_persistence.set_visible(False)
         self.image_storage_state.set_from_icon_name('tails-unlocked',
                                                     Gtk.IconSize.BUTTON)
-        self.image_storage_state.set_visible(True)
-        self.box_storage_unlocked.set_visible(True)
-        self.button_start.set_sensitive(True)
 
         # Copy all settings from the "persistent settings directory". This is
         # a workaround for an issue that caused the "Settings were loaded"-
@@ -160,6 +185,8 @@ class PersistentStorage(object):
         # (e5653981228b375c28bf4d1ace9be3367e080900) and the commit which
         # extended its usage and introduced this lengthy comment, can be
         # reverted once #11529 is done.
+        #
+        # This clean up is tracked on #19062.
         for setting in glob.glob(os.path.join(persistent_settings_dir, 'tails.*')):
             sh.cp("-a", setting, settings_dir)
 
@@ -167,6 +194,11 @@ class PersistentStorage(object):
             self.apply_settings_cb()
         else:
             self.load_settings_cb()
+
+        # We're done unlocking and activating the Persistent Storage
+        self.image_storage_state.set_visible(True)
+        self.box_storage_unlocked.set_visible(True)
+        self.button_start.set_sensitive(True)
 
     def cb_checkbutton_storage_show_passphrase_toggled(self, widget):
         self.entry_storage_passphrase.set_visibility(widget.get_active())

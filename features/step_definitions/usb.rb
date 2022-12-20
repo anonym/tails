@@ -1,28 +1,26 @@
+require 'securerandom'
+
 # Returns a hash that for each persistence preset the running Tails is aware of,
 # for each of the corresponding configuration lines,
 # maps the source to the destination.
 def get_persistence_presets_config(skip_links = false)
-  # Perl script that prints all persistence configuration lines (one per line)
-  # in the form: <mount_point>:<comma-separated-list-of-options>
-  script = <<-SCRIPT
-  use strict;
-  use warnings FATAL => "all";
-  use Tails::Persistence::Configuration::Presets;
-  foreach my $atom (Tails::Persistence::Configuration::Presets->new()->atoms) {
-    say $atom->destination, ":", join(",", @{$atom->options});
-  }
-  SCRIPT
-  # VMCommand:s cannot handle newlines, and they're irrelevant in the
-  # above perl script any way
-  script.delete!("\n")
-  presets_configs = $vm.execute_successfully("perl -E '#{script}'")
-                       .stdout.chomp.split("\n")
+  # Python script that prints all persistence configuration lines (one per
+  # line) in the form: <mount_point>\t<comma-separated-list-of-options>
+  script = [
+    'from tps.configuration import features',
+    'for feature in features.get_classes():',
+    '    for mount in feature.Mounts:',
+    '        print(mount)',
+  ]
+  c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
+  assert(c.success?, 'Python script for get_persistence_presets_config failed')
+  presets_configs = c.stdout.chomp.split("\n")
   assert presets_configs.size >= 10,
          "Got #{presets_configs.size} persistence preset configuration " \
          'lines, which is too few'
   persistence_mapping = {}
   presets_configs.each do |line|
-    destination, options_str = line.split(':')
+    destination, options_str = line.split("\t")
     options = options_str.split(',')
     is_link = options.include? 'link'
     next if is_link && skip_links
@@ -52,45 +50,6 @@ def persistent_volumes_mountpoints
   $vm.execute('ls -1 -d /live/persistence/*_unlocked/').stdout.chomp.split
 end
 
-# Returns an array that for each persistence preset the running Tails is aware
-# of, contains a hash with the following keys:
-# id, enabled, has_configuration_button.
-def persistent_presets_ui_settings
-  # Perl script that prints all persistence presets
-  # in the form: <id>:<enabled>:<has_configuration_button>
-  script = <<-SCRIPT
-  use strict;
-  use warnings FATAL => "all";
-  use Tails::Persistence::Configuration::Presets;
-  foreach my $preset (Tails::Persistence::Configuration::Presets->new()->all) {
-    say(sprintf(
-      "%s:%s:%s",
-      $preset->{id},
-      ($preset->{enabled} ? 1 : 0),
-      (exists($preset->{configuration_app_desktop_id}) && defined($preset->{configuration_app_desktop_id})
-         ? 1
-         : 0
-      ),
-    ));
-  }
-  SCRIPT
-  # VMCommand:s cannot handle newlines, and they're irrelevant in the
-  # above perl script any way
-  script.delete!("\n")
-  presets = $vm.execute_successfully("perl -E '#{script}'")
-               .stdout.chomp.split("\n")
-  assert presets.size >= 10,
-         "Got #{presets.size} persistence presets, which is too few"
-  presets.map do |line|
-    id, enabled, has_configuration_button = line.split(':')
-    {
-      'id'                       => id,
-      'enabled'                  => (enabled == '1'),
-      'has_configuration_button' => (has_configuration_button == '1'),
-    }
-  end
-end
-
 # Returns the list of mountpoints which are configured in persistence.conf
 def configured_persistent_mountpoints
   $vm.file_content(
@@ -98,6 +57,14 @@ def configured_persistent_mountpoints
   ).split("\n").map do |line|
     line.split[0]
   end
+end
+
+def persistent_storage_frontend
+  Dogtail::Application.new('tps-frontend')
+end
+
+def persistent_storage_main_frame
+  persistent_storage_frontend.child('Persistent Storage', roleName: 'frame')
 end
 
 def recover_from_upgrader_failure
@@ -175,7 +142,7 @@ Then /^(no|the "([^"]+)") USB drive is selected$/ do |mode, name|
 end
 
 def persistence_exists?(name)
-  data_part_dev = $vm.disk_dev(name) + '2'
+  data_part_dev = $vm.persistent_storage_dev_on_disk(name)
   $vm.execute("test -b #{data_part_dev}").success?
 end
 
@@ -190,7 +157,11 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
             else
               action.capitalize
             end
-    @installer.button(label).click
+    # Despite being a normal "push button" this button doesn't respond
+    # to the "press" action. It has a "click" action, which works, but
+    # after that the installer is inaccessible for Dogtail.
+    @installer.button(label).grabFocus
+    @screen.press('Enter')
     unless action == 'upgrade'
       confirmation_label = if persistence_exists?(name)
                              'Delete Persistent Storage and Reinstall'
@@ -219,58 +190,61 @@ Given(/^I plug and mount a USB drive containing a Tails USB image$/) do
 end
 
 def enable_all_persistence_presets
-  @screen.wait('PersistenceWizardPresets.png', 20)
-  presets = persistent_presets_ui_settings
-  presets[0]['is_first'] = true
-  debug_log("presets: #{presets}")
-  presets.each do |setting|
-    debug_log("on preset: #{setting}")
-    tabs_to_select_switch  = 3 # previous switch -> separator -> row -> switch
-    tabs_to_select_switch -= 1 if setting['is_first']
-    tabs_to_select_switch += 1 if setting['has_configuration_button']
-    # Select the switch
-    debug_log("typing TAB #{tabs_to_select_switch} times to select the switch")
-    tabs_to_select_switch.times do
-      debug_log('typing TAB')
-      @screen.press('Tab')
-    end
-    # Activate the switch
-    if !setting['enabled']
-      debug_log('pressing space')
-      @screen.press('space')
+  assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
+  switches = persistent_storage_main_frame.children(roleName: 'toggle button')
+  switches.each do |switch|
+    if switch.checked
+      debug_log("#{switch.name} is already enabled, skipping")
     else
-      debug_log('setting already enabled, skipping')
+      debug_log("enabling #{switch.name}")
+      # To avoid having to bother with scrolling the window we just
+      # send an AT-SPI action instead of clicking.
+      switch.toggle
+      try_for(10) { switch.checked }
     end
   end
-end
-
-def save_persistence_settings
-  @screen.press('Return') # Press the Save button
-  @screen.wait('PersistenceWizardDone.png', 60)
 end
 
 When /^I disable the first persistence preset$/ do
-  step 'I start "Configure persistent volume" via GNOME Activities Overview'
-  @screen.wait('PersistenceWizardPresets.png', 300)
-  @screen.type(['Tab'], ['space'], ['Return'])
-  @screen.wait('PersistenceWizardDone.png', 30)
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+  assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
+  persistent_folder_switch = persistent_storage_main_frame.child(
+    'Activate Persistent Folder',
+    roleName: 'toggle button'
+  )
+  assert persistent_folder_switch.checked
+  persistent_folder_switch.toggle
+  try_for(10) { !persistent_folder_switch.checked }
   @screen.press('alt', 'F4')
 end
 
-Given /^I create a persistent partition( with the default settings| for Additional Software)?$/ do |mode|
+Given(/^I enable persistence creation in Tails Greeter$/) do
+  @screen.wait('TailsGreeterPersistenceCreate.png', 10).click
+end
+
+Given /^I create a persistent partition( with the default settings| for Additional Software)?( using the wizard that was already open)?$/ do |mode, dontrun|
   # XXX: the wording here could be misleading. Pay attention when reading it! (or, please improve it)
   default_settings = mode
   asp = mode == ' for Additional Software'
-  unless asp
-    step 'I start "Configure persistent volume" via GNOME Activities Overview'
+  unless asp || dontrun
+    step 'I start "Persistent Storage" via GNOME Activities Overview'
   end
-  @screen.wait('PersistenceWizardStart.png', 60)
+  persistent_storage_main_frame.button('Co_ntinue').click
+  persistent_storage_main_frame
+    .child('Passphrase:', roleName: 'label')
+    .labelee
+    .grabFocus
   @screen.type(@persistence_password)
-  @screen.press('Tab')
-  @screen.type(@persistence_password, ['Return'])
-  @screen.wait('PersistenceWizardPresets.png', 300)
+  persistent_storage_main_frame
+    .child('Confirm:', roleName: 'label')
+    .labelee
+    .grabFocus
+  @screen.type(@persistence_password)
+  persistent_storage_main_frame.button('_Create Persistent Storage').click
+  try_for(300) do
+    persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
+  end
   enable_all_persistence_presets unless default_settings
-  save_persistence_settings unless asp
 end
 
 def check_disk_integrity(name, dev, scheme)
@@ -347,19 +321,19 @@ Then /^the running Tails is installed on USB drive "([^"]+)"$/ do |target_name|
 end
 
 Then /^there is no persistence partition on USB drive "([^"]+)"$/ do |name|
-  data_part_dev = $vm.disk_dev(name) + '2'
+  data_part_dev = $vm.persistent_storage_dev_on_disk(name)
   assert($vm.execute("test -b #{data_part_dev}").failure?,
          "USB drive #{name} has a partition '#{data_part_dev}'")
 end
 
 Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
-  dev = $vm.disk_dev(name) + '2'
+  dev = $vm.persistent_storage_dev_on_disk(name)
   check_part_integrity(name, dev, 'crypto', 'crypto_LUKS',
                        part_label: 'TailsData')
 
   luks_dev = nil
   # The LUKS container may already be opened, e.g. by udisks after
-  # we've run tails-persistence-setup.
+  # we've created the Persistent Storage.
   c = $vm.execute("ls -1 --hide 'control' /dev/mapper/")
   if c.success?
     c.stdout.split("\n").each do |candidate|
@@ -405,10 +379,9 @@ Given /^I enable persistence$/ do
 end
 
 def tails_persistence_enabled?
-  persistence_state_file = '/var/lib/live/config/tails.persistence'
-  $vm.execute("test -e '#{persistence_state_file}'").success? &&
-    $vm.execute(". '#{persistence_state_file}' && " \
-                'test "$TAILS_PERSISTENCE_ENABLED" = true').success?
+  libtps_file = "/usr/local/lib/tails-shell-library/libtps.sh"
+  $vm.execute(". '#{libtps_file}' && " \
+              'tps_is_unlocked').success?
 end
 
 Given /^all persistence presets(| from the old Tails version)(| but the first one) are enabled$/ do |old_tails, except_first|
@@ -570,10 +543,6 @@ Then /^all persistence configuration files have safe access rights$/ do
       "#{mountpoint}/persistence.conf does not exist, while it should"
     )
     assert_vmcommand_success(
-      $vm.execute("test -e #{mountpoint}/persistence.conf.bak"),
-      "#{mountpoint}/persistence.conf.bak does not exist, while it should"
-    )
-    assert_vmcommand_success(
       $vm.execute("test ! -e #{mountpoint}/live-persistence.conf"),
       "#{mountpoint}/live-persistence.conf does exist, while it should not"
     )
@@ -583,8 +552,8 @@ Then /^all persistence configuration files have safe access rights$/ do
       file_owner = $vm.execute("stat -c %U '#{f}'").stdout.chomp
       file_group = $vm.execute("stat -c %G '#{f}'").stdout.chomp
       file_perms = $vm.execute("stat -c %a '#{f}'").stdout.chomp
-      assert_equal('tails-persistence-setup', file_owner)
-      assert_equal('tails-persistence-setup', file_group)
+      assert_equal('tails-persistent-storage', file_owner)
+      assert_equal('tails-persistent-storage', file_group)
       case f
       when %r{.*/live-additional-software.conf$}
         assert_equal('644', file_perms)
@@ -753,10 +722,23 @@ Then /^only the expected files are present on the persistence partition on USB d
 end
 
 When /^I delete the persistent partition$/ do
-  step 'I start "Delete persistent volume" via GNOME Activities Overview'
-  @screen.wait('PersistenceWizardDeletionStart.png', 120)
-  @screen.press('space')
-  @screen.wait('PersistenceWizardDone.png', 120)
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+
+  delete_btn = persistent_storage_main_frame.button('Delete Persistent Storage')
+  assert delete_btn
+
+  # If we just do delete_btn.click, then dogtail won't find tps-frontend anymore.
+  # That's probably a bug somewhere, and this is a simple workaround
+  delete_btn.grabFocus
+  @screen.press('Return')
+
+  persistent_storage_frontend
+    .child('Warning', roleName: 'alert')
+    .button('Delete Persistent Storage').click
+  assert persistent_storage_main_frame.child(
+    'The Persistent Storage was successfully deleted.',
+    roleName: 'label'
+  )
 end
 
 Then /^Tails has started in UEFI mode$/ do
@@ -1146,25 +1128,32 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
                                roleName:    'dialog',
                                showingOnly: true)
   # Open the file chooser
-  disks.pressKey('Enter')
+  @screen.press('Enter')
   select_disk_image_dialog = disks.child('Select Disk Image to Restore',
                                          roleName:    'file chooser',
                                          showingOnly: true)
-  disks.typeText(@usb_image_path)
+  @screen.paste(
+    @usb_image_path,
+    app: :gtk_file_chooser
+  )
   sleep 2 # avoid ENTER being eaten by the auto-completion system
-  disks.pressKey('Enter')
+  @screen.press('Enter')
   try_for(10) do
     !select_disk_image_dialog.showing
   end
+  # Clicking this button using Dogtail works, but afterwards GNOME
+  # Disks becomes inaccessible.
   restore_dialog.child('Start Restoring…',
                        roleName:    'push button',
-                       showingOnly: true).click
+                       showingOnly: true).grabFocus
+  @screen.press('Return')
   disks.child('Information', roleName: 'alert', showingOnly: true)
        .child('Restore', roleName: 'push button', showingOnly: true)
-       .click
+       .grabFocus
+  @screen.press('Return')
   # Wait until the restoration job is finished
   job = disks.child('Job', roleName: 'label', showingOnly: true)
-  try_for(60) do
+  try_for(120) do
     !job.showing
   end
 end
@@ -1174,12 +1163,14 @@ Given /^I set all Greeter options to non-default values$/ do
   # otherwise we might detect the + button or language entry before it
   # has been readjusted, so while we try to click it, it moves so we
   # miss it.
-  step 'I disable networking in Tails Greeter'
+  step 'I disable the Unsafe Browser'
   sleep 2
-  step 'I allow the Unsafe Browser to be started'
+  step 'I disable networking in Tails Greeter'
   sleep 2
   step 'I disable MAC spoofing in Tails Greeter'
   sleep 2
+  # Administration password needs to be done last because its image has blue background (selected)
+  # while the others have no such background.
   step 'I set an administration password'
   sleep 2
   # We do this one last so we don't have to worry about translations
@@ -1198,7 +1189,7 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_LOCALE_NAME=de_DE
       TAILS_MACSPOOF_ENABLED=false
       TAILS_NETWORK=false
-      TAILS_UNSAFE_BROWSER_ENABLED=true
+      TAILS_UNSAFE_BROWSER_ENABLED=false
       TAILS_XKBLAYOUT=de
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=
@@ -1217,7 +1208,7 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_LOCALE_NAME=en_US
       TAILS_MACSPOOF_ENABLED=true
       TAILS_NETWORK=true
-      TAILS_UNSAFE_BROWSER_ENABLED=false
+      TAILS_UNSAFE_BROWSER_ENABLED=true
       TAILS_XKBLAYOUT=us
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=
@@ -1244,6 +1235,13 @@ Then /^(.*) is not configured to persist$/ do |dir|
   assert(!configured_persistent_mountpoints.include?(dir))
 end
 
-Then /^I accept the persistence wizard's offer to restart Tails$/ do
-  @screen.wait('PersistenceWizardRestartButton.png', 5).click
+Then /^the Tails Persistent Storage behave tests pass$/ do
+  $vm.execute_successfully('/usr/lib/python3/dist-packages/tps/configuration/behave-tests/run-tests.sh')
+end
+
+When /^I give the Persistent Storage on drive "([^"]+)" its own UUID$/ do |name|
+  # Rationale: udisks cannot unlock 2 devices with the same UUID.
+  dev = $vm.persistent_storage_dev_on_disk(name)
+  uuid = SecureRandom.uuid
+  $vm.execute_successfully("cryptsetup luksUUID --uuid #{uuid} #{dev}")
 end
