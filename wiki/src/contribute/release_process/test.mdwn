@@ -242,12 +242,13 @@ prefer UEFI:
 2. Boot this USB stick on bare-metal a first time to trigger re-partitioning.
    - You should see the "GNU GRUB" title, as opposed to a syslinux menu.
    - Wait until you see the Welcome Screen.
-3. Boot this USB stick a second time, measuring the boot time (from the
+3. Shut down Tails
+4. Boot this USB stick a second time, measuring the boot time (from the
    GRUB menu until the GNOME desktop is ready -- quickly press
    ENTER in the Welcome Screen). Take note of the boot time you measured.
-4. Go through steps 1-3 again, but this time using the previous Tails version.
+5. Go through steps 1-4 again, but this time using the previous Tails version.
    Use the same computer and the same USB stick.
-5. Compare the boot times you measured at steps 3 and 4.
+6. Compare the boot times you measured at steps 3 and 4.
    Expected result: the new Tails should not be significantly slower to start
    than the old one.
 
@@ -258,9 +259,11 @@ On a computer configured to prefer legacy BIOS boot:
 
 1. Freshly install the version of Tails being tested to a USB stick.
 2. Boot this USB stick on bare-metal a first time to trigger re-partitioning.
-   You should see the "SYSLINUX" title in the bootloader, as opposed to GRUB.
-3. Boot this USB stick a second time.
-4. You should see the Welcome Screen appear.
+   - You should see the "SYSLINUX" title in the bootloader, as opposed to GRUB.
+   - Wait until you see the Welcome Screen.
+3. Shut down Tails
+4. Boot this USB stick a second time.
+5. You should see the Welcome Screen appear.
 
 Misc
 ====
