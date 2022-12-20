@@ -685,6 +685,10 @@ class StepErrorMixin:
         )
         if coming_from in ["proxy"]:
             self.state["error"]["fix_attempt"] = True
+        if self.app.get_network_time_result["status"] is not None \
+           and self.app.get_network_time_result["status"] == "success":
+            for box in ["wrong_clock", "captive_portal", "proxy"]:
+                self.get_object(f"box_{box}").hide()
         self._step_error_submit_allowed()
 
     def cb_step_error_btn_proxy_clicked(self, *args):
