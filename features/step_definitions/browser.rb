@@ -6,7 +6,6 @@ end
 
 When /^I successfully start the Unsafe Browser(?: in "([^"]+)")?$/ do |lang_code|
   step 'I start the Unsafe Browser'
-  step 'I see and accept the Unsafe Browser start verification'
   if lang_code && lang_code == 'en'
     step 'I see the "Starting the Unsafe Browser..." notification ' \
          'after at most 60 seconds'
