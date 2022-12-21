@@ -123,19 +123,6 @@ Feature: Upgrading an old Tails USB installation
     And the file system changes introduced in version 2.3~testoverlayfsng are present in the Unsafe Browser's chroot
 
   @automatic_upgrade
-  Scenario: Upgrading a Tails that has several SquashFS deltas present with an incremental upgrade
-    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
-    And Tails is fooled to think that version 2.0~testoverlayfsng was initially installed
-    And Tails is fooled to think it is running version 2.1~testoverlayfsng
-    And Tails is fooled to think a 2.0.1~testoverlayfsng SquashFS delta is installed
-    And Tails is fooled to think a 2.1~testoverlayfsng SquashFS delta is installed
-    When the network is plugged
-    And Tor is ready
-    Then I am proposed to install an incremental upgrade to version 2.2~testoverlayfsng
-    And I can successfully install the incremental upgrade to version 2.2~testoverlayfsng
-    Then only the 2.2~testoverlayfsng SquashFS delta is installed
-
-  @automatic_upgrade
   Scenario: Upgrading a Tails whose signing key is outdated
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And Tails is fooled to think that version 2.0~testoverlayfsng was initially installed
