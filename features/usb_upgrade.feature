@@ -2,9 +2,9 @@
 Feature: Upgrading an old Tails USB installation
   As a Tails user
   If I have an old version of Tails installed on a USB device
-  and the USB device has a persistent partition
+  and the USB device has a Persistent Storage
   I want to upgrade Tails on it
-  and keep my persistent partition in the process
+  and keep my Persistent Storage in the process
 
   # An issue with this feature is that scenarios depend on each
   # other. When editing this feature, make sure you understand these
