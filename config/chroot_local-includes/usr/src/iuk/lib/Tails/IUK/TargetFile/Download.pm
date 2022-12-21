@@ -137,7 +137,7 @@ method _build_ua () {
         );
     }
     unless ($ENV{HARNESS_ACTIVE} or $ENV{DISABLE_PROXY}) {
-        $ua->proxy([qw(http https)] => 'socks://127.0.0.1:9062');
+        $ua->proxy([qw(http https)] => 'socks://127.0.0.1:9063');
     }
     $ua->protocols_allowed([qw(http https)]);
     $ua->max_size($self->size);

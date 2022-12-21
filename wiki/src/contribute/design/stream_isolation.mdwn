@@ -71,8 +71,13 @@ in [[!tails_gitweb config/chroot_local-includes/etc/tor/torrc]]:
 
 * default system-wide `SocksPort` (9050): `IsolateDestAddr` and
   `IsolateDestPort` enabled
-* dedicated `SocksPort` for Tails-specific applications (9062):
+* dedicated `SocksPort` for other Tails-specific applications (9062):
   `IsolateDestAddr` and `IsolateDestPort` enabled
+* dedicated `SocksPort` (9063) used by the *Upgrader* to download IUKs with
+  `tails-iuk-get-target-file`: we disable isolation flags so there's at least
+  a chance that the circuit used to connect to Mirrorbits is reused for the
+  actual download, thus benefiting from the fact Mirrorbits uses GeoIP to select
+  the mirror.
 * dedicated `SocksPort` for web browser (still 9050, but on a veth
   dedicated to web browser's netns): no stream
   isolation options
