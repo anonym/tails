@@ -993,20 +993,45 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="step_error_text">
-                    <property name="name">step_error_text</property>
+                  <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can-focus">True</property>
+                    <property name="can-focus">False</property>
                     <property name="margin-top">6</property>
-                    <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
-                    <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
-                    <accessibility>
-                      <relation type="controlled-by" target="step_error_btn_scanqrcode"/>
-                      <relation type="described-by" target="step_error_label_warning"/>
-                    </accessibility>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Bridge</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="step_error_text">
+                        <property name="name">step_error_text</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="placeholder-text" translatable="yes">obfs4 ...</property>
+                        <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
+                        <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
+                        <accessibility>
+                          <relation type="controlled-by" target="step_error_btn_scanqrcode"/>
+                          <relation type="described-by" target="step_error_label_warning"/>
+                        </accessibility>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
+                    <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
