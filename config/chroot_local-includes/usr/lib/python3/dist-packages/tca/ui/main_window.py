@@ -667,6 +667,11 @@ class StepConnectProgressMixin:
 
 class StepErrorMixin:
     def before_show_error(self, coming_from):
+        label_explain = self.get_object("label_explain")
+        # We hide this label by default. We'll show it below whenever
+        # we have a good explanation to give to the user.
+        label_explain.hide()
+
         self.state["error"] = {
             "fix_attempt": False  # has the user done something to fix it?
         }
@@ -695,6 +700,10 @@ class StepErrorMixin:
              and self.app.get_network_time_result["status"] == "success":
             for box in ["wrong_clock", "captive_portal", "proxy"]:
                 self.get_object(f"box_{box}").hide()
+            label_explain.set_text(
+                _("Your local network seems to be blocking access to Tor.")
+            )
+            label_explain.show()
 
         self._step_error_submit_allowed()
 
