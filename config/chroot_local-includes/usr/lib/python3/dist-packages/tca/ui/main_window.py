@@ -701,7 +701,7 @@ class StepErrorMixin:
             for box in ["wrong_clock", "captive_portal", "proxy"]:
                 self.get_object(f"box_{box}").hide()
             label_explain.set_text(
-                _("Your local network seems to be blocking access to Tor.")
+                _("This local network seems to be blocking access to Tor.")
             )
             label_explain.show()
 
