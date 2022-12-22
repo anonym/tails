@@ -80,7 +80,8 @@ mail_subject = "Bug report: %x" % random.randrange(16**32)
 
 
 def mail_prepended_info():
-    """Returns the version of the running Tails system
+    """Return the version of the running Tails system.
+
     A callback function to get information to prepend to the mail
     (this information will be encrypted). This is useful to add
     software version.
@@ -91,7 +92,6 @@ def mail_prepended_info():
     @return The output of tails-version, if any, or an English string
             explaining the error
     """
-
     try:
         tails_version_process = subprocess.Popen("tails-version",
                                                  stdout=subprocess.PIPE)
@@ -106,7 +106,8 @@ def mail_prepended_info():
 
 
 def mail_appended_info():
-    """Returns debugging information on the running Tails system
+    """Return debugging information on the running Tails system.
+
     A callback function to get information to append to the email
     (this information will be encrypted). This is useful to add
     configuration files useful for debugging.
