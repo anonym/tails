@@ -169,19 +169,55 @@ Storage, your Persistent Storage fails to load with the error message:
 
 To fix this, remove or replace these symbolic links.
 
-To access the content of your Persistent Storage:
+The following instructions explain how to access the content of your Persistent
+Storage.
 
-1. Start Tails and set an
-   [[administration password|doc/first_steps/welcome_screen/administration_password]].
+- When starting Tails:
 
-1. Choose **Applications**&nbsp;▸ **System Tools**&nbsp;▸ **Root Terminal** to
-   open a terminal with administration rights.
+  1. Do not unlock your Persistent Storage.
 
-1. Execute the following command to open the *Files* browser with administration rights:
+  2. Set an [[administration password|doc/first_steps/welcome_screen/administration_password]].
 
-       nautilus
+- In Tails, unlock your Persistent Storage:
 
-1. In the file browser, navigate to */live/persistence/TailsData_unlocked/Dotfiles*.
+  1. Choose **Applications**&nbsp;▸ **Utilities**&nbsp;▸ **Disks**.
+
+  1. In the *Disks* utility, select your Tails USB stick in the left pane.
+
+  1. Select the **TailsData LUKS** partition in the right pane.
+
+  1. Click the **[[!img lib/unlock.png alt="Unlock selected encrypted partition"
+     class="symbolic" link="no"]]** button.
+
+  1. Enter the passphrase of your Persistent Storage.
+
+  1. In the second password prompt, enter your administration password.
+
+  1. Click the **TailsData Ext4** that appeared below the **TailsData LUKS** partition.
+
+  1. Click the **[[!img lib/media-playback-start.png alt="Mount selected
+   partition" link=no class=symbolic]]**.
+
+  1. Close the *Disks* utility.
+
+- Navigate to the content of your Persistent Storage:
+
+  1. Choose **Applications**&nbsp;▸ **System Tools**&nbsp;▸ **Root Terminal** to
+     open a terminal with administration rights.
+
+  1. Execute the following command to open the *Files* browser with administration rights:
+
+         nautilus
+
+  1. In the *Files* browser, navigate to */media/amnesia/TailsData/dotfiles*.
+
+     Remove or replace all symbolic links in the dotfiles folder.
+
+     Symbolic links have the following icon:
+
+     [[!img symlink.png link="no" alt=""]]
+
+  1. Restart Tails and try unlocking your Persistent Storage like usually.
 
 ## Welcome Screen and Tor Connection do not fit on 800x600 resolution ([[!tails_ticket 19324]])
 
