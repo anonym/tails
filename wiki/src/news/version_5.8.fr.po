@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-12-22 11:35+0000\n"
+"POT-Creation-Date: 2022-12-23 10:06+0000\n"
 "PO-Revision-Date: 2022-12-20 21:06+0000\n"
 "Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -263,49 +263,190 @@ msgstr ""
 msgid "<h1 id=\"issues\">Known issues</h1>\n"
 msgstr "<h1 id=\"issues\">Problèmes connus</h1>\n"
 
-#. type: Bullet: '- '
-msgid ""
-"The switches that turn on and off the different features of the Persistent "
-"Storage are very slow to respond on some USB sticks. Please report on [[!"
-"tails_ticket 19291]] if this happens to you."
+#. type: Plain text
+#, no-wrap
+msgid "<h2 id=\"qt\">Problems with Qt applications like <i>Kleopatra</i> and <i>Feather</i></h2>\n"
 msgstr ""
 
-#. type: Bullet: '- '
+#. type: Plain text
 msgid ""
-"The top of the Welcome Screen is cut out on small displays (800×600), like "
-"virtual machines. ([[!tails_ticket 19324]])"
+"Applications using the Qt toolkit have issues in Wayland. You can work "
+"around these issues by running these applications using XWayland instead."
+msgstr ""
+
+#. type: Title ###
+#, no-wrap
+msgid "Clipboard encryption and decryption is broken in *Kleopatra* ([[!tails_ticket 19329]])"
+msgstr ""
+
+#. type: Plain text
+msgid "To fix this:"
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid ""
+"Choose **Applications**&nbsp;▸ **Utilities**&nbsp;▸ **Terminal** to open a "
+"terminal."
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Execute the following command in the terminal:"
 msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "  You can press **Alt+S** to start Tails.\n"
+msgid "       unset QT_QPA_PLATFORM ; kleopatra\n"
 msgstr ""
 
-#. type: Bullet: '- '
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   This only works if *Kleopatra* has never been started since Tails started.\n"
+"   Otherwise, execute this command and try again:\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "       killall kleopatra\n"
+msgstr ""
+
+#. type: Title ###
+#, no-wrap
+msgid "AppImages like *Feather* wallet and *Bitcoin-Qt* fail to load ([[!tails_ticket 19326]])"
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Navigate to your AppImage in the *Files* browser."
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid ""
+"Do right-click (on Mac, click with two fingers) in the folder and choose "
+"**Open in Terminal**."
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Execute the following command in the terminal to start your AppImage."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "   Replace:\n"
+msgstr ""
+
+#. type: Bullet: '   - '
+msgid ""
+"<span class=\"command-placeholder\">application.AppImage</span> by the file "
+"name of your AppImage."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "   <p class=\"pre command\">unset QT_QPA_PLATFORM ; ./<span class=\"command-placeholder\">application.AppImage</span></p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "   For example, to start the *Feather* wallet version 2.1.2, execute:\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "       unset QT_QPA_PLATFORM ; ./feather-2.1.2.AppImage\n"
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "*Tor Browser* and *Unsafe Browser* have no minimize and maximize buttons ([[!tails_ticket 19328]])"
+msgstr ""
+
+#. type: Plain text
+msgid "To work around this:"
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid ""
+"Right-click on the *Tor Browser* tab in the window list at the bottom of the "
+"screen."
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Choose **Minimize** or **Maximize**."
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "Persistent Storage fails to load"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"If you have [[!wikipedia Symbolic_link desc=\"symbolic links\"]] in the "
+"[[Dotfiles|doc/first_steps/persistence#dotfiles]] feature of your Persistent "
+"Storage, your Persistent Storage fails to load."
+msgstr ""
+
+#. type: Plain text
+msgid "To fix this, replace these symbolic links."
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "Welcome Screen and Tor Connection do not fit on 800x600 resolution ([[!tails_ticket 19324]])"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"The top of the Welcome Screen and some button of the Tor Connection "
+"assistant are cut out on small displays (800×600), like virtual machines. "
+"([[!tails_ticket 19324]])"
+msgstr ""
+
+#. type: Plain text
+msgid "You can press **Alt+S** to start Tails."
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "Switches of the Persistent Storage settings are very slow sometimes ([[!tails_ticket 19291]])"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"The switches that turn on and off the different features of the Persistent Storage\n"
+"are very slow to respond on some USB sticks. Please report on [[!tails_ticket\n"
+"19291]] if this happens to you.\n"
+msgstr ""
+
+#. type: Title ##
+#, no-wrap
+msgid "Progress bar of *Tor Connection* gets stuck around 50% ([[!tails_ticket 19173]])"
+msgstr ""
+
+#. type: Plain text
 msgid ""
 "When using a custom Tor `obfs4` bridge, the progress bar of *Tor Connection* "
-"sometimes gets stuck halfway through and becomes extremely slow. ([[!"
-"tails_ticket 19173]])"
+"sometimes gets stuck halfway through and becomes extremely slow."
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
-msgid "  To fix this, you can either:\n"
+msgid "To fix this, you can either:"
 msgstr ""
 
-#. type: Bullet: '  * '
+#. type: Bullet: '* '
 msgid "Close and reopen *Tor Connection* to speed up the initial connection."
 msgstr ""
 
-#. type: Bullet: '  * '
+#. type: Bullet: '* '
 msgid "Try a different `obfs4` bridge."
 msgstr ""
 
 #. type: Plain text
 #, no-wrap
 msgid ""
-"    This issue only affects outdated obfs4 bridges and does not happen with\n"
-"    obfs4 bridges that run version 0.0.12 or later.\n"
+"  This issue only affects outdated obfs4 bridges and does not happen with\n"
+"  obfs4 bridges that run version 0.0.12 or later.\n"
 msgstr ""
 
 #. type: Plain text

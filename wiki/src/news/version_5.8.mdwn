@@ -106,26 +106,90 @@ For more details, read our [[!tails_gitweb debian/changelog desc="changelog"]].
 
 <h1 id="issues">Known issues</h1>
 
-- The switches that turn on and off the different features of the Persistent Storage
-  are very slow to respond on some USB sticks. Please report on [[!tails_ticket
-  19291]] if this happens to you.
+<h2 id="qt">Problems with Qt applications like <i>Kleopatra</i> and <i>Feather</i></h2>
 
-- The top of the Welcome Screen is cut out on small displays (800×600), like
-  virtual machines. ([[!tails_ticket 19324]])
+Applications using the Qt toolkit have issues in Wayland. You can work around
+these issues by running these applications using XWayland instead.
 
-  You can press **Alt+S** to start Tails.
+### Clipboard encryption and decryption is broken in *Kleopatra* ([[!tails_ticket 19329]])
 
-- When using a custom Tor `obfs4` bridge, the progress bar of *Tor Connection*
-  sometimes gets stuck halfway through and becomes extremely slow. ([[!tails_ticket 19173]])
+To fix this:
 
-  To fix this, you can either:
+1. Choose **Applications**&nbsp;▸ **Utilities**&nbsp;▸ **Terminal** to open a terminal.
 
-  * Close and reopen *Tor Connection* to speed up the initial connection.
+1. Execute the following command in the terminal:
 
-  * Try a different `obfs4` bridge.
+       unset QT_QPA_PLATFORM ; kleopatra
 
-    This issue only affects outdated obfs4 bridges and does not happen with
-    obfs4 bridges that run version 0.0.12 or later.
+   This only works if *Kleopatra* has never been started since Tails started.
+   Otherwise, execute this command and try again:
+
+       killall kleopatra
+
+### AppImages like *Feather* wallet and *Bitcoin-Qt* fail to load ([[!tails_ticket 19326]])
+
+To fix this:
+
+1. Navigate to your AppImage in the *Files* browser.
+
+1. Do right-click (on Mac, click with two fingers) in the folder and choose
+   **Open in Terminal**.
+
+1. Execute the following command in the terminal to start your AppImage.
+
+   Replace:
+
+   - <span class="command-placeholder">application.AppImage</span> by the
+     file name of your AppImage.
+
+   <p class="pre command">unset QT_QPA_PLATFORM ; ./<span class="command-placeholder">application.AppImage</span></p>
+
+   For example, to start the *Feather* wallet version 2.1.2, execute:
+
+       unset QT_QPA_PLATFORM ; ./feather-2.1.2.AppImage
+
+## *Tor Browser* and *Unsafe Browser* have no minimize and maximize buttons ([[!tails_ticket 19328]])
+
+To work around this:
+
+1. Right-click on the *Tor Browser* tab in the window list at the bottom of the screen.
+
+1. Choose **Minimize** or **Maximize**.
+
+## Persistent Storage fails to load
+
+If you have [[!wikipedia Symbolic_link desc="symbolic links"]] in the
+[[Dotfiles|doc/first_steps/persistence#dotfiles]] feature of your Persistent
+Storage, your Persistent Storage fails to load.
+
+To fix this, replace these symbolic links.
+
+## Welcome Screen and Tor Connection do not fit on 800x600 resolution ([[!tails_ticket 19324]])
+
+The top of the Welcome Screen and some button of the Tor Connection assistant are cut out on small displays (800×600), like
+virtual machines. ([[!tails_ticket 19324]])
+
+You can press **Alt+S** to start Tails.
+
+## Switches of the Persistent Storage settings are very slow sometimes ([[!tails_ticket 19291]])
+
+The switches that turn on and off the different features of the Persistent Storage
+are very slow to respond on some USB sticks. Please report on [[!tails_ticket
+19291]] if this happens to you.
+
+## Progress bar of *Tor Connection* gets stuck around 50% ([[!tails_ticket 19173]])
+
+When using a custom Tor `obfs4` bridge, the progress bar of *Tor Connection*
+sometimes gets stuck halfway through and becomes extremely slow.
+
+To fix this, you can either:
+
+* Close and reopen *Tor Connection* to speed up the initial connection.
+
+* Try a different `obfs4` bridge.
+
+  This issue only affects outdated obfs4 bridges and does not happen with
+  obfs4 bridges that run version 0.0.12 or later.
 
 See the list of [[long-standing issues|support/known_issues]].
 
