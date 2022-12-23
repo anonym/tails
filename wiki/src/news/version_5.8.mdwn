@@ -158,7 +158,7 @@ To work around this:
 
 1. Choose **Minimize** or **Maximize**.
 
-## Persistent Storage fails to load
+<h2 id="ps">Persistent Storage fails to load</h2>
 
 If you have [[!wikipedia Symbolic_link desc="symbolic links"]] in the
 [[Dotfiles|doc/first_steps/persistence#dotfiles]] feature of your Persistent
@@ -167,7 +167,21 @@ Storage, your Persistent Storage fails to load with the error message:
     Failed to activate the Persistent Storage.
     Please start Tails and send an error report.
 
-To fix this, replace these symbolic links.
+To fix this, remove or replace these symbolic links.
+
+To access the content of your Persistent Storage:
+
+1. Start Tails and set an
+   [[administration password|doc/first_steps/welcome_screen/administration_password]].
+
+1. Choose **Applications**&nbsp;▸ **System Tools**&nbsp;▸ **Root Terminal** to
+   open a terminal with administration rights.
+
+1. Execute the following command to open the *Files* browser with administration rights:
+
+       nautilus
+
+1. In the file browser, navigate to */live/persistence/TailsData_unlocked/Dotfiles*.
 
 ## Welcome Screen and Tor Connection do not fit on 800x600 resolution ([[!tails_ticket 19324]])
 
