@@ -182,8 +182,8 @@ mo_file () {
 
 refresh_mo () {
     for locale in "$@" ; do
-        po=$(po_file $locale)
-        mo=$(mo_file $locale)
+        po=$(po_file "$locale")
+        mo=$(mo_file "$locale")
         mkdir -p "$(dirname "$mo")"
         msgfmt --check -o "${mo}" "${po}"
     done
