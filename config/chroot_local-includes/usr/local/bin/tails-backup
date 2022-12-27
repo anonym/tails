@@ -41,7 +41,7 @@ EOF
     )
 }
 
-title="$(gettext -s 'Back up Persistent Storage')"
+title="$(gettext -s 'Back Up Persistent Storage')"
 if [ ! -d "$SOURCE" ] || [ ! -b "$(backup_luks_device)" ]; then
     msg="$(gettext -s 'This utility updates your backup Tails USB stick.\n\nTo create a backup Tails USB stick, see <a href="file:///usr/share/doc/tails/website/doc/first_steps/persistence/backup.en.html">making a backup of your Persistent Storage</a>.\n\n<b>Impossible to update your backup Tails USB stick.</b>\n\nTo update your backup Tails USB stick, you need to:')"
     if [ ! -d "$SOURCE" ]; then
@@ -101,11 +101,11 @@ then
     sleep 1
     echo "Done!"
     gio mount --eject "${DEST}"
-    title="$(gettext -s 'Backup successful')"
+    title="$(gettext -s 'Backup Successful')"
     msg="$(gettext -s '<b>Your Persistent Storage was backed up successfully to your backup Tails USB stick!</b>\n\nYou can now safely unplug your backup Tails USB stick.\n\nIf your backup Tails has an outdated version of Tails, we recommend you\nupdate it by cloning your current Tails using <i>Tails Installer</i>.\n\nSee <a href="file:///usr/share/doc/tails/website/upgrade/clone.en.html#upgrade">manually upgrade from another Tails</a>.')"
     zenity --info --ellipsize --title "$title" --text "$msg"
 else
-    title="$(gettext -s 'Backup failed')"
+    title="$(gettext -s 'Backup Failed')"
     msg="$(gettext -s '<b>Updating your backup Tails failed.</b>\n\nYou can:\n\n• Try to update your backup Tails again.\n\n• Make sure that there is enough free space on your backup Tails.\n\n• Analyze the log in the terminal.')"
     zenity --error --ellipsize --title "$title" --text "$msg"
     exit 1
