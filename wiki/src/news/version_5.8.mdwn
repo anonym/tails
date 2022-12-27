@@ -121,7 +121,7 @@ To fix this:
 
 1. Execute the following command in the terminal:
 
-       unset QT_QPA_PLATFORM ; kleopatra &
+       unset QT_QPA_PLATFORM & kleopatra &
 
    This only works if *Kleopatra* has never been started since Tails started.
    Otherwise, execute this command and try again:
@@ -150,15 +150,34 @@ To fix this:
 
        unset QT_QPA_PLATFORM ; ./feather-2.1.2.AppImage
 
-## *Tor Browser* and *Unsafe Browser* have no minimize and maximize buttons ([[!tails_ticket 19328]])
+<h2 id="graphics">Some graphics cards stopped working in Tails 5.8</h2>
 
-To work around this:
+People have reported us several graphics cards that used to work in Tails 5.7
+and stopped working in Tails 5.8:
 
-1. Right-click on the *Tor Browser* tab in the window list at the bottom of the screen.
+- Nvidia
+  * `10de:2489`
+  * `10de:2504` RTX
+  * `10de:2560` GA106M GeForce RTX 3060 Mobile
+  * `10de:25e0`
+- Intel
+  * `8086:0046`
+  * `8086:3185` GeminiLake
+  * `8086:4692`
+  * `8086:46a6`
+  * `8086:4e55`
+- AMD
+  * `1002:1506`
+  * `1002:15e7`
+  * `1002:6605` Radeon R7 M260X
+  * `1002:6649` Bonaire FirePro W5100
+  * `1002:73df` RX Radeon 6700XT
 
-1. Choose **Minimize** or **Maximize**.
+Unfortunately, we have no solution to offer you so far as this is a regression
+in the Linux kernel distributed by Debian.
 
-<h2 id="ps">Persistent Storage fails to load</h2>
+We hope that this gets fixed in the next update of the Linux kernel in Tails 5.9.
+<h2 id="ps">Persistent Storage fails to load with symbolic links in Dotfiles ([[!tails_ticket 19346]])</h2>
 
 If you have [[!wikipedia Symbolic_link desc="symbolic links"]] in the
 [[Dotfiles|doc/first_steps/persistence#dotfiles]] feature of your Persistent
@@ -218,6 +237,14 @@ Storage.
      [[!img symlink.png link="no" alt=""]]
 
   1. Restart Tails and try unlocking your Persistent Storage like usually.
+
+## *Tor Browser* and *Unsafe Browser* have no minimize and maximize buttons ([[!tails_ticket 19328]])
+
+To work around this:
+
+1. Right-click on the *Tor Browser* tab in the window list at the bottom of the screen.
+
+1. Choose **Minimize** or **Maximize**.
 
 ## Welcome Screen and Tor Connection do not fit on 800x600 resolution ([[!tails_ticket 19324]])
 
