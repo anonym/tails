@@ -1431,34 +1431,56 @@ You probably already know how to do that, but keep this in mind:
    for whatever reasons, you need to turn off your computer.
 
  - if you are running this and going AFK for long time (ie: overnight) you might want to
-   keep your CPU busy by rerunning failed scenarios
+   keep your CPU busy by rerunning failed scenarios. See the "Automatically re-run failures" section.
 
  - if the following conditions are met:
-    - you are making out an emergency release OR you still feel the need to make the release as soon as
+    - you are making out an emergency release *OR* you still feel the need to make the release as soon as
       possible for security reasons
-    - you are *not* running test overnight, so skipping tests will reduce the lead time
-      then, feel free to skip testing `@not_release_blocker`, setting
+    - *and* you are *not* running test overnight, so skipping tests will reduce the lead time
+    - *then*, feel free to skip testing `@not_release_blocker`, setting
       `what=(--tag ~@not_release_blocker)` in the following example.
 
-So here is a good example of how you can do this. Tweak it to adapt it to your directory structure.
-Run this *as root* and with *bash*:
 
-```
+Automatically re-run failures
+--------------------------------
+
+So here is a good example of how you can do this. Save this code into a file named `test-rerun.sh`, tweaking it
+(especially the `tmpdir`) to adapt it to your directory structure.
+
+```sh
+#!/bin/bash
+
+if [ $(id -u) -ne 0 ]; then
+	exec sudo \
+		VERSION="$VERSION" ISOS="$ISOS" PREVIOUS_STABLE_VERSION="$PREVIOUS_STABLE_VERSION" \
+		tmpdir="$HOME/tails/release/test-results/${VERSION:?}" \
+		"$0" "$@"
+fi
+
 (
-tmpdir="$HOME/tails/release/test-results/${VERSION:?}"
-what=()
-args=(--tmpdir "$tmpdir" --keep-snapshots --capture --view
-        --iso ${ISOS:?}/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.iso
-        --old-iso ${ISOS:?}/tails-amd64-${PREVIOUS_VERSION:?}/tails-amd64-${PREVIOUS_VERSION:?}.iso
+    tmpdir="${tmpdir}"
+    what=()
+    args=(--tmpdir "$tmpdir" --keep-snapshots --capture --view
+        --iso "${ISOS:?}/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.iso"
+        --old-iso "${ISOS}/tails-amd64-${PREVIOUS_STABLE_VERSION:?}/tails-amd64-${PREVIOUS_STABLE_VERSION:?}.iso"
     )
-./run_test_suite "${args[@]}" "${what[@]}"
+    ./run_test_suite "${args[@]}" "${what[@]}"
 
-while true; do
-    ./run_test_suite "${args[@]}" "@$(find "${tmpdir:?}" -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|head -n1)"
-    sleep 3
-done
+    while true; do
+        ./run_test_suite "${args[@]}" "@$(find "${tmpdir:?}" -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|head -n1)"
+        sleep 3
+    done
 )
 ```
+
+then, run
+
+```sh
+export VERSION ISOS PREVIOUS_STABLE_VERSION
+./test-rerun.sh
+```
+
+This will run tests *forever*, so that CPU time is not wasted.
 
 
 Public testing
