@@ -172,6 +172,12 @@ and stopped working in Tails 5.8:
   * `1002:6605` Radeon R7 M260X
   * `1002:6649` Bonaire FirePro W5100
   * `1002:73df` RX Radeon 6700XT
+- Multiple graphics cards:
+  * Workaround:
+    - Plug the monitor into the motherboard's Intel graphics card,
+      as opposed to the external Nvidia or AMD/ATI graphics card.
+    - Add these [[boot options|doc/advanced_topics/boot_options]]:
+      `modprobe.blacklist=radeon modprobe.blacklist=amdgpu modprobe.blacklist=nouveau`
 
 Unfortunately, we have no solution to offer you so far.
 
