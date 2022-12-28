@@ -52,7 +52,7 @@ CSS_FILE = 'greeter.css'
 ICON_DIR = 'icons/'
 PREFERRED_WIDTH = 620
 PREFERRED_HEIGHT = 470
-IMG_PERSISTENT_STORAGE = '/usr/share/icons/tails-persistent-storage.png'
+IMG_PERSISTENT_STORAGE = '/usr/share/icons/tails-persistent-storage.svg'
 locale.bindtextdomain(TRANSLATION_DOMAIN, tailsgreeter.config.system_locale_dir)
 
 
