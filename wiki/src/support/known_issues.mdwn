@@ -149,13 +149,6 @@ starting Tails|doc/advanced_topics/boot_options]]:
 Still, the trackpad and keyboard might not work. You can use an external
 mouse and keyboard.
 
-### MacBook Pro 8,3 17" (AMD Radeon HD6770M and Intel HD Graphics 3000)
-
-If Tails fails to start, [[add the following boot option when
-starting Tails|doc/advanced_topics/boot_options]]:
-
-    radeon.modeset=0
-
 ### MacBook Pro 16,1 (A2141)
 
 The computer freezes then automatically restarts. An error message
@@ -189,21 +182,10 @@ On some laptops, Tails starts with the following error:
 
 <p class="pre">soft lockup - CPU#<span class="command-placeholder">N</span> stuck for <span class="command-placeholder">N</span>s</p>
 
-To start Tails successfully, [[add the following boot option when starting
+To start Tails successfully, try to [[add the following boot option when starting
 Tails|doc/advanced_topics/boot_options]]:
 
-    acpi_rev_override=1 nouveau.modeset=0
-
-<h3 id="dell-chromebook-lulu">Dell Chromebook LULU</h3>
-
-<!--
-Last updated: 2018-01-10
--->
-
-To start Tails successfully, [[add the following boot option when starting
-Tails|doc/advanced_topics/boot_options]]:
-
-    nomodeset
+    acpi_rev_override=1
 
 <h3 id="microsoft-surface-laptop-3">Microsoft Surface Laptop 3</h3>
 
