@@ -127,3 +127,10 @@ if the CPU is vulnerable, this:
    buffer clearing on exit to userspace";
 2. disables SMT which is another avenue for exploiting this class
    of attacks.
+
+### `randomize_kstack_offset=on`
+
+Randomize kernel stack offset on syscall entry.
+
+This is recommended by <https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings>
+and enabled by default in more recent Debian kernels [[!debbug 1016056]].
