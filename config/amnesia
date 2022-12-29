@@ -14,11 +14,11 @@ export SOURCE_DATE_EPOCH="$(date --utc --date="$(dpkg-parsechangelog --show-fiel
 export SOURCE_DATE_YYYYMMDD="$(date --utc --date="$(dpkg-parsechangelog --show-field=Date)" +%Y%m%d)"
 
 # Base for the string that will be passed to "lb config --bootappend-live"
-AMNESIA_APPEND_NON_REMOVABLE="nopersistence noprompt timezone=Etc/UTC splash noautologin module=Tails slab_nomerge slub_debug=FZ mce=0 vsyscall=none init_on_free=1 mds=full,nosmt page_alloc.shuffle=1"
-AMNESIA_APPEND="live-media=removable ${AMNESIA_APPEND_NON_REMOVABLE}"
+CMDLINE_APPEND_NON_REMOVABLE="nopersistence noprompt timezone=Etc/UTC splash noautologin module=Tails slab_nomerge slub_debug=FZ mce=0 vsyscall=none init_on_free=1 mds=full,nosmt page_alloc.shuffle=1"
+CMDLINE_APPEND="live-media=removable ${CMDLINE_APPEND_NON_REMOVABLE}"
 
 # Options passed to isohybrid
-AMNESIA_ISOHYBRID_OPTS="-h 255 -s 63 --id 42 --verbose"
+ISOHYBRID_OPTS="-h 255 -s 63 --id 42 --verbose"
 
 # Kernel version
 KERNEL_VERSION='5.10.0-20'
@@ -31,13 +31,13 @@ if [ ! -x "`command -v dpkg-parsechangelog`" ]; then
    exit 2
 fi
 
-# Compute the current Amnesia's version once for all
-AMNESIA_NOW="`date --utc '+%Y%m%dT%H%MZ'`"
-AMNESIA_VERSION="`dpkg-parsechangelog -SVersion`"
-AMNESIA_FULL_VERSION="${AMNESIA_VERSION} - ${SOURCE_DATE_YYYYMMDD}"
+# Compute the current Tails version once for all
+DATETIME_NOW="`date --utc '+%Y%m%dT%H%MZ'`"
+TAILS_VERSION="`dpkg-parsechangelog -SVersion`"
+TAILS_FULL_VERSION="${TAILS_VERSION} - ${SOURCE_DATE_YYYYMMDD}"
 
-# Developpers' data used by git-dch, debcommit and friends in the release script
-AMNESIA_DEV_KEYID="A490 D0F4 D311 A415 3E2B  B7CA DBB8 02B2 58AC D84F"
+# Signing key
+TAILS_SIGNING_KEY_FP="A490 D0F4 D311 A415 3E2B  B7CA DBB8 02B2 58AC D84F"
 
 # Used to set a custom home page if the distribution is UNRELEASED
 TAILS_DISTRIBUTION="`dpkg-parsechangelog -SDistribution`"

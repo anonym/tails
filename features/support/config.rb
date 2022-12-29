@@ -93,7 +93,7 @@ RTL_LANGUAGES = ['Arabic', 'Persian'].freeze
 VM_XML_PATH = "#{Dir.pwd}/features/domains".freeze
 
 TAILS_SIGNING_KEY = cmd_helper(
-  ". #{Dir.pwd}/config/amnesia; echo ${AMNESIA_DEV_KEYID}"
+  ". #{Dir.pwd}/config/amnesia; echo ${TAILS_SIGNING_KEY_FP}"
 ).tr(' ', '').chomp
 WEBM_VIDEO_URL = 'https://tails.boum.org/lib/test_suite/test.webm'.freeze
 
