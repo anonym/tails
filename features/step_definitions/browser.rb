@@ -128,7 +128,7 @@ When /^I open the address "([^"]*)" in the (.* Browser)( without waiting)?$/ do 
   retry_method.call(recovery_on_failure) do
     open_address.call
     unless non_blocking
-      try_for(120) do
+      try_for(120, delay: 3) do
         !browser.child?('Stop', roleName: 'push button', retry: false) &&
           browser.child?('Reload', roleName: 'push button', retry: false)
       end
