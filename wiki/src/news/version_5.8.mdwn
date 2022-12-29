@@ -163,28 +163,49 @@ People have reported us several graphics cards that used to work in Tails 5.7
 and stopped working in Tails 5.8:
 
 - Nvidia
+  * `10de:1f82` GeForce GTX 1650
+  * `10de:2488`
   * `10de:2489`
+  * `10de:24dc` GA104M GeForce RTX 3080 Mobile
   * `10de:2504` RTX
   * `10de:2560` GA106M GeForce RTX 3060 Mobile
   * `10de:25e0`
 - Intel
-  * `8086:0046`
-  * `8086:3185` GeminiLake
-  * `8086:4692`
-  * `8086:46a6`
+  * `8086:0046` Core Processor Integrated Graphic Controller
+  * `8086:0a16` Haswell-ULT Integrated Graphics Controller
+  * `8086:3185` GeminiLake (UHD Graphics 600)
+    - Add the `i915.force_probe=3185` [[boot option|doc/advanced_topics/boot_options]]
+      and [let us know](tails-bugs@boum.org) whether it helps.
+  * `8086:4692` UHD Graphics 730
+    - Add the `i915.force_probe=4692` [[boot option|doc/advanced_topics/boot_options]]
+      and [let us know](tails-bugs@boum.org) whether it helps.
+  * `8086:46a6` Alder Lake-P
+    - Add the `i915.force_probe=46a6` [[boot option|doc/advanced_topics/boot_options]]
+      and [let us know](tails-bugs@boum.org) whether it helps.
   * `8086:4e55`
+    - Add the `i915.force_probe=4e55` [[boot option|doc/advanced_topics/boot_options]]
+      and [let us know](tails-bugs@boum.org) whether it helps.
 - AMD
   * `1002:1506`
   * `1002:15e7`
   * `1002:6605` Radeon R7 M260X
   * `1002:6649` Bonaire FirePro W5100
-  * `1002:73df` RX Radeon 6700XT
+  * `1002:73df` RX Radeon 6700XT (Navi 22)
+  * `1002:73ff` Navi 23
+  * `1002:743f` RX 6400
+- If the error message lists multiple graphics cards:
+  - If possible, plug the monitor into the motherboard's Intel graphics card, as
+    opposed to the external Nvidia or AMD/ATI graphics card.
+  - Explicitly select one of the two graphics adapters in the BIOS
+    instead of letting the system choose one automatically. If this does
+    not solve the problem, try selecting the other graphics adapter.
 
 These graphics card probably don't work as good on Wayland as they used to work on X.Org.
 
 Unfortunately, we have no solution to offer you so far.
 
 We hope that this gets fixed in the next update of the Linux kernel, maybe in Tails 5.9.
+
 <h2 id="ps">Persistent Storage fails to load with symbolic links in Dotfiles ([[!tails_ticket 19346]])</h2>
 
 If you have [[!wikipedia Symbolic_link desc="symbolic links"]] in the

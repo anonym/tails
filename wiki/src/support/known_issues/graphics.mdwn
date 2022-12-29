@@ -138,13 +138,6 @@ Other graphics cards in the Radeon HD family might be affected:
 
 ### Workaround
 
-Try starting Tails using the following [[boot
-options|doc/advanced_topics/boot_options]].
-You should try only one of these boot options per start attempt.
-
-* `radeon.modeset=0`
-* `xorg-driver=modesetting`
-
 If the computer has another, integrated graphics card, try configuring
 the computer to use that one instead of the AMD graphics card.
 For example, using the following [[boot
@@ -160,12 +153,6 @@ option|doc/advanced_topics/boot_options]]:
 <tr><th>Name</th><th>ID</th><th>Revision number</th></tr>
 <tr><td>Advanced Micro Devices, Inc. [AMD/ATI] Exo UL/ULT/ULP [Radeon R5 M320]</td><td></td><td></td></tr>
 </table>
-
-### Workaround
-
-Adding `radeon.modeset=0 xorg-driver=modesetting` to the
-[[boot options|doc/advanced_topics/boot_options]]
-fixes the issue.
 
 <h2 id="radeon-r9">AMD Radeon R9</h2>
 
@@ -279,16 +266,7 @@ Various Intel graphics card.
 
 ### Workaround
 
-Try starting Tails using the following [[boot
-options|doc/advanced_topics/boot_options]].
-You should try only one of these boot options per start attempt.
-
-* `xorg-driver=intel`
-* `nomodeset`
-* `nomodeset xorg-driver=vesa`
-* `xorg-driver=modesetting`
-
-Otherwise, try starting in the *Troubleshooting Mode*.
+Try starting in the *Troubleshooting Mode*.
 
 <h2 id="intel-855gm">Intel 855GM</h2>
 
@@ -337,15 +315,6 @@ Issue: #15491
 <tr><th>Name</th><th>ID</th><th>Revision number</th></tr>
 <tr><td>NVIDIA Corporation MCP89 (GeForce 320M)</td><td>[10de:08a0]</td><td>a2</td></tr>
 </table>
-
-### Workaround
-
-Try starting Tails using the following [[boot
-options|doc/advanced_topics/boot_options]].
-You should try only one of these boot options per start attempt.
-
-* `nomodeset`
-* `xorg-driver=modesetting`
 
 ### Other possibly affected graphics cards
 
@@ -459,8 +428,6 @@ options|doc/advanced_topics/boot_options]].
 You should try only one of these boot options per start attempt.
 
 * `nouveau.noaccel=1`
-* `nouveau.modeset=0`
-* `xorg-driver=modesetting`
 
 ### Other possibly affected graphics cards
 
@@ -563,8 +530,6 @@ You should try only one of these boot options per start attempt.
 
 * `nouveau.noaccel=0`
 * `nouveau.noaccel=1`
-* `nouveau.modeset=0`
-* `xorg-driver=modesetting`
 
 <h2 id="nvidia-turing">Nvidia NV160 family (Turing)</h2>
 
@@ -600,8 +565,6 @@ options|doc/advanced_topics/boot_options]].
 You should try only one of these boot options per start attempt.
 
 * `nouveau.noaccel=1`
-* `nouveau.modeset=0`
-* `xorg-driver=modesetting`
 
 <h2 id="nvidia-ampere">Nvidia RTX 30X0 family (Ampere)</h2>
 
@@ -613,15 +576,6 @@ out of the box by Tails yet.
 
 Graphics cards in the [[!wikipedia GeForce_30_series desc="Ampere family"]]
 are affected.
-
-### Workaround
-
-Try starting Tails using the following [[boot
-options|doc/advanced_topics/boot_options]].
-You should try only one of these boot options per start attempt.
-
-* `nouveau.modeset=0`
-* `nomodeset`
 
 <h1 id="other-issues">Other issues</h1>
 
@@ -642,31 +596,6 @@ There are several possible workarounds for this issue:
   application, <http://gfx.io/>, to force integrated graphics only through macOS.
   Then restart in that special mode that works with Tails.
 
-* Expert Linux users can also do the following:
-
-  1. Add the `i915.modeset=0 rootpw=pass` option in the
-     [[Boot Loader|doc/advanced_topics/boot_options]].
-
-  2. Create a file `/etc/X11/xorg.conf.d/switchable.conf` with the
-     following content:
-
-         Section "Device"
-             Identifier "Device0"
-             Driver "nouveau"
-             BusID "1:0:0"
-         EndSection
-
-  4. Restart X with the command:
-
-         service gdm3 restart
-
-  5. After the GNOME session has started, change again the root password with
-     the command:
-
-         sudo passwd
-
-For more details, see our issue on [[!tails_ticket 7505 desc="Video is broken with switchable graphics"]].
-
 <h2 id="sg-segfault">Cannot start GNOME session with switchable graphics computers</h2>
 
 On some computers with switchable graphics, Tails 2.10 and later fails
@@ -678,7 +607,6 @@ options|doc/advanced_topics/boot_options]].
 You should try only one of these boot options per start attempt.
 
 * `modprobe.blacklist=nouveau`
-* `xorg-driver=modesetting`
 
 <h2 id="intel-gm965">Intel GM965/GL960</h2>
 
