@@ -19,4 +19,9 @@ esac
 
 manual_add_modules amdgpu bochs-drm cirrus i915 nouveau qxl radeon
 
+# Privacy screen provider drivers, needed by drm drivers
+# on systems with a builtin privacy screen.
+# Reference: https://hansdegoede.livejournal.com/25948.html
+manual_add_modules thinkpad_acpi
+
 exit 0
