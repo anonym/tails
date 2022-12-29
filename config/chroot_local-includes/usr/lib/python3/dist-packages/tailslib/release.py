@@ -1,13 +1,13 @@
 """
 This module is meant to provide informations about Tails release data
-(ie: /etc/amnesia/version).
+(ie: /etc/tails/version).
 """
 
 import datetime
 
 
 def get_release_date() -> datetime.datetime:
-    with open('/etc/amnesia/version') as buf:
+    with open('/etc/tails/version') as buf:
         firstline = next(iter(buf))
     _, source_date = firstline.split(' - ')
     source_date = source_date.strip()

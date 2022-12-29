@@ -581,7 +581,7 @@ class VM
   def file_copy_local_dir(localdir, vm_dir)
     localfiles = Dir.chdir(localdir) { Find.find('.').select { |p| FileTest.file?(p) } }
     localfiles.each do |fpath|
-      # fpath is, for example,"./etc/amnesia/version"
+      # fpath is, for example,"./etc/tails/version"
       vm_path = fpath[1..-1]
       dir = File.dirname(vm_path)
 

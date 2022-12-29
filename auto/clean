@@ -23,8 +23,8 @@ if ls config/*/ > /dev/null 2>&1 ; then
 fi
 
 # files copied or created in the config stage
-rm -f config/chroot_local-includes/etc/amnesia/environment
-rm -f config/chroot_local-includes/etc/amnesia/version
+rm -f config/chroot_local-includes/etc/tails/environment
+rm -f config/chroot_local-includes/etc/tails/version
 rm -f config/chroot_local-includes/usr/share/doc/tails/Changelog
 for list in config/chroot_local-packageslists/*.list ; do
    if [ "$list" != 'config/chroot_local-packageslists/tails-common.list' ]; then

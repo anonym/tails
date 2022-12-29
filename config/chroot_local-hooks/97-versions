@@ -2,12 +2,12 @@
 
 set -e
 
-# Append some version information to /etc/amnesia/version
+# Append some version information to /etc/tails/version
 
-echo "Appending some version information to /etc/amnesia/version"
+echo "Appending some version information to /etc/tails/version"
 
 echo "live-boot: $(dpkg-query -W -f='${Version}\n' live-boot)" \
-   >> /etc/amnesia/version
+   >> /etc/tails/version
 
 echo "live-config: $(dpkg-query -W -f='${Version}\n' live-config)" \
-   >> /etc/amnesia/version
+   >> /etc/tails/version

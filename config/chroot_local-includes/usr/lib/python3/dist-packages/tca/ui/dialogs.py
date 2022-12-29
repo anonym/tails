@@ -20,7 +20,7 @@ log = getLogger("dialogs")
 
 
 def get_build_year():
-    with open("/etc/amnesia/version") as buf:
+    with open("/etc/tails/version") as buf:
         firstline = buf.readline()
         date = firstline.split(" - ")[1]
         year = date[:4]

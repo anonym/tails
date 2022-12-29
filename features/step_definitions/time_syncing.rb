@@ -117,7 +117,7 @@ end
 Then /^the system clock is just past Tails' source date$/ do
   system_time_str = $vm.execute_successfully('date').to_s
   system_time = DateTime.parse(system_time_str).to_time
-  source_time_str = $vm.file_content('/etc/amnesia/version')
+  source_time_str = $vm.file_content('/etc/tails/version')
                        .split("\n")[0]
                        .match(/^.* - ([0-9]+)$/)[1]
   source_time = DateTime.parse(source_time_str).to_time
