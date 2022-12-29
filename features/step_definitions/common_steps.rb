@@ -913,7 +913,7 @@ Then /^persistence for "([^"]+)" is (|not )enabled$/ do |app, enabled|
 end
 
 def language_has_non_latin_input_source(language)
-  # Note: we'll have to update the list when fixing #12638 or #18076
+  # NOTE: we'll have to update the list when fixing #12638 or #18076
   ['Persian', 'Russian'].include?(language)
 end
 
@@ -1008,7 +1008,7 @@ def pulseaudio_sink_inputs
 end
 
 When /^I double-click on the (Tails documentation|Report an Error) launcher on the desktop$/ do |launcher|
-  image = 'Desktop' + launcher.split.map(&:capitalize) .join + '.png'
+  image = 'Desktop' + launcher.split.map(&:capitalize).join + '.png'
   info = xul_application_info('Tor Browser')
   # Sometimes the double-click is lost (#12131).
   retry_action(10) do
@@ -1238,16 +1238,16 @@ Then /^Tails is running version (.+)$/ do |version|
 end
 
 def size_of_shared_disk_for(files)
-  files = [files] if files.class == String
+  files = [files] if files.instance_of?(String)
   assert_equal(Array, files.class)
-  disk_size = files.map { |f| File.new(f).size } .inject(0, :+)
+  disk_size = files.map { |f| File.new(f).size }.inject(0, :+)
   # Let's add some extra space for filesystem overhead etc.
   disk_size += [convert_to_bytes(16, 'MiB'), (disk_size * 0.15).ceil].max
   disk_size
 end
 
 def share_host_files(files)
-  files = [files] if files.class == String
+  files = [files] if files.instance_of?(String)
   assert_equal(Array, files.class)
   disk_size = size_of_shared_disk_for(files)
   disk = random_alpha_string(10)

@@ -137,7 +137,7 @@ When /^I open the address "([^"]*)" in the (.* Browser)( without waiting)?$/ do 
 end
 
 def page_has_loaded_in_the_tor_browser(page_titles)
-  page_titles = [page_titles] if page_titles.class == String
+  page_titles = [page_titles] if page_titles.instance_of?(String)
   assert_equal(Array, page_titles.class)
   if $language == 'German'
     browser_name = 'Tor-Browser'
@@ -172,7 +172,7 @@ end
 def xul_app_shared_lib_check(pid, expected_absent_tbb_libs = [])
   absent_tbb_libs = []
   unwanted_native_libs = []
-  tbb_libs = $vm.execute_successfully("ls -1 ${TBB_INSTALL}/*.so",
+  tbb_libs = $vm.execute_successfully('ls -1 ${TBB_INSTALL}/*.so',
                                       libs: 'tor-browser').stdout.split
   firefox_pmap_info = $vm.execute("pmap --show-path #{pid}").stdout
   native_libs = $vm.execute_successfully(
@@ -183,6 +183,7 @@ def xul_app_shared_lib_check(pid, expected_absent_tbb_libs = [])
     absent_tbb_libs << lib_name unless /\W#{lib}$/.match(firefox_pmap_info)
     native_libs.each do |native_lib|
       next unless native_lib.end_with?("/#{lib_name}")
+
       if /\W#{native_lib}$"/.match(firefox_pmap_info)
         unwanted_native_libs << lib_name
       end

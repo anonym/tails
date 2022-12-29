@@ -151,6 +151,6 @@ Then /^I should see the ([[:alnum:].-]+) tagged snapshot$/ do |tag|
   @output.should have_tagged_snapshot(tag)
 end
 
-Then /^I should see a time\-based snapshot$/ do
+Then /^I should see a time-based snapshot$/ do
   @output.should have_time_based_snapshot
 end

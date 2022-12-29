@@ -379,7 +379,7 @@ Given /^I enable persistence$/ do
 end
 
 def tails_persistence_enabled?
-  libtps_file = "/usr/local/lib/tails-shell-library/libtps.sh"
+  libtps_file = '/usr/local/lib/tails-shell-library/libtps.sh'
   $vm.execute(". '#{libtps_file}' && " \
               'tps_is_unlocked').success?
 end
@@ -426,8 +426,7 @@ def boot_device
   boot_dev_id = $vm.execute(
     'udevadm info --device-id-of-file=/lib/live/mount/medium'
   ).stdout.chomp
-  boot_dev = $vm.execute("readlink -f /dev/block/'#{boot_dev_id}'").stdout.chomp
-  boot_dev
+  $vm.execute("readlink -f /dev/block/'#{boot_dev_id}'").stdout.chomp
 end
 
 def device_info(dev)
@@ -435,7 +434,7 @@ def device_info(dev)
   # config/chroot_local_includes/lib/live/config/998-permissions
   info = $vm.execute("udevadm info --query=property --name='#{dev}'")
             .stdout.chomp
-  info.split("\n").map { |e| e.split('=') } .to_h
+  info.split("\n").map { |e| e.split('=') }.to_h
 end
 
 def boot_device_type

@@ -120,7 +120,7 @@ end
 RSpec::Matchers.define :have_time_based_snapshot do
   match do |string|
     # e.g.: `http://time-based.snapshots.deb.tails.boum.org/debian/2016060602`
-    %r{^http://time\-based\.snapshots\.deb\.tails\.boum\.org/[^/]+/\d+}
+    %r{^http://time-based\.snapshots\.deb\.tails\.boum\.org/[^/]+/\d+}
       .match(string)
   end
   failure_message_for_should do |string|
