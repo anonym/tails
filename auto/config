@@ -8,9 +8,6 @@ set -x
 . "$(dirname "$0")/scripts/utils.sh"
 
 . config/amnesia
-if [ -e config/amnesia.local ] ; then
-   . config/amnesia.local
-fi
 
 if [ -n "${SOURCE_DATE_EPOCH}" ]; then
     CURRENT_EPOCH="$(date --utc +%s)"
