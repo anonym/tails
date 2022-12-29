@@ -602,14 +602,7 @@ def tor_browser_is_nightly
 end
 
 When /^I start the Tor Browser( in offline mode)?$/ do |offline|
-  overview_icon = if tor_browser_is_alpha
-                    'TorBrowserOverviewIconAlpha.png'
-                  elsif tor_browser_is_nightly
-                    'TorBrowserOverviewIconNightly.png'
-                  else
-                    'TorBrowserOverviewIcon.png'
-                  end
-  step "I start \"#{overview_icon}\" via GNOME Activities Overview"
+  step 'I start "Tor Browser" via GNOME Activities Overview'
   if offline
     start_button = Dogtail::Application
                    .new('zenity')
