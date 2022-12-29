@@ -937,38 +937,28 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   end
   @screen.wait("GnomeApplicationsMenu#{$language}.png", 10)
   @screen.press('super')
-  # Only use this way of passing the app_name argument where it's
-  # really needed, e.g. to avoid having to encode lots of keymaps
-  # to be able to type the name correctly:
-  if app_name.match(/[.]png$/)
-    @screen.wait('GnomeActivitiesOverviewLaunchersReady.png', 20)
-    # This should be ctrl + click, to ensure we open a new window.
-    # Let's implement this once one of the callers needs this.
-    @screen.wait(app_name, 20).click
-  else
-    pic = if RTL_LANGUAGES.include?($language)
-            'GnomeActivitiesOverviewSearchRTL.png'
-          else
-            'GnomeActivitiesOverviewSearch.png'
-          end
-    @screen.wait(pic, 20)
-    if language_has_non_latin_input_source($language)
-      # Temporarily switch to en_US keyboard layout to type the name of the app
-      switch_input_source
-    end
-    # Trigger startup of search providers
-    @screen.type(app_name[0])
-    # Give search providers some time to start (#13469#note-5) otherwise
-    # our search sometimes returns no results at all.
-    sleep 2
-    # Type the rest of the search query
-    @screen.type(app_name[1..-1])
-    sleep 4
-    @screen.press('ctrl', 'Return')
-    if language_has_non_latin_input_source($language)
-      # Switch back to $language's default keyboard layout
-      switch_input_source
-    end
+  pic = if RTL_LANGUAGES.include?($language)
+          'GnomeActivitiesOverviewSearchRTL.png'
+        else
+          'GnomeActivitiesOverviewSearch.png'
+        end
+  @screen.wait(pic, 20)
+  if language_has_non_latin_input_source($language)
+    # Temporarily switch to en_US keyboard layout to type the name of the app
+    switch_input_source
+  end
+  # Trigger startup of search providers
+  @screen.type(app_name[0])
+  # Give search providers some time to start (#13469#note-5) otherwise
+  # our search sometimes returns no results at all.
+  sleep 2
+  # Type the rest of the search query
+  @screen.type(app_name[1..-1])
+  sleep 4
+  @screen.press('ctrl', 'Return')
+  if language_has_non_latin_input_source($language)
+    # Switch back to $language's default keyboard layout
+    switch_input_source
   end
 end
 
