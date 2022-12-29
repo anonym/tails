@@ -134,3 +134,10 @@ Randomize kernel stack offset on syscall entry.
 
 This is recommended by <https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings>
 and enabled by default in more recent Debian kernels [[!debbug 1016056]].
+
+### `net.core.bpf_jit_harden = 2`
+
+Turn on BPF JIT hardening, if the JIT is enabled.
+
+This is recommended by
+<https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings>.
