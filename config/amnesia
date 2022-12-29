@@ -1,14 +1,8 @@
 # -*- mode: sh; -*-
 
-# Configuration file for the Amnesia live system
+# Configuration file for Tails
 # 
-# You'd better never directly edit this file: rather put your custom
-# variable assignments in a new file called 'amnesia.local', in the
-# same directory as this one. The values found in the '.local' file
-# will override the ones from this one.
-# 
-# These configuration files are actually shell scripts, and are
-# sourced by various other scripts.
+# This is a shell script. It is sourced by various other scripts.
 
 export SOURCE_DATE_EPOCH="$(date --utc --date="$(dpkg-parsechangelog --show-field=Date)" +%s)"
 export SOURCE_DATE_YYYYMMDD="$(date --utc --date="$(dpkg-parsechangelog --show-field=Date)" +%Y%m%d)"
