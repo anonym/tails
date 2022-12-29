@@ -37,7 +37,7 @@ print_iso_size () {
 git rev-parse --is-inside-work-tree &> /dev/null \
    || fatal "${PWD} is not a Git tree."
 
-. config/amnesia
+. config/variables
 
 # a clean starting point
 rm -rf cache/stages_rootfs

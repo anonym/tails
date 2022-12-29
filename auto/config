@@ -7,7 +7,7 @@ set -x
 
 . "$(dirname "$0")/scripts/utils.sh"
 
-. config/amnesia
+. config/variables
 
 if [ -n "${SOURCE_DATE_EPOCH}" ]; then
     CURRENT_EPOCH="$(date --utc +%s)"
