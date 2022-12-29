@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-12-28 16:42+0000\n"
+"POT-Creation-Date: 2022-12-29 14:23+0000\n"
 "PO-Revision-Date: 2022-12-29 13:17+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,6 +62,11 @@ msgstr ""
 msgid "[[**Donate now to fund our work in 2023.**|donate]]"
 msgstr ""
 "[[**Faire un don maintenant pour financer notre travail en 2023.**|donate]]"
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!toc levels=3]]\n"
+msgstr ""
 
 #. type: Plain text
 #, no-wrap
@@ -140,7 +145,8 @@ msgstr "Wayland et un meilleur Navigateur non sécurisé"
 
 #. type: Plain text
 msgid "We replaced the deprecated X.Org display system with Wayland."
-msgstr "Nous avons remplacé le système d'affichage déprécié X.Org avec Wayland."
+msgstr ""
+"Nous avons remplacé le système d'affichage déprécié X.Org avec Wayland."
 
 #. type: Plain text
 msgid ""
@@ -160,6 +166,11 @@ msgid ""
 "in Tails could start an invisible *Unsafe Browser*, reveal your IP address, "
 "and [[deanonymize you|doc/anonymous_internet/unsafe_browser#security]]."
 msgstr ""
+"Par exemple, depuis [[Tails 4.8|news/version_4.8]], le *Navigateur non "
+"sécurisé* était désactivé par défaut parce qu'une vulnérabilité dans une "
+"autre application dans Tails pouvait permettre de démarrer un *Navigateur "
+"non sécurisé* invisible, révélant votre adresse IP et [[vous désanonymisant|"
+"doc/anonymous_internet/unsafe_browser#security]]."
 
 #. type: Plain text
 msgid ""
@@ -167,6 +178,9 @@ msgid ""
 "Browser* by default. You can still disable the *Unsafe Browser* in the "
 "Welcome Screen."
 msgstr ""
+"Wayland corrige cette vulnérabilité et rend sûr de ré autoriser le "
+"*Navigateur non sécurisé* par défaut. Vous pouvez toujours désactiver le "
+"*Navigateur non sécurisé* dans l'Écran de bienvenue."
 
 #. type: Plain text
 msgid ""
@@ -206,6 +220,8 @@ msgid ""
 "Send an empty email to <bridges@torproject.org> from a Gmail or Riseup email "
 "address."
 msgstr ""
+"Envoyer un courrier électronique vide à <bridges@torproject.org> depuis une "
+"adresse Gmail ou Riseup."
 
 #. type: Bullet: '- '
 msgid ""
@@ -253,7 +269,7 @@ msgstr "- Mise à jour de *Tor* vers la version 0.4.7.12."
 
 #. type: Plain text
 msgid "- Remove the *Dasher* graphical text entry application."
-msgstr ""
+msgstr "- Suppression de l'application de saisie de texte graphique *Dasher*"
 
 #. type: Plain text
 #, no-wrap
@@ -269,6 +285,8 @@ msgid ""
 "- Display a percentage on the connection progress bar. ([[!tails_ticket "
 "19208]])"
 msgstr ""
+"- Affichage du pourcentage dans la barre de progression de la connexion. ([[!"
+"tails_ticket 19208]])"
 
 #. type: Plain text
 #, no-wrap
@@ -284,6 +302,8 @@ msgid ""
 "- Add a **Bridge** label in front of the line to enter a custom bridge. ([[!"
 "tails_ticket 19169]])"
 msgstr ""
+"- Ajout d'une étiquette **Pont** devant la ligne pour saisir un pont "
+"personnalisé. ([[!tails_ticket 19169]])"
 
 #. type: Plain text
 msgid ""
@@ -299,30 +319,47 @@ msgid "<h1 id=\"issues\">Known issues</h1>\n"
 msgstr "<h1 id=\"issues\">Problèmes connus</h1>\n"
 
 #. type: Plain text
+msgid ""
+"If you are facing some of these issues, try downgrading to Tails 5.7. To do "
+"so:"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"- Download [Tails 5.7](https://iso-history.tails.boum.org/tails-amd64-5.7/)  "
+"- Do a [[manual upgrade|upgrade#manual]] to Tails 5.7."
+msgstr ""
+
+#. type: Plain text
 #, no-wrap
 msgid "<h2 id=\"qt\">Problems with Qt applications like <i>Kleopatra</i> and <i>Feather</i></h2>\n"
-msgstr ""
+msgstr "<h2 id=\"qt\">Problèmes avec des applications Qt comme <i>Kleopatra</i> et <i>Feather</i></h2>\n"
 
 #. type: Plain text
 msgid ""
 "Applications using the Qt toolkit have issues in Wayland. You can work "
 "around these issues by running these applications using XWayland instead."
 msgstr ""
+"Les applications qui utilisent la boîte à outils Qt ont des problèmes avec "
+"Wayland. Vous pouvez contourner ces problèmes en exécutant ces applications "
+"avec XWayland à la place."
 
 #. type: Title ###
 #, no-wrap
 msgid "Clipboard encryption and decryption is broken in *Kleopatra* ([[!tails_ticket 19329]])"
-msgstr ""
+msgstr "Le chiffrement du presse-papier est cassé dans *Kleopatra* ([[!tails_ticket 19329]])"
 
 #. type: Plain text
 msgid "To fix this:"
-msgstr ""
+msgstr "Pour le corriger :"
 
 #. type: Bullet: '1. '
 msgid ""
 "Choose **Applications**&nbsp;▸ **Utilities**&nbsp;▸ **Terminal** to open a "
 "terminal."
 msgstr ""
+"Choisir **Applications**&nbsp;▸ **Utilitaires**&nbsp;▸ **Terminal** pour "
+"ouvrir un terminal."
 
 #. type: Bullet: '1. '
 msgid "Execute the following command in the terminal:"
@@ -339,6 +376,8 @@ msgid ""
 "   This only works if *Kleopatra* has never been started since Tails started.\n"
 "   Otherwise, execute this command and try again:\n"
 msgstr ""
+"   Cela ne fonctionne seulement que si *Kleopatra* n'a jamais été lancé depuis que Tails a été démarré.\n"
+"   Autrement, exécuter cette commande et essayer encore :\n"
 
 #. type: Plain text
 #, no-wrap
@@ -367,7 +406,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   Replace:\n"
-msgstr ""
+msgstr "   Remplacer :\n"
 
 #. type: Bullet: '   - '
 msgid ""
@@ -378,12 +417,12 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   <p class=\"pre command\">unset QT_QPA_PLATFORM ; ./<span class=\"command-placeholder\">application.AppImage</span></p>\n"
-msgstr ""
+msgstr "   <p class=\"pre command\">unset QT_QPA_PLATFORM ; ./<span class=\"command-placeholder\">application.AppImage</span></p>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "   For example, to start the *Feather* wallet version 2.1.2, execute:\n"
-msgstr ""
+msgstr "   Par exemple, pour démarrer le portefeuille *Feather* version 2.1.2, exécuter :\n"
 
 #. type: Plain text
 #, no-wrap
@@ -392,7 +431,7 @@ msgstr "       unset QT_QPA_PLATFORM ; ./feather-2.1.2.AppImage\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<h2 id=\"graphics\">Some graphics cards stopped working in Tails 5.8</h2>\n"
+msgid "<h2 id=\"graphics\">Some graphics cards stopped working in Tails 5.8 ([[!tails_ticket 19353]])</h2>\n"
 msgstr ""
 
 #. type: Plain text
@@ -400,6 +439,8 @@ msgid ""
 "People have reported us several graphics cards that used to work in Tails "
 "5.7 and stopped working in Tails 5.8:"
 msgstr ""
+"Des personnes nous ont signalé que plusieurs cartes graphiques qui "
+"fonctionnaient avec Tails 5.7 ne fonctionnent plus avec Tails 5.8 :"
 
 #. type: Bullet: '- '
 msgid "Nvidia"
@@ -439,11 +480,11 @@ msgstr "Intel"
 
 #. type: Bullet: '  * '
 msgid "`8086:0046` Core Processor Integrated Graphic Controller"
-msgstr ""
+msgstr "`8086:0046` Contrôleur graphique intégré au microprocesseur"
 
 #. type: Bullet: '  * '
 msgid "`8086:0a16` Haswell-ULT Integrated Graphics Controller"
-msgstr ""
+msgstr "`8086:0a16` Contrôleur graphique intégré Haswell-ULT"
 
 #. type: Bullet: '  * '
 msgid "`8086:3185` GeminiLake (UHD Graphics 600)"
@@ -454,9 +495,8 @@ msgid ""
 "Add the `i915.force_probe=3185` [[boot option|doc/advanced_topics/"
 "boot_options]] and [let us know](tails-bugs@boum.org) whether it helps."
 msgstr ""
-"Ajouter `i915.force_probe=3185` [[à l'option de démarrage|doc/"
-"advanced_topics/boot_options]] et [faites-nous savoir](tails-bugs@boum.org) "
-"si cela aide."
+"Ajouter [[l'option de démarrage|doc/advanced_topics/boot_options]] `i915."
+"force_probe=3185` et [faites-nous savoir](tails-bugs@boum.org) si cela aide."
 
 #. type: Bullet: '  * '
 msgid "`8086:4692` UHD Graphics 730"
@@ -467,26 +507,32 @@ msgid ""
 "Add the `i915.force_probe=4692` [[boot option|doc/advanced_topics/"
 "boot_options]] and [let us know](tails-bugs@boum.org) whether it helps."
 msgstr ""
+"Ajouter l'[[option de démarrage|doc/advanced_topics/boot_options]] `i915."
+"force_probe=4692`et [faites-nous savoir](tails-bugs@boum.org) si cela aide."
 
 #. type: Bullet: '  * '
 msgid "`8086:46a6` Alder Lake-P"
-msgstr ""
+msgstr "`8086:46a6` Alder Lake-P"
 
 #. type: Bullet: '    - '
 msgid ""
 "Add the `i915.force_probe=46a6` [[boot option|doc/advanced_topics/"
 "boot_options]] and [let us know](tails-bugs@boum.org) whether it helps."
 msgstr ""
+"Ajouter l'[[option de démarrage|doc/advanced_topics/boot_options]] `i915."
+"force_probe=46a6` et [faites-nous savoir](tails-bugs@boum.org) si cela aide."
 
 #. type: Bullet: '  * '
 msgid "`8086:4e55`"
-msgstr ""
+msgstr "`8086:4e55`"
 
 #. type: Bullet: '    - '
 msgid ""
 "Add the `i915.force_probe=4e55` [[boot option|doc/advanced_topics/"
 "boot_options]] and [let us know](tails-bugs@boum.org) whether it helps."
 msgstr ""
+"Ajouter l'[[option de démarrage|doc/advanced_topics/boot_options]] `i915."
+"force_probe=4e55` et [faites-nous savoir](tails-bugs@boum.org) si cela aide."
 
 #. type: Bullet: '- '
 msgid "AMD"
@@ -522,13 +568,15 @@ msgstr "`1002:743f` RX 6400"
 
 #. type: Bullet: '- '
 msgid "If the error message lists multiple graphics cards:"
-msgstr ""
+msgstr "Si le message d'erreur indique plusieurs cartes graphiques :"
 
 #. type: Bullet: '  - '
 msgid ""
 "If possible, plug the monitor into the motherboard's Intel graphics card, as "
 "opposed to the external Nvidia or AMD/ATI graphics card."
 msgstr ""
+"Si possible, brancher le moniteur sur la carte graphique Intel de la carte "
+"mère, au lieu de la carte graphique externe Nvidia ou AMD."
 
 #. type: Bullet: '  - '
 msgid ""
@@ -538,13 +586,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
+msgid ""
+"These graphics card probably don't work as good on Wayland as they used to "
+"work on X.Org."
+msgstr ""
+
+#. type: Plain text
 msgid "Unfortunately, we have no solution to offer you so far."
 msgstr ""
 
 #. type: Plain text
 msgid ""
-"We hope that this gets fixed in the next update of the Linux kernel in Tails "
-"5.9."
+"We hope that this gets fixed in the next update of the Linux kernel, maybe "
+"in Tails 5.9."
 msgstr ""
 
 #. type: Plain text
@@ -684,7 +738,7 @@ msgstr ""
 
 #. type: Title ##
 #, no-wrap
-msgid "*Tor Browser* and *Unsafe Browser* have no minimize and maximize buttons ([[!tails_ticket 19328]])"
+msgid "*Tor Browser* has no minimize and maximize buttons ([[!tails_ticket 19328]])"
 msgstr ""
 
 #. type: Plain text
@@ -703,14 +757,13 @@ msgstr ""
 
 #. type: Title ##
 #, no-wrap
-msgid "Welcome Screen and Tor Connection do not fit on 800x600 resolution ([[!tails_ticket 19324]])"
+msgid "Welcome Screen and Tor Connection don't fit on 800×600 ([[!tails_ticket 19324]])"
 msgstr ""
 
 #. type: Plain text
 msgid ""
 "The top of the Welcome Screen and some button of the Tor Connection "
-"assistant are cut out on small displays (800×600), like virtual machines. "
-"([[!tails_ticket 19324]])"
+"assistant are cut out on small displays (800×600), like virtual machines."
 msgstr ""
 
 #. type: Plain text
@@ -857,3 +910,7 @@ msgstr "[[Pour clés USB (image USB)|install/download]]"
 #. type: Bullet: '  - '
 msgid "[[For DVDs and virtual machines (ISO image)|install/download-iso]]"
 msgstr "[[Pour DVD et machines virtuelles (image ISO)|install/download-iso]]"
+
+#, no-wrap
+#~ msgid "<h2 id=\"graphics\">Some graphics cards stopped working in Tails 5.8</h2>\n"
+#~ msgstr "<h2 id=\"graphics\">Certaines cartes graphiques cessent de fonctionner dans Tails 5.8</h2>\n"
