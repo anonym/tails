@@ -112,7 +112,7 @@ perl -pi \
 sed -i 's@${LB_DISTRIBUTION}/updates@${LB_DISTRIBUTION}-security@' \
     /usr/share/live/build/scripts/build/lb_chroot_sources
 
-# set Amnesia's general options
+# set general options
 $RUN_LB_CONFIG \
    --verbose \
    --apt-recommends false \
@@ -130,7 +130,7 @@ $RUN_LB_CONFIG \
    --bootstrap-config bullseye \
    --archive-areas "main contrib non-free" \
    --includes none \
-   --iso-application="The Amnesic Incognito Live System" \
+   --iso-application="Tails" \
    --iso-publisher="https://tails.boum.org/" \
    --iso-volume="TAILS ${TAILS_FULL_VERSION}" \
    --linux-flavours amd64 \
