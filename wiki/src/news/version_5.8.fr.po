@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2022-12-28 16:42+0000\n"
 "PO-Revision-Date: 2022-12-29 15:08+0000\n"
-"Last-Translator: xin <xin@riseup.net>\n"
+"Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -296,6 +296,8 @@ msgid ""
 "- Add a **Bridge** label in front of the line to enter a custom bridge. ([[!"
 "tails_ticket 19169]])"
 msgstr ""
+"- Ajout d'une étiquette **Pont** devant la ligne pour saisir un pont "
+"personnalisé. ([[!tails_ticket 19169]])"
 
 #. type: Plain text
 msgid ""
@@ -314,27 +316,36 @@ msgstr "<h1 id=\"issues\">Problèmes connus</h1>\n"
 #, no-wrap
 msgid "<h2 id=\"qt\">Problems with Qt applications like <i>Kleopatra</i> and <i>Feather</i></h2>\n"
 msgstr ""
+"<h2 id=\"qt\">Problèmes avec des applications Qt comme <i>Kleopatra</i> et "
+"<i>Feather</i></h2>\n"
 
 #. type: Plain text
 msgid ""
 "Applications using the Qt toolkit have issues in Wayland. You can work "
 "around these issues by running these applications using XWayland instead."
 msgstr ""
+"Les applications qui utilisent la boîte à outils Qt ont des problèmes avec "
+"Wayland. Vous pouvez contourner ces problèmes en exécutant ces applications "
+"avec XWayland à la place."
 
 #. type: Title ###
 #, no-wrap
 msgid "Clipboard encryption and decryption is broken in *Kleopatra* ([[!tails_ticket 19329]])"
 msgstr ""
+"Le chiffrement du presse-papier est cassé dans *Kleopatra* ([[!tails_ticket "
+"19329]])"
 
 #. type: Plain text
 msgid "To fix this:"
-msgstr ""
+msgstr "Pour le corriger :"
 
 #. type: Bullet: '1. '
 msgid ""
 "Choose **Applications**&nbsp;▸ **Utilities**&nbsp;▸ **Terminal** to open a "
 "terminal."
 msgstr ""
+"Choisir **Applications**&nbsp;▸ **Utilitaires**&nbsp;▸ **Terminal** pour "
+"ouvrir un terminal."
 
 #. type: Bullet: '1. '
 msgid "Execute the following command in the terminal:"
@@ -351,6 +362,9 @@ msgid ""
 "   This only works if *Kleopatra* has never been started since Tails started.\n"
 "   Otherwise, execute this command and try again:\n"
 msgstr ""
+"   Cela ne fonctionne seulement que si *Kleopatra* n'a jamais été lancé "
+"depuis que Tails a été démarré.\n"
+"   Autrement, exécuter cette commande et essayer encore :\n"
 
 #. type: Plain text
 #, no-wrap
@@ -379,7 +393,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   Replace:\n"
-msgstr ""
+msgstr "   Remplacer :\n"
 
 #. type: Bullet: '   - '
 msgid ""
@@ -398,6 +412,8 @@ msgstr ""
 #, no-wrap
 msgid "   For example, to start the *Feather* wallet version 2.1.2, execute:\n"
 msgstr ""
+"   Par exemple, pour démarrer le portefeuille *Feather* version 2.1.2, "
+"exécuter :\n"
 
 #. type: Plain text
 #, no-wrap
@@ -408,12 +424,16 @@ msgstr "       unset QT_QPA_PLATFORM ; ./feather-2.1.2.AppImage\n"
 #, no-wrap
 msgid "<h2 id=\"graphics\">Some graphics cards stopped working in Tails 5.8</h2>\n"
 msgstr ""
+"<h2 id=\"graphics\">Certaines cartes graphiques cessent de fonctionner dans "
+"Tails 5.8</h2>\n"
 
 #. type: Plain text
 msgid ""
 "People have reported us several graphics cards that used to work in Tails "
 "5.7 and stopped working in Tails 5.8:"
 msgstr ""
+"Des personnes nous ont signalé que plusieurs cartes graphiques qui "
+"fonctionnaient avec Tails 5.7 ne fonctionnent plus avec Tails 5.8 :"
 
 #. type: Bullet: '- '
 msgid "Nvidia"
@@ -453,11 +473,11 @@ msgstr "Intel"
 
 #. type: Bullet: '  * '
 msgid "`8086:0046` Core Processor Integrated Graphic Controller"
-msgstr ""
+msgstr "`8086:0046` Contrôleur graphique intégré au microprocesseur"
 
 #. type: Bullet: '  * '
 msgid "`8086:0a16` Haswell-ULT Integrated Graphics Controller"
-msgstr ""
+msgstr "`8086:0a16` Contrôleur graphique intégré Haswell-ULT"
 
 #. type: Bullet: '  * '
 msgid "`8086:3185` GeminiLake (UHD Graphics 600)"
@@ -468,9 +488,8 @@ msgid ""
 "Add the `i915.force_probe=3185` [[boot option|doc/advanced_topics/"
 "boot_options]] and [let us know](tails-bugs@boum.org) whether it helps."
 msgstr ""
-"Ajouter `i915.force_probe=3185` [[à l'option de démarrage|doc/"
-"advanced_topics/boot_options]] et [faites-nous savoir](tails-bugs@boum.org) "
-"si cela aide."
+"Ajouter [[l'option de démarrage|doc/advanced_topics/boot_options]] `i915."
+"force_probe=3185` et [faites-nous savoir](tails-bugs@boum.org) si cela aide."
 
 #. type: Bullet: '  * '
 msgid "`8086:4692` UHD Graphics 730"
@@ -481,16 +500,20 @@ msgid ""
 "Add the `i915.force_probe=4692` [[boot option|doc/advanced_topics/"
 "boot_options]] and [let us know](tails-bugs@boum.org) whether it helps."
 msgstr ""
+"Ajouter l'[[option de démarrage|doc/advanced_topics/boot_options]] `i915."
+"force_probe=4692`et [faites-nous savoir](tails-bugs@boum.org) si cela aide."
 
 #. type: Bullet: '  * '
 msgid "`8086:46a6` Alder Lake-P"
-msgstr ""
+msgstr "`8086:46a6` Alder Lake-P"
 
 #. type: Bullet: '    - '
 msgid ""
 "Add the `i915.force_probe=46a6` [[boot option|doc/advanced_topics/"
 "boot_options]] and [let us know](tails-bugs@boum.org) whether it helps."
 msgstr ""
+"Ajouter l'[[option de démarrage|doc/advanced_topics/boot_options]] `i915."
+"force_probe=46a6` et [faites-nous savoir](tails-bugs@boum.org) si cela aide."
 
 #. type: Bullet: '  * '
 msgid "`8086:4e55`"
