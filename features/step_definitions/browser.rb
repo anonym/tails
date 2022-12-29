@@ -46,12 +46,13 @@ def tor_browser_application_info(defaults)
               "/home/#{user}/\.tor-browser/profile\.default"
   defaults.merge(
     {
-      user:                        user,
-      cmd_regex:                   cmd_regex,
-      chroot:                      '',
-      new_tab_button_image:        'TorBrowserNewTabButton.png',
-      browser_reload_button_image: 'TorBrowserReloadButton.png',
-      browser_stop_button_image:   'TorBrowserStopButton.png',
+      user:                            user,
+      cmd_regex:                       cmd_regex,
+      chroot:                          '',
+      new_tab_button_image:            'TorBrowserNewTabButton.png',
+      browser_reload_button_image:     'TorBrowserReloadButton.png',
+      browser_reload_button_image_rtl: 'TorBrowserReloadButtonRTL.png',
+      browser_stop_button_image:       'TorBrowserStopButton.png',
     }
   )
 end

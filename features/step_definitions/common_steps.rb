@@ -626,6 +626,17 @@ Given /^the Tor Browser (?:has started|starts)$/ do
   end
   browser_info = xul_application_info('Tor Browser')
   @screen.wait(browser_info[:new_tab_button_image], 10)
+  try_for(120, delay: 3) do
+    # We can't use Dogtail here: this step must support many languages
+    # and using Dogtail would require maintaining a list of translations
+    # for the "Stop" and "Reload" buttons.
+    @screen.wait_vanish(browser_info[:browser_stop_button_image], 120)
+    if RTL_LANGUAGES.include?($language)
+      @screen.wait(browser_info[:browser_reload_button_image_rtl], 120)
+    else
+      @screen.wait(browser_info[:browser_reload_button_image], 120)
+    end
+  end
 end
 
 Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ do |page|
