@@ -16,10 +16,10 @@ Feature: Backing up the persistent storage
     When I plug USB drive "backup"
     And I give the Persistent Storage on drive "backup" its own UUID
     And I click "Retry" in the backup tool
-    Then the backup tool displays "Do you want to update your backup Tails USB stick now?"
-    When I click "Update" in the backup tool
+    Then the backup tool displays "Do you want to back up your Persistent Storage now?"
+    When I click "Back Up" in the backup tool
     And I enter my persistent storage passphrase into the polkit prompt
-    Then the backup tool displays "Your backup was updated successfully!"
+    Then the backup tool displays "Your Persistent Storage was backed up successfully to your backup Tails USB stick!"
     # The backup tool ejects the drive, so we have to replug it
     When I unplug USB drive "backup"
     And I plug USB drive "backup"
