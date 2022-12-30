@@ -1084,7 +1084,7 @@ class TCAMainWindow(
         ]
         d.format_secondary_markup("\n".join(secondary))
         d.add_buttons(
-            "Close and Lose Progress", Gtk.ResponseType.YES, "Wait", Gtk.ResponseType.NO
+            _("Close and Lose Progress"), Gtk.ResponseType.YES, _("Wait"), Gtk.ResponseType.NO
         )
         d.set_default_response(Gtk.ResponseType.NO)
 
