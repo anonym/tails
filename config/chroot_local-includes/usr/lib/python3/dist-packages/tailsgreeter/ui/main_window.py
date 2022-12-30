@@ -390,7 +390,6 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         self.button_start.set_sensitive(allow_start)
         return False
 
-
     def _storagecreate_updateui(self, enabled=None):
         if enabled is None:
             enabled = self.greeter.persistent_storage_create.load()
