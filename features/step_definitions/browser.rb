@@ -98,8 +98,10 @@ end
 
 When /^I open a new tab in the (.*)$/ do |browser|
   info = xul_application_info(browser)
-  @screen.click(info[:new_tab_button_image])
-  @screen.wait(info[:address_bar_image], 15)
+  retry_action(2) do
+    @screen.click(info[:new_tab_button_image])
+    @screen.wait(info[:address_bar_image], 15)
+  end
 end
 
 When /^I open the address "([^"]*)" in the (.* Browser)( without waiting)?$/ do |address, browser_name, non_blocking|
