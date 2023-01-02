@@ -3,6 +3,17 @@
 set -eu
 set -x
 
+PREREQS=""
+
+prereqs() { echo "$PREREQS"; }
+
+case "$1" in
+	prereqs)
+	prereqs
+	exit 0
+	;;
+esac
+
 option="$(tr ' ' '\n' < /proc/cmdline | grep '^early_patch\b')"
 
 [ -n "$option" ] || exit 0
