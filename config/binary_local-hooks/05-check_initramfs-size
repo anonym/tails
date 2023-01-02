@@ -26,4 +26,6 @@ if [ "$ACTUAL_SIZE" -ge "$MAX_SIZE" ]; then
    echo "E: initramfs is larger ($ACTUAL_SIZE bytes) than the maximum allowed ($MAX_SIZE)" >&2
    lsinitramfs -l "$INITRAMFS"
    exit 1
+else
+   echo "I: initramfs is ${ACTUAL_SIZE} bytes large"
 fi
