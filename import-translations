@@ -45,7 +45,7 @@ fi
 eval "$GIT_IN_TOR_TRANSLATION_DIR checkout \"$BRANCH\""
 eval "$GIT_IN_TOR_TRANSLATION_DIR reset --hard \"origin/$BRANCH\""
 
-# Ensure we only keep PO files that are still present in the Transifex
+# Ensure we only keep PO files that are still present in the
 # branch we import from.
 find "$TAILS_PO_DIR" -name '*.po' -delete
 
