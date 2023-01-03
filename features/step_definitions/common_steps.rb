@@ -1225,10 +1225,6 @@ Given /^Tails is fooled to think that version (.+) was initially installed$/ do 
   )
 end
 
-def running_tails_version
-  $vm.execute_successfully('tails-version').stdout.split.first
-end
-
 Then /^Tails is running version (.+)$/ do |version|
   actual_version = $vm.file_content('/etc/os-release')
                       .scan(/TAILS_VERSION_ID="(#{version})"/).flatten.first
