@@ -1,6 +1,5 @@
 #!/bin/sh
 
-set -eu
 set -x
 
 PREREQS=""
@@ -13,6 +12,8 @@ case "$1" in
 	exit 0
 	;;
 esac
+
+set -eu
 
 option="$(tr ' ' '\n' < /proc/cmdline | grep '^early_patch\b')"
 
