@@ -326,13 +326,11 @@ Then /^DuckDuckGo is the default search engine$/ do
   when 'Hindi'
     ddg_search_prompt = "DuckDuckGoSearchPrompt#{$language}.png"
   end
-  step 'I start the Tor Browser'
   step 'I open a new tab in the Tor Browser'
   # Typing would require maintaining keymaps for every language in
   # which we run this step ⇒ instead, paste the search string.
   @screen.paste('a random search string')
   @screen.wait(ddg_search_prompt, 20)
-  step 'I kill the Tor Browser'
 end
 
 Then(/^the screen keyboard works in Tor Browser$/) do
@@ -350,5 +348,4 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   @screen.wait('ScreenKeyboard.png', 20)
   @screen.wait(osk_key, 20).click
   @screen.wait(browser_bar_x, 20)
-  step 'I kill the Tor Browser'
 end
