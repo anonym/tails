@@ -165,7 +165,8 @@ and stopped working in Tails 5.8:
 - Nvidia
   * `10de:0a70` GeForce 310M
   * `10de:1f82` GeForce GTX 1650
-  * `10de:220a`
+  * `10de:220a` RTX 3080
+  * `10de:2482` GA104 GeForce RTX 3070 Ti
   * `10de:2488`
   * `10de:2489`
   * `10de:24dc` GA104M GeForce RTX 3080 Mobile
@@ -176,10 +177,14 @@ and stopped working in Tails 5.8:
   * `8086:0046` Core Processor Integrated Graphic Controller
   * `8086:0a16` Haswell-ULT Integrated Graphics Controller
   * `8086:1916` Skylake GT2
+    - Add the `i915.force_probe=1916` [[boot option|doc/advanced_topics/boot_options]]
+      and [let us know](tails-bugs@boum.org) whether it helps.
   * `8086:3185` GeminiLake (UHD Graphics 600)
     - Add the `i915.force_probe=3185` [[boot option|doc/advanced_topics/boot_options]]
       and [let us know](tails-bugs@boum.org) whether it helps.
   * `8086:4690`
+    - Add the `i915.force_probe=4690` [[boot option|doc/advanced_topics/boot_options]]
+      and [let us know](tails-bugs@boum.org) whether it helps.
   * `8086:4692` UHD Graphics 730
     - Add the `i915.force_probe=4692` [[boot option|doc/advanced_topics/boot_options]]
       and [let us know](tails-bugs@boum.org) whether it helps.
@@ -187,7 +192,9 @@ and stopped working in Tails 5.8:
     - Add the `i915.force_probe=46a6` [[boot option|doc/advanced_topics/boot_options]]
       and [let us know](tails-bugs@boum.org) whether it helps.
   * `8086:4e55`
-    - Add the `i915.force_probe=4e55` [[boot option|doc/advanced_topics/boot_options]]
+    - To fix this, add the `i915.force_probe=4e55` [[boot option|doc/advanced_topics/boot_options]].
+  * `8086:5917`
+    - Add the `i915.force_probe=5917` [[boot option|doc/advanced_topics/boot_options]]
       and [let us know](tails-bugs@boum.org) whether it helps.
 - AMD
   * `1002:1506`
@@ -205,6 +212,10 @@ and stopped working in Tails 5.8:
     not solve the problem, try selecting the other graphics adapter.
 
 These graphics card probably don't work as good on Wayland as they used to work on X.Org.
+
+Please try our [experimental images with a newer Linux
+kernel](https://nightly.tails.boum.org/build_Tails_ISO_18467-linux-6.0-force-all-tests/lastSuccessful/archive/build-artifacts/)
+and [[tell us|tails-bugs@boum.org]] whether they fix the problem.
 
 Unfortunately, we have no solution to offer you so far.
 
