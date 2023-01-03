@@ -10,9 +10,9 @@ OUTFILE="config/chroot_local-includes/usr/share/tails/greeter/supported_language
 # Add our tier-1 supported languages
 LANG_CODES="ar de en es fa fr hi it pt ru tr zh"
 
-# Add the languages which have translations in Tails
-TRANSLATED="$(find po -name "*.po" -exec basename {} \; | \
-              sed -e "s/\.po//" -e "s/\(.*\)_.*/\1/g")"
+# Add the languages which had translations in Tails before the move to Weblate.
+# When we fix #19359, we can go back to a dynamically generated list.
+TRANSLATED="ca cs da el fi ga he hr hu id ka km lt mk my nl ro sv"
 LANG_CODES="${LANG_CODES} ${TRANSLATED}"
 
 # Write the list to the output file
