@@ -1225,11 +1225,16 @@ Given /^Tails is fooled to think that version (.+) was initially installed$/ do 
   )
 end
 
+def running_tails_version
+  $vm.execute_successfully('tails-version').stdout.split.first
+end
+
 Then /^Tails is running version (.+)$/ do |version|
-  actual_version = $vm.file_content('/etc/os-release')
-                      .scan(/TAILS_VERSION_ID="(#{version})"/).flatten.first
-  assert_equal(version, actual_version,
-               "The version doesn't match /etc/os-release")
+  v1 = running_tails_version
+  assert_equal(version, v1, "The version doesn't match tails-version's output")
+  v2 = $vm.file_content('/etc/os-release')
+          .scan(/TAILS_VERSION_ID="(#{version})"/).flatten.first
+  assert_equal(version, v2, "The version doesn't match /etc/os-release")
 end
 
 def size_of_shared_disk_for(files)

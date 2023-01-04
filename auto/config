@@ -149,6 +149,7 @@ $RUN_LB_CONFIG \
    --initramfs=live-boot \
    "${@}"
 
+install -d config/chroot_local-includes/etc/amnesia/
 install -d config/chroot_local-includes/etc/tails/
 
 # environment
@@ -159,9 +160,9 @@ echo "TAILS_WIKI_SUPPORTED_LANGUAGES='${TAILS_WIKI_SUPPORTED_LANGUAGES}'" \
    >> config/chroot_local-includes/etc/tails/environment
 
 # version
-echo "${TAILS_FULL_VERSION}" > config/chroot_local-includes/etc/tails/version
+echo "${TAILS_FULL_VERSION}" > config/chroot_local-includes/etc/amnesia/version
 if git rev-list HEAD >/dev/null 2>&1; then
-   git rev-list HEAD | head -n 1 >> config/chroot_local-includes/etc/tails/version
+   git rev-list HEAD | head -n 1 >> config/chroot_local-includes/etc/amnesia/version
 fi
 # os-release
 cat >> config/chroot_local-includes/etc/os-release <<EOF
