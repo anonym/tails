@@ -52,30 +52,24 @@ when started:
 Security
 --------
 
-The Unsafe Browser is run by a separate `clearnet` user, wich is
-allowed to make TCP connections to any port, and UDP DNS queries;
-access to local services like Tor etc. are blocked so it cannot
-interfere with them if compromised. Restricting the TCP ports to
-HTTP(S) and DNS only is not done since some captive portals use
-non-standard ports. Port restrictions are a pretty weak defense any
-way since just *one* open port is enough to do anything.
+The Unsafe Browser is run in a restricted environment:
+ - it runs in its own mount namespace; this is not particularly restrictive
+ - it runs in a specific network namespace
+   - it can establish arbitrary TCP/UDP connections
+   - it cannot contact local services, like Tor
+ - Apparmor rules prevent it from accessing sensitive files
 
-The Unsafe Browser is run inside a chroot consisting of a throw away
+The Unsafe Browser is run inside a chroot-like namespace consisting of a throw away
 overlayfs union between a read-only version of the pre-boot Tails
-filesystem, and a tmpfs as the rw branch. Hence, the post-boot
-filesystem (which contains all user data) isn't available to the
-Unsafe Browser within the chroot. The chroot and overlayfs union is created
-upon Unsafe Browser start, and is torn down after it exits, forcefully
-killing any remaining processes run from inside it.
+filesystem, and a tmpfs as the rw branch.
 
-It should be noted that chroots are pretty weak jails, so an exploit
-could easily escape it and have access to the complete filesystem (as
-restricted for the `clearnet` user). Hence, the reason for using a
-chroot is not for that purpose, but for separating its insecure
-configuration from the rest of the Tails system. For instance, within
-the chroot the DNS server obtained through DNS is configured as the
-system resolver, which would be dangerous if used in the outside
-system.
+Using mount namespace, we can control with good degree of accuracy what data are shared with the Unsafe
+Browser. The goal of this is to forbid the Unsafe Browser from accessing any user files, because that could
+lead to deanonymization.
+
+The overlayfs union is created upon Unsafe Browser start, and is torn down after it exits,
+forcefully killing any remaining processes run from inside it.
+
 
 ### Attack scenarios and known issues
 
