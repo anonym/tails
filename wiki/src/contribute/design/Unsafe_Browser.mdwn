@@ -53,23 +53,26 @@ Security
 --------
 
 The Unsafe Browser is run in a restricted environment:
- - it runs in its own mount namespace; this is not particularly restrictive
- - it runs in a specific network namespace
+
+ - it runs in its own mount namespace, where (through the use of tmpfs and overlayfs):
+   - no modifications can be made to the system
+   - the system as shown as it was before booting. No modification to the state that happened after boot is
+     visible
+   - however, /home is fully readable and writable, and is just a bind-mount to the "normal" /home
+
+ - it runs in its own network namespace
    - it can establish arbitrary TCP/UDP connections
    - it cannot contact local services, like Tor
- - Apparmor rules prevent it from accessing sensitive files
 
-The Unsafe Browser is run inside a chroot-like namespace consisting of a throw away
-overlayfs union between a read-only version of the pre-boot Tails
-filesystem, and a tmpfs as the rw branch.
+ - Apparmor rules prevent it from accessing sensitive files:
+   - Every file in Desktop, Downloads, Documents, etc.
+   - Every file in home except `/home/amnesia/.*`
+   - However, it can access `/home/amnesia/Tor Browser/` and `/home/amnesia/Persistent/Tor Browser/`.
 
-Using mount namespace, we can control with good degree of accuracy what data are shared with the Unsafe
-Browser. The goal of this is to forbid the Unsafe Browser from accessing any user files, because that could
-lead to deanonymization.
-
-The overlayfs union is created upon Unsafe Browser start, and is torn down after it exits,
-forcefully killing any remaining processes run from inside it.
-
+This means that the Unsafe Browser cannot access most user files (with the exception of files in `Tor
+Browser/`, reducing the risk of deanonymization.
+It can also only go through the clearnet, but not interact with any other Tails service which could ever lead
+to deanonymizaation.
 
 ### Attack scenarios and known issues
 
