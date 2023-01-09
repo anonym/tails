@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2022-06-04 18:38+0000\n"
-"PO-Revision-Date: 2023-01-03 14:17+0000\n"
+"PO-Revision-Date: 2023-01-04 21:17+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
@@ -54,6 +54,9 @@ msgid ""
 "release of *Tor Browser* [11.0.14](https://blog.torproject.org/new-release-"
 "tor-browser-11014/)."
 msgstr ""
+"Cette version a été ajournée du 31 mai au 5 juin à cause d'un délai dans la "
+"publication de la version [11.0.14](https://blog.torproject.org/"
+"new-release-tor-browser-11014/) du *Navigateur Tor*."
 
 #. type: Plain text
 #, no-wrap
@@ -76,11 +79,16 @@ msgid ""
 "The *Tor Connection* assistant now automatically fixes the computer clock if "
 "you choose to connect to Tor automatically."
 msgstr ""
+"L'assistant de *Connexion à Tor* corrige maintenant automatiquement "
+"l'horloge de l'ordinateur si vous choisissez de vous connecter à Tor "
+"automatiquement."
 
 #. type: Plain text
 #, no-wrap
 msgid "  This makes is much easier for people in Asia to circumvent censorship.\n"
 msgstr ""
+"  Cela rend plus facile pour les personnes en Asie de contourner la censure."
+"\n"
 
 #. type: Plain text
 #, no-wrap
@@ -91,6 +99,14 @@ msgid ""
 "  exception to our policy of only making Internet connections through the Tor\n"
 "  network.\n"
 msgstr ""
+"  Tails détermine l'heure réelle en se connectant au service de détection de "
+"portail\n"
+"  captif de [Fedora](https://getfedora.org/), qui est utilisé par la plupart "
+"des distributions\n"
+"  Linux. Cette connexion ne se fait pas à travers le réseau Tor et est une\n"
+"  exception à notre politique de ne faire que des connexions Internet à "
+"travers le réseau\n"
+"  Tor.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -104,6 +120,10 @@ msgid ""
 "  synchronization in our [[design documentation about non-Tor\n"
 "  traffic|contribute/design/Tor_enforcement#non-tor-traffic]].</p>\n"
 msgstr ""
+"  <p>Vous pouvez en apprendre plus sur notre évaluation de sécurité de la\n"
+"  synchronisation de temps dans notre [[documentation de conception sur le "
+"trafic\n"
+"  en-dehors de Tor|contribute/design/Tor_enforcement#non-tor-traffic]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -115,6 +135,9 @@ msgid ""
 "The time displayed in the top navigation uses the time zone selected when "
 "fixing the clock in the *Tor Connection* assistant."
 msgstr ""
+"L'heure affichée en haut de la navigation utilise le fuseau horaire "
+"sélectionné lors du réglage de l'horloge dans l'assistant de *Connexion à "
+"Tor*."
 
 #. type: Plain text
 #, no-wrap
@@ -123,22 +146,31 @@ msgid ""
 "  everybody from the desktop ([[!tails_ticket 10819]]) and store it in the\n"
 "  Persistent Storage ([[!tails_ticket 12094]]).\n"
 msgstr ""
+"  À l'avenir, nous rendrons possible de modifier le fuseau horaire affiché "
+"pour\n"
+"  toutes les personnes depuis le bureau ([[!tails_ticket 10819]]) et nous le "
+"stockerons dans le\n"
+"  stockage persistant ([[!tails_ticket 12094]]).\n"
 
 #. type: Bullet: '- '
 msgid ""
 "The last screen of the *Tor Connection* assistant makes it clear whether you "
 "are connected using Tor bridges or not."
 msgstr ""
+"Le dernier écran de l'assistant de *Connexion à Tor* clarifie si vous êtes "
+"connecté en utilisant les ponts Tor ou non."
 
 #. type: Plain text
 #, no-wrap
 msgid "  [[!img bridges.png link=\"no\" alt=\"Connected to Tor successfully with bridges\"]]\n"
 msgstr ""
+"  [[!img bridges.png link=\"no\" alt=\"Connexion réussie à Tor en utilisant "
+"les ponts\"]]\n"
 
 #. type: Title ##
 #, no-wrap
 msgid "*Unsafe Browser* and captive portals"
-msgstr ""
+msgstr "*Navigateur non sécurisé* et portails captifs"
 
 #. type: Bullet: '- '
 msgid ""
@@ -146,17 +178,26 @@ msgid ""
 "to the Tor network yet. This new version makes it easier to understand how "
 "to sign in to the network using a captive portal."
 msgstr ""
+"Nous avons écrit une nouvelle page d'accueil pour le *Navigateur non "
+"sécurisé* lorsque vous n'êtes pas encore connecté au réseau Tor. Cette "
+"nouvelle version rend plus facile de comprendre comment s'authentifier dans "
+"un réseau utilisant un portail captif."
 
 #. type: Plain text
 #, no-wrap
 msgid "  [[!img doc/anonymous_internet/unsafe_browser/captive_portal.svg link=\"no\" alt=\"Example of captive portal: Free Wi-Fi hotspot\"]]\n"
 msgstr ""
+"  [[!img doc/anonymous_internet/unsafe_browser/captive_portal.svg link=\"no\""
+" alt=\"Exemple de portail captif : point de connexion Wi-Fi gratuit\"]]\n"
 
 #. type: Bullet: '- '
 msgid ""
 "Tails now asks for confirmation before restarting when the *Unsafe Browser* "
 "was not enabled in the Welcome Screen. This prevents losing work too easily."
 msgstr ""
+"Tails demande maintenant une confirmation avant de redémarrer lors que le *"
+"Navigateur non sécurisé* n'a pas été activé dans l'Écran de bienvenue. Cela "
+"évite de perdre trop facilement du travail."
 
 #. type: Plain text
 #, no-wrap
@@ -171,15 +212,19 @@ msgstr "Kleopatra"
 #. type: Plain text
 msgid "- Associate OpenPGP files with *Kleopatra* in the *Files* browser."
 msgstr ""
+"- Associer les fichiers OpenPGP avec *Kleopatra* dans le navigateur de "
+"*Fichiers*."
 
 #. type: Plain text
 #, no-wrap
 msgid "  You can now double-click on `.gpg` files to decrypt them.\n"
 msgstr ""
+"  Vous pouvez maintenant double-cliquer sur les fichiers `.gpg` pour les "
+"déchiffrer.\n"
 
 #. type: Plain text
 msgid "- Add *Kleopatra* to the Favorites applications."
-msgstr ""
+msgstr "- Ajout de *Kleopatra* dans les applications favorites."
 
 #. type: Plain text
 #, no-wrap
@@ -231,35 +276,46 @@ msgid ""
 "rolling back from the option to hide that you are connecting to Tor.  ([[!"
 "tails_ticket 18546]])"
 msgstr ""
+"Suppression de la sélection automatique de l'option **Configurer un pont** "
+"lors du retour au choix de l'option qui permet de masquer que vous êtes "
+"connectés à Tor.  ([[!tails_ticket 18546]])"
 
 #. type: Bullet: '- '
 msgid ""
 "Give the same instructions on both screens where you have to configure a "
 "bridge. ([[!tails_ticket 18596]])"
 msgstr ""
+"Donner les mêmes instructions sur les deux écrans où vous configurez un "
+"pont. ([[!tails_ticket 18596]])"
 
 #. type: Bullet: '- '
 msgid ""
 "Help rename the default *KeePassXC* database to open it automatically in the "
 "future. ([[!tails_ticket 18966]])"
 msgstr ""
+"Aide à renommer la base de données par défaut *KeePassXC* pour l'ouvrir "
+"automatiquement à l'avenir. ([[!tails_ticket 18966]])"
 
 #. type: Bullet: '- '
 msgid ""
 "Fix sharing files using *OnionShare* from the *Files* browser.  ([[!"
 "tails_ticket 18990]])"
 msgstr ""
+"Corriger le partage de fichiers avec *OnionShare* depuis le navigateur de "
+"*Fichiers*.  ([[!tails_ticket 18990]])"
 
 #. type: Plain text
 #, no-wrap
 msgid "  [[!img onionshare.png link=\"no\" alt=\"Share via OnionShare\"]]\n"
-msgstr ""
+msgstr "  [[!img onionshare.png link=\"no\" alt=\"Partage avec OnionShare\"]]\n"
 
 #. type: Bullet: '- '
 msgid ""
 "Disable search providers in the Activities overview: files, calculator, and "
 "terminal. ([[!tails_ticket 18952]])"
 msgstr ""
+"Désactive les fournisseurs de résultat dans le résumé d'activités : "
+"fichiers, calculatrice et terminal. ([[!tails_ticket 18952]])"
 
 #. type: Plain text
 msgid ""
