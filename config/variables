@@ -1,0 +1,37 @@
+# -*- mode: sh; -*-
+
+# Configuration file for Tails
+# 
+# This is a shell script. It is sourced by various other scripts.
+
+export SOURCE_DATE_EPOCH="$(date --utc --date="$(dpkg-parsechangelog --show-field=Date)" +%s)"
+export SOURCE_DATE_YYYYMMDD="$(date --utc --date="$(dpkg-parsechangelog --show-field=Date)" +%Y%m%d)"
+
+# Base for the string that will be passed to "lb config --bootappend-live"
+CMDLINE_APPEND_NON_REMOVABLE="nopersistence noprompt timezone=Etc/UTC splash noautologin module=Tails slab_nomerge slub_debug=FZ mce=0 vsyscall=none init_on_free=1 mds=full,nosmt page_alloc.shuffle=1 randomize_kstack_offset=on"
+CMDLINE_APPEND="live-media=removable ${CMDLINE_APPEND_NON_REMOVABLE}"
+
+# Options passed to isohybrid
+ISOHYBRID_OPTS="-h 255 -s 63 --id 42 --verbose"
+
+# Kernel version
+KERNEL_VERSION='6.0.0-0.deb11.6'
+
+### You should not have to change anything below this line ####################
+
+# sanity checks
+if [ ! -x "`command -v dpkg-parsechangelog`" ]; then
+   echo "could not find dpkg-parsechangelog, please apt-get install dpkg-dev" >&2
+   exit 2
+fi
+
+# Compute the current Tails version once for all
+DATETIME_NOW="`date --utc '+%Y%m%dT%H%MZ'`"
+TAILS_VERSION="`dpkg-parsechangelog -SVersion`"
+TAILS_FULL_VERSION="${TAILS_VERSION} - ${SOURCE_DATE_YYYYMMDD}"
+
+# Signing key
+TAILS_SIGNING_KEY_FP="A490 D0F4 D311 A415 3E2B  B7CA DBB8 02B2 58AC D84F"
+
+# Used to set a custom home page if the distribution is UNRELEASED
+TAILS_DISTRIBUTION="`dpkg-parsechangelog -SDistribution`"

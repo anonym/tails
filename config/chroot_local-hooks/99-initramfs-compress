@@ -16,8 +16,5 @@ ensure_hook_dependency_is_installed initramfs-tools xz-utils fatresize
 # live-build will regenerate it later on anyway, which will apply
 # the settings we configure here.
 
-OPTS_FILE='/etc/initramfs-tools/initramfs.conf'
-
-[ -f "${OPTS_FILE}" ] || exit 11
-
-sed -i'' 's,^COMPRESS=.*,COMPRESS=xz,' "${OPTS_FILE}"
+echo 'COMPRESS=xz' > /etc/initramfs-tools/conf.d/compress.conf
+echo 'COMPRESSLEVEL=9' > /etc/initramfs-tools/conf.d/compresslevel.conf
