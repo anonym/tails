@@ -3,6 +3,6 @@
 set -eu
 
 # At tailsgreeter time, NetworkManager is not active, so nmcli would fail
-if systemctl is-active NetworkManager; then
+if systemctl is-active --quiet NetworkManager ; then
     nmcli connection reload
 fi
