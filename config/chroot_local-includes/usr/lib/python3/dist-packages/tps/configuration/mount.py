@@ -349,13 +349,13 @@ class Mount(object):
         """Check if the mount is active. Raise an IsInactiveException
         if the feature is inactive."""
         if not self.is_active():
-            raise IsInactiveException()
+            raise IsInactiveException(f"Mount {self.dest} is inactive")
 
     def check_is_inactive(self):
         """Check if the mount is inactive. Raise an IsActiveException
         if the feature is active."""
         if self.is_active():
-            raise IsActiveException()
+            raise IsActiveException(f"Mount {self.dest} is active")
 
     def _is_active_using_symlinks(self):
         if not self.src.exists() or not self.dest.exists():
