@@ -171,6 +171,8 @@ class Mount(object):
             logger.warning(f"Is already mounted: {self}")
             return
 
+        logger.info(f"Activating mount {self.dest}...")
+
         # Check if anything else is mounted on the destination
         src = _what_is_mounted_on(self.dest)
         if src:
@@ -221,6 +223,8 @@ class Mount(object):
             self._activate_using_symlinks()
         else:
             self._activate_using_bind_mount()
+
+        logger.info(f"Done activating mount {self.dest}")
 
     def _activate_using_symlinks(self):
         if self.is_file:

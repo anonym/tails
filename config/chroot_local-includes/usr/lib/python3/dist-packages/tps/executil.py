@@ -37,5 +37,5 @@ def execute_hooks(hooks_dir: Union[str, PathLike]):
     for file in sorted(hooks_dir.iterdir()):
         if file.is_dir():
             continue
-        logger.debug(f"Executing hook {file}", stacklevel=2)
+        logger.info(f"Executing hook {file}", stacklevel=2)
         subprocess.check_call([file])
