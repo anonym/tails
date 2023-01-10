@@ -224,9 +224,9 @@ def step_impl(context: TestContext, exception: str):
 
 @then('the destination directory contains symlinks to all the files in the source directory')
 def step_impl(context: TestContext):
-    # The _is_active_using_symlinks function checks exactly what we want
+    # The _check_is_active_using_symlinks function checks exactly what we want
     # to check here
-    assert context.mount._is_active_using_symlinks()
+    context.mount._check_is_active_using_symlinks()
 
 @then('the {mount_operand} directory contains no symlink')
 def step_impl(context: TestContext, mount_operand: str):
