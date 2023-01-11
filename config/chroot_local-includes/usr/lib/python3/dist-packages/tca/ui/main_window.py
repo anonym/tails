@@ -696,8 +696,7 @@ class StepErrorMixin:
             # already seen the explanation about bridges and we don't
             # need to repeat it here.
             self.get_object("label_explain_bridge").hide()
-        elif self.app.get_network_time_result["status"] is not None \
-             and self.app.get_network_time_result["status"] == "success":
+        elif self.app.get_network_time_result["status"] == "success":
             for box in ["wrong_clock", "captive_portal", "proxy"]:
                 self.get_object(f"box_{box}").hide()
             label_explain.set_text(
