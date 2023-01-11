@@ -390,7 +390,6 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         self.button_start.set_sensitive(allow_start)
         return False
 
-
     def _storagecreate_updateui(self, enabled=None):
         if enabled is None:
             enabled = self.greeter.persistent_storage_create.load()
@@ -399,11 +398,10 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         self.label_storagecreate_after.set_visible(enabled)
 
         if enabled:
-            label = "Don't _Create Persistent Storage"
+            label = _("Don't _Create Persistent Storage")
         else:
-            label = "_Create Persistent Storage"
-        self.button_storagecreate_create.set_label(_(label))
-
+            label = _("_Create Persistent Storage")
+        self.button_storagecreate_create.set_label(label)
 
     def cb_button_storagecreate_create_clicked(self, widget, user_data=None):
         enabled = self.greeter.persistent_storage_create.toggle()
