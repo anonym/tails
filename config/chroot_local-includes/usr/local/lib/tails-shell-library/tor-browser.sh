@@ -83,9 +83,10 @@ configure_best_tor_browser_locale() {
 }
 
 supported_tor_browser_locales() {
-    7z e -tzip -- "${TBB_INSTALL}/omni.ja" res/multilocale.txt >/dev/null
-    tr ',' "\n" < multilocale.txt
-    rm multilocale.txt
+    tmp=$(mktemp -d)
+    7z e -tzip -o"$tmp" -- "${TBB_INSTALL}/omni.ja" res/multilocale.txt >/dev/null
+    tr ',' "\n" < "$tmp"/multilocale.txt
+    rm -rf "$tmp"
 }
 
 locale_is_supported_by_tor_browser() {
