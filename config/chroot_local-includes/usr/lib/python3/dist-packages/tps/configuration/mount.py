@@ -1,5 +1,6 @@
 import logging
 import os
+import stat
 from pathlib import Path
 import shlex
 import subprocess
@@ -369,16 +370,18 @@ class Mount(object):
             # If the source doesn't exist, the feature can't be active.
             raise IsInactiveException(f"Mount {self.dest} is inactive: Symlink source {self.src} does not exist")
 
-        if not self.dest.exists():
+        if not self.dest.is_symlink() and not self.dest.exists():
             # If the destination doesn't exist, the feature can't be active.
-            raise IsInactiveException(f"Mount {self.dest} is inactive: Symlink {self.dest} does not exist")
+            raise IsInactiveException(f"Mount {self.dest} is inactive: Destination {self.dest} does not exist")
 
         for dir, _, files in os.walk(self.src):
             dest_dir = os.path.join(self.dest, os.path.relpath(dir, self.src))
             for f in files:
                 src = Path(dir, f)
                 dest = Path(dest_dir, f)
-                if dest.resolve() != src:
+                if not dest.is_symlink():
+                    raise IsInactiveException(f"Mount {self.dest} is inactive: Symlink {dest} does not exist")
+                if dest.readlink() != src:
                     raise IsInactiveException(
                         f"Mount {self.dest} is inactive: Symlink {dest} does not resolve to the symlink source {src} but to {dest.resolve()}")
 
@@ -434,12 +437,21 @@ def _chown_ref(source: Union[str, Path], dest: Union[str, Path]):
     """Change the owner and group of dest to the ones of source"""
     # If the destination is a symlink, we want to change the symlinks
     # owner, so we set --no-dereference.
-    executil.check_call(["chown", "--no-dereference", "--reference",
-                         source, dest])
+    # We don't use the --reference option here but retrieve the UID and
+    # GID ourselves because chown resolves symlinks of the reference file.
+    uid = source.lstat().st_uid
+    gid = source.lstat().st_gid
+    executil.check_call(["chown", "--no-dereference", f"{uid}:{gid}", dest])
 
 
 def _chmod_ref(source: Union[str, Path], dest: Union[str, Path]):
     """Change the permissions of dest to the ones of source"""
-    # chmod doesn't support --no-dereference because it's not possible
-    # to change the permissions of a symlink.
-    executil.check_call(["chmod", "--reference", source, dest])
+    # Don't call chmod when the destination is a symlink, because we
+    # don't want to change the permissions of the symlink's target and
+    # it's not possible to change the permission of a symlink itself.
+    if Path(dest).is_symlink():
+        return
+    # We don't use the --reference option here but retrieve the UID and
+    # GID ourselves because chmod resolves symlinks of the reference file.
+    chmod_mode = stat.S_IMODE(source.lstat().st_mode)
+    executil.check_call(["chmod", "%o" % chmod_mode, source, dest])
