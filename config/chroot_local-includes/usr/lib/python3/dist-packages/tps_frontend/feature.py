@@ -159,7 +159,7 @@ class Feature(object):
             self.switch.set_active(is_active)
             return
 
-        logger.info("Feature successfully activated")
+        logger.debug("Feature successfully activated")
 
     def on_deactivate_call_finished(self, proxy: Gio.DBusProxy,
                                   res: Gio.AsyncResult):
@@ -196,7 +196,7 @@ class Feature(object):
             self.switch.set_active(is_active)
             return
 
-        logger.info("Feature successfully deactivated")
+        logger.debug("Feature successfully deactivated")
 
     def on_properties_changed(self, proxy: Gio.DBusProxy,
                               changed_properties: GLib.Variant,
