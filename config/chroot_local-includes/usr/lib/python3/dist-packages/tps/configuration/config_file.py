@@ -120,7 +120,7 @@ class ConfigFile(object):
     def save(self, features: List["Feature"]):
         """Create the config file for the specified list of features"""
         self.lock.acquire()
-        logger.debug(f"Saving config file with features: {features}")
+        logger.debug(f"Saving config file with features: {[f.Id for f in features]}")
         try:
             # Get the lines we have to set for the features
             lines = list()
