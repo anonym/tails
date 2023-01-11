@@ -141,7 +141,6 @@ class DBusObject(object, metaclass=ABCMeta):
                                     locals=locals())
                     stats = pstats.Stats(prof, stream=profile_file).strip_dirs().sort_stats(pstats.SortKey.CUMULATIVE)
                     stats.print_stats()
-                    stats.dump_stats(profile_file.name + ".data")
             else:
                 self.handle_method_call_inner(*args, **kwargs)
 
