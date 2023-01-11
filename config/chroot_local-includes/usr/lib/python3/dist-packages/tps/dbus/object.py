@@ -129,7 +129,8 @@ class DBusObject(object, metaclass=ABCMeta):
             self.num_ongoing_calls += 1
 
         try:
-            logger.debug("Handling method call %s.%s%s", self.__class__.__name__, method_name, parameters)
+            # We don't log the parameters here to avoid logging secrets
+            logger.debug("Handling method call %s.%s", self.__class__.__name__, method_name)
             method_info = self.node_info.lookup_interface(interface_name).lookup_method(method_name)
 
             # If the method has a special handler function, then call that.
