@@ -180,7 +180,7 @@ def apparmor_profile_of_pid(pid):
     # in case there is no AppArmor profile, so the only unsupported
     # mode here is unconfined scripts.
     enabled_aa_profile_re = r'^(.+) \((?:complain|enforce)\)$'
-    with open(f'/proc/{str(pid)}/attr/current', "rb") as fh:
+    with open(f'/proc/{pid}/attr/current', "rb") as fh:
         aa_profile_status = str(fh.read().strip(), 'UTF-8')
         apparmor_profile_match = re.match(
             enabled_aa_profile_re,
