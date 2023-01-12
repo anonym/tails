@@ -42,4 +42,4 @@ class State(Enum):
 IN_PROGRESS_STATES = (State.CREATING, State.DELETING, State.UNLOCKING)
 
 PROFILING = False
-PROFILES_DIR = "/var/lib/tails-persistent-storage/profiles"
+PROFILES_DIR = "/run/tails-persistent-storage/profiles"
