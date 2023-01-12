@@ -1,12 +1,12 @@
 import abc
 from gi.repository import GLib
-from logging import getLogger
 import os
 from pathlib import Path
 import psutil
 import time
 from typing import TYPE_CHECKING, Dict, List, Optional
 
+import tps.logging
 from tps import executil
 from tps import State, DBUS_FEATURE_INTERFACE, DBUS_FEATURES_PATH, \
     ON_ACTIVATED_HOOKS_DIR, ON_DEACTIVATED_HOOKS_DIR
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
     from tps.configuration.conflicting_app import ConflictingApp
     from tps.service import Service
 
-logger = getLogger(__name__)
+logger = tps.logging.get_logger(__name__)
 
 
 class ConflictingProcessesError(Exception):

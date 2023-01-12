@@ -2,7 +2,6 @@ import tempfile
 from contextlib import contextmanager
 import grp
 from io import TextIOBase
-import logging
 import os
 from pathlib import Path
 import pwd
@@ -12,6 +11,7 @@ import sys
 from typing import TYPE_CHECKING, List, Optional
 from threading import Lock
 
+import tps.logging
 from tps.configuration.mount import Mount
 
 if TYPE_CHECKING:
@@ -25,7 +25,7 @@ else:
     TPS_UID = pwd.getpwnam("tails-persistent-storage").pw_uid
     TPS_GID = grp.getgrnam("tails-persistent-storage").gr_gid
 
-logger = logging.getLogger(__name__)
+logger = tps.logging.get_logger(__name__)
 
 
 class InvalidStatError(Exception):
