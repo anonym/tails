@@ -162,6 +162,8 @@ class Service(DBusObject, ServiceUsingJobs):
                   self.state.name
             raise FailedPreconditionError(msg)
 
+        logger.info("Deleting Persistent Storage...")
+
         try:
             # Disable all features first to ensure that no process is
             # accessing any of the mounts
@@ -173,6 +175,8 @@ class Service(DBusObject, ServiceUsingJobs):
             self.refresh_state(overwrite_in_progress=True)
             self.refresh_features()
 
+        logger.info("Done deleting Persistent Storage")
+
     def do_delete(self):
         # Delete the partition
         self.State = State.DELETING
@@ -181,6 +185,8 @@ class Service(DBusObject, ServiceUsingJobs):
     def Activate(self):
         """Activate all Persistent Storage features which are currently
         configured in the persistence.conf config file."""
+
+        logger.info("Activating Persistent Storage...")
 
         # Wait for all udev and UDisks events to finish
         executil.check_call(["udevadm", "settle"])
@@ -196,6 +202,8 @@ class Service(DBusObject, ServiceUsingJobs):
         finally:
             self.refresh_state()
             self.refresh_features()
+
+        logger.info("Done activating Persistent Storage")
 
     def do_activate(self):
         # Ensure that the config file exists
@@ -224,6 +232,8 @@ class Service(DBusObject, ServiceUsingJobs):
     def Unlock(self, passphrase: str):
         """Unlock and mount the Persistent Storage"""
 
+        logger.info("Unlocking Persistent Storage...")
+
         # Check if we can unlock the Persistent Storage
         if self.state != State.NOT_UNLOCKED:
             msg = "Can't unlock when state is '%s'" % self.state.name
@@ -234,6 +244,8 @@ class Service(DBusObject, ServiceUsingJobs):
         finally:
             self.refresh_state(overwrite_in_progress=True)
             self.refresh_features(refresh_is_active=False)
+
+        logger.info("Done unlocking Persistent Storage")
 
     def do_unlock(self, passphrase: str):
         self.state = State.UNLOCKING
