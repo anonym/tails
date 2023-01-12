@@ -58,6 +58,20 @@ Feature: Symlink directories
         Then the destination directory contains symlinks to all the files in the source directory
         And the destination directory contains a symlink to a file owned by amnesia
 
+    Scenario: The source directory contains a valid symlink
+        Given the destination directory exists
+        And the source directory exists
+        And the source directory contains a valid symlink
+        When the mount is activated
+        Then the destination directory contains a symlink to a valid symlink
+
+    Scenario: The source directory contains a broken symlink
+        Given the destination directory exists
+        And the source directory exists
+        And the source directory contains a broken symlink
+        When the mount is activated
+        Then the destination directory contains a symlink to a broken symlink
+
     @symlink_attack
     Scenario: Destination directory already contains a symlink
         Given the destination directory exists

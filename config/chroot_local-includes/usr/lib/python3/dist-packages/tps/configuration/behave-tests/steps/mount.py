@@ -75,6 +75,20 @@ def step_impl(context: TestContext, mount_operand: str, user: str):
     os.chown(f, testutils.get_uid(user), -1)
 
 
+@given('the {mount_operand} directory contains a valid symlink')
+def step_impl(context: TestContext, mount_operand: str):
+    path = testutils.get_mount_operand(context.mount, mount_operand)
+    # Create the test file
+    f = Path(path, TEST_FILE_NAME)
+    f.touch(mode=600)
+    symlink = Path(path, "symlink")
+    symlink.symlink_to(f)
+
+@given('the source directory contains a broken symlink')
+def step_impl(context: TestContext):
+    symlink = Path(context.mount.src, "symlink")
+    symlink.symlink_to("/non-existent")
+
 @given('the path of the destination directory is below /home/amnesia')
 def step_impl(context: TestContext):
     # Remove the tmpdir created by environment.py
@@ -208,6 +222,23 @@ def step_impl(context: TestContext, mount_operand: str, user: str):
     assert f.is_file()
     # Check that the test file is owned by {user}
     assert f.lstat().st_uid == testutils.get_uid(user)
+
+
+@then('the {mount_operand} directory contains a symlink to a valid symlink')
+def step_impl(context: TestContext, mount_operand: str):
+    path = testutils.get_mount_operand(context.mount, mount_operand)
+    # Check that the symlink points to another symlink
+    symlink = Path(path, "symlink").readlink()
+    assert symlink.is_symlink()
+    assert symlink.resolve().exists()
+
+@then('the {mount_operand} directory contains a symlink to a broken symlink')
+def step_impl(context: TestContext, mount_operand: str):
+    path = testutils.get_mount_operand(context.mount, mount_operand)
+    # Check that the symlink points to another symlink
+    symlink = Path(path, "symlink").readlink()
+    assert symlink.is_symlink()
+    assert not symlink.readlink().exists()
 
 @then('mount activation fails with OSError {errno_name}')
 def step_impl(context: TestContext, errno_name: str):
