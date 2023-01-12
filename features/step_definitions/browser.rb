@@ -46,12 +46,13 @@ def tor_browser_application_info(defaults)
               "/home/#{user}/\.tor-browser/profile\.default"
   defaults.merge(
     {
-      user:                        user,
-      cmd_regex:                   cmd_regex,
-      chroot:                      '',
-      new_tab_button_image:        'TorBrowserNewTabButton.png',
-      browser_reload_button_image: 'TorBrowserReloadButton.png',
-      browser_stop_button_image:   'TorBrowserStopButton.png',
+      user:                            user,
+      cmd_regex:                       cmd_regex,
+      chroot:                          '',
+      new_tab_button_image:            'TorBrowserNewTabButton.png',
+      browser_reload_button_image:     'TorBrowserReloadButton.png',
+      browser_reload_button_image_rtl: 'TorBrowserReloadButtonRTL.png',
+      browser_stop_button_image:       'TorBrowserStopButton.png',
     }
   )
 end
@@ -97,8 +98,10 @@ end
 
 When /^I open a new tab in the (.*)$/ do |browser|
   info = xul_application_info(browser)
-  @screen.click(info[:new_tab_button_image])
-  @screen.wait(info[:address_bar_image], 15)
+  retry_action(2) do
+    @screen.click(info[:new_tab_button_image])
+    @screen.wait(info[:address_bar_image], 15)
+  end
 end
 
 When /^I open the address "([^"]*)" in the (.* Browser)( without waiting)?$/ do |address, browser_name, non_blocking|
@@ -128,7 +131,7 @@ When /^I open the address "([^"]*)" in the (.* Browser)( without waiting)?$/ do 
   retry_method.call(recovery_on_failure) do
     open_address.call
     unless non_blocking
-      try_for(120) do
+      try_for(120, delay: 3) do
         !browser.child?('Stop', roleName: 'push button', retry: false) &&
           browser.child?('Reload', roleName: 'push button', retry: false)
       end
@@ -323,13 +326,11 @@ Then /^DuckDuckGo is the default search engine$/ do
   when 'Hindi'
     ddg_search_prompt = "DuckDuckGoSearchPrompt#{$language}.png"
   end
-  step 'I start the Tor Browser'
   step 'I open a new tab in the Tor Browser'
   # Typing would require maintaining keymaps for every language in
   # which we run this step ⇒ instead, paste the search string.
   @screen.paste('a random search string')
   @screen.wait(ddg_search_prompt, 20)
-  step 'I kill the Tor Browser'
 end
 
 Then(/^the screen keyboard works in Tor Browser$/) do
@@ -347,5 +348,4 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   @screen.wait('ScreenKeyboard.png', 20)
   @screen.wait(osk_key, 20).click
   @screen.wait(browser_bar_x, 20)
-  step 'I kill the Tor Browser'
 end

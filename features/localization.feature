@@ -18,11 +18,12 @@ Feature: Localization
     Then the keyboard layout is set to "<layout>"
     When the network is plugged
     And Tor is ready
-    Then DuckDuckGo is the default search engine
-    And I successfully start the Unsafe Browser in "<lang_code>"
+    Then I successfully start the Unsafe Browser in "<lang_code>"
     And I kill the Unsafe Browser
     When I enable the screen keyboard
     Then the screen keyboard works in Tor Browser
+    And DuckDuckGo is the default search engine
+    And I kill the Tor Browser
     And the screen keyboard works in Thunderbird
     And the layout of the screen keyboard is set to "<osk_layout>"
 
