@@ -668,9 +668,6 @@ class StepConnectProgressMixin:
 class StepErrorMixin:
     def before_show_error(self, coming_from):
         label_explain = self.get_object("label_explain")
-        # We hide this label by default. We'll show it below whenever
-        # we have a good explanation to give to the user.
-        label_explain.hide()
 
         self.state["error"] = {
             "fix_attempt": False  # has the user done something to fix it?
@@ -691,18 +688,21 @@ class StepErrorMixin:
         if coming_from in ["proxy"]:
             self.state["error"]["fix_attempt"] = True
         hide_mode: bool = self.state["hide"]["hide"]
-        if hide_mode:
-            # Bridges are compulsory in hide mode, so the user has
-            # already seen the explanation about bridges and we don't
-            # need to repeat it here.
-            self.get_object("label_explain_bridge").hide()
-        elif self.app.get_network_time_result["status"] == "success":
-            for box in ["wrong_clock", "captive_portal", "proxy"]:
-                self.get_object(f"box_{box}").hide()
-            label_explain.set_text(
-                _("This local network seems to be blocking access to Tor.")
-            )
-            label_explain.show()
+        time_synced: bool = (not hide_mode) and self.app.get_network_time_result[
+            "status"
+        ] == "success"
+
+        # Bridges are compulsory in hide mode, so the user has
+        # already seen the explanation about bridges and we don't
+        # need to repeat it here.
+        self.get_object("label_explain_bridge").set_visible(not hide_mode)
+
+        for box in ["wrong_clock", "captive_portal", "proxy"]:
+            self.get_object(f"box_{box}").set_visible(not time_synced)
+        label_explain.set_text(
+            _("This local network seems to be blocking access to Tor.")
+        )
+        label_explain.set_visible(time_synced)
 
         self._step_error_submit_allowed()
 
