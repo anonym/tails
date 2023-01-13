@@ -13,7 +13,18 @@ Feature: Persistent Storage Features
 
     Scenario: Activating a feature with inconsistent state
       Given a feature with bind mounts
-      And the feature is enabled in the config file
+      And the feature is not active
+      And the bind mounts are not active
+      But the feature is enabled in the config file
       When the feature is activated
       Then the feature is active
       And the bind mounts are active
+
+    Scenario: Deactivating a feature with inconsistent state
+      Given a feature with bind mounts
+      And the feature is active
+      And the bind mounts are active
+      But the feature is not enabled in the config file
+      When the feature is deactivated
+      Then the feature is not active
+      And the bind mounts are not active
