@@ -30,7 +30,17 @@ add_gnome_bookmark() {
     flock --exclusive 9
 
     mkdir -p "$(dirname "${BOOKMARKS_FILE}")"
-    _build_bookmark_line "$@" >> "${BOOKMARKS_FILE}"
+
+    local line
+    line=$(_build_bookmark_line "$@")
+
+    # Check if the line exists
+    if grep --fixed-strings --line-regexp -q "${line}" "${BOOKMARKS_FILE}"; then
+      echo >&2 "Not adding GNOME bookmark, bookmark already exists: $*"
+      return
+    fi
+
+    echo "${line}" >> "${BOOKMARKS_FILE}"
 }
 
 remove_gnome_bookmark() {
@@ -46,7 +56,7 @@ remove_gnome_bookmark() {
 
     # Check if the line exists
     if ! grep --fixed-strings --line-regexp -q "${line}" "${BOOKMARKS_FILE}"; then
-        return 1
+        echo >&2 "Not removing GNOME bookmark, bookmark does not exist: $*"
     fi
 
     # Delete the line
