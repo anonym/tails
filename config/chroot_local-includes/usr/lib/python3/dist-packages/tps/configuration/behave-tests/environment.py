@@ -5,6 +5,9 @@ import shutil
 import subprocess
 import sys
 from tempfile import mkdtemp, NamedTemporaryFile
+from unittest.mock import Mock
+
+from behave.model import Feature
 
 from behave.model_core import Status
 
@@ -15,6 +18,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", "..", ".."))
 
 from tps import executil
+from tps.service import Service
 from tps.configuration.mount import Mount
 from tps.mountutil import mount, MOUNTFLAG_NOSYMFOLLOW, \
     MOUNTFLAG_BIND, MOUNTFLAG_REMOUNT
@@ -29,14 +33,19 @@ os.environ["NOSYMFOLLOW_MOUNTPOINT"] = NOSYMFOLLOW_MOUNTPOINT
 # This is not actually the class that behave passes to the functions
 # below, but pretending that it is provides code completion
 class EnvironmentContext(object):
+    # Behave internal
+    feature: Feature
+
+    # Added by us
     device_backing_file: str
     device: str
     mount_point: str
+    service: Service
     tmpdir: Path
     mount: Mount
 
 
-def before_feature(context: EnvironmentContext, feature):
+def before_feature(context: EnvironmentContext, feature: Feature):
     if "requires_mountpoint" not in feature.tags:
         return
 
@@ -115,10 +124,14 @@ def after_feature(context: EnvironmentContext, feature):
 
 
 def before_scenario(context: EnvironmentContext, scenario):
-    if "requires_mountpoint" not in context.feature.tags:
-        return
-    # Create a temporary directory which is used by the mount tests
-    context.tmpdir = Path(mkdtemp(prefix="dest-TailsData", dir="/var/cache"))
+    context.mount = None
+
+    if "requires_mock_service" in context.feature.tags:
+        context.service = Mock(spec=Service)
+
+    if "requires_mountpoint" in context.feature.tags:
+        # Create a temporary directory which is used by the mount tests
+        context.tmpdir = Path(mkdtemp(prefix="dest-TailsData", dir="/var/cache"))
 
 
 def after_scenario(context: EnvironmentContext, scenario):
@@ -127,12 +140,17 @@ def after_scenario(context: EnvironmentContext, scenario):
 
     # Deactivate the mount in case it was activated by the scenario
     # (deactivate() doesn't fail it was not)
-    context.mount.deactivate()
+    if context.mount:
+        context.mount.deactivate()
 
     # Clean up any content that the scenario might have created on the
     # mount point
     for p in Path(context.mount_point).iterdir():
-        shutil.rmtree(p)
+        if p.is_dir():
+            shutil.rmtree(p)
+        else:
+            p.unlink()
+
     # Also clean up any content of the mount point below the nosymfollow
     # mount point
     for p in Path(NOSYMFOLLOW_MOUNTPOINT + str(context.mount_point)).iterdir():
