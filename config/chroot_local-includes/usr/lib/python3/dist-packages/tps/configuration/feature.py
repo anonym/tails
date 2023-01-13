@@ -255,15 +255,13 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         # the mounts are not actually mounted) running the hooks would
         # make things even worse, so we check if the mounts are actually
         # mounted and let any exception escalate.
+        # XXX: The persistence.conf file should be migrated to an
+        # internal state file to avoid users causing inconsistent state
         for mount in self.Mounts: mount.check_is_active()
         hooks_dir = Path(ON_ACTIVATED_HOOKS_DIR, self.Id)
         executil.execute_hooks(hooks_dir)
 
     def on_deactivated(self):
-        # Same as in on_activated, we check if the mounts are actually
-        # deactivated here
-        # XXX: The persistence.conf file should be migrated to an
-        # internal state file to avoid users causing inconsistent state
         for mount in self.Mounts: mount.check_is_inactive()
         hooks_dir = Path(ON_DEACTIVATED_HOOKS_DIR, self.Id)
         executil.execute_hooks(hooks_dir)
@@ -274,16 +272,35 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         all_mounts_active = all(mount.is_active() for mount in self.Mounts)
         all_mounts_inactive = not any(mount.is_active() for mount in self.Mounts)
 
+        if is_enabled and all_mounts_active:
+            state = _State.Active
+        elif not is_enabled and all_mounts_inactive:
+            state = _State.Inactive
+        else:
+            state = _State.Inconsistent
+
         # In the UI, we only want the state to be displayed as active
         # when the feature is enabled and all mounts are active
-        self.IsActive = is_enabled and all_mounts_active
+        try:
+            self.IsActive = state == _State.Active
+        except IsActiveException:
+            # It's expected that the call to check_is_active in
+            # self.on_deactivated raises an IsActiveException if we're
+            # in an inconsistent state, i.e. the feature is disabled in
+            # the config file but there are active bindings.
+            # We can't expect the on-deactivated hooks to do the right
+            # when there are still active bindings, so we accept that
+            # they were not run and ignore the exception.
+            # This means that when the feature is activated again, the
+            # on-activated hooks are run again without the on-deactivated
+            # hooks having been run, so the on-activated hooks must
+            # gracefully handle that case.
+            if state == _State.Inconsistent:
+                pass
+            else:
+                raise
 
-        # Let the caller know if we're in an inconsistent state
-        if is_enabled and all_mounts_active:
-            return _State.Active
-        if not is_enabled and all_mounts_inactive:
-            return _State.Inactive
-        return _State.Inconsistent
+        return state
 
     def wait_for_conflicting_processes_to_terminate(self, job: "Job"):
         """Waits until all conflicting processes were terminated.
