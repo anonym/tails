@@ -1,4 +1,5 @@
 import abc
+from enum import Enum
 from gi.repository import GLib
 import os
 from pathlib import Path
@@ -27,6 +28,13 @@ logger = tps.logging.get_logger(__name__)
 
 class ConflictingProcessesError(Exception):
     pass
+
+
+# This enum is currently only used internally
+class _State(Enum):
+    Active = 1
+    Inactive = 2
+    Inconsistent = 3
 
 
 class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
@@ -67,8 +75,8 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             return FailedPreconditionError(msg)
 
         # Check if feature is active
-        is_active = self.refresh_is_active()
-        if is_active:
+        state = self.refresh_is_active()
+        if state == state.Active:
             raise AlreadyActivatedError("Feature %r is already activated"
                                         % self.Id)
 
@@ -135,8 +143,8 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             return FailedPreconditionError(msg)
 
         # Check if feature is active
-        is_active = self.refresh_is_active()
-        if not is_active:
+        state = self.refresh_is_active()
+        if state == state.Inactive:
             raise NotActivatedError("Feature %r is not activated" % self.Id)
 
         # If there is still a job running, cancel it
@@ -260,11 +268,22 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         hooks_dir = Path(ON_DEACTIVATED_HOOKS_DIR, self.Id)
         executil.execute_hooks(hooks_dir)
 
-    def refresh_is_active(self) -> bool:
+    def refresh_is_active(self) -> _State:
         config_file = self.service.config_file
-        is_active = config_file.exists() and config_file.contains(self)
-        self.IsActive = is_active
-        return is_active
+        is_enabled = config_file.exists() and config_file.contains(self)
+        all_mounts_active = all(mount.is_active() for mount in self.Mounts)
+        all_mounts_inactive = not any(mount.is_active() for mount in self.Mounts)
+
+        # In the UI, we only want the state to be displayed as active
+        # when the feature is enabled and all mounts are active
+        self.IsActive = is_enabled and all_mounts_active
+
+        # Let the caller know if we're in an inconsistent state
+        if is_enabled and all_mounts_active:
+            return _State.Active
+        if not is_enabled and all_mounts_inactive:
+            return _State.Inactive
+        return _State.Inconsistent
 
     def wait_for_conflicting_processes_to_terminate(self, job: "Job"):
         """Waits until all conflicting processes were terminated.
