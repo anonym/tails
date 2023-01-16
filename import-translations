@@ -3,7 +3,6 @@
 set -e
 set -u
 
-EXCLUDE_LANGS=''
 TAILS_PO_DIR='po'
 SCRIPT_DIR=$(readlink -f "$(dirname "$0")")
 TOR_TRANSLATION_REMOTE='https://gitlab.torproject.org/tpo/translation.git'
@@ -15,11 +14,6 @@ GIT_IN_TOR_TRANSLATION_DIR="git \
 ### External libraries
 . "$SCRIPT_DIR/config/chroot_local-includes/usr/local/lib/tails-shell-library/po.sh"
 
-lang_is_excluded () {
-	local lang="$1"
-	echo -n "$EXCLUDE_LANGS" | grep -qs -w "$lang"
-}
-
 # Defaults
 LANG_DOT_PO_LAYOUT=yes
 
@@ -27,7 +21,7 @@ LANG_DOT_PO_LAYOUT=yes
 # and set parameters accordingly
 # shellcheck disable=SC2016
 if [ -f 'po/tails.pot' ]; then
-	BRANCH='tails-misc_release'
+	BRANCH='tails-misc'
 	AFTER_IMPORT='intltool_update_po $(po_languages)'
 elif [ -f 'po/onioncircuits.pot' ]; then
 	LANG_DOT_PO_LAYOUT=no
@@ -51,17 +45,15 @@ fi
 eval "$GIT_IN_TOR_TRANSLATION_DIR checkout \"$BRANCH\""
 eval "$GIT_IN_TOR_TRANSLATION_DIR reset --hard \"origin/$BRANCH\""
 
-# Ensure we only keep PO files that are still present in the Transifex
+# Ensure we only keep PO files that are still present in the
 # branch we import from.
 find "$TAILS_PO_DIR" -name '*.po' -delete
 
-# For each completely translated language, merge it,
-# unless it is translated outside Transifex
+# For each completely translated language, merge it.
 if [ "$LANG_DOT_PO_LAYOUT" = yes ] ; then
 	find "$TOR_TRANSLATION_DIR" -name '*.po' | sort | while read -r po_file; do
 		lang=$(basename "$po_file" | tr - _ | sed 's/\.po$//')
 
-		! lang_is_excluded "$lang" || continue
 		if [ "$(count_translated_strings < "$po_file")" -lt 1 ]; then
 			echo "Skipping $lang, that has no translated strings."
 			continue
@@ -73,7 +65,6 @@ else
 	find "$TOR_TRANSLATION_DIR" -name '*.pot' | sort | while read -r po_file; do
 		lang=$(basename "$(dirname "$po_file" | tr - _ | sed 's/\.pot$//')")
 
-		! lang_is_excluded "$lang" || continue
 		if [ "$(count_translated_strings < "$po_file")" -lt 1 ]; then
 			echo "Skipping $lang, that has no translated strings."
 			continue
