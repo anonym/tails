@@ -1,4 +1,5 @@
 import logging
+import os.path
 import tempfile
 from os import PathLike
 from pathlib import Path
@@ -67,7 +68,7 @@ def execute_hooks(hooks_dir: Union[str, PathLike]):
 
 
 def prepare_for_profiling(cmd: List) -> List:
-    profile_file = tempfile.NamedTemporaryFile(prefix=cmd[0] + ".", dir=tps.PROFILES_DIR, delete=False)
+    profile_file = tempfile.NamedTemporaryFile(prefix=os.path.basename(cmd[0]) + ".", dir=tps.PROFILES_DIR, delete=False)
     profile_file.close()
     logger.info(f"Creating profile in {profile_file.name}")
     return [
