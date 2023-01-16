@@ -618,7 +618,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
         # We currently support only 1 bridge
         qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
         setup_qrcode_bridges_on_webcam(qr_code_bridges)
-        tor_connection_assistant.child('_Ask for a bridge by email',
+        tor_connection_assistant.child('_Ask for a Tor bridge by email',
                                        roleName: 'radio button')
                                 .click
         tor_connection_assistant.child('Scan QR code',
