@@ -51,20 +51,6 @@ ${*}"
     exit 1
 }
 
-verify_start () {
-    # Make sure the user really wants to start the browser
-    local dialog_msg launch exit
-    dialog_msg="<b><big>$(gettext "Launch the Unsafe Browser?")</big></b>
-
-$(gettext "The Unsafe Browser is not anonymous and the websites that you visit can see your real IP address.\n\nOnly use the Unsafe Browser to sign in to a network, then close it.")"
-    launch="$(gettext "_Launch")"
-    exit="$(gettext "_Exit")"
-    if ! _zenity --question --ellipsize --title "" --text "${dialog_msg}" \
-         --default-cancel --ok-label "${launch}"  --cancel-label "${exit}"; then
-        exit 0
-    fi
-}
-
 exit_because_disabled() {
     local msg restart cancel confirm_msg confirm_button
     msg="$(gettext "The Unsafe Browser was disabled in the Welcome Screen.\n\n")"
@@ -131,7 +117,6 @@ if ! flock -x -n 9; then
     error "$(gettext "Another Unsafe Browser is currently running, or being cleaned up. Please retry in a while.")"
 fi
 
-verify_start
 show_start_notification
 
 echo "* Setting up chroot"
