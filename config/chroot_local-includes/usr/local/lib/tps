@@ -48,8 +48,8 @@ def main():
     args = parser.parse_args()
 
     tps.PROFILING = args.profiling or \
-                os.getenv("TPS_PROFILING") or \
-                "tps-profiling" in Path("/proc/cmdline").read_text().split()
+                    os.getenv("TPS_PROFILING") or \
+                    "tps-profiling" in Path("/proc/cmdline").read_text().split()
     if tps.PROFILING:
         Path(tps.PROFILES_DIR).mkdir(mode=0o700, parents=True, exist_ok=True)
 

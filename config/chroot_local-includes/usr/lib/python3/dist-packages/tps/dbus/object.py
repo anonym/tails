@@ -1,5 +1,4 @@
 import cProfile
-import profile
 import pstats
 import tempfile
 import threading
@@ -7,6 +6,7 @@ import time
 from abc import abstractmethod, ABCMeta
 import inspect
 from logging import getLogger
+from pathlib import Path
 from typing import Any, Dict, List
 from threading import Thread
 
@@ -132,7 +132,8 @@ class DBusObject(object, metaclass=ABCMeta):
 
         try:
             if tps.PROFILING:
-                with tempfile.NamedTemporaryFile(mode="w+", prefix=full_method_name + ".", dir=tps.PROFILES_DIR,
+                uptime = Path("/proc/uptime").read_text().split()[0]
+                with tempfile.NamedTemporaryFile(mode="w+", prefix=uptime + "-" + full_method_name + ".", dir=tps.PROFILES_DIR,
                                                  delete=False) as profile_file:
                     logger.info(f"Creating profile in {profile_file.name}")
                     prof = cProfile.Profile()
