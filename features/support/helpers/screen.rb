@@ -1,6 +1,14 @@
 class FindFailed < StandardError
 end
 
+# This exception means that the error depends on some sort of breakage which should not be considered a proper
+# test failure. A test raising this should be re-run, not considered as failed.
+class TestSuiteRuntimeError < StandardError
+end
+
+class DisplayOutputIsNotActive < TestSuiteRuntimeError
+end
+
 class Match
   attr_reader :w, :h, :x, :y, :image
 
@@ -137,7 +145,14 @@ class Screen
     end
     debug_log("Screen: trying to find #{image}") if opts[:log]
     p = match_screen(image, opts[:sensitivity], false)
-    raise FindFailed, "cannot find #{image} on the screen" if p.nil?
+
+    if p.nil?
+      # The find has failed. Let's check why to give more useful feedback.
+      p = match_screen('DisplayOutputIsNotActive.png', OPENCV_MIN_SIMILARITY, false)
+      raise DisplayOutputIsNotActive, 'screen reached "Display output is not active"' unless p.nil?
+
+      raise FindFailed, "cannot find #{image} on the screen"
+    end
 
     m = Match.new(image, self, *p)
     debug_log("Screen: found #{image} at (#{m.middle.join(', ')})")
