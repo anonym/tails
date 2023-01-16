@@ -6,7 +6,7 @@ Then /^an? "([^"]+)" partition was detected by Tails on drive "([^"]+)"$/ do |ty
   part_info = $vm.execute_successfully(
     "blkid '#{$vm.disk_dev(name)}'"
   ).stdout.strip
-  assert(part_info.split.grep(/^TYPE=\"#{Regexp.escape(type)}\"$/),
+  assert(part_info.split.grep(/^TYPE="#{Regexp.escape(type)}"$/),
          "No #{type} partition was detected by Tails on disk '#{name}'")
 end
 

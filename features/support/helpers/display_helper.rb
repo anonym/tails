@@ -8,7 +8,7 @@ class Display
 
   def active?
     xlsclients_p = IO.popen(['xlsclients', '-display', @x_display,
-                             err: ['/dev/null', 'w'],])
+                             { err: ['/dev/null', 'w'] },])
     x_clients = xlsclients_p.readlines.map { |l| l.split(/\s+/)[1] }
     Process.wait(xlsclients_p.pid)
     x_clients.any? { |c| c == 'virt-viewer' }
@@ -23,7 +23,7 @@ class Display
                             '--connect', 'qemu:///system',
                             '--display', @x_display,
                             @domain,
-                            err: ['/dev/null', 'w'],])
+                            { err: ['/dev/null', 'w'] },])
     # We wait for the display to be active to not lose actions
     # (e.g. key presses) that come immediately after starting (or
     # restoring) a vm

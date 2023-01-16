@@ -99,11 +99,11 @@ module Dogtail
 
     def run(code, init: nil)
       if init
-        init = init.join("\n") if init.class == Array
+        init = init.join("\n") if init.instance_of?(Array)
         c = RemoteShell::PythonCommand.new($vm, init, user: @opts[:user], debug_log: false)
         raise Failure, "The Dogtail init script raised: #{c.exception}" if c.failure?
       end
-      code = code.join("\n") if code.class == Array
+      code = code.join("\n") if code.instance_of?(Array)
       c = RemoteShell::PythonCommand.new($vm, code, user: @opts[:user])
       raise Failure, "The Dogtail script raised: #{c.exception}" if c.failure?
 
@@ -133,7 +133,7 @@ module Dogtail
         'True'
       elsif value == false
         'False'
-      elsif value.class == String
+      elsif value.instance_of?(String)
         # Since we use single-quote the string we have to escape any
         # occurrences inside.
         "'#{value.gsub("'", "\\\\'")}'"
@@ -239,7 +239,7 @@ module Dogtail
 
     TREE_API_APP_SEARCHES.each do |method|
       define_method(method) do |*args, **kwargs|
-        args[0] = translate(args[0], **@opts) if args[0].class == String
+        args[0] = translate(args[0], **@opts) if args[0].instance_of?(String)
         args_str = self.class.args_to_s(*args, **kwargs)
         method_call = "#{method}(#{args_str})"
         Node.new("#{@var}.#{method_call}", **@opts)

@@ -64,7 +64,7 @@ module RemoteShell
         if response_id == id
           if status != 'success'
             # rubocop:disable Style/GuardClause
-            if (status == 'error') && (rest.class == Array) && (rest.size == 1)
+            if (status == 'error') && rest.instance_of?(Array) && (rest.size == 1)
               msg = rest.first
               raise ServerFailure, msg.to_s
             else
