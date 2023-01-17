@@ -40,7 +40,7 @@ option "$_" => (
     is       => 'ro',
     isa      => Str,
     format   => 's',
-) for (qw{uri fallback_uri hash_value});
+) for (qw{uri hash_value});
 
 option 'hash_type' => (
     required => 1,
@@ -74,9 +74,6 @@ option 'max_attempts' => (
     is        => 'ro',
     isa       => Int,
     format    => 's',
-    # Keep in sync with "Scenario: Successfully resuming an
-    # interrupted download, using the fallback mirror pool":
-    # there we must fake (max_attempts - 1) failures
     default   => sub { 6 },
 );
 
@@ -140,7 +137,7 @@ method _build_ua () {
         );
     }
     unless ($ENV{HARNESS_ACTIVE} or $ENV{DISABLE_PROXY}) {
-        $ua->proxy([qw(http https)] => 'socks://127.0.0.1:9062');
+        $ua->proxy([qw(http https)] => 'socks://127.0.0.1:9063');
     }
     $ua->protocols_allowed([qw(http https)]);
     $ua->max_size($self->size);
@@ -217,13 +214,6 @@ method run () {
             my $range_start = -s $temp_fh;
             say STDERR "Resuming download after $range_start bytes";
             $req->header(Range => "bytes=${range_start}-");
-        }
-
-        # For the last attempt, use the fallback URI (that uses the
-        # fallback DNS round-robin mirror pool)
-        if ($attempted == $self->max_attempts - 1) {
-            say STDERR "Falling back to DNS mirror pool";
-            $req->uri($self->fallback_uri);
         }
 
         say STDERR "Sending HTTP request: attempt no. " . ($attempted + 1);

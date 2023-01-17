@@ -253,12 +253,12 @@ Example that would be found at
 	    upgrade-paths:
 	      - type: incremental
 	        target-files:
-	          - url: http://dl.amnesia.boum.org/tails/stable/iuk/v2/Tails_amd64_0.11.1_to_0.11.2.iuk
+	          - url: https://download.tails.net/tails/stable/iuk/v2/Tails_amd64_0.11.1_to_0.11.2.iuk
 	            size: 37345648
 	            sha256: 5c5c47f6155e7807c971251fdad28d5f72ff78db446e43a41e4b900f29229a7d
 	      - type: full
 	        target-files:
-	          - url: http://dl.amnesia.boum.org/tails/stable/tails-amd64-0.11.2/Tails-amd64-0.11.2.iso
+	          - url: https://download.tails.net/tails/stable/tails-amd64-0.11.2/Tails-amd64-0.11.2.iso
 	            size: 762123456
 	            sha256: 1015e37e14c6daaecd528b4a841ef6ac2156a5790346d0fd036f9566ce5f641b
 
@@ -293,10 +293,10 @@ Example: `Tails_amd64_0.11.1_to_0.11.2.iuk`
 
 A given IUK is meant to be made available at the URL composed from:
 
-* `http://dl.amnesia.boum.org/tails/iuk/v2/`
+* `https://download.tails.net/tails/iuk/v2/`
 * the IUK file basename
 
-Example: <http://dl.amnesia.boum.org/tails/iuk/v2/Tails_amd64_0.11.1_to_0.11.2.iuk>
+Example: <https://download.tails.net/tails/iuk/v2/Tails_amd64_0.11.1_to_0.11.2.iuk>
 
 ## Client and user interface
 
@@ -336,8 +336,6 @@ Failure, at any of the above steps, must be reported to the caller.
 * Present such information to the user, let them decide if they want
   to perform the upgrade.
 * If an upgrade path to the new version is available:
-  - transform target files' URL to pick one of our mirrors,
-    using code from [[!tails_gitweb_repo mirror-pool-dispatcher]]
   - securely create a tempdir in `tmpfs`, owned by
     `tails-iuk-get-target-file:tails-iuk-get-target-file`,
     with mode 0750

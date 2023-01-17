@@ -1,7 +1,14 @@
 ## Default SocksPort
 SocksPort 127.0.0.1:9050 IsolateDestAddr IsolateDestPort
-## SocksPort for Tails-specific applications
+## SocksPort for other Tails-specific applications
 SocksPort 127.0.0.1:9062 IsolateDestAddr IsolateDestPort
+## SocksPort used by the Upgrader to download IUKs with
+## tails-iuk-get-target-file
+# We disable isolation flags so there's at least a chance that the
+# circuit used to connect to Mirrorbits is reused for the actual
+# download, thus benefiting from the fact Mirrorbits uses GeoIP to
+# select the mirror.
+SocksPort 127.0.0.1:9063 NoIsolateDestAddr NoIsolateDestPort NoIsolateClientProtocol
 ## SocksPort for the default web browser (address is defined in tails-create-netns)
 SocksPort 10.200.1.1:9050 IsolateSOCKSAuth KeepAliveIsolateSOCKSAuth
 
