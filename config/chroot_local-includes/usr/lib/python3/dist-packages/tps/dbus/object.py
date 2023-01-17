@@ -13,9 +13,10 @@ from threading import Thread
 from gi.repository import Gio, GLib
 
 import tps
+import tps.logging
 from tps.dbus.errors import DBusError
 
-logger = getLogger(__name__)
+logger = tps.logging.get_logger(__name__)
 
 
 class RegistrationFailedError(Exception):

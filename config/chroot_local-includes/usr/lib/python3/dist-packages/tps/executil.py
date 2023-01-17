@@ -7,8 +7,9 @@ import subprocess
 from typing import List, Union
 
 import tps
+import tps.logging
 
-logger = logging.getLogger(__name__)
+logger = tps.logging.get_logger(__name__)
 
 
 def run(cmd: List, *args, **kwargs) -> subprocess.CompletedProcess:

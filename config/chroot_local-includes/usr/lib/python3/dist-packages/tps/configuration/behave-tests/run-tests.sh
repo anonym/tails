@@ -24,4 +24,4 @@ export BEHAVE=1
 # Run the tests in a private mount namespace (using unshare), to avoid leaving
 # any mounts mounted on the host
 # shellcheck disable=SC2086
-unshare --mount ${BEHAVE_CMD} "${SCRIPT_DIR}"
+unshare --mount ${BEHAVE_CMD} "${SCRIPT_DIR}" "$@"

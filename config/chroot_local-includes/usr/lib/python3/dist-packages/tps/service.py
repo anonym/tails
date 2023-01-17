@@ -193,6 +193,11 @@ class Service(DBusObject, ServiceUsingJobs):
         udisks.settle()
 
         # Check if we can activate the Persistent Storage
+        if self.state != State.UNLOCKED:
+            msg = "Can't activate features when state is '%s'" % \
+                  self.state.name
+            return FailedPreconditionError(msg)
+
         partition = Partition.find()
         if not partition:
             raise NotCreatedError("No Persistent Storage found")
