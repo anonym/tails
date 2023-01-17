@@ -133,7 +133,8 @@ class DBusObject(object, metaclass=ABCMeta):
         try:
             if tps.PROFILING:
                 uptime = Path("/proc/uptime").read_text().split()[0]
-                with tempfile.NamedTemporaryFile(mode="w+", prefix=uptime + "-" + full_method_name + ".", dir=tps.PROFILES_DIR,
+                with tempfile.NamedTemporaryFile(mode="w+", prefix=f"{uptime}-{full_method_name}.",
+                                                 dir=tps.PROFILES_DIR,
                                                  delete=False) as profile_file:
                     logger.info(f"Creating profile in {profile_file.name}")
                     prof = cProfile.Profile()

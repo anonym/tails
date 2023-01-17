@@ -69,7 +69,9 @@ def execute_hooks(hooks_dir: Union[str, PathLike]):
 
 def prepare_for_profiling(cmd: List) -> List:
     uptime = Path("/proc/uptime").read_text().split()[0]
-    profile_file = tempfile.NamedTemporaryFile(prefix=uptime + "-" + os.path.basename(cmd[0]) + ".", dir=tps.PROFILES_DIR, delete=False)
+    profile_file = tempfile.NamedTemporaryFile(prefix=f"{uptime}-{os.path.basename(cmd[0])}.",
+                                               dir=tps.PROFILES_DIR,
+                                               delete=False)
     profile_file.close()
     logger.info(f"Creating profile in {profile_file.name}")
     return [
