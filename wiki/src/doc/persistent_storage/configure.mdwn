@@ -1,100 +1,39 @@
 [[!meta title="Configuring the Persistent Storage"]]
 
 To configure the Persistent Storage, choose
-**Applications**&nbsp;▸ **Tails**&nbsp;▸ **Configure persistent volume**.
-
-<div class="note">
-
-<p><strong>Restart Tails to apply the changes</strong> after selecting or
-deselecting one or several features.</p>
-
-</div>
+**Applications**&nbsp;▸ **Tails**&nbsp;▸ **Persistent Storage**.
 
 <div class="note">
 
 <p>Only the features that are listed below can currently be made
 persistent.</p>
 
-<p>We are often asked to implement new features of the
-Persistent Storage:
-Tor Browser preferences,
-Tor configuration,
-desktop background,
-mouse and touchpad settings,
-etc.
-See the
-[[!tails_gitlab
+<p>We are often asked to implement new features of the Persistent Storage: Tor
+Browser preferences, Tor configuration, desktop background, mouse and touchpad
+settings, and so on. See the [[!tails_gitlab
 groups/tails/-/issues?scope=all&utf8=✓&state=opened&label_name%5B%5D=C%3APersistence
-desc="list of issues about the Persistent Storage"]].<p>
+desc="list of issues about the Persistent Storage in our GitLab"]].<p>
 
 </div>
 
-<div class="bug" id="deselect">
-
-<p>If you turn off a feature, it will be
-unavailable after restarting Tails but the
-corresponding files
-are still saved in the Persistent Storage.</p>
-
-<p>To delete the files corresponding to a feature:</p>
-
-<ol>
-  <li>
-    Start Tails and set an
-    [[administration password|doc/first_steps/welcome_screen/administration_password]].
-  </li>
-  <li>
-    Choose
-    <span class="menuchoice">
-      <span class="guimenu">Applications</span>&nbsp;▸
-      <span class="guisubmenu">System Tools</span>&nbsp;▸
-      <span class="guimenuitem">Root Terminal</span>
-    </span>
-    to open a terminal with administration rights.
-  </li>
-  <li>
-    Execute the <span class="code">nautilus</span> command to open the file
-    browser with administration rights.
-  </li>
-  <li>
-    In the file browser, navigate to <span class="filename">
-    /live/persistence/TailsData_unlocked</span>.
-  </li>
-  <li>
-    Delete the folder corresponding to the feature:
-    <ul>
-      <li><strong>Personal Data</strong>: <code>Persistent</code> folder</li>
-      <li><strong>Welcome Screen</strong>: <code>greeter-settings</code> folder</li>
-      <li><strong>Browser Bookmarks</strong>: <code>bookmarks</code> folder</li>
-      <li><strong>Network Connections</strong>: <code>nm-system-connections</code></li>
-      <li><strong>Additional Software</strong>: <code>apt</code> and <code>apt-sources.list.d</code> folders and <code>live-additional-software.conf</code> file</li>
-      <li><strong>Printers</strong>: <code>cups-configuration</code> folder</li>
-      <li><strong>Thunderbird</strong>: <code>thunderbird</code> folder</li>
-      <li><strong>GnuPG</strong>: <code>gnupg</code> folder</li>
-      <li><strong>Bitcoin Client</strong>: <code>electrum</code> folder</li>
-      <li><strong>Pidgin</strong>: <code>pidgin</code> folder</li>
-      <li><strong>SSH Client</strong>: <code>openssh-client</code> folder</li>
-      <li><strong>Dotfiles</strong>: <code>dotfiles</code> folder</li>
-    </ul>
-  </li>
-</ol>
-
-</div>
-
-<a id="personal_data"></a>
+<a id="persistent_folder"></a>
 
 <div class="icon">
 [[!img stock_folder.png link="no" alt=""]]
-<div class="text"><h2>Personal Data</h2></div>
+<div class="text"><h2>Persistent Folder</h2></div>
 </div>
 
-When the Personal Data feature is turned on, you can save your personal files and working
+When the Persistent Folder feature is turned on, you can save your personal files and working
 documents in the <span class="filename">Persistent</span> folder.
 
 To open the <span class="filename">Persistent</span> folder, choose
 <span class="menuchoice">
   <span class="guimenu">Places</span>&nbsp;▸
   <span class="guimenuitem">Persistent</span></span>.
+
+The *Tor Browser* folder inside the *Persistent* folder is accessible from *Tor
+Browser*. You must save your downloads or copy your uploads to this
+*Peristent/Tor Browser* folder.
 
 <a id="welcome_screen"></a>
 
@@ -125,13 +64,12 @@ successfully is saved in the Persistent Storage.
 
 <div class="icon">
 [[!img user-bookmarks.png link="no" alt=""]]
-<div class="text"><h2>Browser Bookmarks</h2></div>
+<div class="text"><h2>Tor Browser Bookmarks</h2></div>
 </div>
 
-When the Browser Bookmarks feature is turned on, changes to the bookmarks in
+When the Tor Browser Bookmarks feature is turned on, changes to the bookmarks in
 [[*Tor Browser*|doc/anonymous_internet/Tor_Browser]]
-are saved in the Persistent Storage. This does not apply to the
-[[*Unsafe Browser*|doc/anonymous_internet/unsafe_browser]].
+are saved in the Persistent Storage.
 
 <a id="network_connections"></a>
 
@@ -141,9 +79,8 @@ are saved in the Persistent Storage. This does not apply to the
 </div>
 
 When the Network Connections feature is turned on, the
-[[configuration of the network devices and connections|doc/anonymous_internet/networkmanager]]
-is saved in the Persistent Storage, for example the passwords of Wi-Fi
-networks.
+[[password for Wi-Fi networks and configuration of wired networks|doc/anonymous_internet/networkmanager]]
+are saved in the Persistent Storage.
 
 <a id="additional_software"></a>
 
@@ -184,10 +121,10 @@ is saved in the Persistent Storage.
 
 <div class="icon">
 [[!img lib/apps/thunderbird.png link="no" alt=""]]
-<div class="text"><h2>Thunderbird</h2></div>
+<div class="text"><h2>Thunderbird Email Client</h2></div>
 </div>
 
-When the Thunderbird feature is turned on, the email, feeds, and OpenPGP keys in the
+When the Thunderbird Email Client feature is turned on, the email, feeds, and OpenPGP keys in the
 [[*Thunderbird* email client|doc/anonymous_internet/thunderbird]]
 are saved in the Persistent Storage.
 
@@ -210,14 +147,14 @@ feature anymore if you only use OpenPGP encryption in
 
 </div>
 
-<a id="bitcoin"></a>
+<a id="electrum"></a>
 
 <div class="icon">
 [[!img lib/apps/electrum.png link="no" alt=""]]
-<div class="text"><h2>Bitcoin Client</h2></div>
+<div class="text"><h2>Electrum Bitcoin Wallet</h2></div>
 </div>
 
-When the Bitcoin Client feature is turned on, the bitcoin wallet and preferences of
+When the Electrum Bitcoin Wallet feature is turned on, the bitcoin wallet and preferences of
 the [[*Electrum* bitcoin client|anonymous_internet/electrum]] are saved in the
 Persistent Storage.
 
@@ -225,30 +162,32 @@ Persistent Storage.
 
 <div class="icon">
 [[!img lib/apps/pidgin.png link="no" alt=""]]
-<div class="text"><h2>Pidgin</h2></div>
+<div class="text"><h2>Pidgin Internet Messenger</h2></div>
 </div>
 
-When the Pidgin feature is turned on, all the configuration files of the
+When the Pidgin Internet Messenger feature is turned on, all the configuration files of the
 [[*Pidgin* internet messenger|doc/anonymous_internet/pidgin]]
 are saved in the Persistent Storage:
 
-  - The configuration of your accounts, buddies and chats.
-  - Your OTR encryption keys and keyring.
-  - The content of the discussions is not saved unless you configure
-    <span class="application">Pidgin</span> to do so.
+- The configuration of your accounts, contacts, and chats
+- Your OTR encryption keys and keyring
 
-All the configuration options are available from the graphical interface of *Pidgin*. There
-is no need to manually edit or overwrite the configuration files.
+The content of the discussions is not saved, unless you configure *Pidgin* to
+do so.
 
-<a id="ssh_client"></a>
+All the configuration options are available from the graphical interface of
+*Pidgin*. You don't need to automatically edit or overwrite the configuration
+files.
+
+<a id="ssh"></a>
 
 <div class="icon">
 [[!img seahorse-key-ssh.png link="no" alt=""]]
 <div class="text"><h2>SSH Client</h2></div>
 </div>
     
-When the SSH Client feature is turned on, all the files related to the secure-shell (SSH) client
-are saved in the Persistent Storage:
+When the SSH Client feature is turned on, all the files related to the Secure
+Shell (SSH) client are saved in the Persistent Storage:
 
   - The SSH keys that you create or import
   - The public keys of the hosts you connect to
@@ -350,6 +289,58 @@ projector), you can save the configuration of your displays using the
 1. Copy the <span class="filename">.config/monitors.xml</span> file from
    your <span class="filename">Home</span> folder to
    <span class="filename">/live/persistence/TailsData_unlocked/dotfiles/.config</span>.
+
+<div class="bug" id="deactivate">
+
+<p>If you turn off a feature, it will be
+unavailable after restarting Tails but the
+corresponding files
+are still saved in the Persistent Storage.</p>
+
+<p>To delete the files corresponding to a feature:</p>
+
+<ol>
+  <li>
+    Start Tails and set an
+    [[administration password|doc/first_steps/welcome_screen/administration_password]].
+  </li>
+  <li>
+    Choose
+    <span class="menuchoice">
+      <span class="guimenu">Applications</span>&nbsp;▸
+      <span class="guisubmenu">System Tools</span>&nbsp;▸
+      <span class="guimenuitem">Root Terminal</span>
+    </span>
+    to open a terminal with administration rights.
+  </li>
+  <li>
+    Execute the <span class="code">nautilus</span> command to open the file
+    browser with administration rights.
+  </li>
+  <li>
+    In the file browser, navigate to <span class="filename">
+    /live/persistence/TailsData_unlocked</span>.
+  </li>
+  <li>
+    Delete the folder corresponding to the feature:
+    <ul>
+      <li><strong>Persistent Folder</strong>: <code>Persistent</code> folder</li>
+      <li><strong>Welcome Screen</strong>: <code>greeter-settings</code> folder</li>
+      <li><strong>Tor Browser Bookmarks</strong>: <code>bookmarks</code> folder</li>
+      <li><strong>Network Connections</strong>: <code>nm-system-connections</code></li>
+      <li><strong>Additional Software</strong>: <code>apt</code> and <code>apt-sources.list.d</code> folders and <code>live-additional-software.conf</code> file</li>
+      <li><strong>Printers</strong>: <code>cups-configuration</code> folder</li>
+      <li><strong>Thunderbird Email Client</strong>: <code>thunderbird</code> folder</li>
+      <li><strong>GnuPG</strong>: <code>gnupg</code> folder</li>
+      <li><strong>Electrum Bitcoin Wallet</strong>: <code>electrum</code> folder</li>
+      <li><strong>Pidgin Internet Messenger</strong>: <code>pidgin</code> folder</li>
+      <li><strong>SSH Client</strong>: <code>openssh-client</code> folder</li>
+      <li><strong>Dotfiles</strong>: <code>dotfiles</code> folder</li>
+    </ul>
+  </li>
+</ol>
+
+</div>
 
 <h1 id="use">Using the Persistent Storage</h1>
 
