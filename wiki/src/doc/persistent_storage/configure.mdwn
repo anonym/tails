@@ -49,6 +49,28 @@ and additional settings.
 To restore your settings when starting Tails, unlock your Persistent
 Storage in the Welcome Screen.
 
+<a id="printers"></a>
+
+<div class="icon">
+[[!img printer.png link="no" alt=""]]
+<div class="text"><h2>Printers</h2></div>
+</div>
+
+When the Printers feature is turned on, the
+[[configuration of the printers|doc/sensitive_documents/printing_and_scanning]]
+is saved in the Persistent Storage.
+
+<a id="network_connections"></a>
+
+<div class="icon">
+[[!img network-manager.png link="no" alt=""]]
+<div class="text"><h2>Network Connections</h2></div>
+</div>
+
+When the Network Connections feature is turned on, the
+[[password for Wi-Fi networks and configuration of wired networks|doc/anonymous_internet/networkmanager]]
+are saved in the Persistent Storage.
+
 <a id="tor-bridge">
 
 <div class="icon">
@@ -71,51 +93,16 @@ When the Tor Browser Bookmarks feature is turned on, changes to the bookmarks in
 [[*Tor Browser*|doc/anonymous_internet/Tor_Browser]]
 are saved in the Persistent Storage.
 
-<a id="network_connections"></a>
+<a id="electrum"></a>
 
 <div class="icon">
-[[!img network-manager.png link="no" alt=""]]
-<div class="text"><h2>Network Connections</h2></div>
+[[!img lib/apps/electrum.png link="no" alt=""]]
+<div class="text"><h2>Electrum Bitcoin Wallet</h2></div>
 </div>
 
-When the Network Connections feature is turned on, the
-[[password for Wi-Fi networks and configuration of wired networks|doc/anonymous_internet/networkmanager]]
-are saved in the Persistent Storage.
-
-<a id="additional_software"></a>
-
-<div class="icon">
-[[!img additional_software/additional_software.png link="no" alt=""]]
-<div class="text"><h2>Additional Software</h2></div>
-</div>
-
-When the Additional Software feature is turned on, a list of
-[[additional software|additional_software]] of
-your choice is automatically installed every
-time you start Tails.
-
-The corresponding software packages are stored in the
-Persistent Storage. They are automatically upgraded for security after
-a network connection is established.
-
-<div class="caution">
-
-<p>The packages included in Tails are carefully tested for security.
-Installing additional packages might break the security built in Tails,
-so [[be careful with what you install|additional_software#warning]].</p>
-
-</div>
-
-<a id="printers"></a>
-
-<div class="icon">
-[[!img printer.png link="no" alt=""]]
-<div class="text"><h2>Printers</h2></div>
-</div>
-
-When the Printers feature is turned on, the
-[[configuration of the printers|doc/sensitive_documents/printing_and_scanning]]
-is saved in the Persistent Storage.
+When the Electrum Bitcoin Wallet feature is turned on, the bitcoin wallet and preferences of
+the [[*Electrum* bitcoin client|anonymous_internet/electrum]] are saved in the
+Persistent Storage.
 
 <a id="thunderbird"></a>
 
@@ -146,17 +133,6 @@ feature anymore if you only use OpenPGP encryption in
 <em>Thunderbird</em>.</p>
 
 </div>
-
-<a id="electrum"></a>
-
-<div class="icon">
-[[!img lib/apps/electrum.png link="no" alt=""]]
-<div class="text"><h2>Electrum Bitcoin Wallet</h2></div>
-</div>
-
-When the Electrum Bitcoin Wallet feature is turned on, the bitcoin wallet and preferences of
-the [[*Electrum* bitcoin client|anonymous_internet/electrum]] are saved in the
-Persistent Storage.
 
 <a id="pidgin"></a>
 
@@ -200,6 +176,30 @@ configuration file, make sure not to overwrite the
 default configuration from the
 <i>/etc/ssh/ssh_config</i> file. Otherwise, you might weaken the
 encryption defaults or render SSH unusable.</p>
+
+</div>
+
+<a id="additional_software"></a>
+
+<div class="icon">
+[[!img additional_software/additional_software.png link="no" alt=""]]
+<div class="text"><h2>Additional Software</h2></div>
+</div>
+
+When the Additional Software feature is turned on, a list of
+[[additional software|additional_software]] of
+your choice is automatically installed every
+time you start Tails.
+
+The corresponding software packages are stored in the
+Persistent Storage. They are automatically upgraded for security after
+a network connection is established.
+
+<div class="caution">
+
+<p>The packages included in Tails are carefully tested for security.
+Installing additional packages might break the security built in Tails,
+so [[be careful with what you install|additional_software#warning]].</p>
 
 </div>
 
