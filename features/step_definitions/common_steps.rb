@@ -381,6 +381,13 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
     sleep(10)
   end
   login_button_region.click
+
+  sleep 3
+  if @screen.exists('PersistentStorageNotUnlocked.png')
+    @screen.press('Right')
+    @screen.press('Return')
+  end
+
   step 'the Tails desktop is ready'
 end
 
