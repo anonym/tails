@@ -37,9 +37,6 @@ systemctl --global enable tails-virt-notify-user.service
 systemctl --global enable tails-wait-until-tor-has-bootstrapped.service
 systemctl --global enable tails-create-persistent-storage.service
 
-# OnionCircuits has no text input area so it does not need an IBus proxy
-systemctl --global enable "tails-a11y-proxy-netns@onioncircs.service"
-
 for netns in tbb clearnet; do
     systemctl --global enable "tails-a11y-proxy-netns@${netns}.service"
     systemctl --global enable "tails-ibus-proxy-netns@${netns}.service"
