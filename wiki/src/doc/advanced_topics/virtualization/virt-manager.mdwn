@@ -65,7 +65,7 @@ command:
 Running Tails from an ISO image
 ===============================
 
-1. [[Download an ISO image|install/dvd]].
+1. [[Download Tails as an ISO image|install/download-iso]], instead of a USB image.
 
 1. Start *virt-manager*.
 
@@ -81,12 +81,12 @@ Running Tails from an ISO image
 
 1. In *step 2*:
 
-   - **Choose ISO image**, then **Browse...**, and **Browse Local** to
-     browse for the ISO image that you want to start from.
+   1. **Choose ISO image**, then **Browse...**, and **Browse Local** to
+      browse for the ISO image that you want to start from.
 
-   - Unselect **Automatically detected from the installation media / source**.
+   2. Unselect **Automatically detected from the installation media / source**.
 
-   - Specify **Debian 10** in the field **Choose the operating system you are installing**.
+   3. Specify **Debian 10** in the field **Choose the operating system you are installing**.
 
 1. In *step 3*, allocate at least 2048 MB of RAM.
 
@@ -129,7 +129,7 @@ Running Tails from a USB image
 Running Tails from a USB image is the only virtualization solution that
 allows you to use a Persistent Storage in a virtual machine.
 
-1. [[Download a USB image|install/download]] instead of an ISO image.
+1. [[Download Tails as a USB image|install/download]], instead of an ISO image.
 
 1. Increase the size of the USB image to be at least 8 GB. This creates
    space for automatic upgrades and the Persistent Storage.
@@ -157,34 +157,36 @@ allows you to use a Persistent Storage in a virtual machine.
 
 1. In *step 2*:
 
-   - Choose **Browse...**, and **Browse Local** to
-   browse for the USB image that you want to start from.
+   1. Choose **Browse...**, and **Browse Local** to browse for the USB image
+      that you want to start from.
 
-   - Specify **Debian 10** in the field **Choose the operating system you are installing**.
+   1. Specify **Debian 10** in the field **Choose the operating system you are
+      installing**.
 
 1. In *step 3*, allocate at least 2048 MB of RAM.
 
 1. In *step 4*:
 
-   - Type a name of your choice for the new virtual machine.
+   1. Type a name of your choice for the new virtual machine.
 
-   - Choose **Customize configuration before install**.
+   1. Choose **Customize configuration before install**.
 
-   - Click **Finish** to open the configuration view.
+   1. Click **Finish** to open the configuration view.
 
 1. In the configuration view, choose **VirtIO Disk 1** or **IDE Disk 1**
 
-   - Set **Disk bus** to **USB**.
+   1. Set **Disk bus** to **USB**.
 
-   - Click **Apply**.
+   1. Click **Apply**.
 
-   - Expand the **Advanced options**.
+   1. Expand the **Advanced options**.
 
-   - Enable **Removable**.
+   1. Enable **Removable**.
 
-   - Click **Apply** again.
+   1. Click **Apply** again.
 
-   - Click **Begin Installation** in the top left corner to start the virtual machine.
+   1. Click **Begin Installation** in the top left corner to start the virtual
+      machine.
 
 After you start on the USB image, you can [[create a Persistent
 Storage|first_steps/persistence]] on it.
@@ -200,21 +202,19 @@ create a virtual machine running from an ISO image as described
 
 Then do the following:
 
-  1. From the virtual machine window, choose
-     <span class="menuchoice">
-     <span class="guimenu">Virtual Machine</span>&nbsp;▸
-     <span class="guisubmenuitem">Shut Down</span>&nbsp;▸
-     <span class="guimenuitem">Force Off</span></span> to shut down the
-     virtual machine.
+  1. From the virtual machine window, choose **Virtual Machine**&nbsp;▸ **Shut
+     Down**&nbsp;▸ **Force Off** to shut down the virtual machine.
+
   1. Plug in the USB stick from which you want to run Tails.
-  1. Choose
-     <span class="menuchoice">
-     <span class="guimenu">View</span>&nbsp;▸
-     <span class="guimenuitem">Details</span></span> to edit the
-     configuration of the virtual machine.
+
+  1. Choose **View**&nbsp;▸ **Details** to edit the configuration of the
+     virtual machine.
+
   1. Click on the **Add Hardware** button on the bottom of the left
      pane.
+
   1. Select **USB Host Device** in the left pane.
+
   1. In the right pane, click on the device from which you want to run
      Tails, and click **Finish**.
 
@@ -227,20 +227,22 @@ You can also disconnect the original ISO image and start directly from the
 USB stick once Tails is already installed on it. To do so:
 
   1. Shut down the virtual machine.
+
   1. In the configuration of the virtual machine, click on **SATA CDROM
      1** in the left pane.
+
   1. Click on the **Disconnect** button in the right pane.
+
   1. To enable the USB stick as a boot option:
+
      1. Click on **Boot Options** in the left pane.
+
      1. Select the **USB** boot option corresponding to your USB device.
+
      1. Click **Apply**.
-  1. To start the virtual machine choose
-     <span class="menuchoice">
-     <span class="guimenu">View</span>&nbsp;▸
-     <span class="guimenuitem">Console</span></span> and then
-     <span class="menuchoice">
-     <span class="guimenu">Virtual Machine</span>&nbsp;▸
-     <span class="guimenuitem">Run</span></span>.
+
+  1. To start the virtual machine choose **View**&nbsp;▸ **Console** and then
+     **Virtual Machine**&nbsp;▸ **Run**.
 
 After you start on the USB device, you can [[create a Persistent
 Storage|first_steps/persistence]] on it.

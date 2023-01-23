@@ -179,16 +179,6 @@ case mounted to `/media/tails-persistence-setup/TailsData` instead of
 `/live/persistence/TailsData_unlocked` (this logic in handled by
 [[!tails_gitweb config/chroot_local-includes/usr/lib/python3/dist-packages/tailslib/persistence.py]]).
 
-The [[!tails_gitweb
-config/chroot_local-includes/usr/local/lib/tails-synchronize-data-to-new-persistent-volume]]
-script synchronizes APT data (lists and cached packages) to the newly created
-Persistent Storage. It is run:
-
- - when (and if) the user clicks _Restart_ as instructed in `tails-persistence-setup`;
- - during shutdown, by the
-   [[!tails_gitweb config/chroot_local-includes/lib/systemd/system/tails-synchronize-data-to-new-persistent-volume-on-shutdown.service]]
-   systemd service (but this does not always work, see [[!tails_ticket 18839]]).
-
 #### With the Persistent Storage locked
 
 No notification is displayed as people who have a Persistent Storage but

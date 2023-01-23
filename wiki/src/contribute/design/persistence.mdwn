@@ -1,37 +1,114 @@
-Data persistence is a somewhat tricky topic in a Live system context,
-especially one explicitly designed to avoid leaving any trace of
-its use.
-
-Some real-life usecases however require to set up some kind of data
-persistence, which were then carefully introduced and supported.
-
 [[!toc levels=4]]
 
-Usecases
-========
+# Introduction
+
+As a live system designed to not leave any trace of its use on a 
+computer, Tails doesn't store any user data and configuration by 
+default. To still be able to use Tails without re-configuring all 
+used apps after each boot, Tails supports storing some 
+explicitly selected configuration and data persistently on an encrypted
+volume.
+
+# Requirements
+Allow users to easily set up an encrypted volume and configure which 
+data and configuration should be stored persistently on the encrypted 
+volume.
+
+# Design
+
+Technical overview:
+* Encrypted (LUKS) volume on the Tails device
+* Configuration file containing source paths and destination paths
+* Files are either bind-mounted or linked via symlinks
+* Hooks are executed on activation / deactivation 
+
+Components:
+* A privileged backend: A D-Bus activated systemd service which exposes 
+  an API via the D-Bus system bus
+* A GTK app which uses the API to allow the user to easily set up and
+  configure the Persistent Storage
+* A command-line tool and shell library to allow other components of
+  Tails to easily use the API to configure the Persistent Storage
+
+# XXX
+* Setup and configuration is done via the `Persistent Storage` app
+* 
+* User can choose which data and configuration (features) to 
+  store persistently from a pre-configured list 
+* In addition, users can make arbitrary files persistent by editing
+  a config file manually
+
+  pre-configured list of  which files and directories 
+* Files and directories which are made persistent are copied to the 
+  Persistent Storage
+* Files and directories are 
+
+# Implementation
+
+## Backend
+The backend is implemented as a D-Bus activated systemd service using
+the D-Bus system bus. It exposes two interfaces:
+
+```
+<interface name='org.boum.tails.PersistentStorage'>
+    <method name='Quit'/>
+    <method name='Create'>
+        <arg name='passphrase' direction='in' type='s'/>
+    </method>
+    <method name='ChangePassphrase'>
+        <arg name='passphrase' direction='in' type='s'/>
+        <arg name='new_passphrase' direction='in' type='s'/>
+    </method>
+    <method name='Delete'/>
+    <method name='Activate'/>
+    <method name='Unlock'>
+        <arg name='passphrase' direction='in' type='s'/>
+    </method>
+    <property name="State" type="s" access="read" />
+    <property name="Error" type="s" access="read" />
+    <property name="IsCreated" type="b" access="read"/>
+    <property name="IsUnlocked" type="b" access="read"/>
+    <property name="BootDeviceIsSupported" type="b" access="read"/>
+    <property name="Device" type="s" access="read"/>
+    <property name="Job" type="o" access="read"/>
+</interface>
+```
+
+and
+
+```
+<interface name='org.boum.tails.PersistentStorage.Feature'>
+    <method name='Activate'/>
+    <method name='Deactivate'/>
+    <property name="Id" type="s" access="read"/>
+    <property name="IsActive" type="b" access="read"/>
+    <property name="Job" type="o" access="read"/>
+</interface>
+```
+
+
+Use Cases
+=========
 
 What can be made persistent?
 ----------------------------
 
-Here are the usecases that are of interest for our users and we want
+Here are the use cases that are of interest for our users and we want
 to support.
 
 ### Application-specific configurations
 
 This is relevant for the following applications:
 
-- GnuPG, SSH and OTR key pairs
-- GnuPG configuration
-- SSH client configuration
-- Tor Browser certificate trust
-- Tor Browser bookmarks
-- Pidgin configuration
-- MUA configuration
-- printers configuration
-- Tor's data/cache for faster bootstrap with slow connections and
-  better protections through more stable entry guards
-  (`/var/lib/tor/`)
-- NoScript global behaviour (whitelist / blacklist) and exceptions
+- Tor Browser bookmarks (`/home/amnesia/.mozilla/firefox/bookmarks`)
+- Printer configuration (`/etc/cups`)
+- Network configuration (`/etc/NetworkManager/system-connections`)
+- Tor bridge configuration (`/var/lib/tca`)
+- Electrum configuration and data (`/home/amnesia/.electrum`)
+- Thunderbird configuration and data (`/home/amnesia/.thunderbird`)
+- GnuPG configuration and keys (`/home/amnesia/.gnupg`)
+- Pidgin configuration and OTR keys (`/home/amnesia/.purple`)
+- SSH client configuration and key (`/home/amnesia/.ssh`)
 
 A tool (`tails-persistence-setup`) helps the user to choose exactly
 what files/directories should be persistent. With such a general

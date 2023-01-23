@@ -2,7 +2,6 @@
 
 from pathlib import Path
 import re
-import subprocess
 import ipaddress
 import time
 import logging
@@ -14,7 +13,7 @@ import stem.socket
 from typing import List, Optional, Dict, Any, Tuple, cast, Callable
 import tca.config
 
-log = logging.getLogger("tor-launcher")
+log = logging.getLogger("torutils")
 
 
 class StemFDSocket(stem.socket.ControlSocket):
@@ -42,15 +41,13 @@ class StemFDSocket(stem.socket.ControlSocket):
 
 def recover_fd_from_parent() -> tuple:
     fds = [int(fd) for fd in os.getenv("INHERIT_FD", "").split(",")]
-    # fds[0] must be a rw fd for settings file
-    # fds[1] must be a rw fd for state file
-    # fds[2] must be a socket to tca-portal
+    # fds[0] must be a rw fd for state file
+    # fds[1] must be a socket to tca-portal
 
-    configfile = os.fdopen(fds[0], "r+")
-    statefile = os.fdopen(fds[1], "r+")
-    portal = socket.socket(fileno=fds[2])
+    statefile = os.fdopen(fds[0], "r+")
+    portal = socket.socket(fileno=fds[1])
 
-    return (configfile, statefile, portal)
+    return (statefile, portal)
 
 
 # PROXY_TYPES is a sequence of Tor options related to proxing.
@@ -293,6 +290,44 @@ class TorConnectionConfig:
         return [b for b in parsed_bridges if b]
 
     @classmethod
+    def parse_qr_content(cls, content: str) -> List[str]:
+        """
+        Parse the content of a QR code received by BridgeDB.
+
+        >>> br1 = 'obfs4 1.2.3.4:80 XZAWCH5CIBSUXZAWCH5CIBSUXZAWCH5CIBSU cert=blblbl iat-mode=0'
+        >>> br2 = br1.replace(':80', ':81')
+
+        It can parse the old format: python string repreasentation of a list
+        >>> parsed = TorConnectionConfig.parse_qr_content(str([br1, br2]))
+        >>> len(parsed)
+        2
+        >>> parsed[0] == br1
+        True
+        >>> parsed[1] == br2
+        True
+
+        It can parse the new format: list of bridge lines
+        >>> parsed2 = TorConnectionConfig.parse_qr_content('\\n'.join([br1, br2]))
+        >>> parsed2 == parsed
+        True
+
+        """
+        bridge_strings = content.strip()
+        if bridge_strings.startswith("[") and bridge_strings.endswith("]"):
+            # "Old" format: str([...lines...]) in Python.
+            # " was never used in bridge lines, so we can parse them as
+            # JSON even though they are Python.
+            try:
+                lines = json.loads(bridge_strings.replace('\'', '"'))
+            except json.decoder.JSONDecodeError:
+                raise ValueError("Not a valid QR code")
+        else:
+            # "New" format: strings separated by \n
+            lines = bridge_strings.split('\n')
+        # TODO: implement bridge:// URIs when they will be used
+        return cls.parse_bridge_lines(lines)
+
+    @classmethod
     def get_default_bridges(cls, only_type: Optional[str] = None) -> List[str]:
         """Get default bridges from a txt file."""
         bridges = []
@@ -401,17 +436,21 @@ class TorConnectionConfig:
 
 class TorLauncherUtils:
     def __init__(self, stem_controller: Controller,
-                 config_buf, state_buf,
-                 set_tor_sandbox_fn: Callable[[bool], None]):
+                 read_config_fn: Callable[[Callable], None],
+                 write_config_fn: Callable[[Callable, str], None],
+                 state_buf,
+                 set_tor_sandbox_fn: Callable[[Callable, str], None]):
         """
         Arguments:
         stem_controller -- an already connected and authorized stem Controller
-        config_buf -- an already open read-write buffer to the configuration file
+        read_config_fn -- a Callable that returns the contents of tca.conf
+        write_config_fn -- a Callable that writes its argument to tca.conf
         state_buf -- an already open read-write buffer to the state file
         set_tor_sandbox_fn -- a Callable whose argument sets Tor's Sandbox value
         """
         self.stem_controller = stem_controller
-        self.config_buf = config_buf
+        self.read_config_fn = read_config_fn
+        self.write_config_fn = write_config_fn
         self.state_buf = state_buf
         self.tor_connection_config = None
         self.set_tor_sandbox_fn = set_tor_sandbox_fn
@@ -424,33 +463,57 @@ class TorLauncherUtils:
             )
 
     def load_conf_from_file(self):
-        if self.tor_connection_config is None:
-            log.debug("Loading configuration from file")
+        if self.tor_connection_config is not None:
+            return
+
+        log.debug("Loading configuration from file")
+
+        def on_done_reading_conf_from_file_cb(gjsonrpcclient, result, error):
+            if result is not None and result.get("returncode", 1) == 0:
+                if len(result["stdout"]) == 0:
+                    data = {}
+                else:
+                    try:
+                        data = json.loads(result["stdout"])
+                    except json.JSONDecodeError:
+                        log.warning("Invalid JSON")
+                        data = {}
+            else:
+                log.warning("Could not read configuration")
+                data = {}
             self.tor_connection_config = TorConnectionConfig.load_from_dict(
-                self.read_tca_conf().get("tor", {})
+                data.get("tor", {})
             )
 
+        self.read_config_fn(on_done_reading_conf_from_file_cb)
+
     def save_conf(self):
+        """Save configuration.
+
+        Save Tor configuration to torrc and, asynchronously, to our
+        own configuration file.
+        """
         if self.tor_connection_config is None:
             return
 
-        # Save configuration to our own configuration file
+        def on_done_writing_conf_to_file_cb(gjsonrpcclient, result, error):
+            if result is not None and result.get("returncode", 1) == 0:
+                # Save configuration to torrc
+                self.stem_controller.save_conf()
+            else:
+                log.warning("Could not save configuration")
+
         data = {
             "tor": self.tor_connection_config.to_dict(
                 # We only want to persist custom bridges, not the default ones
                 include_default_bridges=False
             )
         }
-        encode_to_json_buf(data, self.config_buf)
 
-        # Save configuration to torrc
-        self.stem_controller.save_conf()
+        self.write_config_fn(on_done_writing_conf_to_file_cb, json.dumps(data))
 
     def save_tca_state(self, state):
         encode_to_json_buf(state, self.state_buf)
-
-    def read_tca_conf(self):
-        return decode_json_from_buf(self.config_buf)
 
     def read_tca_state(self):
         return decode_json_from_buf(self.state_buf)

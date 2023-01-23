@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-06-14 17:40+0000\n"
-"PO-Revision-Date: 2022-05-04 19:24+0000\n"
+"POT-Creation-Date: 2022-12-28 15:20+0000\n"
+"PO-Revision-Date: 2023-01-08 19:17+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -368,24 +368,6 @@ msgstr "[[!wikipedia Radeon_HD_8000_series]]"
 
 #. type: Plain text
 msgid ""
-"Try starting Tails using the following [[boot options|doc/advanced_topics/"
-"boot_options]].  You should try only one of these boot options per start "
-"attempt."
-msgstr ""
-"Essayez de démarrer Tails en utilisant ces [[options de démarrage|doc/"
-"advanced_topics/boot_options]]. Vous devriez essayer une seule de ces "
-"options par essai de démarrage."
-
-#. type: Bullet: '* '
-msgid "`radeon.modeset=0`"
-msgstr "`radeon.modeset=0`"
-
-#. type: Bullet: '* '
-msgid "`xorg-driver=modesetting`"
-msgstr "`xorg-driver=modesetting`"
-
-#. type: Plain text
-msgid ""
 "If the computer has another, integrated graphics card, try configuring the "
 "computer to use that one instead of the AMD graphics card.  For example, "
 "using the following [[boot option|doc/advanced_topics/boot_options]]:"
@@ -416,14 +398,6 @@ msgstr ""
 "<tr><th>Nom</th><th>Identifiant</th><th>Numéro de version</th></tr>\n"
 "<tr><td>Advanced Micro Devices, Inc. [AMD/ATI] Exo UL/ULT/ULP [Radeon R5 M320]</td><td></td><td></td></tr>\n"
 "</table>\n"
-
-#. type: Plain text
-msgid ""
-"Adding `radeon.modeset=0 xorg-driver=modesetting` to the [[boot options|doc/"
-"advanced_topics/boot_options]] fixes the issue."
-msgstr ""
-"Ajouter `radeon.modeset=0 xorg-driver=modesetting` aux [[options de "
-"démarrage|doc/advanced_topics/boot_options]] corrige le problème."
 
 #. type: Plain text
 #, no-wrap
@@ -624,23 +598,9 @@ msgstr ""
 "<tr><td>Intel Corporation</td><td></td><td></td></tr>\n"
 "</table>\n"
 
-#. type: Bullet: '* '
-msgid "`xorg-driver=intel`"
-msgstr "`xorg-driver=intel`"
-
-#. type: Bullet: '* '
-msgid "`nomodeset`"
-msgstr "`nomodeset`"
-
-#. type: Bullet: '* '
-msgid "`nomodeset xorg-driver=vesa`"
-msgstr "`nomodeset xorg-driver=vesa`"
-
 #. type: Plain text
-msgid "Otherwise, try starting in the *Troubleshooting Mode*."
-msgstr ""
-"Dans le cas contraire, essayez de démarrer dans le mode *Troubleshooting "
-"Mode*."
+msgid "Try starting in the *Troubleshooting Mode*."
+msgstr "Essayez de démarrer dans le mode *Troubleshooting Mode*."
 
 #. type: Plain text
 #, no-wrap
@@ -668,6 +628,45 @@ msgstr ""
 "<tr><th>Nom</th><th>Identifiant</th><th>Numéro de version</th></tr>\n"
 "<tr><td>Intel Corporation 82852/855GM Integrated Graphics Device</td><td>[8086:3582]</td><td>(rev 02)</td></tr>\n"
 "</table>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "<h2 id=\"intel-uhd-750\">Intel UHD 750</h2>\n"
+msgstr "<h2 id=\"intel-uhd-750\">Intel UHD 750</h2>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<!--\n"
+"Issue: #18467\n"
+msgstr ""
+"<!--\n"
+"Issue: #18467\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<table>\n"
+"<tr><th>Name</th><th>ID</th><th>Revision number</th></tr>\n"
+"<tr><td>Intel UHD 750</td><td>[8086:4c8a]</td><td></td></tr>\n"
+"</table>\n"
+msgstr ""
+"<table>\n"
+"<tr><th>Nom</th><th>Identifiant</th><th>Numéro de version</th></tr>\n"
+"<tr><td>Intel UHD 750</td><td>[8086:4c8a]</td><td></td></tr>\n"
+"</table>\n"
+
+#. type: Plain text
+msgid ""
+"Try starting Tails using the following [[boot option|doc/advanced_topics/"
+"boot_options]]:"
+msgstr ""
+"Essayer de démarrer Tails en utilisant [[les options de démarrage suivantes|"
+"doc/advanced_topics/boot_options]] :"
+
+#. type: Bullet: '* '
+msgid "`i915.force_probe=4c8a`"
+msgstr "`i915.force_probe=4c8a`"
 
 #. type: Plain text
 #, no-wrap
@@ -929,10 +928,6 @@ msgstr ""
 msgid "`nouveau.noaccel=1`"
 msgstr "`nouveau.noaccel=1`"
 
-#. type: Bullet: '* '
-msgid "`nouveau.modeset=0`"
-msgstr "`nouveau.modeset=0`"
-
 #. type: Plain text
 msgid ""
 "Other graphics cards in the [NV110 family (Maxwell)](https://nouveau."
@@ -1157,6 +1152,16 @@ msgstr ""
 "freedesktop.org/CodeNames.html#NV160) pouvent être concernées."
 
 #. type: Plain text
+msgid ""
+"Try starting Tails using the following [[boot options|doc/advanced_topics/"
+"boot_options]].  You should try only one of these boot options per start "
+"attempt."
+msgstr ""
+"Essayez de démarrer Tails en utilisant ces [[options de démarrage|doc/"
+"advanced_topics/boot_options]]. Vous devriez essayer une seule de ces "
+"options par essai de démarrage."
+
+#. type: Plain text
 #, no-wrap
 msgid "<h2 id=\"nvidia-ampere\">Nvidia RTX 30X0 family (Ampere)</h2>\n"
 msgstr "<h2 id=\"nvidia-ampere\">Famille Nvidia RTX 30X0 (Ampere)</h2>\n"
@@ -1222,71 +1227,6 @@ msgstr ""
 "Pour les ordinateurs Mac, il est possible d'utiliser une application tierce, "
 "<http://gfx.io/>, pour forcer la carte graphique intégrée uniquement avec "
 "macOS. Redémarrez dans ce mode spécial pour faire fonctionner Tails."
-
-#. type: Bullet: '* '
-msgid "Expert Linux users can also do the following:"
-msgstr "Les personnes expertes de Linux peuvent aussi :"
-
-#. type: Bullet: '  1. '
-msgid ""
-"Add the `i915.modeset=0 rootpw=pass` option in the [[Boot Loader|doc/"
-"advanced_topics/boot_options]]."
-msgstr ""
-"Ajouter l'option `i915.modeset=0 rootpw=pass` dans le [[menu du chargeur "
-"d’amorçage|doc/advanced_topics/boot_options]]."
-
-#. type: Bullet: '  2. '
-msgid ""
-"Create a file `/etc/X11/xorg.conf.d/switchable.conf` with the following "
-"content:"
-msgstr ""
-"Créer un fichier `/etc/X11/xorg.conf.d/switchable.conf` avec le contenu "
-"suivant :"
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"         Section \"Device\"\n"
-"             Identifier \"Device0\"\n"
-"             Driver \"nouveau\"\n"
-"             BusID \"1:0:0\"\n"
-"         EndSection\n"
-msgstr ""
-"         Section \"Device\"\n"
-"             Identifier \"Device0\"\n"
-"             Driver \"nouveau\"\n"
-"             BusID \"1:0:0\"\n"
-"         EndSection\n"
-
-#. type: Bullet: '  4. '
-msgid "Restart X with the command:"
-msgstr "Redémarrer X avec la commande :"
-
-#. type: Plain text
-#, no-wrap
-msgid "         service gdm3 restart\n"
-msgstr "         service gdm3 restart\n"
-
-#. type: Bullet: '  5. '
-msgid ""
-"After the GNOME session has started, change again the root password with the "
-"command:"
-msgstr ""
-"Après le démarrage de la session GNOME, modifier à nouveau le mot de passe "
-"root avec la commande :"
-
-#. type: Plain text
-#, no-wrap
-msgid "         sudo passwd\n"
-msgstr "         sudo passwd\n"
-
-#. type: Plain text
-msgid ""
-"For more details, see our issue on [[!tails_ticket 7505 desc=\"Video is "
-"broken with switchable graphics\"]]."
-msgstr ""
-"Pour plus de détails, voir notre problème [[!tails_ticket 7505 desc=\"Plus "
-"d'affichage avec les cartes graphiques commutables\"]]."
 
 #. type: Plain text
 #, no-wrap
@@ -1410,6 +1350,87 @@ msgid ""
 msgstr ""
 "Pour l'étape \"Modifiez les options de démarrage selon les besoins\" du "
 "guide, tapez `edd=off` pour ajouter cette option à la ligne de commande."
+
+#~ msgid "`radeon.modeset=0`"
+#~ msgstr "`radeon.modeset=0`"
+
+#~ msgid "`xorg-driver=modesetting`"
+#~ msgstr "`xorg-driver=modesetting`"
+
+#~ msgid ""
+#~ "Adding `radeon.modeset=0 xorg-driver=modesetting` to the [[boot options|"
+#~ "doc/advanced_topics/boot_options]] fixes the issue."
+#~ msgstr ""
+#~ "Ajouter `radeon.modeset=0 xorg-driver=modesetting` aux [[options de "
+#~ "démarrage|doc/advanced_topics/boot_options]] corrige le problème."
+
+#~ msgid "`xorg-driver=intel`"
+#~ msgstr "`xorg-driver=intel`"
+
+#~ msgid "`nomodeset`"
+#~ msgstr "`nomodeset`"
+
+#~ msgid "`nomodeset xorg-driver=vesa`"
+#~ msgstr "`nomodeset xorg-driver=vesa`"
+
+#~ msgid "`nouveau.modeset=0`"
+#~ msgstr "`nouveau.modeset=0`"
+
+#~ msgid "Expert Linux users can also do the following:"
+#~ msgstr "Les personnes expertes de Linux peuvent aussi :"
+
+#~ msgid ""
+#~ "Add the `i915.modeset=0 rootpw=pass` option in the [[Boot Loader|doc/"
+#~ "advanced_topics/boot_options]]."
+#~ msgstr ""
+#~ "Ajouter l'option `i915.modeset=0 rootpw=pass` dans le [[menu du chargeur "
+#~ "d’amorçage|doc/advanced_topics/boot_options]]."
+
+#~ msgid ""
+#~ "Create a file `/etc/X11/xorg.conf.d/switchable.conf` with the following "
+#~ "content:"
+#~ msgstr ""
+#~ "Créer un fichier `/etc/X11/xorg.conf.d/switchable.conf` avec le contenu "
+#~ "suivant :"
+
+#, no-wrap
+#~ msgid ""
+#~ "         Section \"Device\"\n"
+#~ "             Identifier \"Device0\"\n"
+#~ "             Driver \"nouveau\"\n"
+#~ "             BusID \"1:0:0\"\n"
+#~ "         EndSection\n"
+#~ msgstr ""
+#~ "         Section \"Device\"\n"
+#~ "             Identifier \"Device0\"\n"
+#~ "             Driver \"nouveau\"\n"
+#~ "             BusID \"1:0:0\"\n"
+#~ "         EndSection\n"
+
+#~ msgid "Restart X with the command:"
+#~ msgstr "Redémarrer X avec la commande :"
+
+#, no-wrap
+#~ msgid "         service gdm3 restart\n"
+#~ msgstr "         service gdm3 restart\n"
+
+#~ msgid ""
+#~ "After the GNOME session has started, change again the root password with "
+#~ "the command:"
+#~ msgstr ""
+#~ "Après le démarrage de la session GNOME, modifier à nouveau le mot de "
+#~ "passe root avec la commande :"
+
+#, no-wrap
+#~ msgid "         sudo passwd\n"
+#~ msgstr "         sudo passwd\n"
+
+#~ msgid ""
+#~ "For more details, see our issue on [[!tails_ticket 7505 desc=\"Video is "
+#~ "broken with switchable graphics\"]]."
+#~ msgstr ""
+#~ "Pour plus de détails, voir notre problème [[!tails_ticket 7505 desc="
+#~ "\"Plus d'affichage avec les cartes graphiques commutables\"]]."
 
 #~ msgid ""
 #~ "Try adding to the [[boot options|doc/advanced_topics/boot_options]], one "

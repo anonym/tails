@@ -3,38 +3,26 @@
 import os
 import subprocess
 
-from tailslib import PERSISTENCE_SETUP_USERNAME
-from tailslib.utils import launch_x_application
+from tailslib.utils import spawn_x_application
 
 
 PERSISTENCE_DIR = "/live/persistence/TailsData_unlocked"
-NEWLY_CREATED_PERSISTENCE_DIR = "/media/tails-persistence-setup/TailsData"
 PERSISTENCE_PARTITION = "/dev/disk/by-partlabel/TailsData"
 
 
-def get_persistence_path(search_new_persistence=False,
-                         return_nonexistent=False):
+def get_persistence_path(return_nonexistent=False) -> str:
     """Return the path of the (newly created) persistence.
 
-    Return PERSISTENCE_DIR if it exists.  If search_new_persistence is True,
-    also try NEWLY_CREATED_PERSISTENCE_DIR.
+    Return PERSISTENCE_DIR if it exists.
 
-    If return_nonexistent is true, return the path that the file would have
-    after new persistence creation.
+    If return_nonexistent is true, also return PERSISTENCE_DIR if it
+    does not exist.
 
-    If no persistence directory exists and return_nonexistent is true, raise
-    FileNotFoundError.
+    If no persistence directory exists and return_nonexistent is false,
+    raise FileNotFoundError.
     """
-    if os.path.isdir(PERSISTENCE_DIR):
+    if os.path.isdir(PERSISTENCE_DIR) or return_nonexistent:
         return PERSISTENCE_DIR
-    elif search_new_persistence:
-        if os.path.isdir(NEWLY_CREATED_PERSISTENCE_DIR) or return_nonexistent:
-            return NEWLY_CREATED_PERSISTENCE_DIR
-        else:
-            raise FileNotFoundError(
-                "No persistence directory found. Neither {dir} not {alt_dir} "
-                "exist.".format(dir=PERSISTENCE_DIR,
-                                alt_dir=NEWLY_CREATED_PERSISTENCE_DIR))
     else:
         raise FileNotFoundError(
             "No persistence directory found in {dir}".format(
@@ -46,13 +34,10 @@ def has_persistence():
     return os.path.exists(PERSISTENCE_PARTITION)
 
 
-def has_unlocked_persistence(search_new_persistence=False):
-    """Return true iff a persistence directory exists.
-
-    The search_new_persistence argument is passed to get_persistence_path.
-    """
+def has_unlocked_persistence():
+    """Return true iff a persistence directory exists."""
     try:
-        get_persistence_path(search_new_persistence)
+        get_persistence_path()
     except FileNotFoundError:
         return False
     else:
@@ -65,8 +50,14 @@ def is_tails_media_writable():
         "/usr/local/lib/tails-boot-device-can-have-persistence").returncode
 
 
-def launch_persistence_setup(*args):
-    """Launch tails-persistence-setup and wait for its completion."""
-    launch_x_application(PERSISTENCE_SETUP_USERNAME,
-                         "/usr/bin/tails-persistence-setup",
-                         *args)
+def spawn_tps_frontend(*args):
+    """Launch tps-frontend, don't wait for its completion."""
+    spawn_x_application("/usr/local/bin/tps-frontend-wrapper",
+                        *args)
+
+
+def additional_software_persistence_feature_is_active() -> bool:
+    """Return True iff the AdditionalSoftware feature is active."""
+    return subprocess.run(
+        ["/usr/local/lib/tpscli", "is-active", "AdditionalSoftware"]
+    ).returncode == 0

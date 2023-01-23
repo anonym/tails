@@ -1,6 +1,5 @@
 #!/bin/sh
 
-PERSISTENCE_SETTING='/var/lib/live/config/tails.persistence'
 MACSPOOF_SETTING='/var/lib/live/config/tails.macspoof'
 NETWORK_SETTING='/var/lib/live/config/tails.network'
 UNSAFE_BROWSER_SETTING='/var/lib/live/config/tails.unsafe-browser'
@@ -10,14 +9,6 @@ _get_tg_setting() {
         . "${1}"
         eval "echo \${${2}:-}"
     fi
-}
-
-persistence_is_enabled() {
-    [ "$(_get_tg_setting "${PERSISTENCE_SETTING}" TAILS_PERSISTENCE_ENABLED)" = true ]
-}
-
-persistence_is_enabled_for() {
-    persistence_is_enabled && mountpoint -q "$1" 2>/dev/null
 }
 
 mac_spoof_is_enabled() {

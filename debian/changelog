@@ -1,3 +1,699 @@
+tails (5.8) unstable; urgency=medium
+
+  * Upgrade Thunderbird to 102.6.0-1~deb11u1
+
+  * Fix FTBFS: refresh patch (tails/tails!965)
+
+    Closes #19297
+  
+    Commits:
+      - Fix FTBFS: refresh patch
+
+  * Update tor browser to 12.0.1 (tails/tails!979)
+
+    Closes #19313
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0.1-build1
+
+  * Enable bullseye-proposed-updates (to test Bullseye 11.6 before it's released),
+    upgrade to Linux 5.10.158 (tails/tails!975)
+
+    Closes #19301, #19293
+
+    Commits:
+      - After disabling the Tor Configuration persistence feature, only start Tor
+        Connection if we're connected to a local network
+      - Also consider the Linux kernel from bullseye-updates
+      - Install the Linux kernel from bullseye-proposed-updates, if that suite is
+        enabled
+      - Test suite: remove unused image
+      - Upgrade to Linux 5.10.158-1
+      - Enable bullseye-proposed-updates, to test Bullseye 11.6 before it's released
+      - Bump snapshot of the Debian archive to 2022121302, so we can use proposed-
+        updates for Bullseye 11.6
+
+  * Test suite: make keyboard input more reliable (tails/tails!971)
+
+    Commits:
+      - Test suite: increase sleep time at the end of Screen#type
+      - Test suite: correct comment
+      - Test suite: keep keys pressed for 40 ms
+      - Test suite: improve comment
+      - Test suite: keep keys pressed for 20 ms instead of 10 ms
+      - Test suite: update comment
+
+  * Fix Dotfiles access for non-root users (tails/tails!968)
+
+    Closes #19278
+
+    Commits:
+      - Fix dotfiles access for non-root users
+
+  * Adapt to Wayland our error reporting mechanism when GDM fails to start
+    (tails/tails!951)
+
+    Closes #19227
+
+    Commits:
+      - resorting to X.Org → crash → better UX!
+      - Adapt to Wayland our error reporting mechanism when GDM fails to start
+
+  * Switch from bullseye-proposed-updates to Bullseye 11.6 (tails/tails!978)
+
+    Closes #19315
+
+    Commits:
+      - Revert "Enable bullseye-proposed-updates, to test Bullseye 11.6 before it's
+        released"
+      - Bump APT snapshots
+
+  * Tor Connection UI improvements (tails/tails!977)
+
+    Closes #19238, #19256, #19169, #19172
+
+    Commits:
+      - Tor Connection: fix window size
+      - Fix links from Tor Connection to the offline documentation
+      - Tor Connection: fix typo in string
+      - Tor Connection: display QR code scanning error below the scanning button
+      - Add label to bridge line
+
+  * Persistent Storage: use new icon (tails/tails!976)
+
+    Commits:
+      - Use the new Persistent Storage icon on the Welcome Screen when the Persistent
+        Storage does not exist yet
+      - Persistent Storage: use new icon
+
+  * Allow persisting bridge scanned from QR code, take 1 (tails/tails!973)
+
+    Closes #19281
+
+    Commits:
+      - Allow persisting bridge scanned from QR code, take 1
+
+  * Update tor to 0.4.7.12 (tails/tails!972)
+
+    Closes #19310
+
+    Commits:
+      - Update tor to 0.4.7.12
+
+  * fix window centering (tails/tails!970)
+
+    Closes #19045
+
+    Commits:
+      - Ensure extension description matches what it actually does
+      - gdm-tails is a GDM session, with extension support
+      - more comments to clarify subtleties
+      - check which session we're in is more to the point
+      - not really needed
+      - Apply 1 suggestion(s) to 1 file(s)
+      - stop "when it's done" , not predefined time
+      - window-centering only runs in GDM
+      - increase timeout
+      - rounding is needed to avoid false moves
+      - better comments and log messages
+      - Revert "avoid useless CPU work"
+      - avoid useless CPU work
+      - extensions are disabled in GDM: workaround
+      - window centering in Greeter
+
+  * Remove static suggestion of diceware passphrase (tails/tails!969)
+
+    Closes #19305
+
+    Commits:
+      - Remove static suggestion of diceware passphrase
+
+  * Allow disabling the Unsafe Browser (tails/tails!967)
+
+    Closes #19289
+
+    Commits:
+      - fix "I disable the Unsafe Browser" in corner cases
+      - adapt Greeter options persistence
+      - fix test suite for new wording
+      - Adjust to the Unsafe Browser being disabled by default
+      - Update tests
+      - Enable Unsafe Browser by default
+      - Revert "Welcome Screen: always enable the Unsafe Browser and make the setting
+        obsolete"
+
+  * Misc Persistent Storage fixes for 5.8 (tails/tails!966)
+
+    Closes #19220, #19279, #19280, #19148, #19294
+
+    Commits:
+      - Don't run OnionShare as a native Wayland app
+      - Run Qt applications as native Wayland by default
+      - Allow running Qt applications as native Wayland
+      - Remove Dasher (broken on Wayland)
+      - Tell the user what's going on while deleting Persistent Storage
+      - When Persistent Storage is unlocked, instruct how to delete it
+      - Persistent Storage: add missing link to doc on the features screen
+
+  * FIX --disable-chutney (tails/tails!961)
+
+    Commits:
+      - FIX --disable-chutney
+
+  * Tor Connection: select "Ask for a bridge by email" by default when "Hiding"
+    (tails/tails!957)
+
+    Closes #19167
+
+    Commits:
+      - Make it easier to scan a QR code
+      - Tor Connection: select "Ask for a bridge by email" by default when "Hiding"
+
+  * Tor Connection: display percentage on the connection progress bar
+    (tails/tails!955)
+
+    Commits:
+      - Tor Connection: display percentage on the connection progress bar
+
+  * TPS explanation strings, and more (tails/tails!947)
+
+    Closes #18759
+
+    Commits:
+      - remove vague comment
+      - remove dead code
+      - remove dead code
+      - explanation strings for relevant TPS features
+
+  * Additional Software: ensure APT is not broken after being interrupted
+    (tails/tails!946)
+
+    Closes #18657
+
+    Commits:
+      - Additional Software: ensure APT is not broken after being interrupted
+
+  * Test suite: relax our expectations for coverage of the known pattern in memory
+    (tails/tails!944)
+
+    Commits:
+      - Test suite: relax our expectations for coverage of the known pattern in memory
+
+  * create persistent storage from the greeter (tails/tails!922)
+
+    Closes #15586
+
+    Commits:
+      - change wording following the new style
+      - comment to explain flag files
+      - tabs → spaces
+      - Apply 3 suggestion(s) to 3 file(s)
+      - Fix labels
+      - greeter test suite code refactor
+      - checking early is useless and ineffective
+      - FIX look at the actual value
+      - big code refactoring
+      - actually handle button
+      - better size and margins for padlock
+      - make label the same in glade and python
+      - remove suggested-action
+      - Reorder in greeter
+      - Better real estate use
+      - draft: automated tests
+      - "don't create" is not a suggested-action
+      - Clearer state management in UI
+      - actually start persistent storage setup
+      - draft: create persistent storage from greeter
+
+  * Upgrade Tor Browser to 12.0 (tails/tails!921)
+
+    Closes #19135, #19085
+
+    Commits:
+      - Test suite: bump timeout
+      - Make code more readable
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0
+      - Test suite: fix "Downloading files with the Tor Browser" scenario with Tor
+        Browser 12 on Wayland
+      - Test suite: improve comment phrasing
+      - Test suite: only compute keymap once in Screen#press
+      - Test suite (mouse_location): remove unused method parameters
+      - Fix buggy (invisible) conflict resolution from rebase
+      - Turn off shellcheck false positive
+      - Drop obsolete mentions of $TBB_EXT
+      - Drop import of library that's not needed anymore
+      - Update handling of Tor Browser locales
+      - Fix location for Burmese
+      - Declare newly added Tor Browser locales
+      - Don't try to install non-existing langpacks
+      - Tor Browser update process: there's no langpacks anymore
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0a5
+      - Upgrade Tor Browser to nightly.2022.11.22
+      - Thunderbird: avoid proxy bypass, same as Tor Browser
+      - Test suite: Unsafe Browser has no bookmarks at all anymore
+      - Unsafe Browser: delete default bookmarks
+      - Test suite: update expected images
+      - Test suite: update expected images
+      - Upgrade Tor Browser to 12.0a4
+      - Thunderbird: replace network.security.ports.banned pref with
+        network.proxy.allow_hijacking_localhost
+      - Tor Browser: remove network.security.ports.banned pref, which does more harm
+        than good
+      - Update AppArmor policy for Tor Browser 12
+      - Test suite: update expected images for Tor Browser 12
+      - Test suite: update expected Unsafe Browser images for Tor Browser 12
+      - Lint
+      - Remove unused variable
+      - Test suite: update expected images for Tor Browser 12
+      - Test suite: remove obsolete complexity
+      - Test suite: update for new "New Identity" UX in Tor Browser 12
+      - Test suite: spam Tor Browser less intensively
+      - Test suite: refactoring (DRY)
+      - Test suite: update expected image
+      - Test suite: spam Tor Browser less intensively
+      - Test suite: add support for Tor Browser nightly builds
+      - Clarify comment
+      - Fix indentation
+      - Drop unused flexibility
+      - Remove obsolete variable
+      - Adjust to multilingual Tor Browser tarball
+      - Adjust to script being renamed upstream
+      - Upgrade Tor Browser to nightly.2022.10.19
+      - Tor Browser upgrade doc: support nightly builds, assume multilingual tarball
+      - Upgrade Tor Browser to 12.0a3
+      - Unsafe Browser: also apply branding to brand.properties
+      - Fix grammar in comment
+      - Unsafe Browser: don't ask confirmation when quitting with CTRL+q
+      - Test suite: update Unsafe Browser images
+      - Test suite: add expected unused Tor Browser library
+      - Test suite: adjust to Tor Browser 12's (Firefox 102) new download flow
+      - Upgrade Tor Browser to 12.0a2
+      - Clarify wording
+
+ -- Tails developers <tails@boum.org>  Mon, 19 Dec 2022 09:43:26 +0000
+
+tails (5.8~beta1) unstable; urgency=medium
+
+  * Rewrite the Persistent Storage settings in Python (tails/tails!897)
+
+    Closes: #17803, #15142, #11529, #15827, #7002, #18008, #17331, #7503, #19130, #16061, #15313
+
+    Commits:
+      - Change test case to reflect what we wanted
+      - Really disable broken Thunderbird test
+      - fix reload-connections hook during greeter
+      - clarify Mount.__str__ from persistence.conf format
+      - one more type hint
+      - remove a (never used) systemd alias
+      - symlink_to ignores the second argument.
+      - sort hook execution
+      - Point to issue
+      - Update comment
+      - Reset Tor configuration when deactivating the corresponding Persistent Storage
+        feature
+      - Don't install/upgrade Additional Software unless the corresponding persistent
+        directories are mounted
+      - Don't try to create Persistent Storage when the system partition is not called
+        "Tails"
+      - Don't try to create Persistent Storage on non-GPT device
+      - Persistent Storage creation: use UI strings from the design
+      - Add ssh as a conflict app for the SSH client feature
+      - Move "Tor Browser Bookmarks" to Applications section of Persistent Storage
+        settings
+      - Save with Glade 3.40.0
+      - Reload NetworkManager connections when activating/deactivating the
+        corresponding Persistent Storage feature
+      - tps-frontend: fix icons path
+      - Stop setting custom permissions on /var/lib/live/config
+      - WhisperBack: don't include obsolete file in the attached technical info
+      - CUPS: update configuration files as soon as possible
+      - Restart CUPS after enabling/disabling the Printers persistent storage feature
+      - Remove incorrect comment
+      - Remove function that's not used anymore
+      - tails-additional-software-config: adjust to new Persistent Storage
+        implementation
+      - Refactoring: move method to library
+      - Revert "Test suite: workaround regression in Additional Software"
+      - tails-additional-software: don't wait for tps-frontend to complete before
+        writing contents to live-additional-software.conf
+      - Add docstring
+      - launch_x_application: drop feature we don't need anymore
+      - Add exceptions for Bandit false positives
+      - Use long option name
+      - Harden sudo configuration
+      - Revert "Test suite: add temporary workaround for tps buggy user story wrt.
+        dotfiles"
+      - Fix the user story for Dotfiles
+      - Lint
+      - tps: document behavior that can be surprising
+      - TCA: fix setup of persistent bridge switch widget
+      - Remove unused script and service
+      - Test suite: remove obsolete workaround
+      - TCA: drop useless code
+      - TCA: fix localization of window title
+      - Remove unused copied'n'pasted constant
+      - TCA: mediate reading/writing from/to tca.conf via tca-portal
+      - Update logger's name: "tor-launcher" does not mean anything in this context
+        anymore
+      - Remove unused import
+      - TCA: remove unused import
+      - TCA: fix type of argument
+      - Don't allow deleting an unlocked Persistent Storage
+      - Drop incomplete attempt to support unlocking Persistent Storage after login
+      - Unsafe Browser: adjust to the removal of persistence_is_enabled in tails-
+        greeter.sh
+      - Lint
+      - Remove useless customization
+      - Fix typo in docstring
+      - Add Synaptic, apt-get, and dpkg as conflicting apps for the Additional Software
+        persistent storage feature
+      - Remove "XXX" comment: this is about further improving a feature that was not
+        even planned in the design
+      - Remove "XXX" comment: already tracked on the issue
+      - Lint
+      - Remove "XXX" comment: moved to the issue
+      - Lint
+      - Fix variable type mismatch
+      - Remove "XXX" comment: moved to the issue
+      - Remove "XXX" comment
+      - Add check
+      - Remove "XXX" comment: let's not translate stuff that the user has no chance to
+        ever see
+      - Remove "XXX" comment: moved to the issue
+      - Test suite: fix Gherkin When/Then semantics
+      - Test suite: fix backup scenario
+      - Remove unused import
+      - Test suite: refactoring (extract code to method)
+      - Revert "Test suite: adjust for increased TimeoutStopsec= (refs: #17278)"
+      - Test suite: check earlier that Additional Software is correctly configured
+      - Test suite: workaround regression in Additional Software
+      - Test suite: minor refactoring
+      - Additional Software: add more accurate wait loop
+      - Update comment
+      - Additional Software: don't run tps a second time
+      - Additional Software: drop unsupported and now useless options
+      - mypy: enable a few more checks
+      - mypy: ignore gi and gi.repository
+      - Help mypy discover our Python libraries
+      - Lint
+      - Fix comment phrasing
+      - Fix activating Additional Software with an unlocked persistent storage
+      - Test suite: use shortcut
+      - Test suite: continue adapting to new UI
+      - Remove obsolete scripts
+      - Test suite: drop the Persistent Storage configuration file unit tests
+      - Fix indentation
+      - Ignore flake8 false positives
+      - tps test suite: make config_file_test support the case when udisks is not
+        running
+      - Fix typo in comment
+      - GitLab CI: drop test-persistent-storage-behave
+      - Fix tps behave tests when a dedicated filesystem is mounted on /tmp
+      - Add support for debug output without a debugger installed
+      - Lint
+      - Fix type mismatch
+      - Lint
+      - Test suite: finish adapting "I delete the persistent partition" to new UI
+      - Use string from the design
+      - Fix inverted boolean logic
+      - Fix typo in comment
+      - Make it possible to run config_file_test.py without a tails-persistent-storage
+        user
+      - Revert "tps: Change owner of persistence.conf to root"
+      - Move class docstring where it belongs
+      - Fix typo in comment
+      - Test suite: don't test for persistence.conf.bak existence
+      - Test suite: run the persistence storage behave and config file unit tests
+      - GitLab CI: add missing dependencies
+      - GitLab CI: run persistent storage tests in separate jobs
+      - tps test suite: use larger filesystem to that mke2fs can create a Journal
+      - Fix typo in comment
+      - Declare mount flags used by the tps test suite
+      - tps test suite: use the same mount flags as production
+      - Sort ExecStartPre before ExecStart, just like their execution order
+      - Maintain directories with systemd-tmpfiles
+      - Forbid usage as non-amnesia: this would break stuff
+      - Simplify code and make bookmark removal an atomic operation
+      - Do all GNOME bookmarks changes as the amnesia user
+      - Use canonical directory location
+      - Protect grep command against special regexp chars
+      - Revert incomplete split of the Welcome Screen persistence feature
+      - Welcome Screen: don't allow login until we're fully done activating the
+        Persistent Storage
+      - Remove unused import
+      - Welcome Screen: point to new issue that tracks a cleanup that's now possible
+      - Remove unused imports
+      - Lint
+      - Remove unused import
+      - Don't let tempfile try to delete file that we just renamed
+      - Don't try (and fail) to refresh features' IsActive when unlocking
+      - Use different variables names when we're using them to store different data
+        types
+      - Fix comment grammar and clarify
+      - Test suite: add temporary workaround for tps buggy user story wrt. dotfiles
+      - Add shellcheck exception
+      - Test suite: actually enable all persistence presets.
+      - tps: Remove config file backup functionality
+      - tps: Make writes to the configuration file atomic
+      - tps: Fix "invalid boot device" message not shown
+      - tps: Fix state handling
+      - tps: Handle expected error that deletion fails because device is busy
+      - tps: Don't unmount with force
+      - Remove unused IncorrectOwnerException and IncorrectOwnerError
+      - Rename test directory
+      - tps: Remove the obsolete mount test
+      - GitLab CI: Run the tps config file test
+      - tps: Fix config file test
+      - tps: Change owner of persistence.conf to root
+      - tps: Deactivate features before deleting
+      - Test suite: start porting to new implementation of Persistent Storage
+      - Test suite: update referenced class name
+      - tps: Don't make the tps service exit when closing the app
+      - tps: Add button to open tails-additional-software-config
+      - tps: Add labelled-by property to list boxes in features_view.ui
+      - tps: Fix test
+      - tps: Print debug log messages when running behave tests
+      - tps: Make features view accessible to screen readers
+      - tps: Format features_view.ui with glade
+      - tps: Use connect-drop
+      - connect-drop: Avoid opening an additional file descriptor
+      - actually authenticate to dbus
+      - Test suite: remove obsolete images
+      - Persistent Storage frontend: add accessibility relationships
+      - connect-drop: fix style
+      - connect-drop: --dbus has help line
+      - connect-drop: option groups
+      - connect-drop --env-keep
+      - connect-drop is now DBus-aware
+      - WIP: Update Persistent Storage design document
+      - Update Persistent Storage design document
+      - tps: Add basic support for custom features
+      - Clarify branded names
+      - tps: Add some accessibility information
+      - tps: Improve layout
+      - Set executable bit on unlock-veracrypt-volumes
+      - tps: Use tails-documentation to open doc links
+      - tps: Add a HACKING.md
+      - tps: Try again using get_block_for_dev
+      - tps: Add Tor Configuration feature
+      - tps: Remove Language and Region feature
+      - tps: Start implementing language and region feature
+      - Rewrite Persistent Storage settings in Python (refs: #17803)
+
+  * Tor bridges QR code scanning (tails/tails!874)
+
+    Closes: #18219
+
+    Commits:
+      - match labels between code and tests
+      - do whatever dogtail wants
+      - fix labeling in tca
+      - Test suite: update to new string
+      - Apply GNOME style guide
+      - Implement sajolida's new design for bridges input on the error screen
+      - Polish new bridge input UI
+      - infobar works in error page, too
+      - infobar moved up
+      - MessageDialog → InfoBar
+      - scanning QR from error page is tested, too
+      - test suite refactoring
+      - adapt QR code automated test to new mockup
+      - using QR code sets state
+      - the new mockup now seems to behave
+      - scan qrcode: new mockup
+      - change wording for QR code errors
+      - Test suite: ensure we see the QR code on the screen
+      - run_test_suite: check recently added dependencies
+      - WIP: Test suite: add test for QR code scanning feature in Tor Connection
+      - Reference issue that has more details instead of a commit that lacks context
+      - Don't load library that we don't use anymore
+      - show no dialog if the user closes zbarcam
+      - Ignore zbarcam output if it arrives too late
+      - Add the v4l2loopback kernel module
+      - improve labels before UX does :)
+      - Tor Connection: disable the "Scan a QR code" button until "Enter a bridge that
+        you already know" is selected
+      - gettext for dialog
+      - implement Scan QR code from error step, too
+      - better error handling
+      - QR code content is parsed/validated
+      - doctests for parse_qr_content
+      - Convert the contents of the QR code into bridge lines
+      - clicking on "Scan QR code" does something...
+      - glade: clicked callback + naming convention
+      - Tor Connection: add button to scan QR code
+      - scanning Tor bridges QR codes: building blocks
+
+  * Migrate from X.Org to Wayland (tails/tails!838)
+
+    Closes: #12213, #19042, #14623, #15635, #19008, #16795, #18020, #17284, #5422, #9767, #7502, #18339
+
+    Commits:
+      - Test suite: don't expect the application title seen on the accessibility bus to
+        be localized
+      - Glade: AtkObject::accessible-role properties should not be translatable
+      - Test suite: fix clearing notifications
+      - FIX sandbox check for some parts of the test suite
+      - Test suite: simplify
+      - workaround an a11y bug preventing test suite
+      - one more test suite fix
+      - Test suite: migrate to input techniques that work on Wayland
+      - TPS is on Wayland, a11y, ibus...
+      - remove unused import
+      - Update path
+      - more explicit block clearnet → internal services
+      - FIX proxy test for unsafebrowser
+      - Really disable broken Thunderbird test
+      - no incoming connections to UnsafeBrowser
+      - tails-add-session-firewall-rune work without --apply
+      - typo
+      - Test suite: make test work in non-English locales
+      - Test suite: rename step to match what it currently checks
+      - Fix typos in comment
+      - Test suite: remove workaround
+      - Test suite: fix race condition
+      - Test suite: add missing space between words in error message
+      - Extract Python code to an external script
+      - Simplify
+      - Drop unnecessary /g regexp modifiers
+      - Use extended regexps
+      - Don't install unneeded systemd-container
+      - Update comment
+      - Remove obsolete comment
+      - Fix typo in comment
+      - Update comment
+      - Improve user-facing string
+      - Use install(1) instead of mkdir + chown
+      - Make variable name correctly reflect its value
+      - Make variable name correctly reflect its value
+      - Add missing word in error message
+      - Test suite: drop unnecessary step
+      - Test suite: move and warn about xdotool using code
+      - Fix a bunch of issues identified by shellcheck
+      - Unsafe Browser: drop workarounds.
+      - Test suite: clarify/simplify code
+      - Test suite: fix recovery
+      - Test suite: fix robustness issue
+      - Test suite: verify that browser address bar images exist
+      - Test suite: adjust path
+      - Test suite: fix sanity check
+      - Test suite: drop comment
+      - Unsafe Browser: move code
+      - Unsafe Browser: drop unnecessary mount for container
+      - Test suite: adapt firewall sanity check to the clearnet network namespace
+      - Test suite: adapt test after dropping the greeter's Unsafe Browser setting
+      - Test suite: adapt regex to new command line
+      - Test suite: deal with Unsafe Browser permission error
+      - Test suite: export Unsafe Browser bookmarks into an accessible directory
+      - Unsafe Browser: allow access to /etc/hosts in AppArmor profile
+      - Test suite: use correct step
+      - Welcome Screen: really hide the "Add" button for obsolete settings
+      - Welcome Screen: always enable the Unsafe Browser and make the setting obsolete
+      - Revert "Unsafe Browser: prevent accidental/malicious operation under Xorg"
+      - Unsafe Browser: further isolate from the root filesystem
+      - Unsafe Browser: drop duplicated mount
+      - Fix incorrect merge conflict resolution.
+      - Unsafe Browser: expose the real /home
+      - Unsafe Browser: confine with AppArmor
+      - Unsafe Browser: prevent accidental/malicious operation under Xorg
+      - Unsafe Browser: work around issue with ibus/a11y proxy stopping
+      - Make necessary firewall rules in tails-create-netns persist throughout the
+        session.
+      - Unsafe Browser: migrate to tails-create-netns
+      - Unsafe Browser: run as native Wayland application
+      - Unsafe Browser: start with tailslib.netnsdrop.run_in_netns()
+      - Add missing double quotes
+      - Use $() to get a command's output, not backticks
+      - Add missing double quotes
+      - Drop unused argument
+      - Disable shellcheck false positive
+      - Test suite: work around the Screen Keyboard not appearing as it should on
+        Wayland
+      - Patch Thunderbird AppArmor profile so it works in Wayland.
+      - Thunderbird: enable Wayland support
+      - Test suite: fix a bunch of incorrect/buggy Dogtail click actions
+      - Tor Browser: enable Wayland support
+      - Test suite: fix a bunch of incorrect Dogtail "click" actions
+      - Test suite: make test more robust.
+      - Unsafe Browser: enable ibus and accessibility!
+      - Test suite: actually disable TOR_TRANSPROXY for the Unsafe Browser
+      - Test suite: optimization
+      - Test suite: fix chroot vs pmap mismatch.
+      - Test suite: fix Dogtail for non-amneisia users
+      - Test suite vs Wayland: fix another issue when clicking crashes accessibility
+      - Remote shell: get the GNOME environment from the python library instead
+      - Fix environment so accessibility is working with launch_x_application()
+      - Test suite vs Wayland: deal with several issues when installing packages in
+        synaptic
+      - Test suite: deal with XWayland vs Dogtail issue for synaptic run as root
+      - Test suite: enable the accessibility toolkit for the root user
+      - Remote shell: set XAUTHORITY, which isn't set by export_gnome_env() any more
+      - Wayland vs export_gnome_env(): drop variables not dumped into /run/gnome-shell-
+        environment/environ
+      - Test suite: deal with Wayland vs Dogtail issue
+      - Test suite: deal with GNOME notification buttons being unclickable through
+        Dogtail
+      - Test suite: work around another instance where Dogtail breaks after clicking a
+        button
+      - Test suite: use correct activation for some particular push buttons.
+      - Test suite: deal with Wayland vs Dogtail issue.
+      - Test suite: some radio buttons want 'click', some want 'select'.
+      - Test suite: work around AT-SPI action bug
+      - Test suite: apparently some buttons want "click" while others want "press"
+      - Test suite: fix Electrum test vs Wayland migration.
+      - Test suite: use appropriate Dogtail actions for push/radio buttons.
+      - Test suite: use better image when waiting for snapshots to be restored fully.
+      - Unsafe Browser: hook zenity dialogs to at-spi bus.
+      - stop installing xorg packages
+      - Test suite: handle Unsafe Browser exiting with an error code after being
+        killed.
+      - Test suite: adapt Unsafe Browser tests since migrating to Wayland.
+      - Test suite: adapt to Wayland
+      - Test suite: adapt to Wayland
+      - Revert "Remove unused exec_unconfined_firefox()."
+      - Update GNOME Shell user service name for Wayland
+      - Test suite: migrate more tests to input techniques that work on Wayland
+      - Remote shell: ensure $DISPLAY is set
+      - Test suite: don't import dogtail.rawinput that can't work on Wayland
+      - Test suite: generate methods with meta-programming
+      - Test suite: migrate to input techniques that work on Wayland
+      - Test suite: remove X.Org-specific workaround
+      - Fix typo in comment
+      - Test suite: click in a way that works on Wayland
+      - Test suite: remove unused method that's broken on Wayland
+      - Unsafe Browser: set up networking via a new namespace.
+      - Revert "Unsafe Browser: crappy attempt to sort of get networking up."
+      - Unsafe Browser: crappy attempt to sort of get networking up.
+      - Unsafe Browser: bind-mount resolv.conf as read-only.
+      - Unsafe Browser: experiment for running as the amnesia user.
+      - Stop disabling Wayland in GDM (refs: #12213).
+      - Revert "Use X.Org in amnesia's GNOME session (refs: #12213)."
+
+ -- Tails developers <tails@boum.org>  Wed, 02 Nov 2022 09:47:35 +0000
+
 tails (5.7) unstable; urgency=medium
 
   * fix FTBFS: don't remove, just hold (tails/tails!960)

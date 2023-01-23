@@ -65,7 +65,7 @@ Then /^I am prompted to setup an email account$/ do
 end
 
 Then /^I cancel setting up an email account$/ do
-  thunderbird_wizard.button('Cancel').click
+  thunderbird_wizard.button('Cancel').press
 end
 
 Then /^I open Thunderbird's Add-ons Manager$/ do
@@ -89,7 +89,7 @@ Then /^I open the Extensions tab$/ do
   # finally do the click.
   try_for(10) do
     @thunderbird_addons
-      .child('Extensions', roleName: 'page tab', retry: false).click
+      .child('Extensions', roleName: 'page tab', retry: false).press
     # Verify that we clicked correctly:
     @thunderbird_addons
       .child('Manage Your Extensions', roleName: 'heading', retry: false)
@@ -104,11 +104,14 @@ When /^I enter my email credentials into the autoconfiguration wizard$/ do
   address = $config['Thunderbird']['address']
   name = address.split('@').first
   password = $config['Thunderbird']['password']
-  thunderbird_wizard.child('Your full name', roleName: 'entry').typeText(name)
+  thunderbird_wizard.child('Your full name', roleName: 'entry').grabFocus
+  @screen.paste(name)
   thunderbird_wizard.child('Email address',
-                           roleName: 'entry').typeText(address)
-  thunderbird_wizard.child('Password', roleName: 'password text').typeText(password)
-  thunderbird_wizard.button('Continue').click
+                           roleName: 'entry').grabFocus
+  @screen.paste(address)
+  thunderbird_wizard.child('Password', roleName: 'password text').grabFocus
+  @screen.paste(password)
+  thunderbird_wizard.button('Continue').press
   # This button is shown if and only if a configuration has been found
   try_for(120) { thunderbird_wizard.button('Done') }
 end
@@ -132,27 +135,30 @@ def wait_for_thunderbird_progress_bar_to_vanish(thunderbird_frame)
 end
 
 When /^I fetch my email$/ do
-  account = thunderbird_main.child($config['Thunderbird']['address'],
-                                   roleName: 'table row')
-  account.click
+  thunderbird_main.child($config['Thunderbird']['address'],
+                         roleName: 'table row')
+                  .activate
   thunderbird_frame = thunderbird_app.child(
     "#{$config['Thunderbird']['address']} - Mozilla Thunderbird", roleName: 'frame'
   )
 
-  thunderbird_frame.child('Mail Toolbar', roleName: 'tool bar')
-                   .button('Get Messages').click
+  get_messages_menu = thunderbird_frame.child('Mail Toolbar', roleName: 'tool bar')
+                                       .button('Get Messages')
+  get_messages_menu.press
+  get_messages_menu.child('Get All New Messages', roleName: 'menu item')
+                   .click
   wait_for_thunderbird_progress_bar_to_vanish(thunderbird_frame)
 end
 
 When /^I accept the (?:autoconfiguration wizard's|manual) configuration$/ do
-  thunderbird_wizard.button('Done').click
+  thunderbird_wizard.button('Done').press
 
   # The password check can fail due to bad Tor circuits.
   retry_tor do
     try_for(120) do
       # Spam the button, even if it is disabled (while it is still
       # testing the password).
-      thunderbird_wizard.button('Finish').click
+      thunderbird_wizard.button('Finish').press
       false
     rescue StandardError
       true
@@ -176,26 +182,26 @@ When /^I accept the (?:autoconfiguration wizard's|manual) configuration$/ do
 end
 
 When /^I select the autoconfiguration wizard's IMAP choice$/ do
-  thunderbird_wizard.child('IMAP (remote folders)', roleName: 'radio button').click
+  thunderbird_wizard.child('IMAP (remote folders)', roleName: 'radio button').select
 end
 
 When /^I send an email to myself$/ do
   thunderbird_main.child('Mail Toolbar',
-                         roleName: 'tool bar').button('Write').click
+                         roleName: 'tool bar').button('Write').press
   compose_window = thunderbird_app.child('Write: (no subject) - Thunderbird')
-  compose_window.child('To', roleName: 'entry')
-                .typeText($config['Thunderbird']['address'])
+  compose_window.child('To', roleName: 'entry').grabFocus
+  @screen.paste($config['Thunderbird']['address'])
   # The randomness of the subject will make it easier for us to later
   # find *exactly* this email. This makes it safe to run several tests
   # in parallel.
   @subject = "Automated test suite: #{random_alnum_string(32)}"
-  compose_window.child('Subject', roleName: 'entry')
-                .typeText(@subject)
+  compose_window.child('Subject', roleName: 'entry').grabFocus
+  @screen.paste(@subject)
   compose_window = thunderbird_app.child("Write: #{@subject} - Thunderbird")
-  compose_window.child('Message body', roleName: 'document web')
-                .typeText('test')
+  compose_window.child('Message body', roleName: 'document web').grabFocus
+  @screen.type('test')
   compose_window.child('Composition Toolbar', roleName: 'tool bar')
-                .button('Send').click
+                .button('Send').press
   try_for(120, delay: 2) do
     !compose_window.exist?
   end
@@ -204,10 +210,11 @@ end
 Then /^I can find the email I sent to myself in my inbox$/ do
   recovery_proc = proc { step 'I fetch my email' }
   retry_tor(recovery_proc) do
-    thunderbird_inbox.click
-    filter = thunderbird_main.child('Filter these messages <Ctrl+Shift+K>',
-                                    roleName: 'entry')
-    filter.typeText(@subject)
+    thunderbird_inbox.activate
+    thunderbird_main.child('Filter these messages <Ctrl+Shift+K>',
+                           roleName: 'entry')
+                    .grabFocus
+    @screen.paste(@subject)
     hit_counter = thunderbird_main.child('1 message')
     inbox_view = hit_counter.parent
     all_rows = inbox_view.children(roleName: 'table row')
@@ -216,13 +223,13 @@ Then /^I can find the email I sent to myself in my inbox$/ do
     the_message = message_row.child(@subject, roleName: 'table cell')
     assert_not_nil(the_message)
     # Let's clean up
-    the_message.click
-    inbox_view.button('Delete').click
+    the_message.parent.activate
+    inbox_view.button('Delete').press
   end
 end
 
 Then /^my Thunderbird inbox is non-empty$/ do
-  thunderbird_inbox.click
+  thunderbird_inbox.activate
   message_list = thunderbird_main.child('Filter these messages <Ctrl+Shift+K>',
                                         roleName: 'entry')
                                  .parent.parent.child(roleName: 'table')
@@ -244,6 +251,9 @@ Then(/^the screen keyboard works in Thunderbird$/) do
     osk_key = 'ScreenKeyboardKeyPersian.png'
     thunderbird_x = 'ThunderbirdXPersian.png'
   end
+  # We have to click to activate the screen keyboard (#19101),
+  # but we cannot do it with Dogtail so we have to use a picture.
+  @screen.click('ThunderbirdTextEntry.png')
   @screen.wait('ScreenKeyboard.png', 20)
   @screen.wait(osk_key, 20).click
   @screen.wait(thunderbird_x, 20)

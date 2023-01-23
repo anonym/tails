@@ -3,23 +3,25 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2022-06-04 08:38+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2022-12-20 18:06+0000\n"
+"Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #. type: Plain text
 #, markdown-text, no-wrap
 msgid "[[!meta title=\"Why is the time wrong?\"]]\n"
-msgstr ""
+msgstr "[[!meta title=\"Pourquoi l'heure indiquée n'est pas la bonne ?\"]]\n"
 
 #. type: Plain text
 #, markdown-text
@@ -29,6 +31,10 @@ msgid ""
 "the United Kingdom, or in the past if you are east of the UK. The minutes "
 "should be accurate."
 msgstr ""
+"Au démarrage de Tails, le fuseau horaire est réglé sur GMT (Greenwich Mean "
+"Time). Ce fuseau horaire peut-être quelques heures en avance si vous êtes à "
+"l'ouest du Royaume-Uni, ou en retard si vous êtes à l'est du Royaume-Uni. "
+"Les minutes devraient être les bonnes."
 
 #. type: Plain text
 #, markdown-text, no-wrap
@@ -36,6 +42,8 @@ msgid ""
 "[[!img gmt.png link=\"no\" alt=\"Time displayed with 'GMT' indication in top "
 "navigation bar\"]]\n"
 msgstr ""
+"[[!img gmt.png link=\"no\" alt=\"L'heure affichée avec l'indication 'GMT' "
+"dans la barre de navigation\"]]\n"
 
 #. type: Plain text
 #, markdown-text
@@ -43,6 +51,9 @@ msgid ""
 "We do this for anonymity reasons: if some application reveals your actual "
 "time zone, it might help identifying who you are."
 msgstr ""
+"Nous faisons cela pour la protection de l'anonymat : si certaines "
+"applications dévoilent votre véritable fuseau horaire, cela pourrait aider à "
+"vous identifier."
 
 #. type: Plain text
 #, markdown-text
@@ -50,11 +61,14 @@ msgid ""
 "Having all Tails users set to the same time zone makes it more difficult to "
 "distinguish you amongst all the other Tails users."
 msgstr ""
+"Le fait d'avoir toutes les personnes qui utilisent Tails sur le même fuseau "
+"horaire rend plus difficile de vous identifier parmi toutes les autres "
+"personnes qui utilisent Tails."
 
 #. type: Title =
 #, markdown-text, no-wrap
 msgid "Displaying the time in your local time zone"
-msgstr ""
+msgstr "Afficher l'heure dans votre fuseau horaire"
 
 #. type: Plain text
 #, markdown-text
@@ -63,6 +77,9 @@ msgid ""
 "and time zone|doc/anonymous_internet/tor/troubleshoot]] of your computer, "
 "the time is displayed in your time zone instead of in GMT."
 msgstr ""
+"Si la connexion à Tor avec un pont échoue et que vous devez [[régler l'heure "
+"et le fuseau horaire|doc/anonymous_internet/tor/troubleshoot]] de votre "
+"ordinateur, l'heure est affichée dans votre fuseau horaire plutôt qu'en GMT."
 
 #. type: Plain text
 #, markdown-text, no-wrap
@@ -70,11 +87,13 @@ msgid ""
 "[[!img local.png link=\"no\" alt=\"Time displayed without 'GMT' indication "
 "in top navigation bar\"]]\n"
 msgstr ""
+"[[!img local.png link=\"no\" alt=\"L'heure affichée sans l'indication 'GMT' "
+"dans la barre de navigation\"]]\n"
 
 #. type: Plain text
 #, markdown-text, no-wrap
 msgid "<div class=\"bug\">\n"
-msgstr ""
+msgstr "<div class=\"bug\">\n"
 
 #. type: Plain text
 #, markdown-text, no-wrap
@@ -84,6 +103,10 @@ msgid ""
 "way of changing the time zone of the time displayed in the top navigation\n"
 "bar.</p>\n"
 msgstr ""
+"<p>Corriger l'heure quand Tails échoue à se connecter à Tor est actuellement "
+"la seule \n"
+"façon de changer le fuseau horaire affiché dans la barre de \n"
+"navigation.</p>\n"
 
 #. type: Plain text
 #, markdown-text, no-wrap
@@ -92,16 +115,20 @@ msgid ""
 "([[!tails_ticket 10819]]) from the desktop and store it in the Persistent\n"
 "Storage ([[!tails_ticket 12094]]).</p>\n"
 msgstr ""
+"<p>À l'avenir, nous voulons rendre possible le changement de fuseau horaire\n"
+"([[!tails_ticket 10819]]) depuis le bureau et l'enregistrer dans le "
+"stockage\n"
+"persistant ([[!tails_ticket 12094]]).</p>\n"
 
 #. type: Plain text
 #, markdown-text, no-wrap
 msgid "</div>\n"
-msgstr ""
+msgstr "</div>\n"
 
 #. type: Title =
 #, markdown-text, no-wrap
 msgid "Time used by applications"
-msgstr ""
+msgstr "L'heure utilisée par les applications"
 
 #. type: Plain text
 #, markdown-text
@@ -110,6 +137,9 @@ msgid ""
 "bar, the internal time used by all applications in Tails is still in GMT to "
 "protect your anonymity."
 msgstr ""
+"Bien que l'heure soit affichée dans votre fuseau horaire dans la barre de "
+"navigation, l'heure interne utilisée par toutes les applications dans Tails "
+"reste en GMT pour protéger votre anonymat."
 
 #. type: Plain text
 #, markdown-text
@@ -118,3 +148,6 @@ msgid ""
 "*Pidgin* is always in GMT to avoid leaking your time zone to the people you "
 "write to."
 msgstr ""
+"Par exemple, l'heure d'envoi des courriers électroniques dans *Thunderbird* "
+"ou des messages dans *Pidgin* est toujours en GMT pour éviter de dévoiler "
+"votre fuseau horaire aux personnes auxquelles vous écrivez."

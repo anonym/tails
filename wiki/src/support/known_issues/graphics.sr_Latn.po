@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2021-06-14 17:40+0000\n"
+"POT-Creation-Date: 2022-12-28 15:20+0000\n"
 "PO-Revision-Date: 2018-10-26 13:27+0000\n"
 "Last-Translator: Weblate Admin <admin@example.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -308,21 +308,6 @@ msgstr ""
 
 #. type: Plain text
 msgid ""
-"Try starting Tails using the following [[boot options|doc/advanced_topics/"
-"boot_options]].  You should try only one of these boot options per start "
-"attempt."
-msgstr ""
-
-#. type: Bullet: '* '
-msgid "`radeon.modeset=0`"
-msgstr ""
-
-#. type: Bullet: '* '
-msgid "`xorg-driver=modesetting`"
-msgstr ""
-
-#. type: Plain text
-msgid ""
 "If the computer has another, integrated graphics card, try configuring the "
 "computer to use that one instead of the AMD graphics card.  For example, "
 "using the following [[boot option|doc/advanced_topics/boot_options]]:"
@@ -344,12 +329,6 @@ msgid ""
 "<tr><th>Name</th><th>ID</th><th>Revision number</th></tr>\n"
 "<tr><td>Advanced Micro Devices, Inc. [AMD/ATI] Exo UL/ULT/ULP [Radeon R5 M320]</td><td></td><td></td></tr>\n"
 "</table>\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"Adding `radeon.modeset=0 xorg-driver=modesetting` to the [[boot options|doc/"
-"advanced_topics/boot_options]] fixes the issue."
 msgstr ""
 
 #. type: Plain text
@@ -507,20 +486,8 @@ msgid ""
 "</table>\n"
 msgstr ""
 
-#. type: Bullet: '* '
-msgid "`xorg-driver=intel`"
-msgstr ""
-
-#. type: Bullet: '* '
-msgid "`nomodeset`"
-msgstr ""
-
-#. type: Bullet: '* '
-msgid "`nomodeset xorg-driver=vesa`"
-msgstr ""
-
 #. type: Plain text
-msgid "Otherwise, try starting in the *Troubleshooting Mode*."
+msgid "Try starting in the *Troubleshooting Mode*."
 msgstr ""
 
 #. type: Plain text
@@ -542,6 +509,37 @@ msgid ""
 "<tr><th>Name</th><th>ID</th><th>Revision number</th></tr>\n"
 "<tr><td>Intel Corporation 82852/855GM Integrated Graphics Device</td><td>[8086:3582]</td><td>(rev 02)</td></tr>\n"
 "</table>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<h2 id=\"intel-uhd-750\">Intel UHD 750</h2>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<!--\n"
+"Issue: #18467\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<table>\n"
+"<tr><th>Name</th><th>ID</th><th>Revision number</th></tr>\n"
+"<tr><td>Intel UHD 750</td><td>[8086:4c8a]</td><td></td></tr>\n"
+"</table>\n"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"Try starting Tails using the following [[boot option|doc/advanced_topics/"
+"boot_options]]:"
+msgstr ""
+
+#. type: Bullet: '* '
+msgid "`i915.force_probe=4c8a`"
 msgstr ""
 
 #. type: Plain text
@@ -711,10 +709,6 @@ msgstr ""
 msgid "`nouveau.noaccel=1`"
 msgstr ""
 
-#. type: Bullet: '* '
-msgid "`nouveau.modeset=0`"
-msgstr ""
-
 #. type: Plain text
 msgid ""
 "Other graphics cards in the [NV110 family (Maxwell)](https://nouveau."
@@ -855,6 +849,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
+msgid ""
+"Try starting Tails using the following [[boot options|doc/advanced_topics/"
+"boot_options]].  You should try only one of these boot options per start "
+"attempt."
+msgstr ""
+
+#. type: Plain text
 #, no-wrap
 msgid "<h2 id=\"nvidia-ampere\">Nvidia RTX 30X0 family (Ampere)</h2>\n"
 msgstr ""
@@ -905,58 +906,6 @@ msgid ""
 "For the Mac computers, it is possible to use a third-party application, "
 "<http://gfx.io/>, to force integrated graphics only through macOS.  Then "
 "restart in that special mode that works with Tails."
-msgstr ""
-
-#. type: Bullet: '* '
-msgid "Expert Linux users can also do the following:"
-msgstr ""
-
-#. type: Bullet: '  1. '
-msgid ""
-"Add the `i915.modeset=0 rootpw=pass` option in the [[Boot Loader|doc/"
-"advanced_topics/boot_options]]."
-msgstr ""
-
-#. type: Bullet: '  2. '
-msgid ""
-"Create a file `/etc/X11/xorg.conf.d/switchable.conf` with the following "
-"content:"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"         Section \"Device\"\n"
-"             Identifier \"Device0\"\n"
-"             Driver \"nouveau\"\n"
-"             BusID \"1:0:0\"\n"
-"         EndSection\n"
-msgstr ""
-
-#. type: Bullet: '  4. '
-msgid "Restart X with the command:"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "         service gdm3 restart\n"
-msgstr ""
-
-#. type: Bullet: '  5. '
-msgid ""
-"After the GNOME session has started, change again the root password with the "
-"command:"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "         sudo passwd\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"For more details, see our issue on [[!tails_ticket 7505 desc=\"Video is "
-"broken with switchable graphics\"]]."
 msgstr ""
 
 #. type: Plain text

@@ -7,14 +7,12 @@ PERL_PROGS="/usr/local/bin/tails-security-check \
     /usr/local/lib/tails-htp-notify-user \
     $(find \
          config/chroot_local-includes/usr/src/iuk/bin \
-         config/chroot_local-includes/usr/src/persistence-setup/bin \
          -type f \
          | perl -p -E 's{^config/chroot_local-includes}{}' \
     ) \
     $(find \
       config/chroot_local-includes/usr/src/iuk/lib \
       config/chroot_local-includes/usr/src/perl5lib/lib \
-      config/chroot_local-includes/usr/src/persistence-setup/lib \
       -type f -name '*.pm' \
       | perl -p -E 's{^config/chroot_local-includes}{}' \
 )"
@@ -37,13 +35,19 @@ PYTHON_PROGS="/etc/whisperback/config.py \
     /usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py \
     /usr/lib/python3/dist-packages/tca/config.py \
     /usr/lib/python3/dist-packages/tca/ui/main_window.py \
-    /usr/local/bin/tca \
+    /usr/lib/python3/dist-packages/tps_frontend/application.py \
+    /usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py \
+    /usr/lib/python3/dist-packages/tps_frontend/error_dialog.py \
+    /usr/lib/python3/dist-packages/tps_frontend/feature.py \
+    /usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py \
+    /usr/lib/python3/dist-packages/tps_frontend/window.py \
     /usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py \
     /usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_list.py \
     /usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py \
     /usr/lib/python3/dist-packages/whisperBack/exceptions.py \
     /usr/lib/python3/dist-packages/whisperBack/gui.py \
     /usr/lib/python3/dist-packages/whisperBack/whisperback.py \
+    /usr/local/bin/tca \
     /usr/local/lib/tails-additional-software-notify \
     /usr/local/lib/tails-virt-notify-user \
     /usr/local/sbin/tails-additional-software"
@@ -87,6 +91,12 @@ prog_potfile () {
 	/usr/share/gnome-shell/extensions/torstatus@tails.boum.org/extension.js)
             domain=torstatus-extension.js
             ;;
+        /usr/lib/python3/dist-packages/tps/*)
+            domain="tps-$(basename "$prog")"
+            ;;
+        /usr/lib/python3/dist-packages/tps_frontend/*)
+            domain="tps-frontend-$(basename "$prog")"
+            ;;
         /usr/lib/python3/dist-packages/unlock_veracrypt_volumes/*)
             domain="unlock-veracrypt-volumes-$(basename "$prog")"
             ;;
@@ -104,9 +114,6 @@ prog_potfile () {
             ;;
         /usr/lib/python3/dist-packages/whisperBack/*)
             domain="whisperBack-$(basename "$prog")"
-            ;;
-        /usr/src/persistence-setup/lib/*)
-            domain="persistence-setup-$(basename "$prog")"
             ;;
         *)
             domain=$(basename "$prog")
@@ -175,8 +182,8 @@ mo_file () {
 
 refresh_mo () {
     for locale in "$@" ; do
-        po=$(po_file $locale)
-        mo=$(mo_file $locale)
+        po=$(po_file "$locale")
+        mo=$(mo_file "$locale")
         mkdir -p "$(dirname "$mo")"
         msgfmt --check -o "${mo}" "${po}"
     done

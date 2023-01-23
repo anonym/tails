@@ -35,6 +35,9 @@ export TOR_CONTROL_PASSWD='passwd'
 # it doesn't work in Tails, and we deal with those configurations
 # externally through TCA.
 export TOR_NO_DISPLAY_NETWORK_SETTINGS='yes'
+# Enabling Wayland support to make (among other things, presumably)
+# the GNOME on-screen keyboard work.
+export MOZ_ENABLE_WAYLAND=1
 
 ask_for_confirmation() {
     if [ "${TOR_BROWSER_SKIP_OFFLINE_WARNING:-}" = 'yes' ] || \

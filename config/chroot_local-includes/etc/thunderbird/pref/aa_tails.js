@@ -64,8 +64,13 @@ pref("spellchecker.dictionary_path", "/usr/share/hunspell");
 
 // Use a manual proxy configuration.
 pref("network.proxy.type", 1);
-// Same as in config/chroot_local-includes/usr/share/tails/tor-browser-prefs.js
-pref("network.security.ports.banned", "631,6136,4444,4445,6668,7656,7657,7658,7659,7660,8998,9040,9050,9062,9150,9051");
+// Block direct connections to localhost
+pref("network.proxy.allow_hijacking_localhost", true);
+pref("network.proxy.failover_direct", false);
+// Connections to localhost are blocked by
+// setting network.proxy.allow_hijacking_localhost = true,
+// so we don't need to ban specific ports, which can be fingerprinted.
+pref("network.security.ports.banned", "");
 // Number of seconds to wait before attempting to recontact an unresponsive proxy server.
 pref("network.proxy.failover_timeout", 1800);
 

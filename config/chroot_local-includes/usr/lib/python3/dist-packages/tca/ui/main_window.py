@@ -170,12 +170,12 @@ class StepChooseBridgeMixin:
         )
         hide_mode: bool = self.state["hide"]["hide"]
         if hide_mode:
-            self.builder.get_object("step_bridge_text").grab_focus()
+            self.builder.get_object("step_bridge_btn_scanqrcode").grab_focus()
         else:
             self.builder.get_object("step_bridge_radio_default").grab_focus()
         self.get_object("radio_default").set_sensitive(not hide_mode)
 
-        self.builder.get_object("step_bridge_radio_type").set_active(hide_mode)
+        self.builder.get_object("step_bridge_radio_scan").set_active(hide_mode)
         self.get_object(
             "combo"
         ).hide()  # we are forcing that to obfs4 until we support meek
@@ -211,9 +211,10 @@ class StepChooseBridgeMixin:
             self.builder.get_object(obj).set_sensitive(sensitive)
 
     def _step_bridge_update_persistence_ui(self):
-        # Enable this UI iff. we're using custom bridges
+        # Enable this UI iff. we're using scanned or custom bridges
         self._step_bridge_set_persistence_sensitivity(
             self.builder.get_object("step_bridge_radio_type").get_active()
+            or self.builder.get_object("step_bridge_radio_scan").get_active()
         )
 
         # Unlocked persistence
@@ -240,7 +241,7 @@ class StepChooseBridgeMixin:
                 help_label = _(
                     "To save your bridge, "
                     '<a href="doc/first_steps/persistence">'
-                    "unlock you Persistent Storage</a>."
+                    "unlock your Persistent Storage</a>."
                 )
             # No persistence
             else:
@@ -287,16 +288,22 @@ class StepChooseBridgeMixin:
     def _step_bridge_set_actives(self):
         default = self.builder.get_object("step_bridge_radio_default").get_active()
         manual = self.builder.get_object("step_bridge_radio_type").get_active()
+        scan = self.builder.get_object("step_bridge_radio_scan").get_active()
         self.get_object("combo").set_sensitive(default)
         self.builder.get_object("step_bridge_text").set_sensitive(manual)
+        self.builder.get_object("step_bridge_btn_scanqrcode").set_sensitive(scan)
+        self.builder.get_object("step_bridge_label_scanresult").set_sensitive(scan)
         self.builder.get_object("step_bridge_btn_submit").set_sensitive(
             default or (manual and self._step_bridge_is_text_valid())
+            or (scan and self.get_object('label_scanresult').get_property('visible'))
         )
 
     def cb_step_bridge_radio_changed(self, *args):
         self._step_bridge_set_actives()
-        manual = self.builder.get_object("step_bridge_radio_type").get_active()
-        self._step_bridge_set_persistence_sensitivity(manual)
+        can_persist = \
+            self.builder.get_object("step_bridge_radio_type").get_active() \
+            or self.builder.get_object("step_bridge_radio_scan").get_active()
+        self._step_bridge_set_persistence_sensitivity(can_persist)
 
     def cb_step_bridge_text_changed(self, *args):
         self._step_bridge_set_actives()
@@ -337,9 +344,9 @@ class StepChooseBridgeMixin:
             )
 
         if state:
-            portal_method = "enable-tor-configuration-persistence"
+            portal_method = "ensure-tor-configuration-is-persistent"
         else:
-            portal_method = "disable-tor-configuration-persistence"
+            portal_method = "ensure-tor-configuration-is-not-persistent"
         self.app.portal.call_async(
             portal_method,
             cb_persistence_config_changed,
@@ -347,8 +354,66 @@ class StepChooseBridgeMixin:
         return True  # disable the default handler
 
     def cb_step_bridge_btn_submit_clicked(self, *args):
+        self._step_bridge_set_state_from_view()
+
+        self.change_box("progress")
+
+    def cb_step_bridge_btn_back_clicked(self, *args):
+        self.change_box("hide")
+
+    def scan_qrcode(self):
+        # yes, the *exactly* same code is run, no matter if you are calling
+        # this from "bridge" step or from "error" step
+
+        error_box = self.builder.get_object('step_bridge_box_scanerror')
+        error_label = self.builder.get_object('step_bridge_label_scanerror')
+        error_box.hide()
+        step_called_from = self.state['step']
+
+        def set_error(msg):
+            error_label.set_label(msg)
+            error_box.show_all()
+
+        def on_qrcode_scanned(gjsonrpcclient, res, error):
+            if self.state['step'] != step_called_from:
+                log.info("QR code scanned (exitcode: %d) too late, ignoring",
+                         res.get('returncode', -1) if res else -1)
+                return
+
+            if not res or res.get("returncode", 1) != 0:
+                set_error(_(
+                    "Failed to detect a webcam. Maybe your webcam is too old."
+                ))
+                return
+
+            raw_content = res.get('stdout', '').strip()
+            if not raw_content:
+                # if the output is empty, we assume that the user closed the window by themself
+                # to be really sure, we should use zbarcam --xml;
+                # however, do "empty" QR codes even exists?
+                set_error(_("Failed to scan QR code. Try with more light or closer to the camera."))
+                return
+
+            try:
+                self.last_scanned_qrcode = TorConnectionConfig.parse_qr_content(raw_content)
+            except Exception:
+                set_error(_(
+                    "Invalid QR code. Try sending another email and scanning again."
+                ))
+                return
+            else:
+                self._step_bridge_set_actives()
+                self._step_bridge_set_state_from_view()
+
+        self.app.portal.call_async("scan-qrcode", on_qrcode_scanned)
+
+    def cb_step_bridge_btn_scanqrcode_clicked(self, *args):
+        self.scan_qrcode()
+
+    def _step_bridge_set_state_from_view(self):
         default = self.builder.get_object("step_bridge_radio_default").get_active()
         manual = self.builder.get_object("step_bridge_radio_type").get_active()
+        scan = self.builder.get_object("step_bridge_radio_scan").get_active()
         self.state["hide"]["bridge"] = True
         if default:
             self.state["bridge"]["kind"] = "default"
@@ -362,12 +427,9 @@ class StepChooseBridgeMixin:
                 [text]
             )
             log.info("Bridges parsed: %s", self.state["bridge"]["bridges"])
-
-        self.change_box("progress")
-
-    def cb_step_bridge_btn_back_clicked(self, *args):
-        self.change_box("hide")
-
+        elif scan:
+            self.state["bridge"]["kind"] = "manual"
+            self.state["bridge"]["bridges"] = self.last_scanned_qrcode
 
 class StepConnectProgressMixin:
     def before_show_progress(self, coming_from):
@@ -735,6 +797,9 @@ class StepErrorMixin:
             self.state["bridge"]["kind"] = "manual"
         self.change_box("progress")
 
+    def cb_step_error_btn_scanqrcode_clicked(self, *args):
+        self.cb_step_bridge_btn_scanqrcode_clicked(*args)
+
 
 class StepProxyMixin:
     def before_show_proxy(self, coming_from):
@@ -839,15 +904,13 @@ class TCAMainWindow(
 
     def __init__(self, app):
         Gtk.ApplicationWindow.__init__(
-            self, title=tca.config.APPLICATION_TITLE, application=app
+            self,
+            title=tca.config.LOCALIZED_APPLICATION_TITLE,
+            application=app
         )
         self.app = app
-        self.set_role(tca.config.APPLICATION_WM_CLASS)
-        # set_wm_class is deprecated, but it's the only way I found to set taskbar title; see #18610
-        self.set_wmclass(
-            tca.config.APPLICATION_WM_CLASS, tca.config.APPLICATION_WM_CLASS
-        )
-        self.set_title(tca.config.APPLICATION_TITLE)
+
+    def finish_init(self):
         # self.state collects data from user interactions. Its main key is the step name
         self.state: Dict[str, Any] = {
             "hide": {},
@@ -900,7 +963,6 @@ class TCAMainWindow(
         builder.add_from_file(tca.config.data_path + MAIN_UI_FILE)
         builder.connect_signals(self)
 
-        self.main_container = builder.get_object("box_main_container_image_step")
         self.stack = builder.get_object("box_main_container_stack")
         for step in self.STEPS_ORDER:
             box = builder.get_object("step_{}_box".format(step))
@@ -909,9 +971,40 @@ class TCAMainWindow(
 
         self.connection_progress = ConnectionProgress(self)
         GLib.timeout_add(1000, self.connection_progress.tick)
-        self.add(self.main_container)
+        self.add(builder.get_object("box_main_container"))
         self.show()
         self.change_box(self.state["step"])
+
+    @property
+    def last_scanned_qrcode(self):
+        return self.state.get('bridges', {}).get('last_scanned_qrcode', [])
+
+    @last_scanned_qrcode.setter
+    def last_scanned_qrcode(self, value):
+        '''
+        When setting the QR code, we're also refreshing the relevant part of the UI: step_bridge_label_scanresult
+        '''
+        self.state.setdefault('bridges', {})
+        self.state['bridges']['last_scanned_qrcode'] = value
+
+        bridge_info = value[0].split()[1]  # IP address
+        bridge_type = value[0].split()[0]
+        informative_message = _("Scanned {bridge_type} bridge: <b>{bridge_info}</b>.")
+
+        label_scanresult = self.builder.get_object("step_bridge_label_scanresult")
+        label_scanresult.set_text(
+                informative_message.format(
+                    bridge_info=bridge_info,
+                    bridge_type=bridge_type,
+                    )
+                )
+        label_scanresult.set_property("use-markup", True)
+        label_scanresult.show()
+
+        content = str(value[0])
+        text = self.builder.get_object("step_error_text")
+        text.get_buffer().set_text(content, len(content))
+
 
     @property
     def user_wants_hide(self) -> Optional[bool]:

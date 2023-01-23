@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-05-31 09:30+0200\n"
-"PO-Revision-Date: 2022-05-22 18:39+0000\n"
+"POT-Creation-Date: 2023-01-11 11:15+0000\n"
+"PO-Revision-Date: 2023-01-21 09:17+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: Tails translators <tails@boum.org>\n"
 "Language: fr\n"
@@ -146,7 +146,7 @@ msgid ""
 "trustworthy. Only run Tails in a virtual machine on Windows or macOS for testing\n"
 "purposes and do not rely on it for security.</p>\n"
 msgstr ""
-"<P>Microsoft Windows et macOS étant des logiciels propriétaires, ils ne peuvent pas être considérés\n"
+"<p>Microsoft Windows et macOS étant des logiciels propriétaires, ils ne peuvent pas être considérés\n"
 "de confiance. Utilisez Tails dans une machine virtuelle hébergée par Windows ou macOS seulement\n"
 "pour faire des tests et ne comptez pas dessus pour de la sécurité.</p>\n"
 
@@ -182,75 +182,79 @@ msgstr ""
 msgid "Running Tails from an ISO image"
 msgstr "Exécuter Tails à partir d'une image ISO"
 
-#. type: Plain text
-msgid "First, start *VirtualBox*."
-msgstr "Tout d'abord, lancer *VirtualBox*."
+#. type: Bullet: '1. '
+msgid ""
+"[[Download Tails as an ISO image|install/download-iso]], instead of a USB "
+"image."
+msgstr ""
+"[[Télécharger une image ISO de Tails|install/download-iso]], au lieu de "
+"l'image USB."
+
+#. type: Bullet: '1. '
+msgid "Start *VirtualBox*."
+msgstr "Lancer *VirtualBox*."
 
 #. type: Plain text
 msgid "To create a new virtual machine:"
 msgstr "Pour créer une nouvelle machine virtuelle :"
 
 #. type: Bullet: '  1. '
-#, fuzzy
-#| msgid ""
-#| "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
-#| "span>&nbsp;▸ <span class=\"guimenuitem\">Settings...</span></span>."
-msgid ""
-"Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
-"span>&nbsp;▸ <span class=\"guimenuitem\">New...</span></span>."
-msgstr ""
-"Choisir <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
-"span>&nbsp;▸ <span class=\"guimenuitem\">Configuration...</span></span>."
+msgid "Choose **Machine**&nbsp;▸**New...**."
+msgstr "Choisir **Machine**&nbsp;▸**Nouvelle...**."
 
 #. type: Bullet: '  1. '
-msgid "In the **Name and operating system** screen, specify:"
-msgstr ""
+msgid "In the **Name and operating system** screen:"
+msgstr "Dans l'écran **Nom et système d'exploitation** :"
 
-#. type: Bullet: '     - '
-msgid "A name of your choice."
-msgstr ""
+#. type: Bullet: '     1. '
+msgid "Specify:"
+msgstr "Spécifier :"
 
-#. type: Bullet: '     - '
-msgid "**Type**: **Linux**."
-msgstr ""
+#. type: Bullet: '        - '
+msgid "A name of your choice"
+msgstr "Un nom de votre choix"
 
-#. type: Bullet: '     - '
-msgid "**Version**: **Other Linux (64 bit)**."
-msgstr ""
+#. type: Bullet: '        - '
+msgid "**Type**: **Linux**"
+msgstr "**Type** : **Linux**"
 
-#. type: Bullet: '     - '
-#, fuzzy
-#| msgid "Click **Start**."
+#. type: Bullet: '        - '
+msgid "**Version**: **Other Linux (64 bit)**"
+msgstr "**Version** : **Other Linux (64 bit)**"
+
+#. type: Bullet: '     2. '
 msgid "Click **Next**."
-msgstr "Cliquer sur **Démarrer**."
+msgstr "Cliquer sur **Suivant**."
 
 #. type: Bullet: '  1. '
 msgid "In the **Memory size** screen:"
-msgstr ""
+msgstr "Dans l'écran **Taille de la mémoire** :"
 
-#. type: Bullet: '     - '
+#. type: Bullet: '     1. '
 msgid "Allocate at least 2048 MB of RAM."
-msgstr ""
+msgstr "Allouer au moins 2048 Mo de mémoire vive."
 
 #. type: Bullet: '  1. '
 msgid "In the **Hard drive** screen:"
-msgstr ""
+msgstr "Dans l'écran **Disque dur** :"
 
-#. type: Bullet: '     - '
+#. type: Bullet: '     1. '
 msgid "Choose **Do not add a virtual hard drive**."
-msgstr ""
+msgstr "Choisir **Ne pas ajouter de disque dur virtuel**."
 
-#. type: Bullet: '     - '
-#, fuzzy
-#| msgid "Click **Start**."
+#. type: Bullet: '     1. '
 msgid "Click **Create**."
-msgstr "Cliquer sur **Démarrer**."
+msgstr "Cliquer sur **Créer**."
 
-#. type: Bullet: '     - '
+#. type: Plain text
+#, no-wrap
 msgid ""
-"Click **Continue** in the warning dialog about creating a virtual machine "
-"without a hard drive."
+"     1. Click **Continue** in the warning dialog about creating a virtual\n"
+"\tmachine without a hard drive.\n"
 msgstr ""
+"     1. Cliquer sur **Continuer** dans la fenêtre d'avertissement à propos "
+"de la création d'une machine\n"
+"\tvirtuelle sans disque dur.\n"
 
 #. type: Plain text
 msgid "To configure the virtual machine to start from an ISO image:"
@@ -262,16 +266,8 @@ msgid "Select the new virtual machine in the left pane."
 msgstr "Sélectionner la machine virtuelle dans la partie gauche."
 
 #. type: Bullet: '  1. '
-#, fuzzy
-#| msgid ""
-#| "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
-#| "span>&nbsp;▸ <span class=\"guimenuitem\">Settings...</span></span>."
-msgid ""
-"Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
-"span>&nbsp;▸ <span class=\"guimenuitem\">Settings...</span></span>."
-msgstr ""
-"Choisir <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
-"span>&nbsp;▸ <span class=\"guimenuitem\">Configuration...</span></span>."
+msgid "Choose **Machine**&nbsp;▸ **Settings...**."
+msgstr "Choisir **Machine**&nbsp;▸ **Paramètres...**."
 
 #. type: Bullet: '  1. '
 msgid "Select **System** in the left pane."
@@ -297,20 +293,23 @@ msgstr ""
 "Sélectionner **Vide** sous **Contrôleur IDE** dans la liste de sélection de "
 "l'**Arborescence de stockage** dans la partie droite."
 
-#. type: Plain text
-#, no-wrap
+#. type: Bullet: '  1. '
 msgid ""
-"  1. Click on the **CD** icon on the right of the window and select\n"
-"  **Choose a virtual CD/DVD disk file...** to browse for the ISO image\n"
-"  you want to start Tails from.\n"
-"  1. Check the **Live CD/DVD** option.\n"
-"  1. Click **OK**.\n"
+"Click on the **CD** icon on the right of the window and select **Choose a "
+"virtual CD/DVD disk file...** to browse for the ISO image you want to start "
+"Tails from."
 msgstr ""
-"  1. Cliquer sur l'icône **CD** dans la droite de la fenêtre et sélectionner\n"
-"  **Choisissez un fichier de CD/DVD virtuel...** pour naviguer jusqu'à l'image ISO\n"
-"  de Tails.\n"
-"  1. Cocher l'option **Live CD/DVD**.\n"
-"  1. Cliquer sur **OK**.\n"
+"Cliquer sur l'icône **CD** dans la droite de la fenêtre et sélectionner **"
+"Choisissez un fichier de CD/DVD virtuel...** pour naviguer jusqu'à l'image "
+"ISO de Tails à partir de laquelle vous souhaitez démarrer."
+
+#. type: Bullet: '  1. '
+msgid "Check the **Live CD/DVD** option."
+msgstr "Cocher l'option **Live CD/DVD**."
+
+#. type: Bullet: '  1. '
+msgid "Click **OK**."
+msgstr "Cliquer sur **OK**."
 
 #. type: Plain text
 msgid "To start the new virtual machine:"
@@ -326,8 +325,8 @@ msgstr "Cliquer sur **Démarrer**."
 
 #. type: Plain text
 #, no-wrap
-msgid "<div class=\"note\">\n"
-msgstr "<div class=\"note\">\n"
+msgid "<div class=\"bug\">\n"
+msgstr "<div class=\"bug\">\n"
 
 #. type: Plain text
 #, no-wrap
@@ -335,6 +334,9 @@ msgid ""
 "<p><i>VirtualBox Guest Additions</i> has been removed since Tails 4.27. As a\n"
 "result:</p>\n"
 msgstr ""
+"<p>Les <i>Additions invité VirtualBox</i> ont été supprimées depuis Tails "
+"4.27. En\n"
+"conséquence :</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -348,6 +350,10 @@ msgid ""
 "<a href=\"https://www.virtualbox.org/manual/ch04.html#guestadd-intro\">shared clipboard</a>\n"
 "feature of <i>VirtualBox</i> is unavailable.</p></li>\n"
 msgstr ""
+"<li><p>La fonction\n"
+"<a href=\"https://www.virtualbox.org/manual/ch04.html#guestadd-intro\""
+">presse-papier partagé</a>\n"
+"de <i>VirtualBox</i> n'est pas disponible.</p></li>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -356,6 +362,11 @@ msgid ""
 "virtual machine window in the host OS. The screen resolution must be changed\n"
 "from inside Tails.</p>\n"
 msgstr ""
+"<li><p>La résolution de l'écran de Tails ne peut pas être modifiée en "
+"modifiant la taille\n"
+"de la fenêtre de la machine virtuelle du système d'exploitation hôte. La "
+"résolution de l'écran doit être\n"
+"modifiée depuis Tails.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -363,6 +374,9 @@ msgid ""
 "<p>To change the screen resolution from inside Tails, choose\n"
 "<b>Applications&nbsp;▸ System Tools&nbsp;▸ Settings&nbsp;▸ Displays&nbsp;▸ Resolution</b>.</p>\n"
 msgstr ""
+"<p>Pour changer la résolution depuis Tails, choisir\n"
+"<b>Applications&nbsp;▸ Outils système &nbsp;▸ Paramètres&nbsp;▸ Écrans&nbsp;▸"
+" Définition</b>.</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -370,6 +384,9 @@ msgid ""
 "<p>You might also need to adjust the virtual machine window in the host OS to\n"
 "fit the new screen resolution.</p></li>\n"
 msgstr ""
+"<p>Vous pourriez aussi avoir besoin d'ajuster la fenêtre de la machine "
+"virtuelle dans le système d'exploitation hôte pour\n"
+"correspondre à la nouvelle résolution d'écran.</p></li>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -382,6 +399,31 @@ msgid ""
 "<p>We plan to add back <i>VirtualBox Guest Additions</i> in a future version\n"
 "of Tails. See [[!tails_ticket 18728]].</p>\n"
 msgstr ""
+"<p>Nous prévoyons de restaurer les <i>Additions invité VirtualBox</i> dans "
+"une prochaine version\n"
+"de Tails. Voir [[!tails_ticket 18728]].</p>\n"
+
+#~ msgid ""
+#~ "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
+#~ "span>&nbsp;▸ <span class=\"guimenuitem\">New...</span></span>."
+#~ msgstr ""
+#~ "Choisir <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
+#~ "span>&nbsp;▸ <span class=\"guimenuitem\">Nouvelle...</span></span>."
+
+#, fuzzy
+#~| msgid ""
+#~| "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
+#~| "span>&nbsp;▸ <span class=\"guimenuitem\">Settings...</span></span>."
+#~ msgid ""
+#~ "Choose <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
+#~ "span>&nbsp;▸ <span class=\"guimenuitem\">Settings...</span></span>."
+#~ msgstr ""
+#~ "Choisir <span class=\"menuchoice\"> <span class=\"guimenu\">Machine</"
+#~ "span>&nbsp;▸ <span class=\"guimenuitem\">Configuration...</span></span>."
+
+#, no-wrap
+#~ msgid "<div class=\"note\">\n"
+#~ msgstr "<div class=\"note\">\n"
 
 #, no-wrap
 #~ msgid ""
@@ -428,8 +470,8 @@ msgstr ""
 #~ "     machine: shared folders, resizable display, shared clipboard, etc.</"
 #~ "p>\n"
 #~ msgstr ""
-#~ "     <div class=\"bug\"><p>Les modules invités de <span "
-#~ "class=\"application\">VirtualBox</span>\n"
+#~ "     <div class=\"bug\"><p>Les modules invités de <span class="
+#~ "\"application\">VirtualBox</span>\n"
 #~ "     permettent l'usage de fonctionnalités supplémentaires lors de "
 #~ "l'utilisation de Tails\n"
 #~ "     dans une machine virtuelle : dossiers partagés, affichage "

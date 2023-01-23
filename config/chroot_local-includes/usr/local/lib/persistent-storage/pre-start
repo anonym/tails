@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -eu
+
+NOSYMFOLLOW_MOUNTPOINT=/var/lib/tails-persistent-storage/nosymfollow
+
+# Create a bind-mount of the root filesystem with the nosymfollow option set.
+# When activating Persistent Storage features, we use this mountpoint to prevent
+# symlinks attacks. See
+# https://gitlab.tails.boum.org/tails/tails/-/merge_requests/339#note_169215
+if ! mountpoint --quiet "${NOSYMFOLLOW_MOUNTPOINT}"; then
+  mount --bind / "${NOSYMFOLLOW_MOUNTPOINT}"
+  mount -o remount,nosymfollow "${NOSYMFOLLOW_MOUNTPOINT}"
+fi

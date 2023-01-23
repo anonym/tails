@@ -2,7 +2,6 @@ import gi
 
 from tailsgreeter import TRANSLATION_DOMAIN
 import tailsgreeter.config
-import tailsgreeter.utils
 from tailsgreeter.settings import SettingNotFoundError
 from tailsgreeter.ui import _
 from tailsgreeter.ui.setting import GreeterSetting
@@ -345,13 +344,13 @@ class UnsafeBrowserSettingUI(AdditionalSetting):
     @property
     def value_for_display(self) -> str:
         if self.unsafe_browser_enabled:
-            return _("Enabled")
+            return _("Enabled (default)")
         else:
-            return _("Disabled (default)")
+            return _("Disabled")
 
     def __init__(self, unsafe_browser_setting):
         self._unsafe_browser_setting = unsafe_browser_setting
-        self.unsafe_browser_enabled = False
+        self.unsafe_browser_enabled = True
         super().__init__()
         self.accel_key = Gdk.KEY_u
         self.listbox_unsafe_browser_controls = self.builder.get_object('listbox_unsafe_browser_controls')

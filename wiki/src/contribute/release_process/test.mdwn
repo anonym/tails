@@ -191,36 +191,39 @@ Incremental upgrades
 
 3. Set an administration password in the Welcome Screen.
 
-4. Upgrade to the version we're testing:
+4. Prepare the system so it can upgrade to the version we're testing:
 
         sudo sh -c 'sed -i /^TAILS_CHANNEL=/d /etc/os-release &&
                     echo TAILS_CHANNEL=\"test\" >> /etc/os-release' && \
         systemctl --user restart tails-upgrade-frontend.service
 
+   Don't wait for the last command to complete: this will happen later on.
+
 5. Connect to Local Network and to Tor
 
-6. Once the upgrade has been applied and you're suggested to restart Tails,
-   do that.
+6. Accept the suggestion to upgrade to the version we're testing
 
-7. In the Welcome Screen, enable the Unsafe Browser.
+7. Once the upgrade has been applied and you're suggested to restart Tails,
+   do that.
 
 8. Verify that the resulting, upgraded system "works fine":
 
    * it boots
-   * it pretends to be the correct version
-   * Tor works fine
-   * Tor Browser works fine
+   * The *About Tails* app reports the expected version: the one we are testing
+   * You can connect to Tor using *Tor Connection*
+   * Tor Browser can browse websites
    * the Unsafe Browser starts
 
 Torrents
 ========
 
-Make sure that the .torrent files we advertise for this release can be
-used to download the *full* images:
+Download the images with the Torrent files provided by the Release Manager:
 
 * ISO
 
 * USB image
+
+Wait until the downloads complete before calling this done.
 
 Real (non-VM) hardware
 ======================
@@ -239,12 +242,13 @@ prefer UEFI:
 2. Boot this USB stick on bare-metal a first time to trigger re-partitioning.
    - You should see the "GNU GRUB" title, as opposed to a syslinux menu.
    - Wait until you see the Welcome Screen.
-3. Boot this USB stick a second time, measuring the boot time (from the
+3. Shutdown Tails
+4. Boot this USB stick a second time, measuring the boot time (from the
    GRUB menu until the GNOME desktop is ready -- quickly press
    ENTER in the Welcome Screen). Take note of the boot time you measured.
-4. Go through steps 1-3 again, but this time using the previous Tails version.
+5. Go through steps 1-4 again, but this time using the previous Tails version.
    Use the same computer and the same USB stick.
-5. Compare the boot times you measured at steps 3 and 4.
+6. Compare the boot times you measured at steps 3 and 4.
    Expected result: the new Tails should not be significantly slower to start
    than the old one.
 
@@ -255,9 +259,11 @@ On a computer configured to prefer legacy BIOS boot:
 
 1. Freshly install the version of Tails being tested to a USB stick.
 2. Boot this USB stick on bare-metal a first time to trigger re-partitioning.
-   You should see the "SYSLINUX" title in the bootloader, as opposed to GRUB.
-3. Boot this USB stick a second time.
-4. You should see the Welcome Screen appear.
+   - You should see the "SYSLINUX" title in the bootloader, as opposed to GRUB.
+   - Wait until you see the Welcome Screen.
+3. Shutdown Tails
+4. Boot this USB stick a second time.
+5. You should see the Welcome Screen appear.
 
 Misc
 ====
