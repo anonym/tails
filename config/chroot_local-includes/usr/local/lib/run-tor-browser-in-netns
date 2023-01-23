@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -eu
+set -x
+
+# Import gnome_env
+# shellcheck source=tails-shell-library/gnome.sh
+. /usr/local/lib/tails-shell-library/gnome.sh
+
+NETNSNAME=tbb
+COMMAND=/usr/bin/tor-browser
+
+# shellcheck disable=SC2046
+exec ip netns exec "${NETNSNAME}" \
+    /sbin/runuser -u amnesia -- \
+    bwrap --bind / / \
+          --proc /proc \
+          --dev /dev \
+          --bind "/run/user/1000/netns-specific/${NETNSNAME}" /run/user/1000/shared-with-me/ \
+          --tmpfs /run/user/1000/netns-specific/ \
+          --setenv AT_SPI_BUS_ADDRESS unix:path=/run/user/1000/shared-with-me/at.sock \
+          --setenv IBUS_ADDRESS unix:path=/run/user/1000/shared-with-me/ibus.sock \
+          env -- \
+          $(gnome_env) \
+          "${COMMAND}" "$@"

@@ -1,31 +1,13 @@
-#!/usr/bin/env python3
-'''
-Wrapper on /usr/bin/tor-browser.
+#!/bin/sh
 
-See netnsdrop module for a better understanding of how it works and its assumptions.
-'''
-import sys
-import os
-import logging
+set -eu
 
-from tailslib.netnsdrop import run
+AT_SPI_PROXY_SERVICE=tails-a11y-proxy-netns@tbb.service
+IBUS_PROXY_SERVICE=tails-ibus-proxy-netns@tbb.service
 
-
-def main():
-    env = {
-        "TOR_BROWSER_SKIP_OFFLINE_WARNING": os.getenv(
-            "TOR_BROWSER_SKIP_OFFLINE_WARNING", "no"
-        )
-    }
-    run(
-        "/usr/bin/tor-browser",
-        "tbb",
-        "/usr/local/bin/tor-browser",
-        extra_env=env,
-        extra_args=sys.argv[1:]
-    )
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    main()
+exec systemd-run --user --scope \
+    --property=Requires="${AT_SPI_PROXY_SERVICE}" \
+    --property=After="${AT_SPI_PROXY_SERVICE}" \
+    --property=Requires="${IBUS_PROXY_SERVICE}" \
+    --property=After="${IBUS_PROXY_SERVICE}" \
+    sudo /usr/local/lib/run-tor-browser-in-netns "$@"
