@@ -369,7 +369,18 @@ If `lint_po` complains:
 * send a note to <tails-l10n@boum.org> [public] so that they get in touch with
   whoever can fix them.
 
-If the previous commit added a PO file for a new locale, add it to
+Check if the previous commit added a PO file for a new locale:
+
+    (
+     headcommit=$(git show-ref HEAD)
+     git ls-files po/ |
+     while read f
+     do
+       git log '--pretty=format:%H' --diff-filter=A --decorate=short | head -n1 | grep -qw "${headcommit}" && echo $f
+     done
+    )
+
+add it to
 `config/chroot_local-includes/usr/share/tails/browser-localization/descriptions`
 (in the `MOZILLA_LOCALE:LOCATION` format).
 
