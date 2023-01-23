@@ -1533,6 +1533,26 @@ Public testing
    - This is a public list, don't point to the pad.
    - Make a deadline clear: until when is feedback useful?
 
+     (
+     msgfile=$(mktemp)
+     trap 'rm $msgfile' EXIT
+     cat <<EOF > $msgfile
+     Hi,
+
+     The *candidate* images for Tails ${VERSION} are ready for testing:
+
+     https://download.tails.net/tails/stable/tails-amd64-${VERSION}/tails-amd64-${VERSION}.img
+
+     They did not go through our entire QA yet.
+
+     Please test and report back by Tuesday, 09:00 UTC.
+
+     Thanks!
+     EOF
+     thunderbird -compose "to=tails-testers@boum.org,subject='Call for testing: $VERSION',format=text,message=$msgfile"
+     sleep 2
+     )
+
 Lead the internal manual testing to conclusion
 ==============================================
 
