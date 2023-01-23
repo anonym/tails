@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-12-19 03:08+0100\n"
-"PO-Revision-Date: 2022-12-20 14:06+0000\n"
+"POT-Creation-Date: 2022-12-28 15:20+0000\n"
+"PO-Revision-Date: 2023-01-03 22:17+0000\n"
 "Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: es\n"
@@ -347,27 +347,6 @@ msgid "[[!wikipedia Radeon_HD_8000_series]]"
 msgstr "[[!wikipedia Radeon_HD_8000_series]]"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "Try adding `nomodeset` to the [[startup options|doc/first_steps/"
-#| "startup_options#boot_loader_menu]]."
-msgid ""
-"Try starting Tails using the following [[boot options|doc/advanced_topics/"
-"boot_options]].  You should try only one of these boot options per start "
-"attempt."
-msgstr ""
-"Intenta añadir `nomodeset` a las [[opciones de arranque|doc/first_steps/"
-"startup_options#boot_loader_menu]]."
-
-#. type: Bullet: '* '
-msgid "`radeon.modeset=0`"
-msgstr "`radeon.modeset=0`"
-
-#. type: Bullet: '* '
-msgid "`xorg-driver=modesetting`"
-msgstr "`xorg-driver=modesetting`"
-
-#. type: Plain text
 msgid ""
 "If the computer has another, integrated graphics card, try configuring the "
 "computer to use that one instead of the AMD graphics card.  For example, "
@@ -403,18 +382,6 @@ msgstr ""
 "<tr><th>Nombre</th><th>ID</th><th>Número de Revisión</th></tr>\n"
 "<tr><td>Intel Corporation</td><td></td><td></td></tr>\n"
 "</table>\n"
-
-#. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "Adding `radeon.dpm=0` to the [[startup options|/doc/first_steps/"
-#| "startup_options#boot_loader_menu]] fixes the issue."
-msgid ""
-"Adding `radeon.modeset=0 xorg-driver=modesetting` to the [[boot options|doc/"
-"advanced_topics/boot_options]] fixes the issue."
-msgstr ""
-"El problema se arregla añadiendo `radeon.dpm=0` a las [[opciones de "
-"arranque|/doc/advanced_topics/boot_options]]."
 
 #. type: Plain text
 #, no-wrap
@@ -624,20 +591,10 @@ msgstr ""
 "<tr><td>Intel Corporation</td><td></td><td></td></tr>\n"
 "</table>\n"
 
-#. type: Bullet: '* '
-msgid "`xorg-driver=intel`"
-msgstr ""
-
-#. type: Bullet: '* '
-msgid "`nomodeset`"
-msgstr ""
-
-#. type: Bullet: '* '
-msgid "`nomodeset xorg-driver=vesa`"
-msgstr ""
-
 #. type: Plain text
-msgid "Otherwise, try starting in the *Troubleshooting Mode*."
+#, fuzzy
+#| msgid "Otherwise, try starting in the *Troubleshooting Mode*."
+msgid "Try starting in the *Troubleshooting Mode*."
 msgstr "También puedes intentar arrancando en *Troubleshooting Mode*."
 
 #. type: Plain text
@@ -933,10 +890,6 @@ msgstr ""
 msgid "`nouveau.noaccel=1`"
 msgstr ""
 
-#. type: Bullet: '* '
-msgid "`nouveau.modeset=0`"
-msgstr ""
-
 #. type: Plain text
 #, fuzzy
 #| msgid ""
@@ -1107,6 +1060,19 @@ msgstr ""
 "freedesktop.org/wiki/CodeNames/#nv130familypascal)"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "Try adding `nomodeset` to the [[startup options|doc/first_steps/"
+#| "startup_options#boot_loader_menu]]."
+msgid ""
+"Try starting Tails using the following [[boot options|doc/advanced_topics/"
+"boot_options]].  You should try only one of these boot options per start "
+"attempt."
+msgstr ""
+"Intenta añadir `nomodeset` a las [[opciones de arranque|doc/first_steps/"
+"startup_options#boot_loader_menu]]."
+
+#. type: Plain text
 #, fuzzy, no-wrap
 #| msgid "Nvidia Pascal\n"
 msgid "<h2 id=\"nvidia-ampere\">Nvidia RTX 30X0 family (Ampere)</h2>\n"
@@ -1120,8 +1086,8 @@ msgstr ""
 
 #. type: Plain text
 msgid ""
-"Graphics cards in the [[!wikipedia GeForce_30_series desc=\"Ampere "
-"family\"]] are affected."
+"Graphics cards in the [[!wikipedia GeForce_30_series desc=\"Ampere family"
+"\"]] are affected."
 msgstr ""
 
 #. type: Plain text
@@ -1159,69 +1125,6 @@ msgid ""
 "For the Mac computers, it is possible to use a third-party application, "
 "<http://gfx.io/>, to force integrated graphics only through macOS.  Then "
 "restart in that special mode that works with Tails."
-msgstr ""
-
-#. type: Bullet: '* '
-msgid "Expert Linux users can also do the following:"
-msgstr "Usuarios expertos de Linux pueden hacer lo siguiente:"
-
-#. type: Bullet: '  1. '
-#, fuzzy
-#| msgid ""
-#| "Add the `i915.modeset=0 rootpw=pass` option in the [[Boot Loader Menu|doc/"
-#| "first_steps/startup_options#boot_loader_menu]]."
-msgid ""
-"Add the `i915.modeset=0 rootpw=pass` option in the [[Boot Loader|doc/"
-"advanced_topics/boot_options]]."
-msgstr ""
-"Añade `intel_idle.max_cstate=1` a las [[opciones de arranque|/doc/"
-"first_steps/startup_options/#boot_loader_menu]]."
-
-#. type: Bullet: '  2. '
-msgid ""
-"Create a file `/etc/X11/xorg.conf.d/switchable.conf` with the following "
-"content:"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"         Section \"Device\"\n"
-"             Identifier \"Device0\"\n"
-"             Driver \"nouveau\"\n"
-"             BusID \"1:0:0\"\n"
-"         EndSection\n"
-msgstr ""
-"         Section \"Device\"\n"
-"             Identifier \"Device0\"\n"
-"             Driver \"nouveau\"\n"
-"             BusID \"1:0:0\"\n"
-"         EndSection\n"
-
-#. type: Bullet: '  4. '
-msgid "Restart X with the command:"
-msgstr "Reinicia X con el comando:"
-
-#. type: Plain text
-#, no-wrap
-msgid "         service gdm3 restart\n"
-msgstr "         service gdm3 restart\n"
-
-#. type: Bullet: '  5. '
-msgid ""
-"After the GNOME session has started, change again the root password with the "
-"command:"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "         sudo passwd\n"
-msgstr "         sudo passwd\n"
-
-#. type: Plain text
-msgid ""
-"For more details, see our issue on [[!tails_ticket 7505 desc=\"Video is "
-"broken with switchable graphics\"]]."
 msgstr ""
 
 #. type: Plain text
@@ -1341,6 +1244,62 @@ msgid ""
 "For the guide's \"Modify the boot options as needed\" step, type `edd=off` "
 "to add this option to the command line."
 msgstr ""
+
+#~ msgid "`radeon.modeset=0`"
+#~ msgstr "`radeon.modeset=0`"
+
+#~ msgid "`xorg-driver=modesetting`"
+#~ msgstr "`xorg-driver=modesetting`"
+
+#, fuzzy
+#~| msgid ""
+#~| "Adding `radeon.dpm=0` to the [[startup options|/doc/first_steps/"
+#~| "startup_options#boot_loader_menu]] fixes the issue."
+#~ msgid ""
+#~ "Adding `radeon.modeset=0 xorg-driver=modesetting` to the [[boot options|"
+#~ "doc/advanced_topics/boot_options]] fixes the issue."
+#~ msgstr ""
+#~ "El problema se arregla añadiendo `radeon.dpm=0` a las [[opciones de "
+#~ "arranque|/doc/advanced_topics/boot_options]]."
+
+#~ msgid "Expert Linux users can also do the following:"
+#~ msgstr "Usuarios expertos de Linux pueden hacer lo siguiente:"
+
+#, fuzzy
+#~| msgid ""
+#~| "Add the `i915.modeset=0 rootpw=pass` option in the [[Boot Loader Menu|"
+#~| "doc/first_steps/startup_options#boot_loader_menu]]."
+#~ msgid ""
+#~ "Add the `i915.modeset=0 rootpw=pass` option in the [[Boot Loader|doc/"
+#~ "advanced_topics/boot_options]]."
+#~ msgstr ""
+#~ "Añade `intel_idle.max_cstate=1` a las [[opciones de arranque|/doc/"
+#~ "first_steps/startup_options/#boot_loader_menu]]."
+
+#, no-wrap
+#~ msgid ""
+#~ "         Section \"Device\"\n"
+#~ "             Identifier \"Device0\"\n"
+#~ "             Driver \"nouveau\"\n"
+#~ "             BusID \"1:0:0\"\n"
+#~ "         EndSection\n"
+#~ msgstr ""
+#~ "         Section \"Device\"\n"
+#~ "             Identifier \"Device0\"\n"
+#~ "             Driver \"nouveau\"\n"
+#~ "             BusID \"1:0:0\"\n"
+#~ "         EndSection\n"
+
+#~ msgid "Restart X with the command:"
+#~ msgstr "Reinicia X con el comando:"
+
+#, no-wrap
+#~ msgid "         service gdm3 restart\n"
+#~ msgstr "         service gdm3 restart\n"
+
+#, no-wrap
+#~ msgid "         sudo passwd\n"
+#~ msgstr "         sudo passwd\n"
 
 #, fuzzy
 #~| msgid ""

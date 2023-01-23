@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
 "POT-Creation-Date: 2022-06-04 08:38+0200\n"
-"PO-Revision-Date: 2022-12-24 12:17+0000\n"
-"Last-Translator: xin <xin@riseup.net>\n"
+"PO-Revision-Date: 2023-01-05 11:17+0000\n"
+"Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: Tails translators <tails@boum.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -1007,10 +1007,11 @@ msgstr "<h2 id=\"htp\">Pourquoi Tails se connecte-t-il automatiquement à de nom
 #. type: Plain text
 msgid "The clock of the computer needs to be set at the correct time to both:"
 msgstr ""
+"L'horloge de l'ordinateur a besoin d'être à la bonne heure pour à la fois :"
 
 #. type: Bullet: '1. '
 msgid "Be able to connect to the Tor network in the first place"
-msgstr ""
+msgstr "Être capable de se connecter au réseau Tor en premier lieu"
 
 #. type: Plain text
 #, no-wrap
@@ -1019,10 +1020,15 @@ msgid ""
 "   to Tor, either [[automatically|doc/anonymous_internet/tor#automatic]] or\n"
 "   [[manually|doc/anonymous_internet/tor/troubleshoot#clock]].\n"
 msgstr ""
+"   L'horloge de l'ordinateur est corrigée une première fois, "
+"approximativement, avant de se connecter\n"
+"   à Tor, soit [[automatiquement|doc/anonymous_internet/tor#automatic]] "
+"soit\n"
+"   [[manuellement|doc/anonymous_internet/tor/troubleshoot#clock]].\n"
 
 #. type: Bullet: '2. '
 msgid "Protect your anonymity while using Tor"
-msgstr ""
+msgstr "Protéger votre anonymat lors de l'utilisation de Tor"
 
 #. type: Plain text
 #, no-wrap
@@ -1031,27 +1037,34 @@ msgid ""
 "   from identifying you by analyzing minor differences of your computer clock\n"
 "   with the correct time.\n"
 msgstr ""
+"   L'horloge de l'ordinateur est corrigée une deuxième fois, précisément, "
+"pour éviter qu'un site web\n"
+"   vous identifie en analysant les petites différences de l'horloge de votre "
+"l'ordinateur\n"
+"   par rapport à l'heure correcte.\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "This synchronization is made by sending HTTPS queries through Tor to several websites and deducing a correct time from their answers. The list of websites that could be queried in this process can be found in `/etc/default/htpdate`."
+#, no-wrap
 msgid ""
 "   This second synchronization is made by sending HTTPS queries through Tor to several\n"
 "   websites and deducing a correct time from their answers. You can see the\n"
 "   list of websites that Tails can connect to in *[[!tails_gitweb config/chroot_local-includes/etc/default/htpdate.pools desc=\"/etc/default/htpdate.pools\"]]*.\n"
-msgstr "La synchronisation est faite par l'envoi de requêtes HTTPS à travers Tor vers nombre de sites web et l'heure correcte est déduite à partir de leurs réponses. La liste des sites web qui peuvent être sollicités dans ce processus se trouve dans `/etc/default/htpdate`."
+msgstr ""
+"   La seconde est faite par l'envoi de requêtes HTTPS à travers Tor vers "
+"nombre de\n"
+"   sites web et l'heure correcte est déduite à partir de leurs réponses. "
+"Vous pouvez voir la\n"
+"   liste des sites web auquel Tails peux se connecter dans *[[!tails_gitweb "
+"config/chroot_local-includes/etc/default/htpdate.pools desc=\"/etc/default/"
+"htpdate.pools\"]]*.\n"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "See also our [[design document|contribute/design/Time_syncing]] on this "
-#| "topic."
 msgid ""
 "See also our [[design document on time synchronization|contribute/design/"
 "Time_syncing]]."
 msgstr ""
-"Voir également notre [[document de conception|contribute/design/"
-"Time_syncing]] à ce propos."
+"Voir également notre [[document de conception sur la synchronisation du "
+"temps|contribute/design/Time_syncing]] (en anglais)."
 
 #. type: Plain text
 #, no-wrap
@@ -1315,8 +1328,9 @@ msgid ""
 "For more information, refer to the official\n"
 "[<span class=\"application\">youtube-dl</span> website](https://ytdl-org.github.io/youtube-dl/index.html).\n"
 msgstr ""
-"Pour plus d'information, consultez le [site internet\n"
-"officiel de <span class=\"application\">youtube-dl</span>](https://ytdl-org3.github.io/youtube-dl/index.html) (en anglais).\n"
+"Pour plus d'information, consultez le [site web\n"
+"officiel de <span class=\"application\">youtube-dl</span>](https://ytdl-org3."
+"github.io/youtube-dl/index.html) (en anglais).\n"
 
 #. type: Plain text
 #, no-wrap
@@ -1343,20 +1357,24 @@ msgstr ""
 "17823]] pour une liste de guides non officiels sur la façon d'utiliser Monero dans Tails.\n"
 
 #. type: Plain text
-#, fuzzy, no-wrap
-#| msgid "<h2 id=\"youtube\">Can I download videos from websites?</h2>\n"
+#, no-wrap
 msgid "<h2 id=\"voip\">Can I do voice or video calls from Tails?</h2>\n"
-msgstr "<h2 id=\"youtube\">Puis-je télécharger des vidéos depuis des sites web ?</h2>\n"
+msgstr ""
+"<h2 id=\"voip\">Puis-je faire des appels vocaux et vidéos depuis Tails ?</h2>"
+"\n"
 
 #. type: Plain text
 msgid "Not yet."
-msgstr ""
+msgstr "Pas encore."
 
 #. type: Bullet: '- '
 msgid ""
 "Videoconferencing tools that work in web browsers, like *Jitsi*, *Google "
 "Meet*, and *BigBlueButton*, don't work in *Tor Browser* yet."
 msgstr ""
+"Les outils de visioconférence qui marchent dans des navigateurs web, comme "
+"*Jitsi*, *Google Meet* et *BigBlueButton*, ne marchent pas encore dans la *"
+"Navigateur Tor*."
 
 #. type: Plain text
 #, no-wrap
@@ -1365,6 +1383,11 @@ msgid ""
 "  [[!wikipedia User_Datagram_Protocol desc=\"UDP\"]] connections. But, the Tor network only\n"
 "  supports TCP connections, like the ones used for HTTP and email.\n"
 msgstr ""
+"  Ils ont besoin de la technologie [[!wikipedia_fr WebRTC]], qui utilise\n"
+"  des connections [[!wikipedia_fr User_Datagram_Protocol desc=\"UDP\"]]. "
+"Mais le réseau Tor supporte\n"
+"  seulement les connections TCP, comme celles utilisées pour HTTP et le "
+"courrier électronique.\n"
 
 #. type: Plain text
 #, no-wrap
@@ -1373,12 +1396,17 @@ msgid ""
 "  Tor](https://gitlab.torproject.org/tpo/core/torspec/-/issues/73), which\n"
 "  should remove this limitation.\n"
 msgstr ""
+"  Le Projet Tor travaille sur le [support du trafic UDP à travers\n"
+"  Tor](https://gitlab.torproject.org/tpo/core/torspec/-/issues/73), ce qui\n"
+"  devrait enlever cette limitation.\n"
 
 #. type: Bullet: '- '
 msgid ""
 "Proprietary applications like *Skype* or *Zoom* will never be available in "
 "Tails because they are not Free Software."
 msgstr ""
+"Les applications propriétaires comme *Skype* ou *Zoom* ne seront jamais "
+"disponibles dans Tails car elles ne sont pas des logiciels libres."
 
 #. type: Bullet: '- '
 msgid ""
@@ -1387,6 +1415,10 @@ msgid ""
 "first_steps/persistence#additional_software]] feature to add *Mumble* to "
 "your Tails."
 msgstr ""
+"[*Mumble*](https://www.mumble.info/) est la seule application de discussion "
+"vocale dont nous savons qu'elle fonctionne dans Tails. Vous pouvez utiliser "
+"la fonctionnalité [[Logiciels supplémentaires|doc/first_steps/"
+"persistence#additional_software]] pour ajouter *Mumble* à votre Tails."
 
 #. type: Plain text
 #, no-wrap
@@ -1395,6 +1427,11 @@ msgid ""
 "  on *Mumble*. If you are a Debian developer, please help us\n"
 "  [[!tails_ticket 17617 desc=\"get *Wahay* in Debian\"]].\n"
 msgstr ""
+"  [*Wahay*](https://wahay.org/) est une application décentralisée de "
+"discussion vocale basée\n"
+"  sur *Mumble*. Si vous êtes une personne qui développe sur Debian, merci de "
+"nous aider à\n"
+"  [[!tails_ticket 17617 desc=\"obtenir *Wahay* dans Debian\"]].\n"
 
 #. type: Plain text
 #, no-wrap
