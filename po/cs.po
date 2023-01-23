@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-16 09:36+0100\n"
+"POT-Creation-Date: 2023-01-23 09:28+0100\n"
 "PO-Revision-Date: 2013-07-25 09:07+0000\n"
 "Last-Translator: Fourdee Foureight, 2020-2022\n"
 "Language-Team: Czech (http://www.transifex.com/otf/torproject/language/cs/)\n"
@@ -38,25 +38,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-
-#: config/chroot_local-includes/etc/whisperback/config.py:67
-#, python-format
-msgid ""
-"<h1>Help us fix your bug!</h1>\n"
-"<p>Read <a href=\"%s\">our bug reporting instructions</a>.</p>\n"
-"<p><strong>Do not include more personal information than\n"
-"needed!</strong></p>\n"
-"<h2>About giving us an email address</h2>\n"
-"<p>\n"
-"Giving us an email address allows us to contact you to clarify the problem. "
-"This\n"
-"is needed for the vast majority of the reports we receive as most reports\n"
-"without any contact information are useless. On the other hand it also "
-"provides\n"
-"an opportunity for eavesdroppers, like your email or Internet provider, to\n"
-"confirm that you are using Tails.\n"
-"</p>\n"
-msgstr ""
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
@@ -69,24 +50,31 @@ msgid ""
 "You can install additional software automatically from your persistent "
 "storage when starting Tails."
 msgstr ""
+"Můžete instalovat dodatečný software automaticky z vašeho trvalého úložiště "
+"při spuštění Tails."
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:77
 msgid ""
 "The following software is installed automatically from your persistent "
 "storage when starting Tails."
 msgstr ""
+"Následující software je automaticky instalován z vašeho trvalého úložiště "
+"při spouštění Tails."
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:180
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
+"Pro přidání dalších, nainstalujte software prostřednictvím <a href="
+"\"synaptic.desktop\">Správce balíčků Synaptic</a> nebo <a href=\"org.gnome."
+"Terminal.desktop\">APT v příkazové řádce</a>."
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:154
 msgid "_Create persistent storage"
-msgstr ""
+msgstr "Vytvořit _trvalé úložiště"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:72
 msgid "Persistence is disabled for Electrum"
@@ -99,24 +87,26 @@ msgid ""
 "It is strongly recommended to only run Electrum when its persistence feature "
 "is activated."
 msgstr ""
+"Jakmile Tails restartujete, všechna Electrum data, včetně vaši Bitcion "
+"peněženky, budou ztracena.\n"
+"Je důrazně doporučeno spouštět Electrum pouze s aktivovanou funkcí "
+"presistence."
 
 #: config/chroot_local-includes/usr/local/bin/electrum:75
 msgid "Do you want to start Electrum anyway?"
-msgstr ""
+msgstr "Chcete i přesto Electrum spustit?"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:78
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:60
 msgid "_Launch"
 msgstr "_Spustit"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:79
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
 msgid "_Exit"
 msgstr "_Ukončit"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/DownloadProgress.pm:59
 msgid "Unknown time"
-msgstr ""
+msgstr "Neznámý čas"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -125,10 +115,10 @@ msgstr ""
 #, perl-brace-format
 msgid "1y"
 msgid_plural "{count}y"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "1r"
+msgstr[1] "1y"
+msgstr[2] "1y"
+msgstr[3] "{count}r"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -137,10 +127,10 @@ msgstr[3] ""
 #, perl-brace-format
 msgid "1d"
 msgid_plural "{count}d"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "1d"
+msgstr[1] "1d"
+msgstr[2] "1d"
+msgstr[3] "{count}d"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -149,10 +139,10 @@ msgstr[3] ""
 #, perl-brace-format
 msgid "1h"
 msgid_plural "{count}h"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "1h"
+msgstr[1] "1h"
+msgstr[2] "1h"
+msgstr[3] "{count}h"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -161,10 +151,10 @@ msgstr[3] ""
 #, perl-brace-format
 msgid "1m"
 msgid_plural "{count}m"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "1m"
+msgstr[1] "1m"
+msgstr[2] "1m"
+msgstr[3] "{count}m"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -173,67 +163,74 @@ msgstr[3] ""
 #, perl-brace-format
 msgid "1s"
 msgid_plural "{count}s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "1s"
+msgstr[1] "1s"
+msgstr[2] "1s"
+msgstr[3] "{count}s"
 
 #. Translators: don't translate {time}, {downloaded}, {size}
 #. and {speed}, they are placeholders and will be replaced.
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/DownloadProgress.pm:139
 #, perl-brace-format
 msgid "#{time} left — {downloaded} of {size} ({speed}/sec)\n"
-msgstr ""
+msgstr "#{time} zbývá — {downloaded} z {size} ({speed}/s)\n"
 
 #. Translators: KB is the short form for kilobyte
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Role/FormatByte.pm:33
 msgid "KB"
-msgstr ""
+msgstr "kB"
 
 #. Translators: MB is the short form for megabyte
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Role/FormatByte.pm:35
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #. Translators: GB is the short form for gigabyte
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Role/FormatByte.pm:37
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Role/FormatByte.pm:43
 msgid "bytes"
-msgstr ""
+msgstr "bajtů"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:198
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:709
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:890
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:197
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:707
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:859
 msgid ""
 "For debugging information, execute the following command: sudo tails-"
 "debugging-info"
 msgstr ""
+"Pro informace pro ladění spusťte následující příkaz: sudo tails-debugging-"
+"info"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:290
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
+"<b>Při aktualizaci podpisového klíče došlo k chybě.</b>\\n\\n<b>To z "
+"znemožňuje zjistit z našeho webu, zda je k dostupná aktualizace.</b>\\n"
+"\\nZkontrolujte své připojení k síti, restartujte Tails a pak se o "
+"aktualizaci pokuste znovu.\\n\\nPokud problém přetrvá, přejděte na file:///"
+"usr/share/doc/tails/website/doc/upgrade/error/check.en.html"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:304
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:303
 msgid "Error while downloading the signing key"
-msgstr ""
+msgstr "Chyba při stahování podpisového klíče"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:315
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:314
 msgid "Error while updating the signing key"
-msgstr ""
+msgstr "Chyba při aktualizaci podpisového klíče"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:342
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:341
 msgid "Error while checking for upgrades"
-msgstr ""
+msgstr "Chyba při kontrole aktualizací"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:344
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:343
 msgid ""
 "<b>Could not determine whether an upgrade is available from our website.</"
 "b>\n"
@@ -243,72 +240,91 @@ msgid ""
 "If the problem persists, go to file:///usr/share/doc/tails/website/doc/"
 "upgrade/error/check.en.html"
 msgstr ""
+"<b>Nelze určit, zda je k dispozici na našich webových stránkách aktualizace."
+"</b>\n"
+"\n"
+"Zkontrolujte připojení k síti, restartujte Tails a vyzkoušejte aktualizaci "
+"znovu. \n"
+"\n"
+"Pokud problém přetrvává, navštivte adresu file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/check.en.html"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:359
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:358
 msgid "no automatic upgrade is available from our website for this version"
 msgstr ""
+"pro tuto verzi není na našich stránkách dostupná žádná automatická "
+"aktualizace"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:365
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:364
 msgid "your device was not created using a USB image or Tails Installer"
 msgstr ""
+"vaše zařízení nebylo vytvoření pomocí obrazu USB disku ani instalátoru Tails"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:370
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:369
 msgid "Tails was started from a DVD or a read-only device"
-msgstr ""
+msgstr "Tails byl spuštěn z disku DVD nebo zařízení pouze pro čtení"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:375
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:374
 msgid "there is not enough free space on the Tails system partition"
-msgstr ""
+msgstr "na systémovém oddílu Tails není dostatek volného místa"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:380
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:379
 msgid "not enough memory is available on this system"
-msgstr ""
+msgstr "systém nemá dostatek paměti"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:385
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:384
 #, perl-brace-format
 msgid "No explanation available for reason '{reason}'."
-msgstr ""
+msgstr "Pro důvod '{reason}' není dostupné žádné vysvětlení."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:408
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:407
 msgid "The system is up-to-date"
-msgstr ""
+msgstr "Systém je aktuální"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:413
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:412
 msgid "This version of Tails is outdated, and may have security issues."
-msgstr ""
+msgstr "Tato verze Tails je zastaralá a může obsahovat bezpečnostní problémy."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:443
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:442
 #, perl-brace-format
 msgid ""
 "The available incremental upgrade requires {space_needed} of free space on "
 "Tails system partition,  but only {free_space} is available."
 msgstr ""
+"Dostupný inkrementální upgrade vyžaduje {space_needed} volného prostoru na "
+"Tails systémovém oddílu, ale volného místa je pouze {free_space}."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:455
-#, perl-brace-format
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:454
+#, fuzzy, perl-brace-format
 msgid ""
 "The available incremental upgrade requires {memory_needed} of free memory, "
 "but only {free_memory} is available."
 msgstr ""
+"Dostupný inkrementální upgrade vyžaduje {space_needed} volného prostoru na "
+"Tails systémovém oddílu, ale volného místa je pouze {free_space}."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:466
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:465
 msgid ""
 "An error ocurred while detecting available upgrades.\n"
 "This should not happen. Please report a bug."
 msgstr ""
+"Při zjišťování dostupných aktualizací došlo k chybě. To by se nemělo stát. "
+"Chybu prosím nahlaste."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:469
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:488
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:468
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:487
 msgid "Error while detecting available upgrades"
-msgstr ""
+msgstr "Chyba při zjišťování dostupných aktualizací"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:484
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:483
 msgid ""
 "An incremental upgrade is available, but no full upgrade is.\n"
 "This should not happen. Please report a bug."
 msgstr ""
+"Přírůstková aktualizace je dostupná, ale není dostupná plná aktualizace.\n"
+"Toto by se nemělo stát. Tuto chybu prosím nahlaste,"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:497
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:496
 #, perl-brace-format
 msgid ""
 "<b>You should upgrade to {name} {version}.</b>\n"
@@ -323,20 +339,30 @@ msgid ""
 "\n"
 "Do you want to upgrade now?"
 msgstr ""
+"<b>Měli byste aktualizovat na {name} {version}.</b>\n"
+"\n"
+"Pro více detailů k této nové verzi přejděte na {details_url}\n"
+"\n"
+"Během upgradu doporučujeme zavřít všechny ostatní aplikace.\n"
+"Stažení upgradu může trvat dlouho, několik minut nebo i pár hodin.\n"
+"\n"
+"Velikost ke stažení: {size}\n"
+"\n"
+"Přejete si aktualizovat?"
+
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:509
+msgid "Upgrade available"
+msgstr "Aktualizace k dispozici"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:510
-msgid "Upgrade available"
-msgstr ""
+msgid "Upgrade now"
+msgstr "Aktualizovat nyní"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:511
-msgid "Upgrade now"
-msgstr ""
-
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:512
 msgid "Upgrade later"
-msgstr ""
+msgstr "Aktualizovat později"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:519
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:518
 #, perl-brace-format
 msgid ""
 "<b>You should do a manual upgrade to the latest version of {name}.</b>\n"
@@ -344,64 +370,59 @@ msgid ""
 "For more information about this new version, go to {details_url}\n"
 "\n"
 "It is impossible to do an automatic upgrade of your Tails to this new "
-"version.\n"
+"version: {explanation}.\n"
 "\n"
 "To learn how to do a manual upgrade, go to {manual_upgrade_url}"
 msgstr ""
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:529
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:528
 msgid "New version available"
-msgstr ""
+msgstr "Dostupná nová verze"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:610
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:609
 msgid "Downloading upgrade"
-msgstr ""
+msgstr "Stahování aktualizace"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:612
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:611
 #, perl-brace-format
 msgid "Downloading the upgrade to {name} {version}..."
-msgstr ""
+msgstr "Stahuje se aktualizace na {name} {version}..."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:702
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:700
 msgid ""
 "<b>The upgrade could not be downloaded.</b>\\n\\nCheck your network "
 "connection, and restart Tails to try upgrading again.\\n\\nIf the problem "
 "persists, go to file:///usr/share/doc/tails/website/doc/upgrade/error/"
 "download.en.html"
 msgstr ""
+"<b>Aktualizace nemohla být stažena.</b>\\n\\nZkontrolujte připojení k "
+"internetu, restartujte Tails a pokuste se o aktualizaci znovu. .\\n\\nPokud "
+"problém přetrvává, navštivte adresu file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/download.en.html"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:713
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:728
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:711
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:726
 msgid "Error while downloading the upgrade"
-msgstr ""
+msgstr "Chyba při stahování aktualizace"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:723
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:721
 #, perl-brace-format
 msgid ""
 "Output file '{output_file}' does not exist, but tails-iuk-get-target-file "
 "did not complain. Please report a bug."
 msgstr ""
+"Výstupní složka '%{output_file}s' neexistuje, ale tails-iuk-get-target-file "
+"nehlásí chybu. Prosíme nahlaště chybu."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:739
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:737
 msgid "Error while creating temporary downloading directory"
-msgstr ""
+msgstr "Chyba při vytváření dočasného adresáře pro stažení"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:742
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:740
 msgid "Failed to create temporary download directory"
-msgstr ""
+msgstr "Nepodařilo se vytvořit dočasný adresář pro stažení"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:766
-msgid ""
-"<b>Could not choose a download server.</b>\n"
-"\n"
-"This should not happen. Please report a bug."
-msgstr ""
-
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:769
-msgid "Error while choosing a download server"
-msgstr ""
-
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:783
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:752
 msgid ""
 "The upgrade was successfully downloaded.\n"
 "\n"
@@ -409,16 +430,21 @@ msgid ""
 "\n"
 "Please save your work and close all other applications."
 msgstr ""
+"Aktualizace byla úspěšně stažena.\n"
+"\n"
+"Síťové připojení bude během provádění aktualizace vypnuto.\n"
+"\n"
+"Uložte prosím svou práci a ukončete všechny ostatní aplikace."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:788
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:757
 msgid "Upgrade successfully downloaded"
-msgstr ""
+msgstr "Aktualizace byla úspěšně stažena"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:789
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:758
 msgid "Apply upgrade"
-msgstr ""
+msgstr "Nainstalovat aktualizaci"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:796
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:765
 msgid ""
 "<b>Your Tails device was successfully upgraded.</b>\n"
 "\n"
@@ -427,65 +453,78 @@ msgid ""
 "\n"
 "Do you want to restart now?"
 msgstr ""
+"<b>Vaše zařízení Tails bylo aktualizováno.</b>\n"
+"\n"
+"Některé bezpečnostní funkce nejsou dočasně dostupné.\n"
+"Novou verzi Tails doporučujeme co nejdříve restartovat.\n"
+"\n"
+"Chcete restartovat nyní?"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:801
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:770
 msgid "Restart Tails"
-msgstr ""
+msgstr "Restartovat Tails"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:802
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:771
 msgid "Restart now"
-msgstr ""
+msgstr "Restartovat hned"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:803
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:772
 msgid "Restart later"
-msgstr ""
+msgstr "Restartovat později"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:813
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:782
 msgid "Error while restarting the system"
-msgstr ""
+msgstr "Chyba při restartu systému"
+
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:783
+msgid "Failed to restart the system"
+msgstr "Systém se nepodařilo restartovat"
+
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:796
+msgid "Error while shutting down the network"
+msgstr "Chyba při vypínání sítě"
+
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:797
+msgid "Failed to shutdown network"
+msgstr "Nepodařilo se vypnout síť"
+
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:807
+msgid "Error while cancelling the upgrade download"
+msgstr "Chyba při rušení stahování aktualizace"
+
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:808
+msgid "Failed to cancel the upgrade download"
+msgstr "Nepodařilo se zrušit stahování aktualizace"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:814
-msgid "Failed to restart the system"
-msgstr ""
-
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:827
-msgid "Error while shutting down the network"
-msgstr ""
-
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:828
-msgid "Failed to shutdown network"
-msgstr ""
-
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:838
-msgid "Error while cancelling the upgrade download"
-msgstr ""
-
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:839
-msgid "Failed to cancel the upgrade download"
-msgstr ""
-
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:845
 msgid "Upgrading the system"
-msgstr ""
+msgstr "Aktualizace systému"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:847
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:816
 msgid ""
 "<b>Your Tails device is being upgraded...</b>\n"
 "\n"
 "For security reasons, the network connection is now disabled."
 msgstr ""
+"<b>Vaše zařízení Tails se právě aktualizuje...</b>\n"
+"\n"
+"Z důvodu bezpečnosti je nyní síťové připojení vypnuto."
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:884
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:853
 msgid ""
 "<b>An error occured while installing the upgrade.</b>\\n\\nYour Tails device "
 "needs to be repaired and might be unable to restart.\\n\\nPlease follow the "
 "instructions at file:///usr/share/doc/tails/website/doc/upgrade/error/"
 "install.en.html"
 msgstr ""
+"<b>Pri instalování aktualizace došlo k chybě.</b>\\n\\nVaše Tails zařízení "
+"je potřeba opravit a nemusí být možné ho spustit. \\n\\nPokračujte podle "
+"instrukcí na adrese file:///usr/share/doc/tails/website/doc/upgrade/error/"
+"install.en.html"
 
-#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:894
+#: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:863
 msgid "Error while installing the upgrade"
-msgstr ""
+msgstr "Chyba při instalaci aktualizace"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:32
 msgid "Additional Settings"
@@ -512,16 +551,16 @@ msgstr "_Heslo pro správu"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:186
 msgid "_MAC Address Anonymization"
-msgstr ""
+msgstr "_Anonymizace MAC adresy"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:249
 msgid "_Offline Mode"
-msgstr ""
+msgstr "_Offline režim"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:258
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:413
 msgid "Enable networking (default)"
-msgstr ""
+msgstr "Povolit síť (default)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:260
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:459
@@ -530,20 +569,20 @@ msgstr "Zakázat všechny sítě"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:315
 msgid "_Network Connection"
-msgstr ""
+msgstr "_Síťové připojení"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:323
 msgid "Obsolete"
-msgstr ""
+msgstr "Zastaralé"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:338
 msgid "_Unsafe Browser"
-msgstr ""
+msgstr "_Nebezpečný prohlížeč"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:347
 #, fuzzy
 msgid "Enabled (default)"
-msgstr "Zapnuto (výchozí)"
+msgstr "Zakázáno (default)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:349
 #, fuzzy
@@ -556,15 +595,26 @@ msgstr "Zapnuto (výchozí)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:402
 msgid "On"
-msgstr ""
+msgstr "Zapnuto"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:404
 msgid "Off"
-msgstr ""
+msgstr "Vypnuto"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:406
 msgid "Off (default)"
 msgstr "Vypnuto (výchozí)"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:401
+#, fuzzy
+msgid "Don't _Create Persistent Storage"
+msgstr "Vytvořit trvalé úložiště"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:403
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
+#, fuzzy
+msgid "_Create Persistent Storage"
+msgstr "Vytvořit trvalé úložiště"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:81
 #, fuzzy
@@ -578,19 +628,19 @@ msgstr "Vytvořit trvalé úložiště"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:68
 msgid "Unlocking…"
-msgstr ""
+msgstr "Odemykání..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:94
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:118
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:509
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:508
 msgid "Unlock"
 msgstr "Odemknout"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:99
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:40
 msgid "Cannot unlock encrypted storage with this passphrase."
-msgstr ""
+msgstr "S tímto přístupovým heslem nelze šifrované úložiště odemknout."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:112
 msgid ""
@@ -614,12 +664,12 @@ msgstr "_Formáty"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py:244
 msgid "_Keyboard Layout"
-msgstr ""
+msgstr "_Rozložení klávesnice"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:288
 #, python-format
 msgid "Unable to write on %(device)s, skipping."
-msgstr ""
+msgstr "Na zařízení %(device)s nelze zapsat, přeskakuji."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:332
 #, python-format
@@ -627,15 +677,17 @@ msgid ""
 "Some partitions of the target device %(device)s are mounted. They will be "
 "unmounted before starting the installation process."
 msgstr ""
+"Některé svazky přopojené na cílovém zařízení %(device)s budou před zahájením "
+"procesu instalace odpojeny."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:341
 msgid "Extracting live image to the target device..."
-msgstr ""
+msgstr "Rozbalování obrazu na cílové zařízení..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:348
 #, python-format
 msgid "Wrote to device at %(speed)d MB/sec"
-msgstr ""
+msgstr "Zapsáno na zařízení rychlostí %(speed)d MB/s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:446
 #, python-format
@@ -643,6 +695,8 @@ msgid ""
 "There was a problem executing the following command: `%(command)s`.\n"
 "A more detailed error log has been written to \"%(filename)s\"."
 msgstr ""
+"Vyskytl se problém při provádění následujícího příkazu: `%(command)s`.\n"
+"Podrobnější záznam o chybě byl zapsán do \"%(filename)s\"."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:462
 #, python-format
@@ -650,217 +704,223 @@ msgid ""
 "Not enough free space on device.\n"
 "%(iso_size)dMB ISO + %(overlay_size)dMB overlay > %(free_space)dMB free space"
 msgstr ""
+"Na zařízení není dost volného místa.\n"
+"%(iso_size)d MB ISO + %(overlay_size)d MB pro trvalé úložiště > "
+"%(free_space)d MB volného místa"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:471
 #, python-format
 msgid "Creating %sMB persistent overlay"
-msgstr ""
+msgstr "Vytváření %s MB velkého překryvu trvalého úložiště"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:521
 #, python-format
 msgid "Unable to copy %(infile)s to %(outfile)s: %(message)s"
-msgstr ""
+msgstr "%(infile)s nelze do %(outfile)s zkopírovat: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:535
 msgid "Removing existing Tails system"
-msgstr ""
+msgstr "Odebrání existujícícho systému Tails"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:545
 #, python-format
 msgid "Unable to remove file from previous Tails system: %(message)s"
-msgstr ""
+msgstr "Soubor z předchozího Tails systému nelze odebrat: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:552
 #, python-format
 msgid "Unable to chmod %(file)s: %(message)s"
-msgstr ""
+msgstr "Oprávnění %(file)s nelze změnit: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:559
 #, python-format
 msgid "Unable to remove directory from previous Tails system: %(message)s"
-msgstr ""
+msgstr "Adresář z předchozího Tails systému nelze odebrat: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:607
 #, python-format
 msgid "Cannot find device %s"
-msgstr ""
+msgstr "Zařízení %s nelze nalézt"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:657
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:904
 msgid "Unknown filesystem.  Your device may need to be reformatted."
-msgstr ""
+msgstr "Neznámý souborový systém. Vaše zařízení bude nutné zformátovat."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:660
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:907
 #, python-format
 msgid "Unsupported filesystem: %s"
-msgstr ""
+msgstr "Nepodporovaný systém souborů: %s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:678
 #, python-format
 msgid "Unknown GLib exception while trying to mount device: %(message)s"
-msgstr ""
+msgstr "Neznámá výjimka GLib při pokusu o připojení zařízení: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:683
 #, python-format
 msgid "Unable to mount device: %(message)s"
-msgstr ""
+msgstr "Zařízení nelze připojit: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:688
 msgid "No mount points found"
-msgstr ""
+msgstr "Nenalezeny žádné body připojení"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:699
 #, python-format
 msgid "Entering unmount_device for \"%(device)s\""
-msgstr ""
+msgstr "Provádím unmount_device pro \"%(device)s\""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:708
 #, python-format
 msgid "Unmounting mounted filesystems on \"%(device)s\""
-msgstr ""
+msgstr "Odpojuji připojené systémy souborů na \"%(device)s\""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:712
 #, python-format
 msgid "Unmounting \"%(udi)s\" on \"%(device)s\""
-msgstr ""
+msgstr "Odpojuji \"%(udi)s\" na \"%(device)s\""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:723
 #, python-format
 msgid "Mount %s exists after unmounting"
-msgstr ""
+msgstr "Připojení %s existuje po odpojení"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:760
 #, python-format
 msgid "Partitioning device %(device)s"
-msgstr ""
+msgstr "Vytváří se svazek na zařízení %(device)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:889
 #, python-format
 msgid "Unsupported device '%(device)s', please report a bug."
-msgstr ""
+msgstr "Nepodporované zařízení  '%(device)s', prosím nahlaste chybu"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:892
 msgid "Trying to continue anyway."
-msgstr ""
+msgstr "Snažím se pokračovat dál."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:901
 msgid "Verifying filesystem..."
-msgstr ""
+msgstr "Ověrování systému souborů..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:925
 #, python-format
 msgid "Unable to change volume label: %(message)s"
-msgstr ""
+msgstr "Jmenovku svazku nelze změnit: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:930
 msgid "Installing bootloader..."
-msgstr ""
+msgstr "Instalace bootloaderu..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:937
 #, python-format
 msgid "Removing %(file)s"
-msgstr ""
+msgstr "Probíhá odebírání %(file)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1019
 #, python-format
 msgid "%s already bootable"
-msgstr ""
+msgstr "%s je bootovatelné"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1039
 msgid "Unable to find partition"
-msgstr ""
+msgstr "Svazek nelze nalézt"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1058
 #, python-format
 msgid "Formatting %(device)s as FAT32"
-msgstr ""
+msgstr "%(device)s se formátuje jako FAT32"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1121
 #, python-format
 msgid "Reading extracted MBR from %s"
-msgstr ""
+msgstr "Čtení extrahované MBR z %s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1125
 #, python-format
 msgid "Could not read the extracted MBR from %(path)s"
-msgstr ""
+msgstr "Nelze načíst extrahované MBR z %(path)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1138
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1139
 #, python-format
 msgid "Resetting Master Boot Record of %s"
-msgstr ""
+msgstr "Obnovování hlavního bootovacího záznamu %s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1144
 msgid "Drive is a loopback, skipping MBR reset"
 msgstr ""
+"Zařízení je smyčka, obnovení hlavního bootovacího záznamu bude přeskočeno"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1148
 msgid "Synchronizing data on disk..."
-msgstr ""
+msgstr "Synchronizace dat na disku..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:146
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
 msgstr ""
+"Chyba: Nelze nastavit jmenovku nebo získat UUID vašeho zařízení. Nelze "
+"pokračovat."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:180
 #, python-format
 msgid "Installation complete! (%s)"
-msgstr ""
+msgstr "Instalace dokončena! (%s)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:185
 msgid "Tails installation failed!"
-msgstr ""
+msgstr "Instalace Tails selhala"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:274
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:1
 msgid "Tails Installer"
-msgstr ""
+msgstr "Instalátor Tails"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:316
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:163
 msgid "Clone the current Tails"
-msgstr ""
+msgstr "Klonovat současné Tails"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:323
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:184
 msgid "Use a downloaded Tails ISO image"
-msgstr ""
+msgstr "Použít stažený ISO obraz Tails"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:361
 msgid "Upgrade"
-msgstr ""
+msgstr "Aktualizovat"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:362
 msgid "Manual Upgrade Instructions"
-msgstr ""
+msgstr "Pokyny pro ruční aktualizaci"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:373
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:572
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:358
 msgid "Install"
-msgstr ""
+msgstr "Instalovat"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:376
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:131
 msgid "Installation Instructions"
-msgstr ""
+msgstr "Pokyny pro instalaci"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:383
 #, python-format
 msgid "%(size)s %(vendor)s %(model)s device (%(device)s)"
-msgstr ""
+msgstr "%(size)s %(vendor)s %(model)s zařízení %(device)s)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:395
 msgid "No ISO image selected"
-msgstr ""
+msgstr "Nebyl vybrán obraz ISO"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:396
 msgid "Please select a Tails ISO image."
-msgstr ""
+msgstr "Vyberte prosím obraz ISO s Tails."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:458
 #, python-format
@@ -869,6 +929,9 @@ msgid ""
 "manufacturer and Tails will fail to start from it. Please try installing on "
 "a different model."
 msgstr ""
+"USB flash disk „%(pretty_name)s“ je nastaven jako neodebratelný jeho "
+"výrobcem a Tails se na něm nepodaří nastartovat. Zkuste prosím instalaci na "
+"jiný model."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:468
 #, python-format
@@ -876,6 +939,8 @@ msgid ""
 "The device \"%(pretty_name)s\" is too small to install Tails (at least "
 "%(size)s GB is required)."
 msgstr ""
+"Zařízení \"%(pretty_name)s\" je moc malé pro instalaci Tails (je vyžadováno "
+"alespoň %(size)s GB)."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:481
 #, python-format
@@ -884,32 +949,36 @@ msgid ""
 "downloaded Tails ISO image:\n"
 "%(dl_url)s"
 msgstr ""
+"Pro aktualizaci zařízení \"%(pretty_name)s\" z této verze Tails budete muset "
+"použít stažený ISO obraz Tails:\n"
+"%(dl_url)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:501
 msgid "No device suitable to install Tails could be found"
-msgstr ""
+msgstr "Nebylo nalezeno žádné zařízení vhodné pro instalaci Tails"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:503
 #, python-format
 msgid "Please plug a USB flash drive or SD card of at least %0.1f GB."
 msgstr ""
+"Připojte prosím USB flash disk nebo SD kartu velikosti alespoň %0.1f GB."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:515
 msgid "An error happened while installing Tails"
-msgstr ""
+msgstr "Při instalaci Tails nastala chyba"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:567
 msgid "Installation complete!"
-msgstr ""
+msgstr "Instalace dokončena!"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:622
 msgid "Unable to mount device"
-msgstr ""
+msgstr "Zařízení nelze připojit"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:628
 #, python-format
 msgid "%(parent_size)s %(vendor)s %(model)s device (%(device)s)"
-msgstr ""
+msgstr "%(parent_size)s %(vendor)s %(model)s zařízení (%(device)s)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:637
 msgid ""
@@ -917,10 +986,13 @@ msgid ""
 "\n"
 "The persistent storage on this USB stick will be lost."
 msgstr ""
+"\n"
+"\n"
+"Trvalé úložiště na tomto USB flash disku bude ztraceno."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:638
 msgid "Delete Persistent Storage and Reinstall"
-msgstr ""
+msgstr "Smazat trvalé úložiště a znovu nainstalovat"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:640
 msgid ""
@@ -928,45 +1000,51 @@ msgid ""
 "\n"
 "All data on this USB stick will be lost."
 msgstr ""
+"\n"
+"\n"
+"Všechna data na tomto USB flash disku budou ztracena."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:641
 msgid "Delete All Data and Install"
-msgstr ""
+msgstr "Smazat všechna data a nainstalovat"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:642
 #, python-format
 msgid "%(description)s%(delete_message)s"
-msgstr ""
+msgstr "%(description)s%(delete_message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:646
 msgid "Confirm the target USB stick"
-msgstr ""
+msgstr "Potvrďte cílový USB flash disk"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:687
 msgid ""
 "The selected file is unreadable. Please fix its permissions or select "
 "another file."
 msgstr ""
+"Vybraný soubor je nečitelný. Opravte jeho oprávnění nebo vyberte jiný soubor."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:693
 msgid ""
 "Unable to use the selected file.  You may have better luck if you move your "
 "ISO to the root of your drive (ie: C:\\)"
 msgstr ""
+"Vybraný soubor nelze použít. Zkuste přesunout ISO do kořenového adresáře "
+"vašeho disku (např. C:\\)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:699
 #, python-format
 msgid "%(filename)s selected"
-msgstr ""
+msgstr "Vybrán soubor %(filename)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:31
 msgid "Unable to find Tails on ISO"
-msgstr ""
+msgstr "Na ISO nelze nalézt Tails"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:37
 #, python-format
 msgid "Could not guess underlying block device: %s"
-msgstr ""
+msgstr "Nelze odhadnout základní blokové zařízení: %s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:52
 #, python-format
@@ -975,21 +1053,24 @@ msgid ""
 "%(out)s\n"
 "%(err)s"
 msgstr ""
+"Nastal problém při spouštění '%(cmd)s'.\n"
+"%(out)s\n"
+"%(err)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:64
 #, python-format
 msgid "\"%s\" does not exist"
-msgstr ""
+msgstr "\"%s\" neexistuje"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:66
 #, python-format
 msgid "\"%s\" is not a directory"
-msgstr ""
+msgstr "\"%s\" není adresář"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:77
 #, python-format
 msgid "Skipping \"%(filename)s\""
-msgstr ""
+msgstr "Přeskakuji \"%(filename)s\""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/utils.py:54
 #, python-format
@@ -997,10 +1078,12 @@ msgid ""
 "There was a problem executing `%(cmd)s`.%(out)s\n"
 "%(err)s"
 msgstr ""
+"Nastal problém při spouštění '%(cmd)s'.%(out)s\n"
+"%(err)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/utils.py:126
 msgid "Could not open device for writing."
-msgstr ""
+msgstr "Zařízení nelze otevřit pro zápis."
 
 #: config/chroot_local-includes/usr/local/bin/keepassxc:19
 #, sh-format
@@ -1025,15 +1108,15 @@ msgstr "Ponechat současný název"
 
 #: config/chroot_local-includes/usr/local/bin/replace-su-with-sudo:19
 msgid "su is disabled. Please use sudo instead."
-msgstr ""
+msgstr "su je vypnuto. Použijte prosím sudo."
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:46
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:313
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:459
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:592
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1034
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:314
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:460
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:593
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1096
 msgid "Error"
 msgstr "Chyba"
 
@@ -1042,12 +1125,15 @@ msgid ""
 "The device Tails is running from cannot be found. Maybe you used the 'toram' "
 "option?"
 msgstr ""
+"Zařízení, ze kterého běží Tails, nelze najít. Možná jste použili volbu "
+"'toram'?"
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:251
 msgid ""
 "The drive Tails is running from cannot be found. Maybe you used the 'toram' "
 "option?"
 msgstr ""
+"Disk, na kterém běží Tails, nelze najít. Možná jste použili volbu 'toram''?"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/status-menu-helper@tails.boum.org/extension.js:78
 msgid "Lock screen"
@@ -1055,17 +1141,18 @@ msgstr "Zamknout obrazovku"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/status-menu-helper@tails.boum.org/extension.js:82
 msgid "Suspend"
-msgstr ""
+msgstr "Pozastavit"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/status-menu-helper@tails.boum.org/extension.js:86
 msgid "Restart"
-msgstr ""
+msgstr "Restartovat"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/status-menu-helper@tails.boum.org/extension.js:90
 msgid "Power Off"
 msgstr "Vypnout"
 
 #: config/chroot_local-includes/usr/local/bin/tails-about:22
+#: config/chroot_local-includes/usr/local/bin/tails-about:35
 #: ../config/chroot_local-includes/usr/share/desktop-directories/Tails.directory.in.h:1
 msgid "Tails"
 msgstr "Tails"
@@ -1074,10 +1161,6 @@ msgstr "Tails"
 #: ../config/chroot_local-includes/usr/share/applications/tails-about.desktop.in.h:1
 msgid "About Tails"
 msgstr "O Tails"
-
-#: config/chroot_local-includes/usr/local/bin/tails-about:35
-msgid "The Amnesic Incognito Live System"
-msgstr "The Amnesic Incognito Live System"
 
 #: config/chroot_local-includes/usr/local/bin/tails-about:36
 #, python-format
@@ -1100,16 +1183,20 @@ msgid ""
 "{details} Please check your list of additional software or read the system "
 "log to understand the problem."
 msgstr ""
+"{details} Zkontrolujte seznam dodatečného softwaru nebo si přečtěte "
+"systémový protokol pro lepší pochopení problému."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:155
 msgid ""
 "Please check your list of additional software or read the system log to "
 "understand the problem."
 msgstr ""
+"Zkontrolujte seznam dodatečného softwaru nebo si přečtěte systémový protokol "
+"pro lepší pochopení problému."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
 msgid "Show Log"
-msgstr ""
+msgstr "Zobrazit protokol"
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
 msgid "Configure"
@@ -1132,12 +1219,12 @@ msgstr ", "
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:321
 #, python-brace-format
 msgid "Add {packages} to your additional software?"
-msgstr ""
+msgstr "Přidat {packages} k vašemu dodatečnému softwaru?"
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:293
 msgid ""
 "To install it automatically from your persistent storage when starting Tails."
-msgstr ""
+msgstr "Instalovat automaticky z vašeho trvalého úložiště při spouštění Tails."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:295
 msgid "Install Every Time"
@@ -1152,13 +1239,15 @@ msgstr "Instalovat pouze jednou"
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:332
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:372
 msgid "The configuration of your additional software failed."
-msgstr ""
+msgstr "Konfigurace vašeho dodatečného softwaru selhala."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:323
 msgid ""
 "To install it automatically when starting Tails, you can create a persistent "
 "storage and activate the <b>Additional Software</b> feature."
 msgstr ""
+"K automatické instalaci při spouštění Tails můžete vytvořit trvalé úložiště "
+"a aktivovat vlastnost <b>Dodatečný software.</b>"
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:326
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:265
@@ -1167,32 +1256,32 @@ msgstr "Vytvořit trvalé úložiště"
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:334
 msgid "Creating your persistent storage failed."
-msgstr ""
+msgstr "Trvalé úložiště se nepodařilo vytvořit."
 
 #. Translators: Don't translate {packages}, it's a placeholder and
 #. will be replaced.
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:343
 #, python-brace-format
 msgid "You could install {packages} automatically when starting Tails"
-msgstr ""
+msgstr "{packages} můžete instalovat automaticky při startu Tails."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:346
 msgid "To do so, you need to run Tails from a USB stick."
-msgstr ""
+msgstr "K tomu musíte Tails spustit z USB disku."
 
 #. Translators: Don't translate {packages}, it's a placeholder and will be
 #. replaced.
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:360
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Remove {packages} from your additional software?"
-msgstr ""
+msgstr "Přidat {packages} k vašemu dodatečnému softwaru?"
 
 #. Translators: Don't translate {packages}, it's a placeholder
 #. and will be replaced.
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:364
 #, python-brace-format
 msgid "This will stop installing {packages} automatically."
-msgstr ""
+msgstr "Tím se balík {packages} přestane automaticky aktualizovat."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:366
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:163
@@ -1201,7 +1290,7 @@ msgstr "Odstranit"
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:543
 msgid "Installing your additional software from persistent storage..."
-msgstr ""
+msgstr "Instalace dodatečného softwaru z trvalého úložiště..."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:545
 msgid "This can take several minutes."
@@ -1209,7 +1298,7 @@ msgstr "Toto může trvat pár minut."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:558
 msgid "The installation of your additional software failed"
-msgstr ""
+msgstr "Instalace dalšího softwaru selhala"
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:573
 msgid "Additional software installed successfully"
@@ -1217,7 +1306,7 @@ msgstr "Dodatečný software byl úspěšně nainstalován"
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:593
 msgid "The check for upgrades of your additional software failed"
-msgstr ""
+msgstr "Kontrola aktualizací vašeho dodatečného softwaru selhala"
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:595
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:603
@@ -1225,10 +1314,12 @@ msgid ""
 "Please check your network connection, restart Tails, or read the system log "
 "to understand the problem."
 msgstr ""
+"Zkontrolujte prosím síťové připojení, restartujte Tails nebo si přečtěte "
+"systémový protokol pro lepší pochopení problému."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:602
 msgid "The upgrade of your additional software failed"
-msgstr ""
+msgstr "Upgrade vašeho dodatečného softwaru selhal"
 
 #: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:37
 msgid "Documentation"
@@ -1241,22 +1332,24 @@ msgid ""
 "Remove {package} from your additional software? This will stop installing "
 "the package automatically."
 msgstr ""
+"Chcete odstranit {package} z vašeho dodatečného softwaru? Tím se balík "
+"přestane automaticky aktualizovat."
 
 #. Translators: Don't translate {pkg}, it's a placeholder and will be replaced.
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:106
 #, python-brace-format
 msgid "Failed to remove {pkg}"
-msgstr ""
+msgstr "Odstranění {pkg} selhalo"
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:131
 msgid "Failed to read additional software configuration"
-msgstr ""
+msgstr "Selhalo čtení konfigurace dodatečného softwaru"
 
 #. Translators: Don't translate {package}, it's a placeholder and will be replaced.
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:161
 #, python-brace-format
 msgid "Stop installing {package} automatically"
-msgstr ""
+msgstr "Zastavit automatickou instalaci {package}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:187
 msgid ""
@@ -1264,6 +1357,9 @@ msgid ""
 "Package Manager</a> or <a href=\"org.gnome.Terminal.desktop\">APT on the "
 "command line</a>."
 msgstr ""
+"To provedete tak, že nainstalujete software prostřednictvím <a href="
+"\"synaptic.desktop\">Správce balíčků Synaptic</a> nebo <a href=\"org.gnome."
+"Terminal.desktop\">APT v příkazové řádce</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:196
 msgid ""
@@ -1271,6 +1367,10 @@ msgid ""
 "some software using <a href=\"synaptic.desktop\">Synaptic Package Manager</"
 "a> or <a href=\"org.gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
+"To provedete tak, že při startu Tails odemknete své trvalé úložiště a "
+"nainstalujete software prostřednictvím <a href=\"synaptic.desktop\">Správce "
+"balíčků Synaptic</a> nebo <a href=\"org.gnome.Terminal.desktop\">APT v "
+"příkazové řádce</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:206
 msgid ""
@@ -1278,14 +1378,19 @@ msgid ""
 "href=\"synaptic.desktop\">Synaptic Package Manager</a> or <a href=\"org."
 "gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
+"To provedete tak, že vytvoříte trvalé úložiště a nainstalujete software "
+"prostřednictvím <a href=\"synaptic.desktop\">Správce balíčků Synaptic</a> "
+"nebo <a href=\"org.gnome.Terminal.desktop\">APT v příkazové řádce</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:214
 msgid "To do so, install Tails on a USB stick and create a persistent storage."
 msgstr ""
+"To provedete tak, že nainstalujete Tails na USB disk a vytvoříte trvalé "
+"úložiště."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:258
 msgid "[package not available]"
-msgstr ""
+msgstr "[balík není dostupný]"
 
 #: config/chroot_local-includes/usr/local/lib/tails-htp-notify-user:68
 msgid "Failed to synchronize the clock!"
@@ -1304,7 +1409,7 @@ msgid "Set up a password to unlock the screen."
 msgstr "Nastavte heslo pro odemčení obrazovky."
 
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:149
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2165
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2227
 msgid "Password"
 msgstr "Heslo"
 
@@ -1333,6 +1438,9 @@ msgid ""
 "is temporarily disabled.\n"
 "You might prefer to restart Tails and disable MAC address anonymization."
 msgstr ""
+"Anonymizace MAC adresy se pro síťovou kartu ${nic_name} (${nic}) nezdařila, "
+"takže je dočasně zakázána.\n"
+"Možná raději restartujete Tails a zakážte anonymizaci adres MAC."
 
 #: config/chroot_local-includes/usr/local/lib/tails-spoof-mac:66
 msgid "All networking disabled"
@@ -1345,6 +1453,10 @@ msgid ""
 "error recovery also failed so all networking is disabled.\n"
 "You might prefer to restart Tails and disable MAC address anonymization."
 msgstr ""
+"Anonymizace MAC adresy se pro síťovou kartu ${nic_name} (${nic}) nezdařila, "
+"takže je dočasně zakázána. Zotavení z chyby selhalo taky, takže je zakázána "
+"veškerá síťová komunikace.\n"
+"Možná raději restartujete Tails a zakážte anonymizaci adres MAC."
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:36
 #, python-brace-format
@@ -1359,6 +1471,15 @@ msgid ""
 "Or do a manual upgrade.\n"
 "See {manual_upgrade_url}"
 msgstr ""
+"<b>Není dostupný dostatek paměti pro kontrolu aktualizací.</b>\n"
+"\n"
+"Ujistěte se, že tento systém splňuje podmínky pro běh Tails.\n"
+"Viz file:///usr/share/doc/tails/website/doc/about/requirements.en.html\n"
+"\n"
+"Zkuste restartovat Tails a znovu zkontrolovat aktualizace.\n"
+"\n"
+"Nebo proveďte ruční aktualizaci.\n"
+"Viz {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:76
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:45
@@ -1380,50 +1501,58 @@ msgid ""
 "trustworthy, for both the host operating system and the virtualization "
 "software."
 msgstr ""
+"Hostitelský operační systém i virtualizační software mohou monitorovat, co v "
+"Tails děláte. Za důvěryhodný lze považovat jen svobodný software, a to jak v "
+"případě operačního systému, tak virutálizačního softwaru."
 
 #: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:40
 msgid "Don't Show Again"
-msgstr ""
+msgstr "Příště nezobrazovat"
 
 #: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:42
 msgid "Learn More"
-msgstr ""
+msgstr "Zjistit více"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/config.py:9
 #: ../config/chroot_local-includes/usr/share/applications/tca.desktop.in.h:1
 msgid "Tor Connection"
-msgstr ""
+msgstr "Tor spojení"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:200
 msgid "_Use a bridge that you already know"
-msgstr ""
+msgstr "_Použít bridge, který už znáte"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:242
+#, fuzzy
 msgid ""
 "To save your bridge, <a href=\"doc/first_steps/persistence\">unlock your "
 "Persistent Storage</a>."
 msgstr ""
+"Pro uložení vašeho bridge <a href=\"doc/first_steps/persistence\">odemkněte "
+"Trvalé úložiště</a>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
 msgid ""
 "To save your bridge, <a href=\"doc/first_steps/persistence\">create a "
 "Persistent Storage</a> on your Tails USB stick."
 msgstr ""
+"Pro uložení vašeho bridge na svém Tails USB flash disku <a href=\"doc/"
+"first_steps/persistence\">vytvořte Trvalé úložiště</a>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:269
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:754
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:773
 #, python-brace-format
 msgid "Invalid: {exception}"
-msgstr ""
+msgstr "Neplatné: {exception}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:281
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:767
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:786
 msgid "You need to configure an obfs4 bridge to hide that you are using Tor"
-msgstr ""
+msgstr "Musíte nakonfigurovat bridge obfs4, abyste skryli, že používáte Tor."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:334
 msgid "Failed to configure your Persistent Storage"
-msgstr ""
+msgstr "Nastavení Trvalého úložiště selhalo."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:385
 msgid "Failed to detect a webcam. Maybe your webcam is too old."
@@ -1443,49 +1572,54 @@ msgstr ""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:500
 msgid "Connecting to Tor without bridges…"
-msgstr ""
+msgstr "Připojování k Toru bez využití bridgů..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:507
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:531
 msgid "Connecting to Tor with default bridges…"
-msgstr ""
+msgstr "Připojování k Toru s výchozími bridgi..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:514
 msgid "Connecting to Tor with a custom bridge…"
-msgstr ""
+msgstr "Připojování k Toru pomocí vlastního bridge..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:622
 msgid "Connected to Tor successfully with bridges"
 msgstr ""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:624
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1898
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1960
 msgid "Connected to Tor successfully"
-msgstr ""
+msgstr "Úspěšně připojeno k Toru"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:628
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1923
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1985
 msgid "You can now browse the Internet anonymously and uncensored."
-msgstr ""
+msgstr "Nyní můžete procházet internet anonymně a bez cenzury."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:757
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:703
+#, fuzzy
+msgid "This local network seems to be blocking access to Tor."
+msgstr "Vaše místní síť blokuje přístup k Toru."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:776
 msgid "Bridge address malformed"
-msgstr ""
+msgstr "Nesprávný tvar Bridge adresy"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:775
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:794
 msgid "Setting a bridge is needed if you want to hide that you are using Tor"
-msgstr ""
+msgstr "Pokud chcete skrýt, že používáte Tor, je nutné nastavit bridge."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:992
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1011
 #, python-brace-format
 msgid "Scanned {bridge_type} bridge: <b>{bridge_info}</b>."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1077
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1096
 msgid "Are you sure you want to lose progress?"
-msgstr ""
+msgstr "Opravdu chcete o práci přijít?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1081
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1100
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -1493,10 +1627,23 @@ msgid ""
 "If connecting to Tor fails, you will have to wait again until the end of the "
 "progress bar to be able to troubleshoot your connection."
 msgstr ""
+"Po zavření asistenta pro připojení k síti Tor bude Tails pokračovat v "
+"připojování k síti Tor.\n"
+"\n"
+"Pokud se připojení k síti Tor nezdaří, budete muset počkat až doběhne  "
+"ukazatel průběhu, abyste mohli vyřešit problémy s připojením."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
+msgid "Close and Lose Progress"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1107
+msgid "Wait"
+msgstr ""
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:41
 msgid "You need to migrate your OpenPGP keys"
-msgstr ""
+msgstr "Musíte zmigrovat své klíče OpenPGP"
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:43
 msgid ""
@@ -1504,14 +1651,17 @@ msgid ""
 "in support for OpenPGP encryption. To continue using your OpenPGP keys in "
 "<i>Thunderbird</i>, follow our migration instructions."
 msgstr ""
+"<i>Thunderbird</i> 78 nyní nahrazuje <i>Enigmail</i> rozšíření s "
+"integrovanou podporou šifrování OpenPGP. Chcete-li nadále používat klíče "
+"OpenPGP v <i>Thunderbird</i>, postupujte podle našich pokynů k migraci."
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:45
 msgid "_Open Migration Instructions"
-msgstr ""
+msgstr "_Otevřete pokyny k migraci"
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:46
 msgid "_Migrate Later"
-msgstr ""
+msgstr "_Migrovat později"
 
 #: config/chroot_local-includes/usr/bin/tor-browser:49
 msgid "Tor is not ready"
@@ -1523,19 +1673,19 @@ msgstr "Síť Tor není připravena. Chcete prohlížeč Tor přesto spustit?"
 
 #: config/chroot_local-includes/usr/bin/tor-browser:51
 msgid "Start Tor Browser Offline"
-msgstr ""
+msgstr "Spustit prohlížeč Tor offline"
 
 #: config/chroot_local-includes/usr/bin/tor-browser:52
 msgid "Open Tor Connection"
-msgstr ""
+msgstr "Otevřít spojení s Torem"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/torstatus@tails.boum.org/extension.js:37
 msgid "Tor Status"
-msgstr ""
+msgstr "Stav sítě Tor"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/torstatus@tails.boum.org/extension.js:46
 msgid "Open Onion Circuits"
-msgstr ""
+msgstr "Otevřít Onion řetězce"
 
 #. Translators: Don't translate {volume_label} or {volume_size},
 #. they are placeholders and will be replaced. They need
@@ -1551,7 +1701,7 @@ msgstr "{volume_label} ({volume_size})"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:71
 #, python-brace-format
 msgid "{partition_name} ({partition_size})"
-msgstr ""
+msgstr "{partition_name} ({partition_size})"
 
 #. Translators: Don't translate {volume_size}, it's a placeholder
 #. and will be replaced. It needs to be present in the translated
@@ -1559,14 +1709,14 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:77
 #, python-brace-format
 msgid "{volume_size} Volume"
-msgstr ""
+msgstr "{volume_size} veliký svazek"
 
 #. Translators: Don't translate {volume_name}, it's a placeholder and
 #. will be replaced. It needs to be present in the translated string.
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:116
 #, python-brace-format
 msgid "{volume_name} (Read-Only)"
-msgstr ""
+msgstr "{volume_name} (pouze pro čtení)"
 
 #. Translators: Don't translate {partition_name} and {container_path}, they
 #. are placeholders and will be replaced. They need to be present
@@ -1602,11 +1752,11 @@ msgstr "{volume_name} – {drive_name}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:234
 msgid "Wrong passphrase or parameters"
-msgstr ""
+msgstr "Nasprávné heslo nebo parametry"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:236
 msgid "Error unlocking volume"
-msgstr ""
+msgstr "Chyba při odemykání svazku"
 
 #. Translators: Don't translate {volume_name} or {error_message},
 #. they are placeholder and will be replaced.  They need
@@ -1617,10 +1767,12 @@ msgid ""
 "Couldn't unlock volume {volume_name}:\n"
 "{error_message}"
 msgstr ""
+"Svazek {volume_name} se nepodařilo odemknout:\n"
+"{error_message}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:343
 msgid "One or more applications are keeping the volume busy."
-msgstr ""
+msgstr "Jedna nebo více aplikací zaneprazdňují daný svazek."
 
 #. Translators: Don't translate {volume_name} or {error_message},
 #. they are placeholder and will be replaced. They need
@@ -1631,10 +1783,12 @@ msgid ""
 "Couldn't lock volume {volume_name}:\n"
 "{error_message}"
 msgstr ""
+"Svazek {volume_name} se nepodařilo uzamknout:\n"
+"{error_message}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:352
 msgid "Locking the volume failed"
-msgstr ""
+msgstr "Zamykání svazku selhalo"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_list.py:83
 msgid "No file containers added"
@@ -1642,7 +1796,7 @@ msgstr "Nebyly přidány žádné souborové kontejnery"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_list.py:98
 msgid "No VeraCrypt devices detected"
-msgstr ""
+msgstr "Nebyly nalezeny žádné VeraCrypt zařízení."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:40
 #: ../config/chroot_local-includes/usr/share/applications/unlock-veracrypt-volumes.desktop.in.h:1
@@ -1656,11 +1810,11 @@ msgstr "Kontejner již přidán"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:115
 #, python-format
 msgid "The file container %s should already be listed."
-msgstr ""
+msgstr "Souborový kontejner %s už by měl být uveden."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:131
 msgid "Container opened read-only"
-msgstr ""
+msgstr "Kontejner otevřen pouze pro čtení"
 
 #. Translators: Don't translate {path}, it's a placeholder  and will be replaced.
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:133
@@ -1671,10 +1825,13 @@ msgid ""
 "container.\n"
 "{error_message}"
 msgstr ""
+"Souborový kontejner {path} nemohl být otevřen pro zápis. Namísto toho byl "
+"otevřen pouze pro čtení. Obsah kontejneru nebude moci změnit.\n"
+"{error_message}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:138
 msgid "Error opening file"
-msgstr ""
+msgstr "Chyba při otevírání souboru"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:160
 msgid "Not a VeraCrypt container"
@@ -1695,73 +1852,66 @@ msgid ""
 "Could not add file container %s: Timeout while waiting for loop setup.\n"
 "Please try using the <i>Disks</i> application instead."
 msgstr ""
+"Nebylo možné přidat kontejner %s: Vypršel časový limit při čekání na "
+"nastavení smyčky.\n"
+"Pokuste se použít aplikaci <i>Disky</i>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:209
 msgid "Choose File Container"
-msgstr ""
+msgstr "Vybrat souborový kontejner"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
-msgid "Launch the Unsafe Browser?"
-msgstr ""
-
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
-msgid ""
-"The Unsafe Browser is not anonymous and the websites that you visit can see "
-"your real IP address.\\n\\nOnly use the Unsafe Browser to sign in to a "
-"network, then close it."
-msgstr ""
-
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:70
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
 msgid "The Unsafe Browser was disabled in the Welcome Screen.\\n\\n"
 msgstr ""
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:73
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
 msgid ""
 "To use the Unsafe Browser, restart Tails and make sure that the Unsafe "
 "Browser is enabled in the additional settings of the Welcome Screen."
 msgstr ""
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:75
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
+#, fuzzy
 msgid "To use the Unsafe Browser, restart Tails."
-msgstr ""
+msgstr "Zakázat Nezabezpečený prohlížeč (default)"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:78
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:64
 msgid "_Restart"
-msgstr ""
+msgstr "_Restartovat"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:79
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:123
 msgid "_Cancel"
 msgstr ""
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:80
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:66
 msgid ""
 "Do you really want to restart Tails now?\\n\\nAll your current work will be "
 "lost."
 msgstr ""
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:81
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:67
 msgid "Restart Now"
-msgstr ""
+msgstr "Restartovat teď"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:88
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
 msgid "Failed to restart the system."
-msgstr ""
+msgstr "Systém se nepodařilo restartovat."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:96
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
 msgid "Starting the Unsafe Browser..."
 msgstr "Spouštění Nezabezpečeného prohlížeče..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:97
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:83
 msgid "This may take a while, so please be patient."
 msgstr "Může to chvíli trvat, chvilku strpení prosím."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:89
 msgid "Shutting down the Unsafe Browser..."
 msgstr "Ukončování Nezabezpečeného prohlížeče..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:104
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:90
 msgid ""
 "This may take a while, and you may not restart the Unsafe Browser until it "
 "is properly shut down."
@@ -1769,13 +1919,13 @@ msgstr ""
 "Může to chvíli trvat a Nezabezpečený prohlížeč nebudete moci znovu spustit, "
 "dokud nebude správně ukončen."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:117
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:1
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:512
 msgid "Unsafe Browser"
 msgstr "Nezabezpečený prohlížeč"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:131
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:117
 msgid ""
 "Another Unsafe Browser is currently running, or being cleaned up. Please "
 "retry in a while."
@@ -1783,24 +1933,27 @@ msgstr ""
 "Další Nezabezpečený prohlížeč je spuštěn nebo se čistí. Zkuste to znovu "
 "později."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:139
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:124
 msgid "Failed to setup chroot."
 msgstr "Nepodařilo se nastavit \"chroot\"."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:145
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:130
 msgid "Failed to configure browser."
-msgstr ""
+msgstr "Prohlížeč se nepodařilo nakonfigurovat."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:147
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:132
 msgid ""
 "You are not connected to a local network yet.\\n\\nTo be able to start the "
 "Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile "
 "network."
 msgstr ""
+"Ještě nejste připojeni k místní síti. \\n\\n Nebudete moci spustit "
+"nezabezpečený prohlížeč, dokud se napřipojíte k Wi-Fi, kabelové nebo mobilní "
+"síti."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:170
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:155
 msgid "Failed to run browser."
-msgstr ""
+msgstr "Prohlížeč se nepodařilo spustit."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/exceptions.py:40
 #, python-format
@@ -1811,51 +1964,51 @@ msgstr ""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:113
 msgid "Name of the affected software"
-msgstr ""
+msgstr "Název postiženého softwaru"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:115
 msgid "Exact steps to reproduce the error"
-msgstr ""
+msgstr "Přesný popis kroků při kterých k chybě dochází"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:117
 msgid "Actual result and description of the error"
-msgstr ""
+msgstr "Skutečný výsledek a popis chyby"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:119
 msgid "Desired result"
-msgstr ""
+msgstr "Očekávaný výsledek"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:132
 msgid "Unable to load a valid configuration."
-msgstr ""
+msgstr "Nelze nahrát platnou konfiguraci."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:169
 msgid "Sending mail..."
-msgstr ""
+msgstr "Odesílání pošty..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:170
 msgid "Sending mail"
-msgstr ""
+msgstr "Odesílání pošty"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:172
 msgid "This could take a while..."
-msgstr ""
+msgstr "Může to chvíli trvat..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:188
 msgid "The contact email address doesn't seem valid."
-msgstr ""
+msgstr "Zdá se, že kontaktní e-mailová adresa není platná."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:205
 msgid "Unable to send the mail: SMTP error."
-msgstr ""
+msgstr "Poštu nelze odeslat: chyba SMTP."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:207
 msgid "Unable to connect to the server."
-msgstr ""
+msgstr "Nelze se připojit k serveru."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:209
 msgid "Unable to create or to send the mail."
-msgstr ""
+msgstr "Poštu nelze vytvořit nebo odeslat."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:212
 msgid ""
@@ -1866,19 +2019,27 @@ msgid ""
 "\n"
 "If it does not work, you will be offered to save the bug report."
 msgstr ""
+"\n"
+"\n"
+"Hlášení o problému nebylo možné odeslat, pravděpodobně kvůli problémům sítě. "
+"Zkuste se prosím znovu připojit k síti a znovu klepnout na tlačítko "
+"Odeslat.\n"
+"\n"
+"Pokud to nebude fungovat, bude vám nabídnuta možnost hlášení o problému "
+"uložit."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:225
 msgid "Your message has been sent."
-msgstr ""
+msgstr "Vaše zpráva byla úspěšně odeslána."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:232
 msgid "An error occured during encryption."
-msgstr ""
+msgstr "Během šifrování došlo k chybě."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:252
 #, python-format
 msgid "Unable to save %s."
-msgstr ""
+msgstr "%s nelze uložit."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:275
 #, python-format
@@ -1893,58 +2054,66 @@ msgid ""
 "\n"
 "Do you want to save the bug report to a file?"
 msgstr ""
+"Hlášení problému nebylo možné odeslat, pravděpodobně kvůli síťové chybě. \n"
+"\n"
+"Řešením může být hlášení uložit na USB disk a poslat nám ho na %s z jiného "
+"počítače. Pamatujte, že vaše hlášení v tomto případě nebude anonymní, pokud "
+"o anonymizaci nepostaráte sami (například připojením přes Tor a použitím "
+"jednorázově založené e-mailové schránky).\n"
+"\n"
+"Chcete uložit toto hlášení problému do souboru?"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:337
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:280
 msgid "WhisperBack"
-msgstr ""
+msgstr "WhisperBack"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:338
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:12
 msgid "Send feedback in an encrypted mail."
-msgstr ""
+msgstr "Poslat zpětnou vazbu šifrovanou poštou."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:341
 msgid "Copyright © 2009-2018 Tails developers (tails@boum.org)"
-msgstr ""
+msgstr "Copyright © 2009-2018 vývojáři Tails (tails@boum.org)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:342
 msgid "Tails developers <tails@boum.org>"
-msgstr ""
+msgstr "Vývojáři Tails <tails@boum.org>"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:343
 msgid "translator-credits"
-msgstr ""
+msgstr "translator-credits"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:376
 msgid "This doesn't seem to be a valid URL or OpenPGP key."
-msgstr ""
+msgstr "Toto není správná URL adresa ani OpenPGP klíč."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:62
 #, python-format
 msgid "Invalid contact email: %s"
-msgstr ""
+msgstr "Neplatný kontaktní e-mail: %s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:82
 #, python-format
 msgid "Invalid contact OpenPGP key: %s"
-msgstr ""
+msgstr "Neplatný kontaktní OpenPGP klíč: %s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:84
 msgid "Invalid contact OpenPGP public key block"
-msgstr ""
+msgstr "Neplatný blok veřejného OpenPGP klíče"
 
 #: config/chroot_local-includes/usr/local/bin/tca:154
 msgid "You turned on Offline Mode in the Welcome Screen."
-msgstr ""
+msgstr "Na uvítací obrazovce jste zapnuli Offline mód."
 
 #: config/chroot_local-includes/usr/local/bin/tca:155
 msgid "It is impossible to connect to Tor in Offline Mode."
-msgstr ""
+msgstr "V offline módu není možné se připojit k Toru."
 
 #: config/chroot_local-includes/usr/local/bin/tca:156
 msgid "To connect to Tor and the Internet, restart Tails without Offline Mode."
-msgstr ""
+msgstr "Pro připojení k Toru a internetu restartujte Tails bez offline módu."
 
 #: ../config/chroot_local-includes/etc/skel/Desktop/Report_an_error.desktop.in.h:1
 msgid "Report an error"
@@ -1966,14 +2135,16 @@ msgid ""
 "Configure which files and application configuration are saved between "
 "working sessions"
 msgstr ""
+"Nastavte které soubory a konfigurace aplikací se uloží mezi pracovními "
+"relacemi"
 
 #: ../config/chroot_local-includes/usr/share/applications/root-terminal.desktop.in.h:1
 msgid "Root Terminal"
-msgstr ""
+msgstr "Root Terminal"
 
 #: ../config/chroot_local-includes/usr/share/applications/root-terminal.desktop.in.h:2
 msgid "Opens a terminal as the root user, using gksu to ask for the password"
-msgstr ""
+msgstr "Otevře terminál pod účtem root s použitím gksu pro ověření hesla"
 
 #: ../config/chroot_local-includes/usr/share/applications/tails-documentation.desktop.in.h:2
 msgid "Learn how to use Tails"
@@ -1985,11 +2156,11 @@ msgstr "Zjistěte více o Tails"
 
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:2
 msgid "Install, clone, upgrade Tails"
-msgstr ""
+msgstr "Instalovat, klonovat, aktualizovat Tails"
 
 #: ../config/chroot_local-includes/usr/share/applications/tca.desktop.in.h:2
 msgid "Connect Tails to the Tor network"
-msgstr ""
+msgstr "Připojit Tails k síti Tor"
 
 #: ../config/chroot_local-includes/usr/share/applications/tor-browser.desktop.in.h:1
 msgid "Tor Browser"
@@ -2016,18 +2187,20 @@ msgid ""
 "Configure the additional software installed from your persistent storage "
 "when starting Tails"
 msgstr ""
+"Nastavte dodatečný software, který se při startu Tails nainstaluje z vašeho "
+"trvalého úložiště"
 
 #: ../config/chroot_local-includes/usr/share/applications/whisperback.desktop.in.h:1
 msgid "WhisperBack Error Reporting"
-msgstr ""
+msgstr "Hlášení chyb WhisperBack"
 
 #: ../config/chroot_local-includes/usr/share/applications/whisperback.desktop.in.h:2
 msgid "Send feedback via encrypted e-mail"
-msgstr ""
+msgstr "Odeslat zpětnou vazbu šifrovaným e-mailem"
 
 #: ../config/chroot_local-includes/usr/share/applications/whisperback.desktop.in.h:3
 msgid "feedback;bug;report;tails;error;"
-msgstr ""
+msgstr "feedback;bug;report;tails;error;"
 
 #: ../config/chroot_local-includes/usr/share/desktop-directories/Tails.directory.in.h:2
 msgid "Tails specific tools"
@@ -2039,17 +2212,19 @@ msgstr "Pro spuštění Root terminálu se musíte ověřit."
 
 #: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.additional-software.policy.in.h:1
 msgid "Remove an additional software package"
-msgstr ""
+msgstr "Odeberte balíček dodatečného softwaru"
 
 #: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.additional-software.policy.in.h:2
 msgid ""
 "Authentication is required to remove a package from your additional software "
 "($(command_line))"
 msgstr ""
+"Pro odebrání balíčku dodatečného softwaru ($(command_line)) je vyžadována "
+"autentizace"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:18
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:56
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:740
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:739
 msgid "Administration Password"
 msgstr "Heslo pro správu"
 
@@ -2059,6 +2234,8 @@ msgid ""
 "tasks. Otherwise, the administration password is disabled for better "
 "security."
 msgstr ""
+"Pokud potřebujete provádět úkony správy, nastavte administrátorské heslo. V "
+"opačném případě bude heslo pro správu pro zvýšení zabezpečení zakázáno."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:69
 msgid "Enter an administration password"
@@ -2066,16 +2243,16 @@ msgstr "Zadejte heslo pro správu"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:107
 msgid "Confirm your administration password"
-msgstr ""
+msgstr "Potvrďte heslo pro správu"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:124
 msgid "Disable"
 msgstr "Zakázat"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:154
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:744
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:743
 msgid "MAC Address Anonymization"
-msgstr ""
+msgstr "Anonymizace MAC adresy"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:170
 msgid ""
@@ -2084,17 +2261,21 @@ msgid ""
 "generally safer as it helps you hide your geographical location. But it "
 "might also create connectivity problems or look suspicious."
 msgstr ""
+"Anonymizace MAC adresy skrývá sériové číslo síťového rozhraní (Wi-Fi nebo "
+"kabelového) před místní sítí. Anonymizace MAC adres je obecně bezpečnější, "
+"protože pomáhá skrýt vaši zeměpisnou polohu. Může však také způsobit "
+"problémy s připojením nebo vypadat podezřele."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:212
 msgid "Anonymize all MAC addresses (default)"
-msgstr ""
+msgstr "Anonymizovat všechny MAC adresy (výchozí)"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:258
 msgid "Don't anonymize MAC addresses"
-msgstr ""
+msgstr "Neanonymizovat MAC adresy"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:311
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:748
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:747
 msgid "Network Configuration"
 msgstr "Konfigurace sítě"
 
@@ -2109,18 +2290,28 @@ msgid ""
 "If you want to work offline, enable the Offline Mode in the additional "
 "settings."
 msgstr ""
+"Toto dodatečné nastavení jsme v Tails 4.19 (červen 2021) nahradili "
+"asistentem pro připojení k síti Tor integrovaným na ploše.\n"
+"\n"
+"Po spuštění aplikace Tails budete dotázáni, zda chcete používat Tor bridge "
+"při připojování k síti Tor.\n"
+"\n"
+"Pokud chcete pracovat offline, povolte v doplňkovém nastavení režim Offline."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:357
 msgid "Offline Mode"
-msgstr ""
+msgstr "Offline režim"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:373
 msgid ""
 "If you want to work completely offline, you can disable all networking for "
 "increased security."
 msgstr ""
+"Pokud chcete pracovat zcela offline, můžete pro zvýšení bezpečnosti vypnout "
+"všechny sítě."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:528
+#, fuzzy
 msgid ""
 "The Unsafe Browser allows you to sign in to a network using a captive "
 "portal.\n"
@@ -2136,20 +2327,28 @@ msgid ""
 "2022), after we fixed the security vulnerabilities that made us disable it "
 "by default in Tails 4.8 (June 2020)."
 msgstr ""
+"Nezabezpečený prohlížeč vám dovolí použít portál pro přihlášení k síti.\n"
+"\n"
+"Portál pro přihlášení k síti je webová stránka, která se zobrazí, než budete "
+"moci vstoupit do internetu. Tyto portály většinou vyžadují přihlášení k síti "
+"nebo zadání informací, jako je emailová adresa.\n"
+"\n"
+"Nezabezpečený prohlížeč není anynomní. Používejte jej pouze pro přístup k "
+"portálům pro přihlášení k síti."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:576
 #, fuzzy
 msgid "Enable the Unsafe Browser (default)"
-msgstr "Spouštění Nezabezpečeného prohlížeče..."
+msgstr "Zakázat Nezabezpečený prohlížeč (default)"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:622
 #, fuzzy
 msgid "Disable the Unsafe Browser"
-msgstr "Spouštění Nezabezpečeného prohlížeče..."
+msgstr "Povolit Nezabezpečený prohlížeč"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:100
 msgid "Settings were loaded from the persistent storage."
-msgstr ""
+msgstr "Nastavení bylo načteno z trvalého úložiště."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:152
 msgid "Welcome to Tails!"
@@ -2168,54 +2367,57 @@ msgid ""
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:246
+#, fuzzy
 msgid ""
 "You will create and configure your Persistent Storage after starting Tails."
-msgstr ""
+msgstr "Instalovat automaticky z vašeho trvalého úložiště při spouštění Tails."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:301
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:300
 msgid "Language & Region"
-msgstr ""
+msgstr "Region a jazyk"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:337
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:336
 msgid "Default Settings"
 msgstr "Výchozí nastavení"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:400
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:399
 msgid "Encrypted _Persistent Storage"
 msgstr "Šifrované _Trvalé úložiště"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:441
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:440
 msgid "Show Passphrase"
 msgstr "Zobrazit heslo"
 
 #. The label for this placeholder text is not very big, so keep this string short.
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:494
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:493
 msgid "Enter your passphrase to unlock the persistent storage"
-msgstr ""
+msgstr "Pro odemčení trvalého úložiště zadejte heslo"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:542
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:541
 msgid "Your persistent storage is unlocked. Restart Tails to lock it again."
 msgstr "Trvalé úložiště je odemčeno. Restart Tails ho znovu uzamkne."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:580
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:579
 msgid "_Additional Settings"
 msgstr "_Další nastavení"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:663
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:662
 msgid "Add an additional setting"
 msgstr "Přidat další nastavení"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:712
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:711
 msgid ""
 "The default settings are safe in most situations. To add a custom setting, "
 "press the \"+\" button below."
 msgstr ""
+"Výchozí nastavení je ve většině situací bezpečné. Chcete-li přidat vlastní "
+"nastavení, klepněte níže na tlačítko „+“."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:756
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:755
 msgid "Shutdown"
 msgstr "Vypnout"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:767
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:766
 msgid "_Start Tails"
 msgstr "_Spustit Tails"
 
@@ -2228,7 +2430,7 @@ msgstr "Zobrazit heslo"
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:95
 #, fuzzy
 msgid "Current _Passphrase"
-msgstr "Zobrazit heslo"
+msgstr "Přístupové heslo:"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:131
 #, fuzzy
@@ -2247,16 +2449,18 @@ msgstr "Zobrazit heslo"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:253
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:213
+#, fuzzy
 msgid "The passphrases do not match"
-msgstr ""
+msgstr "Hesla se neshodují"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:317
 msgid "Ch_ange"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/deleted_view.ui.in:21
+#, fuzzy
 msgid "The Persistent Storage was successfully deleted."
-msgstr ""
+msgstr "Smazat trvalé úložiště a znovu nainstalovat"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/deleted_view.ui.in:32
 msgid "_Close"
@@ -2275,8 +2479,9 @@ msgid ""
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/fail_view.ui.in:74
+#, fuzzy
 msgid "Send Error Report"
-msgstr ""
+msgstr "Hlášení chyb WhisperBack"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:61
 msgid ""
@@ -2295,18 +2500,19 @@ msgid ""
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:106
+#, fuzzy
 msgid "Personal Documents"
-msgstr ""
+msgstr "Osobní data"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:134
 #, fuzzy
 msgid "Persistent Folder"
-msgstr "Vytvořit trvalé úložiště"
+msgstr "Smazat trvalý svazek"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:153
 #, fuzzy
 msgid "Open Persistent Folder"
-msgstr "Vytvořit trvalé úložiště"
+msgstr "Smazat trvalý svazek"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:166
 #, fuzzy
@@ -2319,12 +2525,14 @@ msgid "System Settings"
 msgstr "Výchozí nastavení"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:229
+#, fuzzy
 msgid "Activate Welcome Screen"
-msgstr ""
+msgstr "Úvodní obrazovka"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:250
+#, fuzzy
 msgid "Activate Printers"
-msgstr ""
+msgstr "Tiskárny"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:275
 msgid "Network"
@@ -2332,7 +2540,7 @@ msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:303
 msgid "Network Connections"
-msgstr ""
+msgstr "Síťová připojení"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:304
 msgid "Save Wi-Fi passwords and mobile broadband configuration."
@@ -2341,16 +2549,16 @@ msgstr ""
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:314
 #, fuzzy
 msgid "Activate Network Connections"
-msgstr "Konfigurace sítě"
+msgstr "Síťová připojení"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:325
 msgid "Tor Bridge"
-msgstr ""
+msgstr "Tor Bridge"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:335
 #, fuzzy
 msgid "Activate Tor Bridge"
-msgstr "Spustit prohlížeč Tor"
+msgstr "Tor Bridge"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:360
 msgid "Applications"
@@ -2359,19 +2567,22 @@ msgstr ""
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:398
 #, fuzzy
 msgid "Activate Tor Browser Bookmarks"
-msgstr "Spustit prohlížeč Tor"
+msgstr "Záložky prohlížeče"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:409
+#, fuzzy
 msgid "Electrum Bitcoin Wallet"
-msgstr ""
+msgstr "Bitcoinová peněženka Electrum a její nastavení"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:419
-msgid "Activate Electrum Bitcoin Waller"
-msgstr ""
+#, fuzzy
+msgid "Activate Electrum Bitcoin Wallet"
+msgstr "Bitcoinová peněženka Electrum a její nastavení"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:430
+#, fuzzy
 msgid "Thunderbird Email Client"
-msgstr ""
+msgstr "Thunderbird"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:440
 msgid "Activate Thunderbird Email Client"
@@ -2379,7 +2590,7 @@ msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:451
 msgid "GnuPG"
-msgstr ""
+msgstr "GnuPG"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:452
 msgid "OpenPGP keys outside of Thunderbird."
@@ -2399,11 +2610,12 @@ msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:494
 msgid "SSH Client"
-msgstr ""
+msgstr "SSH Client"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:504
+#, fuzzy
 msgid "Activate SSH Client"
-msgstr ""
+msgstr "SSH Client"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:529
 #, fuzzy
@@ -2411,8 +2623,11 @@ msgid "Advanced Settings"
 msgstr "Další nastavení"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:558
+#, fuzzy
 msgid "Install additional software automatically when starting Tails."
 msgstr ""
+"Můžete instalovat dodatečný software automaticky z vašeho trvalého úložiště "
+"při spuštění Tails."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:577
 #, fuzzy
@@ -2426,19 +2641,21 @@ msgstr "Dodatečný software"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:601
 msgid "Dotfiles"
-msgstr ""
+msgstr "Dotfiles"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:602
+#, fuzzy
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
-msgstr ""
+msgstr "Symlink každého souboru ve složce Dotfiles do složky Home"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:612
+#, fuzzy
 msgid "Activate Dotfiles"
-msgstr ""
+msgstr "Dotfiles"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:642
 msgid "Custom"
-msgstr ""
+msgstr "Vlastní"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:661
 msgid ""
@@ -2447,10 +2664,13 @@ msgid ""
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:703
+#, fuzzy
 msgid ""
 "<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
 "Storage</a>"
 msgstr ""
+"Pro uložení vašeho bridge <a href=\"doc/first_steps/persistence\">odemkněte "
+"Trvalé úložiště</a>."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/locked_view.ui.in:52
 msgid ""
@@ -2470,7 +2690,7 @@ msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:82
 msgid "Passphrase:"
-msgstr ""
+msgstr "Přístupové heslo:"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:101
 #, fuzzy
@@ -2486,11 +2706,6 @@ msgstr "Zobrazit heslo"
 #, fuzzy
 msgid "_Back"
 msgstr "Zpět"
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
-#, fuzzy
-msgid "_Create Persistent Storage"
-msgstr "Vytvořit trvalé úložiště"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:56
 msgid ""
@@ -2524,8 +2739,9 @@ msgid "Co_ntinue"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:29
+#, fuzzy
 msgid "_Delete..."
-msgstr ""
+msgstr "Mazání..."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
 #, fuzzy
@@ -2540,7 +2756,7 @@ msgstr "Zobrazit heslo"
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:66
 #, fuzzy
 msgid "_Restart Tails"
-msgstr "_Spustit Tails"
+msgstr "Restartovat Tails"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:61
 msgid "File Containers"
@@ -2548,7 +2764,7 @@ msgstr "Souborové kontejnery"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:80
 msgid "_Add"
-msgstr ""
+msgstr "_Přidat"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:86
 msgid "Add a file container"
@@ -2556,17 +2772,18 @@ msgstr "Přidat souborový kontejner"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:103
 msgid "Partitions and Drives"
-msgstr ""
+msgstr "Disky a svazky"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:121
 msgid ""
 "This application is not affiliated with or endorsed by the VeraCrypt project "
 "or IDRIX."
 msgstr ""
+"Tato aplikace není spojena s ani schválena projektem VeraCrypt ani IDRIX."
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/volume.ui.in:29
 msgid "_Open"
-msgstr ""
+msgstr "_Otevřít"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/volume.ui.in:38
 msgid "Lock this volume"
@@ -2574,7 +2791,7 @@ msgstr "Zamknout tento svazek"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/volume.ui.in:52
 msgid "_Unlock"
-msgstr ""
+msgstr "_Odemknout"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/volume.ui.in:61
 msgid "Detach this volume"
@@ -2582,15 +2799,15 @@ msgstr "Odpojit tento svazek"
 
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:265
 msgid "Target USB stick:"
-msgstr ""
+msgstr "Cílový USB flash disk:"
 
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:341
 msgid "Reinstall (delete all data)"
-msgstr ""
+msgstr "Přeinstalovat (smazat všechna data)"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:11
 msgid "Copyright © 2009-2018 tails@boum.org"
-msgstr ""
+msgstr "Copyright © 2009-2018 tails@boum.org"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:15
 msgid ""
@@ -2610,58 +2827,76 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
 msgstr ""
+"WhisperBack - Odešlete svou zpětnou šifrovanou poštou\n"
+"Copyright (C) 2009-2018 vývojáři Tails <tails@boum.org>\n"
+"\n"
+"Tento program je svobodný software; můžete ho dále šířit a/nebo modifikovat "
+"pokud dodržíte podmínek licence GNU General Public License tak, jak ji "
+"publikovala Free Software Foundation ve verzi 3 nebo (pokud chcete) "
+"kterékoliv její novější verze.\n"
+"\n"
+"Tento program je distribuován v naději, že bude užitečný, ale ZCELA BEZ "
+"ZÁRUKY; i bez implicitní záruky PRODEJNOSTI nebo VHODNOSTI KE KONKRÉTNÍMU "
+"ÚČELU.   Podrobnosti najdete v textu licence GNU General Public License.\n"
+"\n"
+"Kopii GNU General Public License jste měli dostat spolu s tímto programem. "
+"Pokud tomu tak není, najde ji na <https://www.gnu.org/licenses/>.\n"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:122
 msgid ""
 "If you want us to encrypt messages when we respond to you, add your key ID, "
 "a link to your key, or the key as a public key block:"
 msgstr ""
+"Pokud chcete, abychom šifrovali naši odpověď, přidejte ID svého klíče, odkaz "
+"na váš klíč, nebo klíč jako blok veřejného klíče."
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:308
 msgid "Summary"
-msgstr ""
+msgstr "Shrnutí"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:337
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:485
 msgid "Bug description"
-msgstr ""
+msgstr "Popis problému"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:378
 msgid "Help:"
-msgstr ""
+msgstr "Pomoc:"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:388
 msgid "Read our bug reporting guidelines."
-msgstr ""
+msgstr "Přečtěte si naše pokyny pro hlášení chyb."
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:416
 msgid "Email address (if you want an answer from us)"
-msgstr ""
+msgstr "E-mailová adresa (pokud chcete, abychom vám odpověděli)"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:445
 msgid "optional PGP key"
-msgstr ""
+msgstr "PGP klíč (nepovinné)"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:470
 msgid "Please know that we are not able to reply to every bug report."
 msgstr ""
+"Berte prosím na vědomí, že nejsme schopni odpovědět na všechna nahlášení "
+"chyb."
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:502
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:613
 msgid "Technical details to include"
-msgstr ""
+msgstr "Technické podrobnosti k přiložení"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:540
 msgid "headers"
-msgstr ""
+msgstr "hlavičky"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:588
 msgid "debugging info"
-msgstr ""
+msgstr "informace pro ladění"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:680
 msgid "Send"
-msgstr ""
+msgstr "Odeslat"
 
 #: ../config/chroot_local-includes/usr/local/share/mime/packages/unlock-veracrypt-volumes.xml.in.h:1
 msgid "TrueCrypt/VeraCrypt container"
@@ -2669,172 +2904,226 @@ msgstr "Kontejner TrueCrypt/VeraCrypt"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:82
 msgid "Configure a Tor bridge"
-msgstr ""
+msgstr "Nastavit Tor bridge"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:106
 msgid ""
 "Bridges are secret Tor relays. Use a bridge as your first Tor relay if "
 "accessing Tor is blocked from where you are."
 msgstr ""
+"Bridge (mosty) jsou tajné Tor relaye. Tor bridge použijte jako svůj první "
+"relay, pokud se chcete k Toru přijit z místa, kde je blokovaný."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:122
 msgid "<a href=\"doc/anonymous_internet/tor\">Learn more about Tor bridges</a>"
-msgstr ""
+msgstr "<a href=\"doc/anonymous_internet/tor\">Zjistit více o Tor bridgích</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:157
 msgid "Use a _default bridge"
-msgstr ""
+msgstr "Použít _implicitní bridge"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:180
 msgid "obfs4 (recommended)"
-msgstr ""
+msgstr "obfs4 (doporučeno)"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:181
 msgid "meek"
-msgstr ""
+msgstr "meek"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:204
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1456
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1518
 msgid "None"
-msgstr ""
+msgstr "Žádné"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:240
-msgid "_Ask for a bridge by email"
-msgstr ""
+#, fuzzy
+msgid "_Ask for a Tor bridge by email"
+msgstr "• Bridge přes email"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:259
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:955
+#, fuzzy
 msgid ""
 "Send an empty email to <tt>bridges@torproject.org</tt> from a Gmail or "
 "Riseup email address with your phone and scan the QR code that is attached "
 "to the automatic reply."
 msgstr ""
+"O Tor bridge můžete požádat tak,\n"
+"že poslete e-mail na adresu <tt>bridges@torproject.org</tt> z e-mailové "
+"adresy Gmail nebo Riseup.\n"
+"\n"
+"Například můžete email poslat ze svého telefonu a pak zadat bridge v Tails.\n"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:271
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:272
 msgid "Scan _QR code"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:372
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:373
 msgid "_Enter a bridge that you already know"
-msgstr ""
+msgstr "_Zadat bridge, který už znám"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:398
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:399
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1040
+#, fuzzy
 msgid "Bridge"
-msgstr ""
+msgstr "Tor Bridge"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:411
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:412
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1053
 msgid "obfs4 ..."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:484
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:485
 msgid "Save bridge to _Persistent Storage"
-msgstr ""
+msgstr "Uložit bridge do _Trvalého úložiště"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:509
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:510
 msgid "Save bridge to Persistent Storage"
-msgstr ""
+msgstr "Uložit bridge do Trvalého úložiště"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:649
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1096
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1494
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:650
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1158
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1556
 msgid "_Connect to Tor"
-msgstr ""
+msgstr "_Připojit k Toru"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:691
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:692
 msgid "Error connecting to Tor"
-msgstr ""
+msgstr "Chyba připojování do Tor"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:720
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:736
 msgid "• Wrong clock"
-msgstr ""
+msgstr "• Nesprávný čas"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:740
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:756
 msgid "Your clock and time zone need to be correct to connect to Tor."
-msgstr ""
+msgstr "Pro připojení k Toru musí být váš čas a časová zóna správně."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:753
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:769
 msgid "Fix _Clock"
-msgstr ""
+msgstr "Opravit _hodiny"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:791
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:807
 msgid "• Public network"
-msgstr ""
+msgstr "• Veřejná síť"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:811
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:827
 msgid ""
 "If you are in a shop, hotel, or airport, you might need to sign in to the "
 "local network using the Unsafe Browser."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:824
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:840
 msgid "Try _Signing in to the Network"
-msgstr ""
+msgstr "Pokuste se _přihlásit k síti"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:863
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:879
 msgid "• Local proxy"
-msgstr ""
+msgstr "• Místní proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:883
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:899
 msgid ""
 "If you are on a corporate or university network, you might need to configure "
 "a local proxy."
 msgstr ""
+"Pokud se necházíte v korporátní nebo univerzitní síti, může být potřeba "
+"nakonfigurovat místní proxy."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:896
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:912
 msgid "Configure a Local _Proxy"
-msgstr ""
+msgstr "Nakonfigurovat místní _Proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:935
-msgid "• Bridge by email"
-msgstr ""
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:951
+#, fuzzy
+msgid "• Tor bridge by email"
+msgstr "• Bridge přes email"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:977
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:971
+#, fuzzy
+msgid ""
+"Tor bridges are secret Tor relays. Use a bridge as your first Tor relay if "
+"connections to Tor are blocked, for example in some countries, by some "
+"public networks, or by some parental controls."
+msgstr ""
+"Tor bridge jsou Tor relaye. Pokud je připojení k Toru blokováno, například v "
+"některých zemích, veřejných sítích nebo při rodičovské kontrole, použijte "
+"jako první Tor relay bridge.\n"
+"\n"
+"Tuto možnost vyberte, pokud již víte, že potřebujete bridge. V opačném "
+"případě Tails automaticky zjistí, zda potřebujete bridge pro připojení k "
+"Toru z místní sítě."
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:991
+#, fuzzy
+msgid ""
+"To get a bridge, send an empty email to <tt>bridges@torproject.org</tt> from "
+"a Gmail or Riseup email address with your phone and scan the QR code that is "
+"attached to the automatic reply."
+msgstr ""
+"O Tor bridge můžete požádat tak,\n"
+"že poslete e-mail na adresu <tt>bridges@torproject.org</tt> z e-mailové "
+"adresy Gmail nebo Riseup.\n"
+"\n"
+"Například můžete email poslat ze svého telefonu a pak zadat bridge v Tails.\n"
+
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1014
 msgid "Scan QR Code"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1083
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1145
 msgid ""
 "<a href=\"doc/anonymous_internet/tor/troubleshoot\">Troubleshooting "
 "connecting to Tor</a>"
 msgstr ""
+"<a href=\"doc/anonymous_internet/tor/troubleshoot\">Řešení problémů s "
+"připojením k síti Tor</a>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1129
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1537
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1191
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1599
 msgid ""
 "Everything you do on the Internet from Tails goes through the Tor network."
-msgstr ""
+msgstr "Cokoli děláte na internetu přes Tails prochází přes síť Tor."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1143
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1552
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1205
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1614
 msgid ""
 "Tor encrypts and anonymizes your connection by passing it through 3 relays.\n"
 "Tor relays are servers operated by different organizations and volunteers "
 "around the world."
 msgstr ""
+"Tor šifruje a anonymizuje vaše připojení tím, že ho předává přes 3 "
+"zprostředkovatele.\n"
+"Tor relays jsou servery provozované různými organizacemi a dobrovolníky po "
+"celém světě."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1179
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1241
 msgid "<b>Connect to Tor _automatically</b>"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1229
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1291
 msgid ""
 "We recommend connecting to Tor automatically if you are on a public Wi-Fi "
 "network or if many people in your country use Tor to circumvent censorship."
 msgstr ""
+"Pokud jste ve veřejné síti Wi-Fi nebo pokud ve vaší zemi používá Tor mnoho "
+"lidí k obcházení cenzury, doporučujeme se k němu připojit automaticky."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1247
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1309
 msgid ""
 "Tails will try different ways of connecting to Tor until it succeeds.\n"
 "\n"
 "Someone monitoring your Internet connection could identify these attempts as "
 "coming from a Tails user."
 msgstr ""
+"Tails vyzkouší různé způsoby připojení k Toru, dokud se mu to nepodaří.\n"
+"\n"
+"Někdo, kdo sleduje vaše internetové připojení, by mohl tyto pokusy "
+"identifikovat jako pokusy pocházející od uživatele Tails."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1281
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1343
 msgid "Configure a Tor _bridge"
-msgstr ""
+msgstr "Nastavit Tor bridge"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1327
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1389
 msgid ""
 "Tor bridges are secret Tor relays. Use a bridge as your first Tor relay if "
 "connections to Tor are blocked, for example in some countries, by some "
@@ -2844,18 +3133,27 @@ msgid ""
 "Tails will autodetect whether you need a bridge to connect to Tor from your "
 "local network."
 msgstr ""
+"Tor bridge jsou Tor relaye. Pokud je připojení k Toru blokováno, například v "
+"některých zemích, veřejných sítích nebo při rodičovské kontrole, použijte "
+"jako první Tor relay bridge.\n"
+"\n"
+"Tuto možnost vyberte, pokud již víte, že potřebujete bridge. V opačném "
+"případě Tails automaticky zjistí, zda potřebujete bridge pro připojení k "
+"Toru z místní sítě."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1369
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1431
 msgid "<b>_Hide to my local network that I'm connecting to Tor</b>"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1419
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1481
 msgid ""
 "You might need to go unnoticed if using Tor could look suspicious to someone "
 "who monitors your Internet connection."
 msgstr ""
+"Můžete potřebovat zůstat nepovšimnuti, pokud by používání Toru mohlo někomu, "
+"kdo monitoruje vaše internetové připojení, připadat podezřelé."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1437
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1499
 msgid ""
 "Tails will only connect to Tor after you configured a Tor bridge. Bridges "
 "are secret Tor relays that hide that you are connecting to Tor.\n"
@@ -2867,118 +3165,132 @@ msgid ""
 "yet, if you connect from a public Wi-Fi network, or if you are in the "
 "Eastern Hemisphere."
 msgstr ""
+"Tails se k Toru připojí až po konfiguraci Tor bridgů. Bridge jsou tajné Tor "
+"relaye, které skrývají, že se připojujete k Toru.\n"
+"\n"
+"Náš tým dělá vše pro to, aby vám pomohl připojit se k Toru pomocí těch "
+"nejdiskrétnějších typů Tor bridgů.\n"
+"\n"
+"Pokud ještě neznáte žádné Tor bridge, pokud se připojujete z veřejné sítě Wi-"
+"Fi nebo pokud se nacházíte na východní polokouli, budete muset provést "
+"dodatečnou konfiguraci."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1482
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1544
 msgid ""
 "<a href=\"doc/anonymous_internet/tor\">Learn more about how Tails connects "
 "to Tor</a>"
 msgstr ""
+"<a href=\"doc/anonymous_internet/tor\">Zjistit více o tom, jak se Tails "
+"připojujjí k Toru</a>"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1567
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1629
 msgid "Connect to a local network"
-msgstr ""
+msgstr "Připojit k místní síti"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1584
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1646
 msgid ""
 "You are not connected to a local network yet. To be able to connect to the "
 "Tor network, you first need to connect to a Wi-Fi, wire, or mobile network."
 msgstr ""
+"Zatím nejste připojeni k místní síti. Abyste se mohli připojit k síti Tor, "
+"musíte se nejprve připojit k síti Wi-Fi, kabelové nebo mobilní síti."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1596
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1658
 msgid "Open Wi-Fi settings"
-msgstr ""
+msgstr "Otevřít nastavení Wi-Fi"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1645
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1707
 msgid "Testing Internet access…"
-msgstr ""
+msgstr "Zkouším přístup k internetu..."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1685
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1747
 msgid "You have access to the Internet"
-msgstr ""
+msgstr "Máte přístup k internetu"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1719
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1781
 msgid "Testing access to Tor…"
-msgstr ""
+msgstr "Zkouším přístup k Toru..."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1762
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1824
 msgid "You can connect to Tor"
-msgstr ""
+msgstr "K Toru se můžete připojit"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1792
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1854
 msgid "Failed to connect to Tor without bridges."
-msgstr ""
+msgstr "Připojení k Toru bez bridgů selhalo."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1808
-msgid "Your local network is blocking access to Tor."
-msgstr ""
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1870
+#, fuzzy
+msgid "This local network is blocking access to Tor."
+msgstr "Vaše místní síť blokuje přístup k Toru."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1840
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1902
 msgid "Connecting to Tor…"
-msgstr ""
+msgstr "Připojuji se k Toru..."
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1945
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2007
 msgid "Start Tor Browser"
 msgstr "Spustit prohlížeč Tor"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1964
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2026
 msgid "Open Network Monitor"
-msgstr ""
+msgstr "Otevřete monitor sítě"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1977
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2039
 msgid "View Tor Circuits"
-msgstr ""
+msgstr "Zobrazit Tor okruhy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1991
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2053
 msgid "Reset Tor Connection"
-msgstr ""
+msgstr "Resetovat připojení k Toru"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2031
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2093
 msgid "Configure a Local Proxy"
-msgstr ""
+msgstr "Nakonfigurovat místní proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2057
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2119
 msgid "Proxy Type"
-msgstr ""
+msgstr "Typ proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2074
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2136
 msgid "No proxy"
-msgstr ""
+msgstr "Bez proxy"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2075
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2137
 msgid "SOCKS 4"
-msgstr ""
+msgstr "SOCKS 4"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2076
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2138
 msgid "SOCKS 5"
-msgstr ""
+msgstr "SOCKS 5"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2077
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2139
 msgid "HTTP / HTTPS"
-msgstr ""
+msgstr "HTTP / HTTPS"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2096
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2158
 msgid "Address"
-msgstr ""
+msgstr "Adresa"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2113
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2175
 msgid "Username"
-msgstr ""
+msgstr "Uživatelské jméno"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2130
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2192
 msgid "IP address or hostname"
-msgstr ""
+msgstr "IP adresa nebo název serveru"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2148
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2210
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
-#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2272
+#: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2334
 msgid "_Save Proxy Settings"
-msgstr ""
+msgstr "_Uložit nastavení proxy"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:7
 msgid "Tor Connection - Fix Clock"
-msgstr ""
+msgstr "Připojení k Toru - Oprava hodin"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:76
 msgid ""
@@ -2986,71 +3298,396 @@ msgid ""
 "never be sent over the network and will only be used to fix your clock and "
 "connect to Tor."
 msgstr ""
+"Vaše časové pásmo nelze použít k vaší identifikaci nebo lokalizaci. Vaše "
+"časové pásmo nebude nikdy odesláno po síti a bude použito pouze k opravě "
+"vašich hodin a připojení k Toru."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:142
 msgid "Time zone"
-msgstr ""
+msgstr "Časová zóna"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:186
 msgid "Time"
-msgstr ""
+msgstr "Cas"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:223
 msgid ":"
-msgstr ""
+msgstr ":"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:277
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:311
 msgid "January"
-msgstr ""
+msgstr "Leden"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:312
 msgid "February"
-msgstr ""
+msgstr "Únor"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:313
 msgid "March"
-msgstr ""
+msgstr "Březen"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:314
 msgid "April"
-msgstr ""
+msgstr "Duben"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:315
 msgid "May"
-msgstr ""
+msgstr "Květen"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:316
 msgid "June"
-msgstr ""
+msgstr "Červen"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:317
 msgid "July"
-msgstr ""
+msgstr "Červenec"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:318
 msgid "August"
-msgstr ""
+msgstr "Srpen"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:319
 msgid "September"
-msgstr ""
+msgstr "Září"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:320
 msgid "October"
-msgstr ""
+msgstr "Říjen"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:321
 msgid "November"
-msgstr ""
+msgstr "Listopad"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:322
 msgid "December"
-msgstr ""
+msgstr "Prosinec"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:368
 msgid "Clock"
-msgstr ""
+msgstr "Hodiny"
+
+#, python-format
+#~ msgid ""
+#~ "<h1>Help us fix your bug!</h1>\n"
+#~ "<p>Read <a href=\"%s\">our bug reporting instructions</a>.</p>\n"
+#~ "<p><strong>Do not include more personal information than\n"
+#~ "needed!</strong></p>\n"
+#~ "<h2>About giving us an email address</h2>\n"
+#~ "<p>\n"
+#~ "Giving us an email address allows us to contact you to clarify the "
+#~ "problem. This\n"
+#~ "is needed for the vast majority of the reports we receive as most "
+#~ "reports\n"
+#~ "without any contact information are useless. On the other hand it also "
+#~ "provides\n"
+#~ "an opportunity for eavesdroppers, like your email or Internet provider, "
+#~ "to\n"
+#~ "confirm that you are using Tails.\n"
+#~ "</p>\n"
+#~ msgstr ""
+#~ "<h1>Pomozte nám opravit tuto chybu!</h1>\n"
+#~ "<p>Přečtěte si <a href=\"%s\">naše instrukce pro hlášení chyb</a>.</p>\n"
+#~ "<p><strong>Nevkládejte žádné osobní údaje, které nejsou nezbytně nutné!</"
+#~ "strong></p>\n"
+#~ "<h2>Jak je to s vaší e-mailovou adresou</h2>\n"
+#~ "<p>\n"
+#~ "Uvedením své e-mailové adresy nám umožníte vás kontaktovat v případě, že "
+#~ "bude nutné upřesnit některé informace. To bývá u ohlášených chyb časté a "
+#~ "hlášení bez kontaktních údajů mohou být bez toho nepoužitelná. Na druhou "
+#~ "stranu je potřeba počítat s tím, že tyto údaje mohou prozradit "
+#~ "poskytovateli vaší schránky nebo internetového připojení, že Tails "
+#~ "používáte.\n"
+#~ "</p>\n"
+
+#~ msgid ""
+#~ "<b>Could not choose a download server.</b>\n"
+#~ "\n"
+#~ "This should not happen. Please report a bug."
+#~ msgstr ""
+#~ "<b>Nelze vybrat server pro stahování.</b>\n"
+#~ "\n"
+#~ "Toto by se nemělo stát. Prosíme nahlaste to jako chybu."
+
+#~ msgid "Error while choosing a download server"
+#~ msgstr "Chyba při výběru serveru stahování"
+
+#~ msgid "The Amnesic Incognito Live System"
+#~ msgstr "The Amnesic Incognito Live System"
+
+#~ msgid "Launch the Unsafe Browser?"
+#~ msgstr "Spustit Nezabezpečený prohlížeč?"
+
+#~ msgid "Enabled"
+#~ msgstr "Povoleno"
+
+#, python-brace-format
+#~ msgid ""
+#~ "live-persist failed with return code {returncode}:\n"
+#~ "{stderr}"
+#~ msgstr ""
+#~ "live-persist selhalo s návratovým kódem {returncode}:\n"
+#~ "{stderr}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "cryptsetup failed with return code {returncode}:\n"
+#~ "{stdout}\n"
+#~ "{stderr}"
+#~ msgstr ""
+#~ "cryptsetup selhalo s návratovým kódem {returncode}:\n"
+#~ "{stdout}\n"
+#~ "{stderr}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "live-persist failed with return code {returncode}:\n"
+#~ "{stdout}\n"
+#~ "{stderr}"
+#~ msgstr ""
+#~ "live-persist selhalo s návratovým kódem {returncode}:\n"
+#~ "{stdout}\n"
+#~ "{stderr}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "umount failed with return code {returncode}:\n"
+#~ "{stdout}\n"
+#~ "{stderr}"
+#~ msgstr ""
+#~ "umount selhalo s návratovým kódem {returncode}:\n"
+#~ "{stdout}\n"
+#~ "{stderr}"
+
+#~ msgid "Persistence wizard - Persistent volume creation"
+#~ msgstr "Průvodce vytvořením trvalého svazku - vytvoření trvalého svazku"
+
+#~ msgid "Choose a passphrase to protect the persistent volume"
+#~ msgstr "Zadejte heslo na ochranu trvalého svazku"
+
+#, perl-brace-format
+#~ msgid ""
+#~ "A {size} persistent volume will be created on the <b>{vendor} {model}</b> "
+#~ "device. Data on this volume will be stored in an encrypted form protected "
+#~ "by a passphrase."
+#~ msgstr ""
+#~ "Trvalý svazek o velikosti {size} bude vytvořen na zařísení <b>{vendor} "
+#~ "{model}</b>. Data na tomto svazku budou uložena v šifrované podobě "
+#~ "chráněné heslem."
+
+#~ msgid "Create"
+#~ msgstr "Vytvořit"
+
+#~ msgid ""
+#~ "<b>Beware!</b> Using persistence has consequences that must be well "
+#~ "understood. Tails can't help you if you use it wrong! See the "
+#~ "<i>Encrypted persistence</i> page of the Tails documentation to learn "
+#~ "more."
+#~ msgstr ""
+#~ "<b>Pozor!</b> Používání persistence má důsledky, kterým je nutno dobře "
+#~ "rozumět. Tails vám nemůže pomoci, pokud jej používáte špatně! Pro více "
+#~ "informací si přečtěte stránku<i>Encrypted persistence</i> v dokumentaci "
+#~ "Tails."
+
+#~ msgid "Verify Passphrase:"
+#~ msgstr "Potvrďte heslo:"
+
+#~ msgid "Passphrase can't be empty"
+#~ msgstr "Heslo nesmí být prázdné"
+
+#~ msgid "Failed"
+#~ msgstr "Chyba"
+
+#~ msgid "Mounting Tails persistence partition."
+#~ msgstr "Připojování trvalého oddílu Tails."
+
+#~ msgid "The Tails persistence partition will be mounted."
+#~ msgstr "Trvalý oddíl Tails bude připojen."
+
+#~ msgid "Correcting permissions of the persistent volume."
+#~ msgstr "Probíhá oprava oprávnění trvalého svazku."
+
+#~ msgid "The permissions of the persistent volume will be corrected."
+#~ msgstr "Oprávnění trvalého svazku budou opravena."
+
+#~ msgid "Creating default persistence configuration."
+#~ msgstr "Vytváření výchozí konfigurace persistence."
+
+#~ msgid "The default persistence configuration will be created."
+#~ msgstr "Výchozí konfigurace persistence bude vytvořena."
+
+#~ msgid "Creating..."
+#~ msgstr "Vytváření..."
+
+#~ msgid "Creating the persistent volume..."
+#~ msgstr "Vytváření trvalého svazku..."
+
+#~ msgid "Persistence wizard - Persistent volume configuration"
+#~ msgstr "Průvodce vytvořením trvalého svazku - konfigurace"
+
+#~ msgid "Specify the files that will be saved in the persistent volume"
+#~ msgstr "Vyberte soubory, které budou uloženy na trvalém svazku."
+
+#, perl-brace-format
+#~ msgid ""
+#~ "The selected files will be stored in the encrypted partition {partition} "
+#~ "({size}), on the <b>{vendor} {model}</b> device."
+#~ msgstr ""
+#~ "Vybrané soubory budou uloženy v šifrovaném oddílu partition} ({size}) na "
+#~ "zařízení <b>{vendor} {model}</b>."
+
+#~ msgid "Save"
+#~ msgstr "Uložit"
+
+#~ msgid "Saving..."
+#~ msgstr "Ukládání..."
+
+#~ msgid "Saving persistence configuration..."
+#~ msgstr "Ukládání nastavení trvalého svazku..."
+
+#~ msgid "Persistence wizard - Persistent volume deletion"
+#~ msgstr "Průvodce vytvořením trvalého svazku - odstranění trvalého svazku"
+
+#~ msgid "Your persistent data will be deleted."
+#~ msgstr "Vaše trvalá data budou smazána."
+
+#, perl-brace-format
+#~ msgid ""
+#~ "The persistent volume {partition} ({size}), on the <b>{vendor} {model}</"
+#~ "b> device, will be deleted."
+#~ msgstr ""
+#~ "Trvalý svazek {partition} ({size}) bude smazán ze zařízení <b>{vendor} "
+#~ "{model}</b>."
+
+#~ msgid "Delete"
+#~ msgstr "Smazat"
+
+#~ msgid "Deleting the persistent volume..."
+#~ msgstr "Mazání trvalého svazku..."
+
+#~ msgid "Keep files stored in the `Persistent' directory"
+#~ msgstr "Data uložená ve složce „Persistent“"
+
+#~ msgid "Language, administration password, and additional settings"
+#~ msgstr "Jazyk, administrační heslo a další nastavení"
+
+#~ msgid "Save the last bridge that you used to connect to Tor"
+#~ msgstr "Uložit bridge, který jste použili k připojení k Toru naposledy"
+
+#~ msgid "Bookmarks saved in the Tor Browser"
+#~ msgstr "Záložky uložené v prohlížeči Tor"
+
+#~ msgid "Configuration of network devices and connections"
+#~ msgstr "Konfigurace síťových zařízení a připojení"
+
+#~ msgid "Software installed when starting Tails"
+#~ msgstr "Software nainstalovaný po spuštění Tails"
+
+#~ msgid "Printers configuration"
+#~ msgstr "Nastavení tiskáren"
+
+#~ msgid "Thunderbird emails, feeds, and OpenPGP keys"
+#~ msgstr "Thunderbitd e-maily, kanály a klíče OpenPGP"
+
+#~ msgid "Bitcoin Client"
+#~ msgstr "Bitcoin klient"
+
+#~ msgid "Pidgin"
+#~ msgstr "Pidgin"
+
+#~ msgid "Pidgin profiles and OTR keyring"
+#~ msgstr "Profily klienta Pidgin a OTR klíčenka"
+
+#~ msgid "SSH keys, configuration and known hosts"
+#~ msgstr "SSH klíče, konfigurace a známé počítače"
+
+#~ msgid "Setup Tails persistent volume"
+#~ msgstr "Nastavení trvalého svazku pro Tails"
+
+#~ msgid "Device already has a persistent volume."
+#~ msgstr "Zařízení už má trvalý oddíl."
+
+#~ msgid "Device has not enough unallocated space."
+#~ msgstr "Zařízení nemá dostatek nealokovaného místa."
+
+#~ msgid "Device has no persistent volume."
+#~ msgstr "Zařízení nemá trvalý oddíl."
+
+#~ msgid ""
+#~ "Cannot delete the persistent volume while in use. You should restart "
+#~ "Tails without persistence."
+#~ msgstr ""
+#~ "Nelze smazat trvalý oddíl, zatímco je používán. Musíte restartovat Tails "
+#~ "bez používání trvalého oddílu."
+
+#~ msgid "Persistence volume is not unlocked."
+#~ msgstr "Trvalý oddíl není odemčen."
+
+#~ msgid "Persistence volume is not mounted."
+#~ msgstr "Trvalý oddíl není připojen."
+
+#~ msgid ""
+#~ "Persistence volume is not readable. Permissions or ownership problems?"
+#~ msgstr "Trvalý oddíl není čitelný. Problém s povolením nebo s vlastnictvím?"
+
+#~ msgid "Persistence volume is not writable."
+#~ msgstr "Do trvalého svazku nelze zapisovat."
+
+#~ msgid "Tails is running from non-USB / non-SDIO device."
+#~ msgstr "Tails běží ze zařízení, které není  USB / SDIO."
+
+#~ msgid "Device is optical."
+#~ msgstr "Zařízení je optické."
+
+#~ msgid "Device was not created using a USB image or Tails Installer."
+#~ msgstr ""
+#~ "Zařízení nebylo vytvořeno z obrazu USB disku ani instalátorem Tails."
+
+#~ msgid "Persistence wizard - Finished"
+#~ msgstr "Průvodce vytvořením trvalého svazku dokončil svou činnost."
+
+#~ msgid ""
+#~ "Any changes you have made will only take effect after restarting Tails."
+#~ msgstr "Veškeré provedené změny se projeví až po restartu Tails."
+
+#~ msgid ""
+#~ "\\n\\nTo always enable the Unsafe Browser, turn on the Welcome Screen "
+#~ "feature of the Persistent Storage."
+#~ msgstr ""
+#~ "\\n\\nChcete-li vždy povolit funkci Nebezpečného prohlížeče, zapněte "
+#~ "funkci trvalého úložiště na Uvítací obrazovce."
+
+#~ msgid "Delete the persistent volume and its content"
+#~ msgstr "Smazat trvalý svazek a jeho obsah"
+
+#~ msgid "Configure persistent volume"
+#~ msgstr "Konfigurace trvalého svazku"
+
+#~ msgid "image"
+#~ msgstr "obrázek"
+
+#~ msgid "heading"
+#~ msgstr "nadpis"
+
+#~ msgid "_Request a new bridge"
+#~ msgstr "_Požádat o nový bridge"
+
+#~ msgid "toggle-button"
+#~ msgstr "přepínač"
+
+#~ msgid ""
+#~ "To request new Tor bridges, you can also:\n"
+#~ "\n"
+#~ "            1. Send an empty email to <tt>bridges@torproject.org</tt> "
+#~ "from a Gmail or Riseup email address.\n"
+#~ "\n"
+#~ "              2. Type below one of the bridges that you received by email."
+#~ msgstr ""
+#~ "O Tor bridge můžete požádat také:\n"
+#~ "\n"
+#~ " 1. Poslat prázdný e-mail na adresu <tt>bridges@torproject.org</tt> z e-"
+#~ "mailové adresy Gmail nebo Riseup.\n"
+#~ " 2. Níže zadejte jeden bridgů, který jsem obdrželi emailem."
