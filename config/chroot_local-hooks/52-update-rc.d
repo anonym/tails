@@ -37,10 +37,9 @@ systemctl --global enable tails-virt-notify-user.service
 systemctl --global enable tails-wait-until-tor-has-bootstrapped.service
 systemctl --global enable tails-create-persistent-storage.service
 
-for netns in tbb clearnet; do
-    systemctl --global enable "tails-a11y-proxy-netns@${netns}.service"
-    systemctl --global enable "tails-ibus-proxy-netns@${netns}.service"
-done
+
+systemctl --global enable "tails-a11y-proxy-netns@clearnet.service"
+systemctl --global enable "tails-ibus-proxy-netns@clearnet.service"
 
 # Use socket activation only, to delay the startup of cupsd.
 systemctl disable cups.service
