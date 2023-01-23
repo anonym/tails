@@ -448,6 +448,13 @@ Update other base branches
    resolving properly, abort this merge and let the Foundations
    Team know.
 
+4. Look at the content of `$RELEASE_BRANCH`, `devel` and `feature/bookworm`
+
+        for branch in ${RELEASE_BRANCH} devel feature/bookworm; do
+            git switch ${branch}
+            ls config/APT_overlays.d/
+        done
+
 4. Ensure that the `$RELEASE_BRANCH`, `devel` and `feature/bookworm` (if it exists) branches
    have the expected content in `config/APT_overlays.d/`: e.g. it must
    not list any overlay APT suite that has been merged already.
