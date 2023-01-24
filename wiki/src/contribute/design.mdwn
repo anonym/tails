@@ -6,7 +6,7 @@
 
 In this document we present a specification of a *Privacy Enhancing
 Live Distribution* (PELD) as well as an actual implementation of it called
-*The Amnesic Incognito Live System* (in short: *Tails*).
+*Tails*.
 
 By writing this document we intend to help third-parties do
 security analyses of any given PELD and specifically of Tails.
@@ -830,10 +830,9 @@ cookie authentication) which is non-standard (see about the "control
 port filter" below), as a transparent proxy on port 9040 (only used
 for remapped onion services) and as a DNS server on port 8853.
 
-The client listens on a few SOCKS address/ports (the rationale being
-detailed on the [[Tor stream isolation design
-page|contribute/design/stream_isolation]]): 9050 (both for localhost and
-for the TorBrowser netns) and 9062.
+The client listens on a few SOCKS address/ports. For details,
+see the [[Tor stream isolation design
+page|contribute/design/stream_isolation]]).
 
 Only connections from localhost or from specific network namespaces are
 accepted. It can be argued that running a Tor server (onion router)
@@ -925,7 +924,7 @@ the host machine hard drive, unless explicitly told to do so by the
 user. The Debian Live persistence feature is disabled by passing
 `nopersistence` over the kernel command line to live-boot.
 
-- [[!tails_gitweb config/amnesia]]
+- [[!tails_gitweb config/variables]]
 
 ### 3.6.11 Filesystems stored on removable devices
 

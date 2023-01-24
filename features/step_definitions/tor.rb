@@ -616,9 +616,9 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
     else
       if qr_code
         # We currently support only 1 bridge
-        qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
+        qr_code_bridges = chutney_bridges(bridge_type).slice(0, 1)
         setup_qrcode_bridges_on_webcam(qr_code_bridges)
-        tor_connection_assistant.child('_Ask for a bridge by email',
+        tor_connection_assistant.child('_Ask for a Tor bridge by email',
                                        roleName: 'radio button')
                                 .click
         tor_connection_assistant.child('Scan QR code',
@@ -683,7 +683,7 @@ When /^I scan a QR code from the error page in Tor Connection Assistant$/ do
     break # We currently support only 1 bridge
   end
 
-  qr_code_bridges = chutney_bridges(bridge_type).slice(0,1)
+  qr_code_bridges = chutney_bridges(bridge_type).slice(0, 1)
   setup_qrcode_bridges_on_webcam(qr_code_bridges)
   tor_connection_assistant.child('Scan QR Code', roleName: 'push button').click
 
@@ -807,11 +807,10 @@ When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
 
   def get_visible_results(dialog)
     table = dialog.child(roleName: 'tree table')
-    results = table.children(roleName: 'table cell').select do |res|
+    table.children(roleName: 'table cell').select do |res|
       # Let's skip continents, but keep special timezones: UTC and GMT
       res.name.include? '/' or ['UTC', 'GMT'].include?(res.name)
     end
-    results
   end
 
   @screen.type(timezone)
@@ -877,7 +876,7 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?
     raise "Unsupported flow target '#{flow_target}'"
   end
 
-  # Note: many scenarios that use the network do not explicitly allow
+  # NOTE: many scenarios that use the network do not explicitly allow
   # using the connectivity check service. They pass because we're
   # restoring a snapshot where time sync has already happened (most
   # often "I have started Tails from DVD and logged in and the network

@@ -30,7 +30,7 @@ Then /^if releasing, the tagged Tails APT source is enabled$/ do
     puts 'Not on a tag ⇒ skipping this step'
     next
   end
-  assert_match(/umjqavufhoix3smyq6az2sx4istmuvsgmz4bq5u5x56rnayejoo6l2qd[.]onion\/?\s+#{Regexp.quote(git_current_tag)}\s/,
+  assert_match(%r{umjqavufhoix3smyq6az2sx4istmuvsgmz4bq5u5x56rnayejoo6l2qd[.]onion/?\s+#{Regexp.quote(git_current_tag)}\s},
                apt_sources)
 end
 
@@ -39,7 +39,7 @@ Then /^if releasing, no unversioned Tails APT source is enabled$/ do
     puts 'Not on a tag ⇒ skipping this step'
     next
   end
-  assert_no_match(%r{umjqavufhoix3smyq6az2sx4istmuvsgmz4bq5u5x56rnayejoo6l2qd[.]onion\/?\s+(stable|testing|devel)\s},
+  assert_no_match(%r{umjqavufhoix3smyq6az2sx4istmuvsgmz4bq5u5x56rnayejoo6l2qd[.]onion/?\s+(stable|testing|devel)\s},
                   apt_sources)
 end
 
@@ -205,12 +205,12 @@ Then /^I install "(.+)" using Synaptic$/ do |package_name|
     # search has completed.
     try_for(10) do
       package_entry.grabFocus
-      package_entry.get_field("selected")
+      package_entry.get_field('selected')
     end
     @screen.press('Return')
     # Now we have marked the package for installation and we have to
     # wait for the Apply button to become available
-    try_for(10) { @synaptic.button('Apply').get_field("sensitive") }
+    try_for(10) { @synaptic.button('Apply').get_field('sensitive') }
     # This button is also problematic when clicking with Dogtail
     @synaptic.button('Apply').grabFocus
     @screen.press('Return')

@@ -29,7 +29,6 @@ use Tails::RunningSystem;
 use Tails::IUK::DownloadProgress;
 use Tails::IUK::UpgradeDescriptionFile;
 use Tails::IUK::Utils qw{space_available_in};
-use Tails::MirrorPool;
 use Try::Tiny;
 use Types::Path::Tiny qw{AbsDir AbsFile};
 use Types::Standard qw(ArrayRef Bool CodeRef Defined HashRef InstanceOf Int Maybe Str Object);
@@ -519,7 +518,7 @@ method run () {
                 "<b>You should do a manual upgrade to the latest version of {name}.</b>\n\n".
                 "For more information about this new version, go to {details_url}\n\n".
                 "It is impossible to do an automatic upgrade of ".
-                "your Tails to this new version.\n\n".
+                "your Tails to this new version: {explanation}.\n\n".
                 "To learn how to do a manual upgrade, go to {manual_upgrade_url}",
                 details_url        => q{https://tails.boum.org/latest},
                 name               => $upgrade_description->product_name,
@@ -606,7 +605,7 @@ fun space_needed (HashRef $upgrade_path) {
     $space_factor * $upgrade_path->{'total-size'} + $space_margin;
 }
 
-method get_target_files (HashRef $upgrade_path, CodeRef $url_transform, AbsDir $destdir) {
+method get_target_files (HashRef $upgrade_path, AbsDir $destdir) {
     my $title = __("Downloading upgrade");
     my $info = __x(
         "Downloading the upgrade to {name} {version}...",
@@ -618,8 +617,7 @@ method get_target_files (HashRef $upgrade_path, CodeRef $url_transform, AbsDir $
     foreach my $target_file (target_files($upgrade_path, $destdir)) {
         my @cmd = (
             'tails-iuk-get-target-file',
-            '--uri',          $url_transform->($target_file->{url}),
-            '--fallback_uri', $target_file->{url},
+            '--uri',          $target_file->{url},
             '--hash_type',    'sha256',
             '--hash_value',   $target_file->{sha256},
             '--size',         $target_file->{size},
@@ -745,37 +743,8 @@ method do_incremental_upgrade (HashRef $upgrade_path) {
     );
     chomp $target_files_tempdir;
 
-    my $url_transform = sub {
-        my $url = shift;
-
-        try {
-            $url = Tails::MirrorPool->new(
-                # hack: piggy-back on the logic we have in T::RunningSystem
-                # for handling the default value and override_baseurl
-                baseurl         => $self->running_system->baseurl,
-                ($ENV{HARNESS_ACTIVE}
-                     ? (fallback_prefix => 'https://127.0.0.1:'
-                                           . $ENV{TAILS_FALLBACK_DL_URL_PORT}
-                                           . '/tails')
-                     : ()
-                ),
-            )->transformURL($url);
-        } catch {
-            $self->fatal(
-                __(
-                    "<b>Could not choose a download server.</b>\n\n".
-                    "This should not happen. Please report a bug.",
-                ),
-                title => __(q{Error while choosing a download server}),
-                debugging_info => $self->encoding->decode($_),
-            );
-        };
-
-        return $url;
-    };
-
     $self->get_target_files(
-        $upgrade_path, $url_transform, path($target_files_tempdir)
+        $upgrade_path, path($target_files_tempdir)
     );
 
     $self->dialog(

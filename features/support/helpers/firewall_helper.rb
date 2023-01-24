@@ -132,7 +132,7 @@ def assert_all_connections(pcap_file,
 
   raise FirewallAssertionFailedError,
         "#{message}\n" +
-        bad.map { |e| "  #{e}" } .join("\n")
+        bad.map { |e| "  #{e}" }.join("\n")
 end
 
 def assert_no_connections(pcap_file, **opts, &block)

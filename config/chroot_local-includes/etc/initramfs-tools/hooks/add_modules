@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# Do a subset of what MODULES=most would do.
+#
+# Then, /etc/initramfs-tools/hooks/z-mac-boot-hack
+# will remove some of those.
+#
+# This script must support being run several times.
+
+set -e
+set -u
+
+. /usr/share/initramfs-tools/hook-functions
+
+# As of initramfs 0.142, MODULES=most would pass these arguments:
+# base net ide scsi block ata dasd firewire mmc usb_storage fb
+auto_add_modules \
+    base \
+    block \
+    ata \
+    mmc \
+    usb_storage \
+    fb

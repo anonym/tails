@@ -131,7 +131,7 @@ class Feature(object):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
-            logger.error(f"error activating feature: {e.message}")
+            logger.error(f"Error activating feature {self.dbus_object_name}: {e.message}")
 
             if e.matches(Gio.io_error_quark(), Gio.IOErrorEnum.CANCELLED):
                 # The operation was cancelled by the user, so we cancel
@@ -147,11 +147,11 @@ class Feature(object):
                 # This is an expected error which we don't want error
                 # reports for.
                 SymlinkSourceDirectoryError.strip_remote_error(e)
-                self.window.display_error(_("Error activating feature"),
+                self.window.display_error(_("Error activating feature {}").format(self.dbus_object_name),
                                           e.message,
                                           with_send_report_button=False)
             else:
-                self.window.display_error(_("Error activating feature"),
+                self.window.display_error(_("Error activating feature {}").format(self.dbus_object_name),
                                           e.message)
 
             # Ensure that the switch displays the correct state
@@ -159,7 +159,7 @@ class Feature(object):
             self.switch.set_active(is_active)
             return
 
-        logger.info("Feature successfully activated")
+        logger.debug(f"Feature {self.dbus_object_name} successfully activated")
 
     def on_deactivate_call_finished(self, proxy: Gio.DBusProxy,
                                   res: Gio.AsyncResult):
@@ -169,7 +169,7 @@ class Feature(object):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
-            logger.error(f"error deactivating feature: {e.message}")
+            logger.error(f"Error deactivating feature {self.dbus_object_name}: {e.message}")
 
             if e.matches(Gio.io_error_quark(), Gio.IOErrorEnum.CANCELLED):
                 # The operation was cancelled by the user, so we cancel
@@ -184,11 +184,11 @@ class Feature(object):
                 # an expected error which we don't want error reports
                 # for.
                 TargetIsBusyError.strip_remote_error(e)
-                self.window.display_error(_("Error deactivating feature"),
+                self.window.display_error(_("Error deactivating feature {}").format(self.dbus_object_name),
                                           e.message,
                                           with_send_report_button=False)
             else:
-                self.window.display_error(_("Error deactivating feature"),
+                self.window.display_error(_("Error deactivating feature {}").format(self.dbus_object_name),
                                           e.message)
 
             # Ensure that the switch displays the correct state
@@ -196,7 +196,7 @@ class Feature(object):
             self.switch.set_active(is_active)
             return
 
-        logger.info("Feature successfully deactivated")
+        logger.debug(f"Feature {self.dbus_object_name} successfully deactivated")
 
     def on_properties_changed(self, proxy: Gio.DBusProxy,
                               changed_properties: GLib.Variant,

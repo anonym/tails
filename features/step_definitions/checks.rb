@@ -35,8 +35,7 @@ def check_key_valid(line, months)
   return true if expiry.empty?
 
   expiration_date = Date.parse(expiry.flatten.first)
-  valid = ((expiration_date << months.to_i) > DateTime.now)
-  valid
+  ((expiration_date << months.to_i) > DateTime.now)
 end
 
 def get_subkey_use(line)
@@ -99,7 +98,7 @@ def key_valid_for_n_months?(type, fingerprint, months)
   !valid_subkeys.empty?
 end
 
-Then /^the live user has been setup by live\-boot$/ do
+Then /^the live user has been setup by live-boot$/ do
   assert_vmcommand_success(
     $vm.execute('test -e /var/lib/live/config/user-setup'),
     'live-boot failed its user-setup'

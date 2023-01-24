@@ -91,9 +91,9 @@ class PersistentStorageSettings(object):
                 method_name="Activate",
                 parameters=None,
                 flags=Gio.DBusCallFlags.NONE,
-                # -1 means the default timeout of 25 seconds is used,
-                # which should be enough.
-                timeout_msec=-1,
+                # In some cases, the default timeout of 25 seconds was not
+                # enough, so we use a timeout of 120 seconds instead.
+                timeout_msec=120000,
             )
         except GLib.GError as err:
             raise tailsgreeter.errors.PersistentStorageError(

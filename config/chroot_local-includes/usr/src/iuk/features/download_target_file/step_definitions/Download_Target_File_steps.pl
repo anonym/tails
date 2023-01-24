@@ -229,7 +229,6 @@ When qr{^I download "([^"]+)" \(of expected size (\d+)\) from "([^"]+)", (?:fail
     my $cmdline =
         path($bindir, "tails-iuk-get-target-file") .
         ' --uri "'          . $uri             . '"' .
-        ' --fallback_uri "' . $uri             . '"' .
         ' --hash_type "'    . 'sha256'         . '"' .
         ' --hash_value "'   . $expected_hash   . '"' .
         ' --output_file "'  . $output_filename . '"' .

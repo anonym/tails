@@ -49,7 +49,6 @@ that's needed by the test suite, and setting a `umask` that runs the tests in
 conditions closer to production):
 
     export SOURCE_DATE_EPOCH=$(date --utc +%s)
-    export NODE_TLS_REJECT_UNAUTHORIZED=0
     cd "$(git rev-parse --show-toplevel)/config/chroot_local-includes/usr/src/iuk" && \
     export TORSOCKS_CONF_FILE=$PWD/torsocks.conf
     sudo true
@@ -59,8 +58,6 @@ Run the full test suite:
 
     cd "$(git rev-parse --show-toplevel)/config/chroot_local-includes/usr/src/iuk" && \
     TAILS_GIT_CHECKOUT="$(git rev-parse --show-toplevel)" \
-    NODE_PATH="${TAILS_GIT_CHECKOUT}/submodules/mirror-pool-dispatcher/lib/js" \
-    PATH="${TAILS_GIT_CHECKOUT}/submodules/mirror-pool-dispatcher/bin:$PATH" \
     PERL5LIB="${TAILS_GIT_CHECKOUT}/config/chroot_local-includes/usr/src/perl5lib/lib" \
        LC_ALL=C.UTF-8 \
        dzil test --all
@@ -71,8 +68,6 @@ For example:
 
     cd "$(git rev-parse --show-toplevel)/config/chroot_local-includes/usr/src/iuk" && \
     TAILS_GIT_CHECKOUT="$(git rev-parse --show-toplevel)" \
-    NODE_PATH="${TAILS_GIT_CHECKOUT}/submodules/mirror-pool-dispatcher/lib/js" \
-    PATH="${TAILS_GIT_CHECKOUT}/submodules/mirror-pool-dispatcher/bin:$PATH" \
     PERL5LIB="${TAILS_GIT_CHECKOUT}/config/chroot_local-includes/usr/src/perl5lib/lib" \
        LC_ALL=C.UTF-8 \
        pherkin features/download_upgrade-description_file

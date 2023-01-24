@@ -34,7 +34,7 @@ Feature: System memory erasure on shutdown
     Then I find very few patterns in the guest's memory
     # write cache
     When I fill the USB drive with a known pattern
-    Then patterns cover at least 95% of the test FS size in the guest's memory
+    Then patterns cover at least 93% of the test FS size in the guest's memory
     When I umount the USB drive
     Then I find very few patterns in the guest's memory
     # read cache

@@ -47,7 +47,7 @@ Tails bugfix releases, how this decision is made and implemented
 depends in great part on what kind of Tails release is upcoming (major
 or bugfix).
 
-The `KERNEL_VERSION` variable in [[!tails_gitweb config/amnesia]]
+The `KERNEL_VERSION` variable in [[!tails_gitweb config/variables]]
 determines what version of the kernel will be installed during the
 build. This includes the ABI version number, so even our `devel`
 branch does not get Linux point-release (e.g. 4.19.7) upgrades
@@ -94,7 +94,7 @@ To learn how the new kernel works for us:
 
 1. Fork a branch off `devel` called
    `NNNNN-linux-X.Y+force-all-tests`.
-2. Adjust `KERNEL_VERSION` in `config/amnesia`. If `KERNEL_VERSION` is
+2. Adjust `KERNEL_VERSION` in `config/variables`. If `KERNEL_VERSION` is
    unchanged (point-release without ABI bump), then this branch is
    identical to `devel` and its only purpose is to force Jenkins to
    run our entire test suite (`+force-all-tests`). But since this

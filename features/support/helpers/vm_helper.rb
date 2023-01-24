@@ -467,7 +467,7 @@ class VM
         return e.elements['source'].attribute('path').to_s
       end
     end
-    return nil
+    nil
   end
 
   def add_remote_shell_channel
@@ -561,14 +561,14 @@ class VM
   end
 
   def file_content(paths)
-    paths = [paths] unless paths.class == Array
+    paths = [paths] unless paths.instance_of?(Array)
     paths.reduce('') do |acc, path|
       acc + file_open(path).read
     end
   end
 
   def file_overwrite(path, lines)
-    lines = lines.join("\n") if lines.class == Array
+    lines = lines.join("\n") if lines.instance_of?(Array)
     file_open(path) { |f| return f.write(lines) }
   end
 
@@ -616,7 +616,7 @@ class VM
   end
 
   def file_append(path, lines)
-    lines = lines.join("\n") if lines.class == Array
+    lines = lines.join("\n") if lines.instance_of?(Array)
     file_open(path) { |f| return f.append(lines) }
   end
 
@@ -699,7 +699,7 @@ class VM
       end
     end
 
-    # Note: In this case the "opposite" of `internal_snapshot` is not
+    # NOTE: In this case the "opposite" of `internal_snapshot` is not
     # anything relating to external snapshots, but actually "memory
     # state"(-only) snapshots.
     if internal_snapshot

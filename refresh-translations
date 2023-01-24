@@ -16,7 +16,7 @@ PERL_PROGS="/usr/local/bin/tails-security-check \
       -type f -name '*.pm' \
       | perl -p -E 's{^config/chroot_local-includes}{}' \
 )"
-PYTHON_PROGS="/etc/whisperback/config.py \
+PYTHON_PROGS="\
     /usr/local/bin/electrum \
     /usr/local/bin/replace-su-with-sudo \
     /usr/local/bin/tails-about \
@@ -31,6 +31,7 @@ PYTHON_PROGS="/etc/whisperback/config.py \
     /usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py \
     /usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py \
     /usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py \
+    /usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py \
     /usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py \
     /usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py \
     /usr/lib/python3/dist-packages/tca/config.py \

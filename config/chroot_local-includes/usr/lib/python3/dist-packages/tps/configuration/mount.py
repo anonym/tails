@@ -1,5 +1,5 @@
-import logging
 import os
+import stat
 from pathlib import Path
 import shlex
 import subprocess
@@ -7,12 +7,13 @@ import sys
 from typing import List, Union, Optional
 
 from tailslib import LIVE_USERNAME, LIVE_USER_UID
+import tps.logging
 from tps import _, TPS_MOUNT_POINT
 from tps import executil
 from tps.mountutil import mount, MOUNTFLAG_BIND
 from tps.dbus.errors import TargetIsBusyError
 
-logger = logging.getLogger(__name__)
+logger = tps.logging.get_logger(__name__)
 
 NOSYMFOLLOW_MOUNTPOINT = "/var/lib/tails-persistent-storage/nosymfollow"
 
@@ -163,13 +164,17 @@ class Mount(object):
         return options
 
     def activate(self):
-        if self.is_active():
+        try:
+            self.check_is_inactive()
+        except IsActiveException as e:
             # The mount is already active. It could be that two
             # different features have the same mount, which would
             # cause the mount to be activated again. To support that
             # case, we ignore the error here and just log a warning.
-            logger.warning(f"Is already mounted: {self}")
+            logger.warning(str(e))
             return
+
+        logger.info(f"Activating mount {self.dest}...")
 
         # Check if anything else is mounted on the destination
         src = _what_is_mounted_on(self.dest)
@@ -221,6 +226,8 @@ class Mount(object):
             self._activate_using_symlinks()
         else:
             self._activate_using_bind_mount()
+
+        logger.info(f"Done activating mount {self.dest}")
 
     def _activate_using_symlinks(self):
         if self.is_file:
@@ -286,12 +293,14 @@ class Mount(object):
         mount(self.src, self.dest, MOUNTFLAG_BIND)
 
     def deactivate(self):
-        if not self.is_active():
+        try:
+            self.check_is_active()
+        except IsInactiveException as e:
             # The mount is not active. It could be that two different
             # features have the same mount, which would cause the mount
             # to be deactivated again. To support that case, we ignore
             # the error here and just log a warning.
-            logger.warning(f"Is not mounted: {self}")
+            logger.warning(str(e))
             return
 
         if self.uses_symlinks:
@@ -336,43 +345,51 @@ class Mount(object):
             raise
 
     def is_active(self) -> bool:
-        if self.uses_symlinks:
-            return self._is_active_using_symlinks()
-        else:
-            return self._is_active_using_bind_mount()
+        try:
+            self.check_is_active()
+            return True
+        except IsInactiveException:
+            return False
 
     def check_is_active(self):
         """Check if the mount is active. Raise an IsInactiveException
         if the feature is inactive."""
-        if not self.is_active():
-            raise IsInactiveException()
+        if self.uses_symlinks:
+            self._check_is_active_using_symlinks()
+        else:
+            self._check_is_active_using_bind_mount()
 
     def check_is_inactive(self):
         """Check if the mount is inactive. Raise an IsActiveException
         if the feature is active."""
         if self.is_active():
-            raise IsActiveException()
+            raise IsActiveException(f"Mount {self.dest} is active")
 
-    def _is_active_using_symlinks(self):
-        if not self.src.exists() or not self.dest.exists():
-            # If the source or destination directory doesn't exist,
-            # the feature can't be active.
-            return False
+    def _check_is_active_using_symlinks(self):
+        if not self.src.exists():
+            # If the source doesn't exist, the feature can't be active.
+            raise IsInactiveException(f"Mount {self.dest} is inactive: Symlink source {self.src} does not exist")
+
+        if not self.dest.is_symlink() and not self.dest.exists():
+            # If the destination doesn't exist, the feature can't be active.
+            raise IsInactiveException(f"Mount {self.dest} is inactive: Destination {self.dest} does not exist")
 
         for dir, _, files in os.walk(self.src):
             dest_dir = os.path.join(self.dest, os.path.relpath(dir, self.src))
             for f in files:
                 src = Path(dir, f)
                 dest = Path(dest_dir, f)
-                if dest.resolve() != src:
-                    logger.info(f"{dest.resolve()} != {src}")
-                    return False
-        return True
+                if not dest.is_symlink():
+                    raise IsInactiveException(f"Mount {self.dest} is inactive: Symlink {dest} does not exist")
+                if dest.readlink() != src:
+                    raise IsInactiveException(
+                        f"Mount {self.dest} is inactive: Symlink {dest} does not resolve to the symlink source {src} but to {dest.resolve()}")
 
-    def _is_active_using_bind_mount(self) -> bool:
+    def _check_is_active_using_bind_mount(self):
         # Check if the Persistent Storage cleartext device is already
         # mounted on the destination
-        return _is_mountpoint(self.dest)
+        if not _is_mountpoint(self.dest):
+            raise IsInactiveException(f"Mount {self.dest} is inactive: {self.dest} it not a mountpoint")
 
     def _create_dest_directory(self, path: Path):
         """Create the destination directory of a mount in the same way as
@@ -420,12 +437,21 @@ def _chown_ref(source: Union[str, Path], dest: Union[str, Path]):
     """Change the owner and group of dest to the ones of source"""
     # If the destination is a symlink, we want to change the symlinks
     # owner, so we set --no-dereference.
-    executil.check_call(["chown", "--no-dereference", "--reference",
-                         source, dest])
+    # We don't use the --reference option here but retrieve the UID and
+    # GID ourselves because chown resolves symlinks of the reference file.
+    uid = source.lstat().st_uid
+    gid = source.lstat().st_gid
+    executil.check_call(["chown", "--no-dereference", f"{uid}:{gid}", dest])
 
 
 def _chmod_ref(source: Union[str, Path], dest: Union[str, Path]):
     """Change the permissions of dest to the ones of source"""
-    # chmod doesn't support --no-dereference because it's not possible
-    # to change the permissions of a symlink.
-    executil.check_call(["chmod", "--reference", source, dest])
+    # Don't call chmod when the destination is a symlink, because we
+    # don't want to change the permissions of the symlink's target and
+    # it's not possible to change the permission of a symlink itself.
+    if Path(dest).is_symlink():
+        return
+    # We don't use the --reference option here but retrieve the UID and
+    # GID ourselves because chmod resolves symlinks of the reference file.
+    chmod_mode = stat.S_IMODE(source.lstat().st_mode)
+    executil.check_call(["chmod", "%o" % chmod_mode, source, dest])

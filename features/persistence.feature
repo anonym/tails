@@ -1,7 +1,7 @@
 @product
 Feature: Tails persistence
   As a Tails user
-  I want to use Tails persistence feature
+  I want to use a Persistent Storage
 
   Scenario: Tails Persistent Storage behave tests
     Given I have started Tails from DVD and logged in with an administration password and the network is connected

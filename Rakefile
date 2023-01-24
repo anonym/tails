@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 #
-# Tails: The Amnesic Incognito Live System
+# Tails: https://tails.boum.org/
 # Copyright © 2012 Tails developers <tails@boum.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -134,7 +134,7 @@ def vagrant_ssh_config(key)
   if $vagrant_ssh_config.nil?
     $vagrant_ssh_config = capture_vagrant('ssh-config')
                           .first.split("\n") \
-                          .map { |line| line.strip.split(/\s+/, 2) } .to_h
+                          .map { |line| line.strip.split(/\s+/, 2) }.to_h
     # The path in the ssh-config output is quoted, which is not what
     # is expected outside of a shell, so let's get rid of the quotes.
     $vagrant_ssh_config['IdentityFile'].gsub!(/^"|"$/, '')
@@ -305,10 +305,8 @@ task :parse_build_options do
     end
   end
 
-  if ENV['TAILS_OFFLINE_MODE'] == '1'
-    if ENV['TAILS_PROXY'].nil?
-      abort 'You must use a caching proxy when building offline'
-    end
+  if ENV['TAILS_OFFLINE_MODE'] == '1' && ENV['TAILS_PROXY'].nil?
+    abort 'You must use a caching proxy when building offline'
   end
 end
 
@@ -413,10 +411,12 @@ end
 
 task merge_base_branch: ['parse_build_options', 'setup_environment'] do
   next if $skip_mergebasebranch
+
   branch = git_helper('git_current_branch')
   base_branch = git_helper('base_branch')
   source_date_faketime = `date --utc --date="$(dpkg-parsechangelog --show-field=Date)" '+%Y-%m-%d %H:%M:%S'`.chomp
   next if releasing? || branch == base_branch
+
   commit_before_merge = git_helper('git_current_commit')
   warn "Merging base branch '#{base_branch}' (at commit " \
        "#{ENV['BASE_BRANCH_GIT_COMMIT']}) ..."
@@ -438,6 +438,7 @@ task merge_base_branch: ['parse_build_options', 'setup_environment'] do
   # If we actually merged anything we'll re-run rake in the new Git
   # state in order to avoid subtle build errors due to mixed state.
   next if commit_before_merge == git_helper('git_current_commit')
+
   ENV['GIT_COMMIT'] = git_helper('git_current_commit')
   ENV['FEATURE_BRANCH_GIT_COMMIT'] = commit_before_merge
   ENV['TAILS_BUILD_OPTIONS'] = (ENV['TAILS_BUILD_OPTIONS'] || '') + \
@@ -489,51 +490,49 @@ task build: [
   'vm:up',
   'ensure_clean_home_directory',
 ] do
-  begin
-    if ENV['TAILS_RAM_BUILD'] && !enough_free_memory_for_ram_build?
-      warn <<-END_OF_MESSAGE.gsub(/^        /, '')
+  if ENV['TAILS_RAM_BUILD'] && !enough_free_memory_for_ram_build?
+    warn <<-END_OF_MESSAGE.gsub(/^        /, '')
 
         The virtual machine is not currently set with enough memory to
         perform an in-memory build. Either remove the `ram` option from
         the TAILS_BUILD_OPTIONS environment variable, or shut the
         virtual machine down using `rake vm:halt` before trying again.
 
-      END_OF_MESSAGE
-      abort 'Not enough memory for the virtual machine to run an in-memory ' \
-            'build. Aborting.'
-    end
+    END_OF_MESSAGE
+    abort 'Not enough memory for the virtual machine to run an in-memory ' \
+          'build. Aborting.'
+  end
 
-    if ENV['TAILS_BUILD_CPUS'] \
-       && current_vm_cpus != ENV['TAILS_BUILD_CPUS'].to_i
-      warn <<-END_OF_MESSAGE.gsub(/^        /, '')
+  if ENV['TAILS_BUILD_CPUS'] \
+     && current_vm_cpus != ENV['TAILS_BUILD_CPUS'].to_i
+    warn <<-END_OF_MESSAGE.gsub(/^        /, '')
 
         The virtual machine is currently running with #{current_vm_cpus}
         virtual CPU(s). In order to change that number, you need to
         stop the VM first, using `rake vm:halt`. Otherwise, please
         adjust the `cpus` options accordingly.
 
-      END_OF_MESSAGE
-      abort 'The virtual machine needs to be reloaded to change the number ' \
-            'of CPUs. Aborting.'
-    end
-
-    exported_env = EXPORTED_VARIABLES
-                   .select { |k| ENV[k] }
-                   .map    { |k| "#{k}='#{ENV[k]}'" }.join(' ')
-
-    begin
-      retrieved_artifacts = false
-      run_vagrant_ssh("#{exported_env} build-tails")
-    rescue VagrantCommandError
-      retrieve_artifacts(missing_ok: true)
-      retrieved_artifacts = true
-    ensure
-      retrieve_artifacts(missing_ok: false) unless retrieved_artifacts
-      clean_up_builder_vms unless $keep_running
-    end
-  ensure
-    clean_up_builder_vms if $force_cleanup
+    END_OF_MESSAGE
+    abort 'The virtual machine needs to be reloaded to change the number ' \
+          'of CPUs. Aborting.'
   end
+
+  exported_env = EXPORTED_VARIABLES
+                 .select { |k| ENV[k] }
+                 .map    { |k| "#{k}='#{ENV[k]}'" }.join(' ')
+
+  begin
+    retrieved_artifacts = false
+    run_vagrant_ssh("#{exported_env} build-tails")
+  rescue VagrantCommandError
+    retrieve_artifacts(missing_ok: true)
+    retrieved_artifacts = true
+  ensure
+    retrieve_artifacts(missing_ok: false) unless retrieved_artifacts
+    clean_up_builder_vms unless $keep_running
+  end
+ensure
+  clean_up_builder_vms if $force_cleanup
 end
 
 desc 'Retrieve build artifacts from the Vagrant box'
@@ -555,7 +554,7 @@ def retrieve_artifacts(missing_ok: false)
   key_file = vagrant_ssh_config('IdentityFile')
   warn 'Retrieving artifacts from Vagrant build box.'
   run_vagrant_ssh(
-    "sudo chown #{user} " + artifacts.map { |a| "'#{a}'" } .join(' ')
+    "sudo chown #{user} " + artifacts.map { |a| "'#{a}'" }.join(' ')
   )
   fetch_command = [
     'scp',
