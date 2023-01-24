@@ -2117,6 +2117,10 @@ If you just released a final release
      asking them to privately tell the RM for that release
      _how much_ manual testing they can do on release day.
    - `echo Subject: "Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"`
+   - If you use Thunderbird, you can use this:
+
+        thunderbird -compose "to=tails-dev@boum.org,tails-l10n@boum.org,cc=tails-manual-testers@boum.org,subject=Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"
+
    - If a release candidate is planned, include it in the release schedule
      and the call for manual testers.
 
@@ -2127,8 +2131,11 @@ If you just released a final release
    Otherwise, kindly remind the next release manager about this :)
 
    - Send an email to the next RM with:
-     - subject "RM for Tails NEXT_VERSION_NUMBER"
-     - body: "This is a reminder that you will be RM for Tails NEXT_VERSION_NUMBER. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift".
+     - subject "RM for Tails NEXT_PLANNED_VERSION"
+     - body: "This is a reminder that you will be RM for Tails NEXT_PLANNED_VERSION. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift".
+
+        thunderbird -compose "subject='RM for Tails ${NEXT_PLANNED_VERSION}',format=text,body='This is a reminder that you will be RM for Tails ${NEXT_PLANNED_VERSION}. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift'"
+
    - If there's a release candidate scheduled before our next release,
      do the same for the release manager of that release candidate.
 
