@@ -359,7 +359,7 @@ Given /^I set the language to (.*)$/ do |lang|
   @screen.press('Return')
 end
 
-Given /^I log in to a new session(?: in (.*))?$/ do |lang|
+Given /^I log in to a new session(?: in (.*))?( without activating the Persistent Storage)?( after having activated the Persistent Storage| expecting no warning about the Persistent Storage not being activated)?$/ do |lang, expect_warning, expect_no_warning|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
@@ -382,10 +382,18 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
   end
   login_button_region.click
 
-  sleep 3
-  if @screen.exists('PersistentStorageNotUnlocked.png')
+  begin
+    @screen.wait('PersistentStorageNotUnlocked.png', 3)
+    assert(!expect_no_warning)
+    saw_warning = true
     @screen.press('Right')
     @screen.press('Return')
+  rescue FindFailed
+    saw_warning = false
+  end
+
+  if expect_warning
+    assert(saw_warning)
   end
 
   step 'the Tails desktop is ready'
