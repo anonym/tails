@@ -121,8 +121,6 @@ test-iuk:
   - dzil authordebs --install
   - export SOURCE_DATE_EPOCH=$(date --utc +%s)
   - 'TAILS_GIT_CHECKOUT=$CI_PROJECT_DIR
-     NODE_PATH=$CI_PROJECT_DIR/submodules/mirror-pool-dispatcher/lib/js
-     PATH=$CI_PROJECT_DIR/submodules/mirror-pool-dispatcher/bin:$PATH
      PERL5LIB=$CI_PROJECT_DIR/config/chroot_local-includes/usr/src/perl5lib/lib
      LC_ALL=C.UTF-8
      dzil test --all'

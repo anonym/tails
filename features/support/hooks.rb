@@ -242,7 +242,7 @@ Before('@product') do |scenario|
                         '-c:v', 'libx264',
                         '-y',
                         @video_path,
-                        err: ['/dev/null', 'w'],])
+                        { err: ['/dev/null', 'w'] },])
     @video_capture_pid = capture.pid
   end
   @screen = if $config['IMAGE_BUMPING_MODE']
@@ -396,7 +396,7 @@ After('@product') do |scenario|
       # expected bridges/guards.
       $vm.execute('systemctl stop tor@default')
     end
-  rescue
+  rescue StandardError
     # At least we tried!
   end
   # If we don't shut down the system under testing it will continue to

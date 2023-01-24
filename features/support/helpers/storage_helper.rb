@@ -213,9 +213,9 @@ class VMStorage
                          Guestfs::EVENT_ALL)
     g.set_autosync(1)
     disks.each do |disk|
-      if disk.class == String
+      if disk.instance_of?(String)
         g.add_drive_opts(disk_path(disk), format: disk_format(disk))
-      elsif disk.class == Hash
+      elsif disk.instance_of?(Hash)
         g.add_drive_opts(disk[:path], disk[:opts])
       else
         raise "cannot handle type '#{disk.class}'"

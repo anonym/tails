@@ -237,7 +237,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">_Ask for a bridge by email</property>
+                    <property name="label" translatable="yes">_Ask for a Tor bridge by email</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">step_bridge_radio_scan</property>
                   </object>
@@ -259,6 +259,7 @@
                 <property name="label" translatable="yes">Send an empty email to &lt;tt&gt;bridges@torproject.org&lt;/tt&gt; from a Gmail or Riseup email address with your phone and scan the QR code that is attached to the automatic reply.</property>
                 <property name="use-markup">True</property>
                 <property name="wrap">True</property>
+                <property name="xalign">0</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -700,12 +701,27 @@
       </packing>
     </child>
     <child>
+      <object class="GtkLabel" id="step_error_label_explain">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="halign">start</property>
+        <property name="margin-bottom">12</property>
+        <property name="wrap">True</property>
+        <property name="xalign">0</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkBox" id="step_error_box_actions">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="step_error_box_wrong_clock">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="valign">center</property>
@@ -776,7 +792,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="step_error_box_captive_portal">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="valign">center</property>
@@ -848,7 +864,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="step_error_box_proxy">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="valign">center</property>
@@ -920,7 +936,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="step_error_box_bridge">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="valign">center</property>
@@ -932,7 +948,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">• Bridge by email</property>
+                <property name="label" translatable="yes">• Tor bridge by email</property>
                 <attributes>
                   <attribute name="weight" value="semibold"/>
                 </attributes>
@@ -947,14 +963,15 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="step_error_label_explain_bridge">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="margin-top">6</property>
-                <property name="label" translatable="yes">Send an empty email to &lt;tt&gt;bridges@torproject.org&lt;/tt&gt; from a Gmail or Riseup email address with your phone and scan the QR code that is attached to the automatic reply.</property>
+                <property name="label" translatable="yes">Tor bridges are secret Tor relays. Use a bridge as your first Tor relay if connections to Tor are blocked, for example in some countries, by some public networks, or by some parental controls.</property>
                 <property name="use-markup">True</property>
                 <property name="wrap">True</property>
+                <property name="xalign">0</property>
                 <style>
                   <class name="step-error-section-description"/>
                 </style>
@@ -963,6 +980,26 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-top">12</property>
+                <property name="label" translatable="yes">To get a bridge, send an empty email to &lt;tt&gt;bridges@torproject.org&lt;/tt&gt; from a Gmail or Riseup email address with your phone and scan the QR code that is attached to the automatic reply.</property>
+                <property name="use-markup">True</property>
+                <property name="wrap">True</property>
+                <property name="xalign">0</property>
+                <style>
+                  <class name="step-error-section-description"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -991,20 +1028,45 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="step_error_text">
-                    <property name="name">step_error_text</property>
+                  <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can-focus">True</property>
+                    <property name="can-focus">False</property>
                     <property name="margin-top">6</property>
-                    <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
-                    <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
-                    <accessibility>
-                      <relation type="controlled-by" target="step_error_btn_scanqrcode"/>
-                      <relation type="described-by" target="step_error_label_warning"/>
-                    </accessibility>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Bridge</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="step_error_text">
+                        <property name="name">step_error_text</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="placeholder-text" translatable="yes">obfs4 ...</property>
+                        <property name="input-hints">GTK_INPUT_HINT_NO_SPELLCHECK | GTK_INPUT_HINT_NO_EMOJI | GTK_INPUT_HINT_NONE</property>
+                        <signal name="backspace" handler="cb_step_error_text_changed" swapped="no"/>
+                        <accessibility>
+                          <relation type="controlled-by" target="step_error_btn_scanqrcode"/>
+                          <relation type="described-by" target="step_error_label_warning"/>
+                        </accessibility>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
+                    <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
@@ -1053,7 +1115,7 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <style>
@@ -1070,7 +1132,7 @@
       <packing>
         <property name="expand">True</property>
         <property name="fill">True</property>
-        <property name="position">1</property>
+        <property name="position">2</property>
       </packing>
     </child>
     <child>
@@ -1088,7 +1150,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">False</property>
-        <property name="position">3</property>
+        <property name="position">4</property>
       </packing>
     </child>
     <child>
@@ -1110,7 +1172,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">False</property>
-        <property name="position">4</property>
+        <property name="position">5</property>
       </packing>
     </child>
   </object>
@@ -1805,7 +1867,7 @@ Tor relays are servers operated by different organizations and volunteers around
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes">Your local network is blocking access to Tor.</property>
+            <property name="label" translatable="yes">This local network is blocking access to Tor.</property>
             <style>
               <class name="progress-box-text"/>
             </style>

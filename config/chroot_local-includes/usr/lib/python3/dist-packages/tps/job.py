@@ -1,16 +1,16 @@
 import abc
 from contextlib import contextmanager
-from logging import getLogger
 import os
 import threading
 from typing import Dict, List, Optional
 
 from gi.repository import Gio, GLib
 
+import tps.logging
 from tps import DBUS_JOBS_PATH, DBUS_JOB_INTERFACE
 from tps.dbus.object import DBusObject
 
-logger = getLogger(__name__)
+logger = tps.logging.get_logger(__name__)
 
 job_id = 0
 job_id_lock = threading.Lock()

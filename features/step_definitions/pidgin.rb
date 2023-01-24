@@ -161,7 +161,7 @@ Given /^my XMPP friend goes online( and joins the multi-user chat)?$/ do |join_c
   @chatbot = ChatBot.new(
     account['username'] + '@' + account['domain'],
     account['password'],
-    **(bot_opts.transform_keys(&:to_sym))
+    **bot_opts.transform_keys(&:to_sym)
   )
   @chatbot.start
   add_after_scenario_hook { @chatbot.stop }
@@ -397,15 +397,13 @@ Then /^I can join the "([^"]+)" channel on "([^"]+)"$/ do |channel, server|
   focus_window(@chat_room_jid)
   @screen.hide_cursor
   try_for(60) do
-    begin
-      @screen.wait(chan_image(server, channel, 'conversation_tab'), 5).click
-    rescue FindFailed => e
-      # If the channel tab can't be found it could be because there were
-      # multiple connection attempts and the channel tab we want is off the
-      # screen. We'll try closing tabs until the one we want can be found.
-      @screen.press('ctrl', 'w')
-      raise e
-    end
+    @screen.wait(chan_image(server, channel, 'conversation_tab'), 5).click
+  rescue FindFailed => e
+    # If the channel tab can't be found it could be because there were
+    # multiple connection attempts and the channel tab we want is off the
+    # screen. We'll try closing tabs until the one we want can be found.
+    @screen.press('ctrl', 'w')
+    raise e
   end
   @screen.hide_cursor
   @screen.wait(chan_image(server, channel, 'welcome'), 10)

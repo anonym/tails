@@ -6,6 +6,8 @@ import subprocess
 import sys
 from tempfile import mkdtemp, NamedTemporaryFile
 
+from behave.model_core import Status
+
 # To be able to run the tests without installing the module first, we
 # tell Python where it can find the tps module relative to the script
 # directory.
@@ -191,7 +193,7 @@ def after_all(context):
 
 
 def after_step(context, step):
-    if BEHAVE_DEBUG_ON_ERROR and step.status == "failed":
+    if BEHAVE_DEBUG_ON_ERROR and step.status == Status.failed:
         # -- ENTER DEBUGGER: Zoom in on failure location.
         # NOTE: Use IPython debugger, same for pdb (basic python debugger).
         import ipdb

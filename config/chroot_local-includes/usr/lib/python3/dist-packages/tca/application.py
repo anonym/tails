@@ -84,6 +84,10 @@ class TCAApplication(Gtk.Application):
             self.has_persistence,
             self.has_unlocked_persistence,
         )
+        self.get_network_time_result = {
+            "status": None,
+            "reason": None,
+        }
 
     def load_configuration(self):
         """Load our configuration, possibly asynchronously."""
@@ -270,12 +274,15 @@ class TCAApplication(Gtk.Application):
 
         def on_get_network_time(portal, result, error):
             if error:
+                self.get_network_time_result["status"] = "error"
                 if result is not None and result.get("returncode", 1) == 5:
+                    self.get_network_time_result["reason"] = "captive-portal"
                     self.log.info("Detected captive portal")
                 else:
-                    self.log.warning("Unspecified error: %s", error)
+                    self.log.warning("get-network-time failed: %s", error)
                 GLib.idle_add(callback, result, error)
             else:
+                self.get_network_time_result["status"] = "success"
                 self.portal.call_async(
                     "set-system-time", on_set_system_time, result["stdout"].rstrip()
                 )

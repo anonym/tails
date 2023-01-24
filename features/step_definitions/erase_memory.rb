@@ -13,11 +13,9 @@ def udev_watchdog_monitored_device
   monitored_out = ps_output_scan.flatten[0]
   assert_not_nil(monitored_out)
   monitored_device_id = $vm.file_content('/sys' + monitored_out + '/dev').chomp
-  monitored_device =
-    $vm.execute_successfully(
-      "readlink -f /dev/block/'#{monitored_device_id}'"
-    ).stdout.chomp
-  monitored_device
+  $vm.execute_successfully(
+    "readlink -f /dev/block/'#{monitored_device_id}'"
+  ).stdout.chomp
 end
 
 Given /^udev-watchdog is monitoring the correct device$/ do

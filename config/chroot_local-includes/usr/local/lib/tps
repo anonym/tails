@@ -6,12 +6,14 @@ import os
 from pathlib import Path
 from gi.repository import GLib, Gio
 
+import tps
+import tps.logging
 from tps import DBUS_SERVICE_NAME
 from tps.service import Service
 
 from typing import Optional
 
-logger = logging.getLogger(__name__)
+logger = tps.logging.get_logger(__name__)
 
 mainloop = GLib.MainLoop()
 service = None  # type: Optional[Service]
@@ -42,7 +44,15 @@ def main():
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action="store_true")
+    parser.add_argument("--profiling", action="store_true",
+                        help="Produce performance profiles in /run/tails-persistent-storage/profiles")
     args = parser.parse_args()
+
+    tps.PROFILING = args.profiling or \
+                    os.getenv("TPS_PROFILING") or \
+                    "tps-profiling" in Path("/proc/cmdline").read_text().split()
+    if tps.PROFILING:
+        Path(tps.PROFILES_DIR).mkdir(mode=0o700, parents=True, exist_ok=True)
 
     # Set up logging
     debug = args.debug or \

@@ -1,4 +1,3 @@
-import logging
 import os
 from pathlib import Path
 import re
@@ -8,12 +7,13 @@ from typing import Optional
 from gi.repository import GLib, UDisks
 
 from tailslib import LIVE_USER_UID, LIVE_USERNAME
+import tps.logging
 from tps import executil
 from tps import _, TPS_MOUNT_POINT, udisks
 from tps.dbus.errors import IncorrectPassphraseError, TargetIsBusyError
 from tps.job import Job
 
-logger = logging.getLogger(__name__)
+logger = tps.logging.get_logger(__name__)
 
 TAILS_MOUNTPOINT = "/lib/live/mount/medium"
 PARTITION_GUID = "8DA63339-0007-60C0-C436-083AC8230908" # Linux reserved

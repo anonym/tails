@@ -2,9 +2,9 @@
 Feature: Upgrading an old Tails USB installation
   As a Tails user
   If I have an old version of Tails installed on a USB device
-  and the USB device has a persistent partition
+  and the USB device has a Persistent Storage
   I want to upgrade Tails on it
-  and keep my persistent partition in the process
+  and keep my Persistent Storage in the process
 
   # An issue with this feature is that scenarios depend on each
   # other. When editing this feature, make sure you understand these
@@ -121,19 +121,6 @@ Feature: Upgrading an old Tails USB installation
     # Regression test on #8158 (i.e. the IUK's filesystem is not part of the Unsafe Browser's chroot)
     And I successfully start the Unsafe Browser
     And the file system changes introduced in version 2.3~testoverlayfsng are present in the Unsafe Browser's chroot
-
-  @automatic_upgrade
-  Scenario: Upgrading a Tails that has several SquashFS deltas present with an incremental upgrade
-    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
-    And Tails is fooled to think that version 2.0~testoverlayfsng was initially installed
-    And Tails is fooled to think it is running version 2.1~testoverlayfsng
-    And Tails is fooled to think a 2.0.1~testoverlayfsng SquashFS delta is installed
-    And Tails is fooled to think a 2.1~testoverlayfsng SquashFS delta is installed
-    When the network is plugged
-    And Tor is ready
-    Then I am proposed to install an incremental upgrade to version 2.2~testoverlayfsng
-    And I can successfully install the incremental upgrade to version 2.2~testoverlayfsng
-    Then only the 2.2~testoverlayfsng SquashFS delta is installed
 
   @automatic_upgrade
   Scenario: Upgrading a Tails whose signing key is outdated

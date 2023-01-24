@@ -1,3 +1,309 @@
+tails (5.9) unstable; urgency=medium
+
+  * Update tor to 0.4.7.13 (tails/tails!1013)
+
+    Closes issues:
+      - Upgrade to Tor 0.4.7.13 (tails/tails#19377)
+
+    Commits:
+      - Update tor to 0.4.7.13
+
+  * Resolve "Upgrade to Tor Browser based on Firefox 102.7" (tails/tails!1012)
+
+    Closes issues:
+      - Upgrade to Tor Browser based on Firefox 102.7 (tails/tails#19360)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0.2-build1
+
+  * tps: Increase timeout of activate call (tails/tails!1006)
+
+    Closes issues:
+      - tps logs passphrase in cleartext in debug mode (tails/tails#19350)
+      - Persistent Storage fails to activate: timeout (tails/tails#19347)
+
+    Commits:
+      - tps: Don't print status of NetworkManager.service to stdout
+      - tps: Bump the activation timeout to 120 seconds
+      - tps: Add log messages
+      - tps: Log line which called executil helper functions
+
+  * Troubleshooting mode: stop passing options that can only break stuff
+    (tails/tails!999)
+
+    Closes issues:
+      - Reconsider Troubleshooting Mode kernel command line wrt. Wayland
+        (tails/tails#19321)
+
+    Commits:
+      - Troubleshooting mode (syslinux): stop passing options that can only break stuff
+      - Troubleshooting mode (EFI): stop passing options that can only break stuff
+
+  * Upgrade to Linux 6.0 (tails/tails!996)
+
+    Closes issues:
+      - Add randomize_kstack_offset=1 to boot parameters (tails/tails#19023)
+      - Enable BPF JIT hardening (tails/tails#19345)
+      - Upgrade to Linux 6.0 (tails/tails#18467)
+
+    Commits:
+      - Test suite: allow the pattern to cover slightly less of the write cache
+      - Revert renaming of /etc/amnesia/version to /etc/tails/version
+      - Move "set -eu" to a better location
+      - Test suite: remove dead code
+      - Test suite: drop check about tails-version output
+      - Upgrade to Linux 6.0.12-1~bpo11+1
+      - early_patch: implement the initramfs-tools' "prereqs" interface
+      - initramfs: stop including SCSI drivers
+      - initramfs: bring back including all DRM modules
+      - Always log the size of the initramfs
+      - initramfs: remove support for AFS and CIFS
+      - initramfs: remove support for PCMCIA and parallel port
+      - initramfs: don't include firmware for drivers we removed
+      - initramfs: remove sunrpc support
+      - initramfs: remove a bunch more SCSI drivers
+      - Add set -u
+      - Drop set -x
+      - Include fewer modules in the initramfs
+      - Compress the initramfs with the most space-efficient XZ compression level
+      - Simplify how we set initramfs compression algorithm
+      - Hardening: turn on BPF JIT hardening, if the JIT is enabled.
+      - Fix headings levels
+      - Hardening: randomize kernel stack offset on syscall entry
+      - initrd: install privacy screen provider drivers
+      - Upgrade to Linux 6.0.3-1~bpo11+1 from bullseye-backports
+      - Enable bullseye-backports APT source
+      - Rename config/amnesia to config/variables
+      - Rename /etc/amnesia to /etc/tails
+      - Deprecate /usr/share/doc/amnesia/
+      - The thing is called Tails
+      - Drop support for config/amnesia.local
+      - Update comment
+      - Rename $AMNESIA_* variables
+      - Remove unused variables
+
+  * Tor Connection: Hide "Fix clock", "Proxy", and "Captive Portal" when time sync
+    was successful already (tails/tails!986)
+
+    Closes issues:
+      - Add label to bridge line on the error screen (tails/tails#19332)
+      - Hide "Fix clock", "Proxy", and "Captive Portal" when time sync was successful
+        already (tails/tails#19171)
+
+    Commits:
+      - Make it easier to reason about state transitions
+      - Tor Connection: simplify test
+      - Tor Connection: improve phrasing
+      - Tor Connection: make phrasing consistent
+      - Tor Connection: tell the user when we know their network is blocking access to
+        Tor
+      - Tor Connection: explain what bridges are on the error screen
+      - Tor Connection: rename "Bridge by email" section on the error screen
+      - Tor Connection: add label to bridge line on the error screen too
+      - Tor Connection: fix alignment of "Send an empty email" string
+      - Tor Connection: Hide "Fix clock", "Proxy", and "Captive Portal" when time sync
+        was successful already
+      - Name widgets so we can act on them
+      - Tor Connection: make log message somewhat clearer
+      - Tor Connection: remember the result of tails-get-network-time
+
+  * tps: Fix handling of symlink bindings (tails/tails!1009)
+
+    Closes issues:
+      - Persistent Storage sometimes fails to activate Dotfiles (tails/tails#19346)
+
+    Commits:
+      - tps behave-tests: Support passing flags to behave
+      - tps behave-tests: Test source directory with symlink
+      - tps behave-tests: Add README
+      - tps: Fix BEHAVE_DEBUG_ON_ERROR feature of the behave tests
+      - tps: Improve log messages
+      - tps-frontend: Improve log and error messages
+      - tps-frontend: Fix log level of message
+      - tps: Fix activation of symlink bindings failing
+      - tps: Fix log message
+      - tps: Improve error message
+      - tps: Fix Activate call failing with spurious error
+      - tps: More useful error message
+
+  * tps: Don't log parameters which can contain secrets (tails/tails!1005)
+
+    Closes issues:
+      - tps logs passphrase in cleartext in debug mode (tails/tails#19350)
+
+    Commits:
+      - tps: Don't log parameters which can contain secrets
+
+  * Do not hide the GTK3 “application menu” button in title bars (tails/tails!1004)
+
+    Closes issues:
+      - Cannot access GTK3 application menus in Tails 5.8 / Wayland (tails/tails#19371)
+
+    Commits:
+      - Do not hide the GTK3 “application menu” button in title bars
+
+  * Fix Tor Browser homepage localization when started from Tor Connection
+    (tails/tails!1003)
+
+    Closes issues:
+      - Tor Browser homepage is not localized when started from Tor Connection
+        (tails/tails#19369)
+
+    Commits:
+      - Simplify f-string
+      - Lint
+      - Fix Tor Browser homepage localization when started from Tor Connection
+
+  * Update tails@ key (tails/tails!1001)
+
+    Commits:
+      - Test suite: ensure OpenPGP keys test is run when the only change on the branch
+        is updating a key
+      - Update tails@ key
+
+  * Pull non-website PO files from Weblate (tails/tails!1000)
+
+    Closes issues:
+      - Pull non-website PO files from Weblate (tails/tails#19322)
+
+    Commits:
+      - import-translations: remove obsolete reference to Transifex
+      - import-translations: drop support for excluding languages
+      - generate-languages-list: workaround the fact we can't distinguish reviewed
+        translations from non-reviewed ones
+      - Pull non-website PO files from Weblate
+
+  * Make a few user-facing strings localizable (tails/tails!998)
+
+    Closes issues:
+      - Not localized (internationalized) strings (tails/tails#19349)
+
+    Commits:
+      - Integrate the Welcome Screen's main_window.py into our l10n framework
+      - Lint
+      - Make a few user-facing strings localizable
+
+  * Autocorrect Rubocop violations (tails/tails!997)
+
+    Commits:
+      - Test suite: lint
+      - Test suite: run rubocop --autocorrect
+
+  * Improve wording of backup utility (tails/tails!995)
+
+    Closes issues:
+      - Improve wording of backup utility (tails/tails#19348)
+
+    Commits:
+      - Test suite: adjust to new UI wording
+      - Use more consistent wording
+      - Fix typography
+      - Improve wording
+
+  * Fix newly discovered shellcheck violations (tails/tails!994)
+
+    Commits:
+      - Fix "lb build" exit code reporting
+      - Add missing quotes
+
+  * Remove scrollbar in Favorites (tails/tails!992)
+
+    Closes issues:
+      - Need to scroll to see all Favorites (tails/tails#19338)
+
+    Commits:
+      - Apply 1 suggestion(s) to 1 file(s)
+      - Test suite: fix "the screen keyboard works in Tor Browser"
+      - Lint
+      - Test suite: remove dead code
+      - Test suite: retry opening new tab
+      - Test suite: ensure Tor Browser has loaded the home page before we continue
+      - Test suite: spam Tor Browser less intensively
+      - Test suite: remove unused code
+      - Test suite: start Tor Browser and Thunderbird by typing their name
+      - Test suite: fix typo in comment
+      - Remove scrollbar in Favorites
+
+  * Remove dead code about TAILS_WIKI_SUPPORTED_LANGUAGES (tails/tails!991)
+
+    Commits:
+      - WhisperBack: don't try to include non-existing tails-greeter.errors file
+      - WhisperBack: don't try to include non-existing xorg.conf
+      - Remove l10n plumbing for WhisperBack configuration file
+      - Remove obsolete .xsessionrc
+      - Lint
+      - WhisperBack config: remove dead code
+
+  * Test suite: fix Unsafe Browser localization test in French (tails/tails!988)
+
+    Commits:
+      - Test suite: fix Unsafe Browser localization test in French
+
+  * Revert "Run Qt applications as native Wayland by default" (tails/tails!987)
+
+    Closes issues:
+      - Remove obsolete config/chroot_local-includes/usr/share/live/config/xserver-
+        xorg/*.ids (tails/tails#19330)
+      - Qt AppImages broken on Tails 5.8 (tails/tails#19326)
+      - Clipboard encryption/decryption with Kleopatra is broken on Wayland
+        (tails/tails#19329)
+      - can't paste into unlock password field in KeepassXC in Tails 5.8
+        (tails/tails#19327)
+
+    Commits:
+      - Remove obsolete per-device X.Org driver override via live-config
+      - Revert "Don't run OnionShare as a native Wayland app"
+      - Revert "Run Qt applications as native Wayland by default"
+
+  * Remove the warning dialog when starting the Unsafe Browser (tails/tails!985)
+
+    Closes issues:
+      - Explain better the Unsafe Browser from Tor Connection (tails/tails#19168)
+
+    Commits:
+      - Test suite: adjust to removed warning dialog
+      - Remove the warning dialog when starting the Unsafe Browser
+
+  * Make the Upgrader use the mirror redirector (tails/tails!983)
+
+    Commits:
+      - Upgrader: use dedicated SocksPort with no stream isolation
+      - Test suite: remove test whose cost/benefit has become very high
+      - Test suite: apply user-facing terminology
+      - Design doc: remove outdated details
+      - Remove now unused mirror-pool-dispatcher submodule
+      - Design doc: update what the fallback DNS pool is used for
+      - Drop dead code, obsolete dependencies, and obsolete tweaks
+      - Upgrader: Drop the "replace URL with a random one from the mirror pool JSON"
+        and "fallback to DNS pool" mechanisms
+      - Upgrader: bring back explanation when impossible to do an incremental upgrade
+      - IUK test suite: adjust to 888b78811bcd156284d01a063d448f6bd693db22
+      - Design doc: use new download URI in example UDFs
+      - Generate UDFs that point to the mirror redirector for ISO and IUK downloads
+
+  * Welcome Screen: restore ability to login with default settings by pressing
+    "Enter" (tails/tails!982)
+
+    Closes issues:
+      - Login with default settings now requires pressing "Enter" twice in the Welcome
+        Screen (tails/tails#19323)
+
+    Commits:
+      - Welcome Screen: restore ability to login with default settings by pressing
+        "Enter"
+
+  * switch Persistent Storage icon to SVG (tails/tails!980)
+
+    Closes issues:
+      - Replace Persistent Storage icon with SVG version (tails/tails#19316)
+
+    Commits:
+      - Also use the SVG icon in the Welcome Screen
+      - Switch Persistent Storage icon to SVG
+
+ -- Tails developers <tails@boum.org>  Mon, 23 Jan 2023 11:53:31 +0100
+
 tails (5.8) unstable; urgency=medium
 
   * Upgrade Thunderbird to 102.6.0-1~deb11u1

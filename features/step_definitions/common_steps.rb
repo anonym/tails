@@ -33,19 +33,18 @@ def post_snapshot_restore_hook(snapshot_name)
   # with our Chutney network, so we ensure that we have fresh circuits.
   # Time jumps and incorrect clocks also confuse Tor in many ways.
   already_synced_time_host_to_guest = false
-  if $vm.connected_to_network?
-    # tor@default.service is always active, so we need to check if Tor
-    # was configured in the snapshot we are using: for example,
-    # with-network-logged-in-unsafe-browser connects to the LAN
-    # but did not configure Tor.
-    if $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
-       check_disable_network != '1'
-      $vm.execute('systemctl stop tor@default.service')
-      $vm.host_to_guest_time_sync
-      already_synced_time_host_to_guest = true
-      $vm.execute('systemctl start tor@default.service')
-      wait_until_tor_is_working
-    end
+  # tor@default.service is always active, so we need to check if Tor
+  # was configured in the snapshot we are using: for example,
+  # with-network-logged-in-unsafe-browser connects to the LAN
+  # but did not configure Tor.
+  if $vm.connected_to_network? &&
+     $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
+     check_disable_network != '1'
+    $vm.execute('systemctl stop tor@default.service')
+    $vm.host_to_guest_time_sync
+    already_synced_time_host_to_guest = true
+    $vm.execute('systemctl start tor@default.service')
+    wait_until_tor_is_working
   end
   $vm.host_to_guest_time_sync unless already_synced_time_host_to_guest
 end
@@ -455,7 +454,8 @@ Given /^the Tails desktop is ready$/ do
   # And also for the root user for applications that run with
   # sudo/pkexec under XWayland.
   $vm.execute_successfully(
-    'DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/0/bus gsettings set org.gnome.desktop.interface toolkit-accessibility true'
+    'DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/0/bus ' \
+    'gsettings set org.gnome.desktop.interface toolkit-accessibility true'
   )
   # Optimize upgrade check: avoid 30 second sleep
   $vm.execute_successfully(
@@ -588,28 +588,8 @@ Given /^available upgrades have been checked$/ do
   try_for(300) { $vm.file_exist?('/run/tails-upgrader/checked_upgrades') }
 end
 
-def tbb_version
-  tbb_dist_url_file = "#{GIT_DIR}/config/chroot_local-includes/usr/share/tails/tbb-dist-url.txt"
-  File.read(tbb_dist_url_file).chomp.split('/').last
-end
-
-def tor_browser_is_alpha
-  /^[0-9.]+a[0-9]+(?:-build[0-9]+)?$/ =~ tbb_version
-end
-
-def tor_browser_is_nightly
-  /^nightly/ =~ tbb_version
-end
-
 When /^I start the Tor Browser( in offline mode)?$/ do |offline|
-  overview_icon = if tor_browser_is_alpha
-                    'TorBrowserOverviewIconAlpha.png'
-                  elsif tor_browser_is_nightly
-                    'TorBrowserOverviewIconNightly.png'
-                  else
-                    'TorBrowserOverviewIcon.png'
-                  end
-  step "I start \"#{overview_icon}\" via GNOME Activities Overview"
+  step 'I start "Tor Browser" via GNOME Activities Overview'
   if offline
     start_button = Dogtail::Application
                    .new('zenity')
@@ -633,6 +613,17 @@ Given /^the Tor Browser (?:has started|starts)$/ do
   end
   browser_info = xul_application_info('Tor Browser')
   @screen.wait(browser_info[:new_tab_button_image], 10)
+  try_for(120, delay: 3) do
+    # We can't use Dogtail here: this step must support many languages
+    # and using Dogtail would require maintaining a list of translations
+    # for the "Stop" and "Reload" buttons.
+    @screen.wait_vanish(browser_info[:browser_stop_button_image], 120)
+    if RTL_LANGUAGES.include?($language)
+      @screen.wait(browser_info[:browser_reload_button_image_rtl], 120)
+    else
+      @screen.wait(browser_info[:browser_reload_button_image], 120)
+    end
+  end
 end
 
 Given /^the Tor Browser loads the (startup page|Tails homepage|Tails GitLab)$/ do |page|
@@ -913,7 +904,7 @@ Then /^persistence for "([^"]+)" is (|not )enabled$/ do |app, enabled|
 end
 
 def language_has_non_latin_input_source(language)
-  # Note: we'll have to update the list when fixing #12638 or #18076
+  # NOTE: we'll have to update the list when fixing #12638 or #18076
   ['Persian', 'Russian'].include?(language)
 end
 
@@ -944,38 +935,28 @@ Given /^I start "([^"]+)" via GNOME Activities Overview$/ do |app_name|
   end
   @screen.wait("GnomeApplicationsMenu#{$language}.png", 10)
   @screen.press('super')
-  # Only use this way of passing the app_name argument where it's
-  # really needed, e.g. to avoid having to encode lots of keymaps
-  # to be able to type the name correctly:
-  if app_name.match(/[.]png$/)
-    @screen.wait('GnomeActivitiesOverviewLaunchersReady.png', 20)
-    # This should be ctrl + click, to ensure we open a new window.
-    # Let's implement this once one of the callers needs this.
-    @screen.wait(app_name, 20).click
-  else
-    pic = if RTL_LANGUAGES.include?($language)
-            'GnomeActivitiesOverviewSearchRTL.png'
-          else
-            'GnomeActivitiesOverviewSearch.png'
-          end
-    @screen.wait(pic, 20)
-    if language_has_non_latin_input_source($language)
-      # Temporarily switch to en_US keyboard layout to type the name of the app
-      switch_input_source
-    end
-    # Trigger startup of search providers
-    @screen.type(app_name[0])
-    # Give search providers some time to start (#13469#note-5) otherwise
-    # our search sometimes returns no results at all.
-    sleep 2
-    # Type the rest of the search query
-    @screen.type(app_name[1..-1])
-    sleep 4
-    @screen.press('ctrl', 'Return')
-    if language_has_non_latin_input_source($language)
-      # Switch back to $language's default keyboard layout
-      switch_input_source
-    end
+  pic = if RTL_LANGUAGES.include?($language)
+          'GnomeActivitiesOverviewSearchRTL.png'
+        else
+          'GnomeActivitiesOverviewSearch.png'
+        end
+  @screen.wait(pic, 20)
+  if language_has_non_latin_input_source($language)
+    # Temporarily switch to en_US keyboard layout to type the name of the app
+    switch_input_source
+  end
+  # Trigger startup of search providers
+  @screen.type(app_name[0])
+  # Give search providers some time to start (#13469#note-5) otherwise
+  # our search sometimes returns no results at all.
+  sleep 2
+  # Type the rest of the search query
+  @screen.type(app_name[1..-1])
+  sleep 4
+  @screen.press('ctrl', 'Return')
+  if language_has_non_latin_input_source($language)
+    # Switch back to $language's default keyboard layout
+    switch_input_source
   end
 end
 
@@ -1008,7 +989,7 @@ def pulseaudio_sink_inputs
 end
 
 When /^I double-click on the (Tails documentation|Report an Error) launcher on the desktop$/ do |launcher|
-  image = 'Desktop' + launcher.split.map(&:capitalize) .join + '.png'
+  image = "Desktop#{launcher.split.map(&:capitalize).join}.png"
   info = xul_application_info('Tor Browser')
   # Sometimes the double-click is lost (#12131).
   retry_action(10) do
@@ -1025,7 +1006,8 @@ When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) dire
   should_work = should_work == 'can'
   @screen.press('ctrl', 's')
   @screen.wait('Gtk3SaveFileDialog.png', 10)
-  if output_dir == 'persistent Tor Browser'
+  case output_dir
+  when 'persistent Tor Browser'
     output_dir = "/home/#{LIVE_USER}/Persistent/Tor Browser"
     @screen.wait('GtkTorBrowserPersistentBookmark.png', 10).click
     @screen.wait('GtkTorBrowserPersistentBookmarkSelected.png', 10)
@@ -1033,10 +1015,10 @@ When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) dire
     # let's use the keyboard shortcut to focus its field
     @screen.press('alt', 'n')
     @screen.wait('TorBrowserSaveOutputFileSelected.png', 10)
-  elsif output_dir == 'default downloads'
+  when 'default downloads'
     output_dir = "/home/#{LIVE_USER}/Tor Browser"
   else
-    @screen.paste(output_dir + '/')
+    @screen.paste("#{output_dir}/")
   end
   # Only the part of the filename before the .html extension can be easily
   # replaced so we have to remove it before typing it into the arget filename
@@ -1064,7 +1046,7 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
   @screen.wait('Gtk3SaveFileDialog.png', 10)
   # Only the file's basename is selected when the file selector dialog opens,
   # so we type only the desired file's basename to replace it
-  @screen.paste(output_dir + '/' + output_file.sub(/[.]pdf$/, ''))
+  @screen.paste("#{output_dir}/#{output_file.sub(/[.]pdf$/, '')}")
   @screen.press('Return')
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do
@@ -1238,16 +1220,16 @@ Then /^Tails is running version (.+)$/ do |version|
 end
 
 def size_of_shared_disk_for(files)
-  files = [files] if files.class == String
+  files = [files] if files.instance_of?(String)
   assert_equal(Array, files.class)
-  disk_size = files.map { |f| File.new(f).size } .inject(0, :+)
+  disk_size = files.map { |f| File.new(f).size }.reduce(0, :+)
   # Let's add some extra space for filesystem overhead etc.
   disk_size += [convert_to_bytes(16, 'MiB'), (disk_size * 0.15).ceil].max
   disk_size
 end
 
 def share_host_files(files)
-  files = [files] if files.class == String
+  files = [files] if files.instance_of?(String)
   assert_equal(Array, files.class)
   disk_size = size_of_shared_disk_for(files)
   disk = random_alpha_string(10)
@@ -1257,12 +1239,12 @@ def share_host_files(files)
   $vm.storage.guestfs_disk_helper(disk) do |g, _|
     partition = g.list_partitions.first
     g.mount(partition, '/')
-    files.each { |f| g.upload(f, '/' + File.basename(f)) }
+    files.each { |f| g.upload(f, "/#{File.basename(f)}") }
   end
   step "I plug USB drive \"#{disk}\""
   mount_dir = $vm.execute_successfully('mktemp -d').stdout.chomp
   dev = $vm.disk_dev(disk)
-  partition = dev + '1'
+  partition = "#{dev}1"
   $vm.execute_successfully("mount #{partition} #{mount_dir}")
   $vm.execute_successfully("chmod -R a+rX '#{mount_dir}'")
   mount_dir
@@ -1272,7 +1254,7 @@ def mount_usb_drive(disk, **fs_options)
   fs_options[:encrypted] ||= false
   @tmp_usb_drive_mount_dir = $vm.execute_successfully('mktemp -d').stdout.chomp
   dev = $vm.disk_dev(disk)
-  partition = dev + '1'
+  partition = "#{dev}1"
   if fs_options[:encrypted]
     password = fs_options[:password]
     assert_not_nil(password)
@@ -1428,7 +1410,7 @@ def save_qrcode(str)
   # https://gitlab.torproject.org/tpo/anti-censorship/bridgedb/-/blob/main/bridgedb/qrcodes.py
   qrencode_output_file = Tempfile.create('qrcode', $config['TMPDIR'])
   qrencode_output_file.close
-  output_file = qrencode_output_file.path + '.jpg'
+  output_file = "#{qrencode_output_file.path}.jpg"
   cmd_helper(['qrencode', '-o', qrencode_output_file.path, '--size=5', '--margin=5', str])
   assert(File.exist?(qrencode_output_file.path))
   cmd_helper(['convert', qrencode_output_file.path, output_file])

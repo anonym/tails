@@ -237,7 +237,7 @@ method udf_for_new_release ($channel) {
 }
 
 method iso_url () {
-    'http://dl.amnesia.boum.org/tails/'
+    'https://download.tails.net/tails/'
         . $self->channel
         . '/'
         . lc($self->product_name)
@@ -266,7 +266,7 @@ method iuk_filename ($previous_version) {
 }
 
 method iuk_url ($previous_version) {
-    'http://dl.amnesia.boum.org/tails/'
+    'https://download.tails.net/tails/'
         . $self->channel
         . '/iuk/v2/'
         . $self->iuk_filename($previous_version);

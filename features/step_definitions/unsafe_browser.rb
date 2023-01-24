@@ -1,8 +1,3 @@
-When /^I see and accept the Unsafe Browser start verification$/ do
-  @screen.wait('GnomeQuestionDialogIcon.png', 30)
-  @screen.type(['Tab'], ['Return'])
-end
-
 Then /^the Unsafe Browser has no add-ons installed$/ do
   step 'I open the address "about:addons" in the Unsafe Browser'
   step 'I see "UnsafeBrowserNoAddons.png" after at most 30 seconds'

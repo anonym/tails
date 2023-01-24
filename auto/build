@@ -37,10 +37,7 @@ print_iso_size () {
 git rev-parse --is-inside-work-tree &> /dev/null \
    || fatal "${PWD} is not a Git tree."
 
-. config/amnesia
-if [ -e config/amnesia.local ] ; then
-   . config/amnesia.local
-fi
+. config/variables
 
 # a clean starting point
 rm -rf cache/stages_rootfs
@@ -174,7 +171,7 @@ echo "I: Hybriding it..."
 touch chroot/binary.iso
 mount --bind binary.iso chroot/binary.iso
 # shellcheck disable=SC2086
-chroot chroot isohybrid $AMNESIA_ISOHYBRID_OPTS binary.iso || fatal "isohybrid failed"
+chroot chroot isohybrid $ISOHYBRID_OPTS binary.iso || fatal "isohybrid failed"
 umount chroot/binary.iso
 print_iso_size binary.iso
 truncate -s %2048 binary.iso

@@ -1,10 +1,11 @@
 from gi.repository import Gio
 from typing import List, Optional
 
-from logging import getLogger
 import psutil
 
-logger = getLogger(__name__)
+import tps.logging
+
+logger = tps.logging.get_logger(__name__)
 
 # A list of all applications currently registered on the system
 # noinspection PyArgumentList

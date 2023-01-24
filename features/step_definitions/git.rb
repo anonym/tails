@@ -1,5 +1,5 @@
-When /^I clone the Git repository "([\S]+)" in GNOME Terminal$/ do |repo|
-  repo_directory = %r{[\S]+/([\S]+)(\.git)?$}.match(repo)[1]
+When /^I clone the Git repository "(\S+)" in GNOME Terminal$/ do |repo|
+  repo_directory = %r{\S+/(\S+)(\.git)?$}.match(repo)[1]
   assert(!$vm.directory_exist?("/home/#{LIVE_USER}/#{repo_directory}"))
 
   recovery_proc = proc do
@@ -23,7 +23,7 @@ When /^I clone the Git repository "([\S]+)" in GNOME Terminal$/ do |repo|
   end
 end
 
-Then /^the Git repository "([\S]+)" has been cloned successfully$/ do |repo|
+Then /^the Git repository "(\S+)" has been cloned successfully$/ do |repo|
   # Git needs a strictly positive time, after seeing "Unpacking objects: 100%",
   # before the conditions we check below are verified
   try_for(10, msg: 'the Git repository has not been cloned') do

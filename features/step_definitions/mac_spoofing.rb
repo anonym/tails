@@ -53,7 +53,7 @@ Then /^some network device leaked the real MAC address$/ do
   end
 end
 
-Given /^macchanger will fail by not spoofing and always returns ([\S]+)$/ do |mode|
+Given /^macchanger will fail by not spoofing and always returns (\S+)$/ do |mode|
   $vm.execute_successfully('mv /usr/bin/macchanger /usr/bin/macchanger.orig')
   $vm.execute_successfully("ln -s /bin/#{mode} /usr/bin/macchanger")
 end
@@ -80,7 +80,7 @@ Given /^no network interface modules can be unloaded$/ do
 end
 
 Then /^(\d+|no) network interface(?:s)? (?:is|are) enabled$/ do |expected_nr_nics|
-  # note that "no".to_i => 0 in Ruby.
+  # NOTE: "no".to_i => 0 in Ruby.
   expected_nr_nics = expected_nr_nics.to_i
   nr_nics = all_ethernet_nics.size
   assert_equal(expected_nr_nics, nr_nics)

@@ -128,17 +128,18 @@ import fcntl
 import glob
 import ipaddress
 import os.path
-import psutil
 import re
 import socket
 import socketserver
-import stem
-import stem.control
-import stem.connection
 import struct
 import sys
 import textwrap
 import time
+
+import psutil
+import stem
+import stem.control
+import stem.connection
 import yaml
 
 DEFAULT_LISTEN_ADDRESS = 'localhost'
@@ -154,7 +155,6 @@ class NoRewriteMatch(RuntimeError):
     """
     Error when no matching rewrite rule was found but one was expected.
     """
-    pass
 
 
 def log(msg):
@@ -180,13 +180,15 @@ def apparmor_profile_of_pid(pid):
     # in case there is no AppArmor profile, so the only unsupported
     # mode here is unconfined scripts.
     enabled_aa_profile_re = r'^(.+) \((?:complain|enforce)\)$'
-    with open('/proc/{}/attr/current'.format(str(pid)), "rb") as fh:
+    with open(f'/proc/{pid}/attr/current', "rb") as fh:
         aa_profile_status = str(fh.read().strip(), 'UTF-8')
-        apparmor_profile_match = re.match(enabled_aa_profile_re, aa_profile_status)
+        apparmor_profile_match = re.match(
+            enabled_aa_profile_re,
+            aa_profile_status
+        )
         if apparmor_profile_match:
             return apparmor_profile_match.group(1)
-        else:
-            return psutil.Process(pid).exe()
+        return psutil.Process(pid).exe()
 
 
 def get_ip_address(ifname):
@@ -227,23 +229,23 @@ class FilteredControlPortProxySession:
         self.subscribed_event_listeners = []
 
     def debug_log_send(self, line):
-        if global_args.print_responses:
+        if GLOBAL_ARGS.print_responses:
             self.debug_log(line, format_multiline=True, sep=': <- ')
 
     def debug_log_recv(self, line):
-        if global_args.print_requests:
+        if GLOBAL_ARGS.print_requests:
             self.debug_log(line, format_multiline=True, sep=': -> ')
 
     def debug_log_rewrite(self, kind, old, new):
         if kind not in ['command', 'received event', 'response'] or \
-           (kind == 'command' and not global_args.print_responses) or \
+           (kind == 'command' and not GLOBAL_ARGS.print_responses) or \
            (kind in ['received event', 'response']
-            and not global_args.print_requests):
+            and not GLOBAL_ARGS.print_requests):
             return
         if new != old:
             old = textwrap.indent(old.strip(), ' '*4)
             new = textwrap.indent(new.strip(), ' '*4)
-            self.debug_log("rewrote {}:\n{}\nto:\n{}".format(kind, old, new),
+            self.debug_log(f"rewrote {kind}:\n{old}\nto:\n{new}",
                            format_multiline=False)
 
     def respond(self, line, raw=False):
@@ -270,9 +272,8 @@ class FilteredControlPortProxySession:
         except (stem.SocketClosed, stem.SocketError):
             if retry:
                 raise
-            else:
-                self.recover_controller()
-                self.proxy_line(line, args_rewriter, response_rewriter, retry=True)
+            self.recover_controller()
+            self.proxy_line(line, args_rewriter, response_rewriter, retry=True)
             return
         if response_rewriter:
             new_response = response_rewriter(response)
@@ -281,7 +282,7 @@ class FilteredControlPortProxySession:
         self.respond(response, raw=True)
 
     def filter_line(self, line):
-        self.debug_log("command filtered: {}".format(line))
+        self.debug_log(f"command filtered: {line}")
         self.respond("510 Command filtered")
 
     def rewrite_line(self, replacers, line):
@@ -317,7 +318,7 @@ class FilteredControlPortProxySession:
     def event_cb(self, event, event_rewriter=None):
         if self.restrict_stream_events and \
            isinstance(event, stem.response.events.StreamEvent) and \
-           not global_args.disable_filtering:
+           not GLOBAL_ARGS.disable_filtering:
             if event.id not in self.client_streams:
                 if event.status not in [stem.StreamStatus.NEW,
                                         stem.StreamStatus.NEWRESOLVE]:
@@ -346,8 +347,8 @@ class FilteredControlPortProxySession:
         for listener, event in self.subscribed_event_listeners:
             if event not in events:
                 self.subscribed_event_listeners.remove((listener, event))
-                if global_args.print_responses:
-                    self.debug_log("unsubscribed from event '{}'".format(event))
+                if GLOBAL_ARGS.print_responses:
+                    self.debug_log(f"unsubscribed from event '{event}'")
                 try:
                     self.controller.remove_event_listener(listener)
                 except (stem.SocketClosed, stem.SocketError):
@@ -360,13 +361,12 @@ class FilteredControlPortProxySession:
                     self.recover_controller()
         for event in events:
             if any(event == event_ for _, event_ in self.subscribed_event_listeners):
-                if global_args.print_responses:
-                    self.debug_log("already subscribed to event '{}'"
-                                   .format(event))
+                if GLOBAL_ARGS.print_responses:
+                    self.debug_log(f"already subscribed to event '{event}'")
                 continue
             rule = self.allowed_events.get(event, {}) or {}
             if not rule.get('suppress', False) or \
-               global_args.disable_filtering:
+               GLOBAL_ARGS.disable_filtering:
                 event_rewriter = None
                 if 'response' in rule:
                     replacers = rule['response']
@@ -379,8 +379,8 @@ class FilteredControlPortProxySession:
                     self.event_cb(event, event_rewriter=event_rewriter)
 
                 self.subscribed_event_listeners.append((_event_cb, event))
-                if global_args.print_responses:
-                    self.debug_log("subscribed to event '{}'".format(event))
+                if GLOBAL_ARGS.print_responses:
+                    self.debug_log(f"subscribed to event '{event}'")
                 try:
                     self.controller.add_event_listener(
                         _event_cb, getattr(stem.control.EventType, event)
@@ -389,9 +389,8 @@ class FilteredControlPortProxySession:
                     # See comment above for failed unsubscriptions.
                     self.recover_controller()
             else:
-                if global_args.print_responses:
-                    self.debug_log("suppressed subscription to event '{}'"
-                                   .format(event))
+                if GLOBAL_ARGS.print_responses:
+                    self.debug_log(f"suppressed subscription to event '{event}'")
 
     def recover_controller(self):
         self.debug_log('lost connection to tor, reconnecting...')
@@ -456,8 +455,9 @@ class FilteredControlPortProxySession:
                 # client that there is no authentication.
                 self.respond("250-PROTOCOLINFO 1")
                 self.respond("250-AUTH METHODS=NULL")
-                self.respond("250-VERSION Tor=\"{}\""
-                             .format(self.controller.get_version()))
+                self.respond(
+                    f"250-VERSION Tor=\"{self.controller.get_version()}\""
+                )
                 self.respond("250 OK")
 
             elif cmd == "AUTHENTICATE":
@@ -473,7 +473,7 @@ class FilteredControlPortProxySession:
                 # The control language doesn't care about case for
                 # the event type.
                 events = [event.upper() for event in args]
-                if not global_args.disable_filtering and \
+                if not GLOBAL_ARGS.disable_filtering and \
                    any(event not in self.allowed_events for event in events):
                     self.filter_line(line)
                 else:
@@ -482,7 +482,7 @@ class FilteredControlPortProxySession:
 
             else:
                 rule = self.get_rule(cmd, arg_str)
-                if rule is None and global_args.disable_filtering:
+                if rule is None and GLOBAL_ARGS.disable_filtering:
                     rule = {}
                 if rule is not None:
                     args_rewriter = None
@@ -559,8 +559,7 @@ class FilteredControlPortProxyHandler(socketserver.StreamRequestHandler):
                             filter_['name'] = name
                     self.filters += filters
             except (yaml.parser.ParserError, yaml.scanner.ScannerError) as err:
-                log("filter '{}' has bad YAML and was not loaded: {}"
-                    .format(filter_file, str(err)))
+                log(f"filter '{filter_file}' has bad YAML and was not loaded: {str(err)}")
 
     def add_allowed_commands(self, commands):
         for cmd in commands:
@@ -667,7 +666,7 @@ class FilteredControlPortProxyHandler(socketserver.StreamRequestHandler):
                 control_port=('127.0.0.1', '9052'), control_socket=None
             )
             tries += 1
-        stem.connection.authenticate_cookie(controller, cookie_path=global_args.control_cookie_path)
+        stem.connection.authenticate_cookie(controller, cookie_path=GLOBAL_ARGS.control_cookie_path)
         return controller
 
     def handle(self):
@@ -720,7 +719,7 @@ class FilteredControlPortProxyHandler(socketserver.StreamRequestHandler):
         else:
             status = 'loaded filter: {}'.format(self.filter_name)
         log('{} connected: {}'.format(self.client_desc, status))
-        if global_args.debug:
+        if GLOBAL_ARGS.debug:
             log('Final rules:')
             log(yaml.dump({
                 'commands': self.allowed_commands,
@@ -761,13 +760,13 @@ def main():
         "--listen-address",
         type=str, metavar='ADDR', default=DEFAULT_LISTEN_ADDRESS,
         help="specifies the address on which the server listens " +
-             "(default: {})".format(DEFAULT_LISTEN_ADDRESS)
+             f"(default: {DEFAULT_LISTEN_ADDRESS})"
     )
     parser.add_argument(
         "--listen-port",
         type=int, metavar='PORT', default=DEFAULT_LISTEN_PORT,
         help="specifies the port on which the server listens " +
-             "(default: {})".format(DEFAULT_LISTEN_PORT)
+             f"(default: {DEFAULT_LISTEN_PORT})"
     )
     parser.add_argument(
         "--listen-interface",
@@ -779,7 +778,7 @@ def main():
         "--control-cookie-path",
         type=str, metavar='PATH', default=DEFAULT_COOKIE_PATH,
         help="specifies the path to Tor's control authentication cookie " +
-             "(default: {})".format(DEFAULT_COOKIE_PATH)
+             f"(default: {DEFAULT_COOKIE_PATH})"
     )
     parser.add_argument(
         "--complain",
@@ -795,21 +794,21 @@ def main():
     # We put the argparse results in the global scope since it's
     # awkward to extend socketserver so additional data can be sent to
     # the request handler, where we need access to the arguments.
-    global global_args
-    global_args = parser.parse_args()
+    global GLOBAL_ARGS
+    GLOBAL_ARGS = parser.parse_args()
     # Deal with overlapping functionality between arguments
-    global_args.__dict__['disable_filtering'] = global_args.complain
-    global_args.__dict__['print_requests'] = global_args.complain or \
-        global_args.debug
-    global_args.__dict__['print_responses'] = global_args.debug
-    if global_args.listen_interface:
-        ip_address = get_ip_address(global_args.listen_interface)
-        if global_args.debug:
-            log("IP address for interface {} : {}".format(
-                global_args.listen_interface, ip_address))
+    GLOBAL_ARGS.__dict__['disable_filtering'] = GLOBAL_ARGS.complain
+    GLOBAL_ARGS.__dict__['print_requests'] = GLOBAL_ARGS.complain or \
+        GLOBAL_ARGS.debug
+    GLOBAL_ARGS.__dict__['print_responses'] = GLOBAL_ARGS.debug
+    if GLOBAL_ARGS.listen_interface:
+        ip_address = get_ip_address(GLOBAL_ARGS.listen_interface)
+        if GLOBAL_ARGS.debug:
+            log(f"IP address for interface {GLOBAL_ARGS.listen_interface} : " +
+                ip_address)
     else:
-        ip_address = global_args.listen_address
-    address = (ip_address, global_args.listen_port)
+        ip_address = GLOBAL_ARGS.listen_address
+    address = (ip_address, GLOBAL_ARGS.listen_port)
     server = FilteredControlPortProxy(address, FilteredControlPortProxyHandler)
     log("Tor control port filter started, listening on {}:{}".format(*address))
     try:

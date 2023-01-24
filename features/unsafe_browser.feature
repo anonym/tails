@@ -82,5 +82,4 @@ Feature: Browsing the web using the Unsafe Browser
     # NetworkManager apparently needs some time to notice that the connection is now off
     And I wait 10 seconds
     When I start the Unsafe Browser
-    And I see and accept the Unsafe Browser start verification
     Then I am told I cannot start the Unsafe Browser when I am offline

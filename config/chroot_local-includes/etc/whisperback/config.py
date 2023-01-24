@@ -17,41 +17,6 @@ import gettext
 # DOCUMENTATION
 
 
-def __get_localised_doc_link():
-    """Return the link to the localised documentation
-
-    @returns  the link to the localised documentation if available, or fallback
-              to the English version
-    """
-
-    # Try to get the list of supported languages codes supported by the
-    # documentation according to the $TAILS_WIKI_SUPPORTED_LANGUAGES
-    # environnement variable. If unset, fallback to `en`
-    try:
-        wiki_supported_languages = os.environ["TAILS_WIKI_SUPPORTED_LANGUAGES"].split(' ')
-    except KeyError:
-        wiki_supported_languages = ['en']
-
-    # locale.getlocale returns a tuple (language code, encoding)
-    # the language is the two first character of the RFC 1766 "language code"
-    system_language_code = locale.getdefaultlocale()[0]
-    if system_language_code:
-        system_language = system_language_code[0:2]
-    else:
-        system_language = None
-
-    # Get the language code of the localised documentation if available, or
-    # fallback to `en`
-    if system_language in wiki_supported_languages:
-        localised_doc_language = system_language
-    else:
-        localised_doc_language = 'en'
-
-    return ("file:///usr/share/doc/tails/website/doc/first_steps/bug_reporting." +
-            localised_doc_language +
-            ".html")
-
-
 def _(string):
     try:
         encoded = gettext.translation("tails", "/usr/share/locale").lgettext(string)
@@ -61,22 +26,6 @@ def _(string):
     finally:
         return string
 
-
-# The right panel help (HTML string)
-html_help = _(
-"""<h1>Help us fix your bug!</h1>
-<p>Read <a href="%s">our bug reporting instructions</a>.</p>
-<p><strong>Do not include more personal information than
-needed!</strong></p>
-<h2>About giving us an email address</h2>
-<p>
-Giving us an email address allows us to contact you to clarify the problem. This
-is needed for the vast majority of the reports we receive as most reports
-without any contact information are useless. On the other hand it also provides
-an opportunity for eavesdroppers, like your email or Internet provider, to
-confirm that you are using Tails.
-</p>
-""") % __get_localised_doc_link()
 
 # ENCRYPTION
 #
@@ -131,7 +80,8 @@ mail_subject = "Bug report: %x" % random.randrange(16**32)
 
 
 def mail_prepended_info():
-    """Returns the version of the running Tails system
+    """Return the version of the running Tails system.
+
     A callback function to get information to prepend to the mail
     (this information will be encrypted). This is useful to add
     software version.
@@ -142,7 +92,6 @@ def mail_prepended_info():
     @return The output of tails-version, if any, or an English string
             explaining the error
     """
-
     try:
         tails_version_process = subprocess.Popen("tails-version",
                                                  stdout=subprocess.PIPE)
@@ -157,7 +106,8 @@ def mail_prepended_info():
 
 
 def mail_appended_info():
-    """Returns debugging information on the running Tails system
+    """Return debugging information on the running Tails system.
+
     A callback function to get information to append to the email
     (this information will be encrypted). This is useful to add
     configuration files useful for debugging.

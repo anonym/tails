@@ -1,16 +1,22 @@
+import cProfile
+import pstats
+import tempfile
 import threading
 import time
 from abc import abstractmethod, ABCMeta
 import inspect
 from logging import getLogger
+from pathlib import Path
 from typing import Any, Dict, List
 from threading import Thread
 
 from gi.repository import Gio, GLib
 
+import tps
+import tps.logging
 from tps.dbus.errors import DBusError
 
-logger = getLogger(__name__)
+logger = tps.logging.get_logger(__name__)
 
 
 class RegistrationFailedError(Exception):
@@ -59,7 +65,7 @@ class DBusObject(object, metaclass=ABCMeta):
         for interface in self.node_info.interfaces:
             reg_id = connection.register_object(self.dbus_path,
                                                 interface,
-                                                self.handle_method_call,
+                                                self.handle_method_call_async,
                                                 self.handle_get_property,
                                                 self.handle_set_property)
             if not reg_id:
@@ -111,27 +117,52 @@ class DBusObject(object, metaclass=ABCMeta):
                 'PropertiesChanged', parameters
             )
 
-    def handle_method_call(self, *args, **kwargs) -> None:
-        thread = Thread(target=self.do_handle_method_call, args=args,
-                        kwargs=kwargs, daemon=True)
+    def handle_method_call_async(self, *args, **kwargs) -> None:
+        thread = Thread(target=self.handle_method_call, args=args, kwargs=kwargs, daemon=True)
         thread.start()
 
-    def do_handle_method_call(self,
-                              connection: Gio.DBusConnection,
-                              sender: str,
-                              object_path: str,
-                              interface_name: str,
-                              method_name: str,
-                              parameters: GLib.Variant,
-                              invocation: Gio.DBusMethodInvocation) -> None:
+    def handle_method_call(self, *args, **kwargs) -> None:
+        method_name = args[4]
+        full_method_name = self.__class__.__name__ + "." + method_name
 
         with self.num_ongoing_calls_lock:
             self.num_ongoing_calls += 1
 
-        try:
-            logger.debug("Handling method call %s.%s%s", self.__class__.__name__, method_name, parameters)
-            method_info = self.node_info.lookup_interface(interface_name).lookup_method(method_name)
+        # We don't log the parameters here to avoid logging secrets
+        logger.debug(f"Handling method call {full_method_name}")
 
+        try:
+            if tps.PROFILING:
+                uptime = Path("/proc/uptime").read_text().split()[0]
+                with tempfile.NamedTemporaryFile(mode="w+", prefix=f"{uptime}-{full_method_name}.",
+                                                 dir=tps.PROFILES_DIR,
+                                                 delete=False) as profile_file:
+                    logger.info(f"Creating profile in {profile_file.name}")
+                    prof = cProfile.Profile()
+                    prof.runctx("self.handle_method_call_inner(*args, **kwargs)",
+                                    globals=globals(),
+                                    locals=locals())
+                    stats = pstats.Stats(prof, stream=profile_file).strip_dirs().sort_stats(pstats.SortKey.CUMULATIVE)
+                    stats.print_stats()
+            else:
+                self.handle_method_call_inner(*args, **kwargs)
+
+        finally:
+            with self.num_ongoing_calls_lock:
+                self.num_ongoing_calls -= 1
+            logger.debug(f"Done handling method call {full_method_name}")
+
+    def handle_method_call_inner(self,
+                                 connection: Gio.DBusConnection,
+                                 sender: str,
+                                 object_path: str,
+                                 interface_name: str,
+                                 method_name: str,
+                                 parameters: GLib.Variant,
+                                 invocation: Gio.DBusMethodInvocation) -> None:
+        method_info = self.node_info.lookup_interface(interface_name).lookup_method(method_name)
+
+        try:
             # If the method has a special handler function, then call that.
             try:
                 handler = getattr(self, method_name + "_method_call_handler")
@@ -170,9 +201,6 @@ class DBusObject(object, metaclass=ABCMeta):
                 logger.warning(f"Error name {error_name} is not a valid D-Bus name")
                 error_name = "python.UnknownError"
             invocation.return_dbus_error(error_name, str(e))
-        finally:
-            with self.num_ongoing_calls_lock:
-                self.num_ongoing_calls -= 1
 
     def handle_get_property(self,
                             connection: Gio.DBusConnection,

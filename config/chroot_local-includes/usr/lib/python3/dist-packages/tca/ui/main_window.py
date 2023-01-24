@@ -667,6 +667,8 @@ class StepConnectProgressMixin:
 
 class StepErrorMixin:
     def before_show_error(self, coming_from):
+        label_explain = self.get_object("label_explain")
+
         self.state["error"] = {
             "fix_attempt": False  # has the user done something to fix it?
         }
@@ -685,6 +687,23 @@ class StepErrorMixin:
         )
         if coming_from in ["proxy"]:
             self.state["error"]["fix_attempt"] = True
+        hide_mode: bool = self.state["hide"]["hide"]
+        time_synced: bool = (not hide_mode) and self.app.get_network_time_result[
+            "status"
+        ] == "success"
+
+        # Bridges are compulsory in hide mode, so the user has
+        # already seen the explanation about bridges and we don't
+        # need to repeat it here.
+        self.get_object("label_explain_bridge").set_visible(not hide_mode)
+
+        for box in ["wrong_clock", "captive_portal", "proxy"]:
+            self.get_object(f"box_{box}").set_visible(not time_synced)
+        label_explain.set_text(
+            _("This local network seems to be blocking access to Tor.")
+        )
+        label_explain.set_visible(time_synced)
+
         self._step_error_submit_allowed()
 
     def cb_step_error_btn_proxy_clicked(self, *args):
@@ -1084,7 +1103,8 @@ class TCAMainWindow(
         ]
         d.format_secondary_markup("\n".join(secondary))
         d.add_buttons(
-            "Close and Lose Progress", Gtk.ResponseType.YES, "Wait", Gtk.ResponseType.NO
+            _("Close and Lose Progress"), Gtk.ResponseType.YES,
+            _("Wait"), Gtk.ResponseType.NO
         )
         d.set_default_response(Gtk.ResponseType.NO)
 
