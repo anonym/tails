@@ -70,7 +70,12 @@ the Foundations Team's duties.
 - Ensure there's [an issue about
   writing the release notes](https://gitlab.tails.boum.org/tails/tails/-/issues?scope=all&state=opened&label_name[]=Core%20Work%3ATechnical%20writing&search=release+notes). This also applies to betas and release
   candidates, so you might create multiple such issues during one
-  shift.
+  shift. Set `Write release notes for $VERSION` as title.
+- Verify there's a `missed:$VERSION` label
+  on [[!tails_gitlab groups/tails/-/labels]]; if there's none,
+  submit a MR against [[!tails_gitlab tails/gitlab-config]]
+  to create one.
+
 - The ISO images for *every* previous beta, RC, and final release
   based on the version of Debian that will be used for the release
   you'll be preparing.
