@@ -1482,7 +1482,7 @@ fi
     ./run_test_suite "${args[@]}" "${what[@]}"
 
     while true; do
-        ./run_test_suite "${args[@]}" "@$(find "${tmpdir:?}" -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|head -n1)"
+        ./run_test_suite "${args[@]}" "@$(find "${tmpdir:?}" -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|shuf -n1)"
         sleep 3
     done
 )
