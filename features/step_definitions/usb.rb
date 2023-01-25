@@ -1172,9 +1172,9 @@ Given /^I set all Greeter options to non-default values$/ do
   # while the others have no such background.
   step 'I set an administration password'
   sleep 2
-  # We do this one last so we don't have to worry about translations
-  # for the above steps.
-  step 'I set the language to German'
+
+  # We should change language, too, but we'll not: let's do that in the "I log in to a new session" step,
+  # which will handle language change much better
 end
 
 Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
