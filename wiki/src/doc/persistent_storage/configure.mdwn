@@ -307,54 +307,36 @@ projector), you can save the configuration of your displays using the
    your <span class="filename">Home</span> folder to
    <span class="filename">/live/persistence/TailsData_unlocked/dotfiles/.config</span>.
 
-<div class="bug" id="deactivate">
+Deleting the data corresponding to a feature
+============================================
 
-<p>If you turn off a feature, it will be
-unavailable after restarting Tails but the
-corresponding files
-are still saved in the Persistent Storage.</p>
+If you turn off a feature, it is unavailable after restarting Tails but the
+corresponding data is still saved on the USB stick.
 
-<p>To delete the files corresponding to a feature:</p>
+To delete the data corresponding to a feature:
 
-<ol>
-  <li>
-    Start Tails and set an
-    [[administration password|doc/first_steps/welcome_screen/administration_password]].
-  </li>
-  <li>
-    Choose
-    <span class="menuchoice">
-      <span class="guimenu">Applications</span>&nbsp;▸
-      <span class="guisubmenu">System Tools</span>&nbsp;▸
-      <span class="guimenuitem">Root Terminal</span>
-    </span>
-    to open a terminal with administration rights.
-  </li>
-  <li>
-    Execute the <span class="code">nautilus</span> command to open the file
-    browser with administration rights.
-  </li>
-  <li>
-    In the file browser, navigate to <span class="filename">
-    /live/persistence/TailsData_unlocked</span>.
-  </li>
-  <li>
-    Delete the folder corresponding to the feature:
-    <ul>
-      <li><strong>Persistent Folder</strong>: <code>Persistent</code> folder</li>
-      <li><strong>Welcome Screen</strong>: <code>greeter-settings</code> folder</li>
-      <li><strong>Tor Browser Bookmarks</strong>: <code>bookmarks</code> folder</li>
-      <li><strong>Network Connections</strong>: <code>nm-system-connections</code></li>
-      <li><strong>Additional Software</strong>: <code>apt</code> and <code>apt-sources.list.d</code> folders and <code>live-additional-software.conf</code> file</li>
-      <li><strong>Printers</strong>: <code>cups-configuration</code> folder</li>
-      <li><strong>Thunderbird Email Client</strong>: <code>thunderbird</code> folder</li>
-      <li><strong>GnuPG</strong>: <code>gnupg</code> folder</li>
-      <li><strong>Electrum Bitcoin Wallet</strong>: <code>electrum</code> folder</li>
-      <li><strong>Pidgin Internet Messenger</strong>: <code>pidgin</code> folder</li>
-      <li><strong>SSH Client</strong>: <code>openssh-client</code> folder</li>
-      <li><strong>Dotfiles</strong>: <code>dotfiles</code> folder</li>
-    </ul>
-  </li>
-</ol>
+1. When starting Tails, set up an [[administration
+   password|doc/first_steps/welcome_screen/administration_password]].
 
-</div>
+1. In Tails, choose **Applications**&nbsp;▸ **System Tools**&nbsp;▸ **Root
+   Terminal** to open a terminal with administration rights.
+
+1. Execute the <span class="command">nautilus</span> command to open the
+   *Files* browser with administration rights.
+
+1. In the *Files* browser, navigate to */live/persistence/TailsData_unlocked*.
+
+1. Delete the folder corresponding to the feature for which you want to delete the data:
+
+   - **Persistent Folder**: *Persistent* folder
+   - **Welcome Screen**: *greeter-settings* folder
+   - **Tor Browser Bookmarks**: *bookmarks* folder
+   - **Network Connections**: *nm-system-connections* folder
+   - **Additional Software**: *apt* and *apt-sources.list.d* folders and *live-additional-software.conf* file
+   - **Printers**: *cups-configuration* folder
+   - **Thunderbird Email Client**: *thunderbird* folder
+   - **GnuPG**: *gnupg* folder
+   - **Electrum Bitcoin Wallet**: *electrum* folder
+   - **Pidgin Internet Messenger**: *pidgin* folder
+   - **SSH Client**: *openssh-client* folder
+   - **Dotfiles**: *dotfiles* folder
