@@ -186,7 +186,15 @@ refresh_mo () {
         po=$(po_file "$locale")
         mo=$(mo_file "$locale")
         mkdir -p "$(dirname "$mo")"
-        msgfmt --check -o "${mo}" "${po}"
+        if ! msgfmt --check -o "${mo}" "${po}"; then
+            echo "Errors for locale '${locale}': restoring old file"
+            if [ -n "$(git ls-files "${po}")" ]; then
+                git restore "${po}"
+                msgfmt --check -o "${mo}" "${po}"
+            else
+                rm "${po}"
+            fi
+        fi
     done
 }
 
