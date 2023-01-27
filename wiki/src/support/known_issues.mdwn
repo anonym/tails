@@ -489,36 +489,27 @@ should still exist.
 
 If you encounter this problem, you can either:
 
-- Turn on again the feature of the Persistent Storage that you need:
+- Turn on again the features of the Persistent Storage that you had configured:
 
-  1. Unlock the Persistent Storage in
-     the Welcome Screen when starting Tails.
+  1. When starting Tails, unlock the Persistent Storage in the Welcome Screen.
 
-  1. Choose
-     <span class="menuchoice">
-       <span class="guimenu">Applications</span>&nbsp;▸
-       <span class="guisubmenu">Tails</span>&nbsp;▸
-       <span class="guimenuitem">Configure persistent volume</span></span>.
-
-  1. If you are asked to enter a passphrase, enter the same passphrase that you
-     use to unlock your Persistent Storage.
+  1. Choose **Applications**&nbsp;▸ **Persistent Storage**.
 
   1. Turn on the features of the Persistent Storage that you had turned on previously.
 
-  1. Click <span class="bold">Save</span>, then restart Tails.
-
-  Your *Persistent* folder and all the data of the Persistent Storage
-  should be restored.
+     Your *Persistent* folder and all the data of the Persistent Storage
+     should be restored.
 
 - Restore the *persistence.conf* file from its backup:
 
-  1. Unlock the Persistent Storage and [[set up an administration password
-     |doc/first_steps/welcome_screen/administration_password]] when
-     starting Tails.
+  1. When starting Tails, unlock the Persistent Storage and [[set up an
+     administration password
+     |doc/first_steps/welcome_screen/administration_password]] in the Welcome
+     Screen.
 
-  1. Execute the following command in a *Terminal*:
+  1. Execute the following command in a *Root Terminal*:
 
-         sudo cp -a /live/persistence/TailsData_unlocked/persistence.conf{.bak,}
+         cp -a /live/persistence/TailsData_unlocked/persistence.conf{.bak,}
 
 If neither of the above instructions fixes the problem, you might need to fix the
 ownership of `TailsData_unlocked`.
