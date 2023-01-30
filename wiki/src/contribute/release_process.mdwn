@@ -1402,6 +1402,21 @@ candidate):
 
     ./bin/publish-iuks
 
+As tracked on [[!tails_gitlab tails/tails/-/issues/19396]], it might well be
+that Mirrorbits will miss this update.
+Let's be sure that this happens via
+
+    ssh rsync.lizard mirrorbits refresh -rehash
+
+If, at a later stage of the process, you realize Mirrorbits is still not
+"noticing" that mirrors are up-to-date, don't be afraid of refreshing/rehashing
+again, or even restart the whole service:
+
+    ssh rsync.lizard systemctl restart mirrorbits.service
+
+In any case, please report your experience on
+[[!tails_gitlab tails/tails/-/issues/19396]]
+
 ## Announce, seed and test the Torrents
 
 Check if there's enough space on our Bittorrent seed to import the new
