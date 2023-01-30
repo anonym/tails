@@ -69,7 +69,7 @@ def main():
         backend_address = get_ibus_bus()
     log.debug("address got! %s", backend_address)
 
-    dirname = os.path.join("/tmp/netns-specific/", args.netns)
+    dirname = os.path.join("/run/user/1000/netns-specific/", args.netns)
     os.makedirs(dirname, exist_ok=True)
     dest_basename = 'at.sock' if args.component == 'a11y' else 'ibus.sock'
     dest_bus_path = os.path.join(dirname, dest_basename)

@@ -41,9 +41,8 @@ systemctl --global enable tails-create-persistent-storage.service
 systemctl --global enable "tails-a11y-proxy-netns@onioncircs.service"
 
 for netns in tbb clearnet; do
-    for bus in a11y ibus; do
-        systemctl --global enable "tails-${bus}-proxy-netns@${netns}.service"
-    done
+    systemctl --global enable "tails-a11y-proxy-netns@${netns}.service"
+    systemctl --global enable "tails-ibus-proxy-netns@${netns}.service"
 done
 
 # Use socket activation only, to delay the startup of cupsd.
