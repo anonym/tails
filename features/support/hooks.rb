@@ -111,7 +111,7 @@ end
 
 def record_scenario_skipped(scenario)
   destfile = ARTIFACTS_DIR + '/skipped.txt'
-  File.open(destfile, 'a') { |f| f.write(scenario.location + "\n") }
+  File.open(destfile, 'a') { |f| f.write("#{scenario.location}\n") }
 end
 
 def _save_vm_file_content(file:, destfile:, desc:)
@@ -306,7 +306,7 @@ After('@product') do |scenario|
         save_failure_artifact('Network capture', pcap_file)
       end
     elsif scenario.exception.is_a?(TestSuiteRuntimeError)
-      info_log("Scenario must be retried: #{scenario.methods.sort}")
+      info_log("Scenario must be retried: #{scenario.name}")
       record_scenario_skipped(scenario)
     elsif [TorBootstrapFailure, TimeSyncingError].any? { |c| scenario.exception.is_a?(c) }
       save_tor_journal
