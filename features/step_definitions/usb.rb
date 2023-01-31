@@ -1219,10 +1219,10 @@ end
 
 Then /^(no )?persistent Greeter options were restored$/ do |no|
   if no
-    assert(!@screen.exists('TailsGreeterPersistentSettingsRestored.png'))
+    assert(!@screen.exists('TailsGreeterToast.png'))
   else
     $language = 'German'
-    @screen.wait('TailsGreeterPersistentSettingsRestored.png', 10)
+    @screen.wait('TailsGreeterPersistentSettingsRestoredGerman.png', 10)
   end
 end
 
