@@ -367,11 +367,11 @@ Given /^I log in to a new session(?: in ([^ ]*))?( without activating the Persis
                    # If we select a RTL language below, the
                    # login and shutdown buttons will
                    # swap place.
-                   'TailsGreeterShutdownButton.png'
+                   ['TailsGreeterShutdownButton.png']
                  else
-                   'TailsGreeterLoginButton.png'
+                   ['TailsGreeterLoginButton.png', 'TailsGreeterLoginButtonGerman.png']
                  end
-  login_button_region = @screen.wait(login_button, 15)
+  login_button_region = @screen.wait_any(login_button, 15)[:match]
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
