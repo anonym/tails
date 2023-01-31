@@ -369,7 +369,18 @@ If `lint_po` complains:
 * send a note to <tails-l10n@boum.org> [public] so that they get in touch with
   whoever can fix them.
 
-If the previous commit added a PO file for a new locale, add it to
+Check if the previous commit added a PO file for a new locale:
+
+    (
+     headcommit=$(git show-ref HEAD)
+     git ls-files po/ |
+     while read f
+     do
+       git log '--pretty=format:%H' --diff-filter=A --decorate=short | head -n1 | grep -qw "${headcommit}" && echo $f
+     done
+    )
+
+add it to
 `config/chroot_local-includes/usr/share/tails/browser-localization/descriptions`
 (in the `MOZILLA_LOCALE:LOCATION` format).
 
@@ -436,6 +447,13 @@ Update other base branches
    If the merge conflicts don't look like something you feel confident
    resolving properly, abort this merge and let the Foundations
    Team know.
+
+4. Look at the content of `$RELEASE_BRANCH`, `devel` and `feature/bookworm`
+
+        for branch in ${RELEASE_BRANCH} devel feature/bookworm; do
+            git switch ${branch}
+            ls config/APT_overlays.d/
+        done
 
 4. Ensure that the `$RELEASE_BRANCH`, `devel` and `feature/bookworm` (if it exists) branches
    have the expected content in `config/APT_overlays.d/`: e.g. it must
@@ -668,9 +686,9 @@ recent. Also look if there's a new `-buildX` tag (e.g.
 `tor-browser-60.3.0esr-8.0-1-build1`) for the Firefox version the Tor
 Browser we want to ship is based on in these Git repositories:
 
-* <https://gitlab.torproject.org/tpo/applications/tor-browser-build.git>
+* https://gitlab.torproject.org/tpo/applications/tor-browser-build/activity
   (`maint-X.Y` branch)
-* <https://gitlab.torproject.org/tpo/applications/tor-browser.git>
+* https://gitlab.torproject.org/tpo/applications/tor-browser/activity
 
 A new tag may indicate that a new Tor Browser release or rebuild is imminent.
 
@@ -790,41 +808,38 @@ suite should be ready, so it is time to:
 Verify that Jenkins reproduced your images
 ------------------------------------------
 
-To verify that Jenkins reproduced your images:
+Verify that Jenkins reproduced your images:
 
-1. Visit the URL printed by this command:
+  (
+   set -eu
+   cd "${ARTIFACTS:?}"
+   url="https://nightly.tails.boum.org/build_Tails_ISO_${RELEASE_BRANCH:?}/lastSuccessful/archive/build-artifacts/tails-build-artifacts.shasum"
+   curl "$url" > SHA512SUMS-jenkins.txt
+   grep --perl-regexp '[.]img|iso' SHA512SUMS-jenkins.txt | sha512sum -c -
+  )
 
-       echo "https://jenkins.tails.boum.org/job/build_Tails_ISO_${RELEASE_BRANCH}/"
+### If the ISO and USB images hashes match
 
-2. Find the relevant build (probably the last one)
-   and compare the SHA512 hashes of the ISO and USB images built by Jenkins
-   (in the `tails-build-artifacts.shasum` build artifact) with the ones
-   of the images you built.
+yay, we're good to go!
 
-3. Then:
+The `.build-manifest` may differ — that's OK.
+Then:
 
-   - If the ISO and USB images hashes match: yay, we're good to go!
-     The `.build-manifest` may differ — that's OK.
-     Then:
+1. To update the `~/.config/tails/release_management/current.yml` template
+   with newly required variables, run:
 
-     1. To update the `~/.config/tails/release_management/current.yml` template
-        with newly required variables, run:
+       ./bin/rm-config generate-boilerplate --stage reproduced-images
 
-            ./bin/rm-config generate-boilerplate --stage reproduced-images
+2. Edit `~/.config/tails/release_management/current.yml`
+   and set the `matching_jenkins_images_build_id` value
+   to the ID of this job (an integer):
 
-     2. Edit `~/.config/tails/release_management/current.yml`
-        and set the `matching_jenkins_images_build_id` value
-        to the ID of this job (an integer):
+       "${EDITOR:?}" ~/.config/tails/release_management/current.yml
 
-            "${EDITOR:?}" ~/.config/tails/release_management/current.yml
+3. Generate the resulting environment variables and export them
+   into your environment:
 
-     3. Generate the resulting environment variables and export them
-        into your environment:
-
-            . $(./bin/rm-config generate-environment --stage reproduced-images)
-
-   - Else, if there is a hash mismatch for one of the images: ouch!
-     see next section
+       . $(./bin/rm-config generate-environment --stage reproduced-images)
 
 ### If there is a hash mismatch
 
@@ -1226,7 +1241,7 @@ Prepare upgrade-description files
                 fi
             ) \
             $( \
-                for version in $(echo ${IUK_SOURCE_VERSIONS:?}); do
+                for version in $(echo ${IUK_SOURCE_VERSIONS:?}) 5.8~beta1; do
                    echo "--previous_version ${version:?}"
                 done \
             ) \
@@ -1387,6 +1402,21 @@ candidate):
 
     ./bin/publish-iuks
 
+As tracked on [[!tails_ticket 19396]], it might well be
+that Mirrorbits will miss this update.
+Let's be sure that this happens via
+
+    ssh rsync.lizard mirrorbits refresh -rehash
+
+If, at a later stage of the process, you realize Mirrorbits is still not
+"noticing" that mirrors are up-to-date, don't be afraid of refreshing/rehashing
+again, or even restart the whole service:
+
+    ssh rsync.lizard systemctl restart mirrorbits.service
+
+In any case, please report your experience on
+[[!tails_ticket 19396]]
+
 ## Announce, seed and test the Torrents
 
 Check if there's enough space on our Bittorrent seed to import the new
@@ -1467,7 +1497,7 @@ fi
     ./run_test_suite "${args[@]}" "${what[@]}"
 
     while true; do
-        ./run_test_suite "${args[@]}" "@$(find "${tmpdir:?}" -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|head -n1)"
+        ./run_test_suite "${args[@]}" "@$(find "${tmpdir:?}" -maxdepth 2 -type f -name rerun.txt  -print0 | xargs -0 ls -t1|stest -s|shuf -n1)"
         sleep 3
     done
 )
@@ -1518,6 +1548,26 @@ Public testing
    - This is a public list, don't point to the pad.
    - Make a deadline clear: until when is feedback useful?
 
+     (
+     msgfile=$(mktemp)
+     trap 'rm $msgfile' EXIT
+     cat <<EOF > $msgfile
+     Hi,
+
+     The *candidate* images for Tails ${VERSION} are ready for testing:
+
+     https://download.tails.net/tails/stable/tails-amd64-${VERSION}/tails-amd64-${VERSION}.img
+
+     They did not go through our entire QA yet.
+
+     Please test and report back by Tuesday, 09:00 UTC.
+
+     Thanks!
+     EOF
+     thunderbird -compose "to=tails-testers@boum.org,subject='Call for testing: $VERSION',format=text,message=$msgfile"
+     sleep 2
+     )
+
 Lead the internal manual testing to conclusion
 ==============================================
 
@@ -1533,14 +1583,14 @@ Lead the internal manual testing to conclusion
 1. Ensure the "Incremental upgrades" part of the manual test suite
    is done:
 
-   1. Wait until all mirrors in the DNS pool have the new version:
+   1. Wait until the IUK start being available:
 
-        IPS=$(host -t A dl.amnesia.boum.org | perl -pE 's/\Adl[.]amnesia[.]boum[.]org has address (.*)/$1/')
-        for ip in $(echo $IPS) ; do
-            ./check-mirrors.rb --channel ${DIST:?} \
-               --allow-multiple --fast \
-               --ip "$ip" "tails-amd64-${VERSION:?}"
-        done
+
+        while ! curl --silent --head --location --fail "https://download.tails.net/tails/stable/iuk/v2/Tails_amd64_${PREVIOUS_VERSION:?}_to_${VERSION:?}.iuk"
+            do
+            sleep 30
+            done
+
 
    1. Delete "⚠ Wait until the Release Manager […]" in the "Incremental
       upgrades" section on the pad.
@@ -1802,18 +1852,13 @@ Bug tracker
 
 Skip this part if preparing a release candidate.
 
-1. Verify there's a `missed:$VERSION` label
-   on [[!tails_gitlab groups/tails/-/labels]]; if there's none,
-   submit a MR against [[!tails_gitlab tails/gitlab-config]]
-   to create one.
-
-2. Ensure you have an up-to-date `tails:gitlab-triage-stable` container image:
+1. Ensure you have an up-to-date `tails:gitlab-triage-stable` container image:
 
         cd "${MASTER_CHECKOUT:?}" && \
         git checkout master && \
         ./config/gitlab-triage/bin/ensure-up-to-date-container-image
 
-3. Postpone to the next scheduled release any remaining open issue and merge
+2. Postpone to the next scheduled release any remaining open issue and merge
    request whose milestone is the version you've just released:
 
         cd "${MASTER_CHECKOUT:?}" && \
@@ -1822,7 +1867,7 @@ Skip this part if preparing a release candidate.
             --host-url "$(bin/gitlab-url TailsRM)" \
             --token "$(bin/gitlab-api-token TailsRM)"
 
-4. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to
+3. Finally, submit a MR against [[!tails_gitlab tails/gitlab-config]] to
    close the just-released [[!tails_gitlab groups/tails/-/milestones
    desc="milestone"]]. See this as an example:
    [[!tails_gitlab tails/gitlab-config/-/merge_requests/18/diffs desc="tails/gitlab-config!18"]]
@@ -2087,6 +2132,10 @@ If you just released a final release
      asking them to privately tell the RM for that release
      _how much_ manual testing they can do on release day.
    - `echo Subject: "Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"`
+   - If you use Thunderbird, you can use this:
+
+        thunderbird -compose "to=tails-dev@boum.org,tails-l10n@boum.org,cc=tails-manual-testers@boum.org,subject=Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"
+
    - If a release candidate is planned, include it in the release schedule
      and the call for manual testers.
 
@@ -2097,8 +2146,11 @@ If you just released a final release
    Otherwise, kindly remind the next release manager about this :)
 
    - Send an email to the next RM with:
-     - subject "RM for Tails NEXT_VERSION_NUMBER"
-     - body: "This is a reminder that you will be RM for Tails NEXT_VERSION_NUMBER. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift".
+     - subject "RM for Tails NEXT_PLANNED_VERSION"
+     - body: "This is a reminder that you will be RM for Tails NEXT_PLANNED_VERSION. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift".
+
+        thunderbird -compose "subject='RM for Tails ${NEXT_PLANNED_VERSION}',format=text,body='This is a reminder that you will be RM for Tails ${NEXT_PLANNED_VERSION}. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift'"
+
    - If there's a release candidate scheduled before our next release,
      do the same for the release manager of that release candidate.
 
