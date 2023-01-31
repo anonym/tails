@@ -602,6 +602,23 @@ Its content will be available until you shut down Tails.
                                 <property name="subtitle" translatable="yes">Symlink every file in the Dotfiles folder into the Home folder.</property>
                                 <property name="icon-name">preferences-desktop</property>
                                 <child>
+                                  <object class="GtkLinkButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="relief">none</property>
+                                    <property name="uri">doc/persistent_storage/configure#dotfiles</property>
+                                    <signal name="activate-link" handler="on_activate_link_button" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="icon_name">tails-help</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
                                   <object class="GtkSwitch" id="dotfiles_switch">
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
