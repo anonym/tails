@@ -32,10 +32,23 @@ supported_locales_path = os.path.join(data_path, 'supported_locales')
 # System locales directory
 system_locale_dir = '/usr/share/locale/'
 
-# Directory where the Greeter settings are stored
+# Directory where the Greeter settings are stored. Settings stored in
+# this directory are copied to the persistent settings directory when
+# the Welcome Screen feature is enabled in the Persistent Storage
+# settings, so only store settings there which should be made
+# persistent. Else use the transient settings directory.
 settings_dir = '/var/lib/gdm3/settings'
 
-# Directory where the persistent Greeter settings are stored
+# Directory where Greeter settings are stored that should not be made
+# persistent. After login, these settings can also be accessed under
+# /var/lib/gdm3/settings.
+transient_settings_dir = '/var/lib/gdm3/transient-settings'
+
+# Auxiliary directory which is made persistent if the Welcome Screen
+# feature is enabled in the Persistent Storage settings.
+# We need this directory to work around an issue which occurs when the
+# settings directory itself is made persistent - see the lengthy comment
+# in tailsgreeter/ui/persistent_storage.py.
 persistent_settings_dir = '/var/lib/gdm3/settings/persistent'
 
 # File where the session language setting is stored
@@ -63,5 +76,7 @@ unsafe_browser_setting_path = os.path.join(settings_dir, unsafe_browser_setting_
 # World-readable file where Tails persistence status is stored
 persistence_state_file = '/var/lib/live/config/tails.persistence'
 
-# World-readable file which represents the intent to create Tails persistence after login
-persistence_create_file = os.path.join(settings_dir, 'tails.create-persistence')
+# World-readable file which represents the intent to create a Persistent
+# Storage after login. Store this in the transient settings dir because
+# we don't want to persist this setting.
+persistence_create_file = os.path.join(transient_settings_dir, 'tails.create-persistence')
