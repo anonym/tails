@@ -276,6 +276,53 @@ Given /^I create a persistent partition( with the default settings| for Addition
   enable_all_persistence_presets unless default_settings
 end
 
+Given /^I change the passphrase of the Persistent Storage( back to the original)?$/ do |change_back|
+  if change_back
+    current_passphrase = @changed_persistence_password
+    new_passphrase = @persistence_password
+  else
+    current_passphrase = @persistence_password
+    new_passphrase = @changed_persistence_password
+  end
+
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+
+  # We can't use the click action here because this button causes a
+  # modal dialog to be run via gtk_dialog_run() which causes the
+  # application to hang when triggered via a ATSPI action. See
+  # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
+  persistent_storage_main_frame.button('Change Passphrase').grabFocus
+  @screen.press("Return")
+  change_passphrase_dialog = persistent_storage_frontend.child(
+    'Change Passphrase', roleName: 'dialog',
+  )
+  change_passphrase_dialog
+    .child('Current Passphrase', roleName: 'label')
+    .labelee
+    .grabFocus
+  @screen.type(current_passphrase)
+  change_passphrase_dialog
+    .child('New Passphrase', roleName: 'label')
+    .labelee
+    .grabFocus
+  @screen.type(new_passphrase)
+  change_passphrase_dialog
+    .child('Confirm New Passphrase', roleName: 'label')
+    .labelee
+    .grabFocus
+  @screen.type(new_passphrase)
+  change_passphrase_dialog.button('Change').click
+  # Wait for the dialog to close
+  try_for(30) do
+    persistent_storage_frontend.child('Change Passphrase', roleName: 'dialog')
+  rescue Dogtail::Failure
+    # The dialog couldn't be found, which is what we want
+    true
+  else
+    false
+  end
+end
+
 def check_disk_integrity(name, dev, scheme)
   info = $vm.execute("udisksctl info --block-device '#{dev}'").stdout
   info_split = info.split("\n  org\.freedesktop\.UDisks2\.PartitionTable:\n")
@@ -400,10 +447,15 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
   $vm.execute("cryptsetup luksClose #{name}")
 end
 
-Given /^I enable persistence$/ do
+Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
   @screen.wait('TailsGreeterPersistencePassphrase.png', 60).click
   sleep 1
-  @screen.type(@persistence_password, ['Return'])
+  if with_changed_passphrase
+    password = @changed_persistence_password
+  else
+    password = @persistence_password
+  end
+  @screen.type(password, ['Return'])
   @screen.wait_any(['TailsGreeterPersistenceUnlocked.png', 'TailsGreeterPersistenceUnlockedGerman.png'], 30)
 end
 

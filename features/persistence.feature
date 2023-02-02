@@ -95,6 +95,16 @@ Feature: Tails persistence
     When I log in to a new session after having activated the Persistent Storage
     Then all Greeter options are set to non-default values
 
+  Scenario: Changing the Persistent Storage passphrase
+    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
+    # Note that if anything fails after the passphrase was changed and
+    # before it's changed back below, subsequent scenarios might fail
+    # because the Persistent Storage doesn't have the expected passphrase.
+    When I change the passphrase of the Persistent Storage
+    And I shutdown Tails and wait for the computer to power off
+    Then I start Tails from USB drive "__internal" with network unplugged and I login with the changed persistence passphrase
+    And I change the passphrase of the Persistent Storage back to the original
+
   Scenario: Deleting a Tails persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
     And I log in to a new session without activating the Persistent Storage
