@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-05-31 09:30+0200\n"
+"POT-Creation-Date: 2023-01-27 18:26+0100\n"
 "PO-Revision-Date: 2023-01-03 19:17+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,8 +23,9 @@ msgid "[[!meta title=\"Rescuing your Persistent Storage from a broken Tails\"]]\
 msgstr "[[!meta title=\"Récupérer le stockage persistant d'un Tails endommagé\"]]\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "<!-- XXX: These instructions should be kept in sync with doc/first_steps/persistence/backup.mdwn -->\n"
+#, fuzzy, no-wrap
+#| msgid "<!-- XXX: These instructions should be kept in sync with doc/first_steps/persistence/backup.mdwn -->\n"
+msgid "<!-- XXX: These instructions should be kept in sync with backup.mdwn -->\n"
 msgstr "<!-- XXX: These instructions should be kept in sync with doc/first_steps/persistence/backup.mdwn -->\n"
 
 #. type: Plain text
@@ -42,12 +43,17 @@ msgid "<div class=\"tip\">\n"
 msgstr "<div class=\"tip\">\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<p>It is advisable to keep a current backup of your Persistent Storage. To learn\n"
+#| "how to create a backup of your Persistent Storage, see our [[instructions on\n"
+#| "how to back up your Persistent Storage to another Tails USB\n"
+#| "stick|doc/first_steps/persistence/backup]].</p>\n"
 msgid ""
 "<p>It is advisable to keep a current backup of your Persistent Storage. To learn\n"
 "how to create a backup of your Persistent Storage, see our [[instructions on\n"
 "how to back up your Persistent Storage to another Tails USB\n"
-"stick|doc/first_steps/persistence/backup]].</p>\n"
+"stick|backup]].</p>\n"
 msgstr ""
 "<p>Il est conseillé de conserver une sauvegarde de votre stockage persistant. Pour apprendre\n"
 "comment créer une sauvegarde de votre stockage persistant, voir [[comment\n"
@@ -71,29 +77,42 @@ msgstr ""
 "panne."
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "Start on your new Tails and create a Persistent Storage.  For detailed "
+#| "instructions, see how to [[create and configure a Persistent Storage|doc/"
+#| "first_steps/persistence]]."
 msgid ""
-"Start on your new Tails and create a Persistent Storage.  For detailed "
-"instructions, see how to [[create and configure a Persistent Storage|doc/"
-"first_steps/persistence]]."
+"Start on your new Tails and [[create a Persistent Storage|persistent_storage/"
+"create]]."
 msgstr ""
 "Démarrez sur votre nouveau Tails et créez un stockage persistant.  Pour les "
 "instructions détaillées, voir comment [[créer et configurer un stockage "
 "persistant|doc/first_steps/persistence]]."
 
-#. type: Plain text
-#, no-wrap
+#. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "   When the Persistent Storage settings shows the list of possible "
+#| "features,\n"
+#| "   click **Save** and exit.\n"
 msgid ""
-"   When the Persistent Storage settings shows the list of possible features,\n"
-"   click **Save** and exit.\n"
+"Close the Persistent Storage settings after creation, when the list of "
+"features is displayed."
 msgstr ""
-"   Quand les paramètres du stockage persistant listent les fonctionnalités possibles,\n"
+"   Quand les paramètres du stockage persistant listent les fonctionnalités "
+"possibles,\n"
 "   cliquez sur **Sauvegarder** et quitter.\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "   The process described below overrides the configuration of the Persistent\n"
+#| "   Storage. So, it does not matter which features you turn on when creating\n"
+#| "   the Persistent Storage.\n"
 msgid ""
 "   The process described below overrides the configuration of the Persistent\n"
-"   Storage. So, it does not matter which features you turn on when creating\n"
+"   Storage. So, it does not matter which features you turn on after creating\n"
 "   the Persistent Storage.\n"
 msgstr ""
 "   Le processus décrit ci-dessous remplace la configuration du stockage\n"
@@ -116,11 +135,15 @@ msgid "   <div class=\"caution\">\n"
 msgstr "   <div class=\"caution\">\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "   Make sure that all applications are closed before continuing with these\n"
+#| "   instructions. Otherwise, the Persistent Storage might not be properly\n"
+#| "   rescued from your broken Tails.\n"
 msgid ""
-"   Make sure that all applications are closed before continuing with these\n"
+"   <p>Make sure that all applications are closed before continuing with these\n"
 "   instructions. Otherwise, the Persistent Storage might not be properly\n"
-"   rescued from your broken Tails.\n"
+"   rescued from your broken Tails.</p>\n"
 msgstr ""
 "   Assurez-vous que toutes les applications sont fermées avant de continuer avec ces \n"
 "   instructions. Sinon, le stockage persistant risque de ne pas être correctement\n"
@@ -131,33 +154,25 @@ msgstr ""
 msgid "   </div>\n"
 msgstr "   </div>\n"
 
-#. type: Plain text
-#, no-wrap
+#. type: Bullet: '1. '
 msgid ""
-"1. Choose\n"
-"   <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-"     <span class=\"guisubmenu\">Accessories</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Files</span></span>\n"
-"   to open the <span class=\"application\">Files</span> browser.\n"
+"Choose **Applications**&nbsp;▸ **Accessories**&nbsp;▸ **Files** to open the "
+"*Files* browser."
 msgstr ""
-"1. Choisir\n"
-"   <span class=\"menuchoice\">\n"
-"     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
-"     <span class=\"guisubmenu\">Accessoires</span>&nbsp;▸\n"
-"     <span class=\"guimenuitem\">Fichiers</span></span>\n"
-"   pour ouvrir le navigateur de <span class=\"application\">Fichiers</span>."
-"\n"
 
 #. type: Bullet: '1. '
 msgid "Plug in the USB stick that has your broken Tails on it."
 msgstr "Branchez la clé USB sur laquelle se trouve votre Tails endommagé."
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "   A new encrypted volume appears in the sidebar of the\n"
+#| "   <span class=\"application\">Files</span> browser. Click on it and enter the\n"
+#| "   passphrase of your broken Tails to unlock the volume.\n"
 msgid ""
 "   A new encrypted volume appears in the sidebar of the\n"
-"   <span class=\"application\">Files</span> browser. Click on it and enter the\n"
+"   *Files* browser. Click on it and enter the\n"
 "   passphrase of your broken Tails to unlock the volume.\n"
 msgstr ""
 "   Un nouveau volume chiffré apparaît dans la barre latérale du\n"
@@ -165,10 +180,13 @@ msgstr ""
 "   phrase de passe de votre Tails endommagé pour déverrouiller le volume.\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "   The Persistent Storage of your broken Tails shows up as\n"
+#| "   <span class=\"guilabel\">TailsData</span>.\n"
 msgid ""
 "   The Persistent Storage of your broken Tails shows up as\n"
-"   <span class=\"guilabel\">TailsData</span>.\n"
+"   **TailsData**.\n"
 msgstr ""
 "   Le stockage persistant de votre Tails endommagé apparaît sous le nom de\n"
 "   <span class=\"guilabel\">TailsData</span>.\n"
@@ -217,9 +235,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<p class=\"pre command root\">rsync -PaSHAXv --del /media/amnesia/TailsData/ /live/persistence/TailsData_unlocked</p>\n"
-msgstr ""
-"<p class=\"pre command root\">rsync -PaSHAXv --del /media/amnesia/TailsData/ "
-"/live/persistence/TailsData_unlocked</p>\n"
+msgstr "<p class=\"pre command root\">rsync -PaSHAXv --del /media/amnesia/TailsData/ /live/persistence/TailsData_unlocked</p>\n"
 
 #. type: Plain text
 msgid ""
@@ -252,3 +268,19 @@ msgstr ""
 "Vous pouvez maintenant éjecter le volume <span class=\"guilabel\">TailsData</span> dans le\n"
 "navigateur de <span class=\"application\">Fichiers</span> et débrancher la clé USB sur laquelle\n"
 "se trouve votre Tails endommagé.\n"
+
+#, no-wrap
+#~ msgid ""
+#~ "1. Choose\n"
+#~ "   <span class=\"menuchoice\">\n"
+#~ "     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
+#~ "     <span class=\"guisubmenu\">Accessories</span>&nbsp;▸\n"
+#~ "     <span class=\"guimenuitem\">Files</span></span>\n"
+#~ "   to open the <span class=\"application\">Files</span> browser.\n"
+#~ msgstr ""
+#~ "1. Choisir\n"
+#~ "   <span class=\"menuchoice\">\n"
+#~ "     <span class=\"guimenu\">Applications</span>&nbsp;▸\n"
+#~ "     <span class=\"guisubmenu\">Accessoires</span>&nbsp;▸\n"
+#~ "     <span class=\"guimenuitem\">Fichiers</span></span>\n"
+#~ "   pour ouvrir le navigateur de <span class=\"application\">Fichiers</span>.\n"

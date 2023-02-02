@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-05-31 09:30+0200\n"
+"POT-Creation-Date: 2023-01-27 18:26+0100\n"
 "PO-Revision-Date: 2022-12-20 18:06+0000\n"
 "Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: Portuguese <http://translate.tails.boum.org/projects/tails/"
@@ -22,15 +22,13 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "[[!meta title=\"Making a backup of your Persistent Storage\"]]\n"
-msgstr ""
-"[[!meta title=\"Fazendo um backup do seu armazenamento persistente\"]]\n"
+msgstr "[[!meta title=\"Fazendo um backup do seu armazenamento persistente\"]]\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "<!-- XXX: These instructions should be kept in sync with doc/first_steps/persistence/rescue.mdwn -->\n"
-msgstr ""
-"<!-- XXX: These instructions should be kept in sync with doc/first_steps/"
-"persistence/rescue.mdwn -->\n"
+#, fuzzy, no-wrap
+#| msgid "<!-- XXX: These instructions should be kept in sync with doc/first_steps/persistence/rescue.mdwn -->\n"
+msgid "<!-- XXX: These instructions should be kept in sync with rescue.mdwn -->\n"
+msgstr "<!-- XXX: These instructions should be kept in sync with doc/first_steps/persistence/rescue.mdwn -->\n"
 
 #. type: Plain text
 #, no-wrap
@@ -38,17 +36,19 @@ msgid "<div class=\"tip\">\n"
 msgstr "<div class=\"tip\">\n"
 
 #. type: Plain text
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<p>If your Tails is broken and you are trying to rescue your Persistent Storage,\n"
+#| "see our [[instructions on rescuing your Persistent\n"
+#| "Storage from a broken Tails|doc/first_steps/persistence/rescue]].</p>\n"
 msgid ""
 "<p>If your Tails is broken and you are trying to rescue your Persistent Storage,\n"
 "see our [[instructions on rescuing your Persistent\n"
-"Storage from a broken Tails|doc/first_steps/persistence/rescue]].</p>\n"
+"Storage from a broken Tails|rescue]].</p>\n"
 msgstr ""
-"<p>Se o seu Tails estiver quebrado e você estiver tentando recuperar o seu "
-"armazenamento persistente,\n"
+"<p>Se o seu Tails estiver quebrado e você estiver tentando recuperar o seu armazenamento persistente,\n"
 "veja nossas [[instruções sobre recuperar o seu armazenamentp\n"
-"persistente de um Tails com defeito|doc/first_steps/persistence/rescue]].</p>"
-"\n"
+"persistente de um Tails com defeito|doc/first_steps/persistence/rescue]].</p>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -100,9 +100,8 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid ""
-"Restart on your backup Tails and create a Persistent Storage on it.  For "
-"detailed instructions, see how to [[create and configure the Persistent "
-"Storage|doc/first_steps/persistence]]."
+"Restart on your backup Tails and [[create a Persistent Storage|"
+"persistent_storage/create]] on it."
 msgstr ""
 
 #. type: Plain text
@@ -116,8 +115,8 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid ""
-"When the Persistent Storage settings shows the list of possible features, "
-"click **Save** and exit."
+"Close the Persistent Storage settings after creation, when the list of "
+"possible features is displayed."
 msgstr ""
 
 #. type: Plain text
@@ -125,7 +124,7 @@ msgstr ""
 msgid ""
 "   The backup process described below overrides the configuration of the\n"
 "   Persistent Storage. So, it does not matter which features you turn on\n"
-"   when creating the Persistent Storage.\n"
+"   after creating the Persistent Storage.\n"
 msgstr ""
 
 #. type: Bullet: '1. '
@@ -191,9 +190,9 @@ msgstr "   </div>\n"
 #. type: Bullet: '1. '
 msgid ""
 "If your backup Tails has an outdated version of Tails, we recommend you "
-"upgrade it by cloning your current Tails using <span "
-"class=\"application\">Tails Installer</span>.  For detailed instructions, "
-"see how to [[manually upgrade from another Tails|upgrade/clone#upgrade]]."
+"upgrade it by cloning your current Tails using <span class=\"application"
+"\">Tails Installer</span>.  For detailed instructions, see how to [[manually "
+"upgrade from another Tails|upgrade/clone#upgrade]]."
 msgstr ""
 
 #. type: Title =
@@ -202,46 +201,67 @@ msgid "Updating your backup Tails from a terminal"
 msgstr ""
 
 #. type: Plain text
-msgid ""
-"If you prefer updating your backup Tails from a terminal, execute the "
-"following command from a *Root Terminal*:"
+msgid "If you prefer updating your backup Tails from a terminal:"
 msgstr ""
 
-#. type: Plain text
-#, no-wrap
-msgid "<p class=\"pre command root\">rsync -PaSHAXv --del /live/persistence/TailsData_unlocked/ /media/amnesia/TailsData</p>\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"When the command finishes, it displays a summary of the data that was "
-"copied. For example:"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<pre>\n"
-"sent 32.32M bytes  received 1.69K bytes  21.55M bytes/sec\n"
-"total size is 32.30M  speedup is 1.00\n"
-"</pre>\n"
-msgstr ""
-"<pre>\n"
-"sent 32.32M bytes  received 1.69K bytes  21.55M bytes/sec\n"
-"total size is 32.30M  speedup is 1.00\n"
-"</pre>\n"
-
+#. type: Bullet: '1. '
 #, fuzzy
-#~| msgid ""
-#~| "Restart Tails, enable persistence, and [[set up an administration "
-#~| "password|startup_options/administration_password]]."
-#~ msgid ""
-#~ "Start on your current Tails, set up an [[administration password|doc/"
-#~ "first_steps/welcome_screen/administration_password]], and unlock the "
-#~ "Persistent Storage."
-#~ msgstr ""
-#~ "Reinicie o Tails, habilite a persistência, e [[configure uma senha de "
-#~ "administração|startup_options/administration_password]]."
+#| msgid ""
+#| "Restart Tails, enable persistence, and [[set up an administration "
+#| "password|startup_options/administration_password]]."
+msgid ""
+"When starting Tails, unlock your Persistent Storage and [[set up an "
+"administration password|doc/first_steps/welcome_screen/"
+"administration_password]]."
+msgstr ""
+"Reinicie o Tails, habilite a persistência, e [[configure uma senha de "
+"administração|startup_options/administration_password]]."
+
+#. type: Bullet: '1. '
+msgid ""
+"Choose **Applications**&nbsp;▸ **Accessories**&nbsp;▸ **Files** to open the "
+"*Files* browser."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   A new encrypted volume appears in the sidebar of the\n"
+"   *Files* browser. Click on it and enter the\n"
+"   passphrase of your backup Tails to unlock the volume.\n"
+msgstr ""
+
+#. type: Bullet: '1. '
+msgid "Execute the following command in a *Root Terminal*:"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "       rsync -PaSHAXv --del /live/persistence/TailsData_unlocked/ /media/amnesia/TailsData\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   When the command finishes, it displays a summary of the data that was\n"
+"   copied. For example:\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid ""
+#| "<pre>\n"
+#| "sent 32.32M bytes  received 1.69K bytes  21.55M bytes/sec\n"
+#| "total size is 32.30M  speedup is 1.00\n"
+#| "</pre>\n"
+msgid ""
+"       sent 32.32M bytes  received 1.69K bytes  21.55M bytes/sec\n"
+"       total size is 32.30M  speedup is 1.00\n"
+msgstr ""
+"<pre>\n"
+"sent 32.32M bytes  received 1.69K bytes  21.55M bytes/sec\n"
+"total size is 32.30M  speedup is 1.00\n"
+"</pre>\n"
 
 #, fuzzy
 #~| msgid "Click on the <span class=\"guilabel\">TailsData</span> tab."
@@ -361,18 +381,17 @@ msgstr ""
 
 #, fuzzy
 #~| msgid ""
-#~| "In the right pane, click on the partition labeled as <span "
-#~| "class=\"guilabel\">Encrypted</span>. The <span "
-#~| "class=\"guilabel\">Partition Label</span> must be <span "
-#~| "class=\"label\">TailsData</span>."
+#~| "In the right pane, click on the partition labeled as <span class="
+#~| "\"guilabel\">Encrypted</span>. The <span class=\"guilabel\">Partition "
+#~| "Label</span> must be <span class=\"label\">TailsData</span>."
 #~ msgid ""
-#~ "In the right pane, click on the partition labeled as <span "
-#~ "class=\"guilabel\">LUKS</span>. The name of the partition must be <span "
-#~ "class=\"guilabel\">TailsData</span>."
+#~ "In the right pane, click on the partition labeled as <span class="
+#~ "\"guilabel\">LUKS</span>. The name of the partition must be <span class="
+#~ "\"guilabel\">TailsData</span>."
 #~ msgstr ""
-#~ "No painel à direita, clique na partição chamada <span "
-#~ "class=\"guilabel\">Encrypted</span>. O <span class=\"guilabel\">Nome da "
-#~ "Partição</span> deve ser <span class=\"label\">TailsData</span>."
+#~ "No painel à direita, clique na partição chamada <span class=\"guilabel"
+#~ "\">Encrypted</span>. O <span class=\"guilabel\">Nome da Partição</span> "
+#~ "deve ser <span class=\"label\">TailsData</span>."
 
 #, fuzzy
 #~| msgid ""
@@ -447,8 +466,8 @@ msgstr ""
 #~ msgid ""
 #~ "1. In the titlebar, choose\n"
 #~ "   <span class=\"menuchoice\">\n"
-#~ "     <span class=\"guimenu\">[[!img lib/open-menu.png alt=\"Menu\" "
-#~ "class=\"symbolic\" link=\"no\"]]</span>&nbsp;▸\n"
+#~ "     <span class=\"guimenu\">[[!img lib/open-menu.png alt=\"Menu\" class="
+#~ "\"symbolic\" link=\"no\"]]</span>&nbsp;▸\n"
 #~ "     <span class=\"guimenuitem\">[[!img lib/tab-new.png alt=\"New tab\" "
 #~ "class=\"symbolic\" link=\"no\"]]</span>\n"
 #~ "   </span>\n"
@@ -467,25 +486,25 @@ msgstr ""
 #, fuzzy
 #~| msgid ""
 #~| "To copy a folder containing persistent data from the old persistent "
-#~| "volume to the new one, drag and drop that folder from the <span "
-#~| "class=\"guilabel\">TailsData</span> onto the <span "
-#~| "class=\"guilabel\">TailsData_unlocked</span> tab. When copying a folder, "
-#~| "choose to <span class=\"guilabel\">Merge All</span> the folder, and "
-#~| "<span class=\"guilabel\">Replace All</span> files. Do not copy a folder "
-#~| "if you do not know what it is used for."
+#~| "volume to the new one, drag and drop that folder from the <span class="
+#~| "\"guilabel\">TailsData</span> onto the <span class=\"guilabel"
+#~| "\">TailsData_unlocked</span> tab. When copying a folder, choose to <span "
+#~| "class=\"guilabel\">Merge All</span> the folder, and <span class="
+#~| "\"guilabel\">Replace All</span> files. Do not copy a folder if you do "
+#~| "not know what it is used for."
 #~ msgid ""
 #~ "To copy a folder containing persistent data from the old persistent "
-#~ "volume to the new one, drag and drop that folder from the <span "
-#~ "class=\"guilabel\">TailsData</span> onto the <span "
-#~ "class=\"guilabel\">TailsData_unlocked</span> tab."
+#~ "volume to the new one, drag and drop that folder from the <span class="
+#~ "\"guilabel\">TailsData</span> onto the <span class=\"guilabel"
+#~ "\">TailsData_unlocked</span> tab."
 #~ msgstr ""
 #~ "Para copiar uma pasta contedo dados persistentes do volume persistente "
-#~ "antigo para o novo, arraste e solte essa pasta da aba <span "
-#~ "class=\"guilabel\">TailsData</span> para a aba <span "
-#~ "class=\"guilabel\">TailsData_unlocked</span>. Ao copiar uma pasta, "
-#~ "escolha para <span class=\"guilabel\">Unir Todos</span>, e <span "
-#~ "class=\"guilabel\">Substituir Todos</span> os arquivos. Não copie uma "
-#~ "pasta se você não souber para que ela é usada."
+#~ "antigo para o novo, arraste e solte essa pasta da aba <span class="
+#~ "\"guilabel\">TailsData</span> para a aba <span class=\"guilabel"
+#~ "\">TailsData_unlocked</span>. Ao copiar uma pasta, escolha para <span "
+#~ "class=\"guilabel\">Unir Todos</span>, e <span class=\"guilabel"
+#~ "\">Substituir Todos</span> os arquivos. Não copie uma pasta se você não "
+#~ "souber para que ela é usada."
 
 #, fuzzy
 #~| msgid ""
@@ -496,9 +515,9 @@ msgstr ""
 #~| "imported and this goes beyond the scope of these instructions.  Note "
 #~| "that this folder does not contain personal data."
 #~ msgid ""
-#~ "The <span class=\"filename\">apt</span> folder and the <span "
-#~ "class=\"filename\">live-additional-software.conf</span> file correspond "
-#~ "to the <span class=\"guilabel\">[[Additional Software|"
+#~ "The <span class=\"filename\">apt</span> folder and the <span class="
+#~ "\"filename\">live-additional-software.conf</span> file correspond to the "
+#~ "<span class=\"guilabel\">[[Additional Software|"
 #~ "configure#additional_software]]</span> persistence feature. But they "
 #~ "require administration rights to be imported and this goes beyond the "
 #~ "scope of these instructions.  Note that this folder does not contain "
