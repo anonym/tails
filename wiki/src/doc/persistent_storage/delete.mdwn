@@ -1,0 +1,25 @@
+[[!meta title="Deleting the Persistent Storage"]]
+
+1. Start Tails from the USB stick on which you want to delete the
+   Persistent Storage.
+
+1. In the Welcome Screen, keep the Persistent Storage locked.
+
+1. Choose **Applications**&nbsp;▸ **Tails**&nbsp;▸ **Persistent Storage**.
+
+1. Click **Delete** in the right of the title bar.
+
+<div class="caution">
+
+<!-- We should get rid of this warning once we have
+     #8436 (Wipe the LUKS header when deleting a persistent volume). -->
+
+<p>This technique is fast but might not prevent a strong attacker from
+recovering files from an old Persistent Storage using advanced [[data
+recovery techniques|encryption_and_privacy/secure_deletion#why]].</p>
+
+<p>To securely delete the Persistent Storage, you have to [[securely
+delete the entire USB stick|encryption_and_privacy/secure_deletion#erase-device]],
+which is a much slower operation.</p>
+
+</div>
