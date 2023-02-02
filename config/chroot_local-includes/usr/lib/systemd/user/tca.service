@@ -1,9 +1,9 @@
 [Unit]
 Description=Tor Connection Assistant
-Requires=tails-ibus-proxy-netns@tca.service
-After=tails-ibus-proxy-netns@tca.service
-Requires=tails-a11y-proxy-netns@tca.service
-After=tails-a11y-proxy-netns@tca.service
+Requires=tails-ibus-proxy.service
+After=tails-ibus-proxy.service
+Requires=tails-a11y-bus-proxy.service
+After=tails-a11y-bus-proxy.service
 ConditionUser=1000
 
 [Service]

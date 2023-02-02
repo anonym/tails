@@ -2,8 +2,8 @@
 
 set -eu
 
-AT_SPI_PROXY_SERVICE=tails-a11y-proxy-netns@tbb.service
-IBUS_PROXY_SERVICE=tails-ibus-proxy-netns@tbb.service
+AT_SPI_PROXY_SERVICE=tails-a11y-bus-proxy.service
+IBUS_PROXY_SERVICE=tails-ibus-proxy.service
 
 exec systemd-run --user --scope \
     --property=Requires="${AT_SPI_PROXY_SERVICE}" \

@@ -2,12 +2,12 @@
 
 set -eu
 
-AT_SPI_PROXY_SERVICE=tails-a11y-proxy-netns@onioncircs.service
-IBUS_PROXY_SERVICE=tails-ibus-proxy-netns@onioncircs.service
+A11Y_BUS_PROXY_SERVICE=tails-a11y-bus-proxy.service
+IBUS_PROXY_SERVICE=tails-ibus-proxy.service
 
 exec systemd-run --user --scope \
-    --property=Requires="${AT_SPI_PROXY_SERVICE}" \
-    --property=After="${AT_SPI_PROXY_SERVICE}" \
+    --property=Requires="${A11Y_BUS_PROXY_SERVICE}" \
+    --property=After="${A11Y_BUS_PROXY_SERVICE}" \
     --property=Requires="${IBUS_PROXY_SERVICE}" \
     --property=After="${IBUS_PROXY_SERVICE}" \
     sudo /usr/local/lib/run-onioncircuits-in-netns "$@"

@@ -37,9 +37,13 @@ systemctl --global enable tails-virt-notify-user.service
 systemctl --global enable tails-wait-until-tor-has-bootstrapped.service
 systemctl --global enable tails-create-persistent-storage.service
 
-
-systemctl --global enable "tails-a11y-proxy-netns@clearnet.service"
-systemctl --global enable "tails-ibus-proxy-netns@clearnet.service"
+# This causes the proxies to run during the whole session, instead of
+# being started and stopped when needed. The only app which needs
+# the proxies and doesn't define this requirement in a systemd service
+# yet is the Unsafe Browser. Once that is fixed, we can remove these
+# lines (and the [Install] sections from the service files).
+systemctl --global enable "tails-a11y-bus-proxy.service"
+systemctl --global enable "tails-ibus-proxy.service"
 
 # Use socket activation only, to delay the startup of cupsd.
 systemctl disable cups.service

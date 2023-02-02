@@ -6,7 +6,7 @@ This functions make many assumptions about the working of it; that's in the hope
 a somewhat similar structure. This is:
     - the netns has already been created, of course
     - somewhere in /etc/sudoers.d/ the wrapper can be run as root
-    - the systemd user unit tails-a11y-proxy-netns@$NETNS is running
+    - the systemd user unit tails-a11y-bus-proxy is running
 """
 import os
 import logging
@@ -14,36 +14,36 @@ import logging
 from tailslib.gnome import gnome_env_vars
 from tailslib import LIVE_USERNAME
 
+A11Y_BUS_PROXY_PATH="/run/user/1000/.dbus-proxy/a11y-bus-proxy.sock"
+IBUS_PROXY_PATH="/run/user/1000/.dbus-proxy/ibus-proxy.sock"
+A11Y_BUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/a11y-bus-proxy.sock"
+IBUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/ibus-proxy.sock"
+
 
 def run_in_netns(*args, netns, user="amnesia", root="/", bind_mounts=[]):
     # base bwrap sharing most of the system
     bwrap = ["bwrap", "--bind", root, "/", "--proc", "/proc", "--dev", "/dev"]
     for src, dest in bind_mounts:
         bwrap += ["--bind", src, dest]
-    # passes data to us
+
     bwrap += [
-        "--bind",
-        os.path.join("/run/user/1000/netns-specific/", netns),
-        "/run/user/1000/shared-with-me/",
+        "--bind", A11Y_BUS_PROXY_PATH, A11Y_BUS_SANDBOX_PATH,
+        "--bind", IBUS_PROXY_PATH, IBUS_SANDBOX_PATH,
     ]
-    # hide data not for us
-    bwrap += ["--tmpfs", "/run/user/1000/netns-specific/"]
 
     ch_netns = ["ip", "netns", "exec", netns]
     runuser = ["/sbin/runuser", "-u", LIVE_USERNAME]
     envcmd = [
         "/usr/bin/env", "--",
         *gnome_env_vars(),
-        "AT_SPI_BUS_ADDRESS=unix:path=/run/user/1000/shared-with-me/at.sock",
-        "IBUS_ADDRESS=unix:path=/run/user/1000/shared-with-me/ibus.sock",
+        f"AT_SPI_BUS_ADDRESS=unix:path={A11Y_BUS_SANDBOX_PATH}",
+        f"IBUS_ADDRESS=unix:path={IBUS_SANDBOX_PATH}",
     ]
     # We run tca with several wrappers to accomplish our privilege-isolation-magic:
     # connect_drop: opens a privileged file and pass FD to new process
     # ch_netns: enter the new namespace
     # runuser: change back to unprivileged user
-    # bwrap: this is probably the most complicated; what it does is sharing /run/user/1000/netns-specific/$NETNS on
-    # /run/user/1000/shared-with-me/ and hide /run/user/1000/netns-specific/ . The result is that TCA will be able to access
-    # sockets that would otherwise be unreachable. See also tails-{a11y,ibus}-proxy-netns@.service
+    # bwrap: Mount D-Bus proxies. See also tails-a11y-bus-proxy.service and tails-ibus-proxy.service.
     # envcmd: set the "right" environment; this means getting all "normal" gnome variables, AND clarifying
     #         where is the {a11y,ibus} bus, which is related to bwrap
 
