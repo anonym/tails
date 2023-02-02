@@ -240,14 +240,14 @@ class StepChooseBridgeMixin:
             if self.app.has_persistence:
                 help_label = _(
                     "To save your bridge, "
-                    '<a href="doc/first_steps/persistence">'
+                    '<a href="doc/persistent_storage">'
                     "unlock your Persistent Storage</a>."
                 )
             # No persistence
             else:
                 help_label = _(
                     "To save your bridge, "
-                    '<a href="doc/first_steps/persistence">'
+                    '<a href="doc/persistent_storage">'
                     "create a Persistent Storage</a> "
                     "on your Tails USB stick."
                 )
