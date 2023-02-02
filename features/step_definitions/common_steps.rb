@@ -222,7 +222,7 @@ def boot_menu_cmdline_images
       'TailsBootMenuKernelCmdlineUEFI_Bookworm.png',
     ]
   else
-    ['TailsBootMenuKernelCmdline.png']
+    ['TailsBootMenuKernelCmdline.png', 'TailsBootMenuKernelCmdline_alt.png']
   end
 end
 
@@ -233,7 +233,7 @@ def boot_menu_images
     # drop TailsBootMenuGRUB_Bullseye.png.
     ['TailsBootMenuGRUB_Bullseye.png', 'TailsBootMenuGRUB_Bookworm.png']
   else
-    ['TailsBootMenuSyslinux.png']
+    ['TailsBootMenuSyslinux.png', 'TailsBootMenuSyslinux_alt.png']
   end
 end
 

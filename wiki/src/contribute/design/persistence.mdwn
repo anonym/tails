@@ -1,3 +1,5 @@
+[[!meta title="Persistent Storage"]]
+
 [[!toc levels=4]]
 
 # Introduction
@@ -17,12 +19,14 @@ volume.
 # Design
 
 Technical overview:
+
 * Encrypted (LUKS) volume on the Tails device
 * Configuration file containing source paths and destination paths
 * Files are either bind-mounted or linked via symlinks
 * Hooks are executed on activation / deactivation 
 
 Components:
+
 * A privileged backend: A D-Bus activated systemd service which exposes 
   an API via the D-Bus system bus
 * A GTK app which uses the API to allow the user to easily set up and
@@ -31,13 +35,13 @@ Components:
   Tails to easily use the API to configure the Persistent Storage
 
 # XXX
+
 * Setup and configuration is done via the `Persistent Storage` app
 * 
 * User can choose which data and configuration (features) to 
   store persistently from a pre-configured list 
 * In addition, users can make arbitrary files persistent by editing
   a config file manually
-
   pre-configured list of  which files and directories 
 * Files and directories which are made persistent are copied to the 
   Persistent Storage
