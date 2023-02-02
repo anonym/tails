@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-06-04 08:38+0200\n"
+"POT-Creation-Date: 2023-01-27 18:26+0100\n"
 "PO-Revision-Date: 2019-10-23 09:15+0000\n"
 "Last-Translator: emmapeel <emma.peel@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -268,9 +268,9 @@ msgstr ""
 
 #. type: Plain text
 msgid ""
-"To store files in your Tails USB stick, use the encrypted [[Persistent "
-"Storage|doc/first_steps/persistence]]. To exchange files between Tails and "
-"another operating system, use a separate USB stick."
+"To store files in your Tails USB stick, use the [[Persistent Storage|doc/"
+"persistent_storage]]. To exchange files between Tails and another operating "
+"system, use a separate USB stick."
 msgstr ""
 
 #. type: Plain text
@@ -456,7 +456,6 @@ msgstr ""
 msgid ""
 "<div class=\"next\">\n"
 "  <ul>\n"
-"    <li>[[Warnings about the Persistent Storage|doc/first_steps/persistence/warnings#index3h1]]</li>\n"
 "    <li>[[Browsing the web with <span class=\"application\">Tor Browser</span>|doc/anonymous_internet/Tor_browser]]</li>\n"
 "  </ul>\n"
 "</div>\n"
@@ -538,88 +537,6 @@ msgstr ""
 msgid ""
 "Tails does not include a Java plugin in its browser because it could break "
 "your anonymity."
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<h1 id=\"persistent-storage\">Persistent Storage</h1>\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"custom-settings\">Can I save my custom settings?</h2>\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<em>&hellip; like Tor Browser preferences, Tor configuration, desktop\n"
-"background, mouse and touchpad settings, etc.</em>\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"By default Tails does not save anything from one session to another.  Only "
-"the Persistent Storage allows you to reuse data across different Tails "
-"sessions. See the [[list of features of the Persistent Storage|doc/"
-"first_steps/persistence#configure]]."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"We are frequently requested to add new features to the Persistent Storage "
-"but we are usually busy working on other priorities. See the"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"groups/tails/-/issues?scope=all&utf8=✓&state=opened&label_name%5B%5D=C"
-"%3APersistence desc=\"list of issues about the Persistent Storage\"]]."
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"luks\">How strong is the encryption of the Persistent Storage and LUKS?</h2>\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"Tails uses LUKS to encrypt the Persistent Storage. This is the same "
-"technique as the one we recommend for [[creating and using encrypted volumes|"
-"doc/encryption_and_privacy/encrypted_volumes]] in general."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"LUKS is a very popular standard for disk encryption in Linux. LUKS is the "
-"default technique for full-disk encryption proposed by many distributions, "
-"including Debian and Ubuntu, when installing a regular system."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"The Persistent Storage is created with the default LUKS parameters used by "
-"`udisks` and `cryptsetup`."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"To understand better how the Persistent Storage works, see our [[design "
-"document|contribute/design/persistence]]."
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"recover-passphrase\">Is it possible to recover the passphrase of the Persistent Storage?</h2>\n"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"No. The encryption of the Persistent Storage is very strong and it is "
-"impossible to recover the passphrase of the Persistent Storage. If the "
-"passphrase is weak enough, an attacker can try many possible passphrases and "
-"end up guessing your passphrase.  Such an attack is called [[!wikipedia "
-"Brute_force_attack desc=\"*brute-force attack*\"]]."
 msgstr ""
 
 #. type: Plain text
@@ -929,7 +846,7 @@ msgstr "<div class=\"tip\">\n"
 msgid ""
 "<p>If a software is not included in Tails, but is included in Debian, you can use\n"
 "the [[Additional\n"
-"Software|doc/first_steps/persistence#additional_software]] feature of\n"
+"Software|doc/persistent_storage/configure#additional_software]] feature of\n"
 "the Persistent Storage to install it automatically every time you start Tails.</p>\n"
 msgstr ""
 
@@ -949,11 +866,11 @@ msgstr ""
 msgid "**retroshare**: not in Debian"
 msgstr ""
 
-#. type: Plain text
-#, no-wrap
+#. type: Bullet: '  - '
 msgid ""
-"  - **rar/unrar**: is not [[free software|doc/about/license]], but you can use the\n"
-"\t[[additional software|doc/first_steps/additional_software]] feature to install it\n"
+"**rar/unrar**: is not [[free software|doc/about/license]], but you can use "
+"the [[Additional Software|doc/persistent_storage/additional_software]] "
+"feature to install it"
 msgstr ""
 
 #. type: Plain text
@@ -989,12 +906,11 @@ msgid "<h2 id=\"youtube\">Can I download videos from websites?</h2>\n"
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
 msgid ""
-"You can install <span class=\"code\">youtube-dl</span> as an [[additional\n"
-"package|doc/first_steps/additional_software]]. <span class=\"application\">youtube-dl</span>\n"
-"allows downloading videos from more than\n"
-"[700 websites](https://github.com/rg3/youtube-dl/blob/master/docs/supportedsites.md).\n"
+"You can install `youtube-dl` as [[Additional Software|doc/persistent_storage/"
+"additional_software]]. *youtube-dl* allows downloading videos from more than "
+"[700 websites](https://github.com/rg3/youtube-dl/blob/master/docs/"
+"supportedsites.md)."
 msgstr ""
 
 #. type: Plain text
@@ -1075,8 +991,8 @@ msgstr ""
 msgid ""
 "[*Mumble*](https://www.mumble.info/) is the only voice chat application that "
 "we know works from Tails. You can use the [[Additional Software|doc/"
-"first_steps/persistence#additional_software]] feature to add *Mumble* to "
-"your Tails."
+"persistent_storage/additional_software]] feature to add *Mumble* to your "
+"Tails."
 msgstr ""
 
 #. type: Plain text

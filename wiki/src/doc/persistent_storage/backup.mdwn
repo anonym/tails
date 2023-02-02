@@ -1,0 +1,105 @@
+[[!meta title="Making a backup of your Persistent Storage"]]
+
+<!-- XXX: These instructions should be kept in sync with rescue.mdwn -->
+
+<div class="tip">
+
+<p>If your Tails is broken and you are trying to rescue your Persistent Storage,
+see our [[instructions on rescuing your Persistent
+Storage from a broken Tails|rescue]].</p>
+
+</div>
+
+[[!toc]]
+
+<h1 id="create">Create a new Tails to store your backup</h1>
+
+We recommend you to create another Tails to store
+your backup. This way, if your Tails is lost or damaged, you can
+replace it immediately with your backup Tails.
+
+<div class="bug">
+
+<p>Your backup Tails must be version 4.14 or newer.</p>
+
+</div>
+
+1. Install Tails on a new USB stick on which you want to create your
+   backup Tails. For detailed instructions, see how to [[install Tails
+   from another Tails|install/clone#install-tails]].
+   Make sure that this new USB stick is at least as large as your
+   current Tails USB stick.
+
+1. We recommend making your backup Tails USB stick look different than your
+   current Tails USB stick to avoid using your backup Tails by mistake.
+
+1. Shutdown and unplug your current Tails USB stick.
+
+1. Restart on your backup Tails and [[create a Persistent
+   Storage|persistent_storage/create]] on it.
+
+   <div class="tip">
+   <p>We recommend using the same passphrase as your current Tails
+   so that the passphrase is easier to remember.</p>
+   </div>
+
+1. Close the Persistent Storage settings after creation, when the list of
+   possible features is displayed.
+
+   The backup process described below overrides the configuration of the
+   Persistent Storage. So, it does not matter which features you turn on
+   after creating the Persistent Storage.
+
+1. Shutdown and unplug your backup Tails USB stick.
+
+<h1 id="update">Create or update your backup</h1>
+
+1. Start on your current Tails and
+   unlock the Persistent Storage.
+
+1. Plug in your backup Tails USB stick.
+
+1. Choose
+   <span class="menuchoice">
+     <span class="guimenu">Applications</span>&nbsp;▸
+     <span class="guisubmenu">System Tools</span>&nbsp;▸
+     <span class="guimenuitem">Back Up Persistent Storage</span></span>.
+
+   <div class="note">
+
+   <p>Each time you update your backup, only the files that have changed
+   are copied.</p>
+
+   </div>
+
+1. If your backup Tails has an outdated version of Tails, we recommend you upgrade it by cloning your
+   current Tails using <span class="application">Tails Installer</span>.
+   For detailed instructions, see how to [[manually upgrade from another
+   Tails|upgrade/clone#upgrade]].
+
+Updating your backup Tails from a terminal
+==========================================
+
+If you prefer updating your backup Tails from a terminal:
+
+1. When starting Tails, unlock your Persistent Storage and [[set up an administration
+   password|doc/first_steps/welcome_screen/administration_password]].
+
+1. Choose **Applications**&nbsp;▸ **Accessories**&nbsp;▸ **Files** to open the
+   *Files* browser.
+
+1. Plug in your backup Tails USB stick.
+
+   A new encrypted volume appears in the sidebar of the
+   *Files* browser. Click on it and enter the
+   passphrase of your backup Tails to unlock the volume.
+
+1. Execute the following command in a *Root Terminal*:
+
+       rsync -PaSHAXv --del /live/persistence/TailsData_unlocked/ /media/amnesia/TailsData
+
+   When the command finishes, it displays a summary of the data that was
+   copied. For example:
+
+       sent 32.32M bytes  received 1.69K bytes  21.55M bytes/sec
+       total size is 32.30M  speedup is 1.00
