@@ -38,6 +38,19 @@ Feature: Tails persistence
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
     Then all persistence presets but the first one are enabled
 
+  Scenario: Activating and deactivating Persistent Storage features
+    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
+    Then persistence for "Persistent" is enabled
+    And the directory "/home/amnesia/Persistent" exists
+    When I write a file "/home/amnesia/Persistent/foo" with contents "foo"
+    Then the file "/live/persistence/TailsData_unlocked/Persistent/foo" exists
+    When I disable the first persistence preset
+    Then persistence for "Persistent" is not enabled
+    And the directory "/home/amnesia/Persistent" does not exist
+    When I enable the first persistence preset
+    Then persistence for "Persistent" is enabled
+    And the file "/home/amnesia/Persistent/foo" exists
+
   Scenario: Writing files to a read/write-enabled persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And the network is plugged

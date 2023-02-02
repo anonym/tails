@@ -218,22 +218,31 @@ def enable_all_persistence_presets
   end
 end
 
-When /^I disable the first persistence preset$/ do
+When /^I (enable|disable) the first persistence preset$/ do |mode|
   step 'I start "Persistent Storage" via GNOME Activities Overview'
   assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   persistent_folder_switch = persistent_storage_main_frame.child(
     'Activate Persistent Folder',
     roleName: 'toggle button'
   )
-  assert persistent_folder_switch.checked
+  if mode == "enable"
+    assert !persistent_folder_switch.checked
+  else
+    assert persistent_folder_switch.checked
+  end
+
   persistent_folder_switch.toggle
   try_for(10) do
-    assert !persistent_folder_switch.checked
     # GtkSwitch does not expose its underlying state via AT-SPI (the
     # accessible has the "check" state when the switch is on but the
-    # underlying state is false) so we check via D-Bus that the
-    # Persistent Directory feature is inactive.
-    !persistent_directory_is_active
+    # underlying state is false) so we check the state via D-Bus.
+    if mode == "enable"
+      assert persistent_folder_switch.checked
+      persistent_directory_is_active
+    else
+      assert !persistent_folder_switch.checked
+      !persistent_directory_is_active
+    end
   end
   @screen.press('alt', 'F4')
 end
