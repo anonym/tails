@@ -16,6 +16,18 @@ Feature: Tails persistence
     And persistence is disabled
     But a Tails persistence partition exists on USB drive "__internal"
 
+  Scenario: Creating a Persistent Storage
+    Given I have started Tails without network from a USB drive without a persistent partition and logged in
+    Then Tails is running from USB drive "__internal"
+    When I create a directory "/home/amnesia/Persistent"
+    And I write a file "/home/amnesia/Persistent/foo" with contents "foo"
+    And I create a persistent partition with the default settings
+    Then the file "/live/persistence/TailsData_unlocked/Persistent/foo" exists
+    And I shutdown Tails and wait for the computer to power off
+    And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
+    Then persistence for "Persistent" is enabled
+    And the file "/home/amnesia/Persistent/foo" exists
+
   Scenario: Booting Tails from a USB drive with an enabled persistent partition and reconfiguring it
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     Then Tails is running from USB drive "__internal"
