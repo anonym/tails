@@ -1065,12 +1065,13 @@ class TCAMainWindow(
     def change_box(self, name: str, **kwargs):
         coming_from = self.state["step"]
         self.state["step"] = name
-        try:
+        if os.path.exists(IMG_SIDE[self.state["step"]]):
             self.set_image(IMG_SIDE[self.state["step"]])
-        except GLib.Error as e:
+        else:
             # Don't fail if the image can't be set (for example because
             # the file is not there)
-            log.exception(e)
+            log.error("Image file not found for step %s",
+                      self.state["step"])
         self.stack.set_visible_child_name(name)
 
         if hasattr(self, "before_show_%s" % name):
