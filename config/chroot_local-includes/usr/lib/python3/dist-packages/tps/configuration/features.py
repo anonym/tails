@@ -24,7 +24,7 @@ class BrowserBookmarks(Feature):
 class WelcomeScreen(Feature):
     Id = "WelcomeScreen"
     Mounts = [
-        Mount("greeter-settings", "/var/lib/gdm3/settings/persistent")
+        Mount("greeter-settings", "/var/lib/gdm3/settings")
     ]
 
 

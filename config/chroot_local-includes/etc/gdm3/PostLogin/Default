@@ -19,7 +19,8 @@ export PATH="/usr/sbin:${PATH}"
 POLKIT=/etc/polkit-1/localauthority.conf.d/52-tails-greeter.conf
 SUDOERS=/etc/sudoers.d/tails-greeter
 NO_PASSWORD_LECTURE=/etc/sudoers.d/tails-greeter-no-password-lecture
-GREETER_EXPORTED_SETTINGS="tails.macspoof tails.network tails.unsafe-browser"
+GREETER_EXPORTED_PERSISTENT_SETTINGS="tails.macspoof tails.network tails.unsafe-browser"
+GREETER_EXPORTED_TRANSIENT_SETTINGS=""
 
 log() {
     echo "$1" >&2
@@ -63,13 +64,19 @@ log "Entering PostLogin"
 # unblocking the network below; doing so will make the user-set MAC
 # spoofing option apply (via the custom udev rule) when loading the
 # modules for the previously blocked network devices.
-for setting in ${GREETER_EXPORTED_SETTINGS}; do
+for setting in ${GREETER_EXPORTED_PERSISTENT_SETTINGS}; do
     /usr/bin/install -m 0640 -o root -g root \
         "/var/lib/gdm3/settings/$setting" \
         "/var/lib/live/config/$setting"
 done
 
-if grep -F 'CREATE_PERSISTENT_STORAGE=true' /var/lib/gdm3/settings/tails.create-persistence
+for setting in ${GREETER_EXPORTED_TRANSIENT_SETTINGS}; do
+    /usr/bin/install -m 0640 -o root -g root \
+        "/var/lib/gdm3/transient-settings/$setting" \
+        "/var/lib/live/config/$setting"
+done
+
+if grep -F 'CREATE_PERSISTENT_STORAGE=true' /var/lib/gdm3/transient-settings/tails.create-persistence
 then
     # The other settings are files in which the *content* is relevant: in this case, the *existence* is
     # relevant.
