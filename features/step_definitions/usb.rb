@@ -1173,8 +1173,11 @@ Given /^I set all Greeter options to non-default values$/ do
   step 'I set an administration password'
   sleep 2
 
-  # We should change language, too, but we'll not: let's do that in the "I log in to a new session" step,
-  # which will handle language change much better
+  # We should change language, too, but we'll not: in fact, changing the language would change labels in the
+  # UI, so we would need to keep images (see #19420) in both languages, making the test suite harder to
+  # maintain.
+  # The "I log in to a new session" step can change language at the very last moment, which is a good
+  # workaround to the problem.
 end
 
 Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
