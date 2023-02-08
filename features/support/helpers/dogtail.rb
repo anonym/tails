@@ -217,6 +217,10 @@ module Dogtail
       get_field('checked') == 'True'
     end
 
+    def focused
+      get_field('focused') == 'True'
+    end
+
     def text
       get_field('text')
     end
