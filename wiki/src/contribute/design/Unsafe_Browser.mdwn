@@ -92,7 +92,7 @@ don't setup any way (like bind mounts) to make it possible to access it.
 
 Opening the Unsafe Browser requires arbitrary code execution as `amnesia`: all
 of the most-sensitive applications we ship have an AppArmor profile which
-disables spawning the Unsafe Browser (XXX: ensure this is true!).
+disables spawning the Unsafe Browser. This is tracked in [[!tails_ticket 19421]].
 
 This means that making the Unsafe Browser a setting in the Tails Greeter
 doesn't actually improve security as of now: if the user doesn't want to use
@@ -117,8 +117,8 @@ This is a serious attack surface, however:
    accessibility features enabled, this attack is unfeasible. We acknowledge that a11y is a feature which many
    users just can't disable.
 
-XXX: check if the end-user doc clearly says that it's better to close the
-Unsafe Browser as soon as you're done with what you needed to do.
+XXX:  The end-user doc should clearly says that it's better to close the Unsafe Browser as soon as you're done
+with what you needed to do. [[!tails_ticket 19229]]
 
 
 ----
