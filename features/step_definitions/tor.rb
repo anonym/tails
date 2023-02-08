@@ -481,7 +481,7 @@ When(/^I look at the hide mode but then I go back$/) do
       '_Back',
       roleName: 'push button'
     )
-    assert_equal('True', btn.get_field('sensitive'))
+    assert btn.sensitive
     btn.click
   end
 end
@@ -779,7 +779,7 @@ def click_connect_to_tor
     '_Connect to Tor',
     roleName: 'push button'
   )
-  assert_equal('True', btn.get_field('sensitive'))
+  assert btn.sensitive
   btn.click
 end
 
@@ -788,10 +788,7 @@ When /^(?:I click "Connect to Tor"|I retry connecting to Tor)$/ do
 end
 
 Then /^I cannot click the "Connect to Tor" button$/ do
-  assert_equal(
-    'False',
-    tor_connection_assistant.child('_Connect to Tor').get_field('sensitive')
-  )
+  assert !tor_connection_assistant.child('_Connect to Tor').sensitive
 end
 
 When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
