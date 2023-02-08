@@ -92,7 +92,7 @@ def try_for(timeout, **options)
         # print it in case of a timeout.
         last_exception = e
         debug_log('try_for: failed with exception: ' \
-                  "#{last_exception.class}: #{last_exception}") if options[:log]
+                  "#{last_exception.class}: #{last_exception}\n#{last_exception.backtrace.join("\n")}") if options[:log]
       rescue Exception => e # rubocop:disable Lint/RescueException
         # Any other exception is rethrown as-is: it is probably not
         # the kind of failure that try_for is supposed to mask.
