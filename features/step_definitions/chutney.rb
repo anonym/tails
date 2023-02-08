@@ -1,7 +1,3 @@
-def chutney_src_dir
-  "#{GIT_DIR}/submodules/chutney"
-end
-
 def chutney_status_log(cmd)
   action = case cmd
            when 'start'
@@ -34,11 +30,7 @@ def ensure_chutney_is_running
   return if $chutney_initialized
 
   chutney_listen_address = $vmnet.bridge_ip_addr
-  chutney_script = "#{chutney_src_dir}/chutney"
-  assert(
-    File.executable?(chutney_script),
-    "It does not look like '#{chutney_src_dir}' is the Chutney source tree"
-  )
+  chutney_script = "#{GIT_DIR}/features/scripts/chutney"
   network_definition = "#{GIT_DIR}/features/chutney/test-network"
   env = {
     'CHUTNEY_LISTEN_ADDRESS' => chutney_listen_address,
@@ -57,9 +49,7 @@ def ensure_chutney_is_running
   chutney_cmd = proc do |cmd|
     chutney_status_log(cmd)
     cmd = 'stop' if cmd == 'stop_old'
-    Dir.chdir(chutney_src_dir) do
-      cmd_helper([chutney_script, cmd, network_definition], env: env)
-    end
+    cmd_helper([chutney_script, cmd, network_definition], env: env)
   end
 
   # After an unclean shutdown of the test suite (e.g. Ctrl+C) the
