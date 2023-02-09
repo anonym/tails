@@ -56,15 +56,15 @@ The Unsafe Browser is run in a restricted environment:
 
  - it runs in its own mount namespace, where (through the use of tmpfs and overlayfs):
    - no modifications can be made to the system
-   - the system as shown as it was before booting. No modification to the state that happened after boot is
+   - the system is shown as it was before booting. No modification to the state that happened after boot is
      visible
-   - however, /home is fully readable and writable, and is just a bind-mount to the "normal" /home
+   - however, `/home` is fully readable and writable, and is just a bind-mount of the "normal" `/home`
 
  - it runs in its own network namespace
    - it can establish arbitrary TCP/UDP connections
    - it cannot contact local services, like Tor
 
- - Apparmor rules prevent it from accessing sensitive files:
+ - AppArmor rules prevent it from accessing sensitive files:
    - Every file in Desktop, Downloads, Documents, etc.
    - Every file in home except `/home/amnesia/.*`
    - However, it can access `/home/amnesia/Tor Browser/` and `/home/amnesia/Persistent/Tor Browser/`.
