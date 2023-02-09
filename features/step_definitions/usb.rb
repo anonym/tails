@@ -1182,7 +1182,7 @@ end
 
 Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
   settings = $vm.execute_successfully(
-    'grep -h "^TAILS_" /var/lib/gdm3/settings/tails.* | ' \
+    'grep -h "^TAILS_" /var/lib/gdm3/settings/persistent/tails.* | ' \
     'grep -v "^TAILS_.*PASSWORD" | LC_ALL=C sort'
   ).stdout
   if non_default
@@ -1198,11 +1198,11 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
     EXPECTED
     $vm.execute_successfully(
       'grep "^TAILS_USER_PASSWORD=\'.\+\'$" ' \
-      '/var/lib/gdm3/settings/tails.password'
+      '/var/lib/gdm3/settings/persistent/tails.password'
     )
     $vm.execute_successfully(
       'grep "^TAILS_PASSWORD_HASH_FUNCTION=SHA512$" ' \
-      '/var/lib/gdm3/settings/tails.password'
+      '/var/lib/gdm3/settings/persistent/tails.password'
     )
   else
     expected = <<~EXPECTED
@@ -1215,7 +1215,7 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=
     EXPECTED
-    assert(!$vm.file_exist?('/var/lib/gdm3/settings/tails.password'))
+    assert(!$vm.file_exist?('/var/lib/gdm3/settings/persistent/tails.password'))
   end
   assert_equal(expected, settings)
 end

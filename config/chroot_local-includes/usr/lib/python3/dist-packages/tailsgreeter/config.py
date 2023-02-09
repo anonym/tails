@@ -37,12 +37,12 @@ system_locale_dir = '/usr/share/locale/'
 # the Welcome Screen feature is enabled in the Persistent Storage
 # settings, so only store settings there which should be made
 # persistent. Else use the transient settings directory.
-persistent_settings_dir = '/var/lib/gdm3/settings'
+persistent_settings_dir = '/var/lib/gdm3/settings/persistent'
 
 # Directory where Greeter settings are stored that should not be made
 # persistent. After login, these settings can also be accessed under
-# /var/lib/gdm3/settings.
-transient_settings_dir = '/var/lib/gdm3/transient-settings'
+# /var/lib/gdm3/settings/persistent.
+transient_settings_dir = '/var/lib/gdm3/settings/transient'
 
 # File where the session language setting is stored
 language_setting_path = os.path.join(persistent_settings_dir, 'tails.language')
