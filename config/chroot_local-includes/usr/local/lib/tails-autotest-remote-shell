@@ -46,6 +46,8 @@ import traceback
 
 from tailslib.gnome import gnome_env
 
+from typing import Tuple, Optional
+
 REMOTE_SHELL_DEV = '/dev/virtio-ports/org.tails.remote_shell.0'
 
 
@@ -119,7 +121,7 @@ class PythonSession:
         self.process.stdin.write(init_code)
         self.process.stdin.flush()
 
-    def execute(self, code):
+    def execute(self, code) -> Tuple[str, str, str]:
         # This wrapping ensures that we can run almost any reasonable
         # code and capture what it does.
         wrapper = """
@@ -127,26 +129,32 @@ class PythonSession:
             fake_stderr = io.StringIO()
             sys.stdout = fake_stdout
             sys.stderr = fake_stderr
-            exc = None
+            exc_str = None
             try:
             {code}
             except Exception as e:
-                exc = '%s: %s' % (type(e).__name__, str(e))
+                exc_str = '%s: %s' % (type(e).__name__, str(e))
             # This newline is needed to end the `try` statement.
 
             sys.stdout = orig_stdout
             sys.stderr = orig_stderr
-            out_data = fake_stdout.getvalue()
-            err_data = fake_stderr.getvalue()
+            out_str = fake_stdout.getvalue()
+            err_str = fake_stderr.getvalue()
             fake_stdout.close()
             fake_stderr.close()
-            print(json.dumps([exc, out_data, err_data]))
+            print(json.dumps([exc_str, out_str, err_str]))
             """.replace('            ', '').lstrip()
         indented_code = textwrap.indent(code, prefix=' ' * 4)
         wrapped_code = wrapper.format(code=indented_code)
         self.process.stdin.write(wrapped_code)
         self.process.stdin.flush()
-        return self.process.stdout.readline().strip()
+        return_str = self.process.stdout.readline().strip()
+        try:
+            exc_str, out_str, err_str = json.loads(return_str)
+            return exc_str, out_str, err_str
+        except Exception as e:
+            exc_str = '%s: %s' % (type(e).__name__, str(e))
+            return exc_str, "", ""
 
 
 def run_cmd_as_user(cmd, user):
@@ -219,9 +227,8 @@ def main():
                 if user not in python_sessions:
                     python_sessions[user] = PythonSession(user)
                 session = python_sessions[user]
-                result_str = session.execute(code)
-                result = json.loads(result_str)
-                ret = json.dumps([id, 'success'] + result)
+                exc, out_str, err_str = session.execute(code)
+                ret = json.dumps([id, 'success', exc, out_str, err_str])
             elif cmd_type in ['file_read', 'file_write', 'file_append']:
                 path, *rest = rest
                 open_mode = cmd_type[5] + 'b'
