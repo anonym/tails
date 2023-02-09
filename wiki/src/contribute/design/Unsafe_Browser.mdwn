@@ -78,10 +78,10 @@ to deanonymizaation.
 
 #### XWayland
 
-UnsafeBrowser used (pre-5.8) to be run as an X.Org application. This was
+The *Unsafe Browser* used (pre-5.8) to be run as an X.Org application. This was
 knowingly insecure. The switch to Wayland gave us better security properties.
 
-However, can an amnesia-level attacker force UnsafeBrowser to run as an XWayland
+However, can an amnesia-level attacker force the *Unsafe Browser* to run as an XWayland
 application?
 
 It cannot. In fact, the Unsafe Browser is not allowed to access XWayland, because it runs in a different
@@ -91,16 +91,16 @@ don't setup any way (like bind mounts) to make it possible to access it.
 #### Opening the Unsafe Browser
 
 Opening the Unsafe Browser requires arbitrary code execution as `amnesia`: all
-of the most-sensitive applications we ship have an AppArmor profile which
+of the most-sensitive applications we ship should have an AppArmor profile which
 disables spawning the Unsafe Browser. This is tracked in [[!tails_ticket 19421]].
 
-This means that making the Unsafe Browser a setting in the Tails Greeter
+This means that disabling the Unsafe Browser in the Welcome Screen
 doesn't actually improve security as of now: if the user doesn't want to use
 Unsafe Browser, they just will avoid to, and no practical attacker can easily
 run it.
 
 
-#### accessibility bus
+#### Accessibility bus
 
 An attacker with access to the accessibility bus can trivially exploit an
 _already-open_ Unsafe Browser to phone home and deanonymize users.
