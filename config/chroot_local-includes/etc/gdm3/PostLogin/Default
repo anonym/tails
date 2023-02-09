@@ -22,13 +22,14 @@
 # This script is run after you press the "Start Tails" button. What it does is to copy the relevant files from
 # /var/lib/gdm3/settings/persistent and /var/lib/gdm3/settings/transient into /var/lib/live/config/
 #
-# Persistentent Storage
+# Persistent Storage
 # ----------------------
 #
-# The persistent storage can persist /var/lib/gdm3/settings/persistent/
+# The Persistent Storage can persist /var/lib/gdm3/settings/persistent/
 #
 # If, for whatever reasons (see #19410 for an example), a file is in that directory which shouldn't be there
-# at all, this file is ignored: only a specific list of files is copied.
+# at all, this file is ignored: only the files specified below in
+# $GREETER_EXPORTED_PERSISTENT_SETTINGS are copied.
 
 
 # For whatever reason, /usr/sbin (needed by at least chpasswd)
