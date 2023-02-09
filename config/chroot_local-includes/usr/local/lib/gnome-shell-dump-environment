@@ -7,14 +7,19 @@ properly set the environment for many user-facing applications.
 How it works
 ----------------
 
-First, it saves the environment in the home. Then, it asks root (with sudo) to move this environment to a
-root-owned directory which is readable, but not writable, by amnesia.
+First, it saves the environment in ~/.gnome-shell-environment. Then,
+it asks root (with sudo) to move this environment to a root-owned
+directory which is readable, but not writable, by amnesia.
 
 Security
 ----------
 
-Any amnesia-capable attacker could do that. However, the privileged part will abort if the file already
-exists. This means that it can only be run once.
+An attacker able to run code as amnesia can write arbitrary content to
+~/.gnome-shell-environment and cause that to be copied to
+/run/gnome-shell-environment. Because we use this file to set up the
+environment for processes running as amnesia, that means that such an
+attacker can control processes running as amnesia. We don't use the file
+for anything else.
 
 Environment
 ---------------
