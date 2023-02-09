@@ -71,9 +71,9 @@ class PersistentStorageSettings(object):
                 method_name="Unlock",
                 parameters=GLib.Variant("(s)", (passphrase,)),
                 flags=Gio.DBusCallFlags.NONE,
-                # -1 means the default timeout of 25 seconds is used,
-                # which should be enough.
-                timeout_msec=-1,
+                # In some cases, the default timeout of 25 seconds was not
+                # enough, so we use a timeout of 120 seconds instead.
+                timeout_msec=120000,
             )
         except GLib.GError as err:
             if IncorrectPassphraseError.is_instance(err):
