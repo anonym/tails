@@ -13,6 +13,24 @@
 #   $TAILS_XKBLAYOUT, $TAILS_XKBVARIANT, $TAILS_XKBOPTIONS
 # * /var/lib/gdm3/settings/tails.password : $TAILS_USER_PASSWORD
 
+# Overall working of Welcome Screen additional settings
+# =====================================================
+#
+# When you select additional settings in the Welcome Screen, this results in files being created/modified
+# in /var/lib/gdm3/settings and /var/lib/gdm3/transient-settings
+#
+# This script is run after you press the "Start Tails" button. What it does is to copy the relevant files from
+# /var/lib/gdm3/{,transient-}settings/ into /var/lib/live/config/
+#
+# Persistentent Storage
+# ----------------------
+#
+# The persistent storage can persist /var/lib/gdm3/settings/
+#
+# If, for whatever reasons (see #19410 for an example), a file is in that directory which shouldn't be there
+# at all, this file is ignored: only a specific list of files is copied.
+
+
 # For whatever reason, /usr/sbin (needed by at least chpasswd)
 # is not in our PATH
 export PATH="/usr/sbin:${PATH}"
