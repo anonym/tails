@@ -69,12 +69,19 @@ def ensure_chutney_is_running
       chutney_cmd.call('start')
     rescue Test::Unit::AssertionFailedError => e
       if File.directory?(env['CHUTNEY_DATA_DIR'])
-        raise e, "#{e.message}\n" \
-              'You are running with --keep-snapshots or --keep-chutney, ' \
-              'but Chutney failed ' \
-              'to start with its current data directory. To recover you ' \
-              "likely want to delete '#{env['CHUTNEY_DATA_DIR']}' and " \
-              'all test suite snapshots and then start over.'
+        raise e, %{#{e.message}
+
+Note: You are running with --keep-snapshots or --keep-chutney, but Chutney
+failed to start with its current data directory. To recover you likely
+want to delete Chutney's data directory and all test suite snapshots:
+
+    sudo rm -r #{env['CHUTNEY_DATA_DIR']}
+
+    for snapshot in $(virsh snapshot-list --name TailsToaster); do
+      virsh snapshot-delete TailsToaster --snapshotname "${snapshot}"
+    done
+
+}
       else
         chutney_cmd.call('configure')
         chutney_cmd.call('start')
