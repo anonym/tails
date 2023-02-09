@@ -167,11 +167,13 @@ and stopped working in Tails 5.8:
   * `10de:1f82` GeForce GTX 1650
   * `10de:220a` RTX 3080
   * `10de:2482` GA104 GeForce RTX 3070 Ti
-  * `10de:2488`
-  * `10de:2489`
+  * `10de:2486` GA104 GeForce RTX 3060 Ti: this is fixed in Tails 5.9
+  * `10de:2488` RTX 3070: this is fixed in Tails 5.9
+  * `10de:2489` RTX 3060 Ti
   * `10de:24dc` GA104M GeForce RTX 3080 Mobile
-  * `10de:2504` RTX
+  * `10de:2504` RTX: this is fixed in Tails 5.9
   * `10de:2560` GA106M GeForce RTX 3060 Mobile
+  * GeForce RTX 3060 Ti Founders Edition: this is fixed in Tails 5.9
   * `10de:25e0`
 - Intel
   * `8086:0046` Core Processor Integrated Graphic Controller
@@ -203,6 +205,8 @@ and stopped working in Tails 5.8:
   * `8086:5917`
     - Add the `i915.force_probe=5917` [[boot option|doc/advanced_topics/boot_options]]
       and [let us know](tails-bugs@boum.org) whether it helps.
+  * `8086:8a56`
+    - To fix this, add the `i915.force_probe=8a56` [[boot option|doc/advanced_topics/boot_options]].
 - AMD
   * `1002:1506`
   * `1002:15e7`
@@ -217,6 +221,9 @@ and stopped working in Tails 5.8:
   - Explicitly select one of the two graphics adapters in the BIOS
     instead of letting the system choose one automatically. If this does
     not solve the problem, try selecting the other graphics adapter.
+  - Add the `nouveau.modeset=0` [[boot option|doc/advanced_topics/boot_options]].
+    This will force the system to use your other graphics cards,
+    instead of the NVIDIA one.
 
 These graphics card probably don't work as good on Wayland as they used to work on X.Org.
 
