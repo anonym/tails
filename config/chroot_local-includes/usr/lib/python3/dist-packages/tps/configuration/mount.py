@@ -6,7 +6,7 @@ import subprocess
 import sys
 from typing import List, Union, Optional
 
-from tailslib import LIVE_USERNAME, LIVE_USER_UID
+from tailslib import LIVE_USERNAME, LIVE_USER_UID, NOSYMFOLLOW_MOUNTPOINT
 import tps.logging
 from tps import _, TPS_MOUNT_POINT
 from tps import executil
@@ -14,8 +14,6 @@ from tps.mountutil import mount, MOUNTFLAG_BIND
 from tps.dbus.errors import TargetIsBusyError
 
 logger = tps.logging.get_logger(__name__)
-
-NOSYMFOLLOW_MOUNTPOINT = "/var/lib/tails-persistent-storage/nosymfollow"
 
 
 class FailedPrecondition(Exception):
