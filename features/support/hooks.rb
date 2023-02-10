@@ -142,6 +142,15 @@ def save_journal
   )
 end
 
+def save_boot_log
+  save_vm_command_output(
+    command:  'cat /var/log/boot.log*',
+    id:       'boot-log',
+    basename: 'artifact.boot-log',
+    desc:     'boot log'
+  )
+end
+
 def save_vm_file_content(file, desc: nil)
   _save_vm_file_content(
     file:     file,
@@ -354,6 +363,7 @@ After('@product') do |scenario|
     # on the remote shell here:
     if $vm&.remote_shell_is_up?
       save_journal
+      save_boot_log
       if scenario.feature.file \
          == 'features/additional_software_packages.feature'
         save_vm_command_output(
