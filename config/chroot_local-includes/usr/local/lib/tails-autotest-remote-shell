@@ -240,6 +240,7 @@ def main():
             ret = ""
             if cmd_type in ['sh_call', 'sh_spawn']:
                 user, cmd = rest
+                print(f"Executing as {user}: {cmd}", file=sys.stderr)
                 p = run_cmd_as_user(cmd, user)
                 if cmd_type == "sh_spawn":
                     returncode, stdout, stderr = 0, "", ""
@@ -247,14 +248,17 @@ def main():
                     stdout, stderr = p.communicate()
                     returncode = p.returncode
                 ret = json.dumps([id, 'success', returncode, stdout, stderr])
+                print(f"Result: {ret}")
             elif cmd_type == 'python_execute':
                 user, code = rest
                 if user not in python_sessions or \
                         python_sessions[user].process.poll() is not None:
                     python_sessions[user] = PythonSession(user)
                 session = python_sessions[user]
+                print(f"Executing as {user}:\n{code}", file=sys.stderr)
                 exc, out_str, err_str = session.execute(code)
                 ret = json.dumps([id, 'success', exc, out_str, err_str])
+                print(f"Result: {ret}")
             elif cmd_type in ['file_read', 'file_write', 'file_append']:
                 path, *rest = rest
                 open_mode = cmd_type[5] + 'b'
