@@ -175,6 +175,20 @@ To install an additional package automatically when starting Tails:
 The same package can be reinstalled faster for some time because you
 won't have to download it again.
 
+Using additional software
+=========================
+
+Once installed, normal application programs often work.
+However, Tails has some differences in terms of data storage,
+additional configuration, and network access.
+
+Data storage
+------------
+
+If you want to store data locally, enable persistent storage.
+Once it's enabled, you can store arbitrary files in the folder (directory)
+named *Persistent*.
+
 Additional configuration
 ------------------------
 
@@ -182,6 +196,67 @@ Some packages require additional configuration to work. To keep their
 configuration across Tails sessions, advanced users can use the
 [[Dotfiles|persistent_storage/configure#dotfiles]]
 feature of the Persistent Storage.
+
+Network access
+--------------
+
+Tails handles network access differently than a typical system.
+Application programs that need access the network must send their
+normal network communication through an intermediary called a SOCKS5 service.
+That service, in turn, anonymizes the network communications using Tor.
+This configuration to use SOCKS5 usually requires extra steps before
+the application will successfully communicate over a network.
+
+Tails already provides the Tor browser and the
+the command line tool `wget`; both are
+already configured to use the Tor SOCKS5 service.
+
+In many cases, you can get other networking applications to work
+using the `torsocks` command line application. The `torsocks` enables
+many networking programs to work, but note that it does *not* support IPv6.
+To use `torsocks`, run this on the command line followed by the
+COMMAND you wish to use with network access:
+
+~~~~
+torsocks --isolate COMMAND
+~~~~
+
+The program `curl` includes support for SOCKS5. It's been reported
+to us that on Tails you can also run curl, and many programs that use curl,
+on the command line using this format (the "username" before the
+"@" symbol implements Tor stream isolation just like torsocks does, and
+replace COMMAND with the curl command or whatever you want to run):
+
+~~~~
+ALL_PROXY="socks5://torsocks-$$%3a$(date +%s):0@127.0.0.1:9050" COMMAND
+~~~~
+
+For other applications that access the network,
+configure them to use the SOCKS5 proxy at IP address 127.0.0.1
+(aka "home") with port 9050.
+We would suggest creating a SOCKS username which is
+different each time the application is used in a new session;
+this counters correlation between different sessions.
+The password for the SOCKS username is "0"; this known password
+isn't a security problem because Tails uses the SOCKS5 username
+only for stream isolation, not for access control.
+Only TCP communications are supported; UDP
+communications are generally blocked.
+Tails is configured so that
+lookups of computer names (aka "DNS lookups") will work normally as long as
+the application uses the system configuration.
+Applications that ignore the system configuration for DNS lookups,
+and instead attempt to
+resolve computer names themselves, will fail to resolve those names.
+
+As always, be cautious when accessing the network this way.
+In particular, logging in to any server will eliminate anonymity to
+that server.
+Also, as noted earlier, additional software is not
+directly supported by Tails.
+That said, if you have important general
+tips or recommendations, please let us know.
+
 
 Checking your list of additional software
 =========================================
