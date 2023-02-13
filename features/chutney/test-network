@@ -53,12 +53,12 @@ BridgeDefault = Node(
     torrc="bridge-obfs4.tmpl"
 )
 
-NODES = Authority.getN(4) + \
+NODES = Authority.getN(3) + \
         BridgeAuthority.getN(1) + \
-        NonExitRelay.getN(20) + \
-        ExitRelay.getN(10) + \
-        Bridge.getN(3) + \
-        BridgeObfs4.getN(3) + \
+        NonExitRelay.getN(10) + \
+        ExitRelay.getN(5) + \
+        Bridge.getN(2) + \
+        BridgeObfs4.getN(2) + \
         BridgeDefault.getN(1) + \
         Client.getN(1)
 
