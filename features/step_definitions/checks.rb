@@ -163,7 +163,7 @@ Then /^the support documentation page opens in Tor Browser$/ do
     expected_heading = 'Search the documentation'
   end
   step "\"#{expected_title}\" has loaded in the Tor Browser"
-  browser_name = $language == 'German' ? 'Tor-Browser' : 'Tor Browser'
+  browser_name = 'Tor Browser'
   separator = $language == 'German' ? '-' : '—'
   try_for(60, delay: 3) do
     page_has_heading("#{expected_title} #{separator} #{browser_name}", expected_heading)
