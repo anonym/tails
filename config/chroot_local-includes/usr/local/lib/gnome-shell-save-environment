@@ -3,17 +3,22 @@
 '''
 This is the privileged part for gnome-shell-dump-environment.
 
-The core security feature is that it can only be run once: the next time it is called, it will be a noop.
+It reads the amnesia-owned file ~/.gnome-shell-environment as root and
+writes its content to /run/gnome-shell-environment.
 
-It trusts the file in amnesia's home; this could seem risky. However, the first (and only!) time this will
-happen is at boot time. If an attacker is already there, it means we have already lost.
+To avoid symlink attacks, which would allow amnesia to read arbitrary
+files as root, we read the file below the nosymfollow mountpoint, which
+has the effect that when a symlink would be followed *implicitly* (i.e.
+without calling readlink(2) or similar), the operation fails with ELOOP.
 '''
 
 import shutil
 import sys
 from pathlib import Path
 
-from tailslib import LIVE_USERNAME
+from tailslib import LIVE_USERNAME, NOSYMFOLLOW_MOUNTPOINT
+
+AMNESIA_OWNED_ENV_FILE = Path(NOSYMFOLLOW_MOUNTPOINT, f"home/{LIVE_USERNAME}/.gnome-shell-environment")
 
 
 def main():
@@ -36,7 +41,7 @@ def main():
         sys.exit(0)
     dest.chmod(0o440)
 
-    src = Path('/home/%s/.gnome-shell-environment' % LIVE_USERNAME)
+    src = AMNESIA_OWNED_ENV_FILE
     with src.open('rb') as buf:
         content = buf.read()
     with dest.open('wb') as buf:
