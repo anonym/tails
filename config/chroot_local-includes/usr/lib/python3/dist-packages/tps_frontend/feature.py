@@ -36,6 +36,10 @@ class Feature(object):
         this property."""
         return camel_to_snake(self.__class__.__name__) + "_switch"
 
+    @property
+    def widgets_to_show_while_active(self) -> List[Gtk.Widget]:
+        return list()
+
     def __init__(self, window: "Window", builder: Gtk.Builder,
                  bus: Gio.DBusConnection):
         logger.debug(f"Initializing feature {self.__class__.__name__}")
@@ -112,6 +116,15 @@ class Feature(object):
 
     def deactivate(self):
         logger.debug(f"Deactivating feature {self.dbus_object_name}")
+
+        # Already hide the widgets when we start deactivating the
+        # feature, to:
+        # * avoid races when the user clicks a widget and the action is
+        #   only done when the feature is already deactivated
+        # * avoid that showing the spinner causes the widgets to move
+        for widget in self.widgets_to_show_while_active:
+            widget.hide()
+
         # Create a cancellable that can be used to cancel the activation job
         self.cancellable = Gio.Cancellable()
         self.old_state = True
@@ -194,6 +207,12 @@ class Feature(object):
             # Ensure that the switch displays the correct state
             is_active = self.proxy.get_cached_property("IsActive").get_boolean()
             self.switch.set_active(is_active)
+
+            # We hid the widgets in the deactivate() function, so ensure
+            # that they now have the correct visibility
+            for widget in self.widgets_to_show_while_active:
+                widget.set_visible(is_active)
+
             return
 
         logger.debug(f"Feature {self.dbus_object_name} successfully deactivated")
@@ -205,6 +224,8 @@ class Feature(object):
         if "IsActive" in changed_properties.keys():
             self.switch.set_active(changed_properties["IsActive"])
             self.switch.set_state(changed_properties["IsActive"])
+            for widget in self.widgets_to_show_while_active:
+                widget.set_visible(changed_properties["IsActive"])
 
         if "Job" in changed_properties.keys():
             job_path = changed_properties["Job"]
