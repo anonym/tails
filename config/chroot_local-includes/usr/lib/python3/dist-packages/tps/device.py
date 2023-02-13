@@ -138,6 +138,13 @@ class Partition(object):
         except (InvalidPartitionError, PartitionNotUnlockedError):
             return False
 
+    def is_unlocked_and_mounted(self) -> bool:
+        try:
+            cleartext_device = self.get_cleartext_device()
+            return cleartext_device.is_mounted()
+        except (InvalidPartitionError, PartitionNotUnlockedError):
+            return False
+
     @classmethod
     def exists(cls) -> bool:
         """Return true if the Persistent Storage partition exists and
