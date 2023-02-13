@@ -1406,11 +1406,12 @@ As tracked on [[!tails_ticket 19396]], it might well be
 that Mirrorbits will miss this update.
 Let's be sure that this happens via
 
-    ssh rsync.lizard mirrorbits refresh -rehash
+    ssh rsync.lizard sudo cat /etc/mirrorbits-rpc-password \
+      | ssh rsync.lizard mirrorbits -a refresh -rehash
 
 If, at a later stage of the process, you realize Mirrorbits is still not
 "noticing" that mirrors are up-to-date, don't be afraid of refreshing/rehashing
-again, or even restart the whole service:
+again, or even restart the whole service (which also triggers a rehash):
 
     ssh rsync.lizard sudo systemctl restart mirrorbits.service
 
