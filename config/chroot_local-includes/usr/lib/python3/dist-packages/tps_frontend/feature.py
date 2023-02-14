@@ -1,5 +1,5 @@
 import logging
-from gi.repository import Gio, GLib, GObject, Gtk
+from gi.repository import Gio, GLib, GObject, Gtk, Handy
 import os
 import re
 import psutil
@@ -52,6 +52,9 @@ class Feature(object):
             None,
         )  # type: Gio.DBusProxy
 
+        self.is_active = self.proxy.get_cached_property("IsActive").get_boolean()
+        self.has_data = self.proxy.get_cached_property("HasData").get_boolean()
+
         # Connect to properties-changed signal
         self.proxy.connect("g-properties-changed", self.on_properties_changed)
 
@@ -60,6 +63,21 @@ class Feature(object):
         if not self.box:
             raise RuntimeError(f"Could not find {box_name}")
 
+        # Add the row about deleting leftover data
+        self.delete_data_button = Gtk.Button(
+            label = "Delete Data",
+            valign = "center",
+        )
+        self.delete_data_button.connect("clicked", self.on_delete_data_button_clicked)
+        Gtk.StyleContext.add_class(self.delete_data_button.get_style_context(),
+                                   'destructive-action')
+        self.delete_data_row = Handy.ActionRow(
+            subtitle = _("There's some data. Turn on or delete data."),
+            can_focus = False,
+        )
+        self.delete_data_row.add(self.delete_data_button)
+        self.add_delete_data_row()
+
         self.spinner = Gtk.Spinner()  # type: Gtk.Spinner
 
         switch_name = self.widget_name_prefix + "_switch"
@@ -67,14 +85,31 @@ class Feature(object):
         if not self.switch:
             raise RuntimeError(f"Could not find {switch_name}")
 
-        # Set the initial switch state
-        is_active = self.proxy.get_cached_property("IsActive").get_boolean()
-        self.switch.set_state(is_active)
+        self.switch.set_state(self.is_active)
         self.switch.connect("notify::active", self.on_active_changed)
         self.switch.connect("state-set", self.on_state_set)
 
+        if self.has_data and not self.is_active:
+            self.show_delete_data_row()
+
         self.dialog = None
         self.old_state = None  # type: bool
+
+    def add_delete_data_row(self):
+        action_row_name = self.widget_name_prefix + "_row"
+        action_row = self.builder.get_object(action_row_name)  # type: Handy.ActionRow
+        parent_list_box = action_row.get_parent()  # type: Gtk.ListBox
+
+        i = 0
+        while True:
+            row = parent_list_box.get_row_at_index(i)
+            if not row:
+                raise RuntimeError(f"Couldn't find action row in list box")
+            if row == action_row:
+                break
+            i += 1
+
+        parent_list_box.insert(self.delete_data_row, i + 1)
 
     def show_spinner(self):
         if not self.spinner in self.box.get_children():
@@ -87,6 +122,12 @@ class Feature(object):
     def hide_spinner(self):
         if self.spinner in self.box.get_children():
             self.box.remove(self.spinner)
+
+    def show_delete_data_row(self):
+        self.delete_data_row.show_all()
+
+    def hide_delete_data_row(self):
+        self.delete_data_row.hide()
 
     def on_state_set(self, switch: Gtk.Switch, state: bool):
         # We return True here to prevent the default handler from
@@ -241,16 +282,53 @@ class Feature(object):
 
         logger.debug(f"Feature {self.dbus_object_name} successfully deactivated")
 
+    def on_delete_data_button_clicked(self, button: Gtk.Button):
+        self.show_spinner()
+        self.hide_delete_data_row()
+        self.proxy.call(method_name="Delete",
+                        parameters=None,
+                        flags=Gio.DBusCallFlags.NONE,
+                        timeout_msec=GLib.MAXINT,
+                        cancellable=None,
+                        callback=self.on_delete_call_finished)
+
+    def on_delete_call_finished(self, proxy: Gio.DBusProxy,
+                                  res: Gio.AsyncResult):
+        self.hide_spinner()
+
+        try:
+            proxy.call_finish(res)
+        except GLib.Error as e:
+            logger.error(f"Error deleting data of feature {self.dbus_object_name}: {e.message}")
+            self.window.display_error(_("Error deleting data of feature {}").format(self.dbus_object_name),
+                                      e.message)
+
+            # Ensure that the visibility of the delete data row is correct
+            if self.has_data and not self.is_active:
+                self.show_delete_data_row()
+            return
+
+        logger.debug(f"Data of feature {self.dbus_object_name} successfully deleted")
+
     def on_properties_changed(self, proxy: Gio.DBusProxy,
                               changed_properties: GLib.Variant,
                               invalidated_properties: List[str]):
         logger.debug("changed properties: %s", changed_properties)
         if "IsActive" in changed_properties.keys():
-            self.switch.set_active(changed_properties["IsActive"])
+            self.is_active = changed_properties["IsActive"]
+            self.switch.set_active(self.is_active)
             self.switch.set_state(changed_properties["IsActive"])
             for widget in self.widgets_to_show_while_active:
                 widget.set_visible(changed_properties["IsActive"])
             self.hide_spinner()
+
+        if "HasData" in changed_properties.keys():
+            self.has_data = changed_properties["HasData"]
+
+        if self.has_data and not self.is_active:
+            self.show_delete_data_row()
+        if self.is_active:
+            self.hide_delete_data_row()
 
         if "Job" in changed_properties.keys():
             job_path = changed_properties["Job"]

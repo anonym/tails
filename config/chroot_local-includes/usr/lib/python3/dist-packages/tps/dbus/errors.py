@@ -34,6 +34,9 @@ class ActivationFailedError(DBusError):
 class AlreadyActivatedError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.AlreadyActivated"
 
+class DeletionFailedError(DBusError):
+    name = "org.boum.tails.PersistentStorage.Error.DeletionFailed"
+
 class FailedPreconditionError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.FailedPrecondition"
 

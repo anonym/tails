@@ -4,6 +4,7 @@ from gi.repository import GLib
 import os
 from pathlib import Path
 import psutil
+import shutil
 import time
 from typing import TYPE_CHECKING, Dict, List, Optional
 
@@ -14,8 +15,8 @@ from tps import State, DBUS_FEATURE_INTERFACE, DBUS_FEATURES_PATH, \
 from tps.configuration.mount import Mount, IsActiveException, \
     IsInactiveException
 from tps.dbus.errors import ActivationFailedError, \
-    AlreadyActivatedError, NotActivatedError, JobCancelledError, \
-    FailedPreconditionError
+    AlreadyActivatedError, DeletionFailedError, NotActivatedError, \
+    JobCancelledError, FailedPreconditionError
 from tps.dbus.object import DBusObject
 from tps.job import ServiceUsingJobs
 
@@ -43,9 +44,11 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         <interface name='org.boum.tails.PersistentStorage.Feature'>
             <method name='Activate'/>
             <method name='Deactivate'/>
+            <method name='Delete'/>
             <property name="Id" type="s" access="read"/>
             <property name="Description" type="s" access="read"/>
             <property name="IsActive" type="b" access="read"/>
+            <property name="HasData" type="b" access="read"/>
             <property name="Job" type="o" access="read"/>
         </interface>
     </node>
@@ -180,6 +183,37 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
 
         self.IsActive = False
 
+    def Delete(self):
+        # Check if we can delete the feature
+        if self.service.state != State.UNLOCKED:
+            msg = "Can't delete features when state is '%s'" % \
+                  self.service.state.name
+            raise FailedPreconditionError(msg)
+
+        # Check if feature is active
+        state = self.refresh_is_active()
+        if state == state.Active:
+            msg = f"Can't delete active feature '{self.Id}'"
+            raise FailedPreconditionError(msg)
+
+        if not self.HasData:
+            logger.info(f"Not deleting feature {self.Id}: Feature has no data")
+            return
+
+        logger.info(f"Deleting feature {self.Id}")
+
+        for mount in self.Mounts:
+            shutil.rmtree(mount.src)
+
+        hasData = self.HasData
+        if hasData:
+            raise DeletionFailedError(f"Feature '{self.Id}' still has data")
+
+        changed_properties = {"HasData": GLib.Variant("b", False)}
+        self.emit_properties_changed_signal(self.service.connection,
+                                            DBUS_FEATURE_INTERFACE,
+                                            changed_properties)
+
     # ----- Exported properties ----- #
 
     @property
@@ -192,7 +226,15 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             # Nothing to do
             return
         self._is_active = value
-        changed_properties = {"IsActive": GLib.Variant("b", value)}
+
+        # HasData might also have changed, we just include it here,
+        # which is not necessarily correct but it's simpler than
+        # adding code to store its last value and check if it changed
+        # and it doesn't have any negative impact.
+        changed_properties = {
+            "IsActive": GLib.Variant("b", value),
+            "HasData": GLib.Variant("b", self.HasData)
+        }
         self.emit_properties_changed_signal(self.service.connection,
                                             DBUS_FEATURE_INTERFACE,
                                             changed_properties)
@@ -200,6 +242,10 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             self.on_activated()
         else:
             self.on_deactivated()
+
+    @property
+    def HasData(self) -> bool:
+        return any(mount.has_data() for mount in self.Mounts)
 
     @property
     def Job(self) -> str:

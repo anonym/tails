@@ -163,6 +163,11 @@ class Mount(object):
             options.append("file")
         return options
 
+    def has_data(self) -> bool:
+        if self.is_file:
+            return self.src.exists()
+        return self.src.exists() and any(self.src.iterdir())
+
     def activate(self):
         try:
             self.check_is_inactive()
