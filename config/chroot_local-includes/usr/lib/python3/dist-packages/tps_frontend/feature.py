@@ -27,14 +27,11 @@ class Feature(object):
         return self.__class__.__name__
 
     @property
-    def switch_name(self) -> str:
-        """The name of the GtkSwitch to turn this feature on/off
-
+    def widget_name_prefix(self) -> str:
+        """The string which widgets of this feature are prefixed with.
         By default, the class name converted to snake_case with
-        "_switch" appended is used. Features for which that does
-        not correspond with the actual switch name can override
-        this property."""
-        return camel_to_snake(self.__class__.__name__) + "_switch"
+        "_switch" appended is used."""
+        return camel_to_snake(self.__class__.__name__)
 
     @property
     def widgets_to_show_while_active(self) -> List[Gtk.Widget]:
@@ -58,9 +55,17 @@ class Feature(object):
         # Connect to properties-changed signal
         self.proxy.connect("g-properties-changed", self.on_properties_changed)
 
-        self.switch = self.builder.get_object(self.switch_name)
+        box_name = self.widget_name_prefix + "_box"
+        self.box = self.builder.get_object(box_name)  # type: Gtk.Box
+        if not self.box:
+            raise RuntimeError(f"Could not find {box_name}")
+
+        self.spinner = Gtk.Spinner()  # type: Gtk.Spinner
+
+        switch_name = self.widget_name_prefix + "_switch"
+        self.switch = self.builder.get_object(switch_name)  # type: Gtk.Switch
         if not self.switch:
-            raise RuntimeError(f"Could not find switch {self.switch_name}")
+            raise RuntimeError(f"Could not find {switch_name}")
 
         # Set the initial switch state
         is_active = self.proxy.get_cached_property("IsActive").get_boolean()
@@ -70,6 +75,18 @@ class Feature(object):
 
         self.dialog = None
         self.old_state = None  # type: bool
+
+    def show_spinner(self):
+        if not self.spinner in self.box.get_children():
+            self.box.add(self.spinner)
+            # Ensure that the switch is the last widget in the box
+            self.box.reorder_child(self.switch, -1)
+        self.spinner.start()
+        self.spinner.set_visible(True)
+
+    def hide_spinner(self):
+        if self.spinner in self.box.get_children():
+            self.box.remove(self.spinner)
 
     def on_state_set(self, switch: Gtk.Switch, state: bool):
         # We return True here to prevent the default handler from
@@ -103,6 +120,8 @@ class Feature(object):
 
     def activate(self):
         logger.debug(f"Activating feature {self.dbus_object_name}")
+        self.show_spinner()
+
         # Create a cancellable that can be used to cancel the activation job
         self.cancellable = Gio.Cancellable()
         self.old_state = False
@@ -116,6 +135,7 @@ class Feature(object):
 
     def deactivate(self):
         logger.debug(f"Deactivating feature {self.dbus_object_name}")
+        self.show_spinner()
 
         # Already hide the widgets when we start deactivating the
         # feature, to:
@@ -138,6 +158,8 @@ class Feature(object):
 
     def on_activate_call_finished(self, proxy: Gio.DBusProxy,
                                   res: Gio.AsyncResult):
+        self.hide_spinner()
+
         if self.dialog:
             self.dialog.destroy()
             self.dialog = None
@@ -176,6 +198,8 @@ class Feature(object):
 
     def on_deactivate_call_finished(self, proxy: Gio.DBusProxy,
                                   res: Gio.AsyncResult):
+        self.hide_spinner()
+
         if self.dialog:
             self.dialog.destroy()
             self.dialog = None
@@ -226,6 +250,7 @@ class Feature(object):
             self.switch.set_state(changed_properties["IsActive"])
             for widget in self.widgets_to_show_while_active:
                 widget.set_visible(changed_properties["IsActive"])
+            self.hide_spinner()
 
         if "Job" in changed_properties.keys():
             job_path = changed_properties["Job"]

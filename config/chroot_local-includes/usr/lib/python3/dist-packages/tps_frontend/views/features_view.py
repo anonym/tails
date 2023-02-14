@@ -49,7 +49,7 @@ class Thunderbird(Feature):
     pass
 
 class GnuPG(Feature):
-    switch_name = "gnupg_switch"
+    widget_name_prefix = "gnupg"
 
 class Pidgin(Feature):
     pass
