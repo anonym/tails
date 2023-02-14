@@ -19,13 +19,10 @@ import locale
 import logging
 from typing import TYPE_CHECKING
 import gi
-import glob
 import os
-import sh
 
 import tailsgreeter                                             # NOQA: E402
 import tailsgreeter.config                                      # NOQA: E402
-from tailsgreeter.config import settings_dir, persistent_settings_dir, admin_password_path
 from tailsgreeter.settings import SettingNotFoundError
 from tailsgreeter.translatable_window import TranslatableWindow
 from tailsgreeter.ui.popover import Popover
@@ -377,17 +374,6 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
             self.confirm_dialog.set_visible(False)
             if response != Gtk.ResponseType.OK:
                 return
-
-        for setting in glob.glob(os.path.join(settings_dir, 'tails.*')):
-            sh.cp("-a", setting, persistent_settings_dir)
-        try:
-            self.greeter.admin_setting.load()
-        except SettingNotFoundError:
-            # The admin password is not set, so we have to make sure that
-            # the file also doesn't exist in the persistent directory,
-            # in case that the user disabled a persisted admin password.
-            pw_filename = os.path.basename(admin_password_path)
-            sh.rm("-f", os.path.join(persistent_settings_dir, pw_filename))
 
         self.greeter.login()
         return False

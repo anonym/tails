@@ -32,36 +32,44 @@ supported_locales_path = os.path.join(data_path, 'supported_locales')
 # System locales directory
 system_locale_dir = '/usr/share/locale/'
 
-# Directory where the Greeter settings are stored
-settings_dir = '/var/lib/gdm3/settings'
-
-# Directory where the persistent Greeter settings are stored
+# Directory where the Greeter settings are stored. Settings stored in
+# this directory are copied to the persistent settings directory when
+# the Welcome Screen feature is enabled in the Persistent Storage
+# settings, so only store settings there which should be made
+# persistent. Else use the transient settings directory.
 persistent_settings_dir = '/var/lib/gdm3/settings/persistent'
 
+# Directory where Greeter settings are stored that should not be made
+# persistent. After login, these settings can also be accessed under
+# /var/lib/gdm3/settings/persistent.
+transient_settings_dir = '/var/lib/gdm3/settings/transient'
+
 # File where the session language setting is stored
-language_setting_path = os.path.join(settings_dir, 'tails.language')
+language_setting_path = os.path.join(persistent_settings_dir, 'tails.language')
 
 # File where the session formats setting is stored
-formats_setting_path = os.path.join(settings_dir, 'tails.formats')
+formats_setting_path = os.path.join(persistent_settings_dir, 'tails.formats')
 
 # File where the session keyboard setting is stored
-keyboard_setting_path = os.path.join(settings_dir, 'tails.keyboard')
+keyboard_setting_path = os.path.join(persistent_settings_dir, 'tails.keyboard')
 
 # File where the session sudo password is stored
-admin_password_path = os.path.join(settings_dir, 'tails.password')
+admin_password_path = os.path.join(persistent_settings_dir, 'tails.password')
 
 # File where the network setting is stored
-network_setting_path = os.path.join(settings_dir, 'tails.network')
+network_setting_path = os.path.join(persistent_settings_dir, 'tails.network')
 
 # File where the MAC address spoofing setting is stored
-macspoof_setting_path = os.path.join(settings_dir, 'tails.macspoof')
+macspoof_setting_path = os.path.join(persistent_settings_dir, 'tails.macspoof')
 
 # File where the unsafe browser setting is stored
 unsafe_browser_setting_filename = 'tails.unsafe-browser'
-unsafe_browser_setting_path = os.path.join(settings_dir, unsafe_browser_setting_filename)
+unsafe_browser_setting_path = os.path.join(persistent_settings_dir, unsafe_browser_setting_filename)
 
 # World-readable file where Tails persistence status is stored
 persistence_state_file = '/var/lib/live/config/tails.persistence'
 
-# World-readable file which represents the intent to create Tails persistence after login
-persistence_create_file = os.path.join(settings_dir, 'tails.create-persistence')
+# World-readable file which represents the intent to create a Persistent
+# Storage after login. Store this in the transient settings dir because
+# we don't want to persist this setting.
+persistence_create_file = os.path.join(transient_settings_dir, 'tails.create-persistence')
