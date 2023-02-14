@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2023-01-27 18:26+0100\n"
-"PO-Revision-Date: 2023-01-12 23:17+0000\n"
+"POT-Creation-Date: 2023-02-10 09:35+0000\n"
+"PO-Revision-Date: 2023-02-10 14:27+0000\n"
 "Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
@@ -485,24 +485,34 @@ msgid "`10de:2482` GA104 GeForce RTX 3070 Ti"
 msgstr "`10de:2482` GA104 GeForce RTX 3070 Ti"
 
 #. type: Bullet: '  * '
-msgid "`10de:2488`"
-msgstr "`10de:2488`"
+#, fuzzy
+#| msgid "`10de:2482` GA104 GeForce RTX 3070 Ti"
+msgid "`10de:2486` GA104 GeForce RTX 3060 Ti: this is fixed in Tails 5.9"
+msgstr "`10de:2482` GA104 GeForce RTX 3070 Ti"
 
 #. type: Bullet: '  * '
-msgid "`10de:2489`"
-msgstr "`10de:2489`"
+msgid "`10de:2488` RTX 3070: this is fixed in Tails 5.9"
+msgstr ""
+
+#. type: Bullet: '  * '
+msgid "`10de:2489` RTX 3060 Ti"
+msgstr "`10de:2489` RTX 3060 Ti"
 
 #. type: Bullet: '  * '
 msgid "`10de:24dc` GA104M GeForce RTX 3080 Mobile"
 msgstr "`10de:24dc` GA104M GeForce RTX 3080 Mobile"
 
 #. type: Bullet: '  * '
-msgid "`10de:2504` RTX"
-msgstr "`10de:2504` RTX"
+msgid "`10de:2504` RTX: this is fixed in Tails 5.9"
+msgstr ""
 
 #. type: Bullet: '  * '
 msgid "`10de:2560` GA106M GeForce RTX 3060 Mobile"
 msgstr "`10de:2560` GA106M GeForce RTX 3060 Mobile"
+
+#. type: Bullet: '  * '
+msgid "GeForce RTX 3060 Ti Founders Edition: this is fixed in Tails 5.9"
+msgstr ""
 
 #. type: Bullet: '  * '
 msgid "`10de:25e0`"
@@ -632,6 +642,18 @@ msgstr ""
 "Ajouter l'[[option de démarrage|doc/advanced_topics/boot_options]] `i915."
 "force_probe=5917` et [faites-nous savoir](tails-bugs@boum.org) si cela aide."
 
+#. type: Bullet: '  * '
+msgid "`8086:8a56`"
+msgstr "`8086:8a56`"
+
+#. type: Bullet: '    - '
+msgid ""
+"To fix this, add the `i915.force_probe=8a56` [[boot option|doc/"
+"advanced_topics/boot_options]]."
+msgstr ""
+"Pour corriger, ajouter l'[[option de démarrage|doc/advanced_topics/"
+"boot_options]] `i915.force_probe=8a56`."
+
 #. type: Bullet: '- '
 msgid "AMD"
 msgstr "AMD"
@@ -686,6 +708,19 @@ msgstr ""
 "lieu de laisser le système en choisir une automatiquement. Si cela ne résout "
 "pas le problème, essayez en sélectionnant l'autre carte graphique."
 
+#. type: Bullet: '  - '
+#, fuzzy
+#| msgid ""
+#| "Add the `i915.force_probe=4690` [[boot option|doc/advanced_topics/"
+#| "boot_options]] and [let us know](tails-bugs@boum.org) whether it helps."
+msgid ""
+"Add the `nouveau.modeset=0` [[boot option|doc/advanced_topics/"
+"boot_options]].  This will force the system to use your other graphics "
+"cards, instead of the NVIDIA one."
+msgstr ""
+"Ajouter l'[[option de démarrage|doc/advanced_topics/boot_options]] `i915."
+"force_probe=4690`et [faites-nous savoir](tails-bugs@boum.org) si cela aide."
+
 #. type: Plain text
 msgid ""
 "These graphics card probably don't work as good on Wayland as they used to "
@@ -725,12 +760,6 @@ msgid "<h2 id=\"ps\">Persistent Storage fails to load with symbolic links in Dot
 msgstr "<h2 id=\"ps\">Le stockage persistant n'arrive pas à démarrer avec des liens symboliques dans Dotfiles ([[!tails_ticket 19346]])</h2>\n"
 
 #. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "If you have [[!wikipedia Symbolic_link desc=\"symbolic links\"]] in the "
-#| "[[Dotfiles|doc/first_steps/persistence#dotfiles]] feature of your "
-#| "Persistent Storage, your Persistent Storage fails to load with the error "
-#| "message:"
 msgid ""
 "If you have [[!wikipedia Symbolic_link desc=\"symbolic links\"]] in the "
 "[[Dotfiles|doc/persistent_storage/configure#dotfiles]] feature of your "
@@ -738,7 +767,7 @@ msgid ""
 "message:"
 msgstr ""
 "Si vous avez des [[!wikipedia_fr Lien_symbolique desc=\"liens symboliques"
-"\"]] dans l'option [[Dotfiles|doc/first_steps/persistence#dotfiles]] de "
+"\"]] dans l'option [[Dotfiles|doc/persistent_storage/configure#dotfiles]] de "
 "votre stockage persistant, votre stockage persistant n'arrivera pas à "
 "démarrer avec le message d’erreur :"
 
@@ -1077,6 +1106,15 @@ msgstr "[[Pour clés USB (image USB)|install/download]]"
 #. type: Bullet: '  - '
 msgid "[[For DVDs and virtual machines (ISO image)|install/download-iso]]"
 msgstr "[[Pour DVD et machines virtuelles (image ISO)|install/download-iso]]"
+
+#~ msgid "`10de:2488`"
+#~ msgstr "`10de:2488`"
+
+#~ msgid "`10de:2489`"
+#~ msgstr "`10de:2489`"
+
+#~ msgid "`10de:2504` RTX"
+#~ msgstr "`10de:2504` RTX"
 
 #~ msgid "`10de:220a`"
 #~ msgstr "`10de:220a`"
