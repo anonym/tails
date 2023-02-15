@@ -1,8 +1,227 @@
 tails (5.10) UNRELEASED; urgency=medium
 
-  * Dummy entry for next release.
+  * Upgrade Tor Browser to 12.0.3-build1 (tails/tails!1046)
 
- -- boyska <boyska@riseup.net>  Tue, 24 Jan 2023 12:31:16 +0100
+    Closes issues:
+      - Upgrade to Tor Browser based on Firefox 102.8 (tails/tails#19412)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0.3-build1
+
+  * Avoid symlink attack when writing amnesia owned file as root (tails/tails!1038)
+
+    Dennis Brinkrolf discovered a privilege escalation in Tails 5.9:
+    an adversary, who can already run arbitrary code as the amnesia user,
+    could escalate their privileges to reading arbitrary files on the
+    system. It might be possible to use this as part of an exploit chain
+    to gain full root privileges.
+
+    Closes issues:
+      - Privilege escalation via Dotfiles, sudo, and gnome-shell-save-environment
+        (tails/tails#19424)
+
+    Commits:
+      - clarify/acknowledge security limitations
+      - Update comments
+      - Avoid symlink attack when writing amnesia owned file as root
+
+  * Stop some dbus proxies when they are unneeded (tails/tails!1019)
+
+    Closes issues:
+      - Keyboard input sometimes not working in Tor Connection and Tor Browser
+        (tails/tails#18485)
+
+    Commits:
+      - Rewrite dbus proxy code
+      - Only run Tor Browser dbus proxy services when needed
+      - Only run Onion Circuits dbus proxy service when needed
+      - Automatically start dbus proxy service when Onion Circuits is started
+      - Automatically start dbus proxy service when Tor Browser is started
+
+  * tps: Treat unmounted partition as locked (tails/tails!1043)
+
+    Closes issues:
+      - tps-frontend lets user activate features when the Persistent Storage LUKS was
+        not fully set up (tails/tails#19352)
+
+    Commits:
+      - tps: Treat unmounted partition as locked
+
+  * Upgrader: don't crash when a download is interrupted and then resumed
+    (tails/tails!1040)
+
+    Commits:
+      - Upgrader: don't crash when a download is interrupted and then resumed
+
+  * tps: Bump the unlocking timeout to 120 seconds (tails/tails!1039)
+
+    Closes issues:
+      - Persistent Storage fails to unlock: timeout (tails/tails#19432)
+
+    Commits:
+      - tps: Bump the unlocking timeout to 120 seconds
+
+  * Test suite: adjust to updated Tor Browser localization in German
+    (tails/tails!1034)
+
+    Closes issues:
+      - Test suite step "the support documentation page opens in Tor Browser" is broken
+        in German (tails/tails#19419)
+
+    Commits:
+      - Test suite: relax our expectations, again
+      - Test suite: adjust to updated Tor Browser localization in German
+
+  * Small fixes on Persistent Storage UI (tails/tails!1032)
+
+    Commits:
+      - Fix grammar
+      - Add missing verb
+      - Update doc-source-relationships.yml
+      - Replace: 'doc/first_steps/persistence' with 'doc/persistent_storage'
+      - Fix grammar
+      - Avoid confusing future tense
+      - Fix typography
+      - Fix URL
+      - Fix typography
+      - Nitpick
+      - Improve error message
+      - Be more helpful in UI
+
+  * GitLab CI: remove lint-latest-po job (tails/tails!1031)
+
+    Closes issues:
+      - Fix lint-latest-po (tails/tails#19378)
+
+    Commits:
+      - GitLab CI: remove lint-latest-po job
+
+  * Welcome Screen: Avoid starting Persistent Storage app on each login
+    (tails/tails!1028)
+
+    Closes issues:
+      - Remove Welcome Screen persistent settings hack (tails/tails#19062)
+      - Persistent Storage settings always opened after login (tails/tails#19410)
+
+    Commits:
+      - still renaming directories
+      - Improve comment documenting Welcome Screen settings design
+      - Rename Welcome Screen settings directories
+      - document Welcome Screen settings design
+      - Remove workaround for persistent Welcome Screen settings directory
+      - Welcome Screen: Avoid starting Persistent Storage app on each login
+
+  * Update our doc to the new Persistent Storage (tails/tails!1024)
+
+    Commits:
+      - Update PO file
+      - Remove old issue and work around
+      - Nitpick
+      - Add a bit more doubt
+      - Add dummy changelog entry for 5.10.
+      - Remove UDFs for versions we'll never release
+      - Update PO files
+      - Nitpick
+      - Update core pages
+      - This file is not about persistence anymore
+      - Update cross-references
+      - Add missing page
+      - Answer FAQ
+      - Update cross-references
+      - Explain change
+      - Give more visibility
+      - Reorder by importance
+      - No more warnings!
+      - Integrate FAQ into doc
+      - Fix Markdown
+      - Remove Persistent Storage from installation doc
+      - Move last warning to a better place
+      - Fix broken links
+      - Remove useless warning
+      - Integrate warning in doc
+      - Improve style
+      - Remove screenshots
+      - Layer the information
+      - Remove CSS classes
+      - Complete procedure
+      - Update list of features
+      - Rewrite in Markdown and improve style
+      - Use full HTML
+      - Update to new Persistent Storage
+      - Move instructions to use the Persistent Storage to a dedicated page
+      - Simplify anchors
+      - Update icons
+      - Add subsections and TOC
+      - Reorder features as in new interface
+      - Update to new Persistent Storage
+      - Update to new Persistent Storage
+      - Rename as Markdown file
+      - Deduplicate content
+      - Add icon
+      - Add missing alt tags
+      - Update to new Persistent Storage
+      - Update doc to #19338
+      - Add missing alt tags
+      - Use more consistent terminology
+      - Remove CSS
+      - Fix broken links
+      - Remove unused page
+      - Fix broken links
+      - Rename more pages and images
+      - Merge inline in the only place where it was used
+      - Create a dedicated doc section about the Persistent Storage
+      - Deactivate trail plugin
+      - Remove CSS about traillink
+      - Remove traillink from templates
+      - Remove HTML tags in Markdown
+      - Remove traillink directives (#18951)
+      - Explain better how to exchange with another Linux
+      - Move long warning and FAQ to a dedicated page
+      - Improve warning on opening from another OS
+      - Remove unactionable warning
+      - Update to 5.8
+      - Improve style guide
+      - Apply style guide
+      - Lower importance
+      - Improve intro
+      - Split Persistent Storage creation and configuration
+
+  * FIX Persistent Greeter options scenario (tails/tails!1021)
+
+    Closes issues:
+      - "Persistent Greeter options" test case is broken (tails/tails#19397)
+
+    Commits:
+      - clarify comment
+      - login button in german, too
+      - fix more images for German greeter
+      - Fix test suite regexp
+      - new images for persistent language
+      - FIX Persistent Greeter options scenario
+
+  * No predictable names in /tmp (tails/tails!1018)
+
+    Closes issues:
+      - Don't use predictable names in /tmp (tails/tails#19389)
+
+    Commits:
+      - Don't use predictable names in /tmp
+      - Use service name without variables
+
+  * tps: Ask for confirmation when Persistent Storage exists but is not unlocked
+    (tails/tails!1011)
+
+    Closes issues:
+      - Confirm when starting without unlocking the Persistent Storage
+        (tails/tails#15573)
+
+    Commits:
+      - Test Suite: Check if the confirmation dialog is displayed
+      - Test suite: Fix "I log in to a new session" step failing
+      - tps: Ask for confirmation when Persistent Storage exists but is not unlocked
+
+ -- Tails developers <tails@boum.org>  Wed, 15 Feb 2023 07:57:18 +0000
 
 tails (5.9) unstable; urgency=medium
 
