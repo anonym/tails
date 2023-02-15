@@ -1589,12 +1589,10 @@ Lead the internal manual testing to conclusion
 
    1. Wait until the IUK start being available:
 
-
-        while ! curl --silent --head --location --fail "https://download.tails.net/tails/stable/iuk/v2/Tails_amd64_${PREVIOUS_VERSION:?}_to_${VERSION:?}.iuk"
-            do
-            sleep 30
-            done
-
+          while ! curl --silent --head --location --fail "https://download.tails.net/tails/stable/iuk/v2/Tails_amd64_${PREVIOUS_VERSION:?}_to_${VERSION:?}.iuk"
+          do
+              sleep 30
+          done
 
    1. Delete "⚠ Wait until the Release Manager […]" in the "Incremental
       upgrades" section on the pad.
