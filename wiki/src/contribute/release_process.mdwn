@@ -380,7 +380,10 @@ Check if the previous commit added a PO file for a new locale:
      done
     )
 
-add it to
+Then check the `git log --stat` manually as well: shell snippet above does not
+spot new PO files that Git believes have been renamed from removed ones.
+
+If any locale was added, add it to
 `config/chroot_local-includes/usr/share/tails/browser-localization/descriptions`
 (in the `MOZILLA_LOCALE:LOCATION` format).
 
