@@ -20,17 +20,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 09:28+0100\n"
-"PO-Revision-Date: 2013-07-25 09:07+0000\n"
-"Last-Translator: ION, 2020-2022\n"
-"Language-Team: Hebrew (http://www.transifex.com/otf/torproject/language/"
-"he/)\n"
+"POT-Creation-Date: 2023-02-15 08:44+0100\n"
+"PO-Revision-Date: 2023-01-25 11:39+0000\n"
+"Last-Translator: emma peel <emma.peel@riseup.net>\n"
+"Language-Team: Hebrew <https://hosted.weblate.org/projects/tor/tails-gui/he/"
+">\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % "
-"1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
+"n % 10 == 0) ? 2 : 3));\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
@@ -55,13 +56,13 @@ msgstr "התוכנה הבאה מותקנת באופן אוטומטי מהאחס�
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:180
 msgid ""
-"To add more, install some software using <a href=\"synaptic.desktop"
-"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
-"\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic."
+"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
+"desktop\">APT on the command line</a>."
 msgstr ""
-"כדי להוסיף עוד, התקן תוכנות כלשהן ע״י שימוש ב<a href=\"synaptic.desktop"
-"\">מנהל חבילות סינפטיות</a> או ב-<a href=\"org.gnome.Terminal.desktop\">APT "
-"על שורת הפקודה</a>."
+"כדי להוסיף עוד, התקן תוכנות כלשהן ע״י שימוש ב<a href=\"synaptic."
+"desktop\">מנהל חבילות סינפטיות</a> או ב-<a href=\"org.gnome.Terminal."
+"desktop\">APT על שורת הפקודה</a>."
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:154
 msgid "_Create persistent storage"
@@ -195,10 +196,10 @@ msgstr "למידע ניפוי תקלים, בצע את הפקודה הבאה: sud
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</b>\\n"
-"\\nCheck your network connection, and restart Tails to try upgrading again."
-"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
-"upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</"
+"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
+"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/check.en.html"
 msgstr ""
 "<b>שגיאה התרחשה בזמן עדכון מפתח ההחתמה.</b>\\n\\n<b>זה מונע לקבוע האם שדרוג "
 "זמין מהאתר שלנו.</b>\\n\\nבדוק את חיבור האינטרנט שלך, והפעל מחדש את Tails "
@@ -511,6 +512,7 @@ msgid "Additional Settings"
 msgstr "הגדרות נוספות"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
@@ -585,23 +587,39 @@ msgstr "כבה"
 msgid "Off (default)"
 msgstr "כבוי (ברירת מחדל)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:401
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
+#, fuzzy
+msgid "Persistent Storage Not Unlocked"
+msgstr "צור אחסון מתמיד"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
+#, fuzzy
+msgid ""
+"Do you really want to start Tails without unlocking your Persistent Storage?"
+msgstr "הכנס את ביטוי הסיסמה שלך כדי לבטל נעילת אחסון מתמיד"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#, fuzzy
+msgid "Continue Without Persistent Storage"
+msgstr "צור אחסון מתמיד"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
 #, fuzzy
 msgid "Don't _Create Persistent Storage"
 msgstr "צור אחסון מתמיד"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:403
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
 #, fuzzy
 msgid "_Create Persistent Storage"
 msgstr "צור אחסון מתמיד"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:81
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
 #, fuzzy
 msgid "Error unlocking Persistent Storage: {}"
 msgstr "אחסון _מתמיד מוצפן"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
 #, fuzzy
 msgid "Error activating Persistent Storage: {}"
 msgstr "צור אחסון מתמיד"
@@ -1349,8 +1367,8 @@ msgid ""
 "href=\"synaptic.desktop\">Synaptic Package Manager</a> or <a href=\"org."
 "gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
-"כדי לעשות זאת, צור אחסון מתמיד והתקן תוכנה כלשהי ע״י שימוש ב<a href="
-"\"synaptic.desktop\">מנהל חבילות סינפטיות</a> או ב-<a href=\"org.gnome."
+"כדי לעשות זאת, צור אחסון מתמיד והתקן תוכנה כלשהי ע״י שימוש ב<a "
+"href=\"synaptic.desktop\">מנהל חבילות סינפטיות</a> או ב-<a href=\"org.gnome."
 "Terminal.desktop\">APT על שורת הפקודה</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:214
@@ -1358,6 +1376,7 @@ msgid "To do so, install Tails on a USB stick and create a persistent storage."
 msgstr "כדי לעשות זאת, התקן את Tails על החסן USB וצור אחסון מתמיד."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:258
+#, fuzzy
 msgid "[package not available]"
 msgstr "[package not available]"
 
@@ -1493,16 +1512,17 @@ msgstr "_השתמשו בגשר שאתם/ן כבר מכירים/ות"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:242
 #, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">unlock your "
+"To save your bridge, <a href=\"doc/persistent_storage\">unlock your "
 "Persistent Storage</a>."
 msgstr ""
 "כדי לשמור את הגשר שלך, <a href=\"doc/first_steps/persistence\">בטל נעילה של "
 "האחסון המתמיד שלך</a>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
+#, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">create a "
-"Persistent Storage</a> on your Tails USB stick."
+"To save your bridge, <a href=\"doc/persistent_storage\">create a Persistent "
+"Storage</a> on your Tails USB stick."
 msgstr ""
 "כדי לשמור את הגשר שלך, <a href=\"doc/first_steps/persistence\">צור אחסון "
 "מתמיד</a> בהחסן Tails USB שלך."
@@ -1583,11 +1603,11 @@ msgstr "הגדרת גשר דרושה אם אתה רוצה להסתיר שאתה 
 msgid "Scanned {bridge_type} bridge: <b>{bridge_info}</b>."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1096
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1102
 msgid "Are you sure you want to lose progress?"
 msgstr "האם אתה בטוח שאתה רוצה לאבד התקדמות?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -1600,11 +1620,11 @@ msgstr ""
 "אם ההתחברות אל Tor נכשלת, יתכן שיהיה צורך להמתין עד סיום פעילות סמן סטטוס "
 "ההתקדמות כדי שאפשר יהיה לנסות ולאתר את תקלת ההתחברות."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1112
 msgid "Close and Lose Progress"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1107
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1113
 msgid "Wait"
 msgstr ""
 
@@ -1847,7 +1867,7 @@ msgstr "_הפעל מחדש"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:123
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
 msgid "_Cancel"
 msgstr ""
 
@@ -2016,8 +2036,8 @@ msgid ""
 msgstr ""
 "דיווח התקל לא היה יכול להישלח, כנראה עקב בעיות רשת. \n"
 "\n"
-"כמעקף, אתה יכול לשמור את דיווח התקל כקובץ בכונן USB ולנסות לשלוח לנו אותו ב-"
-"%s מחשבון הדוא״ל שלך ע״י שימוש במערכת אחרת. שים לב שדיווח התקל שלך לא יהיה "
+"כמעקף, אתה יכול לשמור את דיווח התקל כקובץ בכונן USB ולנסות לשלוח לנו אותו "
+"ב-%s מחשבון הדוא״ל שלך ע״י שימוש במערכת אחרת. שים לב שדיווח התקל שלך לא יהיה "
 "אלמוני בעשייתך זאת אלא אם כן תנקוט בצעדים נוספים בעצמך (למשל שימוש ב־Tor עם "
 "חשבון דוא״ל חד־פעמי).\n"
 "\n"
@@ -2438,10 +2458,10 @@ msgstr "דיווח שגיאה של WhisperBack"
 msgid ""
 "Your Persistent Storage is unlocked.\n"
 "\n"
-"Its content will be available until you shut down Tails.\n"
+"Its content is available until you shut down Tails.\n"
 "\n"
-"<a href=\"doc/first_steps/persistence/backup\">Learn how to make a backup of "
-"your Persistent Storage.</a>"
+"<a href=\"doc/persistent_storage/backup\">Learn how to make a backup of your "
+"Persistent Storage.</a>"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:89
@@ -2591,6 +2611,7 @@ msgid "Activate Additional Software"
 msgstr "תכנה נוספת"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:601
+#, fuzzy
 msgid "Dotfiles"
 msgstr "Dotfiles"
 
@@ -2599,26 +2620,26 @@ msgstr "Dotfiles"
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
 msgstr "Symlink מקשר כל קובץ בתיקיית Dotfiles אל תיקיית הבית."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:612
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
 #, fuzzy
 msgid "Activate Dotfiles"
 msgstr "Dotfiles"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:642
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
 msgid "Custom"
 msgstr "מותאמת אישית"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:661
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:678
 msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:703
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
 #, fuzzy
 msgid ""
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 "כדי לשמור את הגשר שלך, <a href=\"doc/first_steps/persistence\">בטל נעילה של "
 "האחסון המתמיד שלך</a>."
@@ -2628,7 +2649,10 @@ msgid ""
 "<b>Your Persistent Storage is locked.</b>\n"
 "\n"
 "To use or configure your Persistent Storage, unlock it in the Welcome Screen "
-"when starting Tails."
+"when starting Tails.\n"
+"\n"
+"To delete your Persistent Storage, click <b>Delete</b> on the right of the "
+"title bar."
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:52
@@ -2663,29 +2687,26 @@ msgid ""
 "Everything you do disappears automatically when you shut down Tails.\n"
 "\n"
 "But you can save some of your files and configuration in an encrypted "
-"Persistent Storage on your Tails USB stick:\n"
+"Persistent Storage on your Tails USB stick, for example:\n"
 "\n"
 "• Your documents\n"
 "• Your Wi-Fi passwords\n"
 "• Your browser bookmarks\n"
-"• and so on\n"
+"• ...\n"
 "\n"
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:92
 msgid ""
-"Unfortunately, this Tails device does not support creating a Persistent "
-"Storage.\n"
+"Sorry, it is impossible to create a Persistent Storage on this device.\n"
 "\n"
-"To be able to use Tails with Persistent Storage, please follow the "
-"documentation to install Tails on a USB stick:\n"
-"\n"
-"<a href=\"install\">Install Tails</a>"
+"To be able to use Tails with a Persistent Storage, please follow our "
+"instructions on <a href=\"install\">installing Tails on a USB stick</a>."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:139
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:137
 msgid "Co_ntinue"
 msgstr ""
 
