@@ -1052,7 +1052,7 @@ on <https://iso-history.tails.boum.org/?C=M&O=D>:
         while true
         do
             size=$(curl --silent --head "${isourl}" | grep -iPo '^content-length:\s*\K\d+')
-            echo "FOUND: ${size}bytes"
+            echo "FOUND: ${size} bytes"
             if [ "$size" -eq "${expected_size}" ]; then
                 echo 'FOUND: ready'
                 notify-send "Image published" 'found in ISO history'
