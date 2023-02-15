@@ -813,13 +813,13 @@ Verify that Jenkins reproduced your images
 
 Verify that Jenkins reproduced your images:
 
-  (
-   set -eu
-   cd "${ARTIFACTS:?}"
-   url="https://nightly.tails.boum.org/build_Tails_ISO_${RELEASE_BRANCH:?}/lastSuccessful/archive/build-artifacts/tails-build-artifacts.shasum"
-   curl "$url" > SHA512SUMS-jenkins.txt
-   grep --perl-regexp '[.]img|iso' SHA512SUMS-jenkins.txt | sha512sum -c -
-  )
+    (
+     set -eu
+     cd "${ARTIFACTS:?}"
+     url="https://nightly.tails.boum.org/build_Tails_ISO_${RELEASE_BRANCH:?}/lastSuccessful/archive/build-artifacts/tails-build-artifacts.shasum"
+     curl "$url" > SHA512SUMS-jenkins.txt
+     grep --perl-regexp '[.]img|iso' SHA512SUMS-jenkins.txt | sha512sum -c -
+    )
 
 ### If the ISO and USB images hashes match
 
