@@ -164,7 +164,7 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         # Add confirm dialog
         self.confirm_dialog = MessageDialog(
             message_type=Gtk.MessageType.WARNING,
-            title=_("Persistent Storage Not Unlocked"),
+            title=_("Persistent Storage Still Locked"),
             text=_("Do you really want to start Tails without unlocking your Persistent Storage?"),
             cancel_label=_("Cancel"),
             ok_label=_("Continue Without Persistent Storage"),
