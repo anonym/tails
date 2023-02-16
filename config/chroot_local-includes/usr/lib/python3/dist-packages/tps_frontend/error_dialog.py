@@ -35,6 +35,11 @@ class ErrorDialog(Gtk.MessageDialog):
         self.format_secondary_text(msg)
         self.set_default_response(Gtk.ResponseType.CLOSE)
 
+        # Make the error message selectable to allow the user to search
+        # for the error via copy-and-paste.
+        secondary_text_label = self.get_message_area().get_children()[-1]  # type: Gtk.Label
+        secondary_text_label.set_selectable(True)
+
     def do_response(self, response_id: int):
         if response_id == Gtk.ResponseType.OK:
             self.app.launch_whisperback()
