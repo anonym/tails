@@ -105,6 +105,7 @@ class PythonSession:
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            text=True,
             env=env,
             cwd=cwd,
             preexec_fn=mk_switch_user_fn(user))
@@ -115,7 +116,7 @@ class PythonSession:
             orig_stdout = sys.stdout
             orig_stderr = sys.stderr
             """.replace('            ', '').lstrip()
-        self.process.stdin.write(init_code.encode())
+        self.process.stdin.write(init_code)
         self.process.stdin.flush()
 
     def execute(self, code):
@@ -143,7 +144,7 @@ class PythonSession:
             """.replace('            ', '').lstrip()
         indented_code = textwrap.indent(code, prefix=' ' * 4)
         wrapped_code = wrapper.format(code=indented_code)
-        self.process.stdin.write(wrapped_code.encode())
+        self.process.stdin.write(wrapped_code)
         self.process.stdin.flush()
         return self.process.stdout.readline().strip()
 
@@ -156,6 +157,7 @@ def run_cmd_as_user(cmd, user):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             shell=True,  # nosec subprocess_popen_with_shell_equals_true
+                            text=True,
                             env=env,
                             cwd=cwd,
                             preexec_fn=switch_user_fn)
@@ -209,9 +211,7 @@ def main():
                 if cmd_type == "sh_spawn":
                     returncode, stdout, stderr = 0, "", ""
                 else:
-                    stdout_b, stderr_b = p.communicate()
-                    stdout = stdout_b.decode('utf-8')
-                    stderr = stderr_b.decode('utf-8')
+                    stdout, stderr = p.communicate()
                     returncode = p.returncode
                 ret = json.dumps([id, 'success', returncode, stdout, stderr])
             elif cmd_type == 'python_execute':
