@@ -63,6 +63,13 @@ class Feature(object):
         if not self.box:
             raise RuntimeError(f"Could not find {box_name}")
 
+        self.expander = Gtk.Expander(
+            expanded=True,
+            visible=True,
+            valign="center",
+            sensitive=False,
+        )
+
         # Add the row about deleting leftover data
         self.delete_data_button = Gtk.Button(
             label = "Delete Data",
@@ -114,8 +121,8 @@ class Feature(object):
     def show_spinner(self):
         if not self.spinner in self.box.get_children():
             self.box.add(self.spinner)
-            # Ensure that the switch is the last widget in the box
-            self.box.reorder_child(self.switch, -1)
+            # Ensure that the spinner is the first widget in the box
+            self.box.reorder_child(self.spinner, 0)
         self.spinner.start()
         self.spinner.set_visible(True)
 
@@ -125,9 +132,13 @@ class Feature(object):
 
     def show_delete_data_row(self):
         self.delete_data_row.show_all()
+        if not self.expander in self.box.get_children():
+            self.box.add(self.expander)
 
     def hide_delete_data_row(self):
         self.delete_data_row.hide()
+        if self.expander in self.box.get_children():
+            self.box.remove(self.expander)
 
     def on_state_set(self, switch: Gtk.Switch, state: bool):
         # We return True here to prevent the default handler from
