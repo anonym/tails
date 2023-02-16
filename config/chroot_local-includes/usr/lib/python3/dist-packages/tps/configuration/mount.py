@@ -166,6 +166,20 @@ class Mount(object):
     def has_data(self) -> bool:
         if self.is_file:
             return self.src.exists()
+
+        # Special handling for the Persistent directory:
+        # Return False if the directory contains only an empty
+        # "Tor Browser" directory.
+        if self.src.name == "Persistent":
+            if not self.src.exists():
+                return False
+            if not any(self.src.iterdir()):
+                return False
+            if any(d.name != "Tor Browser" for d in self.src.iterdir()):
+                return True
+            return Path(self.src, "Tor Browser").exists() and \
+                any(Path(self.src, "Tor Browser").iterdir())
+
         return self.src.exists() and any(self.src.iterdir())
 
     def activate(self):
