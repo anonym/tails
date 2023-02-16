@@ -75,7 +75,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         if self.service.state != State.UNLOCKED:
             msg = "Can't activate features when state is '%s'" % \
                   self.service.state.name
-            return FailedPreconditionError(msg)
+            raise FailedPreconditionError(msg)
 
         # Check if feature is active
         state = self.refresh_is_active()
@@ -143,7 +143,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         if self.service.state != State.UNLOCKED:
             msg = "Can't deactivate features when state is '%s'" % \
                   self.service.state.name
-            return FailedPreconditionError(msg)
+            raise FailedPreconditionError(msg)
 
         # Check if feature is active
         state = self.refresh_is_active()
