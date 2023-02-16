@@ -30,21 +30,19 @@ systemctl enable var-tmp.mount
 systemctl --global enable tails-add-GNOME-bookmarks.service
 systemctl --global enable tails-additional-software-install.service
 systemctl --global enable tails-configure-keyboard.service
-systemctl --global enable tails-create-tor-browser-directories.service
 systemctl --global enable tails-security-check.service
 systemctl --global enable tails-upgrade-frontend.service
 systemctl --global enable tails-virt-notify-user.service
 systemctl --global enable tails-wait-until-tor-has-bootstrapped.service
 systemctl --global enable tails-create-persistent-storage.service
 
-# OnionCircuits has no text input area so it does not need an IBus proxy
-systemctl --global enable "tails-a11y-proxy-netns@onioncircs.service"
-
-for netns in tbb clearnet; do
-    for bus in a11y ibus; do
-        systemctl --global enable "tails-${bus}-proxy-netns@${netns}.service"
-    done
-done
+# This causes the proxies to run during the whole session, instead of
+# being started and stopped when needed. The only app which needs
+# the proxies and doesn't define this requirement in a systemd service
+# yet is the Unsafe Browser. Once that is fixed, we can remove these
+# lines (and the [Install] sections from the service files).
+systemctl --global enable "tails-a11y-bus-proxy.service"
+systemctl --global enable "tails-ibus-proxy.service"
 
 # Use socket activation only, to delay the startup of cupsd.
 systemctl disable cups.service

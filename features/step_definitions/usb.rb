@@ -375,7 +375,7 @@ Given /^I enable persistence$/ do
   @screen.wait('TailsGreeterPersistencePassphrase.png', 60).click
   sleep 1
   @screen.type(@persistence_password, ['Return'])
-  @screen.wait('TailsGreeterPersistenceUnlocked.png', 30)
+  @screen.wait_any(['TailsGreeterPersistenceUnlocked.png', 'TailsGreeterPersistenceUnlockedGerman.png'], 30)
 end
 
 def tails_persistence_enabled?
@@ -1172,14 +1172,17 @@ Given /^I set all Greeter options to non-default values$/ do
   # while the others have no such background.
   step 'I set an administration password'
   sleep 2
-  # We do this one last so we don't have to worry about translations
-  # for the above steps.
-  step 'I set the language to German'
+
+  # We should change language, too, but we'll not: in fact, changing the language would change labels in the
+  # UI, so we would need to keep images (see #19420) in both languages, making the test suite harder to
+  # maintain.
+  # The "I log in to a new session" step can change language at the very last moment, which is a good
+  # workaround to the problem.
 end
 
 Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
   settings = $vm.execute_successfully(
-    'grep -h "^TAILS_" /var/lib/gdm3/settings/tails.* | ' \
+    'grep -h "^TAILS_" /var/lib/gdm3/settings/persistent/tails.* | ' \
     'grep -v "^TAILS_.*PASSWORD" | LC_ALL=C sort'
   ).stdout
   if non_default
@@ -1195,11 +1198,11 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
     EXPECTED
     $vm.execute_successfully(
       'grep "^TAILS_USER_PASSWORD=\'.\+\'$" ' \
-      '/var/lib/gdm3/settings/tails.password'
+      '/var/lib/gdm3/settings/persistent/tails.password'
     )
     $vm.execute_successfully(
       'grep "^TAILS_PASSWORD_HASH_FUNCTION=SHA512$" ' \
-      '/var/lib/gdm3/settings/tails.password'
+      '/var/lib/gdm3/settings/persistent/tails.password'
     )
   else
     expected = <<~EXPECTED
@@ -1212,17 +1215,17 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
       TAILS_XKBMODEL=pc105
       TAILS_XKBVARIANT=
     EXPECTED
-    assert(!$vm.file_exist?('/var/lib/gdm3/settings/tails.password'))
+    assert(!$vm.file_exist?('/var/lib/gdm3/settings/persistent/tails.password'))
   end
   assert_equal(expected, settings)
 end
 
 Then /^(no )?persistent Greeter options were restored$/ do |no|
   if no
-    assert(!@screen.exists('TailsGreeterPersistentSettingsRestored.png'))
+    assert(!@screen.exists('TailsGreeterToast.png'))
   else
     $language = 'German'
-    @screen.wait('TailsGreeterPersistentSettingsRestored.png', 10)
+    @screen.wait('TailsGreeterPersistentSettingsRestoredGerman.png', 10)
   end
 end
 

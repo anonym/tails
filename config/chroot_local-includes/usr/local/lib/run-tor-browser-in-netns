@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+
+import sys
+
+from tailslib.netnsdrop import run_in_netns
+
+run_in_netns("/usr/bin/tor-browser", *sys.argv[1:], netns="tbb")

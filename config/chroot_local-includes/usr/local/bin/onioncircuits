@@ -1,15 +1,13 @@
-#!/usr/bin/env python3
-import os
-import logging
+#!/bin/sh
 
-from tailslib.netnsdrop import run
-from tailslib.gnome import gnome_env_vars
+set -eu
 
+A11Y_BUS_PROXY_SERVICE=tails-a11y-bus-proxy.service
+IBUS_PROXY_SERVICE=tails-ibus-proxy.service
 
-def main():
-    run("/usr/bin/onioncircuits", "onioncircs", "/usr/local/bin/onioncircuits")
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    main()
+exec systemd-run --user --scope \
+    --property=Requires="${A11Y_BUS_PROXY_SERVICE}" \
+    --property=After="${A11Y_BUS_PROXY_SERVICE}" \
+    --property=Requires="${IBUS_PROXY_SERVICE}" \
+    --property=After="${IBUS_PROXY_SERVICE}" \
+    sudo /usr/local/lib/run-onioncircuits-in-netns "$@"

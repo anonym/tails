@@ -497,8 +497,8 @@ class Service(DBusObject, ServiceUsingJobs):
         self.Device = self._partition.device_path
         self.IsCreated = True
 
-        # Check if the partition is unlocked
-        if not self._partition.is_unlocked():
+        # Check if the partition is unlocked and mounted
+        if not self._partition.is_unlocked_and_mounted():
             self.State = State.NOT_UNLOCKED
             self.IsUnlocked = False
             return

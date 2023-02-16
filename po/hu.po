@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 09:28+0100\n"
-"PO-Revision-Date: 2022-12-24 11:49+0000\n"
+"POT-Creation-Date: 2023-02-15 08:44+0100\n"
+"PO-Revision-Date: 2023-01-25 11:39+0000\n"
 "Last-Translator: emma peel <emma.peel@riseup.net>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/tor/tails-gui/"
 "hu/>\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
@@ -55,9 +55,9 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:180
 msgid ""
-"To add more, install some software using <a href=\"synaptic.desktop"
-"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
-"\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic."
+"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
+"desktop\">APT on the command line</a>."
 msgstr ""
 "Továbbiak hozzáadásához telepítsen néhány szoftvert a <a href=\"synaptic."
 "desktop\">Synaptic Package Manager</a> segítségével vagy az <a href=\"org."
@@ -189,10 +189,10 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</b>\\n"
-"\\nCheck your network connection, and restart Tails to try upgrading again."
-"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
-"upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</"
+"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
+"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/check.en.html"
 msgstr ""
 "<b>Hiba történt az aláíró kulcs frissítésekor.</b>\\n\\n<b>Ez megakadályozza "
 "azt, hogy eldöntsük, hogy a weboldalunkról származik-e.</b>\\n\\nEllenőrizze "
@@ -485,7 +485,7 @@ msgid ""
 "\n"
 "For security reasons, the network connection is now disabled."
 msgstr ""
-"A Tails készülékének frissítése folyamatban van...\n"
+"<b>A Tails készülékének frissítése folyamatban van...</b>\n"
 "\n"
 "Biztonsági okok miatt a hálózat le lett tiltva."
 
@@ -510,6 +510,7 @@ msgid "Additional Settings"
 msgstr "További beállítások"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
@@ -555,6 +556,7 @@ msgid "Obsolete"
 msgstr "Elavult"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:338
+#, fuzzy
 msgid "_Unsafe Browser"
 msgstr "_Unsafe Browser"
 
@@ -584,23 +586,39 @@ msgstr "Ki"
 msgid "Off (default)"
 msgstr "Ki (alapértelmezett)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:401
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
+#, fuzzy
+msgid "Persistent Storage Not Unlocked"
+msgstr "Tartós tároló létrehozása"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
+#, fuzzy
+msgid ""
+"Do you really want to start Tails without unlocking your Persistent Storage?"
+msgstr "Adja meg a jelszavát a tartóstár feloldásához"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#, fuzzy
+msgid "Continue Without Persistent Storage"
+msgstr "Tartós tároló létrehozása"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
 #, fuzzy
 msgid "Don't _Create Persistent Storage"
 msgstr "Tartós tároló létrehozása"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:403
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
 #, fuzzy
 msgid "_Create Persistent Storage"
 msgstr "Tartós tároló létrehozása"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:81
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
 #, fuzzy
 msgid "Error unlocking Persistent Storage: {}"
 msgstr "Titkosított _Tartós tár"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
 #, fuzzy
 msgid "Error activating Persistent Storage: {}"
 msgstr "Tartós tároló létrehozása"
@@ -1343,8 +1361,8 @@ msgid ""
 "Package Manager</a> or <a href=\"org.gnome.Terminal.desktop\">APT on the "
 "command line</a>."
 msgstr ""
-"További szoftverek hozzáadásához használja a<a href=\"synaptic.desktop"
-"\">Synaptic Package Manager</a>-t vagy telepítsen <a href=\"org.gnome."
+"További szoftverek hozzáadásához használja a<a href=\"synaptic."
+"desktop\">Synaptic Package Manager</a>-t vagy telepítsen <a href=\"org.gnome."
 "Terminal.desktop\">APT-vel parancssorban</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:196
@@ -1355,8 +1373,8 @@ msgid ""
 msgstr ""
 "Hogy így tehessen, oldja fel tartós tárolóját a Tails indításakor, és "
 "telepítsen további szoftvereket a <a href=\"synaptic.desktop\">Synaptic "
-"Package Manager</a> segítségével vagy <a href=\"org.gnome.Terminal.desktop"
-"\">APT-vel parancssorban</a>."
+"Package Manager</a> segítségével vagy <a href=\"org.gnome.Terminal."
+"desktop\">APT-vel parancssorban</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:206
 msgid ""
@@ -1513,16 +1531,17 @@ msgstr "_Adjon meg egy hidat, amit már ismer"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:242
 #, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">unlock your "
+"To save your bridge, <a href=\"doc/persistent_storage\">unlock your "
 "Persistent Storage</a>."
 msgstr ""
 "A híd elmentéséhez <a href=\"doc/first_steps/persistence\">oldja fel a "
 "Tartós Tárat</a>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
+#, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">create a "
-"Persistent Storage</a> on your Tails USB stick."
+"To save your bridge, <a href=\"doc/persistent_storage\">create a Persistent "
+"Storage</a> on your Tails USB stick."
 msgstr ""
 "A híd elmentéséhez <a href=\"doc/first_steps/persistence\">hozzon létre "
 "Tartós Tárat</a> a Tails USB kulcson."
@@ -1604,11 +1623,11 @@ msgstr ""
 msgid "Scanned {bridge_type} bridge: <b>{bridge_info}</b>."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1096
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1102
 msgid "Are you sure you want to lose progress?"
 msgstr "Biztosan szeretné elveszíteni az előrehaladást?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -1622,11 +1641,11 @@ msgstr ""
 "Ha csatlakozás a Tor-hoz sikertelen, várnia kell újra a folyamat vezérlő "
 "végéig, hogy megjavíthassa a kapcsolatot."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1112
 msgid "Close and Lose Progress"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1107
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1113
 msgid "Wait"
 msgstr ""
 
@@ -1869,7 +1888,7 @@ msgstr "_Újraindítás"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:123
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
 msgid "_Cancel"
 msgstr ""
 
@@ -1910,6 +1929,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:1
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:512
+#, fuzzy
 msgid "Unsafe Browser"
 msgstr "Unsafe Browser"
 
@@ -2163,6 +2183,7 @@ msgid "Browse the World Wide Web without anonymity"
 msgstr "A világháló böngészése névtelenség nélkül"
 
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:3
+#, fuzzy
 msgid "Unsafe Web Browser"
 msgstr "Unsafe Web Browser"
 
@@ -2187,6 +2208,7 @@ msgid "Send feedback via encrypted e-mail"
 msgstr "Visszajelzés küldése titkosított emailben"
 
 #: ../config/chroot_local-includes/usr/share/applications/whisperback.desktop.in.h:3
+#, fuzzy
 msgid "feedback;bug;report;tails;error;"
 msgstr "feedback;bug;report;tails;error;"
 
@@ -2480,10 +2502,10 @@ msgstr "WhisperBack Hibajelentés"
 msgid ""
 "Your Persistent Storage is unlocked.\n"
 "\n"
-"Its content will be available until you shut down Tails.\n"
+"Its content is available until you shut down Tails.\n"
 "\n"
-"<a href=\"doc/first_steps/persistence/backup\">Learn how to make a backup of "
-"your Persistent Storage.</a>"
+"<a href=\"doc/persistent_storage/backup\">Learn how to make a backup of your "
+"Persistent Storage.</a>"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:89
@@ -2641,26 +2663,26 @@ msgstr "Dot-fájlok"
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
 msgstr "Symlink-eljen minden fájlt a Dotfiles mappából a Home mappába"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:612
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
 #, fuzzy
 msgid "Activate Dotfiles"
 msgstr "Dot-fájlok"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:642
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
 msgid "Custom"
 msgstr "Egyéni"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:661
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:678
 msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:703
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
 #, fuzzy
 msgid ""
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 "A híd elmentéséhez <a href=\"doc/first_steps/persistence\">oldja fel a "
 "Tartós Tárat</a>."
@@ -2670,7 +2692,10 @@ msgid ""
 "<b>Your Persistent Storage is locked.</b>\n"
 "\n"
 "To use or configure your Persistent Storage, unlock it in the Welcome Screen "
-"when starting Tails."
+"when starting Tails.\n"
+"\n"
+"To delete your Persistent Storage, click <b>Delete</b> on the right of the "
+"title bar."
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:52
@@ -2705,29 +2730,26 @@ msgid ""
 "Everything you do disappears automatically when you shut down Tails.\n"
 "\n"
 "But you can save some of your files and configuration in an encrypted "
-"Persistent Storage on your Tails USB stick:\n"
+"Persistent Storage on your Tails USB stick, for example:\n"
 "\n"
 "• Your documents\n"
 "• Your Wi-Fi passwords\n"
 "• Your browser bookmarks\n"
-"• and so on\n"
+"• ...\n"
 "\n"
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:92
 msgid ""
-"Unfortunately, this Tails device does not support creating a Persistent "
-"Storage.\n"
+"Sorry, it is impossible to create a Persistent Storage on this device.\n"
 "\n"
-"To be able to use Tails with Persistent Storage, please follow the "
-"documentation to install Tails on a USB stick:\n"
-"\n"
-"<a href=\"install\">Install Tails</a>"
+"To be able to use Tails with a Persistent Storage, please follow our "
+"instructions on <a href=\"install\">installing Tails on a USB stick</a>."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:139
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:137
 msgid "Co_ntinue"
 msgstr ""
 

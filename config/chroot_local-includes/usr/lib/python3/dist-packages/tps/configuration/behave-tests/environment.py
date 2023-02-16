@@ -76,12 +76,7 @@ def after_feature(context: EnvironmentContext, feature):
     if "requires_mountpoint" not in feature.tags:
         return
 
-    # Clean up the loop device and the associated file. We register
-    # this function via atexit.register so that it is run even if an
-    # exception was raised during setUpModule (we tried to use
-    # unittest.addModuleCleanup instead but it didn't work, cleanUpModule
-    # was never run).
-
+    # Clean up the loop device and the associated file.
     # To ensure that as much as possible of the cleanup can be done, we
     # don't exit immediately on an exception, but first continue with
     # the cleanup and raise them in the end.
