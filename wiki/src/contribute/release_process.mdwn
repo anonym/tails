@@ -2138,6 +2138,13 @@ If you just released a final release
 
         thunderbird -compose "to=tails-dev@boum.org,tails-l10n@boum.org,cc=tails-manual-testers@boum.org,subject=Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"
 
+     Else, if you use *notmuch*, you can use this:
+
+         notmuch-emacs-mua --client --create-frame \
+            --cc=tails-manual-testers@boum.org \
+            --subject="Release schedule for Tails ${NEXT_PLANNED_VERSION:?}" \
+            tails-dev@boum.org tails-l10n@boum.org
+
    - If a release candidate is planned, include it in the release schedule
      and the call for manual testers.
 
