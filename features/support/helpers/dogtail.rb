@@ -78,7 +78,22 @@ module Dogtail
       @opts = opts
       @opts[:user] ||= LIVE_USER
       @find_code = "dogtail.tree.root.application('#{@app_name}')"
-      init = [
+
+      init = []
+      if @opts[:user] == LIVE_USER
+        cmd = "dbus-send --print-reply=literal --session --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress"
+        c = RemoteShell::ShellCommand.new($vm, cmd, user: @opts[:user])
+        if c.returncode != 0
+          raise Failure, "dbus-send exited with exit code #{c.returncode}"
+        end
+        a11y_bus = c.stdout.strip
+        init = [
+          'import os',
+          "os.environ['AT_SPI_BUS_ADDRESS'] = '#{a11y_bus}'",
+        ]
+      end
+
+      init += [
         'import dogtail.config',
         'import dogtail.tree',
         'import dogtail.predicate',
