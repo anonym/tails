@@ -70,9 +70,14 @@ class Feature(object):
             sensitive=False,
         )
 
+        action_row_name = self.widget_name_prefix + "_row"
+        self.action_row = self.builder.get_object(action_row_name)  # type: Handy.ActionRow
+        self.name = self.dbus_object_name
+        self.translated_name = self.action_row.get_title()
+
         # Add the row about deleting leftover data
         self.delete_data_button = Gtk.Button(
-            label = "Delete Data",
+            label = _("Delete Data…"),
             valign = "center",
         )
         self.delete_data_button.connect("clicked", self.on_delete_data_button_clicked)
@@ -103,16 +108,14 @@ class Feature(object):
         self.old_state = None  # type: bool
 
     def add_delete_data_row(self):
-        action_row_name = self.widget_name_prefix + "_row"
-        action_row = self.builder.get_object(action_row_name)  # type: Handy.ActionRow
-        parent_list_box = action_row.get_parent()  # type: Gtk.ListBox
+        parent_list_box = self.action_row.get_parent()  # type: Gtk.ListBox
 
         i = 0
         while True:
             row = parent_list_box.get_row_at_index(i)
             if not row:
                 raise RuntimeError(f"Couldn't find action row in list box")
-            if row == action_row:
+            if row == self.action_row:
                 break
             i += 1
 
@@ -171,7 +174,7 @@ class Feature(object):
             self.deactivate()
 
     def activate(self):
-        logger.debug(f"Activating feature {self.dbus_object_name}")
+        logger.debug(f"Activating feature {self.name}")
         self.show_spinner()
 
         # Create a cancellable that can be used to cancel the activation job
@@ -186,7 +189,7 @@ class Feature(object):
                         callback=self.on_activate_call_finished)
 
     def deactivate(self):
-        logger.debug(f"Deactivating feature {self.dbus_object_name}")
+        logger.debug(f"Deactivating feature {self.name}")
         self.show_spinner()
 
         # Already hide the widgets when we start deactivating the
@@ -218,7 +221,7 @@ class Feature(object):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
-            logger.error(f"Error activating feature {self.dbus_object_name}: {e.message}")
+            logger.error(f"Error activating feature {self.name}: {e.message}")
 
             if e.matches(Gio.io_error_quark(), Gio.IOErrorEnum.CANCELLED):
                 # The operation was cancelled by the user, so we cancel
@@ -234,11 +237,11 @@ class Feature(object):
                 # This is an expected error which we don't want error
                 # reports for.
                 SymlinkSourceDirectoryError.strip_remote_error(e)
-                self.window.display_error(_("Error activating feature {}").format(self.dbus_object_name),
+                self.window.display_error(_("Error activating feature {}").format(self.translated_name),
                                           e.message,
                                           with_send_report_button=False)
             else:
-                self.window.display_error(_("Error activating feature {}").format(self.dbus_object_name),
+                self.window.display_error(_("Error activating feature {}").format(self.translated_name),
                                           e.message)
 
             # Ensure that the switch displays the correct state
@@ -246,7 +249,7 @@ class Feature(object):
             self.switch.set_active(is_active)
             return
 
-        logger.debug(f"Feature {self.dbus_object_name} successfully activated")
+        logger.debug(f"Feature {self.name} successfully activated")
 
     def on_deactivate_call_finished(self, proxy: Gio.DBusProxy,
                                   res: Gio.AsyncResult):
@@ -258,7 +261,7 @@ class Feature(object):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
-            logger.error(f"Error deactivating feature {self.dbus_object_name}: {e.message}")
+            logger.error(f"Error deactivating feature {self.name}: {e.message}")
 
             if e.matches(Gio.io_error_quark(), Gio.IOErrorEnum.CANCELLED):
                 # The operation was cancelled by the user, so we cancel
@@ -273,11 +276,11 @@ class Feature(object):
                 # an expected error which we don't want error reports
                 # for.
                 TargetIsBusyError.strip_remote_error(e)
-                self.window.display_error(_("Error deactivating feature {}").format(self.dbus_object_name),
+                self.window.display_error(_("Error deactivating feature {}").format(self.translated_name),
                                           e.message,
                                           with_send_report_button=False)
             else:
-                self.window.display_error(_("Error deactivating feature {}").format(self.dbus_object_name),
+                self.window.display_error(_("Error deactivating feature {}").format(self.translated_name),
                                           e.message)
 
             # Ensure that the switch displays the correct state
@@ -291,9 +294,30 @@ class Feature(object):
 
             return
 
-        logger.debug(f"Feature {self.dbus_object_name} successfully deactivated")
+        logger.debug(f"Feature {self.name} successfully deactivated")
 
     def on_delete_data_button_clicked(self, button: Gtk.Button):
+        msg = _(
+            "Delete all data stored on the Persistent Storage for the {} feature?\n\n"
+            "If you keep the data, it will be restored when you turn the feature on again.",
+        ).format(self.translated_name)
+        self.dialog = Gtk.MessageDialog(self.window,
+                                        Gtk.DialogFlags.MODAL | \
+                                        Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                        Gtk.MessageType.WARNING,
+                                        Gtk.ButtonsType.NONE,
+                                        msg)
+        self.dialog.add_button(_("Cancel"), Gtk.ResponseType.CANCEL)
+        self.dialog.add_button(_("_Delete Data"), Gtk.ResponseType.OK)
+        self.dialog.set_default_response(Gtk.ResponseType.CANCEL)
+        button = self.dialog.get_widget_for_response(Gtk.ResponseType.OK)
+        style_context = button.get_style_context()
+        style_context.add_class("destructive-action")
+        result = self.dialog.run()  # type: Gtk.ResponseType
+        self.dialog.destroy()
+        if result != Gtk.ResponseType.OK:
+            return
+
         self.show_spinner()
         self.hide_delete_data_row()
         self.proxy.call(method_name="Delete",
@@ -310,8 +334,8 @@ class Feature(object):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
-            logger.error(f"Error deleting data of feature {self.dbus_object_name}: {e.message}")
-            self.window.display_error(_("Error deleting data of feature {}").format(self.dbus_object_name),
+            logger.error(f"Error deleting data of feature {self.name}: {e.message}")
+            self.window.display_error(_("Error deleting data of feature {}").format(self.translated_name),
                                       e.message)
 
             # Ensure that the visibility of the delete data row is correct
@@ -319,7 +343,7 @@ class Feature(object):
                 self.show_delete_data_row()
             return
 
-        logger.debug(f"Data of feature {self.dbus_object_name} successfully deleted")
+        logger.debug(f"Data of feature {self.name} successfully deleted")
 
     def on_properties_changed(self, proxy: Gio.DBusProxy,
                               changed_properties: GLib.Variant,
