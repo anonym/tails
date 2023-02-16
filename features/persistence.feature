@@ -11,7 +11,7 @@ Feature: Tails persistence
 
   Scenario: Booting Tails from a USB drive with a disabled persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
-    When I log in to a new session
+    When I log in to a new session without activating the Persistent Storage
     Then Tails is running from USB drive "__internal"
     And persistence is disabled
     But a Tails persistence partition exists on USB drive "__internal"
@@ -53,7 +53,7 @@ Feature: Tails persistence
   Scenario: Creating persistence from the Welcome Screen
     Given I have started Tails without network from a USB drive without a persistent partition and stopped at Tails Greeter's login screen
     And I enable persistence creation in Tails Greeter
-    And I log in to a new session
+    And I log in to a new session expecting no warning about the Persistent Storage not being activated
     Then I create a persistent partition with the default settings using the wizard that was already open
 
   Scenario: Persistent Greeter options
@@ -61,18 +61,18 @@ Feature: Tails persistence
     When I enable persistence
     Then no persistent Greeter options were restored
     When I set all Greeter options to non-default values
-    And I log in to a new session
+    And I log in to a new session in German after having activated the Persistent Storage
     Then all Greeter options are set to non-default values
     When I cold reboot the computer
     And the computer reboots Tails
     Given I enable persistence
     Then persistent Greeter options were restored
-    When I log in to a new session
+    When I log in to a new session after having activated the Persistent Storage
     Then all Greeter options are set to non-default values
 
   Scenario: Deleting a Tails persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
-    And I log in to a new session
+    And I log in to a new session without activating the Persistent Storage
     And persistence is disabled
     But a Tails persistence partition exists on USB drive "__internal"
     And all notifications have disappeared

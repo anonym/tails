@@ -60,9 +60,9 @@
                             <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Your Persistent Storage is unlocked.
 
-Its content will be available until you shut down Tails.
+Its content is available until you shut down Tails.
 
-&lt;a href="doc/first_steps/persistence/backup"&gt;Learn how to make a backup of your Persistent Storage.&lt;/a&gt;</property>
+&lt;a href="doc/persistent_storage/backup"&gt;Learn how to make a backup of your Persistent Storage.&lt;/a&gt;</property>
                             <property name="use-markup">True</property>
                             <property name="wrap">True</property>
                             <property name="max-width-chars">50</property>
@@ -602,6 +602,23 @@ Its content will be available until you shut down Tails.
                                 <property name="subtitle" translatable="yes">Symlink every file in the Dotfiles folder into the Home folder.</property>
                                 <property name="icon-name">preferences-desktop</property>
                                 <child>
+                                  <object class="GtkLinkButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="relief">none</property>
+                                    <property name="uri">doc/persistent_storage/configure#dotfiles</property>
+                                    <signal name="activate-link" handler="on_activate_link_button" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="icon_name">tails-help</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
                                   <object class="GtkSwitch" id="dotfiles_switch">
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
@@ -700,7 +717,7 @@ Its content will be available until you shut down Tails.
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="margin-top">18</property>
-                        <property name="label" translatable="yes">&lt;a href="doc/first_steps/persistence"&gt;Learn more about the Persistent Storage&lt;/a&gt;</property>
+                        <property name="label" translatable="yes">&lt;a href="doc/persistent_storage"&gt;Learn more about the Persistent Storage.&lt;/a&gt;</property>
                         <property name="use-markup">True</property>
                         <property name="wrap">True</property>
                         <property name="max-width-chars">50</property>

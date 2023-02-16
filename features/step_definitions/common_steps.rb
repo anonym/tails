@@ -222,7 +222,7 @@ def boot_menu_cmdline_images
       'TailsBootMenuKernelCmdlineUEFI_Bookworm.png',
     ]
   else
-    ['TailsBootMenuKernelCmdline.png']
+    ['TailsBootMenuKernelCmdline.png', 'TailsBootMenuKernelCmdline_alt.png']
   end
 end
 
@@ -233,7 +233,7 @@ def boot_menu_images
     # drop TailsBootMenuGRUB_Bullseye.png.
     ['TailsBootMenuGRUB_Bullseye.png', 'TailsBootMenuGRUB_Bookworm.png']
   else
-    ['TailsBootMenuSyslinux.png']
+    ['TailsBootMenuSyslinux.png', 'TailsBootMenuSyslinux_alt.png']
   end
 end
 
@@ -359,7 +359,7 @@ Given /^I set the language to (.*)$/ do |lang|
   @screen.press('Return')
 end
 
-Given /^I log in to a new session(?: in (.*))?$/ do |lang|
+Given /^I log in to a new session(?: in ([^ ]*))?( without activating the Persistent Storage)?( after having activated the Persistent Storage| expecting no warning about the Persistent Storage not being activated)?$/ do |lang, expect_warning, expect_no_warning|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
@@ -367,11 +367,11 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
                    # If we select a RTL language below, the
                    # login and shutdown buttons will
                    # swap place.
-                   'TailsGreeterShutdownButton.png'
+                   ['TailsGreeterShutdownButton.png']
                  else
-                   'TailsGreeterLoginButton.png'
+                   ['TailsGreeterLoginButton.png', 'TailsGreeterLoginButtonGerman.png']
                  end
-  login_button_region = @screen.wait(login_button, 15)
+  login_button_region = @screen.wait_any(login_button, 15)[:match]
   if lang && lang != 'English'
     step "I set the language to #{lang}"
     # After selecting options (language, administration password,
@@ -381,6 +381,21 @@ Given /^I log in to a new session(?: in (.*))?$/ do |lang|
     sleep(10)
   end
   login_button_region.click
+
+  begin
+    @screen.wait('PersistentStorageNotUnlocked.png', 3)
+    assert(!expect_no_warning)
+    saw_warning = true
+    @screen.press('Right')
+    @screen.press('Return')
+  rescue FindFailed
+    saw_warning = false
+  end
+
+  if expect_warning
+    assert(saw_warning)
+  end
+
   step 'the Tails desktop is ready'
 end
 

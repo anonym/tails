@@ -35,16 +35,6 @@ lint-po:
     - *prepare-lint-po
     - /tmp/jenkins-tools/slaves/lint_po
 
-lint-latest-po:
-  image: debian:testing
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "stable"'
-  script:
-    - *prepare-lint-po
-    - apt-get -qy install intltool
-    - ./import-translations
-    - /tmp/jenkins-tools/slaves/lint_po po/*.po
-
 bandit:
   script:
   - apt-get -qy install python3-bandit file

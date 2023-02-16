@@ -1,0 +1,11 @@
+[Unit]
+Description=Proxy the IBus
+StopWhenUnneeded=true
+ConditionUser=1000
+
+[Service]
+Type=forking
+ExecStart=/usr/local/lib/tails-ibus-proxy
+
+[Install]
+WantedBy=desktop.target

@@ -159,6 +159,13 @@ class FeaturesView(View):
         subprocess.run(["tails-documentation", uri])
         return True
 
+    def on_activate_link_button(self, link_button: Gtk.LinkButton):
+        uri = link_button.get_uri()
+        page, anchor = uri.split("#")
+        logger.debug("Opening documentation: %s", uri)
+        subprocess.run(["tails-documentation", page, anchor])
+        return True
+
     def add_custom_feature(self, proxy: Gio.DBusObject):
         row = self.builder.get_object("custom_feature_row")  # type: Handy.ActionRow
         row.set_title(proxy.get_cached_property("Description").get_string())

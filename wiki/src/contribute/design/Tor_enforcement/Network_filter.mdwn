@@ -18,11 +18,19 @@ Tor itself obviously has to connect to the Internet without going
 through the Tor network. This is achieved by special-casing
 connections originating from the `debian-tor` Unix user.
 
-#### Unsafe Browser and the `clearnet` user
+#### `clearnet` user
 
-The `clearnet` user used to run the
-[[contribute/design/Unsafe_Browser]] is granted full network access
-(but no loopback access) in order to deal with captive portals.
+The `clearnet` user is used to run `tails-get-network-time`.
+
+It is granted full network access (but no loopback access).
+It most specifically needs to resolve hosts and to make an HTTP connection.
+
+#### Unsafe Browser
+
+The Unsafe Browser is run by the `amnesia` user, in the `clearnet` network namespace.
+This is not to be confused with the `clearnet` user.
+
+The clearnet network namespace has full network access (UDP and TCP) but no loopback access.
 
 #### Local Area Network (LAN)
 

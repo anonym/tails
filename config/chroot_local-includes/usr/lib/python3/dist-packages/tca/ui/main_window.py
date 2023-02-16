@@ -240,14 +240,14 @@ class StepChooseBridgeMixin:
             if self.app.has_persistence:
                 help_label = _(
                     "To save your bridge, "
-                    '<a href="doc/first_steps/persistence">'
+                    '<a href="doc/persistent_storage">'
                     "unlock your Persistent Storage</a>."
                 )
             # No persistence
             else:
                 help_label = _(
                     "To save your bridge, "
-                    '<a href="doc/first_steps/persistence">'
+                    '<a href="doc/persistent_storage">'
                     "create a Persistent Storage</a> "
                     "on your Tails USB stick."
                 )
@@ -1065,7 +1065,13 @@ class TCAMainWindow(
     def change_box(self, name: str, **kwargs):
         coming_from = self.state["step"]
         self.state["step"] = name
-        self.set_image(IMG_SIDE[self.state["step"]])
+        if os.path.exists(IMG_SIDE[self.state["step"]]):
+            self.set_image(IMG_SIDE[self.state["step"]])
+        else:
+            # Don't fail if the image can't be set (for example because
+            # the file is not there)
+            log.error("Image file not found for step %s",
+                      self.state["step"])
         self.stack.set_visible_child_name(name)
 
         if hasattr(self, "before_show_%s" % name):

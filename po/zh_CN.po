@@ -46,9 +46,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 09:28+0100\n"
-"PO-Revision-Date: 2023-01-07 11:49+0000\n"
-"Last-Translator: tortranslate <tg6f3n254a@bk67w.anonbox.net>\n"
+"POT-Creation-Date: 2023-02-15 08:44+0100\n"
+"PO-Revision-Date: 2023-01-26 22:48+0000\n"
+"Last-Translator: emma peel <emma.peel@riseup.net>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/tor/"
 "tails-gui/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -56,7 +56,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
@@ -79,9 +79,9 @@ msgstr "在 Tails 启动时会从永久存储中安装下列附加软件。"
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:180
 msgid ""
-"To add more, install some software using <a href=\"synaptic.desktop"
-"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
-"\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic."
+"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
+"desktop\">APT on the command line</a>."
 msgstr ""
 "要添加更多附加软件，可以使用 <a href=\"synaptic.desktop\">新立得软件包管理器"
 "</a> 或<a href=\"org.gnome.Terminal.desktop\">通过终端使用 APT</a>。"
@@ -202,10 +202,10 @@ msgstr "如需调试信息，请执行命令：sudo tails-debugging-info"
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</b>\\n"
-"\\nCheck your network connection, and restart Tails to try upgrading again."
-"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
-"upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</"
+"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
+"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/check.en.html"
 msgstr ""
 "<b>当更新密钥时出现了一个错误。</b>\\n\\n<b>这将无法通过我们的网站确定是否有"
 "可用更新。</b>\\n\\n检查您的网络连接状态，重启Tails并再次尝试更新。\\n\\n如果"
@@ -280,8 +280,8 @@ msgid ""
 "The available incremental upgrade requires {space_needed} of free space on "
 "Tails system partition,  but only {free_space} is available."
 msgstr ""
-"可用的增量升级需要在 Tails 的系统分区有 %{space_needed}s 空闲空间，而目前仅"
-"有 %{free_space}s 可用。"
+"可用的增量升级需要在 Tails 的系统分区有 {space_needed}s 空闲空间，而目前仅有 "
+"{free_space}s 可用。"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:454
 #, perl-brace-format
@@ -512,9 +512,9 @@ msgid ""
 "instructions at file:///usr/share/doc/tails/website/doc/upgrade/error/"
 "install.en.html"
 msgstr ""
-"<b>安装更新时出现错误</b>\\n\\n您的Tails设备需要修复，并且可能无法重启。\\n"
-"\\n请查看以下说明：file:///usr/share/doc/tails/website/doc/upgrade/error/"
-"install.en.html"
+"<b>安装更新时出现错误</b>\\n\\n您的Tails设备需要修复，并且可能无法重"
+"启。\\n\\n请查看以下说明：file:///usr/share/doc/tails/website/doc/upgrade/"
+"error/install.en.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:863
 msgid "Error while installing the upgrade"
@@ -525,6 +525,7 @@ msgid "Additional Settings"
 msgstr "额外设置"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
@@ -597,21 +598,37 @@ msgstr "关"
 msgid "Off (default)"
 msgstr "关闭（默认）"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:401
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
+#, fuzzy
+msgid "Persistent Storage Not Unlocked"
+msgstr "持久化存储"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
+#, fuzzy
+msgid ""
+"Do you really want to start Tails without unlocking your Persistent Storage?"
+msgstr "现在确定要重启 Tails？\\n\\n目前的所有工作都将丢失。"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#, fuzzy
+msgid "Continue Without Persistent Storage"
+msgstr "创建永久存储"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
 #, fuzzy
 msgid "Don't _Create Persistent Storage"
 msgstr "创建持久存储(_C)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:403
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
 msgid "_Create Persistent Storage"
 msgstr "创建持久存储(_C)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:81
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
 msgid "Error unlocking Persistent Storage: {}"
 msgstr "解锁持久化存储出错：{}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
 msgid "Error activating Persistent Storage: {}"
 msgstr "激活持久化存储出错：{}"
 
@@ -754,7 +771,7 @@ msgid "No mount points found"
 msgstr "未找到挂载点"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:699
-#, python-format
+#, fuzzy, python-format
 msgid "Entering unmount_device for \"%(device)s\""
 msgstr "输入 “%(device)s” 的卸载设备"
 
@@ -1489,16 +1506,18 @@ msgid "_Use a bridge that you already know"
 msgstr "使用你已知的网桥(_U)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:242
+#, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">unlock your "
+"To save your bridge, <a href=\"doc/persistent_storage\">unlock your "
 "Persistent Storage</a>."
 msgstr ""
 "要保存网桥，<a href=\"doc/first_steps/persistence\">解锁您的持久化存储</a>。"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
+#, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">create a "
-"Persistent Storage</a> on your Tails USB stick."
+"To save your bridge, <a href=\"doc/persistent_storage\">create a Persistent "
+"Storage</a> on your Tails USB stick."
 msgstr ""
 "要保存网桥，请在您的 Tails USB 设备上<a href=\"doc/first_steps/persistence\">"
 "创建一个持久化存储</a>。"
@@ -1579,11 +1598,11 @@ msgstr "如果你想隐藏你正在使用 Tor，则需要设置桥接"
 msgid "Scanned {bridge_type} bridge: <b>{bridge_info}</b>."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1096
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1102
 msgid "Are you sure you want to lose progress?"
 msgstr "您确认您想要失去进度吗？"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -1595,11 +1614,11 @@ msgstr ""
 "\n"
 "如果连接至 Tor 失败了，您将必须再次等待至进程结束才能排除您的连接故障"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1112
 msgid "Close and Lose Progress"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1107
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1113
 msgid "Wait"
 msgstr ""
 
@@ -1839,7 +1858,7 @@ msgstr "重启(_R)"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:123
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
 msgid "_Cancel"
 msgstr "取消(_C)"
 
@@ -2412,10 +2431,10 @@ msgstr "发送错误报告"
 msgid ""
 "Your Persistent Storage is unlocked.\n"
 "\n"
-"Its content will be available until you shut down Tails.\n"
+"Its content is available until you shut down Tails.\n"
 "\n"
-"<a href=\"doc/first_steps/persistence/backup\">Learn how to make a backup of "
-"your Persistent Storage.</a>"
+"<a href=\"doc/persistent_storage/backup\">Learn how to make a backup of your "
+"Persistent Storage.</a>"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:89
@@ -2553,24 +2572,25 @@ msgstr "Dotfiles"
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
 msgstr "将 Dotfiles 文件夹中的每个文件符号链接到 Home 文件夹中。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:612
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
 msgid "Activate Dotfiles"
 msgstr "激活 Dotfiles"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:642
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
 msgid "Custom"
 msgstr "自定"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:661
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:678
 msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:703
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
+#, fuzzy
 msgid ""
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 "<a href=\"doc/first_steps/persistence\">了解更多关于持久化存储的信息</a>"
 
@@ -2579,7 +2599,10 @@ msgid ""
 "<b>Your Persistent Storage is locked.</b>\n"
 "\n"
 "To use or configure your Persistent Storage, unlock it in the Welcome Screen "
-"when starting Tails."
+"when starting Tails.\n"
+"\n"
+"To delete your Persistent Storage, click <b>Delete</b> on the right of the "
+"title bar."
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:52
@@ -2611,29 +2634,26 @@ msgid ""
 "Everything you do disappears automatically when you shut down Tails.\n"
 "\n"
 "But you can save some of your files and configuration in an encrypted "
-"Persistent Storage on your Tails USB stick:\n"
+"Persistent Storage on your Tails USB stick, for example:\n"
 "\n"
 "• Your documents\n"
 "• Your Wi-Fi passwords\n"
 "• Your browser bookmarks\n"
-"• and so on\n"
+"• ...\n"
 "\n"
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:92
 msgid ""
-"Unfortunately, this Tails device does not support creating a Persistent "
-"Storage.\n"
+"Sorry, it is impossible to create a Persistent Storage on this device.\n"
 "\n"
-"To be able to use Tails with Persistent Storage, please follow the "
-"documentation to install Tails on a USB stick:\n"
-"\n"
-"<a href=\"install\">Install Tails</a>"
+"To be able to use Tails with a Persistent Storage, please follow our "
+"instructions on <a href=\"install\">installing Tails on a USB stick</a>."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:139
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:137
 msgid "Co_ntinue"
 msgstr ""
 
@@ -2845,6 +2865,7 @@ msgid "Scan _QR code"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:373
+#, fuzzy
 msgid "_Enter a bridge that you already know"
 msgstr "输入一个一个你已知的网桥(E)"
 
@@ -3527,8 +3548,8 @@ msgstr "时钟"
 #~ msgstr "Tails 正在配置持久化存储。请稍等片刻…"
 
 #~ msgid ""
-#~ "Only use the Unsafe Browser to sign in to a network, then close it.\\n"
-#~ "\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
+#~ "Only use the Unsafe Browser to sign in to a network, then close it."
+#~ "\\n\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
 #~ "href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
 #~ "unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and "
 #~ "enable the Unsafe Browser in the additional settings of the Welcome "

@@ -7,11 +7,30 @@
 # =====
 #
 # * /etc/live/config.d/username.conf : $LIVE_USERNAME
-# * /var/lib/gdm3/settings/tails.language: $TAILS_LOCALE_NAME
-# * /var/lib/gdm3/settings/tails.formats: $TAILS_FORMATS
-# * /var/lib/gdm3/settings/tails.keyboard: $TAILS_XKBMODEL,
+# * /var/lib/gdm3/settings/persistent/tails.language: $TAILS_LOCALE_NAME
+# * /var/lib/gdm3/settings/persistent/tails.formats: $TAILS_FORMATS
+# * /var/lib/gdm3/settings/persistent/tails.keyboard: $TAILS_XKBMODEL,
 #   $TAILS_XKBLAYOUT, $TAILS_XKBVARIANT, $TAILS_XKBOPTIONS
-# * /var/lib/gdm3/settings/tails.password : $TAILS_USER_PASSWORD
+# * /var/lib/gdm3/settings/persistent/tails.password : $TAILS_USER_PASSWORD
+
+# Overall working of Welcome Screen additional settings
+# =====================================================
+#
+# When you select additional settings in the Welcome Screen, this results in files being created/modified
+# in /var/lib/gdm3/settings/persistent and /var/lib/gdm3/settings/transient
+#
+# This script is run after you press the "Start Tails" button. What it does is to copy the relevant files from
+# /var/lib/gdm3/settings/persistent and /var/lib/gdm3/settings/transient into /var/lib/live/config/
+#
+# Persistent Storage
+# ----------------------
+#
+# The Persistent Storage can persist /var/lib/gdm3/settings/persistent/
+#
+# If, for whatever reasons (see #19410 for an example), a file is in that directory which shouldn't be there
+# at all, this file is ignored: only the files specified below in
+# $GREETER_EXPORTED_PERSISTENT_SETTINGS are copied.
+
 
 # For whatever reason, /usr/sbin (needed by at least chpasswd)
 # is not in our PATH
@@ -19,7 +38,8 @@ export PATH="/usr/sbin:${PATH}"
 POLKIT=/etc/polkit-1/localauthority.conf.d/52-tails-greeter.conf
 SUDOERS=/etc/sudoers.d/tails-greeter
 NO_PASSWORD_LECTURE=/etc/sudoers.d/tails-greeter-no-password-lecture
-GREETER_EXPORTED_SETTINGS="tails.macspoof tails.network tails.unsafe-browser"
+GREETER_EXPORTED_PERSISTENT_SETTINGS="tails.macspoof tails.network tails.unsafe-browser"
+GREETER_EXPORTED_TRANSIENT_SETTINGS=""
 
 log() {
     echo "$1" >&2
@@ -63,13 +83,19 @@ log "Entering PostLogin"
 # unblocking the network below; doing so will make the user-set MAC
 # spoofing option apply (via the custom udev rule) when loading the
 # modules for the previously blocked network devices.
-for setting in ${GREETER_EXPORTED_SETTINGS}; do
+for setting in ${GREETER_EXPORTED_PERSISTENT_SETTINGS}; do
     /usr/bin/install -m 0640 -o root -g root \
-        "/var/lib/gdm3/settings/$setting" \
+        "/var/lib/gdm3/settings/persistent/$setting" \
         "/var/lib/live/config/$setting"
 done
 
-if grep -F 'CREATE_PERSISTENT_STORAGE=true' /var/lib/gdm3/settings/tails.create-persistence
+for setting in ${GREETER_EXPORTED_TRANSIENT_SETTINGS}; do
+    /usr/bin/install -m 0640 -o root -g root \
+        "/var/lib/gdm3/settings/transient/$setting" \
+        "/var/lib/live/config/$setting"
+done
+
+if grep -F 'CREATE_PERSISTENT_STORAGE=true' /var/lib/gdm3/settings/transient/tails.create-persistence
 then
     # The other settings are files in which the *content* is relevant: in this case, the *existence* is
     # relevant.
@@ -92,9 +118,9 @@ fi
 ### Localization
 
 # Import locale settings
-. /var/lib/gdm3/settings/tails.language || log_n_exit "Language settings file not found."
-. /var/lib/gdm3/settings/tails.formats || log_n_exit "Formats settings file not found."
-. /var/lib/gdm3/settings/tails.keyboard || log_n_exit "Keyboard settings file not found."
+. /var/lib/gdm3/settings/persistent/tails.language || log_n_exit "Language settings file not found."
+. /var/lib/gdm3/settings/persistent/tails.formats || log_n_exit "Formats settings file not found."
+. /var/lib/gdm3/settings/persistent/tails.keyboard || log_n_exit "Keyboard settings file not found."
 if [ -z "${TAILS_LOCALE_NAME}" ] ; then
     log_n_exit "Locale variable not found."
 fi
@@ -135,8 +161,8 @@ log "tails-unblock-network has exited (status=$?)."
 ### Password
 
 # Import password for superuser access
-if [ -e /var/lib/gdm3/settings/tails.password ] ; then
-    . /var/lib/gdm3/settings/tails.password
+if [ -e /var/lib/gdm3/settings/persistent/tails.password ] ; then
+    . /var/lib/gdm3/settings/persistent/tails.password
 fi
 
 # Check if password is actually set
