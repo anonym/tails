@@ -116,11 +116,17 @@ module Dogtail
       if init
         init = init.join("\n") if init.instance_of?(Array)
         c = RemoteShell::PythonCommand.new($vm, init, user: @opts[:user], debug_log: false)
-        raise Failure, "The Dogtail init script raised: #{c.exception}" if c.failure?
+        if c.failure?
+          msg = "The Dogtail init script raised: #{c.exception}\nSTDOUT:\n#{c.stdout}\nSTDERR:\n#{c.stderr}\n"
+          raise Failure, msg
+        end
       end
       code = code.join("\n") if code.instance_of?(Array)
       c = RemoteShell::PythonCommand.new($vm, code, user: @opts[:user])
-      raise Failure, "The Dogtail script raised: #{c.exception}" if c.failure?
+      if c.failure?
+        msg = "The Dogtail init script raised: #{c.exception}\nSTDOUT:\n#{c.stdout.strip}\nSTDERR:\n#{c.stderr.strip}\n"
+        raise Failure, msg
+      end
 
       c
     end
