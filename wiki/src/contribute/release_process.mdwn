@@ -813,13 +813,13 @@ Verify that Jenkins reproduced your images
 
 Verify that Jenkins reproduced your images:
 
-  (
-   set -eu
-   cd "${ARTIFACTS:?}"
-   url="https://nightly.tails.boum.org/build_Tails_ISO_${RELEASE_BRANCH:?}/lastSuccessful/archive/build-artifacts/tails-build-artifacts.shasum"
-   curl "$url" > SHA512SUMS-jenkins.txt
-   grep --perl-regexp '[.]img|iso' SHA512SUMS-jenkins.txt | sha512sum -c -
-  )
+    (
+     set -eu
+     cd "${ARTIFACTS:?}"
+     url="https://nightly.tails.boum.org/build_Tails_ISO_${RELEASE_BRANCH:?}/lastSuccessful/archive/build-artifacts/tails-build-artifacts.shasum"
+     curl "$url" > SHA512SUMS-jenkins.txt
+     grep --perl-regexp '[.]img|iso' SHA512SUMS-jenkins.txt | sha512sum -c -
+    )
 
 ### If the ISO and USB images hashes match
 
@@ -1052,7 +1052,7 @@ on <https://iso-history.tails.boum.org/?C=M&O=D>:
         while true
         do
             size=$(curl --silent --head "${isourl}" | grep -iPo '^content-length:\s*\K\d+')
-            echo "FOUND: ${size}bytes"
+            echo "FOUND: ${size} bytes"
             if [ "$size" -eq "${expected_size}" ]; then
                 echo 'FOUND: ready'
                 notify-send "Image published" 'found in ISO history'
@@ -1589,12 +1589,10 @@ Lead the internal manual testing to conclusion
 
    1. Wait until the IUK start being available:
 
-
-        while ! curl --silent --head --location --fail "https://download.tails.net/tails/stable/iuk/v2/Tails_amd64_${PREVIOUS_VERSION:?}_to_${VERSION:?}.iuk"
-            do
-            sleep 30
-            done
-
+          while ! curl --silent --head --location --fail "https://download.tails.net/tails/stable/iuk/v2/Tails_amd64_${PREVIOUS_VERSION:?}_to_${VERSION:?}.iuk"
+          do
+              sleep 30
+          done
 
    1. Delete "⚠ Wait until the Release Manager […]" in the "Incremental
       upgrades" section on the pad.
@@ -1771,8 +1769,8 @@ Go wild!
 Wait for the HTTP mirrors to catch up
 -------------------------------------
 
-Look at the mirror status. Wait for each of these pages to include at least one
-working mirror:
+Look at the mirror status. Wait for each of these pages to include at least 6
+working mirrors:
 
     (
       base='https://download.tails.net/tails/stable'

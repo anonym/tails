@@ -12,9 +12,12 @@ Changes
 Packages
 --------
 
+This test can only be done by a Tails developer (Foundations Team).
+
 Compare the list of bundled packages and versions with the one shipped last
 time. The new `.packages` file should have been attached to the
-call for testing email sent by the Release Manager.
+call for testing email sent by the Release Manager after the images
+have been built.
 
 	/usr/bin/diff -u \
 	    wiki/src/torrents/files/tails-amd64-3.1.packages \
@@ -33,7 +36,8 @@ Image size
 
 Check the images size has not changed much since the last release.
 
-In a directory with many Tails ISO and USB images:
+In a directory with many Tails ISO and USB images
+([archive](https://iso-history.tails.boum.org/)):
 
     find \( -iname "tails*.iso" -o -iname "tails*.img" \) \
 	     -type f -exec ls -l --block-size=M '{}' \; | sort -rhk 5
@@ -267,8 +271,11 @@ On a computer configured to prefer legacy BIOS boot:
 4. Boot this USB stick a second time.
 5. You should see the Welcome Screen appear.
 
-Misc
-====
+Journal
+=======
 
-* Check that the output of `sudo journalctl` looks OK.
-  For a quick overview, something like `sudo journalctl -p 0..3` can be helpful.
+This test can only be done by a Tails developer (Foundations Team).
+
+Check that the output of `sudo journalctl` looks OK.
+
+For a quick overview, something like `sudo journalctl -p 0..3` can be helpful.
