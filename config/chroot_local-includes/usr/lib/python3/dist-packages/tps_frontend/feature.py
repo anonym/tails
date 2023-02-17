@@ -54,6 +54,7 @@ class Feature(object):
 
         self.is_active = self.proxy.get_cached_property("IsActive").get_boolean()
         self.has_data = self.proxy.get_cached_property("HasData").get_boolean()
+        self.error = self.proxy.get_cached_property("Error").get_string()
 
         # Connect to properties-changed signal
         self.proxy.connect("g-properties-changed", self.on_properties_changed)
@@ -83,14 +84,17 @@ class Feature(object):
         self.delete_data_button.connect("clicked", self.on_delete_data_button_clicked)
         Gtk.StyleContext.add_class(self.delete_data_button.get_style_context(),
                                    'destructive-action')
-        self.delete_data_row = Handy.ActionRow(
-            subtitle = _("There's some data. Turn on or delete data."),
-            can_focus = False,
-        )
-        self.delete_data_row.add(self.delete_data_button)
-        self.add_delete_data_row()
+        self.second_row = Handy.ActionRow(can_focus = False)
+        self.second_row.add(self.delete_data_button)
+        self.add_second_row()
 
         self.spinner = Gtk.Spinner()  # type: Gtk.Spinner
+        self.warning_icon = Gtk.Image(
+            icon_name="gtk-dialog-warning",
+            icon_size=Gtk.IconSize.LARGE_TOOLBAR,
+            visible=True,
+            tooltip_text=_("Activation failed"),
+        )
 
         switch_name = self.widget_name_prefix + "_switch"
         self.switch = self.builder.get_object(switch_name)  # type: Gtk.Switch
@@ -101,13 +105,12 @@ class Feature(object):
         self.switch.connect("notify::active", self.on_active_changed)
         self.switch.connect("state-set", self.on_state_set)
 
-        if self.has_data and not self.is_active:
-            self.show_delete_data_row()
+        self.update_second_row()
 
         self.dialog = None
         self.old_state = None  # type: bool
 
-    def add_delete_data_row(self):
+    def add_second_row(self):
         parent_list_box = self.action_row.get_parent()  # type: Gtk.ListBox
 
         i = 0
@@ -119,7 +122,7 @@ class Feature(object):
                 break
             i += 1
 
-        parent_list_box.insert(self.delete_data_row, i + 1)
+        parent_list_box.insert(self.second_row, i + 1)
 
     def show_spinner(self):
         if not self.spinner in self.box.get_children():
@@ -133,13 +136,43 @@ class Feature(object):
         if self.spinner in self.box.get_children():
             self.box.remove(self.spinner)
 
-    def show_delete_data_row(self):
-        self.delete_data_row.show_all()
+    def show_warning_icon(self):
+        if not self.warning_icon in self.box.get_children():
+            self.box.add(self.warning_icon)
+            # Ensure that the warning icon is the first widget in the box
+            self.box.reorder_child(self.warning_icon, 0)
+
+    def hide_warning_icon(self):
+        if self.warning_icon in self.box.get_children():
+            self.box.remove(self.warning_icon)
+
+    def update_second_row(self):
+        if self.error:
+            self.show_warning_icon()
+        else:
+            self.hide_warning_icon()
+
+        if self.error and self.has_data:
+            subtitle = _("Activation failed. Try again or delete data.")
+        elif self.error:
+            subtitle = _("Activation failed. Try again.")
+        elif self.has_data and not self.is_active:
+            subtitle = _("There's some data. Turn on or delete data.")
+        else:
+            self.hide_second_row()
+            return
+
+        self.second_row.set_subtitle(subtitle)
+        self.delete_data_button.set_visible(self.has_data)
+        self.show_second_row()
+
+    def show_second_row(self):
+        self.second_row.show()
         if not self.expander in self.box.get_children():
             self.box.add(self.expander)
 
-    def hide_delete_data_row(self):
-        self.delete_data_row.hide()
+    def hide_second_row(self):
+        self.second_row.hide()
         if self.expander in self.box.get_children():
             self.box.remove(self.expander)
 
@@ -319,7 +352,7 @@ class Feature(object):
             return
 
         self.show_spinner()
-        self.hide_delete_data_row()
+        self.hide_second_row()
         self.proxy.call(method_name="Delete",
                         parameters=None,
                         flags=Gio.DBusCallFlags.NONE,
@@ -337,11 +370,9 @@ class Feature(object):
             logger.error(f"Error deleting data of feature {self.name}: {e.message}")
             self.window.display_error(_("Error deleting data of feature {}").format(self.translated_name),
                                       e.message)
-
-            # Ensure that the visibility of the delete data row is correct
-            if self.has_data and not self.is_active:
-                self.show_delete_data_row()
             return
+        finally:
+            self.update_second_row()
 
         logger.debug(f"Data of feature {self.name} successfully deleted")
 
@@ -360,10 +391,13 @@ class Feature(object):
         if "HasData" in changed_properties.keys():
             self.has_data = changed_properties["HasData"]
 
-        if self.has_data and not self.is_active:
-            self.show_delete_data_row()
-        if self.is_active:
-            self.hide_delete_data_row()
+        if "Error" in changed_properties.keys():
+            self.error = changed_properties["Error"]
+
+        if "IsActive" in changed_properties.keys() or \
+                "HasData" in changed_properties.keys() or \
+                "Error" in changed_properties.keys():
+            self.update_second_row()
 
         if "Job" in changed_properties.keys():
             job_path = changed_properties["Job"]
