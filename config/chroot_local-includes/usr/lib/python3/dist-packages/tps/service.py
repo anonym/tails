@@ -7,7 +7,8 @@ from tps import executil
 from tps.configuration import features
 from tps.configuration.config_file import ConfigFile, InvalidStatError
 from tps.configuration.feature import Feature, ConflictingProcessesError
-from tps.dbus.errors import InvalidConfigFileError, FailedPreconditionError
+from tps.dbus.errors import InvalidConfigFileError, FailedPreconditionError, \
+    FeatureActivationFailedError
 from tps.dbus.object import DBusObject
 from tps.device import udisks, BootDevice, Partition, InvalidBootDeviceError
 from tps.job import ServiceUsingJobs
@@ -36,10 +37,6 @@ class AlreadyUnlockedError(Exception):
 
 
 class NotUnlockedError(Exception):
-    pass
-
-
-class FeatureActivationFailedError(Exception):
     pass
 
 

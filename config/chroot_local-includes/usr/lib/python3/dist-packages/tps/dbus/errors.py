@@ -57,3 +57,6 @@ class SymlinkSourceDirectoryError(DBusError):
 
 class InvalidConfigFileError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.InvalidConfigFileError"
+
+class FeatureActivationFailedError(DBusError):
+    name = "org.boum.tails.PersistentStorage.Error.FeatureActivationFailedError"

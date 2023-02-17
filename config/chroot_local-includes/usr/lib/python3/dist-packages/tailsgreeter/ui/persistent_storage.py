@@ -8,7 +8,8 @@ from typing import TYPE_CHECKING, Callable
 
 from tailsgreeter.ui import _
 from tailsgreeter.config import persistent_settings_dir
-from tailsgreeter.errors import PersistentStorageError
+from tailsgreeter.errors import PersistentStorageError, \
+    FeatureActivationFailedError
 
 gi.require_version('GLib', '2.0')
 gi.require_version('Gtk', '3.0')
@@ -114,13 +115,14 @@ class PersistentStorage(object):
         self.infobar_persistence.set_visible(True)
         self.button_start.set_sensitive(True)
 
-    def activation_failed(self):
+    def activation_failed(self, label=None):
+        if not label:
+            label = _("Failed to activate the Persistent Storage. "
+                      "Please start Tails and send an error report.")
         self.button_storage_unlock.set_label(_("Unlock"))
         self.image_storage_state.set_visible(True)
         self.spinner_storage_unlock.set_visible(False)
-        self.label_infobar_persistence.set_label(
-            _("Failed to activate the Persistent Storage. "
-              "Please start Tails and send an error report."))
+        self.label_infobar_persistence.set_label(label)
         self.infobar_persistence.set_visible(True)
         self.button_start.set_sensitive(True)
 
@@ -130,6 +132,12 @@ class PersistentStorage(object):
         # Activate the Persistent Storage
         try:
             self.persistence_setting.activate_persistent_storage()
+        except FeatureActivationFailedError as e:
+            logging.error(e)
+            label = _("Some features failed to activate. "
+                      "Start Tails and open the Persistent Storage app to find out more.")
+            self.activation_failed(label)
+            return
         except PersistentStorageError as e:
             logging.error(e)
             self.activation_failed()
