@@ -12,7 +12,7 @@ from tps.dbus.object import DBusObject
 from tps.device import udisks, BootDevice, Partition, InvalidBootDeviceError
 from tps.job import ServiceUsingJobs
 from tps.udisks_monitor import UDisksCreationMonitor
-from tps import State, IN_PROGRESS_STATES, DBUS_ROOT_OBJECT_PATH, \
+from tps import _, State, IN_PROGRESS_STATES, DBUS_ROOT_OBJECT_PATH, \
     DBUS_SERVICE_INTERFACE, TPS_MOUNT_POINT, \
     ON_ACTIVATED_HOOKS_DIR, ON_DEACTIVATED_HOOKS_DIR, \
     DBUS_FEATURES_PATH
@@ -36,6 +36,10 @@ class AlreadyUnlockedError(Exception):
 
 
 class NotUnlockedError(Exception):
+    pass
+
+
+class FeatureActivationFailedError(Exception):
     pass
 
 
@@ -228,11 +232,20 @@ class Service(DBusObject, ServiceUsingJobs):
             finally:
                 raise InvalidConfigFileError(e) from e
 
-        mounts = self.config_file.parse()
-        for mount in mounts:
-            mount.activate()
+        self.refresh_features()
+        failed_features = list()
+        for feature in (f for f in self.features if f.IsActive):
+            try:
+                feature.do_activate(None, non_blocking=True)
+            except Exception as e:
+                logger.exception(e)
+                failed_features.append(feature.Id)
 
         self.run_on_activated_hooks()
+
+        if any(failed_features):
+            msg = _("Features failed to to activate: {}").format(" ".join(failed_features))
+            raise FeatureActivationFailedError(msg)
 
     def Unlock(self, passphrase: str):
         """Unlock and mount the Persistent Storage"""

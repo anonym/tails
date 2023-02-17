@@ -50,6 +50,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             <property name="IsActive" type="b" access="read"/>
             <property name="HasData" type="b" access="read"/>
             <property name="Job" type="o" access="read"/>
+            <property name="Error" type="s" access="read"/>
         </interface>
     </node>
     '''
@@ -63,6 +64,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         super().__init__(connection=service.connection)
         self.service = service
         self.is_custom = is_custom
+        self._error = str()
 
         # Check if the feature is active
         config_file = self.service.config_file
@@ -126,8 +128,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             # on to the client and handled there.
             self.wait_for_conflicting_processes_to_terminate(job)
 
-        for mount in self.Mounts:
-            mount.activate()
+        try:
+            for mount in self.Mounts:
+                mount.activate()
+        except Exception as e:
+            self.Error = str(e)
+            raise
 
         # Check if the directories were actually mounted
         try:
@@ -136,6 +142,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             msg = f"Activation of feature '{self.Id}' failed unexpectedly"
             raise ActivationFailedError(msg) from e
 
+        self.Error = str()
         self.IsActive = True
 
     def Deactivate(self):
@@ -246,6 +253,20 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
     @property
     def HasData(self) -> bool:
         return any(mount.has_data() for mount in self.Mounts)
+
+    @property
+    def Error(self) -> str:
+        """The last error that occurred when trying to activate this
+        feature."""
+        return self._error
+
+    @Error.setter
+    def Error(self, error: str):
+        self._error = error
+        changed_properties = {"Error": GLib.Variant("s", self.Error)}
+        self.emit_properties_changed_signal(self.service.connection,
+                                            DBUS_FEATURE_INTERFACE,
+                                            changed_properties)
 
     @property
     def Job(self) -> str:
