@@ -240,6 +240,12 @@ class Service(DBusObject, ServiceUsingJobs):
             except Exception as e:
                 logger.exception(e)
                 failed_features.append(feature.Id)
+            finally:
+                # Remove features which failed to activate from the
+                # config file. This makes it easier for us to handle
+                # this case in the frontend: The user can just use the
+                # switch to try and activate the feature again.
+                self.save_config_file()
 
         self.run_on_activated_hooks()
 
