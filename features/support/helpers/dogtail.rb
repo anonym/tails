@@ -94,13 +94,8 @@ module Dogtail
       end
 
       init += [
-        'import dogtail.config',
         'import dogtail.tree',
         'import dogtail.predicate',
-        'dogtail.config.logDebugToFile = False',
-        'dogtail.config.logDebugToStdOut = False',
-        'dogtail.config.blinkOnActions = True',
-        'dogtail.config.searchShowingOnly = True',
       ]
       code = [
         "#{@var} = #{@find_code}",
