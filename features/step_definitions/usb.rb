@@ -74,6 +74,10 @@ def recover_from_upgrader_failure
   $vm.spawn('tails-upgrade-frontend-wrapper --no-wait', user: LIVE_USER)
 end
 
+def greeter
+  Dogtail::Application.new('Welcome to Tails!', user:'Debian-gdm')
+end
+
 Given /^I clone USB drive "([^"]+)" to a (new|temporary) USB drive "([^"]+)"$/ do |from, mode, to|
   $vm.storage.clone_to_new_disk(from, to)
   if mode == 'temporary'
@@ -372,10 +376,21 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
 end
 
 Given /^I enable persistence$/ do
-  @screen.wait('TailsGreeterPersistencePassphrase.png', 60).click
+  try_for(60) do
+    greeter.child(roleName: 'password text').grabFocus
+  end
   sleep 1
   @screen.type(@persistence_password, ['Return'])
-  @screen.wait_any(['TailsGreeterPersistenceUnlocked.png', 'TailsGreeterPersistenceUnlockedGerman.png'], 30)
+
+  english_label = "Your persistent storage is unlocked. Restart Tails to lock it again."
+  german_label = "Dein beständiger Speicherbereich ist entsperrt. Starte Tails neu, um ihn wieder zu sperren."
+  try_for(30) do
+    greeter.child(english_label, roleName: 'label', showingOnly: true)
+  rescue Dogtail::Failure
+    greeter.child(german_label, roleName: 'label', showingOnly: true)
+    $language = 'German'
+    true
+  end
 end
 
 def tails_persistence_enabled?
