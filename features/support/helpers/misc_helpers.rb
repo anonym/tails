@@ -395,11 +395,15 @@ end
 def dbus_send_ret_conv(ret)
   type, val = /^\s*(\S+)\s+(.+)$/m.match(ret)[1, 2]
   case type
+  when 'variant'
+    return dbus_send_ret_conv(val)
   when 'string'
     # Unquote
     val[1...-1]
   when 'int32'
     val.to_i
+  when 'boolean'
+    val == 'true'
   when 'array'
     # Drop array start/stop markers ([])
     val.split("\n")[1...-1].map { |e| dbus_send_ret_conv(e) }
@@ -410,6 +414,9 @@ end
 
 def dbus_send_get_shellcommand(service, object_path, method, *args, **opts)
   opts ||= {}
+  opts[:use_system_bus] ||= false
+  bus_arg = opts[:use_system_bus] ? "--system" : "--session"
+
   ruby_type_to_dbus_type = {
     String  => 'string',
     Integer => 'int32',
@@ -420,8 +427,10 @@ def dbus_send_get_shellcommand(service, object_path, method, *args, **opts)
                    "No D-Bus type conversion for Ruby type '#{arg.class}'")
     "#{type}:#{arg}"
   end
+
   $vm.execute(
-    "dbus-send --print-reply --dest=#{service} #{object_path} " \
+    "dbus-send #{bus_arg} --print-reply " \
+    "--dest=#{service} #{object_path} " \
     "    #{method} #{typed_args.join(' ')}",
     **opts
   )
