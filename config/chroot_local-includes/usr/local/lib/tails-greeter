@@ -17,7 +17,17 @@ if grep -qw "debug=greeter" /proc/cmdline && [ -z "${DEBUG_GREETER:-}" ]; then
   # workaround based on https://unix.stackexchange.com/a/201915.
   /usr/libexec/gnome-terminal-server --app-id greeter.debug.Terminal &
   sleep 1
+
+  text="To start the greeter, run:
+
+  /usr/local/lib/tails-greeter
+
+To spawn more terminals, run:
+
   gnome-terminal --app-id greeter.debug.Terminal -- /bin/bash
+"
+
+  gnome-terminal --app-id greeter.debug.Terminal -- /bin/bash -c "echo '${text}'; /bin/bash"
 else
   cd /usr/share/tails/greeter/
   /usr/share/tails/greeter/set-cursor.py watch
