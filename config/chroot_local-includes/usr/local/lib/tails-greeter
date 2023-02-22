@@ -1,5 +1,11 @@
 #!/bin/bash
 export LANG="en_US.UTF-8"
+
+if grep -qw "autotest_never_use_this_option" /proc/cmdline; then
+  # Store the environment for usage by tails-autotest-remove-shell
+  env > "/tmp/gdm-env"
+fi
+
 if grep -qw "debug=greeter" /proc/cmdline && [ -z "${DEBUG_GREETER:-}" ]; then
   # Export DEBUG_GREETER=1 so that when this file is executed again
   # from the gnome-terminal, we actually start the greeter and not
