@@ -90,7 +90,7 @@ def try_for(timeout, **options)
         # Most other exceptions, that inherit from StandardError, are ignored
         # while trying the block. We save the last exception so we can
         # print it in case of a timeout.
-        last_exception = e
+        last_exception = Cucumber::Formatter::BacktraceFilter.new(e).exception
         debug_log('try_for: failed with exception: ' \
                   "#{last_exception.class}: #{last_exception}\n#{last_exception.backtrace.join("\n")}") if options[:log]
       rescue Exception => e # rubocop:disable Lint/RescueException
