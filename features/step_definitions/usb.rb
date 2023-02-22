@@ -87,6 +87,10 @@ def recover_from_upgrader_failure
   $vm.spawn('tails-upgrade-frontend-wrapper --no-wait', user: LIVE_USER)
 end
 
+def greeter
+  Dogtail::Application.new('Welcome to Tails!', user: 'Debian-gdm')
+end
+
 Given /^I clone USB drive "([^"]+)" to a (new|temporary) USB drive "([^"]+)"$/ do |from, mode, to|
   $vm.storage.clone_to_new_disk(from, to)
   if mode == 'temporary'
@@ -456,7 +460,26 @@ Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_p
                @persistence_password
              end
   @screen.type(password, ['Return'])
-  @screen.wait_any(['TailsGreeterPersistenceUnlocked.png', 'TailsGreeterPersistenceUnlockedGerman.png'], 30)
+
+  # Wait until the Persistent Storage was unlocked. We use the fact that
+  # the unlock button is made invisible when the Persistent Storage is
+  # unlocked.
+  try_for(30) do
+    !greeter.child?('Unlock', roleName: 'push button', showingOnly: true)
+  end
+
+  # Figure out which language is set now that the Persistent Storage is
+  # unlocked
+  english_label = 'English - United States'
+  german_label = 'Deutsch - Deutschland (German - Germany)'
+  try_for(30) do
+    greeter.child(english_label, roleName: 'label', showingOnly: true)
+    $language = ''
+  rescue Dogtail::Failure
+    greeter.child(german_label, roleName: 'label', showingOnly: true)
+    $language = 'German'
+    true
+  end
 end
 
 def tails_persistence_enabled?

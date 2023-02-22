@@ -48,6 +48,16 @@ class GreeterSetting(object):
         self.value_label = self.builder.get_object("label_value")
         self.title_label.set_label(self.title)
 
+        # Strip the underscore which marks the mnemonic
+        setting_name = self.title.replace('_', '', 1)
+        # This is a hack to make the listboxrow usable in the Test Suite:
+        # We configure a tooltip text which allows us to use it through
+        # AT-SPI, but we set has_tooltip to false to not display that
+        # tooltip, because the UI is self-explanatory without a tooltip
+        # and the tooltip would just be noise.
+        self.listboxrow.set_tooltip_text(f"Configure {setting_name}")
+        self.listboxrow.set_has_tooltip(False)
+
     def apply(self):
         self.update_value_label()
 
