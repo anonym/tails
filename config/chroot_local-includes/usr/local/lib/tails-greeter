@@ -9,7 +9,7 @@ if grep -qw "debug=greeter" /proc/cmdline && [ -z "${DEBUG_GREETER:-}" ]; then
   # it - belong to the GDM session, we have to run it as a child process.
   # By default, gnome-terminals are spawned by systemd. This is a
   # workaround based on https://unix.stackexchange.com/a/201915.
-  /usr/lib/gnome-terminal/gnome-terminal-server --app-id greeter.debug.Terminal &
+  /usr/libexec/gnome-terminal-server --app-id greeter.debug.Terminal &
   sleep 1
   gnome-terminal --app-id greeter.debug.Terminal -- /bin/bash
 else
