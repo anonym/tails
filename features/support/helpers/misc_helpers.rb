@@ -91,8 +91,13 @@ def try_for(timeout, **options)
         # while trying the block. We save the last exception so we can
         # print it in case of a timeout.
         last_exception = Cucumber::Formatter::BacktraceFilter.new(e).exception
-        debug_log('try_for: failed with exception: ' \
-                  "#{last_exception.class}: #{last_exception}\n#{last_exception.backtrace.join("\n")}") if options[:log]
+        if options[:log]
+          msg = "try_for: failed with exception: #{e.class}: #{e}"
+          if e.class != FindFailed
+            msg += "\n#{last_exception.backtrace.join("\n")}"
+          end
+          debug_log(msg)
+        end
       rescue Exception => e # rubocop:disable Lint/RescueException
         # Any other exception is rethrown as-is: it is probably not
         # the kind of failure that try_for is supposed to mask.
