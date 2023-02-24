@@ -36,7 +36,7 @@ module Dogtail
       init = []
       if @opts[:user] == LIVE_USER
         cmd = "dbus-send --print-reply=literal --session --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress"
-        c = RemoteShell::ShellCommand.new($vm, cmd, user: @opts[:user])
+        c = RemoteShell::ShellCommand.new($vm, cmd, user: @opts[:user], debug_log: false)
         if c.returncode != 0
           raise Failure, "dbus-send exited with exit code #{c.returncode}"
         end
