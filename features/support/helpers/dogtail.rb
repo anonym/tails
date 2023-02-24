@@ -7,52 +7,6 @@ module Dogtail
   private_constant :MIDDLE_CLICK
   private_constant :RIGHT_CLICK
 
-  TREE_API_NODE_SEARCHES = [
-    :button,
-    :child,
-    :childLabelled,
-    :childNamed,
-    :dialog,
-    :menu,
-    :menuItem,
-    :panel,
-    :tab,
-    :textentry,
-  ].freeze
-  private_constant :TREE_API_NODE_SEARCHES
-
-  TREE_API_NODE_SEARCH_FIELDS = [
-    :labelee,
-    :parent,
-  ].freeze
-  private_constant :TREE_API_NODE_SEARCH_FIELDS
-
-  TREE_API_NODE_ACTIONS = [
-    :click,
-    :doActionNamed,
-    :doubleClick,
-    :grabFocus,
-    :keyCombo,
-    :point,
-  ].freeze
-  private_constant :TREE_API_NODE_ACTIONS
-
-  TREE_API_NODE_AT_SPI_ACTIONS = [
-    :activate,
-    :click,
-    :open,
-    :press,
-    :select,
-    :toggle,
-  ].freeze
-  private_constant :TREE_API_NODE_AT_SPI_ACTIONS
-
-  TREE_API_APP_SEARCHES = TREE_API_NODE_SEARCHES + [
-    :dialog,
-    :window,
-  ]
-  private_constant :TREE_API_APP_SEARCHES
-
   class Failure < StandardError
   end
 
@@ -261,19 +215,63 @@ module Dogtail
       get_field('showing') == 'True'
     end
 
-    TREE_API_APP_SEARCHES.each do |method|
-      define_method(method) do |*args, **kwargs|
-        args[0] = translate(args[0], **@opts) if args[0].instance_of?(String)
+    def call_tree_api_method(method, *args, **kwargs)
+      args[0] = translate(args[0], **@opts) if args[0].instance_of?(String)
         args_str = self.class.args_to_s(*args, **kwargs)
         method_call = "#{method}(#{args_str})"
         Node.new("#{@var}.#{method_call}", **@opts)
-      end
     end
 
-    TREE_API_NODE_SEARCH_FIELDS.each do |field|
-      define_method(field) do
-        Node.new("#{@var}.#{field}", **@opts)
-      end
+    def button(*args, **kwargs)
+      call_tree_api_method("button", *args, **kwargs)
+    end
+
+    def child(*args, **kwargs)
+      call_tree_api_method("child", *args, **kwargs)
+    end
+
+    def childLabelled(*args, **kwargs)
+      call_tree_api_method("childLabelled", *args, **kwargs)
+    end
+
+    def childNamed(*args, **kwargs)
+      call_tree_api_method("childNamed", *args, **kwargs)
+    end
+
+    def menu(*args, **kwargs)
+      call_tree_api_method("menu", *args, **kwargs)
+    end
+
+    def menuItem(*args, **kwargs)
+      call_tree_api_method("menuItem", *args, **kwargs)
+    end
+
+    def panel(*args, **kwargs)
+      call_tree_api_method("panel", *args, **kwargs)
+    end
+
+    def tab(*args, **kwargs)
+      call_tree_api_method("tab", *args, **kwargs)
+    end
+
+    def textentry(*args, **kwargs)
+      call_tree_api_method("textentry", *args, **kwargs)
+    end
+
+    def dialog(*args, **kwargs)
+      call_tree_api_method("dialog", *args, **kwargs)
+    end
+
+    def window(*args, **kwargs)
+      call_tree_api_method("window", *args, **kwargs)
+    end
+
+    def labelee
+      Node.new("#{@var}.labelee", **@opts)
+    end
+
+    def parent
+      Node.new("#{@var}.parent", **@opts)
     end
 
     # Override the `child` method to add support for regex matching of
@@ -312,23 +310,37 @@ module Dogtail
       run("#{@var} = #{@find_code}")
     end
 
-    TREE_API_NODE_ACTIONS.each do |method|
-      define_method(method) do |*args, **kwargs|
-        args_str = self.class.args_to_s(*args, **kwargs)
-        method_call = "#{method}(#{args_str})"
-        run("#{@var}.#{method_call}")
-      end
+    def call_tree_node_method(method, *args, **kwargs)
+      args_str = self.class.args_to_s(*args, **kwargs)
+      method_call = "#{method}(#{args_str})"
+      run("#{@var}.#{method_call}")
     end
 
-    # Custom methods that use at-spi actions instead of actions
-    # that rely on rawinput (which don't work on Wayland)
-    TREE_API_NODE_AT_SPI_ACTIONS.each do |action|
-      define_method(action) { doActionNamed(action.to_s) }
+    def doActionNamed(action_name)
+      call_tree_node_method("doActionNamed", action_name)
     end
 
-    def doubleClick
-      doActionNamed('click')
-      doActionNamed('click')
+    def grabFocus
+      call_tree_node_method("grabFocus")
+    end
+
+    def activate
+      doActionNamed("activate")
+    end
+    def click
+      doActionNamed("click")
+    end
+    def open
+      doActionNamed("open")
+    end
+    def press
+      doActionNamed("press")
+    end
+    def select
+      doActionNamed("select")
+    end
+    def toggle
+      doActionNamed("toggle")
     end
 
     def position
