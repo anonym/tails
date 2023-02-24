@@ -352,21 +352,8 @@ end
 
 Given /^I set the language to (.*)$/ do |lang|
   $language = lang
-  # The listboxrow does not expose any actions through AT-SPI,
-  # so Dogtail is unable to click it directly. We let it grab focus
-  # and activate it via the keyboard instead.
-  try_for(10) do
-    row = greeter
-         .child(description: 'Configure Language', showingOnly: true)
-    row.grabFocus
-    row.focused
-  end
-  @screen.press('Return')
-  try_for(10) do
-    greeter
-      .child('Search', roleName: 'text', showingOnly: true)
-      .focused
-  end
+  @screen.wait('TailsGreeterLanguage.png', 10).click
+  @screen.wait('TailsGreeterLanguagePopover.png', 10)
   @screen.type($language)
   sleep(2) # Gtk needs some time to filter the results
   @screen.press('Return')
