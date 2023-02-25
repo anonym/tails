@@ -273,31 +273,6 @@ module Dogtail
     def parent
       Node.new("#{@var}.parent", **@opts)
     end
-
-    # Override the `child` method to add support for regex matching of
-    # node names, which offers much greater flexibility.
-    def override_child(pattern = nil, **opts)
-      if pattern.instance_of?(Regexp)
-        retries = 20
-        if opts.key?(:retry)
-          retries = 1 unless opts[:retry]
-          opts.delete(:retry)
-        end
-        child = nil
-        retry_action(retries, delay: 1, exception: Failure, msg: "Found no child matching /#{pattern.source}/") do
-          child = children(**opts).find do |c|
-            pattern.match(c.name)
-          end
-          assert_not_nil(child)
-        end
-        child
-      else
-        original_child_method(pattern, **opts)
-      end
-    end
-
-    alias original_child_method child
-    alias child override_child
   end
 
   class Node < Application
