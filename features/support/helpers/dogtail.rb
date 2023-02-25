@@ -167,6 +167,21 @@ module Dogtail
       end
     end
 
+    def focused_child
+      node_var = "node#{@@node_counter += 1}"
+      find_script_lines = [
+        "class IsFocused(dogtail.predicate.Predicate):",
+        "    def __init__(self):",
+        "        self.satisfiedByNode = lambda node: node.focused",
+        "    def describeSearchResult(self):",
+        "        return 'focused'",
+        "",
+        "#{node_var} = #{@var}.findChild(IsFocused(), recursive=True, showingOnly=True)",
+      ]
+      run(find_script_lines)
+      Node.new("#{node_var}", **@opts)
+    end
+
     def get_field(key)
       run("print(#{@var}.#{key})").stdout.chomp
     end
