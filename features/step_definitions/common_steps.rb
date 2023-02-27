@@ -900,6 +900,10 @@ When /^the directory "([^"]+)" does not exist$/ do |directory|
   assert(!$vm.directory_exist?(directory))
 end
 
+When /^the file "([^"]+)" has the content "([^"]+)"$/ do |file, content|
+  $vm.file_content(file) == content
+end
+
 When /^I copy "([^"]+)" to "([^"]+)" as user "([^"]+)"$/ do |source, destination, user|
   c = $vm.execute("cp \"#{source}\" \"#{destination}\"", user: user)
   assert(c.success?, "Failed to copy file:\n#{c.stdout}\n#{c.stderr}")

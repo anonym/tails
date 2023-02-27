@@ -1328,3 +1328,20 @@ When /^I give the Persistent Storage on drive "([^"]+)" its own UUID$/ do |name|
   uuid = SecureRandom.uuid
   $vm.execute_successfully("cryptsetup luksUUID --uuid #{uuid} #{dev}")
 end
+
+When /^I create a file in the Persistent directory$/ do
+  step 'I create a directory "/home/amnesia/Persistent"'
+  step 'I write a file "/home/amnesia/Persistent/foo" with contents "foo"'
+end
+
+Then /^the file I created was copied to the Persistent Storage$/ do
+  file = '/live/persistence/TailsData_unlocked/Persistent/foo'
+  step "the file \"#{file}\" exists"
+  step "the file \"#{file}\" has the content \"foo\""
+end
+
+Then /^the file I created in the Persistent directory exists$/ do
+  file = '/home/amnesia/Persistent/foo'
+  step "the file \"#{file}\" exists"
+  step "the file \"#{file}\" has the content \"foo\""
+end
