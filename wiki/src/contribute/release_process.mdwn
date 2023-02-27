@@ -1964,7 +1964,7 @@ If you just released a final release
 
     1. Check if there is anything:
 
-        ssh rsync.lizard find /srv/rsync/tails/tails/alpha/ -type f
+           ssh rsync.lizard find /srv/rsync/tails/tails/alpha/ -type f
 
     2. Decide what to do!
 
@@ -2136,7 +2136,14 @@ If you just released a final release
    - `echo Subject: "Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"`
    - If you use Thunderbird, you can use this:
 
-        thunderbird -compose "to=tails-dev@boum.org,tails-l10n@boum.org,cc=tails-manual-testers@boum.org,subject=Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"
+         thunderbird -compose "to=tails-dev@boum.org,tails-l10n@boum.org,cc=tails-manual-testers@boum.org,subject=Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"
+
+     Else, if you use *notmuch*, you can use this:
+
+         notmuch-emacs-mua --client --create-frame \
+            --cc=tails-manual-testers@boum.org \
+            --subject="Release schedule for Tails ${NEXT_PLANNED_VERSION:?}" \
+            tails-dev@boum.org tails-l10n@boum.org
 
    - If a release candidate is planned, include it in the release schedule
      and the call for manual testers.
@@ -2151,7 +2158,7 @@ If you just released a final release
      - subject "RM for Tails NEXT_PLANNED_VERSION"
      - body: "This is a reminder that you will be RM for Tails NEXT_PLANNED_VERSION. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift".
 
-        thunderbird -compose "subject='RM for Tails ${NEXT_PLANNED_VERSION}',format=text,body='This is a reminder that you will be RM for Tails ${NEXT_PLANNED_VERSION}. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift'"
+           thunderbird -compose "subject='RM for Tails ${NEXT_PLANNED_VERSION}',format=text,body='This is a reminder that you will be RM for Tails ${NEXT_PLANNED_VERSION}. Please see https://tails.boum.org/contribute/working_together/roles/release_manager/#shift'"
 
    - If there's a release candidate scheduled before our next release,
      do the same for the release manager of that release candidate.
