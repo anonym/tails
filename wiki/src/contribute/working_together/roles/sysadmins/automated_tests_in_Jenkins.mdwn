@@ -11,13 +11,13 @@ Jenkins generally only runs scenarios that are _not_ tagged `@fragile`
 in Gherkin. But it runs the full test suite, including scenarios that
 are tagged `@fragile`, if the images under test were built:
 
- - from a branch whose name ends with the `+force-all-tests` suffix
+ - from a branch whose name ends with the `-force-all-tests` suffix
  - from a tag
  - from the `devel` branch
  - from the `testing` branch
 
 Therefore, to ask Jenkins to run the full test suite on your topic
-branch, give it a name that ends `+force-all-tests`.
+branch, give it a name that ends `-force-all-tests`.
 
 ## Trigger a test suite run without rebuilding images
 
