@@ -303,6 +303,7 @@ class Mount(object):
             # Create the parent directory
             self.src.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
             executil.check_call(["cp", "-a", self.dest, self.src])
+            executil.check_call(["sync", "--file-system", self.src])
 
         # Bind-mount the source to the destination. To prevent symlink
         # attacks, we use mount(2) of the libc instead of the mount(8)
