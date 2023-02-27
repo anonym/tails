@@ -22,9 +22,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 09:28+0100\n"
-"PO-Revision-Date: 2023-01-14 23:55+0000\n"
-"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
+"POT-Creation-Date: 2023-02-15 08:44+0100\n"
+"PO-Revision-Date: 2023-01-27 06:49+0000\n"
+"Last-Translator: Oskari Lavinto <olavinto@protonmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/tor/tails-gui/fi/"
 ">\n"
 "Language: fi\n"
@@ -32,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
@@ -59,9 +59,9 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:180
 msgid ""
-"To add more, install some software using <a href=\"synaptic.desktop"
-"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
-"\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic."
+"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
+"desktop\">APT on the command line</a>."
 msgstr ""
 "Jos haluat asentaa lisää, asenna ohjelmistoja käyttäen <a href=\"synaptic."
 "desktop\">Synaptic Package Manageria</a> tai <a href=\"org.gnome.Terminal."
@@ -163,17 +163,17 @@ msgstr "#{time} jäljellä — {downloaded} / {size} ({speed}/sec)\n"
 #. Translators: KB is the short form for kilobyte
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Role/FormatByte.pm:33
 msgid "KB"
-msgstr "%1 kt/s"
+msgstr "kt"
 
 #. Translators: MB is the short form for megabyte
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Role/FormatByte.pm:35
 msgid "MB"
-msgstr "%1 Mt"
+msgstr "Mt"
 
 #. Translators: GB is the short form for gigabyte
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Role/FormatByte.pm:37
 msgid "GB"
-msgstr "%1 Gt"
+msgstr "Gt"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Role/FormatByte.pm:43
 msgid "bytes"
@@ -192,16 +192,16 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</b>\\n"
-"\\nCheck your network connection, and restart Tails to try upgrading again."
-"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
-"upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</"
+"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
+"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/check.en.html"
 msgstr ""
 "<b>Kirjautumisavainta päivittäessä tapahtui virhe.</b>\\n\\n<b>Tämän takia "
 "ei tiedetä, onko päivitys saatavilla verkkosivultamme.</b>\\n\\nTarkista "
-"verkkoyhteytesi ja yritä taas päivitystä käynnistämällä Tails uudelleen.\\n"
-"\\nJos pulma jatkuu, siirry tiedostoon file:///usr/share/doc/tails/website/"
-"doc/upgrade/error/check.en.html"
+"verkkoyhteytesi ja yritä taas päivitystä käynnistämällä Tails uudelleen."
+"\\n\\nJos pulma jatkuu, siirry tiedostoon file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/check.en.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:303
 msgid "Error while downloading the signing key"
@@ -347,7 +347,7 @@ msgid "Upgrade later"
 msgstr "Päivitä myöhemmin"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:518
-#, perl-brace-format
+#, fuzzy, perl-brace-format
 msgid ""
 "<b>You should do a manual upgrade to the latest version of {name}.</b>\n"
 "\n"
@@ -358,6 +358,15 @@ msgid ""
 "\n"
 "To learn how to do a manual upgrade, go to {manual_upgrade_url}"
 msgstr ""
+"<b>Sinun on suoritettava manuaalinen päivitys viimeisimpään {name}-versioon."
+"</b>\n"
+"\n"
+"Lue lisää uudesta versiosta osoitteesta {details_url}\n"
+"\n"
+"Tails-järjestelmääsi on mahdotonta päivittää tähän versioon "
+"automaattisesti.\n"
+"\n"
+"Lue miten manuaalinen päivitys tapahtuu osoitteesta {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:528
 msgid "New version available"
@@ -395,8 +404,8 @@ msgid ""
 "Output file '{output_file}' does not exist, but tails-iuk-get-target-file "
 "did not complain. Please report a bug."
 msgstr ""
-"Tulostetiedostoa '%{output_file}s' ei ole olemassa, mutta tails-iuk-get-"
-"target-file ei valittanut. Ilmoita ohjelmointivirheestä."
+"Tallennustiedostoa '{output_file}' ei ole olemassa, mutta tails-iuk-get-"
+"target-file ei valittanut. Ilmoita viasta."
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:737
 msgid "Error while creating temporary downloading directory"
@@ -516,6 +525,7 @@ msgid "Additional Settings"
 msgstr "Lisäasetukset"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
@@ -536,11 +546,11 @@ msgstr "_Ylläpitosalasana"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:186
 msgid "_MAC Address Anonymization"
-msgstr "MAC osoitteen anonymisointi"
+msgstr "_MAC-osoitteen anonymisointi"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:249
 msgid "_Offline Mode"
-msgstr "Offline tila"
+msgstr "_Yhteydetön tila"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:258
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:413
@@ -588,21 +598,39 @@ msgstr "Pois päältä"
 msgid "Off (default)"
 msgstr "Pois päältä (oletus)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:401
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
+#, fuzzy
+msgid "Persistent Storage Not Unlocked"
+msgstr "Pysyvä tallennustila"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
+#, fuzzy
+msgid ""
+"Do you really want to start Tails without unlocking your Persistent Storage?"
+msgstr ""
+"Haluatko varmasti käynnistää Tailsin uudelleen nyt?\\n\\nKaikki nykyinen työ "
+"menetetään."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#, fuzzy
+msgid "Continue Without Persistent Storage"
+msgstr "Luo pysyvä tallennustila"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
 #, fuzzy
 msgid "Don't _Create Persistent Storage"
 msgstr "_Luo pysyvä tallennustila"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:403
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
 msgid "_Create Persistent Storage"
 msgstr "_Luo pysyvä tallennustila"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:81
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
 msgid "Error unlocking Persistent Storage: {}"
 msgstr "Virhe avatessa pysyvää tallennustilaa: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
 msgid "Error activating Persistent Storage: {}"
 msgstr "Virhe aktivoidessa pysyvää tallennustilaa: {}"
 
@@ -755,9 +783,9 @@ msgid "No mount points found"
 msgstr "Liitoskohtia ei löytynyt"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:699
-#, python-format
+#, fuzzy, python-format
 msgid "Entering unmount_device for \"%(device)s\""
-msgstr ""
+msgstr "Syötetään unmount_device laitteelle \"%(device)s\""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:708
 #, python-format
@@ -1084,6 +1112,14 @@ msgid ""
 "Renaming your database to <i>${default_filename}</i> would allow "
 "<i>KeePassXC</i> to open it automatically in the future."
 msgstr ""
+"<b><big>Haluatko nimetä <i>KeePassXC</i>-tietokantasi uudelleen?</big></b>\n"
+"\n"
+"<i>Persistent</i>-kansiossasi on <i>KeePassXC</i>-tietokanta:\n"
+"\n"
+"<i>${filename}</i>\n"
+"\n"
+"Avtamalla tietokantasi nimeksi <i>${default_filename}</i>, voisi "
+"<i>KeePassXC</i> avata sen jatkossa automaattisesti."
 
 #: config/chroot_local-includes/usr/local/bin/keepassxc:28
 msgid "Rename"
@@ -1510,17 +1546,19 @@ msgid "_Use a bridge that you already know"
 msgstr "_Käytä jo tuntemaasi siltaa"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:242
+#, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">unlock your "
+"To save your bridge, <a href=\"doc/persistent_storage\">unlock your "
 "Persistent Storage</a>."
 msgstr ""
 "Tallenna silta <a href=\"doc/first_steps/persistence\">avaamalla pysyvän "
 "tallennustilan salaus</a>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
+#, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">create a "
-"Persistent Storage</a> on your Tails USB stick."
+"To save your bridge, <a href=\"doc/persistent_storage\">create a Persistent "
+"Storage</a> on your Tails USB stick."
 msgstr ""
 "Tallenna silta <a href=\"doc/first_steps/persistence\">luomalla pysyvä "
 "tallennustila</a> Tailsin USB-muistitikulle."
@@ -1602,13 +1640,13 @@ msgstr "Sillan määritys on pakollista Tor-yhteyden käytön piilottamiseksi"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1011
 #, python-brace-format
 msgid "Scanned {bridge_type} bridge: <b>{bridge_info}</b>."
-msgstr ""
+msgstr "Skannattu {bridge_type} -silta: <b>{bridge_info}</b>."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1096
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1102
 msgid "Are you sure you want to lose progress?"
 msgstr "Haluatko varmasti menettää edistymisen?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -1623,11 +1661,11 @@ msgstr ""
 "uudelleen edistymispalkin loppuun asti voidaksesi suorittaa yhden "
 "vianmäärityksen."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1112
 msgid "Close and Lose Progress"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1107
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1113
 msgid "Wait"
 msgstr ""
 
@@ -1675,7 +1713,7 @@ msgstr "Tor-tila"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/torstatus@tails.boum.org/extension.js:46
 msgid "Open Onion Circuits"
-msgstr "Avaa sipulireititykset"
+msgstr "Avaa Onion-ketjut"
 
 #. Translators: Don't translate {volume_label} or {volume_size},
 #. they are placeholders and will be replaced. They need
@@ -1872,7 +1910,7 @@ msgstr "_Käynnistä uudelleen"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:123
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
 msgid "_Cancel"
 msgstr "__Peruuta"
 
@@ -2287,6 +2325,14 @@ msgid ""
 "If you want to work offline, enable the Offline Mode in the additional "
 "settings."
 msgstr ""
+"Korvasimme tämän lisäasetuksen Tails-versiossa 4.19 (Kesäkuu 2021) "
+"työpöydälle integroidulla Tor-yhteysavustajalla.\n"
+"\n"
+"Muodostaessasi Tor-yhteyttä Tailsin käynnistyttyä sinulta kysytään haluatko "
+"käyttää yhteyteen Tor-siltoja.\n"
+"\n"
+"Jos haluat toimia yhteydettömässä tilassa, ota yhteydetön tila "
+"lisäasetuksista käyttöön."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:357
 msgid "Offline Mode"
@@ -2473,13 +2519,14 @@ msgid "Send Error Report"
 msgstr "Lähetä virheilmoitus"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:61
+#, fuzzy
 msgid ""
 "Your Persistent Storage is unlocked.\n"
 "\n"
-"Its content will be available until you shut down Tails.\n"
+"Its content is available until you shut down Tails.\n"
 "\n"
-"<a href=\"doc/first_steps/persistence/backup\">Learn how to make a backup of "
-"your Persistent Storage.</a>"
+"<a href=\"doc/persistent_storage/backup\">Learn how to make a backup of your "
+"Persistent Storage.</a>"
 msgstr ""
 "Pysyvän tallennustilan salaus on avattu.\n"
 "\n"
@@ -2624,16 +2671,18 @@ msgstr "Pisteellä alkavat tiedostot"
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:602
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
 msgstr ""
+"Liitä jokainen \"Dotfiles\"-kansion tiedosto \"Home\"-kansioon symbolisilla "
+"linkeillä."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:612
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
 msgid "Activate Dotfiles"
 msgstr "Aktivoi pistetiedostot"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:642
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
 msgid "Custom"
 msgstr "Mukautettu"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:661
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:678
 msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
@@ -2641,20 +2690,25 @@ msgstr ""
 "Lisätäksesi tai poistaaksesi mukautettuja ominaisuuksia, muokkaa tiedostoa /"
 "live/persistence/TailsData_unlocked/persistence.conf."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:703
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
+#, fuzzy
 msgid ""
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 "<a href=\"doc/first_steps/persistence\">Lue lisää pysyvästä "
 "tallennustilasta</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/locked_view.ui.in:52
+#, fuzzy
 msgid ""
 "<b>Your Persistent Storage is locked.</b>\n"
 "\n"
 "To use or configure your Persistent Storage, unlock it in the Welcome Screen "
-"when starting Tails."
+"when starting Tails.\n"
+"\n"
+"To delete your Persistent Storage, click <b>Delete</b> on the right of the "
+"title bar."
 msgstr ""
 "<b>Pysyvä tallennustila on lukittu.</b>\n"
 "\n"
@@ -2690,19 +2744,20 @@ msgid "_Back"
 msgstr "_Takaisin"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:56
+#, fuzzy
 msgid ""
 "Everything you do disappears automatically when you shut down Tails.\n"
 "\n"
 "But you can save some of your files and configuration in an encrypted "
-"Persistent Storage on your Tails USB stick:\n"
+"Persistent Storage on your Tails USB stick, for example:\n"
 "\n"
 "• Your documents\n"
 "• Your Wi-Fi passwords\n"
 "• Your browser bookmarks\n"
-"• and so on\n"
+"• ...\n"
 "\n"
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 "Kaikki mitä teet katoaa, kun sammutat Tailsin.\n"
 "\n"
@@ -2718,14 +2773,12 @@ msgstr ""
 "tallennustilasta</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:92
+#, fuzzy
 msgid ""
-"Unfortunately, this Tails device does not support creating a Persistent "
-"Storage.\n"
+"Sorry, it is impossible to create a Persistent Storage on this device.\n"
 "\n"
-"To be able to use Tails with Persistent Storage, please follow the "
-"documentation to install Tails on a USB stick:\n"
-"\n"
-"<a href=\"install\">Install Tails</a>"
+"To be able to use Tails with a Persistent Storage, please follow our "
+"instructions on <a href=\"install\">installing Tails on a USB stick</a>."
 msgstr ""
 "Valitettavasti tämä Tails-laite ei tue pysyvän tallennustilan luomista.\n"
 "\n"
@@ -2734,7 +2787,7 @@ msgstr ""
 "\n"
 "<a href=\"install\">Asenna Tails</a>"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:139
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:137
 msgid "Co_ntinue"
 msgstr "_Jatka"
 
@@ -3240,7 +3293,7 @@ msgstr "Avaa verkonvalvonta"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2039
 msgid "View Tor Circuits"
-msgstr "Näytä reitti"
+msgstr "Näytä Tor-ketjut"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2053
 msgid "Reset Tor Connection"

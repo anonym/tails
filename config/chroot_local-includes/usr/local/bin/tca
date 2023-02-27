@@ -22,6 +22,10 @@ from tailslib.persistence import (
 
 import tca.config
 
+A11Y_BUS_PROXY_PATH="/run/user/1000/.dbus-proxy/a11y-bus-proxy.sock"
+IBUS_PROXY_PATH="/run/user/1000/.dbus-proxy/ibus-proxy.sock"
+A11Y_BUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/a11y-bus-proxy.sock"
+IBUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/ibus-proxy.sock"
 NETNS = "tca"
 log = getLogger(__name__)
 
@@ -89,14 +93,12 @@ def main():
     runuser = ["/sbin/runuser", "-u", LIVE_USERNAME]
     # base bwrap sharing most of the system
     bwrap = ["bwrap", "--bind", "/", "/", "--proc", "/proc", "--dev", "/dev"]
-    # passes data to us
+
     bwrap += [
-        "--bind",
-        os.path.join("/tmp/netns-specific/", NETNS),
-        "/tmp/shared-with-me/",
+        "--bind", A11Y_BUS_PROXY_PATH, A11Y_BUS_SANDBOX_PATH,
+        "--bind", IBUS_PROXY_PATH, IBUS_SANDBOX_PATH,
     ]
-    # hide data not for us
-    bwrap += ["--tmpfs", "/tmp/netns-specific/"]
+
     inherit_vars = [
         "DESKTOP_STARTUP_ID",
         "NOTIFY_SOCKET",
@@ -106,8 +108,8 @@ def main():
         "env",
         *gnome_env_vars(),
         *inherit_env,
-        "AT_SPI_BUS_ADDRESS=unix:path=/tmp/shared-with-me/at.sock",
-        "IBUS_ADDRESS=unix:path=/tmp/shared-with-me/ibus.sock",
+        f"AT_SPI_BUS_ADDRESS=unix:path={A11Y_BUS_SANDBOX_PATH}",
+        f"IBUS_ADDRESS=unix:path={IBUS_SANDBOX_PATH}",
         # uncomment this if you want to tweak the UI
         # 'GTK_DEBUG=interactive',
     ]
@@ -121,9 +123,7 @@ def main():
     # connect_drop: opens a privileged file and pass FD to new process
     # ch_netns: enter the new namespace
     # runuser: change back to unprivileged user
-    # bwrap: this is probably the most complicated; what it does is sharing /tmp/netns-specific/$NETNS on
-    # /tmp/shared-with-me/ and hide /tmp/netns-specific/ . The result is that TCA will be able to access
-    # sockets that would otherwise be unreachable. See also tails-{a11y,ibus}-proxy-netns@.service
+    # bwrap: Mount D-Bus proxies. See also tails-a11y-bus-proxy.service and tails-ibus-proxy.service.
     # envcmd: set the "right" environment; this means getting all "normal" gnome variables, AND clarifying
     #         where is the {a11y,ibus} bus, which is related to bwrap
 

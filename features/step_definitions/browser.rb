@@ -141,12 +141,11 @@ end
 def page_has_loaded_in_the_tor_browser(page_titles)
   page_titles = [page_titles] if page_titles.instance_of?(String)
   assert_equal(Array, page_titles.class)
+  browser_name = 'Tor Browser'
   if $language == 'German'
-    browser_name = 'Tor-Browser'
     reload_action = 'Neu laden'
     separator = '-'
   else
-    browser_name = 'Tor Browser'
     reload_action = 'Reload'
     separator = '—'
   end

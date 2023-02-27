@@ -43,7 +43,7 @@ EOF
 
 title="$(gettext -s 'Back Up Persistent Storage')"
 if [ ! -d "$SOURCE" ] || [ ! -b "$(backup_luks_device)" ]; then
-    msg="$(gettext -s 'This utility backs up your Persistent Storage to your backup Tails USB stick.\n\nTo create a backup Tails USB stick, see <a href="file:///usr/share/doc/tails/website/doc/first_steps/persistence/backup.en.html">making a backup of your Persistent Storage</a>.\n\n<b>Sorry, it is impossible to back up your Persistent Storage.</b>\n\nTo back up your Persistent Storage, you need to:')"
+    msg="$(gettext -s 'This utility backs up your Persistent Storage to your backup Tails USB stick.\n\nTo create a backup Tails USB stick, see <a href="file:///usr/share/doc/tails/website/doc/persistent_storage/backup.en.html">making a backup of your Persistent Storage</a>.\n\n<b>Sorry, it is impossible to back up your Persistent Storage.</b>\n\nTo back up your Persistent Storage, you need to:')"
     if [ ! -d "$SOURCE" ]; then
         msg="${msg}""$(gettext -s '\n\n• Unlock your Persistent Storage when starting Tails.')"
     fi

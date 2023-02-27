@@ -40,6 +40,7 @@ class PersistentStorageSettings(object):
     """Controller for settings related to Persistent Storage"""
     def __init__(self):
         self.is_unlocked = False
+        self.failed_with_unexpected_error = False
         self.cleartext_name = 'TailsData_unlocked'
         self.cleartext_device = '/dev/mapper/' + self.cleartext_name
         self.service_proxy = Gio.DBusProxy.new_sync(
@@ -50,9 +51,8 @@ class PersistentStorageSettings(object):
         device_variant = self.service_proxy.get_cached_property("Device")  # type: GLib.Variant
         self.device = device_variant.get_string() if device_variant else "/"
 
-    def has_persistence(self):
-        return self.service_proxy.\
-            get_cached_property("IsCreated")
+    def is_created(self):
+        return self.service_proxy.get_cached_property("IsCreated")
 
     def unlock(self, passphrase) -> bool:
         """Unlock the Persistent Storage partition
@@ -63,6 +63,7 @@ class PersistentStorageSettings(object):
         if os.path.exists(self.cleartext_device):
             logging.warning(f"Cleartext device {self.cleartext_device} already"
                             f"exists")
+            self.is_unlocked = True
             return True
 
         try:
@@ -70,17 +71,17 @@ class PersistentStorageSettings(object):
                 method_name="Unlock",
                 parameters=GLib.Variant("(s)", (passphrase,)),
                 flags=Gio.DBusCallFlags.NONE,
-                # -1 means the default timeout of 25 seconds is used,
-                # which should be enough.
-                timeout_msec=-1,
+                # In some cases, the default timeout of 25 seconds was not
+                # enough, so we use a timeout of 120 seconds instead.
+                timeout_msec=120000,
             )
         except GLib.GError as err:
             if IncorrectPassphraseError.is_instance(err):
                 return False
+            self.failed_with_unexpected_error = True
             raise tailsgreeter.errors.PersistentStorageError(
                 _("Error unlocking Persistent Storage: {}").format(err)
             )
-
         self.is_unlocked = True
         return True
 
@@ -96,6 +97,7 @@ class PersistentStorageSettings(object):
                 timeout_msec=120000,
             )
         except GLib.GError as err:
+            self.failed_with_unexpected_error = True
             raise tailsgreeter.errors.PersistentStorageError(
                 _("Error activating Persistent Storage: {}").format(err)
             )

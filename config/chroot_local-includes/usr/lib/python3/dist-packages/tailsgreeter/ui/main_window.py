@@ -19,19 +19,17 @@ import locale
 import logging
 from typing import TYPE_CHECKING
 import gi
-import glob
 import os
-import sh
 
 import tailsgreeter                                             # NOQA: E402
 import tailsgreeter.config                                      # NOQA: E402
-from tailsgreeter.config import settings_dir, persistent_settings_dir, admin_password_path
 from tailsgreeter.settings import SettingNotFoundError
 from tailsgreeter.translatable_window import TranslatableWindow
 from tailsgreeter.ui.popover import Popover
 from tailsgreeter.ui import _
 from tailsgreeter.ui.add_settings_dialog import AddSettingsDialog
 from tailsgreeter.ui.additional_settings import AdditionalSetting
+from tailsgreeter.ui.message_dialog import MessageDialog
 from tailsgreeter.ui.help_window import GreeterHelpWindow
 from tailsgreeter.ui.region_settings import LocalizationSettingUI
 from tailsgreeter import TRANSLATION_DOMAIN
@@ -162,6 +160,16 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         # Add settings dialog
         self.dialog_add_setting = AddSettingsDialog(builder, self.settings)
         self.dialog_add_setting.set_transient_for(self)
+
+        # Add confirm dialog
+        self.confirm_dialog = MessageDialog(
+            message_type=Gtk.MessageType.WARNING,
+            title=_("Persistent Storage Not Unlocked"),
+            text=_("Do you really want to start Tails without unlocking your Persistent Storage?"),
+            cancel_label=_("Cancel"),
+            ok_label=_("Continue Without Persistent Storage"),
+        )
+        self.confirm_dialog.set_transient_for(self)
 
         # Setup keyboard accelerators
         self._build_accelerators()
@@ -357,16 +365,15 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         return False
 
     def cb_button_start_clicked(self, widget, user_data=None):
-        for setting in glob.glob(os.path.join(settings_dir, 'tails.*')):
-            sh.cp("-a", setting, persistent_settings_dir)
-        try:
-            self.greeter.admin_setting.load()
-        except SettingNotFoundError:
-            # The admin password is not set, so we have to make sure that
-            # the file also doesn't exist in the persistent directory,
-            # in case that the user disabled a persisted admin password.
-            pw_filename = os.path.basename(admin_password_path)
-            sh.rm("-f", os.path.join(persistent_settings_dir, pw_filename))
+        # Ask for confirmation when Persistent Storage exists but is not
+        # unlocked
+        if self.persistence_setting.is_created() \
+                and not self.persistence_setting.is_unlocked \
+                and not self.persistence_setting.failed_with_unexpected_error:
+            response = self.confirm_dialog.run()
+            self.confirm_dialog.set_visible(False)
+            if response != Gtk.ResponseType.OK:
+                return
 
         self.greeter.login()
         return False

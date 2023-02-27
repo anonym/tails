@@ -38,8 +38,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 09:28+0100\n"
-"PO-Revision-Date: 2022-12-16 13:51+0000\n"
+"POT-Creation-Date: 2023-02-15 08:44+0100\n"
+"PO-Revision-Date: 2023-02-11 14:38+0000\n"
 "Last-Translator: emma peel <emma.peel@riseup.net>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/tor/tails-gui/ar/"
 ">\n"
@@ -49,7 +49,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.15\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
@@ -76,15 +76,16 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:180
 msgid ""
-"To add more, install some software using <a href=\"synaptic.desktop"
-"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
-"\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic."
+"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
+"desktop\">APT on the command line</a>."
 msgstr ""
 "لإضافة المزيد، نصّب بعض البرمجيات باستخدام <a href=\"synaptic.desktop\">مدير "
 "الحزم سينابتك</a> أو <a href=\"org.gnome.Terminal.desktop\">APT من سطر "
 "الأوامر</a>."
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:154
+#, fuzzy
 msgid "_Create persistent storage"
 msgstr "أنشئ مساحة تخزين دائمة"
 
@@ -139,15 +140,15 @@ msgstr[5] "{count}y"
 #. will be replaced.
 #. d is the short form for days.
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/DownloadProgress.pm:82
-#, perl-brace-format
+#, fuzzy, perl-brace-format
 msgid "1d"
 msgid_plural "{count}d"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "{count}d"
+msgstr[1] "1d"
+msgstr[2] "1d"
+msgstr[3] "1d"
+msgstr[4] "1d"
+msgstr[5] "{count}d"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -230,10 +231,10 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</b>\\n"
-"\\nCheck your network connection, and restart Tails to try upgrading again."
-"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
-"upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</"
+"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
+"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/check.en.html"
 msgstr ""
 "<b>حدث خطأ أثناء تحديث مفتاح التوقيع .</b>\\n\\n<b>هذا يمنع تحديد ما إذا كان "
 "متاح التحديث من موقعنا على الويب.</b>\\n\\nتحقق من اتصال الشبكة، و إعادة "
@@ -253,6 +254,7 @@ msgid "Error while checking for upgrades"
 msgstr "خطأ أثناء التحقق من وجود تحديثات"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:343
+#, fuzzy
 msgid ""
 "<b>Could not determine whether an upgrade is available from our website.</"
 "b>\n"
@@ -545,6 +547,7 @@ msgid "Additional Settings"
 msgstr "إعدادات إضافية"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
@@ -560,6 +563,7 @@ msgid "Back"
 msgstr "السابق"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:63
+#, fuzzy
 msgid "_Administration Password"
 msgstr "كلمة السر للأدمن"
 
@@ -582,6 +586,7 @@ msgid "Disable all networking"
 msgstr "عطل جميع الشبكات"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:315
+#, fuzzy
 msgid "_Network Connection"
 msgstr "الاتصال بالشبكة"
 
@@ -619,26 +624,40 @@ msgstr "إيقاف التشغيل"
 msgid "Off (default)"
 msgstr "معطل (إفتراضي)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:401
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
+#, fuzzy
+msgid "Persistent Storage Not Unlocked"
+msgstr "انشاء تخزين دائم"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
+#, fuzzy
+msgid ""
+"Do you really want to start Tails without unlocking your Persistent Storage?"
+msgstr "قم بإدخال عبارتك السرية لفك قفل مساحة التخزين الدائم"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#, fuzzy
+msgid "Continue Without Persistent Storage"
+msgstr "انشاء تخزين دائم"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
 #, fuzzy
 msgid "Don't _Create Persistent Storage"
 msgstr "انشاء تخزين دائم"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:403
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
 #, fuzzy
 msgid "_Create Persistent Storage"
 msgstr "انشاء تخزين دائم"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:81
-#, fuzzy
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
 msgid "Error unlocking Persistent Storage: {}"
-msgstr "الذاكرة المستديمة مشفرة"
+msgstr "الذاكرة المستديمة مشفرة {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:100
-#, fuzzy
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
 msgid "Error activating Persistent Storage: {}"
-msgstr "انشاء تخزين دائم"
+msgstr "انشاء تخزين دائم: {}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:68
 msgid "Unlocking…"
@@ -781,7 +800,7 @@ msgid "No mount points found"
 msgstr "لا توجد نقاط تركيب"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:699
-#, python-format
+#, fuzzy, python-format
 msgid "Entering unmount_device for \"%(device)s\""
 msgstr "إدخال جهاز إلغاء التحميل لـ\"%(device)s\""
 
@@ -835,7 +854,7 @@ msgstr "إزالة ملفات %(file)s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1019
 #, python-format
 msgid "%s already bootable"
-msgstr "%s جاهز للأقلاع "
+msgstr "%s جاهز للأقلاع"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1039
 msgid "Unable to find partition"
@@ -950,8 +969,8 @@ msgid ""
 "The device \"%(pretty_name)s\" is too small to install Tails (at least "
 "%(size)s GB is required)."
 msgstr ""
-"الجهاز \"%(pretty_name)s\" ليس لديه السعة الكافية لتثبيت Tails (مطلوب"
-"%(size)s جيجابايت على الأقل)."
+"الجهاز \"%(pretty_name)s\" ليس لديه السعة الكافية لتثبيت Tails "
+"(مطلوب%(size)s جيجابايت على الأقل)."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:481
 #, python-format
@@ -1135,16 +1154,16 @@ msgid ""
 "The device Tails is running from cannot be found. Maybe you used the 'toram' "
 "option?"
 msgstr ""
-"لايمكن العثور على المحرك الذي يعمل عليه تيلز. قد يكون السبب اختيارك \"تورام"
-"\" 'toram'"
+"لايمكن العثور على المحرك الذي يعمل عليه تيلز. قد يكون السبب اختيارك "
+"\"تورام\" 'toram'"
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:251
 msgid ""
 "The drive Tails is running from cannot be found. Maybe you used the 'toram' "
 "option?"
 msgstr ""
-"لايمكن العثور على المحرك الذي يعمل عليه تيلز. قد يكون السبب اختيارك \"تورام"
-"\" 'toram'"
+"لايمكن العثور على المحرك الذي يعمل عليه تيلز. قد يكون السبب اختيارك "
+"\"تورام\" 'toram'"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/status-menu-helper@tails.boum.org/extension.js:78
 msgid "Lock screen"
@@ -1334,7 +1353,7 @@ msgstr "فشل ترقية البرامج الاضافية الخاصة بك"
 
 #: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:37
 msgid "Documentation"
-msgstr "التوثيق"
+msgstr "وثائق"
 
 #. Translators: Don't translate {package}, it's a placeholder and will be replaced.
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:95
@@ -1368,9 +1387,9 @@ msgid ""
 "Package Manager</a> or <a href=\"org.gnome.Terminal.desktop\">APT on the "
 "command line</a>."
 msgstr ""
-"للقيام بذلك, قم بتثبيت البرنامج باستخدام <a href=\"synaptic.desktop"
-"\">Synaptic Package Manager</a> ال <a href=\"org.gnome.Terminal.desktop"
-"\">APT على سطر الأوامر</a>."
+"للقيام بذلك, قم بتثبيت البرنامج باستخدام <a href=\"synaptic."
+"desktop\">Synaptic Package Manager</a> ال <a href=\"org.gnome.Terminal."
+"desktop\">APT على سطر الأوامر</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:196
 msgid ""
@@ -1383,6 +1402,7 @@ msgstr ""
 "او <a href=\"org.gnome.Terminal.desktop\">APT على سطر الأوامر</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:206
+#, fuzzy
 msgid ""
 "To do so, create a persistent storage and install some software using <a "
 "href=\"synaptic.desktop\">Synaptic Package Manager</a> or <a href=\"org."
@@ -1423,7 +1443,7 @@ msgstr "كلمة السر"
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:150
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:93
 msgid "Confirm"
-msgstr "تأكيد "
+msgstr "تأكيد"
 
 #: config/chroot_local-includes/usr/local/bin/tails-security-check:121
 msgid "This version of Tails has known security issues:"
@@ -1516,7 +1536,7 @@ msgstr "لاتعرض هذا مجددا"
 
 #: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:42
 msgid "Learn More"
-msgstr "إعرف/ي أكثر "
+msgstr "إعرف/ي أكثر"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/config.py:9
 #: ../config/chroot_local-includes/usr/share/applications/tca.desktop.in.h:1
@@ -1530,16 +1550,17 @@ msgstr "_استخدم الجسر الذي تعرفه بالفعل"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:242
 #, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">unlock your "
+"To save your bridge, <a href=\"doc/persistent_storage\">unlock your "
 "Persistent Storage</a>."
 msgstr ""
 "للحفاظ على الجسر الخاص بك, <a href=\"doc/first_steps/persistence\">افتح "
 "Persistent Storage الخاص بك</a>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
+#, fuzzy
 msgid ""
-"To save your bridge, <a href=\"doc/first_steps/persistence\">create a "
-"Persistent Storage</a> on your Tails USB stick."
+"To save your bridge, <a href=\"doc/persistent_storage\">create a Persistent "
+"Storage</a> on your Tails USB stick."
 msgstr ""
 "للحفاظ على الجسر الخاص بك, <a href=\"doc/first_steps/persistence\">إنشاء  "
 "Persistent Storage</a> على جهاز Tails USB الخاص بك."
@@ -1548,7 +1569,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:773
 #, python-brace-format
 msgid "Invalid: {exception}"
-msgstr ""
+msgstr "غير صالح: {exception}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:281
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:786
@@ -1620,11 +1641,11 @@ msgstr "يلزم إنشاء جسر إذا كنت تريد إخفاء أنك تس
 msgid "Scanned {bridge_type} bridge: <b>{bridge_info}</b>."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1096
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1102
 msgid "Are you sure you want to lose progress?"
 msgstr "هل أنت متأكد أنك تريد أن تفقد التقدم؟"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -1637,11 +1658,11 @@ msgstr ""
 "إذا فشل الاتصال بـ Tor، فسيتعين عليك الانتظار مرة أخرى حتى نهاية شريط التقدم "
 "لتتمكن من استكشاف أخطاء الاتصال وإصلاحها."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1112
 msgid "Close and Lose Progress"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1107
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1113
 msgid "Wait"
 msgstr ""
 
@@ -1656,7 +1677,7 @@ msgid ""
 "<i>Thunderbird</i>, follow our migration instructions."
 msgstr ""
 "يستبدل <i>ثندربيرد</i> 78 الآن امتداد<i> Enigmail </i>بدعم مدمج لتشفير "
-"OpenPGP. لمتابعة استخدام مفاتيح OpenPGP في</i> ثندربيرد</i> ، اتبع تعليمات "
+"OpenPGP. لمتابعة استخدام مفاتيح OpenPGP في<i> ثندربيرد</i> ، اتبع تعليمات "
 "الترحيل الخاصة بنا."
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:45
@@ -1885,7 +1906,7 @@ msgstr "_Restart"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:123
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
 msgid "_Cancel"
 msgstr ""
 
@@ -2212,10 +2233,11 @@ msgid "Remove an additional software package"
 msgstr "ازالة حزمة برامج اضافية"
 
 #: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.additional-software.policy.in.h:2
+#, fuzzy
 msgid ""
 "Authentication is required to remove a package from your additional software "
 "($(command_line))"
-msgstr "التوثيق مطلوب لازالة حزمة من برامجك الاضافية ($(سطر_الأوامر))"
+msgstr "التوثيق مطلوب لازالة حزمة من برامجك الاضافية ($(command_line))"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:18
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:56
@@ -2238,7 +2260,7 @@ msgstr "قم بادخال كلمة سر إداريّة"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:107
 msgid "Confirm your administration password"
-msgstr "أكّد كلمة السرّ الإداريّة الخاصّة بك "
+msgstr "أكّد كلمة السرّ الإداريّة الخاصّة بك"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:124
 msgid "Disable"
@@ -2377,6 +2399,7 @@ msgid "Default Settings"
 msgstr "الإعدادات الإفتراضية"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:399
+#, fuzzy
 msgid "Encrypted _Persistent Storage"
 msgstr "الذاكرة المستديمة مشفرة"
 
@@ -2396,6 +2419,7 @@ msgstr ""
 "مجددا."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:579
+#, fuzzy
 msgid "_Additional Settings"
 msgstr "إعدادات إضافية"
 
@@ -2416,6 +2440,7 @@ msgid "Shutdown"
 msgstr "أغلق المتصفح"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:766
+#, fuzzy
 msgid "_Start Tails"
 msgstr "ابدأ تيلز"
 
@@ -2485,10 +2510,10 @@ msgstr "إرسال تقرير بخطأ WhisperBack"
 msgid ""
 "Your Persistent Storage is unlocked.\n"
 "\n"
-"Its content will be available until you shut down Tails.\n"
+"Its content is available until you shut down Tails.\n"
 "\n"
-"<a href=\"doc/first_steps/persistence/backup\">Learn how to make a backup of "
-"your Persistent Storage.</a>"
+"<a href=\"doc/persistent_storage/backup\">Learn how to make a backup of your "
+"Persistent Storage.</a>"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:89
@@ -2530,7 +2555,7 @@ msgstr "شاشة الترحيب"
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:250
 #, fuzzy
 msgid "Activate Printers"
-msgstr "  الطابعات"
+msgstr "الطابعات"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:275
 msgid "Network"
@@ -2638,6 +2663,7 @@ msgid "Activate Additional Software"
 msgstr "برامج إضافية"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:601
+#, fuzzy
 msgid "Dotfiles"
 msgstr "Dotfiles"
 
@@ -2646,26 +2672,26 @@ msgstr "Dotfiles"
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
 msgstr "اربط كل ملف في مجلد Dotfiles بالرمز إلى المجلد الرئيسي"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:612
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
 #, fuzzy
 msgid "Activate Dotfiles"
 msgstr "Dotfiles"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:642
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
 msgid "Custom"
 msgstr "مخصص"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:661
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:678
 msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:703
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
 #, fuzzy
 msgid ""
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 "للحفاظ على الجسر الخاص بك, <a href=\"doc/first_steps/persistence\">افتح "
 "Persistent Storage الخاص بك</a>."
@@ -2675,7 +2701,10 @@ msgid ""
 "<b>Your Persistent Storage is locked.</b>\n"
 "\n"
 "To use or configure your Persistent Storage, unlock it in the Welcome Screen "
-"when starting Tails."
+"when starting Tails.\n"
+"\n"
+"To delete your Persistent Storage, click <b>Delete</b> on the right of the "
+"title bar."
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:52
@@ -2693,7 +2722,7 @@ msgstr "عبارة مرور"
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:101
 #, fuzzy
 msgid "Confirm:"
-msgstr "تأكيد "
+msgstr "تأكيد"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:178
 #, fuzzy
@@ -2710,29 +2739,26 @@ msgid ""
 "Everything you do disappears automatically when you shut down Tails.\n"
 "\n"
 "But you can save some of your files and configuration in an encrypted "
-"Persistent Storage on your Tails USB stick:\n"
+"Persistent Storage on your Tails USB stick, for example:\n"
 "\n"
 "• Your documents\n"
 "• Your Wi-Fi passwords\n"
 "• Your browser bookmarks\n"
-"• and so on\n"
+"• ...\n"
 "\n"
-"<a href=\"doc/first_steps/persistence\">Learn more about the Persistent "
-"Storage</a>"
+"<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
+"a>"
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:92
 msgid ""
-"Unfortunately, this Tails device does not support creating a Persistent "
-"Storage.\n"
+"Sorry, it is impossible to create a Persistent Storage on this device.\n"
 "\n"
-"To be able to use Tails with Persistent Storage, please follow the "
-"documentation to install Tails on a USB stick:\n"
-"\n"
-"<a href=\"install\">Install Tails</a>"
+"To be able to use Tails with a Persistent Storage, please follow our "
+"instructions on <a href=\"install\">installing Tails on a USB stick</a>."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:139
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:137
 msgid "Co_ntinue"
 msgstr ""
 
@@ -2761,6 +2787,7 @@ msgid "File Containers"
 msgstr "مستوعبات الملفات"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:80
+#, fuzzy
 msgid "_Add"
 msgstr "إضافة"
 
@@ -2916,6 +2943,7 @@ msgstr ""
 "<a href=\"doc/anonymous_internet/tor\">تعرف على المزيد حول جسور Tor</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:157
+#, fuzzy
 msgid "Use a _default bridge"
 msgstr "استخدم الجسر الافتراضي"
 
@@ -2997,6 +3025,7 @@ msgid "Your clock and time zone need to be correct to connect to Tor."
 msgstr "يجب أن تكون ساعتك ومنطقتك الزمنية صحيحتين للاتصال بـ Tor."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:769
+#, fuzzy
 msgid "Fix _Clock"
 msgstr "إصلاح الساعة"
 
@@ -3011,6 +3040,7 @@ msgid ""
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:840
+#, fuzzy
 msgid "Try _Signing in to the Network"
 msgstr "حاول تسجيل الدخول إلى الشبكة"
 
@@ -3025,6 +3055,7 @@ msgid ""
 msgstr "إذا كنت على شبكة شركة أو جامعة، فقد تحتاج إلى تكوين بروكسي محلي."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:912
+#, fuzzy
 msgid "Configure a Local _Proxy"
 msgstr "تكوين بروكسي محلي"
 
@@ -3113,6 +3144,7 @@ msgstr ""
 "مستخدم Tails."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1343
+#, fuzzy
 msgid "Configure a Tor _bridge"
 msgstr "تكوين جسر Tor"
 
@@ -3277,7 +3309,7 @@ msgstr "منفذ"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2334
 msgid "_Save Proxy Settings"
-msgstr "_حفظ إعدادات البروكسي "
+msgstr "_حفظ إعدادات البروكسي"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:7
 msgid "Tor Connection - Fix Clock"
