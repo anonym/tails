@@ -135,6 +135,7 @@ class PersistentStorage(object):
             self.activation_failed()
             return
 
+        self.box_storage_unlock.set_visible(False)
         self.spinner_storage_unlock.set_visible(False)
         self.entry_storage_passphrase.set_visible(False)
         self.button_storage_unlock.set_visible(False)
