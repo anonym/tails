@@ -26,15 +26,9 @@ done
 mountpoint=/root/mnt
 mkdir -p "$mountpoint"
 mount -t 9p src "$mountpoint"
-
-# early_patch=test-suite runs a different hook
-if echo "$option" | grep -qw test-suite; then
-    hook="${mountpoint}/hook-test-suite"
-else
-    hook="${mountpoint}/hook"
-fi
-if [ -x "${hook}" ]; then
-    "${hook}" /root || true
+if [ -x "${mountpoint}/hook" ]
+then
+    "${mountpoint}/hook" /root || true
 fi
 
 # early_patch=umount will umount the filesystem immediately after running the hook

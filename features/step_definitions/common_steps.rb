@@ -318,7 +318,7 @@ end
 Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_apt_sources|
   enter_boot_menu_cmdline
   boot_key = @os_loader == 'UEFI' ? 'F10' : 'Return'
-  early_patch = $config['EARLY_PATCH'] ? ' early_patch=test-suite,umount' : ''
+  early_patch = $config['EARLY_PATCH'] ? ' early_patch=umount' : ''
   @screen.type(' autotest_never_use_this_option' \
                ' blacklist=psmouse' \
                " #{early_patch} #{@boot_options}",
