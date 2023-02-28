@@ -127,6 +127,12 @@ by the local configuration file:
   you (and display the match in a pop-up, so you can confirm) but
   YMMV. Defaults to `false`.
 
+* `RESTRICT_CHUTNEY_MEMORY`: Boolean value. If set to `true`, the
+  simulated Tor network (Chutney) will be run in a systemd scope with
+  memory restriction. By default, `MemoryHigh=4G` and `MemoryMax=6G` are
+  used. To use different values, set the `CHUTNEY_MEMORY_HIGH` and
+  `CHUTNEY_MEMORY_MAX` environment variables.
+
 * `TMPDIR`: String value. Directory where various temporary files
   are written during a test, e.g. VM snapshots and memory dumps,
   failure screenshots, pcap files and disk images. Defaults to
