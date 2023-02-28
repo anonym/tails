@@ -127,6 +127,7 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
                                   PREFERRED_WIDTH),
                               min(Gdk.Screen.get_default().get_height(),
                                   PREFERRED_HEIGHT))
+        self.set_valign(Gtk.Align.START)
 
         # Add our icon dir to icon theme
         icon_theme = Gtk.IconTheme.get_default()
