@@ -29,7 +29,7 @@ class PersistentStorage(object):
         self.box_storagecreate = builder.get_object('box_storagecreate')
         self.box_storage_unlock = builder.get_object('box_storage_unlock')
         self.box_storage_unlocked = builder.get_object('box_storage_unlocked')
-        self.button_storage_unlock = builder.get_object('button_storage_unlock')
+        self.button_storage_unlock = builder.get_object('button_storage_unlock')  # type: Gtk.Button
         self.checkbutton_storage_show_passphrase = builder.get_object('checkbutton_storage_show_passphrase')
         self.entry_storage_passphrase = builder.get_object('entry_storage_passphrase')
         self.image_storage_state = builder.get_object('image_storage_state')

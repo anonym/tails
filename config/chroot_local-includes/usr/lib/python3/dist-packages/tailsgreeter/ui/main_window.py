@@ -393,8 +393,10 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         # button was clicked, but changed that behavior (see #17136), so
         # we now force users to click the "Unlock" button first before
         # they can click "Start Tails".
-        allow_start = not bool(editable.get_text())
-        self.button_start.set_sensitive(allow_start)
+        passphrase_empty = not bool(editable.get_text())
+        self.button_start.set_sensitive(passphrase_empty)
+        button_unlock = self.persistent_storage.button_storage_unlock
+        button_unlock.set_sensitive(not passphrase_empty)
         return False
 
     def _storagecreate_updateui(self, enabled=None):
