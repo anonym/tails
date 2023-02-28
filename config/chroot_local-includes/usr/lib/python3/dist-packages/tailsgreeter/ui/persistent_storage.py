@@ -135,7 +135,7 @@ class PersistentStorage(object):
         except FeatureActivationFailedError as e:
             logging.error(e)
             label = _("Some features failed to activate. "
-                      "Start Tails and open the Persistent Storage app to find out more.")
+                      "Start Tails and open the Persistent Storage settings to find out more.")
             self.activation_failed(label)
             return
         except PersistentStorageError as e:
