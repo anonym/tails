@@ -46,6 +46,7 @@ KEEP_SNAPSHOTS = !ENV['KEEP_SNAPSHOTS'].nil?
 DISABLE_CHUTNEY = !ENV['DISABLE_CHUTNEY'].nil?
 LATE_PATCH = ENV['LATE_PATCH']
 EARLY_PATCH = !ENV['EARLY_PATCH'].nil?
+EXTRA_BOOT_OPTIONS = ENV['EXTRA_BOOT_OPTIONS']
 LIVE_USER = cmd_helper(
   '. config/chroot_local-includes/etc/live/config.d/username.conf; ' \
   'echo ${LIVE_USERNAME}'

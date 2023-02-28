@@ -236,8 +236,9 @@ KEEP_SNAPSHOTS=
 TAILS_ISO=
 OLD_TAILS_ISO=
 EARLY_PATCH=
+EXTRA_BOOT_OPTIONS=
 
-LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,disable-chutney,late-patch:,early-patch,iso:,old-iso:,interactive-debugging,image-bumping-mode"
+LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,disable-chutney,late-patch:,early-patch,extra-boot-options:,iso:,old-iso:,interactive-debugging,image-bumping-mode"
 OPTS=$(getopt -o "" --longoptions $LONGOPTS -n "${NAME}" -- "$@")
 eval set -- "$OPTS"
 while [ $# -gt 0 ]; do
@@ -302,6 +303,10 @@ while [ $# -gt 0 ]; do
             ;;
         --early-patch)
             export EARLY_PATCH="yes"
+            ;;
+        --extra-boot-options)
+            shift
+            export EXTRA_BOOT_OPTIONS="$1"
             ;;
         --tmpdir)
             shift
