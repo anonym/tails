@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e
+
+echo "Replacing swapon executable"
+
+# Only allow setting up swap for zram devices. This is not perfect,
+# swapon could be called with multiple devices at once which will
+# result in the real swapon being called if any of the devices is a
+# zram device. It's still better than nothing.
+# Rationale: security-in-depth model.
+
+SWAPON=/sbin/swapon
+
+# Move any /sbin/swapon installed by any package out of the way,
+# now (--rename) as well for any future one (hint: apt-get upgrade...).
+dpkg-divert --rename --add /sbin/swapon
+
+cat > $SWAPON << 'EOF'
+#!/bin/sh
+
+set -eu
+
+if ! echo "$@" | grep -q /dev/zram; then
+  echo >&2 "Setting up swap is only allowed for zram devices"
+  exit 1
+fi
+
+/sbin/swapon.distrib "$@"
+EOF
+chmod 755 $SWAPON
