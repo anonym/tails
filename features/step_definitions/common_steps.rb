@@ -321,7 +321,6 @@ Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_a
   early_patch = $config['EARLY_PATCH'] ? ' early_patch=test-suite,umount' : ''
   @screen.type(' autotest_never_use_this_option' \
                ' blacklist=psmouse' \
-               ' rootpw=root' \
                " #{early_patch} #{@boot_options}",
                [boot_key])
   @screen.wait('TailsGreeter.png', 5 * 60)
