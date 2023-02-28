@@ -20,7 +20,7 @@ def _get_gnome_env_vars():
 
 def gnome_env() -> dict:
     env = dict()
-    for line in _gnome_sh_wrapper("export_gnome_env && env").split("\n"):
+    for line in _gnome_sh_wrapper("gnome_env").split("\n"):
         (key, _, value) = line.rstrip().partition("=")
         if key in _get_gnome_env_vars():
             env[key] = value
