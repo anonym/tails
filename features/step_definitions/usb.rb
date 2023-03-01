@@ -67,6 +67,19 @@ def persistent_storage_main_frame
   persistent_storage_frontend.child('Persistent Storage', roleName: 'frame')
 end
 
+def persistent_directory_is_active(**opts)
+  opts[:user] = 'root'
+  opts[:use_system_bus] = true
+  dbus_send(
+    'org.boum.tails.PersistentStorage',
+    '/org/boum/tails/PersistentStorage/Features/PersistentDirectory',
+    'org.freedesktop.DBus.Properties.Get',
+    'org.boum.tails.PersistentStorage.Feature',
+    'IsActive',
+    **opts
+  )
+end
+
 def recover_from_upgrader_failure
   $vm.execute('pkill --full tails-upgrade-frontend-wrapper')
   $vm.execute('killall tails-upgrade-frontend zenity')
@@ -214,7 +227,14 @@ When /^I disable the first persistence preset$/ do
   )
   assert persistent_folder_switch.checked
   persistent_folder_switch.toggle
-  try_for(10) { !persistent_folder_switch.checked }
+  try_for(10) do
+    assert !persistent_folder_switch.checked
+    # GtkSwitch does not expose its underlying state via AT-SPI (the
+    # accessible has the "check" state when the switch is on but the
+    # underlying state is false) so we check via D-Bus that the
+    # Persistent Directory feature is inactive.
+    !persistent_directory_is_active
+  end
   @screen.press('alt', 'F4')
 end
 

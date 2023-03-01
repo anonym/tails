@@ -1,3 +1,7 @@
+def browser
+  Dogtail::Application.new('Firefox')
+end
+
 When /^I (?:try to )?start the Unsafe Browser$/ do
   # XXX:Bookworm: switch to "gio launch" and drop the whole
   # language_has_non_latin_input_source / switch_input_source system.
@@ -109,13 +113,8 @@ When /^I open the address "([^"]*)" in the (.* Browser)( without waiting)?$/ do 
   open_address = proc do
     step "I open a new tab in the #{browser_name}"
     @screen.click(info[:address_bar_image])
-    # This static here since we have no reliable visual indicators
-    # that we can watch to know when typing is "safe".
-    sleep 5
-    # The browser sometimes loses keypresses when suggestions are
-    # shown, which we work around by pasting the address from the
-    # clipboard, in one go.
-    @screen.paste(address)
+    # Insert string via Dogtail which is more robust than @screen.paste
+    browser.focused_child.text = address
     @screen.press('Return')
   end
   recovery_on_failure = proc do
@@ -326,25 +325,25 @@ Then /^DuckDuckGo is the default search engine$/ do
     ddg_search_prompt = "DuckDuckGoSearchPrompt#{$language}.png"
   end
   step 'I open a new tab in the Tor Browser'
-  # Typing would require maintaining keymaps for every language in
-  # which we run this step ⇒ instead, paste the search string.
-  @screen.paste('a random search string')
+
+  # Insert string via Dogtail which is more robust than @screen.paste
+  browser.focused_child.text = 'a random search string'
   @screen.wait(ddg_search_prompt, 20)
 end
 
 Then(/^the screen keyboard works in Tor Browser$/) do
-  osk_key = 'ScreenKeyboardKeyComma.png'
+  osk_key_images = ['ScreenKeyboardKeyComma.png', 'ScreenKeyboardKeyComma_alt.png']
   browser_bar_x = 'BrowserAddressBarComma.png'
   case $language
   when 'Arabic'
     browser_bar_x = 'BrowserAddressBarCommaRTL.png'
   when 'Persian'
-    osk_key = 'ScreenKeyboardKeyCommaPersian.png'
+    osk_key_images = ['ScreenKeyboardKeyCommaPersian.png']
   end
   step 'I start the Tor Browser'
   step 'I open a new tab in the Tor Browser'
   @screen.wait(xul_application_info('Tor Browser')[:address_bar_image], 10).click
   @screen.wait('ScreenKeyboard.png', 20)
-  @screen.wait(osk_key, 20).click
+  @screen.wait_any(osk_key_images, 20)[:match].click
   @screen.wait(browser_bar_x, 20)
 end

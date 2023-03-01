@@ -42,9 +42,12 @@ import subprocess
 import sys
 import systemd.daemon
 import textwrap
+import time
 import traceback
 
 from tailslib.gnome import gnome_env
+
+from typing import Tuple, Optional
 
 REMOTE_SHELL_DEV = '/dev/virtio-ports/org.tails.remote_shell.0'
 
@@ -61,6 +64,15 @@ def mk_switch_user_fn(user):
 
 
 def get_user_env(user):
+    # We need special handling for the Debian-gdm user because running
+    # 'su -s /bin/sh -c env' doesn't print the same environment which
+    # the Greeter is running in - in particular, DBUS_SESSION_BUS_ADDRESS
+    # does not have the value we need to successfully run Dogtail.
+    if user == "Debian-gdm":
+        with open(f"/tmp/gdm-env") as f:
+            env_data = f.read()
+        return dict((line.split('=', 1) for line in env_data.splitlines()))
+
     # We try to create an environment identical to what's expected
     # inside Tails for the user by logging in (via `su`) as the user,
     # setting up the GNOME shell environment, and extracting the
@@ -81,6 +93,7 @@ def get_user_env(user):
 # Python shell started as a subprocess.
 class PythonSession:
     def __init__(self, user=None):
+        print("Starting new Python session", file=sys.stderr)
         interactive_shell_code = '; '.join([
             "import sys",
             "import code",
@@ -105,6 +118,7 @@ class PythonSession:
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            text=True,
             env=env,
             cwd=cwd,
             preexec_fn=mk_switch_user_fn(user))
@@ -115,10 +129,10 @@ class PythonSession:
             orig_stdout = sys.stdout
             orig_stderr = sys.stderr
             """.replace('            ', '').lstrip()
-        self.process.stdin.write(init_code.encode())
+        self.process.stdin.write(init_code)
         self.process.stdin.flush()
 
-    def execute(self, code):
+    def execute(self, code) -> Tuple[str, str, str]:
         # This wrapping ensures that we can run almost any reasonable
         # code and capture what it does.
         wrapper = """
@@ -126,26 +140,46 @@ class PythonSession:
             fake_stderr = io.StringIO()
             sys.stdout = fake_stdout
             sys.stderr = fake_stderr
-            exc = None
+            exc_str = None
             try:
             {code}
             except Exception as e:
-                exc = '%s: %s' % (type(e).__name__, str(e))
+                exc_str = '%s: %s' % (type(e).__name__, str(e))
             # This newline is needed to end the `try` statement.
 
             sys.stdout = orig_stdout
             sys.stderr = orig_stderr
-            out_data = fake_stdout.getvalue()
-            err_data = fake_stderr.getvalue()
+            out_str = fake_stdout.getvalue()
+            err_str = fake_stderr.getvalue()
             fake_stdout.close()
             fake_stderr.close()
-            print(json.dumps([exc, out_data, err_data]))
+            print(json.dumps([exc_str, out_str, err_str]))
             """.replace('            ', '').lstrip()
         indented_code = textwrap.indent(code, prefix=' ' * 4)
         wrapped_code = wrapper.format(code=indented_code)
-        self.process.stdin.write(wrapped_code.encode())
+        self.process.stdin.write(wrapped_code)
         self.process.stdin.flush()
-        return self.process.stdout.readline().strip()
+
+        if self.process.poll() is not None:
+            exc_str = f"Python process exited unexpectedly with {self.process.returncode}"
+            out_str = self.process.stdout.read()
+            err_str = self.process.stderr.read()
+            return exc_str, out_str, err_str
+
+        return_str = self.process.stdout.readline().strip()
+        try:
+            exc_str, out_str, err_str = json.loads(return_str)
+            return exc_str, out_str, err_str
+        except Exception as e:
+            time.sleep(1)
+            if self.process.poll() is not None:
+                exc_str = f"Python process exited unexpectedly with {self.process.returncode}"
+                out_str = self.process.stdout.read()
+                err_str = self.process.stderr.read()
+                return exc_str, out_str, err_str
+
+            exc_str = '%s: %s' % (type(e).__name__, str(e))
+            return exc_str, "", ""
 
 
 def run_cmd_as_user(cmd, user):
@@ -156,6 +190,7 @@ def run_cmd_as_user(cmd, user):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             shell=True,  # nosec subprocess_popen_with_shell_equals_true
+                            text=True,
                             env=env,
                             cwd=cwd,
                             preexec_fn=switch_user_fn)
@@ -205,23 +240,25 @@ def main():
             ret = ""
             if cmd_type in ['sh_call', 'sh_spawn']:
                 user, cmd = rest
+                print(f"Executing as {user}: {cmd}", file=sys.stderr)
                 p = run_cmd_as_user(cmd, user)
                 if cmd_type == "sh_spawn":
                     returncode, stdout, stderr = 0, "", ""
                 else:
-                    stdout_b, stderr_b = p.communicate()
-                    stdout = stdout_b.decode('utf-8')
-                    stderr = stderr_b.decode('utf-8')
+                    stdout, stderr = p.communicate()
                     returncode = p.returncode
                 ret = json.dumps([id, 'success', returncode, stdout, stderr])
+                print(f"Result: {ret}")
             elif cmd_type == 'python_execute':
                 user, code = rest
-                if user not in python_sessions:
+                if user not in python_sessions or \
+                        python_sessions[user].process.poll() is not None:
                     python_sessions[user] = PythonSession(user)
                 session = python_sessions[user]
-                result_str = session.execute(code)
-                result = json.loads(result_str)
-                ret = json.dumps([id, 'success'] + result)
+                print(f"Executing as {user}:\n{code}", file=sys.stderr)
+                exc, out_str, err_str = session.execute(code)
+                ret = json.dumps([id, 'success', exc, out_str, err_str])
+                print(f"Result: {ret}")
             elif cmd_type in ['file_read', 'file_write', 'file_append']:
                 path, *rest = rest
                 open_mode = cmd_type[5] + 'b'

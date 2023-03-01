@@ -319,9 +319,10 @@ Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_a
   enter_boot_menu_cmdline
   boot_key = @os_loader == 'UEFI' ? 'F10' : 'Return'
   early_patch = $config['EARLY_PATCH'] ? ' early_patch=umount' : ''
+  extra_boot_options = $config['EXTRA_BOOT_OPTIONS'] || ''
   @screen.type(' autotest_never_use_this_option' \
                ' blacklist=psmouse' \
-               " #{early_patch} #{@boot_options}",
+               " #{early_patch} #{@boot_options} #{extra_boot_options}",
                [boot_key])
   @screen.wait('TailsGreeter.png', 5 * 60)
   # When enter_boot_menu_cmdline has rebooted the system after the Greeter
@@ -1403,7 +1404,7 @@ Then(/^the layout of the screen keyboard is set to "([^"]+)"$/) do |layout|
   @screen.find("ScreenKeyboardLayout#{layout.upcase}.png")
 end
 
-Given /^I write a file (\S+) with contents "([^"]*)"$/ do |path, content|
+Given /^I write a file "(\S+)" with contents "([^"]*)"$/ do |path, content|
   $vm.file_overwrite(path, content)
 end
 
