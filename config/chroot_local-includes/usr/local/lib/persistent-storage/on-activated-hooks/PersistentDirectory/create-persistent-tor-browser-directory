@@ -4,4 +4,11 @@ set -e
 set -u
 
 TOR_BROWSER_PERSISTENT_DIR='/home/amnesia/Persistent/Tor Browser'
-install -d -o amnesia -g amnesia -m 0700 "$TOR_BROWSER_PERSISTENT_DIR"
+
+# it's tempting to use --owner option, but that will follow symlinks,
+# which could pave the way for symlink attacks
+install --directory "$TOR_BROWSER_PERSISTENT_DIR"
+chown --no-dereference amnesia:amnesia "$TOR_BROWSER_PERSISTENT_DIR"
+
+# chmod never changes the permissions of symbolic links; see chmod(1)
+chmod 0700 "$TOR_BROWSER_PERSISTENT_DIR"
