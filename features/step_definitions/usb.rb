@@ -225,7 +225,7 @@ When /^I (enable|disable) the first persistence preset$/ do |mode|
     'Activate Persistent Folder',
     roleName: 'toggle button'
   )
-  if mode == "enable"
+  if mode == 'enable'
     assert !persistent_folder_switch.checked
   else
     assert persistent_folder_switch.checked
@@ -236,7 +236,7 @@ When /^I (enable|disable) the first persistence preset$/ do |mode|
     # GtkSwitch does not expose its underlying state via AT-SPI (the
     # accessible has the "check" state when the switch is on but the
     # underlying state is false) so we check the state via D-Bus.
-    if mode == "enable"
+    if mode == 'enable'
       assert persistent_folder_switch.checked
       persistent_directory_is_active
     else
@@ -292,9 +292,9 @@ Given /^I change the passphrase of the Persistent Storage( back to the original)
   # application to hang when triggered via a ATSPI action. See
   # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
   persistent_storage_main_frame.button('Change Passphrase').grabFocus
-  @screen.press("Return")
+  @screen.press('Return')
   change_passphrase_dialog = persistent_storage_frontend.child(
-    'Change Passphrase', roleName: 'dialog',
+    'Change Passphrase', roleName: 'dialog'
   )
   change_passphrase_dialog
     .child('Current Passphrase', roleName: 'label')
@@ -450,11 +450,11 @@ end
 Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
   @screen.wait('TailsGreeterPersistencePassphrase.png', 60).click
   sleep 1
-  if with_changed_passphrase
-    password = @changed_persistence_password
-  else
-    password = @persistence_password
-  end
+  password = if with_changed_passphrase
+               @changed_persistence_password
+             else
+               @persistence_password
+             end
   @screen.type(password, ['Return'])
   @screen.wait_any(['TailsGreeterPersistenceUnlocked.png', 'TailsGreeterPersistenceUnlockedGerman.png'], 30)
 end

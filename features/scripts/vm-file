@@ -22,7 +22,7 @@ class FakeVM
       virt = Libvirt.open('qemu:///system')
       domain = virt.lookup_domain_by_name('TailsToaster')
       @domain_xml = domain.xml_desc
-    rescue
+    rescue StandardError
       raise 'There was a problem with the TailsToaster VM (is it running?)'
     ensure
       virt.close
