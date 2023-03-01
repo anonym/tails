@@ -30,7 +30,6 @@ from tinyrpc.exc import InvalidRequestError
 import systemd.daemon
 
 from tailslib.logutils import configure_logging
-from tailslib.gnome import gnome_env_vars
 from tailslib import (
     CLEARNET_USERNAME,
     LIVE_USERNAME,
@@ -129,20 +128,16 @@ class RootCommand(BaseCommand):
 
 class UserCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> tuple:
-        drop = ("/sbin/runuser", "-u", LIVE_USERNAME)
-        env = ("/usr/bin/env", *gnome_env_vars())
-
-        args = (*drop, "--", *env, *(super().full_command(request)))
+        args = ("/usr/local/lib/exec-in-gnome-env", *(super().full_command(request)))
         return args
 
 
 class PersistentStorageCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> tuple:
         drop = ("/sbin/runuser", "-u", PERSISTENT_STORAGE_USERNAME)
-        env = ("/usr/bin/env", *gnome_env_vars())
-
-        args = (*drop, "--", *env, *(super().full_command(request)))
+        args = (*drop, "--", *(super().full_command(request)))
         return args
+
 
 
 class GetNetworkTimeCommand(BaseCommand):

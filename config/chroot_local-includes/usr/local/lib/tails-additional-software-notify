@@ -6,8 +6,6 @@ import os.path
 import subprocess
 import sys
 
-from tailslib.gnome import gnome_env_vars
-
 import gi
 
 from gi.repository import GLib
@@ -58,7 +56,7 @@ class ASPNotifier(object):
             sys.exit(3)
         elif action == "documentation":
             subprocess.Popen(
-                ["env", *gnome_env_vars(), "tails-documentation", user_data]
+                ["/usr/local/lib/exec-in-gnome-env", "tails-documentation", user_data]
             )
             sys.exit(5)
 
