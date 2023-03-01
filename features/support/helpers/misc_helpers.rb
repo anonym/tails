@@ -198,36 +198,34 @@ def retry_action(max_retries, **options, &block)
 
   retries = 1
   loop do
-    begin
-      debug_log("retry_action: trying #{options[:operation_name]} (attempt " \
-                "#{retries} of #{max_retries})...")
-      block.call
-      debug_log('retry_action: success!')
-      return
-    rescue NameError => e
-      # NameError most likely means typos, and hiding that is rarely
-      # (never?) a good idea, so we rethrow them.
-      raise e
-    rescue StandardError => e
-      if retries <= max_retries
-        debug_log("retry_action: #{options[:operation_name]} failed with " \
-                  "exception: #{e.class}: #{e.message}")
-        options[:recovery_proc]&.call
-        retries += 1
-        sleep options[:delay]
-      else
-        raise MaxRetriesFailure,
-              "#{options[:operation_name]} failed (despite retrying " \
-              "#{max_retries} times) with\n" \
-              "#{e.class}: #{e.message}"
-      end
-    rescue Exception => e # rubocop:disable Lint/RescueException
-      # Any other exception is rethrown as-is: it is probably not
-      # the kind of failure that retry_action is supposed to mask.
-      # For example, retry_action should not prevent a SignalException
-      # from being handled by Ruby.
-      raise e
+    debug_log("retry_action: trying #{options[:operation_name]} (attempt " \
+              "#{retries} of #{max_retries})...")
+    block.call
+    debug_log('retry_action: success!')
+    return
+  rescue NameError => e
+    # NameError most likely means typos, and hiding that is rarely
+    # (never?) a good idea, so we rethrow them.
+    raise e
+  rescue StandardError => e
+    if retries <= max_retries
+      debug_log("retry_action: #{options[:operation_name]} failed with " \
+                "exception: #{e.class}: #{e.message}")
+      options[:recovery_proc]&.call
+      retries += 1
+      sleep options[:delay]
+    else
+      raise MaxRetriesFailure,
+            "#{options[:operation_name]} failed (despite retrying " \
+            "#{max_retries} times) with\n" \
+            "#{e.class}: #{e.message}"
     end
+  rescue Exception => e # rubocop:disable Lint/RescueException
+    # Any other exception is rethrown as-is: it is probably not
+    # the kind of failure that retry_action is supposed to mask.
+    # For example, retry_action should not prevent a SignalException
+    # from being handled by Ruby.
+    raise e
   end
 end
 
@@ -401,7 +399,7 @@ def dbus_send_ret_conv(ret)
   type, val = /^\s*(\S+)\s+(.+)$/m.match(ret)[1, 2]
   case type
   when 'variant'
-    return dbus_send_ret_conv(val)
+    dbus_send_ret_conv(val)
   when 'string'
     # Unquote
     val[1...-1]
@@ -420,7 +418,7 @@ end
 def dbus_send_get_shellcommand(service, object_path, method, *args, **opts)
   opts ||= {}
   opts[:use_system_bus] ||= false
-  bus_arg = opts[:use_system_bus] ? "--system" : "--session"
+  bus_arg = opts[:use_system_bus] ? '--system' : '--session'
 
   ruby_type_to_dbus_type = {
     String  => 'string',

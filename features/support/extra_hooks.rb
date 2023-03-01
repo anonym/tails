@@ -127,11 +127,11 @@ module ExtraFormatters
 
     # Recursively print the exception and all previous exceptions
     def print_exception(e, status, indent)
-        super(e, status, indent)
-        if e.cause
-          cause = Cucumber::Formatter::BacktraceFilter.new(e.cause.dup).exception
-          print_exception(cause, status, indent)
-        end
+      super(e, status, indent)
+      if e.cause
+        cause = Cucumber::Formatter::BacktraceFilter.new(e.cause.dup).exception
+        print_exception(cause, status, indent)
+      end
     end
   end
 end

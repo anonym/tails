@@ -35,11 +35,12 @@ module Dogtail
 
       init = []
       if @opts[:user] == LIVE_USER
-        cmd = "dbus-send --print-reply=literal --session --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress"
+        cmd = 'dbus-send --print-reply=literal --session --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress'
         c = RemoteShell::ShellCommand.new($vm, cmd, user: @opts[:user], debug_log: false)
         if c.returncode != 0
           raise Failure, "dbus-send exited with exit code #{c.returncode}"
         end
+
         a11y_bus = c.stdout.strip
         init = [
           'import os',
@@ -170,16 +171,16 @@ module Dogtail
     def focused_child
       node_var = "node#{@@node_counter += 1}"
       find_script_lines = [
-        "class IsFocused(dogtail.predicate.Predicate):",
-        "    def __init__(self):",
-        "        self.satisfiedByNode = lambda node: node.focused",
-        "    def describeSearchResult(self):",
+        'class IsFocused(dogtail.predicate.Predicate):',
+        '    def __init__(self):',
+        '        self.satisfiedByNode = lambda node: node.focused',
+        '    def describeSearchResult(self):',
         "        return 'focused'",
-        "",
+        '',
         "#{node_var} = #{@var}.findChild(IsFocused(), recursive=True, showingOnly=True)",
       ]
       run(find_script_lines)
-      Node.new("#{node_var}", **@opts)
+      Node.new(node_var.to_s, **@opts)
     end
 
     def get_field(key)
@@ -232,53 +233,53 @@ module Dogtail
 
     def call_tree_api_method(method, *args, **kwargs)
       args[0] = translate(args[0], **@opts) if args[0].instance_of?(String)
-        args_str = self.class.args_to_s(*args, **kwargs)
-        method_call = "#{method}(#{args_str})"
-        Node.new("#{@var}.#{method_call}", **@opts)
+      args_str = self.class.args_to_s(*args, **kwargs)
+      method_call = "#{method}(#{args_str})"
+      Node.new("#{@var}.#{method_call}", **@opts)
     end
 
     def button(*args, **kwargs)
-      call_tree_api_method("button", *args, **kwargs)
+      call_tree_api_method('button', *args, **kwargs)
     end
 
     def child(*args, **kwargs)
-      call_tree_api_method("child", *args, **kwargs)
+      call_tree_api_method('child', *args, **kwargs)
     end
 
     def childLabelled(*args, **kwargs)
-      call_tree_api_method("childLabelled", *args, **kwargs)
+      call_tree_api_method('childLabelled', *args, **kwargs)
     end
 
     def childNamed(*args, **kwargs)
-      call_tree_api_method("childNamed", *args, **kwargs)
+      call_tree_api_method('childNamed', *args, **kwargs)
     end
 
     def menu(*args, **kwargs)
-      call_tree_api_method("menu", *args, **kwargs)
+      call_tree_api_method('menu', *args, **kwargs)
     end
 
     def menuItem(*args, **kwargs)
-      call_tree_api_method("menuItem", *args, **kwargs)
+      call_tree_api_method('menuItem', *args, **kwargs)
     end
 
     def panel(*args, **kwargs)
-      call_tree_api_method("panel", *args, **kwargs)
+      call_tree_api_method('panel', *args, **kwargs)
     end
 
     def tab(*args, **kwargs)
-      call_tree_api_method("tab", *args, **kwargs)
+      call_tree_api_method('tab', *args, **kwargs)
     end
 
     def textentry(*args, **kwargs)
-      call_tree_api_method("textentry", *args, **kwargs)
+      call_tree_api_method('textentry', *args, **kwargs)
     end
 
     def dialog(*args, **kwargs)
-      call_tree_api_method("dialog", *args, **kwargs)
+      call_tree_api_method('dialog', *args, **kwargs)
     end
 
     def window(*args, **kwargs)
-      call_tree_api_method("window", *args, **kwargs)
+      call_tree_api_method('window', *args, **kwargs)
     end
 
     def labelee
@@ -307,30 +308,35 @@ module Dogtail
     end
 
     def doActionNamed(action_name)
-      call_tree_node_method("doActionNamed", action_name)
+      call_tree_node_method('doActionNamed', action_name)
     end
 
     def grabFocus
-      call_tree_node_method("grabFocus")
+      call_tree_node_method('grabFocus')
     end
 
     def activate
-      doActionNamed("activate")
+      doActionNamed('activate')
     end
+
     def click
-      doActionNamed("click")
+      doActionNamed('click')
     end
+
     def open
-      doActionNamed("open")
+      doActionNamed('open')
     end
+
     def press
-      doActionNamed("press")
+      doActionNamed('press')
     end
+
     def select
-      doActionNamed("select")
+      doActionNamed('select')
     end
+
     def toggle
-      doActionNamed("toggle")
+      doActionNamed('toggle')
     end
 
     def position

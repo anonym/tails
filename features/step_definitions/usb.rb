@@ -68,14 +68,14 @@ def persistent_storage_main_frame
 end
 
 def persistent_directory_is_active(**opts)
-  opts[:user] = "root"
+  opts[:user] = 'root'
   opts[:use_system_bus] = true
   dbus_send(
     'org.boum.tails.PersistentStorage',
     '/org/boum/tails/PersistentStorage/Features/PersistentDirectory',
-    "org.freedesktop.DBus.Properties.Get",
-    "org.boum.tails.PersistentStorage.Feature",
-    "IsActive",
+    'org.freedesktop.DBus.Properties.Get',
+    'org.boum.tails.PersistentStorage.Feature',
+    'IsActive',
     **opts
   )
 end
