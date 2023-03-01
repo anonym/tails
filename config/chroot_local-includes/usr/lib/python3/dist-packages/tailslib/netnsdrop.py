@@ -20,7 +20,7 @@ A11Y_BUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/a11y-bus-proxy.sock"
 IBUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/ibus-proxy.sock"
 
 
-def run_in_netns(*args, netns, user="amnesia", root="/", bind_mounts=[]):
+def run_in_netns(*args, netns, root="/", bind_mounts=[]):
     # base bwrap sharing most of the system
     bwrap = ["bwrap", "--bind", root, "/", "--proc", "/proc", "--dev", "/dev"]
     for src, dest in bind_mounts:
