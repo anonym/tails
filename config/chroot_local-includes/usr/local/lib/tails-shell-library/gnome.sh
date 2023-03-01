@@ -6,43 +6,12 @@ XDG_RUNTIME_DIR
 XDG_CURRENT_DESKTOP
 "
 
-GNOME_SHELL_ENV_FILE=/run/gnome-shell-environment/environ
+GNOME_ENV_FILE=/run/user/1000/gnome-env
 
 gnome_env() {
-  local vars
-
-  if [ -f "${GNOME_SHELL_ENV_FILE}" ]; then
-    # shellcheck disable=SC2086
-    vars=$(tr '\0' '\n' < "${GNOME_SHELL_ENV_FILE}" | \
-           grep -E "^($(echo ${GNOME_ENV_VARS} | tr ' ' '|'))=")
+  if [ -f "${GNOME_ENV_FILE}" ]; then
+    xargs -0 -L1 -a "${GNOME_ENV_FILE}"
   fi
-
-  if ! echo "${vars}" | grep -E "^DISPLAY="; then
-    vars="${vars}
-DISPLAY=:0"
-  fi
-
-  if ! echo "${vars}" | grep -E "^XAUTHORITY="; then
-    xauth=$(find /run/user/1000/ \
-        -maxdepth 1 -type f \
-        -user amnesia \
-        -regextype egrep -regex \
-        '/run/user/1000/[.]mutter-Xwaylandauth[.][A-Za-z0-9]+' -print -quit)
-    vars="${vars}
-XAUTHORITY=${xauth}"
-  fi
-
-  if ! echo "${vars}" | grep -E "^WAYLAND_DISPLAY="; then
-    wayland_display=$(find /run/user/1000/ \
-        -maxdepth 1 -type s \
-        -user amnesia \
-        -regextype egrep -regex \
-        '/run/user/1000/[.]wayland-[0-9]+' -print -quit)
-    vars="${vars}
-WAYLAND_DISPLAY=${wayland_display#/run/user/1000/}"
-  fi
-
-  echo "${vars}"
 }
 
 export_gnome_env() {

@@ -1,66 +1,38 @@
-#!/usr/bin/python3
+#!/bin/sh
 
-'''
-This script is invoked before starting gnome-shell. It dumps its own environment, which is often useful to
-properly set the environment for many user-facing applications.
+# This script is invoked before starting gnome-shell. It dumps its own
+# environment for usage by other processes which need some environment
+# variables set to work correctly, for example processes started via
+# systemd system units don't have DBUS_SESSION_BUS_ADDRESS set.
+#
+# This process is run as amnesia and the environment file is writable
+# by amnesia, so to avoid privilege escalation, it's important that the
+# environment file is never exported in a process with more privileges
+# than amnesia.
 
-How it works
-----------------
+set -eu
 
-First, it saves the environment in ~/.gnome-shell-environment. Then,
-it asks root (with sudo) to move this environment to a root-owned
-directory which is readable, but not writable, by amnesia.
+GNOME_ENV_FILE=/run/user/1000/gnome-env
 
-Security
-----------
+# Set some environment variables which are not set in the gnome-shell
+# process but which we still need in some processes which export the
+# environment file.
+if [ -z "${DISPLAY:-}" ]; then
+  export DISPLAY=:0
+fi
 
-An attacker able to run code as amnesia can write arbitrary content to
-~/.gnome-shell-environment and cause that to be copied to
-/run/gnome-shell-environment, at least in some cases (see #19424).
-So, let's assume that they can do this.
+if [ -z "${XAUTHORITY:-}" ]; then
+  for xauth in /run/user/1000/.mutter-Xwaylandauth.*; do
+    export XAUTHORITY="${xauth}"
+  done
+fi
 
-Since we use this file to set up the environment for processes running as
-amnesia, such an attacker can control processes running as amnesia. We
-don't use the file for anything else. While this means that the attacker is
-indeed mangling the environment of running processes, we don't see how this
-can be used for escalating privileges.
+if [ -z "${WAYLAND_DISPLAY:-}" ]; then
+  for wayland_display in /run/user/1000/wayland-*; do
+    export WAYLAND_DISPLAY="${wayland_display}"
+  done
+fi
 
-Environment
----------------
-
-Please note that at the time this script will be run, gnome-shell has not started. Therefore, if gnome-shell
-was to ever change its running environment, this script could never catch those changes. This doesn't seem to
-be the case, so the environment of this script is indeed the one we need.
-
-'''
-
-
-import os
-import sys
-from pathlib import Path
-import subprocess
-
-SAVE_BIN = "/usr/local/lib/gnome-shell-save-environment"
-
-
-def main():
-    env_file = Path("~/.gnome-shell-environment").expanduser()
-    try:
-        env_file.touch(exist_ok=False)
-    except FileExistsError:
-        sys.exit(0)
-
-    # we are getting our own environment.
-    # It might be tempting to use "/proc/`pgrep -x gnome-shell`/environ", but
-    # this script is called before gnome-shell has even started
-    sys_environ = Path("/proc/%d/environ" % os.getpid())
-    with sys_environ.open("rb") as buf:
-        content = buf.read()
-    with env_file.open("wb") as buf:
-        buf.write(content)
-
-    subprocess.check_call(["sudo", "-n", SAVE_BIN])
-
-
-if __name__ == "__main__":
-    main()
+# To avoid issues with environment variables that contain newlines, we
+# dump the environment null-terminated
+env --null > "${GNOME_ENV_FILE}"
