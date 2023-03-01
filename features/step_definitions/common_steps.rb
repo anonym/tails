@@ -165,7 +165,7 @@ Given /^I start Tails( from DVD)?( with network unplugged)?( and genuine APT sou
   end
 end
 
-Given /^I start Tails from (.+?) drive "(.+?)"( with network unplugged)?( and I login( with persistence enabled)?( (?:and|with) an administration password)?)?$/ do |drive_type, drive_name, network_unplugged, do_login, persistence_on, admin_password| # rubocop:disable Metrics/ParameterLists
+Given /^I start Tails from (.+?) drive "(.+?)"( with network unplugged)?( and I login( with persistence enabled)?( with the changed persistence passphrase)?( (?:and|with) an administration password)?)?$/ do |drive_type, drive_name, network_unplugged, do_login, persistence_on, persistence_with_changed_passphrase, admin_password| # rubocop:disable Metrics/ParameterLists
   step "the computer is set to boot from #{drive_type} drive \"#{drive_name}\""
   if network_unplugged
     step 'the network is unplugged'
@@ -176,6 +176,7 @@ Given /^I start Tails from (.+?) drive "(.+?)"( with network unplugged)?( and I 
   step 'the computer boots Tails'
   if do_login
     step 'I enable persistence' if persistence_on
+    step 'I enable persistence with the changed passphrase' if persistence_with_changed_passphrase
     step 'I set an administration password' if admin_password
     step 'I log in to a new session'
     step 'the Additional Software installation service has started'
@@ -899,6 +900,10 @@ When /^the directory "([^"]+)" does not exist$/ do |directory|
   assert(!$vm.directory_exist?(directory))
 end
 
+When /^the file "([^"]+)" has the content "([^"]+)"$/ do |file, content|
+  $vm.file_content(file) == content
+end
+
 When /^I copy "([^"]+)" to "([^"]+)" as user "([^"]+)"$/ do |source, destination, user|
   c = $vm.execute("cp \"#{source}\" \"#{destination}\"", user: user)
   assert(c.success?, "Failed to copy file:\n#{c.stdout}\n#{c.stderr}")
@@ -1402,6 +1407,10 @@ end
 
 Then(/^the layout of the screen keyboard is set to "([^"]+)"$/) do |layout|
   @screen.find("ScreenKeyboardLayout#{layout.upcase}.png")
+end
+
+Given /^I create a directory "(\S+)"$/ do |path|
+  $vm.execute_successfully("mkdir '#{path}'")
 end
 
 Given /^I write a file "(\S+)" with contents "([^"]*)"$/ do |path, content|

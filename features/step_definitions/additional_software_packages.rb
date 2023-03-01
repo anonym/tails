@@ -42,7 +42,7 @@ def click_gnome_shell_notification_button(title)
   # and activate it via the keyboard instead.
   try_for(10) do
     button = Dogtail::Application.new('gnome-shell')
-       .child(title, roleName: 'push button')
+                                 .child(title, roleName: 'push button')
     button.grabFocus
     button.focused
   end

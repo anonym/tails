@@ -16,6 +16,17 @@ Feature: Tails persistence
     And persistence is disabled
     But a Tails persistence partition exists on USB drive "__internal"
 
+  Scenario: Creating a Persistent Storage
+    Given I have started Tails without network from a USB drive without a persistent partition and logged in
+    Then Tails is running from USB drive "__internal"
+    When I create a file in the Persistent directory
+    And I create a persistent partition with the default settings
+    Then the file I created was copied to the Persistent Storage
+    When I shutdown Tails and wait for the computer to power off
+    And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
+    Then persistence for "Persistent" is enabled
+    And the file I created in the Persistent directory exists
+
   Scenario: Booting Tails from a USB drive with an enabled persistent partition and reconfiguring it
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     Then Tails is running from USB drive "__internal"
@@ -25,6 +36,19 @@ Feature: Tails persistence
     And I shutdown Tails and wait for the computer to power off
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
     Then all persistence presets but the first one are enabled
+
+  Scenario: Activating and deactivating Persistent Storage features
+    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
+    Then persistence for "Persistent" is enabled
+    And the directory "/home/amnesia/Persistent" exists
+    When I write a file "/home/amnesia/Persistent/foo" with contents "foo"
+    Then the file "/live/persistence/TailsData_unlocked/Persistent/foo" exists
+    When I disable the first persistence preset
+    Then persistence for "Persistent" is not enabled
+    And the directory "/home/amnesia/Persistent" does not exist
+    When I enable the first persistence preset
+    Then persistence for "Persistent" is enabled
+    And the file "/home/amnesia/Persistent/foo" exists
 
   Scenario: Writing files to a read/write-enabled persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
@@ -69,6 +93,16 @@ Feature: Tails persistence
     Then persistent Greeter options were restored
     When I log in to a new session after having activated the Persistent Storage
     Then all Greeter options are set to non-default values
+
+  Scenario: Changing the Persistent Storage passphrase
+    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
+    # Note that if anything fails after the passphrase was changed and
+    # before it's changed back below, subsequent scenarios might fail
+    # because the Persistent Storage doesn't have the expected passphrase.
+    When I change the passphrase of the Persistent Storage
+    And I shutdown Tails and wait for the computer to power off
+    Then I start Tails from USB drive "__internal" with network unplugged and I login with the changed persistence passphrase
+    And I change the passphrase of the Persistent Storage back to the original
 
   Scenario: Deleting a Tails persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen

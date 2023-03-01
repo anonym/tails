@@ -271,6 +271,7 @@ Before('@product') do |scenario|
   # as a regression test for #17792
   @sudo_password = 'asdf !'
   @persistence_password = 'asdf !'
+  @changed_persistence_password = 'foo123'
   @has_been_reset = false
   # See comment for add_extra_allowed_host() above.
   @extra_allowed_hosts ||= []
