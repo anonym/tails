@@ -1410,7 +1410,7 @@ Then(/^the layout of the screen keyboard is set to "([^"]+)"$/) do |layout|
 end
 
 Given /^I create a directory "(\S+)"$/ do |path|
-  $vm.execute_successfully("mkdir #{path}")
+  $vm.execute_successfully("mkdir '#{path}'")
 end
 
 Given /^I write a file "(\S+)" with contents "([^"]*)"$/ do |path, content|
