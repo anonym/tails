@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# This script exports environment variables from the file specified in
+# the ENVFILE argument and then executes the specified command.
+#
+# If any environment variables from ENVFILE are already set in the
+# current environment, those are *not* overwritten, so environment
+# variables set by the caller take precedence over the ones from ENVFILE.
+#
+# ENVFILE must be null-terminated.
+
+set -eu
+
+GNOME_ENV_FILE=/run/user/1000/gnome-env
+
+# Ensure that we're running as amnesia
+if [ "$(id -u)" -ne "1000"  ]; then
+  runuser -u amnesia -- /usr/local/lib/loadenv-exec "${GNOME_ENV_FILE}" -- "$@"
+else
+  /usr/local/lib/loadenv-exec "${GNOME_ENV_FILE}" -- "$@"
+fi

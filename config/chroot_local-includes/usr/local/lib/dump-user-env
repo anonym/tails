@@ -12,7 +12,12 @@
 
 set -eu
 
-GNOME_ENV_FILE=/run/user/1000/gnome-env
+if [ -z "${EUID:-}" ]; then
+  # bashsupport disable=BP3002
+  EUID=$(id -u)
+fi
+
+GNOME_ENV_FILE="/run/user/${EUID}/gnome-env"
 
 # Set some environment variables which are not set in the gnome-shell
 # process but which we still need in some processes which export the
@@ -22,14 +27,18 @@ if [ -z "${DISPLAY:-}" ]; then
 fi
 
 if [ -z "${XAUTHORITY:-}" ]; then
-  for xauth in /run/user/1000/.mutter-Xwaylandauth.*; do
-    export XAUTHORITY="${xauth}"
+  for xauth in "/run/user/${EUID}/.mutter-Xwaylandauth."*; do
+    if [ -e "${xauth}" ]; then
+      export XAUTHORITY="${xauth}"
+    fi
   done
 fi
 
 if [ -z "${WAYLAND_DISPLAY:-}" ]; then
-  for wayland_display in /run/user/1000/wayland-*; do
-    export WAYLAND_DISPLAY="${wayland_display}"
+  for wayland_display in "/run/user/${EUID}/wayland-"*; do
+    if [ -e "${wayland_display}" ]; then
+      export WAYLAND_DISPLAY="${wayland_display}"
+    fi
   done
 fi
 

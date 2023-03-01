@@ -64,27 +64,19 @@ def mk_switch_user_fn(user):
 
 
 def get_user_env(user):
-    # We need special handling for the Debian-gdm user because running
-    # 'su -s /bin/sh -c env' doesn't print the same environment which
-    # the Greeter is running in - in particular, DBUS_SESSION_BUS_ADDRESS
-    # does not have the value we need to successfully run Dogtail.
-    if user == "Debian-gdm":
-        with open(f"/tmp/gdm-env") as f:
-            env_data = f.read()
-        return dict((line.split('=', 1) for line in env_data.splitlines()))
-
-    # We try to create an environment identical to what's expected
-    # inside Tails for the user by logging in (via `su`) as the user,
-    # setting up the GNOME shell environment, and extracting the
-    # environment via `env`; not that we will run `env` unconditionally
-    # since the former command could fail, e.g. if GNOME is not running.
+    # Get the default environment that's set up when logging in via `su`
     wrapped_env_cmd = "su -c env {}".format(user)
     pipe = subprocess.Popen(wrapped_env_cmd,
                             stdout=subprocess.PIPE,
                             shell=True)  # nosec subprocess_popen_with_shell_equals_true
     env_data = pipe.communicate()[0].decode('utf-8')
     env_dict = dict((line.split('=', 1) for line in env_data.splitlines()))
-    env_dict.update(gnome_env())
+
+    # Get the stored user environment (if the user is a user for which
+    # we store the user environment).
+    if user == "amnesia" or user =="Debian-gdm":
+        env_dict.update(gnome_env(user))
+
     return env_dict
 
 

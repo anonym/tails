@@ -35,7 +35,7 @@ def run_in_netns(*args, netns, user="amnesia", root="/", bind_mounts=[]):
     runuser = ["/sbin/runuser", "-u", LIVE_USERNAME]
     envcmd = [
         "/usr/bin/env", "--",
-        *gnome_env_vars(),
+        *gnome_env_vars(LIVE_USERNAME),
         f"AT_SPI_BUS_ADDRESS=unix:path={A11Y_BUS_SANDBOX_PATH}",
         f"IBUS_ADDRESS=unix:path={IBUS_SANDBOX_PATH}",
     ]
