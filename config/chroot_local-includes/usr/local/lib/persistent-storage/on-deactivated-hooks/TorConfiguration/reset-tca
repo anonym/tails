@@ -3,10 +3,10 @@
 set -eu
 
 rm -rf /var/lib/tca/ /run/tca/
-/usr/local/lib/systemctl-user amnesia stop tca.service
+/usr/local/lib/exec-in-gnome-env systemctl --user stop tca.service
 systemctl stop tor@default.service
 echo DisableNetwork 1 >> /etc/tor/torrc
 systemctl start tor@default.service
 if [ "$(nmcli --terse --fields STATE general status)" = connected ]; then
-    /usr/local/lib/systemctl-user amnesia start tca.service
+    /usr/local/lib/exec-in-gnome-env systemctl --user start tca.service
 fi

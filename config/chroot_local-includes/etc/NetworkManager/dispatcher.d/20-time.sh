@@ -6,10 +6,6 @@
 set -e
 set -u
 
-# Get LIVE_USERNAME
-# shellcheck source=../../live/config.d/username.conf
-. /etc/live/config.d/username.conf
-
 ### Exit conditions
 
 # Run only when the interface is not "lo":
@@ -22,5 +18,4 @@ if [ "$2" != "up" ]; then
 	exit 0
 fi
 
-/usr/local/lib/systemctl-user "${LIVE_USERNAME}" \
-  --user restart tails-htpdate-notify-user.service
+/usr/local/lib/exec-in-gnome-env systemctl --user restart tails-htpdate-notify-user.service
