@@ -452,14 +452,23 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
 end
 
 Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
-  @screen.wait('TailsGreeterPersistencePassphrase.png', 60).click
-  sleep 1
+  # @type [Dogtail::Node]
+  passphrase_entry = nil
+  try_for(60) do
+    passphrase_entry = greeter
+                       .child(roleName: 'password text', showingOnly: true)
+    passphrase_entry.grabFocus
+    passphrase_entry.focused
+  end
+  assert !passphrase_entry.nil?
+
   password = if with_changed_passphrase
                @changed_persistence_password
              else
                @persistence_password
              end
-  @screen.type(password, ['Return'])
+  passphrase_entry.text = password
+  @screen.press('Return')
 
   # Wait until the Persistent Storage was unlocked. We use the fact that
   # the unlock button is made invisible when the Persistent Storage is
