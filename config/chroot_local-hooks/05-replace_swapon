@@ -4,10 +4,7 @@ set -e
 
 echo "Replacing swapon executable"
 
-# Only allow setting up swap for zram devices. This is not perfect,
-# swapon could be called with multiple devices at once which will
-# result in the real swapon being called if any of the devices is a
-# zram device. It's still better than nothing.
+# Only allow setting up swap for zram devices.
 # Rationale: security-in-depth model.
 
 SWAPON=/sbin/swapon
@@ -21,10 +18,12 @@ cat > $SWAPON << 'EOF'
 
 set -eu
 
-if ! echo "$@" | grep -q /dev/zram; then
-  echo >&2 "Setting up swap is only allowed for zram devices"
-  exit 1
-fi
+for param in "$@"; do
+  if echo "${param}" | grep -v /dev/zram | grep -q /dev; then
+    echo >&2 "Setting up swap is only allowed for zram devices"
+    exit 1
+  fi
+done
 
 /sbin/swapon.distrib "$@"
 EOF
