@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
 # This script exports environment variables from the file specified in
 # the ENVFILE argument and then executes the specified command.
@@ -9,33 +9,41 @@
 #
 # ENVFILE must be null-terminated.
 
-set -euo pipefail
+import os
+import sys
+from pathlib import Path
 
-if [ $# -lt 2 ]; then
-  echo >&2 "Usage: $0 ENVFILE [--] COMMAND [ARG...]"
-  exit 1
-fi
+usage = f"{sys.argv[0]} ENVFILE [--] COMMAND [ARG...]"
 
-ENVFILE="$1"
-shift
 
-if [ "$1" = "--" ]; then
-  shift
-fi
+def read_envfile(envfile: str) -> dict:
+    env = dict(os.environ)
+    for line in Path(envfile).read_text().split('\0'):
+        if not line:
+            continue
+        key, value = line.split("=", 1)
+        if key not in env:
+            env[key] = value
+    return env
 
-while IFS= read -r -d $'\0' line; do
-  # Extract the variable name by removing the longest suffix which
-  # matches "=*". For documentation on this bash feature see [1].
-  var="${line%%=*}"
-  # Only export the variable if it's unset in the current environment.
-  # This uses bash's variable indirection, see [2].
-  if [ -z "${!var-}" ]; then
-    export "${line?}"
-  fi
-done <"${ENVFILE}"
 
-exec "$@"
+def main():
+    if os.geteuid() != 1000:
+        print(f"{sys.argv[0]: This script must be run as amnesia}", file=sys.stderr)
+        sys.exit(1)
 
-# References:
-# [1]: Search for "${parameter%%word}" in https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
-# [2]: Search for "indirection" in https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+    if len(sys.argv) < 3:
+        print(usage, file=sys.stderr)
+        sys.exit(1)
+
+    if sys.argv[2] == "--":
+        del sys.argv[2]
+
+    env = read_envfile(sys.argv[1])
+    file = sys.argv[2]
+    args = sys.argv[2:]
+    os.execvpe(file, args, env=env)
+
+
+if __name__ == "__main__":
+    main()
