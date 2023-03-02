@@ -64,13 +64,6 @@ class Feature(object):
         if not self.box:
             raise RuntimeError(f"Could not find {box_name}")
 
-        self.expander = Gtk.Expander(
-            expanded=True,
-            visible=True,
-            valign="center",
-            sensitive=False,
-        )
-
         action_row_name = self.widget_name_prefix + "_row"
         self.action_row = self.builder.get_object(action_row_name)  # type: Handy.ActionRow
         self.name = self.dbus_object_name
@@ -86,6 +79,9 @@ class Feature(object):
                                    'destructive-action')
         self.second_row = Handy.ActionRow(can_focus = False)
         self.second_row.add(self.delete_data_button)
+        # Add an empty label with some margin to make the subtitle align
+        # with the title of the first row
+        self.second_row.add_prefix(Gtk.Label(visible=True, margin_end=33))
         self.add_second_row()
 
         self.spinner = Gtk.Spinner()  # type: Gtk.Spinner
@@ -112,6 +108,8 @@ class Feature(object):
 
     def add_second_row(self):
         parent_list_box = self.action_row.get_parent()  # type: Gtk.ListBox
+        # Don't add any header (default is to add a GtkSeparator)
+        parent_list_box.set_header_func(lambda: None)
 
         i = 0
         while True:
@@ -168,13 +166,9 @@ class Feature(object):
 
     def show_second_row(self):
         self.second_row.show()
-        if not self.expander in self.box.get_children():
-            self.box.add(self.expander)
 
     def hide_second_row(self):
         self.second_row.hide()
-        if self.expander in self.box.get_children():
-            self.box.remove(self.expander)
 
     def on_state_set(self, switch: Gtk.Switch, state: bool):
         # We return True here to prevent the default handler from
