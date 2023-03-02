@@ -69,20 +69,22 @@ class Feature(object):
         self.name = self.dbus_object_name
         self.translated_name = self.action_row.get_title()
 
-        # Add the row about deleting leftover data
+        # Add the delete data button
         self.delete_data_button = Gtk.Button(
-            label = _("Delete Data…"),
-            valign = "center",
+            label=_("Delete Data…"),
+            valign="center",
         )
         self.delete_data_button.connect("clicked", self.on_delete_data_button_clicked)
         Gtk.StyleContext.add_class(self.delete_data_button.get_style_context(),
                                    'destructive-action')
-        self.second_row = Handy.ActionRow(can_focus = False)
-        self.second_row.add(self.delete_data_button)
-        # Add an empty label with some margin to make the subtitle align
-        # with the title of the first row
-        self.second_row.add_prefix(Gtk.Label(visible=True, margin_end=33))
-        self.add_second_row()
+        self.box.add(self.delete_data_button)
+        self.box.reorder_child(self.delete_data_button, 0)
+
+        # Change style context of the subtitle label of the HdyActionRow
+        self.subtitle_label = self.action_row.get_child().get_children()[2].get_children()[1]
+        self.subtitle_style_context = self.subtitle_label.get_style_context()
+        Gtk.StyleContext.add_class(self.subtitle_style_context, "caption")
+        Gtk.StyleContext.remove_class(self.subtitle_style_context, "subtitle")
 
         self.spinner = Gtk.Spinner()  # type: Gtk.Spinner
         self.warning_icon = Gtk.Image(
@@ -101,26 +103,10 @@ class Feature(object):
         self.switch.connect("notify::active", self.on_active_changed)
         self.switch.connect("state-set", self.on_state_set)
 
-        self.update_second_row()
+        self.refresh_ui()
 
         self.dialog = None
         self.old_state = None  # type: bool
-
-    def add_second_row(self):
-        parent_list_box = self.action_row.get_parent()  # type: Gtk.ListBox
-        # Don't add any header (default is to add a GtkSeparator)
-        parent_list_box.set_header_func(lambda: None)
-
-        i = 0
-        while True:
-            row = parent_list_box.get_row_at_index(i)
-            if not row:
-                raise RuntimeError(f"Couldn't find action row in list box")
-            if row == self.action_row:
-                break
-            i += 1
-
-        parent_list_box.insert(self.second_row, i + 1)
 
     def show_spinner(self):
         if not self.spinner in self.box.get_children():
@@ -144,7 +130,7 @@ class Feature(object):
         if self.warning_icon in self.box.get_children():
             self.box.remove(self.warning_icon)
 
-    def update_second_row(self):
+    def refresh_ui(self):
         if self.error:
             self.show_warning_icon()
         else:
@@ -157,18 +143,19 @@ class Feature(object):
         elif self.has_data and not self.is_active:
             subtitle = _("There's some data. Turn on or delete data.")
         else:
-            self.hide_second_row()
+            self.delete_data_button.hide()
+            self.action_row.set_subtitle("")
             return
 
-        self.second_row.set_subtitle(subtitle)
+        if self.error:
+            Gtk.StyleContext.add_class(self.subtitle_style_context, "error")
+            self.subtitle_label.set_selectable(True)
+        else:
+            Gtk.StyleContext.remove_class(self.subtitle_style_context, "error")
+            self.subtitle_label.set_selectable(False)
+
+        self.action_row.set_subtitle(subtitle)
         self.delete_data_button.set_visible(self.has_data)
-        self.show_second_row()
-
-    def show_second_row(self):
-        self.second_row.show()
-
-    def hide_second_row(self):
-        self.second_row.hide()
 
     def on_state_set(self, switch: Gtk.Switch, state: bool):
         # We return True here to prevent the default handler from
@@ -203,6 +190,7 @@ class Feature(object):
     def activate(self):
         logger.debug(f"Activating feature {self.name}")
         self.show_spinner()
+        self.delete_data_button.hide()
 
         # Create a cancellable that can be used to cancel the activation job
         self.cancellable = Gio.Cancellable()
@@ -346,7 +334,7 @@ class Feature(object):
             return
 
         self.show_spinner()
-        self.hide_second_row()
+        self.delete_data_button.hide()
         self.proxy.call(method_name="Delete",
                         parameters=None,
                         flags=Gio.DBusCallFlags.NONE,
@@ -366,7 +354,7 @@ class Feature(object):
                                       e.message)
             return
         finally:
-            self.update_second_row()
+            self.refresh_ui()
 
         logger.debug(f"Data of feature {self.name} successfully deleted")
 
@@ -391,7 +379,7 @@ class Feature(object):
         if "IsActive" in changed_properties.keys() or \
                 "HasData" in changed_properties.keys() or \
                 "Error" in changed_properties.keys():
-            self.update_second_row()
+            self.refresh_ui()
 
         if "Job" in changed_properties.keys():
             job_path = changed_properties["Job"]
