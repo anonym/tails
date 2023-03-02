@@ -13,7 +13,7 @@ import os
 import sys
 from pathlib import Path
 
-usage = f"{sys.argv[0]} ENVFILE [--] COMMAND [ARG...]"
+usage = f"{sys.argv[0]} ENVFILE [--delete] [--] COMMAND [ARG...]"
 
 
 def read_envfile(envfile: str) -> dict:
@@ -36,10 +36,16 @@ def main():
         print(usage, file=sys.stderr)
         sys.exit(1)
 
+    envfile = sys.argv[1]
+    env = read_envfile(envfile)
+
+    if sys.argv[2] == "--delete":
+        os.remove(envfile)
+        del sys.argv[2]
+
     if sys.argv[2] == "--":
         del sys.argv[2]
 
-    env = read_envfile(sys.argv[1])
     file = sys.argv[2]
     args = sys.argv[2:]
     os.execvpe(file, args, env=env)
