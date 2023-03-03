@@ -62,6 +62,7 @@ def step_impl(context: TestContext):
 
     class FeatureWithBindMount(Feature):
         Id = "FeatureWithBindMount"
+        translatable_name = "FeatureWithBindMount"
         Mounts = [bind_mount_1, bind_mount_2]
 
     context.tps_feature = FeatureWithBindMount(context.service)

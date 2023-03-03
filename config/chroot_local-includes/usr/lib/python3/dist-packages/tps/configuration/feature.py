@@ -283,8 +283,8 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
     @property
     @abc.abstractmethod
     def Id(self) -> str:
-        """The name of the feature. It must only contain the ASCII
-        characters "[A-Z][a-z][0-9]_"."""
+        """The name of the feature for internal usage and in logs. It
+        must only contain the ASCII characters "[A-Z][a-z][0-9]_"."""
         return str()
 
     @property
@@ -302,6 +302,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         return list()
 
     # ----- Non-exported properties ------ #
+
+    @property
+    @abc.abstractmethod
+    def translatable_name(self) -> str:
+        """The name of the feature for usage in user-visible strings"""
+        return str()
 
     @property
     def conflicting_apps(self) -> List["ConflictingApp"]:

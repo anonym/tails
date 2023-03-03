@@ -18,10 +18,12 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
+import gettext
 import gi
 import logging
 import os
 
+from tailsgreeter import config
 from tailsgreeter.config import persistent_settings_dir, transient_settings_dir
 from tailsgreeter.gdmclient import GdmClient
 from tailsgreeter.settings import localization
@@ -126,7 +128,8 @@ class GreeterApplication(object):
             setting.on_language_changed(locale_code)
 
         self.translate_to(locale_code)
-        self.mainwindow.current_language = localization.language_from_locale(locale_code)
+        lang = localization.language_from_locale(locale_code)
+        config.set_current_language(lang)
 
     def close_app(self):
         """We're done, quit gtk app"""

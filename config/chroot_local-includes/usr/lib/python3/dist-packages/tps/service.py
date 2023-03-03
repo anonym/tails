@@ -13,7 +13,7 @@ from tps.dbus.object import DBusObject
 from tps.device import udisks, BootDevice, Partition, InvalidBootDeviceError
 from tps.job import ServiceUsingJobs
 from tps.udisks_monitor import UDisksCreationMonitor
-from tps import _, State, IN_PROGRESS_STATES, DBUS_ROOT_OBJECT_PATH, \
+from tps import State, IN_PROGRESS_STATES, DBUS_ROOT_OBJECT_PATH, \
     DBUS_SERVICE_INTERFACE, TPS_MOUNT_POINT, \
     ON_ACTIVATED_HOOKS_DIR, ON_DEACTIVATED_HOOKS_DIR, \
     DBUS_FEATURES_PATH
@@ -230,13 +230,13 @@ class Service(DBusObject, ServiceUsingJobs):
                 raise InvalidConfigFileError(e) from e
 
         self.refresh_features()
-        failed_features = list()
+        failed_feature_names = list()
         for feature in (f for f in self.features if f.IsActive):
             try:
                 feature.do_activate(None, non_blocking=True)
             except Exception as e:
                 logger.exception(e)
-                failed_features.append(feature.Id)
+                failed_feature_names.append(feature.translatable_name)
             finally:
                 # Remove features which failed to activate from the
                 # config file. This makes it easier for us to handle
@@ -246,8 +246,15 @@ class Service(DBusObject, ServiceUsingJobs):
 
         self.run_on_activated_hooks()
 
-        if any(failed_features):
-            msg = _("Features failed to to activate: {}").format(" ".join(failed_features))
+        if any(failed_feature_names):
+            # We want to show a translatable error message to the user
+            # but because the Service.Activate method is called in the
+            # Welcome Screen (and only there), only the Welcome Screen
+            # knows which language the user has currently selected.
+            # So we let the Welcome Screen translate the error message
+            # instead and make it easy for it by just passing the list
+            # of translatable feature names in the error message.
+            msg = ":".join(failed_feature_names)
             raise FeatureActivationFailedError(msg)
 
     def Unlock(self, passphrase: str):
@@ -467,6 +474,7 @@ class Service(DBusObject, ServiceUsingJobs):
             for i, mount in enumerate(unknown_mounts):
                 class CustomFeature(Feature):
                     Id = f"CustomFeature{i}"
+                    translatable_name = f"Custom Feature ({mount.dest_orig})"
                     Description = str(mount.dest_orig)
                     Mounts = [mount]
                 custom_feature = CustomFeature(self, is_custom=True)
