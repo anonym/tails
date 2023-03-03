@@ -11,7 +11,7 @@ a somewhat similar structure. This is:
 import os
 import logging
 
-from tailslib.gnome import gnome_env_vars
+from tailslib.userenv import user_env_vars
 from tailslib import LIVE_USERNAME
 
 A11Y_BUS_PROXY_PATH="/run/user/1000/.dbus-proxy/a11y-bus-proxy.sock"
@@ -35,7 +35,7 @@ def run_in_netns(*args, netns, root="/", bind_mounts=[]):
     runuser = ["/sbin/runuser", "-u", LIVE_USERNAME]
     envcmd = [
         "/usr/bin/env", "--",
-        *gnome_env_vars(LIVE_USERNAME),
+        *user_env_vars(LIVE_USERNAME),
         f"AT_SPI_BUS_ADDRESS=unix:path={A11Y_BUS_SANDBOX_PATH}",
         f"IBUS_ADDRESS=unix:path={IBUS_SANDBOX_PATH}",
     ]

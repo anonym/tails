@@ -45,7 +45,7 @@ import textwrap
 import time
 import traceback
 
-from tailslib.gnome import gnome_env
+from tailslib.userenv import user_env
 
 from typing import Tuple, Optional
 
@@ -75,7 +75,7 @@ def get_user_env(user):
     # Get the stored user environment (if the user is a user for which
     # we store the user environment).
     if user == "amnesia" or user =="Debian-gdm":
-        env_dict.update(gnome_env(user))
+        env_dict.update(user_env(user))
 
     return env_dict
 

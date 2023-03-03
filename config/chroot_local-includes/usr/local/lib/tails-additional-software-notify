@@ -56,7 +56,7 @@ class ASPNotifier(object):
             sys.exit(3)
         elif action == "documentation":
             subprocess.Popen(
-                ["/usr/local/lib/exec-in-gnome-env", "tails-documentation", user_data]
+                ["/usr/local/lib/exec-with-user-env", "tails-documentation", user_data]
             )
             sys.exit(5)
 

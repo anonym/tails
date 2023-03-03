@@ -17,11 +17,10 @@ if [ -z "${EUID:-}" ]; then
   EUID=$(id -u)
 fi
 
-GNOME_ENV_FILE="/run/user/${EUID}/gnome-env"
+USER_ENV_FILE="/run/user/${EUID}/user-env"
 
-# Set some environment variables which are not set in the gnome-shell
-# process but which we still need in some processes which export the
-# environment file.
+# Set some environment variables which are not set by systemd but which
+# we still need in some processes which export the environment file.
 if [ -z "${DISPLAY:-}" ]; then
   export DISPLAY=:0
 fi
@@ -52,4 +51,4 @@ fi
 
 # To avoid issues with environment variables that contain newlines, we
 # dump the environment null-terminated
-env --null > "${GNOME_ENV_FILE}"
+env --null > "${USER_ENV_FILE}"

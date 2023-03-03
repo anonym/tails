@@ -11,11 +11,11 @@
 
 set -eu
 
-GNOME_ENV_FILE=/run/user/1000/gnome-env
+USER_ENV_FILE=/run/user/1000/user-env
 
 # Ensure that we're running as amnesia
 if [ "$(id -u)" -ne "1000"  ]; then
-  runuser -u amnesia -- /usr/local/lib/loadenv-exec "${GNOME_ENV_FILE}" -- "$@"
+  runuser -u amnesia -- /usr/local/lib/loadenv-exec "${USER_ENV_FILE}" -- "$@"
 else
-  /usr/local/lib/loadenv-exec "${GNOME_ENV_FILE}" -- "$@"
+  /usr/local/lib/loadenv-exec "${USER_ENV_FILE}" -- "$@"
 fi

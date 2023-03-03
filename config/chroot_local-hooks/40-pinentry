@@ -16,6 +16,6 @@ dpkg-divert --add --rename --divert \
 
 cat > /usr/bin/pinentry-gtk-2 << 'EOF'
 #!/bin/sh
-/usr/local/lib/exec-in-gnome-env /usr/lib/pinentry/pinentry-gtk-2 "$@"
+/usr/local/lib/exec-with-user-env /usr/lib/pinentry/pinentry-gtk-2 "$@"
 EOF
 chmod 755 /usr/bin/pinentry-gtk-2

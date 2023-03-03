@@ -20,7 +20,7 @@ def chdir(path):
 
 def launch_x_application(command, *args):
     """Launch an X application as LIVE_USERNAME and wait for its completion."""
-    cmdline = ["/usr/local/lib/exec-in-gnome-env", command, *args]
+    cmdline = ["/usr/local/lib/exec-with-user-env", command, *args]
     try:
         subprocess.run(cmdline,
                        stderr=subprocess.PIPE,
@@ -35,7 +35,7 @@ def launch_x_application(command, *args):
 
 def spawn_x_application(command, *args):
     """Launch an X application as LIVE_USERNAME without blocking."""
-    cmdline = ["/usr/local/lib/exec-in-gnome-env", command, *args]
+    cmdline = ["/usr/local/lib/exec-with-user-env", command, *args]
     subprocess.Popen(cmdline,
                      stderr=subprocess.PIPE,
                      universal_newlines=True)
