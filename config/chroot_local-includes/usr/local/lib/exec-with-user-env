@@ -1,17 +1,21 @@
 #!/bin/sh
 
-# This script exports environment variables from the file specified in
-# the ENVFILE argument and then executes the specified command.
+# This scripts loads the environment variables that were stored by
+# dump-user-env in /run/user/1000/user-env and executes the specified
+# command and arguments as amnesia.
 #
-# If any environment variables from ENVFILE are already set in the
-# current environment, those are *not* overwritten, so environment
-# variables set by the caller take precedence over the ones from ENVFILE.
-#
-# ENVFILE must be null-terminated.
+# If any environment variables from /run/user/1000/user-env are already
+# set in the current environment, those are *not* overwritten, so
+# environment variables set by the caller take precedence.
 
 set -eu
 
 USER_ENV_FILE=/run/user/1000/user-env
+
+if [ "$#" -lt 1 ]; then
+  echo >&2 "Usage: $0 COMMAND [ARG]..."
+  exit 1
+fi
 
 # Ensure that we're running as amnesia
 if [ "$(id -u)" -ne "1000"  ]; then
