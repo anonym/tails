@@ -19,7 +19,7 @@ fi
 
 # Ensure that we're running as amnesia
 if [ "$(id -u)" -ne "1000"  ]; then
-  runuser -u amnesia -- /usr/local/lib/loadenv-exec "${USER_ENV_FILE}" -- "$@"
+  runuser -u amnesia -- /usr/local/lib/exec-with-env "${USER_ENV_FILE}" -- "$@"
 else
-  /usr/local/lib/loadenv-exec "${USER_ENV_FILE}" -- "$@"
+  /usr/local/lib/exec-with-env "${USER_ENV_FILE}" -- "$@"
 fi

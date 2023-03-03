@@ -11,5 +11,5 @@ ENVFILE="$1"
 
 /usr/local/lib/connect-drop --dbus --env-keep -- \
     sudo --close-from=4 -u amnesia \
-    /usr/local/lib/loadenv-exec "${ENVFILE}" --delete \
+    /usr/local/lib/exec-with-env "${ENVFILE}" --delete \
     /usr/local/lib/tps-frontend
