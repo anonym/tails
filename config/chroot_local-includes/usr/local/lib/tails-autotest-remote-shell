@@ -77,6 +77,18 @@ def get_user_env(user):
     if user == "amnesia" or user =="Debian-gdm":
         env_dict.update(user_env(user))
 
+    # To allow using Dogtail with applications run as root
+    # (e.g. synaptic), we also load the user env from amnesia when
+    # executing commands as root. Note that this allows privilege
+    # escalation because we export amnesia-controlled environment
+    # variables in a root process, but we don't care about that here
+    # because it's only done in tests.
+    if user == "root":
+        try:
+            env_dict.update(user_env("amnesia"))
+        except FileNotFoundError:
+            pass
+
     return env_dict
 
 
