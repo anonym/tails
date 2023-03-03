@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class Feature(object):
+
     @property
     def dbus_object_name(self) -> str:
         """The name of the D-Bus object representing this feature
@@ -52,6 +53,7 @@ class Feature(object):
             None,
         )  # type: Gio.DBusProxy
 
+        self.is_enabled = self.proxy.get_cached_property("IsEnabled").get_boolean()
         self.is_active = self.proxy.get_cached_property("IsActive").get_boolean()
         self.has_data = self.proxy.get_cached_property("HasData").get_boolean()
         self.error = self.proxy.get_cached_property("Error").get_string()
@@ -99,14 +101,23 @@ class Feature(object):
         if not self.switch:
             raise RuntimeError(f"Could not find {switch_name}")
 
-        self.switch.set_state(self.is_active)
-        self.switch.connect("notify::active", self.on_active_changed)
         self.switch.connect("state-set", self.on_state_set)
+        # Yes, it's confusing that we set the GtkSwitch.active property
+        # to the value of the Feature.IsEnabled property and the
+        # GtkSwitch.state property to the value of the Feature.IsActive
+        # property, but that's what we want: We want the switch to be
+        # in the on position (i.e. GtkSwitch.active == True) when the
+        # feature is enabled in the config file and we want it's
+        # underlying state (blue or gray color) to represent whether
+        # the feature is currently active.
+        self.switch.set_active(self.is_enabled)
+        self.switch.connect("notify::active", self.on_is_enabled_changed)
+
+        self.switch.set_state(self.is_active)
 
         self.refresh_ui()
 
         self.dialog = None
-        self.old_state = None  # type: bool
 
     def show_spinner(self):
         if not self.spinner in self.box.get_children():
@@ -131,23 +142,25 @@ class Feature(object):
             self.box.remove(self.warning_icon)
 
     def refresh_ui(self):
-        if self.error:
+        error = self.error or (self.is_enabled and not self.is_active)
+
+        if error:
             self.show_warning_icon()
         else:
             self.hide_warning_icon()
 
-        if self.error and self.has_data:
+        if error and self.has_data:
             subtitle = _("Activation failed. Try again or delete data.")
-        elif self.error:
+        elif error:
             subtitle = _("Activation failed. Try again.")
-        elif self.has_data and not self.is_active:
+        elif self.has_data and not self.is_enabled:
             subtitle = _("There's some data. Turn on or delete data.")
         else:
             self.delete_data_button.hide()
             self.action_row.set_subtitle("")
             return
 
-        if self.error:
+        if error:
             Gtk.StyleContext.add_class(self.subtitle_style_context, "error")
             self.subtitle_label.set_selectable(True)
         else:
@@ -166,21 +179,10 @@ class Feature(object):
         # See https://developer.gnome.org/gtk3/stable/GtkSwitch.html#GtkSwitch-state-set
         return True
 
-    def on_active_changed(self, switch: Gtk.Switch, pspec: GObject.ParamSpec):
-        is_active = self.proxy.get_cached_property("IsActive").get_boolean()
-        if switch.get_active() == is_active:
-            # The feature already has the desired state. There are only
-            # two cases in which this should happen:
-            # * The feature was changed without user interaction,
-            #   e.g. activated as a default feature by the backend
-            #   after the Persistent Storage was created. In this case
-            #   we only have to set the state of the switch accordingly.
-            # * If we called set_active ourselves, to flip the switch
-            #   back into its old position, because activation of the
-            #   feature failed or the user cancelled it. In this case
-            #   the switch already has the desired state (setting it
-            #   again is a noop).
-            switch.set_state(is_active)
+    def on_is_enabled_changed(self, switch: Gtk.Switch, pspec: GObject.ParamSpec):
+        is_enabled = self.proxy.get_cached_property("IsEnabled").get_boolean()
+        if switch.get_active() == is_enabled:
+            # The feature is already enabled.
             return
         if switch.get_active():
             self.activate()
@@ -194,7 +196,6 @@ class Feature(object):
 
         # Create a cancellable that can be used to cancel the activation job
         self.cancellable = Gio.Cancellable()
-        self.old_state = False
 
         self.proxy.call(method_name="Activate",
                         parameters=None,
@@ -217,7 +218,6 @@ class Feature(object):
 
         # Create a cancellable that can be used to cancel the activation job
         self.cancellable = Gio.Cancellable()
-        self.old_state = True
 
         self.proxy.call(method_name="Deactivate",
                    parameters=None,
@@ -260,8 +260,8 @@ class Feature(object):
                                           e.message)
 
             # Ensure that the switch displays the correct state
-            is_active = self.proxy.get_cached_property("IsActive").get_boolean()
-            self.switch.set_active(is_active)
+            is_enabled = self.proxy.get_cached_property("IsEnabled").get_boolean()
+            self.switch.set_active(is_enabled)
             return
 
         logger.debug(f"Feature {self.name} successfully activated")
@@ -299,11 +299,12 @@ class Feature(object):
                                           e.message)
 
             # Ensure that the switch displays the correct state
-            is_active = self.proxy.get_cached_property("IsActive").get_boolean()
-            self.switch.set_active(is_active)
+            is_enabled = self.proxy.get_cached_property("IsEnabled").get_boolean()
+            self.switch.set_active(is_enabled)
 
             # We hid the widgets in the deactivate() function, so ensure
             # that they now have the correct visibility
+            is_active = self.proxy.get_cached_property("IsActive").get_boolean()
             for widget in self.widgets_to_show_while_active:
                 widget.set_visible(is_active)
 
@@ -362,26 +363,30 @@ class Feature(object):
                               changed_properties: GLib.Variant,
                               invalidated_properties: List[str]):
         logger.debug("changed properties: %s", changed_properties)
-        if "IsActive" in changed_properties.keys():
+        keys = set(changed_properties.keys())
+
+        if "IsEnabled" in keys:
+            self.is_enabled = changed_properties["IsEnabled"]
+            self.switch.set_active(self.is_enabled)
+
+        if "IsActive" in keys:
             self.is_active = changed_properties["IsActive"]
-            self.switch.set_active(self.is_active)
+
             self.switch.set_state(changed_properties["IsActive"])
             for widget in self.widgets_to_show_while_active:
                 widget.set_visible(changed_properties["IsActive"])
             self.hide_spinner()
 
-        if "HasData" in changed_properties.keys():
+        if "HasData" in keys:
             self.has_data = changed_properties["HasData"]
 
-        if "Error" in changed_properties.keys():
+        if "Error" in keys:
             self.error = changed_properties["Error"]
 
-        if "IsActive" in changed_properties.keys() or \
-                "HasData" in changed_properties.keys() or \
-                "Error" in changed_properties.keys():
+        if keys.intersection({"IsEnabled", "IsActive", "HasData", "Error"}):
             self.refresh_ui()
 
-        if "Job" in changed_properties.keys():
+        if "Job" in keys:
             job_path = changed_properties["Job"]
             # noinspection PyArgumentList
             self.backend_job = Gio.DBusProxy.new_sync(
@@ -418,7 +423,6 @@ class Feature(object):
         if result == Gtk.ResponseType.CANCEL:
             self.dialog.destroy()
             self.cancellable.cancel()
-            self.switch.set_active(self.old_state)
 
     def get_conflicting_apps_message(self, apps: Dict[str, List[int]]):
         app_reprs = [self.app_repr_string(app, apps[app]) for app in apps]
