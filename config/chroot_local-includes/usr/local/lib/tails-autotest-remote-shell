@@ -75,7 +75,10 @@ def get_user_env(user):
     # Get the stored user environment (if the user is a user for which
     # we store the user environment).
     if user == "amnesia" or user =="Debian-gdm":
-        env_dict.update(user_env(user))
+        try:
+            env_dict.update(user_env(user))
+        except FileNotFoundError as e:
+            print(f"Failed to load user env for {user}: {e}")
 
     # To allow using Dogtail with applications run as root
     # (e.g. synaptic), we also load the user env from amnesia when
