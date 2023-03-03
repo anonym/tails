@@ -151,7 +151,7 @@ class Service(DBusObject, ServiceUsingJobs):
                 # about the conflicting process.
                 logger.warning(e)
             finally:
-                self.save_config_file()
+                feature.refresh_state()
 
         self.run_on_activated_hooks()
 
@@ -231,18 +231,14 @@ class Service(DBusObject, ServiceUsingJobs):
 
         self.refresh_features()
         failed_feature_names = list()
-        for feature in (f for f in self.features if f.IsActive):
+        for feature in [f for f in self.features if f.IsEnabled]:
             try:
                 feature.do_activate(None, non_blocking=True)
             except Exception as e:
                 logger.exception(e)
                 failed_feature_names.append(feature.translatable_name)
             finally:
-                # Remove features which failed to activate from the
-                # config file. This makes it easier for us to handle
-                # this case in the frontend: The user can just use the
-                # switch to try and activate the feature again.
-                self.save_config_file()
+                feature.refresh_state()
 
         self.run_on_activated_hooks()
 
@@ -458,9 +454,18 @@ class Service(DBusObject, ServiceUsingJobs):
 
     def save_config_file(self):
         """Save all currently active features to the config file."""
-        active_features = [feature for feature in self.features
-                           if feature.IsActive]
-        self.config_file.save(active_features)
+        # XXX: This has a race condition, for example if this is called
+        # by a successful Activate call and we're waiting to acquire the
+        # lock in self.config_file.save, another later Activate call
+        # could also reach this and acquire the lock before us, which
+        # would mean that it saves another feature to the config file
+        # and it's our turn, we remove that feature again.
+        # To solve this, we should have ConfigFile.Add and
+        # ConfigFile.Remove methods which parse the config file and
+        # add the lines for a specific feature to it.
+        enabled_features = [feature for feature in self.features
+                            if feature.IsEnabled]
+        self.config_file.save(enabled_features)
 
     def refresh_features(self):
         # Refresh custom features
@@ -491,9 +496,9 @@ class Service(DBusObject, ServiceUsingJobs):
                 self.object_manager.unexport(known_custom_feature.dbus_path)
                 self.features.remove(known_custom_feature)
 
-        # Refresh IsActive of all features
+        # Refresh state of all features
         for feature in self.features:
-            feature.refresh_is_active()
+            feature.refresh_state()
 
     def refresh_state(self, overwrite_in_progress: bool = False):
         if not self._boot_device:

@@ -31,13 +31,6 @@ class ConflictingProcessesError(Exception):
     pass
 
 
-# This enum is currently only used internally
-class _State(Enum):
-    Active = 1
-    Inactive = 2
-    Inconsistent = 3
-
-
 class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
     dbus_info = '''
     <node>
@@ -48,6 +41,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             <property name="Id" type="s" access="read"/>
             <property name="Description" type="s" access="read"/>
             <property name="IsActive" type="b" access="read"/>
+            <property name="IsEnabled" type="b" access="read"/>
             <property name="HasData" type="b" access="read"/>
             <property name="Job" type="o" access="read"/>
             <property name="Error" type="s" access="read"/>
@@ -66,9 +60,11 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         self.is_custom = is_custom
         self._error = str()
 
-        # Check if the feature is active
+        # Check if the feature is enabled in the config file
         config_file = self.service.config_file
-        self._is_active = config_file.exists() and config_file.contains(self)
+        self._is_enabled = config_file.exists() and config_file.contains(self)
+        self._is_active = all(mount.is_active() for mount in self.Mounts)
+        self._has_data = any(mount.has_data() for mount in self.Mounts)
 
     # ----- Exported functions ----- #
 
@@ -79,9 +75,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
                   self.service.state.name
             raise FailedPreconditionError(msg)
 
-        # Check if feature is active
-        state = self.refresh_is_active()
-        if state == state.Active:
+        if self.IsActive and self.IsEnabled:
             raise AlreadyActivatedError("Feature %r is already activated"
                                         % self.Id)
 
@@ -108,7 +102,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             with self.new_job() as job:
                 self.do_activate(job)
         finally:
-            self.service.save_config_file()
+            self.refresh_state()
 
     def do_activate(self, job: Optional["Job"], non_blocking=False):
         logger.info(f"Activating feature {self.Id}")
@@ -140,10 +134,21 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             for mount in self.Mounts: mount.check_is_active()
         except IsInactiveException as e:
             msg = f"Activation of feature '{self.Id}' failed unexpectedly"
+            self.Error = str(e)
             raise ActivationFailedError(msg) from e
 
+        try:
+            self.run_on_activated_hooks()
+        except Exception as e:
+            self.Error = str(e)
+            raise
+
         self.Error = str()
-        self.IsActive = True
+        # XXX: Setting _is_enabled to True here breaks sending the
+        #      changed-properties signal. Replace with a
+        #      self.service.config_file.add() call
+        self._is_enabled = True
+        self.service.save_config_file()
 
     def Deactivate(self):
         # Check if we can deactivate the feature
@@ -153,8 +158,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             raise FailedPreconditionError(msg)
 
         # Check if feature is active
-        state = self.refresh_is_active()
-        if state == state.Inactive:
+        if not self.IsActive and not self.IsEnabled:
             raise NotActivatedError("Feature %r is not activated" % self.Id)
 
         # If there is still a job running, cancel it
@@ -167,7 +171,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             with self.new_job() as job:
                 self.do_deactivate(job)
         finally:
-            self.service.save_config_file()
+            self.refresh_state()
 
     def do_deactivate(self, job: Optional["Job"]):
         logger.info(f"Deactivating feature {self.Id}")
@@ -188,7 +192,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             msg = f"Deactivation of feature '{self.Id}' failed unexpectedly"
             raise ActivationFailedError(msg) from e
 
-        self.IsActive = False
+        self.run_on_deactivated_hooks()
+        # XXX: Setting _is_enabled to False here breaks sending the
+        #      changed-properties signal. Replace with a
+        #      self.service.config_file.add() call
+        self._is_enabled = False
+        self.service.save_config_file()
 
     def Delete(self):
         # Check if we can delete the feature
@@ -198,8 +207,8 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             raise FailedPreconditionError(msg)
 
         # Check if feature is active
-        state = self.refresh_is_active()
-        if state == state.Active:
+        self.refresh_state(["IsActive"])
+        if self.IsActive:
             msg = f"Can't delete active feature '{self.Id}'"
             raise FailedPreconditionError(msg)
 
@@ -227,32 +236,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
     def IsActive(self) -> bool:
         return self._is_active
 
-    @IsActive.setter
-    def IsActive(self, value: bool):
-        if self._is_active == value:
-            # Nothing to do
-            return
-        self._is_active = value
-
-        # HasData might also have changed, we just include it here,
-        # which is not necessarily correct but it's simpler than
-        # adding code to store its last value and check if it changed
-        # and it doesn't have any negative impact.
-        changed_properties = {
-            "IsActive": GLib.Variant("b", value),
-            "HasData": GLib.Variant("b", self.HasData)
-        }
-        self.emit_properties_changed_signal(self.service.connection,
-                                            DBUS_FEATURE_INTERFACE,
-                                            changed_properties)
-        if value:
-            self.on_activated()
-        else:
-            self.on_deactivated()
-
+    @property
+    def IsEnabled(self) -> bool:
+        return self._is_enabled
     @property
     def HasData(self) -> bool:
-        return any(mount.has_data() for mount in self.Mounts)
+        return self._has_data
 
     @property
     def Error(self) -> str:
@@ -322,58 +311,37 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
 
     # ----- Non-exported functions ----- #
 
-    def on_activated(self):
-        # When there is an inconsistent state between the config file
-        # and the mounts (i.e. the config file contains the mount but
-        # the mounts are not actually mounted) running the hooks would
-        # make things even worse, so we check if the mounts are actually
-        # mounted and let any exception escalate.
-        # XXX: The persistence.conf file should be migrated to an
-        # internal state file to avoid users causing inconsistent state
-        for mount in self.Mounts: mount.check_is_active()
+    def run_on_activated_hooks(self):
         hooks_dir = Path(ON_ACTIVATED_HOOKS_DIR, self.Id)
         executil.execute_hooks(hooks_dir)
 
-    def on_deactivated(self):
-        for mount in self.Mounts: mount.check_is_inactive()
+    def run_on_deactivated_hooks(self):
         hooks_dir = Path(ON_DEACTIVATED_HOOKS_DIR, self.Id)
         executil.execute_hooks(hooks_dir)
 
-    def refresh_is_active(self) -> _State:
+    def refresh_state(self):
+        changed_properties = dict()
+
         config_file = self.service.config_file
         is_enabled = config_file.exists() and config_file.contains(self)
-        all_mounts_active = all(mount.is_active() for mount in self.Mounts)
-        all_mounts_inactive = not any(mount.is_active() for mount in self.Mounts)
+        if self._is_enabled != is_enabled:
+            self._is_enabled = is_enabled
+            changed_properties["IsEnabled"] = GLib.Variant("b", is_enabled)
 
-        if is_enabled and all_mounts_active:
-            state = _State.Active
-        elif not is_enabled and all_mounts_inactive:
-            state = _State.Inactive
-        else:
-            state = _State.Inconsistent
+        has_data = any(mount.has_data() for mount in self.Mounts)
+        if self._has_data != has_data:
+            self._has_data = has_data
+            changed_properties["HasData"] = GLib.Variant("b", has_data)
 
-        # In the UI, we only want the state to be displayed as active
-        # when the feature is enabled and all mounts are active
-        try:
-            self.IsActive = state == _State.Active
-        except IsActiveException:
-            # It's expected that the call to check_is_active in
-            # self.on_deactivated raises an IsActiveException if we're
-            # in an inconsistent state, i.e. the feature is disabled in
-            # the config file but there are active bindings.
-            # We can't expect the on-deactivated hooks to do the right
-            # when there are still active bindings, so we accept that
-            # they were not run and ignore the exception.
-            # This means that when the feature is activated again, the
-            # on-activated hooks are run again without the on-deactivated
-            # hooks having been run, so the on-activated hooks must
-            # gracefully handle that case.
-            if state == _State.Inconsistent:
-                pass
-            else:
-                raise
+        is_active = all(mount.is_active() for mount in self.Mounts)
+        if self._is_active != is_active:
+            self._is_active = is_active
+            changed_properties["IsActive"] = GLib.Variant("b", is_active)
 
-        return state
+        if changed_properties:
+            self.emit_properties_changed_signal(self.service.connection,
+                                                DBUS_FEATURE_INTERFACE,
+                                                changed_properties)
 
     def wait_for_conflicting_processes_to_terminate(self, job: "Job"):
         """Waits until all conflicting processes were terminated.
