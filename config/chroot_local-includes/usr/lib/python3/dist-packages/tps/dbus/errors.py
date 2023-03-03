@@ -31,17 +31,11 @@ class DBusError(Exception):
 class ActivationFailedError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.ActivationFailed"
 
-class AlreadyActivatedError(DBusError):
-    name = "org.boum.tails.PersistentStorage.Error.AlreadyActivated"
-
 class DeletionFailedError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.DeletionFailed"
 
 class FailedPreconditionError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.FailedPrecondition"
-
-class NotActivatedError(DBusError):
-    name = "org.boum.tails.PersistentStorage.Error.NotActivated"
 
 class JobCancelledError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.JobCancelled"

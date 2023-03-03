@@ -15,8 +15,7 @@ from tps import State, DBUS_FEATURE_INTERFACE, DBUS_FEATURES_PATH, \
 from tps.configuration.mount import Mount, IsActiveException, \
     IsInactiveException
 from tps.dbus.errors import ActivationFailedError, \
-    AlreadyActivatedError, DeletionFailedError, NotActivatedError, \
-    JobCancelledError, FailedPreconditionError
+    DeletionFailedError, JobCancelledError, FailedPreconditionError
 from tps.dbus.object import DBusObject
 from tps.job import ServiceUsingJobs
 
@@ -74,10 +73,6 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             msg = "Can't activate features when state is '%s'" % \
                   self.service.state.name
             raise FailedPreconditionError(msg)
-
-        if self.IsActive and self.IsEnabled:
-            raise AlreadyActivatedError("Feature %r is already activated"
-                                        % self.Id)
 
         # If there is still a job running, cancel it
         if self._job:
@@ -152,10 +147,6 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             msg = "Can't deactivate features when state is '%s'" % \
                   self.service.state.name
             raise FailedPreconditionError(msg)
-
-        # Check if feature is active
-        if not self.IsActive and not self.IsEnabled:
-            raise NotActivatedError("Feature %r is not activated" % self.Id)
 
         # If there is still a job running, cancel it
         if self._job:
