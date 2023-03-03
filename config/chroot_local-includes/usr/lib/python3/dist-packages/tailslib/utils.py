@@ -18,7 +18,7 @@ def chdir(path):
         os.chdir(curdir)
 
 
-def launch_x_application(command, *args):
+def run_with_user_env(command, *args):
     """Launch an X application as LIVE_USERNAME and wait for its completion."""
     cmdline = ["/usr/local/lib/exec-with-user-env", command, *args]
     try:

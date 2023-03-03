@@ -32,7 +32,7 @@ from tailslib.persistence import (
     spawn_tps_frontend,
     PERSISTENCE_DIR)
 
-from tailslib.utils import launch_x_application
+from tailslib.utils import run_with_user_env
 
 ASP_STATE_DIR = "/run/live-additional-software"
 ASP_STATE_PACKAGES = os.path.join(ASP_STATE_DIR, "packages")
@@ -402,13 +402,13 @@ def create_persistence_and_setup_additional_packages(packages):
 
 def show_configuration_window():
     """Show additional packages configuration window."""
-    launch_x_application("/usr/local/bin/tails-additional-software-config")
+    run_with_user_env("/usr/local/bin/tails-additional-software-config")
 
 
 def show_system_log():
     """Show additional packages configuration window."""
-    launch_x_application("/usr/bin/gedit",
-                         ASP_LOG_FILE)
+    run_with_user_env("/usr/bin/gedit",
+                      ASP_LOG_FILE)
 
 
 def apt_hook_pre():
