@@ -33,6 +33,10 @@ if [ -z "${XAUTHORITY:-}" ]; then
     fi
   done
 fi
+if [ -z "${XAUTHORITY:-}" ]; then
+  echo >&2 "Failed to set XAUTHORITY: No file matching /run/user/${EUID}/.mutter-Xwaylandauth.*"
+  exit 1
+fi
 
 if [ -z "${WAYLAND_DISPLAY:-}" ]; then
   for wayland_display in "/run/user/${EUID}/wayland-"*; do
@@ -40,6 +44,10 @@ if [ -z "${WAYLAND_DISPLAY:-}" ]; then
       export WAYLAND_DISPLAY="${wayland_display}"
     fi
   done
+fi
+if [ -z "${WAYLAND_DISPLAY:-}" ]; then
+  echo >&2 "Failed to set XAUTHORITY: No file matching /run/user/${EUID}/wayland-*"
+  exit 1
 fi
 
 # To avoid issues with environment variables that contain newlines, we
