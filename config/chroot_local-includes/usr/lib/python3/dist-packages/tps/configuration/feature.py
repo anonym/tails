@@ -182,23 +182,15 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             msg = f"Can't delete active feature '{self.Id}'"
             raise FailedPreconditionError(msg)
 
-        if not self.HasData:
-            logger.info(f"Not deleting feature {self.Id}: Feature has no data")
-            return
-
         logger.info(f"Deleting feature {self.Id}")
 
         for mount in self.Mounts:
             shutil.rmtree(mount.src)
 
-        hasData = self.HasData
-        if hasData:
-            raise DeletionFailedError(f"Feature '{self.Id}' still has data")
-
-        changed_properties = {"HasData": GLib.Variant("b", False)}
-        self.emit_properties_changed_signal(self.service.connection,
-                                            DBUS_FEATURE_INTERFACE,
-                                            changed_properties)
+        self.refresh_state(["HasData"])
+        if self.HasData:
+            msg = f"Deletion command successful but feature '{self.Id}' still has data"
+            raise DeletionFailedError(msg)
 
     # ----- Exported properties ----- #
 
@@ -275,24 +267,29 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         hooks_dir = Path(ON_DEACTIVATED_HOOKS_DIR, self.Id)
         executil.execute_hooks(hooks_dir)
 
-    def refresh_state(self):
+    def refresh_state(self, properties: List[str] = None):
         changed_properties = dict()
+        if not properties:
+            properties = ["IsEnabled", "HasData", "IsActive"]
 
-        config_file = self.service.config_file
-        is_enabled = config_file.exists() and config_file.contains(self)
-        if self._is_enabled != is_enabled:
-            self._is_enabled = is_enabled
-            changed_properties["IsEnabled"] = GLib.Variant("b", is_enabled)
+        if "IsEnabled" in properties:
+            config_file = self.service.config_file
+            is_enabled = config_file.exists() and config_file.contains(self)
+            if self._is_enabled != is_enabled:
+                self._is_enabled = is_enabled
+                changed_properties["IsEnabled"] = GLib.Variant("b", is_enabled)
 
-        has_data = any(mount.has_data() for mount in self.Mounts)
-        if self._has_data != has_data:
-            self._has_data = has_data
-            changed_properties["HasData"] = GLib.Variant("b", has_data)
+        if "HasData" in properties:
+            has_data = any(mount.has_data() for mount in self.Mounts)
+            if self._has_data != has_data:
+                self._has_data = has_data
+                changed_properties["HasData"] = GLib.Variant("b", has_data)
 
-        is_active = all(mount.is_active() for mount in self.Mounts)
-        if self._is_active != is_active:
-            self._is_active = is_active
-            changed_properties["IsActive"] = GLib.Variant("b", is_active)
+        if "IsActive" in properties:
+            is_active = all(mount.is_active() for mount in self.Mounts)
+            if self._is_active != is_active:
+                self._is_active = is_active
+                changed_properties["IsActive"] = GLib.Variant("b", is_active)
 
         if changed_properties:
             self.emit_properties_changed_signal(self.service.connection,
