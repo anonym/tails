@@ -144,11 +144,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             raise
 
         self.Error = str()
-        # XXX: Setting _is_enabled to True here breaks sending the
-        #      changed-properties signal. Replace with a
-        #      self.service.config_file.add() call
-        self._is_enabled = True
-        self.service.save_config_file()
+        self.service.enable_feature(self)
 
     def Deactivate(self):
         # Check if we can deactivate the feature
@@ -193,11 +189,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             raise ActivationFailedError(msg) from e
 
         self.run_on_deactivated_hooks()
-        # XXX: Setting _is_enabled to False here breaks sending the
-        #      changed-properties signal. Replace with a
-        #      self.service.config_file.add() call
-        self._is_enabled = False
-        self.service.save_config_file()
+        self.service.disable_feature(self)
 
     def Delete(self):
         # Check if we can delete the feature

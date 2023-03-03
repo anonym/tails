@@ -1,3 +1,5 @@
+import threading
+
 from gi.repository import Gio, GLib
 from logging import getLogger
 import time
@@ -84,6 +86,7 @@ class Service(DBusObject, ServiceUsingJobs):
         self._error = ""
         self._unlocked = False
         self._created = False
+        self.enable_features_lock = threading.Lock()
 
         # Check if the boot device is valid for creating a Persistent
         # Storage. We only do this once and not in refresh_state(),
@@ -452,20 +455,20 @@ class Service(DBusObject, ServiceUsingJobs):
             logger.debug("Waiting for mainloop events to be handled")
             time.sleep(0.1)
 
-    def save_config_file(self):
-        """Save all currently active features to the config file."""
-        # XXX: This has a race condition, for example if this is called
-        # by a successful Activate call and we're waiting to acquire the
-        # lock in self.config_file.save, another later Activate call
-        # could also reach this and acquire the lock before us, which
-        # would mean that it saves another feature to the config file
-        # and it's our turn, we remove that feature again.
-        # To solve this, we should have ConfigFile.Add and
-        # ConfigFile.Remove methods which parse the config file and
-        # add the lines for a specific feature to it.
-        enabled_features = [feature for feature in self.features
-                            if feature.IsEnabled]
-        self.config_file.save(enabled_features)
+    def enable_feature(self, feature: Feature):
+        with self.enable_features_lock:
+            enabled_features = [feature for feature in self.features
+                                if feature.IsEnabled]
+            self.config_file.save(enabled_features + [feature])
+            feature.refresh_state(["IsEnabled"])
+
+    def disable_feature(self, feature: Feature):
+        with self.enable_features_lock:
+            enabled_features = [feature for feature in self.features
+                                if feature.IsEnabled]
+            enabled_features.remove(feature)
+            self.config_file.save(enabled_features)
+            feature.refresh_state(["IsEnabled"])
 
     def refresh_features(self):
         # Refresh custom features
