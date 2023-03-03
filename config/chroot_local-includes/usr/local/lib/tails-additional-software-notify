@@ -55,9 +55,7 @@ class ASPNotifier(object):
         elif action == "deny":
             sys.exit(3)
         elif action == "documentation":
-            subprocess.Popen(
-                ["/usr/local/lib/exec-with-user-env", "tails-documentation", user_data]
-            )
+            subprocess.Popen(["tails-documentation", user_data])
             sys.exit(5)
 
     def cb_notification_closed(self, notification):
@@ -85,9 +83,6 @@ def print_help():
 
 
 if __name__ == "__main__":
-    os.environ["DBUS_SESSION_BUS_ADDRESS"] = \
-        "unix:path=/run/user/{uid}/bus".format(uid=os.getuid())
-
     gettext.install("tails")
 
     if not 3 <= len(sys.argv) <= 7:
