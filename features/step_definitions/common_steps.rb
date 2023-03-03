@@ -788,7 +788,7 @@ Then /^Tails eventually (shuts down|restarts)$/ do |mode|
 end
 
 Given /^I shutdown Tails and wait for the computer to power off$/ do
-  $vm.spawn('poweroff')
+  $vm.spawn('systemctl poweroff')
   step 'Tails eventually shuts down'
 end
 
