@@ -56,7 +56,6 @@ class Feature(object):
         self.is_enabled = self.proxy.get_cached_property("IsEnabled").get_boolean()
         self.is_active = self.proxy.get_cached_property("IsActive").get_boolean()
         self.has_data = self.proxy.get_cached_property("HasData").get_boolean()
-        self.error = self.proxy.get_cached_property("Error").get_string()
 
         # Connect to properties-changed signal
         self.proxy.connect("g-properties-changed", self.on_properties_changed)
@@ -142,7 +141,7 @@ class Feature(object):
             self.box.remove(self.warning_icon)
 
     def refresh_ui(self):
-        error = self.error or (self.is_enabled and not self.is_active)
+        error = self.is_enabled and not self.is_active
 
         if error:
             self.show_warning_icon()
@@ -380,10 +379,7 @@ class Feature(object):
         if "HasData" in keys:
             self.has_data = changed_properties["HasData"]
 
-        if "Error" in keys:
-            self.error = changed_properties["Error"]
-
-        if keys.intersection({"IsEnabled", "IsActive", "HasData", "Error"}):
+        if keys.intersection({"IsEnabled", "IsActive", "HasData"}):
             self.refresh_ui()
 
         if "Job" in keys:
