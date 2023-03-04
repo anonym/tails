@@ -5,7 +5,8 @@ import re
 import psutil
 from typing import TYPE_CHECKING, Dict, List, Union
 
-from tps.dbus.errors import TargetIsBusyError, SymlinkSourceDirectoryError
+from tps.dbus.errors import TargetIsBusyError, SymlinkSourceDirectoryError, \
+    DBusError
 
 from tps_frontend import _, DBUS_SERVICE_NAME, DBUS_FEATURES_PATH, \
     DBUS_FEATURE_INTERFACE, DBUS_JOB_INTERFACE
@@ -255,6 +256,7 @@ class Feature(object):
                                           e.message,
                                           with_send_report_button=False)
             else:
+                DBusError.strip_remote_error(e)
                 self.window.display_error(_("Error activating feature {}").format(self.translated_name),
                                           e.message)
 
@@ -294,6 +296,7 @@ class Feature(object):
                                           e.message,
                                           with_send_report_button=False)
             else:
+                DBusError.strip_remote_error(e)
                 self.window.display_error(_("Error deactivating feature {}").format(self.translated_name),
                                           e.message)
 
@@ -349,6 +352,7 @@ class Feature(object):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
+            DBusError.strip_remote_error(e)
             logger.error(f"Error deleting data of feature {self.name}: {e.message}")
             self.window.display_error(_("Error deleting data of feature {}").format(self.translated_name),
                                       e.message)

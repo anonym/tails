@@ -26,6 +26,11 @@ class DBusError(Exception):
         prefix = f"GDBus.Error:{cls.name}: "
         if err.message.startswith(prefix):
             err.message = err.message[len(prefix):]
+            return
+
+        prefix = f"GDBus.Error:"
+        if err.message.startswith(prefix):
+            err.message = err.message[len(prefix):]
 
 
 class ActivationFailedError(DBusError):

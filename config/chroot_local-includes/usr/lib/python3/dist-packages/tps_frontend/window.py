@@ -10,7 +10,7 @@ Handy.init()
 
 from tps import State, IN_PROGRESS_STATES
 from tps.dbus.errors import \
-    TargetIsBusyError
+    TargetIsBusyError, DBusError
 
 from tps_frontend import _, WINDOW_UI_FILE
 from tps_frontend.change_passphrase_dialog import ChangePassphraseDialog
@@ -206,6 +206,7 @@ class Window(Gtk.ApplicationWindow):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
+            DBusError.strip_remote_error(e)
             logger.error(f"failed to create Persistent Storage: {e.message}")
             self.display_error(_("Failed to create Persistent Storage"),
                                e.message)
@@ -218,6 +219,7 @@ class Window(Gtk.ApplicationWindow):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
+            DBusError.strip_remote_error(e)
             logger.error(f"failed to delete Persistent Storage: {e.message}")
 
             if TargetIsBusyError.is_instance(e):
