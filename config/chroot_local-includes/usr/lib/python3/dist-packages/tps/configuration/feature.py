@@ -15,7 +15,8 @@ from tps import State, DBUS_FEATURE_INTERFACE, DBUS_FEATURES_PATH, \
 from tps.configuration.mount import Mount, IsActiveException, \
     IsInactiveException
 from tps.dbus.errors import ActivationFailedError, \
-    DeletionFailedError, JobCancelledError, FailedPreconditionError
+    DeletionFailedError, JobCancelledError, FailedPreconditionError, \
+    DeactivationFailedError
 from tps.dbus.object import DBusObject
 from tps.job import ServiceUsingJobs
 
@@ -169,7 +170,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             for mount in self.Mounts: mount.check_is_inactive()
         except IsActiveException as e:
             msg = f"Deactivation of feature '{self.Id}' failed unexpectedly"
-            raise ActivationFailedError(msg) from e
+            raise DeactivationFailedError(msg) from e
 
         self.run_on_deactivated_hooks()
         self.service.disable_feature(self)
