@@ -28,3 +28,11 @@ Feature: Persistent Storage Features
       When the feature is deactivated
       Then the feature is not active
       And the bind mounts are not active
+
+    Scenario: Deleting a feature
+      Given a feature with a bind mount
+      And the feature is not active
+      And the source directory exists
+      And the source directory contains a file owned by amnesia
+      When the feature is deleted
+      Then the source directory does not exist
