@@ -1377,3 +1377,7 @@ Then /^the file I created in the Persistent directory exists$/ do
   step "the file \"#{file}\" exists"
   step "the file \"#{file}\" has the content \"foo\""
 end
+
+Then /^the Persistent directory does not exist$/ do
+  step 'the directory "/home/amnesia/Persistent" does not exist'
+end
