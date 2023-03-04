@@ -10,7 +10,7 @@ from tps.configuration import features
 from tps.configuration.config_file import ConfigFile, InvalidStatError
 from tps.configuration.feature import Feature, ConflictingProcessesError
 from tps.dbus.errors import InvalidConfigFileError, FailedPreconditionError, \
-    FeatureActivationFailedError
+    FeatureActivationFailedError, ActivationFailedError, DeactivationFailedError
 from tps.dbus.object import DBusObject
 from tps.device import udisks, BootDevice, Partition, InvalidBootDeviceError
 from tps.job import ServiceUsingJobs
@@ -462,6 +462,9 @@ class Service(DBusObject, ServiceUsingJobs):
                                 if feature.IsEnabled]
             self.config_file.save(enabled_features + [feature])
             feature.refresh_state(["IsEnabled"])
+            if not feature.IsEnabled:
+                msg = f"Failed to enable feature '{feature.Id}' in config file"
+                raise ActivationFailedError(msg)
 
     def disable_feature(self, feature: Feature):
         with self.enable_features_lock:
@@ -470,6 +473,9 @@ class Service(DBusObject, ServiceUsingJobs):
             enabled_features.remove(feature)
             self.config_file.save(enabled_features)
             feature.refresh_state(["IsEnabled"])
+            if feature.IsEnabled:
+                msg = f"Failed to disable feature '{feature.Id}' in config file"
+                raise DeactivationFailedError(msg)
 
     def refresh_features(self):
         # Refresh custom features
