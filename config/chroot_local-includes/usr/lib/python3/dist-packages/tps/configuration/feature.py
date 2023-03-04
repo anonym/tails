@@ -60,8 +60,11 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         # Check if the feature is enabled in the config file
         config_file = self.service.config_file
         self._is_enabled = config_file.exists() and config_file.contains(self)
+        self._last_signaled_is_enabled = self._is_enabled
         self._is_active = all(mount.is_active() for mount in self.Mounts)
+        self._last_signaled_is_active = self._is_active
         self._has_data = any(mount.has_data() for mount in self.Mounts)
+        self._last_signaled_has_data = self._has_data
 
     # ----- Exported functions ----- #
 
@@ -96,6 +99,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
                 self.do_activate(job)
         finally:
             self.refresh_state()
+            self.signal_properties_changed()
 
     def do_activate(self, job: Optional["Job"], non_blocking=False):
         logger.info(f"Activating feature {self.Id}")
@@ -146,6 +150,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
                 self.do_deactivate(job)
         finally:
             self.refresh_state()
+            self.signal_properties_changed()
 
     def do_deactivate(self, job: Optional["Job"]):
         logger.info(f"Deactivating feature {self.Id}")
@@ -170,6 +175,13 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         self.service.disable_feature(self)
 
     def Delete(self):
+        try:
+            self.do_delete()
+        finally:
+            self.refresh_state()
+            self.signal_properties_changed()
+
+    def do_delete(self):
         # Check if we can delete the feature
         if self.service.state != State.UNLOCKED:
             msg = "Can't delete features when state is '%s'" % \
@@ -268,28 +280,34 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         executil.execute_hooks(hooks_dir)
 
     def refresh_state(self, properties: List[str] = None):
-        changed_properties = dict()
         if not properties:
             properties = ["IsEnabled", "HasData", "IsActive"]
 
         if "IsEnabled" in properties:
             config_file = self.service.config_file
-            is_enabled = config_file.exists() and config_file.contains(self)
-            if self._is_enabled != is_enabled:
-                self._is_enabled = is_enabled
-                changed_properties["IsEnabled"] = GLib.Variant("b", is_enabled)
+            self._is_enabled = config_file.exists() and \
+                               config_file.contains(self)
 
         if "HasData" in properties:
-            has_data = any(mount.has_data() for mount in self.Mounts)
-            if self._has_data != has_data:
-                self._has_data = has_data
-                changed_properties["HasData"] = GLib.Variant("b", has_data)
+            self._has_data = any(mount.has_data() for mount in self.Mounts)
 
         if "IsActive" in properties:
-            is_active = all(mount.is_active() for mount in self.Mounts)
-            if self._is_active != is_active:
-                self._is_active = is_active
-                changed_properties["IsActive"] = GLib.Variant("b", is_active)
+            self._is_active = all(mount.is_active() for mount in self.Mounts)
+
+    def signal_properties_changed(self):
+        changed_properties = dict()
+
+        if self._is_enabled != self._last_signaled_is_enabled:
+            changed_properties["IsEnabled"] = GLib.Variant("b", self._is_enabled)
+            self._last_signaled_is_enabled = self._is_enabled
+
+        if self._has_data != self._last_signaled_has_data:
+            changed_properties["HasData"] = GLib.Variant("b", self._has_data)
+            self._last_signaled_has_data = self._has_data
+
+        if self._is_active != self._last_signaled_is_active:
+            changed_properties["IsActive"] = GLib.Variant("b", self._is_active)
+            self._last_signaled_is_active = self._is_active
 
         if changed_properties:
             self.emit_properties_changed_signal(self.service.connection,

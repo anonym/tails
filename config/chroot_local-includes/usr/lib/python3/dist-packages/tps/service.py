@@ -242,6 +242,7 @@ class Service(DBusObject, ServiceUsingJobs):
                 failed_feature_names.append(feature.translatable_name)
             finally:
                 feature.refresh_state()
+                feature.signal_properties_changed()
 
         self.run_on_activated_hooks()
 
@@ -502,6 +503,7 @@ class Service(DBusObject, ServiceUsingJobs):
         # Refresh state of all features
         for feature in self.features:
             feature.refresh_state()
+            feature.signal_properties_changed()
 
     def refresh_state(self, overwrite_in_progress: bool = False):
         if not self._boot_device:
