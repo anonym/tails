@@ -12,6 +12,7 @@ from tps_frontend import _, DBUS_SERVICE_NAME, DBUS_FEATURES_PATH, \
     DBUS_FEATURE_INTERFACE, DBUS_JOB_INTERFACE
 
 if TYPE_CHECKING:
+    from gi.repository import Atk
     from tps_frontend.window import Window
 
 logger = logging.getLogger(__name__)
@@ -76,6 +77,11 @@ class Feature(object):
             label=_("Delete Data…"),
             valign="center",
         )
+        atk = self.delete_data_button.get_accessible()  # type: Atk.Object
+        # Translators: Don't translate {feature}, it's a placeholder
+        # and will be replaced.
+        atk.set_name(_("Delete {feature} data").
+                     format(feature=self.translated_name))
         self.delete_data_button.connect("clicked", self.on_delete_data_button_clicked)
         Gtk.StyleContext.add_class(self.delete_data_button.get_style_context(),
                                    'destructive-action')
