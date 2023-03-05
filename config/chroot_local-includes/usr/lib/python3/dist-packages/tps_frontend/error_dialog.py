@@ -1,4 +1,4 @@
-from gi.repository import Gtk
+from gi.repository import GLib, Gtk
 from typing import TYPE_CHECKING
 
 from tps_frontend import _
@@ -20,6 +20,17 @@ class ErrorDialog(Gtk.MessageDialog):
         )
         self.app = app
 
+        message_area = self.get_message_area()  # type: Gtk.Box
+        title_label, secondary_label = message_area.get_children()  # type: Gtk.Label
+
+        # Make the title bold
+        title = GLib.markup_escape_text(title)
+        title_label.set_markup(f"<b>{title}</b>")
+
+        # Make the error message selectable to allow the user to search
+        # for the error via copy-and-paste.
+        secondary_label.set_selectable(True)
+
         if with_send_report_button:
             error_report_msg = _(
                 "You can send an error report to help solve the issue.")
@@ -35,11 +46,6 @@ class ErrorDialog(Gtk.MessageDialog):
 
         self.format_secondary_markup(msg)
         self.set_default_response(Gtk.ResponseType.CLOSE)
-
-        # Make the error message selectable to allow the user to search
-        # for the error via copy-and-paste.
-        secondary_text_label = self.get_message_area().get_children()[-1]  # type: Gtk.Label
-        secondary_text_label.set_selectable(True)
 
     def do_response(self, response_id: int):
         if response_id == Gtk.ResponseType.OK:
