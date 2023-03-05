@@ -1,5 +1,6 @@
 import cProfile
 import pstats
+import subprocess
 import tempfile
 import threading
 import time
@@ -188,6 +189,14 @@ class DBusObject(object, metaclass=ABCMeta):
         except DBusError as e:
             logger.exception(e)
             invocation.return_dbus_error(e.name, str(e))
+        except subprocess.CalledProcessError as e:
+            logger.exception(e)
+            error_name = inspect.getmodule(e).__name__ + "." + type(e).__name__
+            msg = str(e)
+            if e.stderr:
+                stderr = GLib.markup_escape_text(e.stderr.strip())
+                msg += f" Command output:\n\n<tt>{stderr}</tt>"
+            invocation.return_dbus_error(error_name, msg)
         except Exception as e:
             logger.exception(e)
             module = inspect.getmodule(e)

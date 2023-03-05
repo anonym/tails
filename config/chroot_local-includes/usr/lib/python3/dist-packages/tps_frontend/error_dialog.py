@@ -16,6 +16,7 @@ class ErrorDialog(Gtk.MessageDialog):
             Gtk.MessageType.ERROR,
             Gtk.ButtonsType.CLOSE,
             title,
+            use_markup=True,
         )
         self.app = app
 
@@ -32,7 +33,7 @@ class ErrorDialog(Gtk.MessageDialog):
             style_context = button.get_style_context()
             style_context.add_class("suggested-action")
 
-        self.format_secondary_text(msg)
+        self.format_secondary_markup(msg)
         self.set_default_response(Gtk.ResponseType.CLOSE)
 
         # Make the error message selectable to allow the user to search
