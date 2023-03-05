@@ -2,8 +2,7 @@ import logging
 from gi.repository import Gio, GLib, GObject, Gtk, Handy
 import os
 import re
-import psutil
-from typing import TYPE_CHECKING, Dict, List, Union
+from typing import TYPE_CHECKING, Dict, List
 
 from tps.dbus.errors import TargetIsBusyError, SymlinkSourceDirectoryError, \
     DBusError
