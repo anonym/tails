@@ -25,6 +25,6 @@ for param in "$@"; do
   fi
 done
 
-/sbin/swapon.distrib "$@"
+exec /sbin/swapon.distrib "$@"
 EOF
 chmod 755 $SWAPON
