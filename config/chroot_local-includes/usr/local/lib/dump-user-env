@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script is invoked before starting gnome-shell. It dumps its own
 # environment for usage by other processes which need some environment
@@ -11,6 +11,16 @@
 # than amnesia.
 
 set -eu
+
+ENV_VARS_TO_DUMP="
+DBUS_SESSION_BUS_ADDRESS
+DISPLAY
+LANG
+WAYLAND_DISPLAY
+XAUTHORITY
+XDG_RUNTIME_DIR
+XDG_CURRENT_DESKTOP
+"
 
 if [ -z "${EUID:-}" ]; then
   # bashsupport disable=BP3002
@@ -51,4 +61,20 @@ fi
 
 # To avoid issues with environment variables that contain newlines, we
 # dump the environment null-terminated
-env --null > "${USER_ENV_FILE}"
+full_env=$(env --null)
+
+# Get the environment variables from the environment which we want to dump
+while IFS= read -r -d $'\0' var; do
+  for var_to_dump in ${ENV_VARS_TO_DUMP}; do
+    if echo "${var}" | grep -q "^${var_to_dump}="; then
+      if [ -z "${filtered_env:-}" ]; then
+        filtered_env="${var}"
+      else
+        filtered_env="${filtered_env}\0${var}"
+      fi
+    fi
+  done
+done <<< "${full_env}"
+
+# Dump the environment variables
+echo "${filtered_env}" > "${USER_ENV_FILE}"

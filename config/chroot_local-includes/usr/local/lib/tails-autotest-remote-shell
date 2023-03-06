@@ -63,6 +63,15 @@ def mk_switch_user_fn(user):
 
 
 def get_user_env(user):
+    if user == "Debian-gdm":
+        # Restore environment dumped by tails-greeter. We can't use
+        # the userenv module here because we need to dump and restore
+        # environment variables which are not allowed in the userenv
+        # module (for example GTK_MODULES).
+        with open(f"/tmp/gdm-env") as f:
+            env_data = f.read()
+            return dict((line.split('=', 1) for line in env_data.splitlines()))
+
     # Get the default environment that's set up when logging in via `su`
     wrapped_env_cmd = "su -c env {}".format(user)
     pipe = subprocess.Popen(wrapped_env_cmd,
@@ -71,9 +80,8 @@ def get_user_env(user):
     env_data = pipe.communicate()[0].decode('utf-8')
     env_dict = dict((line.split('=', 1) for line in env_data.splitlines()))
 
-    # Get the stored user environment (if the user is a user for which
-    # we store the user environment).
-    if user == "amnesia" or user =="Debian-gdm":
+    if user == "amnesia":
+        # Get the stored user environment
         try:
             env_dict.update(user_env(user))
         except FileNotFoundError as e:
