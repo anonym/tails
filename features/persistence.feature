@@ -49,6 +49,14 @@ Feature: Tails persistence
     Then persistence for "Persistent" is enabled
     And the file I created in the Persistent directory exists
 
+  Scenario: Deleting data of a Persistent Storage feature
+    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
+    Then persistence for "Persistent" is enabled
+    When I create a file in the Persistent directory
+    And I disable the first persistence preset
+    And I delete the data of the Persistent Folder feature
+    Then the file I created does not exist on the Persistent Storage
+
   Scenario: Writing files to a read/write-enabled persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And the network is plugged

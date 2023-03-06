@@ -1362,7 +1362,9 @@ When /^I give the Persistent Storage on drive "([^"]+)" its own UUID$/ do |name|
 end
 
 When /^I create a file in the Persistent directory$/ do
-  step 'I create a directory "/home/amnesia/Persistent"'
+  unless $vm.file_exist?('/home/amnesia/Persistent')
+    step 'I create a directory "/home/amnesia/Persistent"'
+  end
   step 'I write a file "/home/amnesia/Persistent/foo" with contents "foo"'
 end
 
@@ -1370,6 +1372,11 @@ Then /^the file I created was copied to the Persistent Storage$/ do
   file = '/live/persistence/TailsData_unlocked/Persistent/foo'
   step "the file \"#{file}\" exists"
   step "the file \"#{file}\" has the content \"foo\""
+end
+
+Then /^the file I created does not exist on the Persistent Storage$/ do
+  file = '/live/persistence/TailsData_unlocked/Persistent/foo'
+  step "the file \"#{file}\" does not exist"
 end
 
 Then /^the file I created in the Persistent directory exists$/ do
@@ -1380,4 +1387,37 @@ end
 
 Then /^the Persistent directory does not exist$/ do
   step 'the directory "/home/amnesia/Persistent" does not exist'
+end
+
+When /^I delete the data of the Persistent Folder feature$/ do
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+
+  def persistent_folder_delete_button(**opts)
+    persistent_storage_main_frame.child(
+      'Delete Persistent Folder data',
+      roleName: 'push button', showingOnly: true, **opts
+    )
+  end
+
+  # We can't use the click action here because this button causes a
+  # modal dialog to be run via gtk_dialog_run() which causes the
+  # application to hang when triggered via a ATSPI action. See
+  # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
+  persistent_folder_delete_button.grabFocus
+  @screen.press('Return')
+  confirm_deletion_dialog = persistent_storage_frontend.child(
+    'Warning', roleName: 'alert'
+  )
+  confirm_deletion_dialog.button('Delete Data').click
+
+  # Wait for the delete data button to disappear
+  try_for(10) do
+    persistent_folder_delete_button(retry: false)
+  rescue Dogtail::Failure
+    # The button couldn't be found, which is what we want
+    true
+  else
+    false
+  end
+  @screen.press('alt', 'F4')
 end
