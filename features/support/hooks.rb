@@ -305,7 +305,7 @@ After('@product') do |scenario|
     mins = format('%<mins>02d', mins: (time_of_fail / 60) % 60)
     hrs  = format('%<hrs>02d',  hrs: time_of_fail / (60 * 60))
     elapsed = "#{hrs}:#{mins}:#{secs}"
-    info_log("Scenario failed at time #{elapsed}")
+    info_log("SCENARIO FAILED: '#{scenario.name}' (at time #{elapsed})")
     unless $vm.display.nil?
       screenshot_path = sanitize_filename("#{scenario.name}.png")
       $vm.display.screenshot(screenshot_path)
