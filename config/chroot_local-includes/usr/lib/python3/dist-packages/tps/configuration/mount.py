@@ -6,7 +6,7 @@ import subprocess
 import sys
 from typing import List, Union, Optional
 
-from tailslib import LIVE_USERNAME, LIVE_USER_UID, NOSYMFOLLOW_MOUNTPOINT
+from tailslib import LIVE_USERNAME, LIVE_USER_UID
 import tps.logging
 from tps import _, TPS_MOUNT_POINT
 from tps import executil
@@ -16,6 +16,7 @@ from tps.dbus.errors import TargetIsBusyError
 
 logger = tps.logging.get_logger(__name__)
 
+NOSYMFOLLOW_MOUNTPOINT = "/run/nosymfollow"
 
 class FailedPrecondition(Exception):
     pass
