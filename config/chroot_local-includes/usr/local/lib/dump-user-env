@@ -50,7 +50,7 @@ if [ -z "${WAYLAND_DISPLAY:-}" ]; then
   done
 fi
 if [ -z "${WAYLAND_DISPLAY:-}" ]; then
-  echo >&2 "Failed to set XAUTHORITY: No file matching /run/user/${EUID}/wayland-*"
+  echo >&2 "Failed to set WAYLAND_DISPLAY: No file matching /run/user/${EUID}/wayland-*"
   exit 1
 fi
 
