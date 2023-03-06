@@ -22,11 +22,6 @@ XDG_RUNTIME_DIR
 XDG_CURRENT_DESKTOP
 "
 
-if [ -z "${EUID:-}" ]; then
-  # bashsupport disable=BP3002
-  EUID=$(id -u)
-fi
-
 USER_ENV_FILE="/run/user/${EUID}/user-env"
 
 # Set some environment variables which are not set by systemd but which
