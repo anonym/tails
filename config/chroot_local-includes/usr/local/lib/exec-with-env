@@ -29,7 +29,7 @@ def read_envfile(envfile: str) -> dict:
 
 def main():
     if os.geteuid() != 1000:
-        print(f"{sys.argv[0]: This script must be run as amnesia}", file=sys.stderr)
+        print(f"{sys.argv[0]}: This script must be run as amnesia", file=sys.stderr)
         sys.exit(1)
 
     if len(sys.argv) < 3:
