@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+import sys
 from functools import lru_cache
 import os
 from pathlib import Path
@@ -19,7 +19,11 @@ def user_env(user=None) -> dict:
     for line in Path(env_file).read_text().split('\0'):
         if not line:
             continue
-        key, value = line.split("=", 1)
+        try:
+            key, value = line.split("=", 1)
+        except Exception as e:
+            print(f"Invalid environment variable: '{line}'", file=sys.stderr)
+            raise e
         env[key] = value
     return env
 
