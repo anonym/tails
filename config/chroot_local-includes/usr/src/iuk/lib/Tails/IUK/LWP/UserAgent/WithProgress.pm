@@ -28,20 +28,10 @@ sub new {
 sub progress {
     # When $status is "begin", $request_or_response is the
     # HTTP::Request object, otherwise it is the HTTP::Response object.
-    my($self, $status, $request_or_response) = @_;
+    my($self) = @_;
 
-    if ($status eq "begin") {
-        say "0";
-    }
-    elsif ($status eq "end") {
-        1; # "end" doesn't mean success, so don't display 100 here
-    }
-    elsif ($status eq "tick") {
-        1; # the fraction can't be calculated
-    }
-    else {
-        say(100 * (-s $self->{temp_file}) / $self->{size});
-    }
+    say(100 * (-s $self->{temp_file}) / $self->{size});
+
     STDOUT->flush;
 }
 
