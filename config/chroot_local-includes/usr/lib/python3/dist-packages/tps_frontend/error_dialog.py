@@ -44,6 +44,7 @@ class ErrorDialog(Gtk.MessageDialog):
             style_context = button.get_style_context()
             style_context.add_class("suggested-action")
 
+        msg = f"<span insert-hyphens='no'>{msg}</span>"
         self.format_secondary_markup(msg)
         self.set_default_response(Gtk.ResponseType.CLOSE)
 
