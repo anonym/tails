@@ -12,22 +12,10 @@
 
 import os
 import sys
-from pathlib import Path
 
-from tailslib.userenv import ALLOWED_ENV_VARS
+from tailslib.userenv import read_allowed_env_vars_from_file
 
 usage = f"{sys.argv[0]} ENVFILE [--delete] [--] COMMAND [ARG]..."
-
-
-def read_allowed_env_vars_from_file(envfile: str) -> dict:
-    env = dict(os.environ)
-    for line in Path(envfile).read_text().split('\0'):
-        if not line:
-            continue
-        key, value = line.split("=", 1)
-        if key in ALLOWED_ENV_VARS and key not in env:
-            env[key] = value
-    return env
 
 
 def main():

@@ -26,25 +26,33 @@ def user_env_file(uid):
     return USER_ENV_FILE_TEMPLATE.format(uid=uid)
 
 
-@lru_cache(maxsize=1)
-def user_env(user=None) -> dict:
-    if user is None:
-        uid = os.geteuid()
-    else:
-        uid = pwd.getpwnam(user).pw_uid
-
-    env = dict()
-    for line in Path(user_env_file(uid)).read_text().split('\0'):
+def read_allowed_env_vars_from_file(envfile: str) -> dict:
+    env = dict(os.environ)
+    for line in Path(envfile).read_text().split('\0'):
         if not line:
             continue
+
         try:
             key, value = line.split("=", 1)
         except Exception as e:
             print(f"Invalid environment variable: '{line}'", file=sys.stderr)
             raise e
-        env[key] = value
+
+        if key in ALLOWED_ENV_VARS and key not in env:
+            env[key] = value
+
     return env
 
 
+@lru_cache(maxsize=1)
+def read_user_env(user=None) -> dict:
+    if user is None:
+        uid = os.geteuid()
+    else:
+        uid = pwd.getpwnam(user).pw_uid
+
+    return read_allowed_env_vars_from_file(user_env_file(uid))
+
+
 def user_env_vars(user=None) -> list:
-    return [f"{key}={value}" for key, value in user_env(user).items()]
+    return [f"{key}={value}" for key, value in read_user_env(user).items()]
