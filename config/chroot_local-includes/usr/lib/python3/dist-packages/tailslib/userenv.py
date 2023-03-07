@@ -5,7 +5,26 @@ import os
 from pathlib import Path
 import pwd
 
-USER_ENV_FILE = "/run/user/{uid}/user-env"
+ENV_VARS_TO_DUMP = [
+    "DBUS_SESSION_BUS_ADDRESS",
+    "DISPLAY",
+    "LANG",
+    "WAYLAND_DISPLAY",
+    "XAUTHORITY",
+    "XDG_RUNTIME_DIR",
+    "XDG_CURRENT_DESKTOP",
+]
+
+ALLOWED_ENV_VARS = ENV_VARS_TO_DUMP + [
+    "DESKTOP_STARTUP_ID",
+]
+
+USER_ENV_FILE_TEMPLATE = "/run/user/{uid}/user-env"
+
+
+def user_env_file(uid):
+    return USER_ENV_FILE_TEMPLATE.format(uid=uid)
+
 
 @lru_cache(maxsize=1)
 def user_env(user=None) -> dict:
@@ -15,8 +34,7 @@ def user_env(user=None) -> dict:
         uid = pwd.getpwnam(user).pw_uid
 
     env = dict()
-    env_file = USER_ENV_FILE.format(uid=uid)
-    for line in Path(env_file).read_text().split('\0'):
+    for line in Path(user_env_file(uid)).read_text().split('\0'):
         if not line:
             continue
         try:

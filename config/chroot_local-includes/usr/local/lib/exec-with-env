@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-# This script exports environment variables from the file specified in
-# the ENVFILE argument and then executes the specified command.
+# This script exports allow-listed environment variables from the file
+# specified in the ENVFILE argument and then executes the specified
+# command.
 #
 # If any environment variables from ENVFILE are already set in the
 # current environment, those are *not* overwritten, so environment
@@ -13,16 +14,18 @@ import os
 import sys
 from pathlib import Path
 
+from tailslib.userenv import ALLOWED_ENV_VARS
+
 usage = f"{sys.argv[0]} ENVFILE [--delete] [--] COMMAND [ARG]..."
 
 
-def read_envfile(envfile: str) -> dict:
+def read_allowed_env_vars_from_file(envfile: str) -> dict:
     env = dict(os.environ)
     for line in Path(envfile).read_text().split('\0'):
         if not line:
             continue
         key, value = line.split("=", 1)
-        if key not in env:
+        if key in ALLOWED_ENV_VARS and key not in env:
             env[key] = value
     return env
 
@@ -37,7 +40,7 @@ def main():
         sys.exit(1)
 
     envfile = sys.argv[1]
-    env = read_envfile(envfile)
+    env = read_allowed_env_vars_from_file(envfile)
 
     if sys.argv[2] == "--delete":
         os.remove(envfile)

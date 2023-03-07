@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env python3
+import glob
+import os
+import sys
+
+from tailslib.userenv import ENV_VARS_TO_DUMP, user_env_file
 
 # This script is invoked before starting gnome-shell. It dumps its own
 # environment for usage by other processes which need some environment
@@ -10,66 +15,42 @@
 # environment file is never exported in a process with more privileges
 # than amnesia.
 
-set -eu
 
-ENV_VARS_TO_DUMP="
-DBUS_SESSION_BUS_ADDRESS
-DISPLAY
-LANG
-WAYLAND_DISPLAY
-XAUTHORITY
-XDG_RUNTIME_DIR
-XDG_CURRENT_DESKTOP
-"
+def log(*args):
+    print(*args, file=sys.stderr)
 
-USER_ENV_FILE="/run/user/${EUID}/user-env"
 
-# Set some environment variables which are not set by systemd but which
-# we still need in some processes which export the environment file.
-if [ -z "${DISPLAY:-}" ]; then
-  export DISPLAY=:0
-fi
+def main():
+    env = dict()
+    for e in ENV_VARS_TO_DUMP:
+        env[e] = os.environ[e]
 
-if [ -z "${XAUTHORITY:-}" ]; then
-  for xauth in "/run/user/${EUID}/.mutter-Xwaylandauth."*; do
-    if [ -e "${xauth}" ]; then
-      export XAUTHORITY="${xauth}"
-    fi
-  done
-fi
-if [ -z "${XAUTHORITY:-}" ]; then
-  echo >&2 "Failed to set XAUTHORITY: No file matching /run/user/${EUID}/.mutter-Xwaylandauth.*"
-  exit 1
-fi
+    # Set some environment variables which are not set by systemd but which
+    # we still need in some processes which export the environment file.
+    if not env["DISPLAY"]:
+        env["DISPLAY"] = ":0"
 
-if [ -z "${WAYLAND_DISPLAY:-}" ]; then
-  for wayland_display in "/run/user/${EUID}/wayland-"*; do
-    if [ -e "${wayland_display}" ]; then
-      export WAYLAND_DISPLAY="${wayland_display}"
-    fi
-  done
-fi
-if [ -z "${WAYLAND_DISPLAY:-}" ]; then
-  echo >&2 "Failed to set WAYLAND_DISPLAY: No file matching /run/user/${EUID}/wayland-*"
-  exit 1
-fi
+    if not env["XAUTHORITY"]:
+        pattern = f"/run/user/{os.geteuid()}/.mutter-Xwaylandauth.*"
+        matches = glob.glob(pattern)
+        if not matches:
+            log(f"Failed to set XAUTHORITY: No file matching {pattern}")
+            sys.exit(1)
+        env["XAUTHORITY"] = matches[0]
 
-# To avoid issues with environment variables that contain newlines, we
-# dump the environment null-terminated
-full_env=$(env --null)
+    if not env["WAYLAND_DISPLAY"]:
+        pattern = f"/run/user/{os.geteuid()}/wayland-*"
+        matches = glob.glob(pattern)
+        if not matches:
+            log(f"Failed to set WAYLAND_DISPLAY: No file matching {pattern}")
+            sys.exit(1)
+        env["WAYLAND_DISPLAY"] = matches[0]
 
-# Get the environment variables from the environment which we want to dump
-while IFS= read -r -d $'\0' var; do
-  for var_to_dump in ${ENV_VARS_TO_DUMP}; do
-    if echo "${var}" | grep -q "^${var_to_dump}="; then
-      if [ -z "${filtered_env:-}" ]; then
-        filtered_env="${var}"
-      else
-        filtered_env="${filtered_env}\0${var}"
-      fi
-    fi
-  done
-done <<< "${full_env}"
+    # To avoid issues with environment variables that contain newlines, we
+    # dump the environment null-terminated
+    with open(user_env_file(os.geteuid()), "w") as f:
+        f.write('\0'.join(f"{key}={value}" for key, value in env.items()))
 
-# Dump the environment variables
-echo "${filtered_env}" > "${USER_ENV_FILE}"
+
+if __name__ == "__main__":
+    main()
