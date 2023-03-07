@@ -4,7 +4,8 @@
 
 set -eu
 
-KEYRING="/home/amnesia/.gnupg/pubring.kbx"
+NOSYMFOLLOW_MOUNTPOINT='/var/lib/tails-persistent-storage/nosymfollow'
+KEYRING="${NOSYMFOLLOW_MOUNTPOINT}/home/amnesia/.gnupg/pubring.kbx"
 KEYRING_BAK="${KEYRING}~"
 KEYRING_SIZE="$(stat -c %s ${KEYRING} || echo 0)"
 
