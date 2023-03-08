@@ -255,7 +255,7 @@ def main():
                         python_sessions[user].process.poll() is not None:
                     python_sessions[user] = PythonSession(user)
                 session = python_sessions[user]
-                print(f"Executing as {user}:\n{code}", file=sys.stderr)
+                print(f"Executing Python as {user}:\n{code}", file=sys.stderr)
                 exc, out_str, err_str = session.execute(code)
                 ret = json.dumps([id, 'success', exc, out_str, err_str])
                 print(f"Result: {ret}")
