@@ -13,7 +13,7 @@
 import os
 import sys
 
-from tailslib.userenv import read_allowed_env_vars_from_file
+from tailslib.userenv import read_allowed_env_from_file, allowed_env
 
 usage = f"{sys.argv[0]} ENVFILE [--delete] [--] COMMAND [ARG]..."
 
@@ -28,7 +28,11 @@ def main():
         sys.exit(1)
 
     envfile = sys.argv[1]
-    env = read_allowed_env_vars_from_file(envfile)
+    env = read_allowed_env_from_file(envfile)
+
+    # Update with allowed environment variables from the current
+    # environment (because those should take precedence)
+    env.update(allowed_env(os.environ))
 
     if sys.argv[2] == "--delete":
         os.remove(envfile)

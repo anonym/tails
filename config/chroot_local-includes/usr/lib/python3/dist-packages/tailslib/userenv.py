@@ -4,6 +4,7 @@ from functools import lru_cache
 import os
 from pathlib import Path
 import pwd
+from typing import Mapping
 
 ENV_VARS_TO_DUMP = [
     "DBUS_SESSION_BUS_ADDRESS",
@@ -26,13 +27,12 @@ def user_env_file(uid):
     return USER_ENV_FILE_TEMPLATE.format(uid=uid)
 
 
-def read_allowed_env_vars_from_file(envfile: str) -> dict:
-    env = dict()
+def allowed_env(env: Mapping) -> dict:
+    return {key: value for key, value in env if key in ALLOWED_ENV_VARS}
 
-    for key in ALLOWED_ENV_VARS:
-        current_env_value = os.getenv(key)
-        if current_env_value:
-            env[key] = current_env_value
+
+def read_allowed_env_from_file(envfile: str) -> dict:
+    env = dict()
 
     for line in Path(envfile).read_text().split('\0'):
         if not line:
@@ -44,10 +44,9 @@ def read_allowed_env_vars_from_file(envfile: str) -> dict:
             print(f"Invalid environment variable: '{line}'", file=sys.stderr)
             raise e
 
-        if key in ALLOWED_ENV_VARS and key not in env:
-            env[key] = value
+        env[key] = value
 
-    return env
+    return allowed_env(env)
 
 
 @lru_cache(maxsize=1)
@@ -57,7 +56,7 @@ def read_user_env(user=None) -> dict:
     else:
         uid = pwd.getpwnam(user).pw_uid
 
-    return read_allowed_env_vars_from_file(user_env_file(uid))
+    return read_allowed_env_from_file(user_env_file(uid))
 
 
 def user_env_vars(user=None) -> list:
