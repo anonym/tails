@@ -2,6 +2,7 @@
 import glob
 import os
 import sys
+import logging
 
 from tailslib.userenv import ENV_VARS_TO_DUMP, user_env_file
 
@@ -14,10 +15,6 @@ from tailslib.userenv import ENV_VARS_TO_DUMP, user_env_file
 # by amnesia, so to avoid privilege escalation, it's important that the
 # environment file is never exported in a process with more privileges
 # than amnesia.
-
-
-def log(*args):
-    print(*args, file=sys.stderr)
 
 
 def main():
@@ -34,7 +31,7 @@ def main():
         pattern = f"/run/user/{os.geteuid()}/.mutter-Xwaylandauth.*"
         matches = glob.glob(pattern)
         if not matches:
-            log(f"Failed to set XAUTHORITY: No file matching {pattern}")
+            logging.error(f"Failed to set XAUTHORITY: No file matching {pattern}")
             sys.exit(1)
         env["XAUTHORITY"] = matches[0]
 
@@ -42,7 +39,7 @@ def main():
         pattern = f"/run/user/{os.geteuid()}/wayland-*"
         matches = glob.glob(pattern)
         if not matches:
-            log(f"Failed to set WAYLAND_DISPLAY: No file matching {pattern}")
+            logging.error(f"Failed to set WAYLAND_DISPLAY: No file matching {pattern}")
             sys.exit(1)
         env["WAYLAND_DISPLAY"] = matches[0]
 
