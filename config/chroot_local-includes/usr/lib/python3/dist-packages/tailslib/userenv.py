@@ -27,7 +27,13 @@ def user_env_file(uid):
 
 
 def read_allowed_env_vars_from_file(envfile: str) -> dict:
-    env = dict(os.environ)
+    env = dict()
+
+    for key in ALLOWED_ENV_VARS:
+        current_env_value = os.getenv(key)
+        if current_env_value:
+            env[key] = current_env_value
+
     for line in Path(envfile).read_text().split('\0'):
         if not line:
             continue
