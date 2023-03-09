@@ -214,51 +214,6 @@ on the error message.
 For example, if you see an error about `8086:4c8a`, use this boot option:
 `i915.force_probe=4c8a`.
 
-<h2 id="nvidia-turing">Nvidia NV160 family (Turing)</h2>
-
-As of 2020-03-19, much of these Nvidia graphics cards are [not
-supported](https://nouveau.freedesktop.org/wiki/FeatureMatrix/) by Tails yet.
-
-### Affected graphics cards
-
-<table>
-        <tr>
-            <th><strong>Code name</strong>  </th>
-            <th><strong>Official Name</strong> </th>
-        </tr>
-        <tr>
-            <td>NV167 (TU117)</td>
-            <td>GeForce RTX 2060 Mobile</td>
-            <td>GeForce RTX 2070</td>
-            <td>GeForce RTX 2070 Super</td>
-            <td>GeForce RTX 2070m</td>
-            <td>GeForce RTX 2080 Super</td>
-        </tr>
-</table>
-
-### Possibly affected graphics cards
-
-Graphics cards in the [NV160 family (Turing)](https://nouveau.freedesktop.org/CodeNames.html#NV160) might be affected.
-
-### Workaround
-
-Try starting Tails using the following [[boot
-options|doc/advanced_topics/boot_options]].
-You should try only one of these boot options per start attempt.
-
-* `nouveau.noaccel=1`
-
-<h2 id="nvidia-ampere">Nvidia RTX 30X0 family (Ampere)</h2>
-
-As of 2020-11-07, these Nvidia graphics cards are [not
-supported](https://nouveau.freedesktop.org/wiki/FeatureMatrix/)
-out of the box by Tails yet.
-
-### Affected graphics cards
-
-Graphics cards in the [[!wikipedia GeForce_30_series desc="Ampere family"]]
-are affected.
-
 <h1 id="other-issues">Other issues</h1>
 
 <h2 id="black-screen-switchable-graphics">Black screen with switchable graphics computers</h2>
