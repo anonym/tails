@@ -325,26 +325,11 @@ Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_a
                ' blacklist=psmouse' \
                " #{early_patch} #{@boot_options} #{extra_boot_options}",
                [boot_key])
-  @screen.wait('TailsGreeter.png', 5 * 60)
-  # When enter_boot_menu_cmdline has rebooted the system after the Greeter
-  # had already been displayed, after the reboot:
-  # 1. The Greeter shows up, but it's an artifact of the previous boot
-  #    (from graphics memory?)
-  # 2. The screen turns black (for a few seconds on my system).
-  # 3. Finally, the Greeter from this boot starts (one can see the animation).
-  #
-  # In such a situation, the previous instruction will erroneously
-  # succeed at step 1, and then following steps that interact with
-  # the Greeter can fail, if they're performed before step 3 happens.
-  #
-  # To workaround this problem, let's wait a bit for the transition
-  # steps 1 and 3 happens, when we know we had to reboot the VM
-  # in enter_boot_menu_cmdline.
-  if @has_been_reset
-    sleep 15
-    @screen.find('TailsGreeter.png')
+  $vm.wait_until_remote_shell_is_up(5 * 60)
+  try_for(60) do
+    !greeter.nil?
   end
-  $vm.wait_until_remote_shell_is_up
+
   post_vm_start_hook
   configure_simulated_Tor_network unless $config['DISABLE_CHUTNEY']
   # This is required to use APT in the test suite as explained in
@@ -354,8 +339,21 @@ end
 
 Given /^I set the language to (.*)$/ do |lang|
   $language = lang
-  @screen.wait('TailsGreeterLanguage.png', 10).click
-  @screen.wait('TailsGreeterLanguagePopover.png', 10)
+  # The listboxrow does not expose any actions through AT-SPI,
+  # so Dogtail is unable to click it directly. We let it grab focus
+  # and activate it via the keyboard instead.
+  try_for(10) do
+    row = greeter
+          .child(description: 'Configure Language', showingOnly: true)
+    row.grabFocus
+    row.focused
+  end
+  @screen.press('Return')
+  try_for(10) do
+    greeter
+      .child('Search', roleName: 'text', showingOnly: true)
+      .focused
+  end
   @screen.type($language)
   sleep(2) # Gtk needs some time to filter the results
   @screen.press('Return')
@@ -794,30 +792,22 @@ Given /^I shutdown Tails and wait for the computer to power off$/ do
   step 'Tails eventually shuts down'
 end
 
-def open_gnome_menu(name, menu_item)
-  menu_position = Dogtail::Application.new('gnome-shell')
-                                      .child(name, roleName: 'menu')
-                                      .position
-  # On Bullseye the top bar menus are problematic: we generally have
-  # to click several times for them to open.
-  retry_action(20) do
-    @screen.click(*menu_position)
-    # Wait for the menu to be open and to have settled: sometimes menu
-    # components appear too fast, before the menu has settled down to
-    # its final size and the button we want to click is in its final
-    # position. Dogtail might allow us to fix that, but given how rare
-    # this problem is, it's not worth the effort.
-    sleep 5
-    @screen.find(menu_item)
+def open_gnome_menu(name)
+  menu = Dogtail::Application.new('gnome-shell')
+                             .child(name, roleName: 'menu')
+  try_for(5) do
+    menu.grabFocus
+    menu.focused
   end
+  @screen.press('Return')
 end
 
 def open_gnome_places_menu
-  open_gnome_menu('Places', 'GnomePlacesHome.png')
+  open_gnome_menu('Places')
 end
 
 def open_gnome_system_menu
-  open_gnome_menu('System', 'TailsEmergencyShutdownHalt.png')
+  open_gnome_menu('System')
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|

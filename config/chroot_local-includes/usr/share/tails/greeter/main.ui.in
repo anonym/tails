@@ -175,36 +175,17 @@
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkBox" id="box_storagecreate_header">
+              <object class="GtkLabel" id="label_storage_header_title1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="spacing">12</property>
-                <child>
-                  <object class="GtkLabel" id="label_storage_header_title1">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes">_Persistent Storage</property>
-                    <property name="use-underline">True</property>
-                    <property name="mnemonic-widget">entry_storage_passphrase</property>
-                    <attributes>
-                      <attribute name="weight" value="bold"/>
-                    </attributes>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
+                <property name="label" translatable="yes">_Persistent Storage</property>
+                <property name="use-underline">True</property>
+                <property name="mnemonic-widget">entry_storage_passphrase</property>
+                <property name="halign">start</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkBox">
@@ -292,7 +273,6 @@
               <object class="GtkBox" id="box_language_header">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label_language_header_title">
                     <property name="visible">True</property>
@@ -391,14 +371,12 @@
               <object class="GtkBox" id="box_storage_header">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">12</property>
+                <property name="spacing">8</property>
                 <child>
                   <object class="GtkLabel" id="label_storage_header_title">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Encrypted _Persistent Storage</property>
-                    <property name="use_underline">True</property>
-                    <property name="mnemonic_widget">entry_storage_passphrase</property>
+                    <property name="label" translatable="yes">Persistent Storage</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -485,46 +463,73 @@
             <child>
               <object class="GtkBox" id="box_storage_unlock">
                 <property name="can_focus">False</property>
+                <property name="spacing">6</property>
                 <child>
-                  <object class="GtkEntry" id="entry_storage_passphrase">
+                  <object class="GtkLabel" id="label_passphrase">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="visibility">False</property>
-                    <property name="placeholder_text" translatable="yes" comments="The label for this placeholder text is not very big, so keep this string short.">Enter your passphrase to unlock the persistent storage</property>
-                    <signal name="activate" handler="cb_entry_storage_passphrase_activated" swapped="no"/>
-                    <signal name="changed" handler="cb_entry_storage_passphrase_changed" swapped="no"/>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">_Passphrase</property>
+                    <property name="use_underline">True</property>
+                    <property name="mnemonic_widget">entry_storage_passphrase</property>
                     <style>
-                      <class name="linked_left"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="button_storage_unlock">
-                    <property name="label" translatable="yes">Unlock</property>
-                    <property name="visible">True</property>
-                    <property name="sensitive">False</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <signal name="clicked" handler="cb_button_storage_unlock_clicked" swapped="no"/>
-                    <style>
-                      <class name="suggested-action"/>
-                      <class name="linked_right"/>
+                      <class name="dim-label"/>
                     </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">3</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
-                <style>
-                  <class name="linked"/>
-                </style>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkEntry" id="entry_storage_passphrase">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="visibility">False</property>
+                        <signal name="activate" handler="cb_entry_storage_passphrase_activated" swapped="no"/>
+                        <signal name="changed" handler="cb_entry_storage_passphrase_changed" swapped="no"/>
+                        <style>
+                          <class name="linked_left"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button_storage_unlock">
+                        <property name="label" translatable="yes">Unlock Encryption</property>
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="cb_button_storage_unlock_clicked" swapped="no"/>
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="linked_right"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <style>
+                      <class name="linked"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -539,7 +544,7 @@
                   <object class="GtkLabel" id="label_storage_unlocked">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Your persistent storage is unlocked. Restart Tails to lock it again.</property>
+                    <property name="label" translatable="yes">Your Persistent Storage is unlocked. Its content will be available until you shut down Tails.</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
@@ -572,7 +577,6 @@
               <object class="GtkBox" id="box_settings_header">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label_settings_header_title">
                     <property name="visible">True</property>
