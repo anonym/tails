@@ -7,8 +7,6 @@ echo "Replacing swapon executable"
 # Only allow setting up swap for zram devices.
 # Rationale: security-in-depth model.
 
-SWAPON=/sbin/swapon
-
 # Move any /sbin/swapon installed by any package out of the way,
 # now (--rename) as well for any future one (hint: apt-get upgrade...).
 dpkg-divert --rename --add /sbin/swapon
