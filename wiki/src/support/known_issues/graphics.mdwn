@@ -212,9 +212,11 @@ If the error message lists multiple graphics cards:
   instead of letting the system choose one automatically. If this does
   not solve the problem, try selecting the other graphics adapter.
 
-* Start Tails using the `nouveau.modeset=0` [[boot option|doc/advanced_topics/boot_options]].
- This will force the system to use your other graphics cards,
- instead of the Nvidia one.
+* Try starting Tails using the following [[boot adoptions|doc/advanced_topics/boot_options]].
+  You should try only one of these boot options per start attempt.
+
+  - `modprobe.blacklist=nouveau`
+  - `nouveau.modeset=0`
 
 <h2 id="black-screen-switchable-graphics">Black screen with switchable graphics computers</h2>
 
