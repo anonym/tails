@@ -1,3 +1,7 @@
+# note that this means that connect-drop-tps could be called with 
+# multipler arguments, if they all match the /tmp/*-env pattern.
+# However, this has no consequence because connect-drop-tps only
+# reads the first argument
 Cmnd_Alias TPS_CONNECT_DROP = /usr/local/lib/connect-drop-tps /tmp/*-env
 
 Defaults!TPS_CONNECT_DROP env_keep+="DESKTOP_STARTUP_ID"
