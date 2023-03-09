@@ -102,6 +102,21 @@ $WORKAROUND_IF_ANY
 
 -->
 
+<h2 id="multiple">Multiple graphics cards</h2>
+
+If the error message lists multiple graphics cards:
+
+  - If possible, plug the monitor into the motherboard's Intel graphics card, as
+    opposed to the external Nvidia or AMD/ATI graphics card.
+
+  - Explicitly select one of the two graphics adapters in the BIOS
+    instead of letting the system choose one automatically. If this does
+    not solve the problem, try selecting the other graphics adapter.
+
+  - Start Tails using the `nouveau.modeset=0` [[boot option|doc/advanced_topics/boot_options]].
+    This will force the system to use your other graphics cards,
+    instead of the Nvidia one.
+
 <h2 id="radeon-hd">AMD Radeon HD</h2>
 
 <!--
