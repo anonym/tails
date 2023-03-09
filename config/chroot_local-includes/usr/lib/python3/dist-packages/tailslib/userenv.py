@@ -18,6 +18,7 @@ ENV_VARS_TO_DUMP = [
 
 ALLOWED_ENV_VARS = ENV_VARS_TO_DUMP + [
     "DESKTOP_STARTUP_ID",
+    "INHERIT_FD",
 ]
 
 USER_ENV_FILE_TEMPLATE = "/run/user/{uid}/user-env"
