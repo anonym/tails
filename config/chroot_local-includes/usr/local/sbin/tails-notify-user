@@ -11,5 +11,5 @@ fi
 summary="$1"
 body="$2"
 
-/usr/local/lib/exec-with-user-env \
-    notify-send ${3:+"--expire-time=$3"} "${summary}" "${body}"
+exec /usr/local/lib/exec-with-user-env \
+     notify-send ${3:+"--expire-time=$3"} "${summary}" "${body}"
