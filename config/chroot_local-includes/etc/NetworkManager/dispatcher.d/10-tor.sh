@@ -40,7 +40,7 @@ while ! systemctl is-active -q user@1000.service; do
 done
 
 echo >&2 "$BASENAME: $1 up: starting tca.service"
-/usr/local/lib/exec-with-user-env systemctl --user start tca.service
+/usr/local/lib/run-with-user-env systemctl --user start tca.service
 
 # that's not what it looks: htpdate will not really be started until Tor has bootstrapped
 echo >&2 "$BASENAME: $1 up: restarting htpdate.service"

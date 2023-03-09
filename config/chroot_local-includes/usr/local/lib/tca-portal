@@ -128,7 +128,7 @@ class RootCommand(BaseCommand):
 
 class UserCommand(BaseCommand):
     def full_command(self, request: RPCRequest) -> tuple:
-        args = ("/usr/local/lib/exec-with-user-env", *(super().full_command(request)))
+        args = ("/usr/local/lib/run-with-user-env", *(super().full_command(request)))
         return args
 
 

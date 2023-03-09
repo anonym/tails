@@ -109,7 +109,7 @@ def _notify(title, body="", accept_label="", deny_label="",
     try:
         completed_process = subprocess.run(
             [
-                "/usr/local/lib/exec-with-user-env",
+                "/usr/local/lib/run-with-user-env",
                 cmd, title, body, accept_label, deny_label,
                 documentation_target, urgent
             ],

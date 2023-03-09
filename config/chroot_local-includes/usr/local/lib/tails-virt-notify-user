@@ -52,7 +52,7 @@ class VirtNotifier(object):
             )
         elif action == "documentation":
             subprocess.run(
-                ["/usr/local/lib/exec-with-user-env", "tails-documentation",
+                ["/usr/local/lib/run-with-user-env", "tails-documentation",
                  'doc/advanced_topics/virtualization', 'security']
             )
         sys.exit(0)

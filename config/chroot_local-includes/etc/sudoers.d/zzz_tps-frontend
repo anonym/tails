@@ -8,7 +8,7 @@ Defaults!TPS_CONNECT_DROP env_keep+="NOTIFY_SOCKET"
 # user so that connect-drop is able to authenticate to D-Bus as that user.
 amnesia   ALL = (tails-persistent-storage)    NOPASSWD: TPS_CONNECT_DROP
 
-Cmnd_Alias TPS_FRONTEND = /usr/local/lib/exec-with-env --env-file /tmp/*-env --delete -- /usr/local/lib/tps-frontend
+Cmnd_Alias TPS_FRONTEND = /usr/local/lib/run-with-env --env-file /tmp/*-env --delete -- /usr/local/lib/tps-frontend
 
 Defaults!TPS_FRONTEND env_keep+="INHERIT_FD"
 Defaults!TPS_FRONTEND env_keep+="DESKTOP_STARTUP_ID"

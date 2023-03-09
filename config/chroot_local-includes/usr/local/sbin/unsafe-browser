@@ -22,7 +22,7 @@ export TEXTDOMAIN
 
 _zenity () {
     AT_SPI_BUS_ADDRESS="$(
-        /usr/local/lib/exec-with-user-env \
+        /usr/local/lib/run-with-user-env \
         dbus-send --session --print-reply=literal \
             --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress \
             | sed 's/^ *//'

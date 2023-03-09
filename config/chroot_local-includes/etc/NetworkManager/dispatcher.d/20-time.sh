@@ -18,4 +18,4 @@ if [ "$2" != "up" ]; then
 	exit 0
 fi
 
-/usr/local/lib/exec-with-user-env systemctl --user restart tails-htpdate-notify-user.service
+/usr/local/lib/run-with-user-env systemctl --user restart tails-htpdate-notify-user.service
