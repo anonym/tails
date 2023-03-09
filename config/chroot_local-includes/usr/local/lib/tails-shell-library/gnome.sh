@@ -23,19 +23,23 @@ DISPLAY=:0"
   fi
 
   if ! echo "${vars}" | grep -E "^XAUTHORITY="; then
-    for xauth in /run/user/1000/.mutter-Xwaylandauth.*; do
-      vars="${vars}
+    xauth=$(find /run/user/1000/ \
+        -maxdepth 1 -type f \
+        -user amnesia \
+        -regextype egrep -regex \
+        '/run/user/1000/[.]mutter-Xwaylandauth[.][A-Za-z0-9]+' -print -quit)
+    vars="${vars}
 XAUTHORITY=${xauth}"
-      break
-    done
   fi
 
   if ! echo "${vars}" | grep -E "^WAYLAND_DISPLAY="; then
-    for wayland_display in /run/user/1000/wayland-*; do
-      vars="${vars}
+    wayland_display=$(find /run/user/1000/ \
+        -maxdepth 1 -type s \
+        -user amnesia \
+        -regextype egrep -regex \
+        '/run/user/1000/[.]wayland-[0-9]+' -print -quit)
+    vars="${vars}
 WAYLAND_DISPLAY=${wayland_display#/run/user/1000/}"
-      break
-    done
   fi
 
   echo "${vars}"
