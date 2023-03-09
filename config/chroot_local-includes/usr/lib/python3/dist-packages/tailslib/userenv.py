@@ -28,7 +28,11 @@ def user_env_file(uid):
 
 
 def allowed_env(env: Mapping) -> dict:
-    return {key: value for key, value in env if key in ALLOWED_ENV_VARS}
+    """
+    >>> allowed_env({"PATH": "/home/", "LANG": "en"})
+    {'LANG': 'en'}
+    """
+    return {key: value for key, value in env.items() if key in ALLOWED_ENV_VARS}
 
 
 def read_allowed_env_from_file(envfile: str) -> dict:
