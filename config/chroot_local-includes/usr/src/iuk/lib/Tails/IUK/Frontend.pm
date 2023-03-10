@@ -647,6 +647,7 @@ method get_target_files (HashRef $upgrade_path, AbsDir $destdir) {
                     '--title', $title, '--text', $info
                 ],
                 \$zenity_in;
+	    # Avoid display the progress dialog initial text
 	    $zenity_in = $download_progress->info;
             $zenity_h->pump_nb;
             try {
