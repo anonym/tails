@@ -28,7 +28,7 @@ sub new {
 sub progress {
     # When $status is "begin", $request_or_response is the
     # HTTP::Request object, otherwise it is the HTTP::Response object.
-    my($self) = @_;
+    my $self = shift;
 
     if (-e $self->{temp_file}) {
         say(100 * (-s $self->{temp_file}) / $self->{size});
