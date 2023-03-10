@@ -95,7 +95,7 @@ class VM
       rexml.elements['domain/cpu/model'].add_attribute('fallback', 'allow')
     end
 
-    if $config['EARLY_PATCH']
+    if config_bool('EARLY_PATCH')
       rexml.elements['domain/devices'].add_element('filesystem')
       rexml.elements['domain/devices/filesystem'].add_attribute('type', 'mount')
       rexml.elements['domain/devices/filesystem'].add_attribute('accessmode', 'passthrough')
