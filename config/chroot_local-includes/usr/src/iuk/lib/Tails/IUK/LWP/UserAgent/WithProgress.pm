@@ -30,7 +30,12 @@ sub progress {
     # HTTP::Request object, otherwise it is the HTTP::Response object.
     my($self) = @_;
 
-    say(100 * (-s $self->{temp_file}) / $self->{size});
+    if (-e $self->{temp_file}) {
+        say(100 * (-s $self->{temp_file}) / $self->{size});
+    }
+    else {
+        say "0";
+    }
 
     STDOUT->flush;
 }
