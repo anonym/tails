@@ -159,7 +159,7 @@ class Feature(object):
         elif error:
             subtitle = _("Activation failed. Try again.")
         elif self.has_data and not self.is_enabled:
-            subtitle = _("There's some data. Turn on or delete data.")
+            subtitle = _("The data of this feature is still saved.")
         else:
             self.delete_data_button.hide()
             self.action_row.set_subtitle("")
@@ -321,8 +321,8 @@ class Feature(object):
 
     def on_delete_data_button_clicked(self, button: Gtk.Button):
         msg = _(
-            "Delete all data stored on the Persistent Storage for the {} feature?\n\n"
-            "If you keep the data, it will be restored when you turn the feature on again.",
+            "Delete all the data of the {} feature that is saved in the Persistent Storage?\n\n"
+            "If you cancel, the data will be restored when you turn this feature on again.",
         ).format(self.translated_name)
         self.dialog = Gtk.MessageDialog(self.window,
                                         Gtk.DialogFlags.MODAL | \
