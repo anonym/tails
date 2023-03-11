@@ -43,16 +43,13 @@ import systemd.daemon
 import textwrap
 import time
 import traceback
+import logging
 
 from tailslib.userenv import read_user_env
 
 from typing import Tuple
 
 REMOTE_SHELL_DEV = '/dev/virtio-ports/org.tails.remote_shell.0'
-
-
-def log(*args):
-    print(*args, file=sys.stderr)
 
 
 def mk_switch_user_fn(user):
@@ -89,7 +86,7 @@ def get_user_env(user):
         try:
             env_dict.update(read_user_env(user))
         except FileNotFoundError as e:
-            log(f"Failed to load user env for {user}: {e}")
+            logging.info(f"Failed to load user env for {user}: {e}")
 
     # To allow using Dogtail with applications run as root
     # (e.g. synaptic), we also load the user env from amnesia when
@@ -111,7 +108,7 @@ def get_user_env(user):
 # Python shell started as a subprocess.
 class PythonSession:
     def __init__(self, user=None):
-        log("Starting new Python session")
+        logging.info("Starting new Python session")
         interactive_shell_code = '; '.join([
             "import sys",
             "import code",
@@ -215,6 +212,7 @@ def run_cmd_as_user(cmd, user):
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
     python_sessions = dict()
     fd = os.open(REMOTE_SHELL_DEV, os.O_RDWR)
     port = open(fd, 'wb+', buffering=0)
@@ -258,7 +256,7 @@ def main():
             ret = ""
             if cmd_type in ['sh_call', 'sh_spawn']:
                 user, cmd = rest
-                log(f"Executing as {user}: {cmd}")
+                logging.info(f"Executing as {user}: {cmd}")
                 p = run_cmd_as_user(cmd, user)
                 if cmd_type == "sh_spawn":
                     returncode, stdout, stderr = 0, "", ""
@@ -266,17 +264,17 @@ def main():
                     stdout, stderr = p.communicate()
                     returncode = p.returncode
                 ret = json.dumps([id, 'success', returncode, stdout, stderr])
-                log(f"Result: {ret}")
+                logging.info(f"Result: {ret}")
             elif cmd_type == 'python_execute':
                 user, code = rest
                 if user not in python_sessions or \
                         python_sessions[user].process.poll() is not None:
                     python_sessions[user] = PythonSession(user)
                 session = python_sessions[user]
-                log(f"Executing Python as {user}:\n{code}")
+                logging.info(f"Executing Python as {user}:\n{code}")
                 exc, out_str, err_str = session.execute(code)
                 ret = json.dumps([id, 'success', exc, out_str, err_str])
-                log(f"Result: {ret}")
+                logging.info(f"Result: {ret}")
             elif cmd_type in ['file_read', 'file_write', 'file_append']:
                 path, *rest = rest
                 open_mode = cmd_type[5] + 'b'
@@ -304,11 +302,11 @@ def main():
                 port.write(chunk)
             port.flush()
         except Exception as e:
-            log("Error caught while processing line:")
-            log("    " + line)
-            log("The error was:")
+            logging.info("Error caught while processing line:")
+            logging.info("    " + line)
+            logging.info("The error was:")
             traceback.print_exc(file=sys.stderr)
-            log("-----")
+            logging.info("-----")
             sys.stderr.flush()
             exc_str = '{}: {}'.format(type(e).__name__, str(e))
             port.write(
