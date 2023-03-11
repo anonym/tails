@@ -271,7 +271,13 @@ class Service(DBusObject, ServiceUsingJobs):
             self.do_unlock(passphrase)
         finally:
             self.refresh_state(overwrite_in_progress=True)
-            self.refresh_features()
+            # We don't refresh the features here to avoid that any errors
+            # caused by unexpected state of the Persistent Storage are
+            # shown to the user as "Failed to Unlock", which would be
+            # misleading because it was unlocked successfully.
+            # We expect the caller to call Activate next after a
+            # successful Unlock call and we refresh the features there,
+            # so it should be fine to skip it here.
 
         logger.info("Done unlocking Persistent Storage")
 
