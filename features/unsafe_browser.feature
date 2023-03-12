@@ -36,6 +36,7 @@ Feature: Browsing the web using the Unsafe Browser
     When I successfully start the Unsafe Browser
     When I open the Tails homepage in the Unsafe Browser
     Then the Tails homepage loads in the Unsafe Browser
+    And the clearnet user has sent packets out to the Internet
 
   @not_release_blocker
   Scenario: Closing the Unsafe Browser shows a stop notification and properly tears down the chroot
