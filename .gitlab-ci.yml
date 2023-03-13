@@ -6,6 +6,9 @@ workflow:
 
 image: debian:bullseye
 
+variables:
+    GET_SOURCES_ATTEMPTS: 10
+
 before_script:
   - export DEBIAN_FRONTEND=noninteractive
   - apt-get update -qq
