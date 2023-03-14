@@ -45,7 +45,7 @@ Feature: Upgrading an old Tails USB installation
     Given a computer
     And I start Tails from USB drive "old" with network unplugged and I login with persistence enabled
     Then Tails is running from USB drive "old"
-    And all persistence presets are enabled
+    And all persistence presets are active
     When I write some files expected to persist
     # Verify that our baseline for the next scenarios is sane
     And all persistent filesystems have safe access rights
@@ -71,7 +71,7 @@ Feature: Upgrading an old Tails USB installation
   Scenario: Booting Tails from a USB drive upgraded from USB with persistence enabled
     Given a computer
     And I start Tails from USB drive "to_upgrade" with network unplugged and I login with persistence enabled
-    Then all persistence presets from the old Tails version are enabled
+    Then all persistence presets from the old Tails version are active
     And Tails is running from USB drive "to_upgrade"
     And the boot device has safe access rights
     And the expected persistent files created with the old Tails version are present in the filesystem
@@ -92,7 +92,7 @@ Feature: Upgrading an old Tails USB installation
     Given I shutdown Tails and wait for the computer to power off
     When I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
     Then Tails is running version 2.2~testoverlayfsng
-    And all persistence presets are enabled
+    And all persistence presets are active
     And the file system changes introduced in version 2.2~testoverlayfsng are present
     And only the 2.2~testoverlayfsng SquashFS delta is installed
     # Our IUK sets a release date that can make Tor bootstrapping impossible
@@ -108,7 +108,7 @@ Feature: Upgrading an old Tails USB installation
     Given I shutdown Tails and wait for the computer to power off
     When I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
     Then Tails is running version 2.3~testoverlayfsng
-    And all persistence presets are enabled
+    And all persistence presets are active
     And the file system changes introduced in version 2.3~testoverlayfsng are present
     And only the 2.3~testoverlayfsng SquashFS delta is installed
     # Regression test for #17425 (i.e. the Upgrader would propose

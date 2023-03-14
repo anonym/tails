@@ -899,18 +899,18 @@ When /^I copy "([^"]+)" to "([^"]+)" as user "([^"]+)"$/ do |source, destination
   assert(c.success?, "Failed to copy file:\n#{c.stdout}\n#{c.stderr}")
 end
 
-def persistent?(app)
+def is_persistence_active?(app)
   conf = get_persistence_presets_config(true)[app.to_s]
   c = $vm.execute("findmnt --noheadings --output SOURCE --target '#{conf}'")
   c.success? && (c.stdout.chomp != 'overlay')
 end
 
-Then /^persistence for "([^"]+)" is (|not )enabled$/ do |app, enabled|
-  case enabled
+Then /^persistence for "([^"]+)" is (|not )active$/ do |app, active|
+  case active
   when ''
-    assert(persistent?(app), 'Persistence should be enabled.')
+    assert(is_persistence_active?(app), 'Persistence should be active.')
   when 'not '
-    assert(!persistent?(app), 'Persistence should not be enabled.')
+    assert(!is_persistence_active?(app), 'Persistence should not be active.')
   end
 end
 

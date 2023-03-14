@@ -497,7 +497,7 @@ def tails_persistence_enabled?
               'tps_is_unlocked').success?
 end
 
-Given /^all persistence presets(| from the old Tails version)(| but the first one) are enabled$/ do |old_tails, except_first|
+Given /^all persistence presets(| from the old Tails version)(| but the first one) are active$/ do |old_tails, except_first|
   assert(old_tails.empty? || except_first.empty?, 'Unsupported case.')
   try_for(120, msg: 'Persistence is disabled') do
     tails_persistence_enabled?

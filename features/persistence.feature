@@ -24,34 +24,34 @@ Feature: Tails persistence
     Then the file I created was copied to the Persistent Storage
     When I shutdown Tails and wait for the computer to power off
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
-    Then persistence for "Persistent" is enabled
+    Then persistence for "Persistent" is active
     And the file I created in the Persistent directory exists
 
   Scenario: Booting Tails from a USB drive with an enabled persistent partition and reconfiguring it
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     Then Tails is running from USB drive "__internal"
-    And all persistence presets are enabled
+    And all persistence presets are active
     And all persistent directories have safe access rights
     When I disable the first persistence preset
     And I shutdown Tails and wait for the computer to power off
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
-    Then all persistence presets but the first one are enabled
+    Then all persistence presets but the first one are active
 
   Scenario: Activating and deactivating Persistent Storage features
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
-    Then persistence for "Persistent" is enabled
+    Then persistence for "Persistent" is active
     And I create a file in the Persistent directory
     Then the file I created was copied to the Persistent Storage
     When I disable the first persistence preset
-    Then persistence for "Persistent" is not enabled
+    Then persistence for "Persistent" is not active
     And the Persistent directory does not exist
     When I enable the first persistence preset
-    Then persistence for "Persistent" is enabled
+    Then persistence for "Persistent" is active
     And the file I created in the Persistent directory exists
 
   Scenario: Deleting data of a Persistent Storage feature
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
-    Then persistence for "Persistent" is enabled
+    Then persistence for "Persistent" is active
     When I create a file in the Persistent directory
     And I disable the first persistence preset
     And I delete the data of the Persistent Folder feature
