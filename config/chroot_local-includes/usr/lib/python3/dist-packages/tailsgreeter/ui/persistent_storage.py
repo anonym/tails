@@ -135,17 +135,17 @@ class PersistentStorage(object):
         except FeatureActivationFailedError as e:
             label = str(e) + "\n" + _("Start Tails and open the Persistent Storage settings to find out more.")
             self.activation_failed(label)
-            return
         except PersistentStorageError as e:
             logging.error(e)
             self.activation_failed()
             return
+        else:
+            self.infobar_persistence.set_visible(False)
 
         self.box_storage_unlock.set_visible(False)
         self.spinner_storage_unlock.set_visible(False)
         self.entry_storage_passphrase.set_visible(False)
         self.button_storage_unlock.set_visible(False)
-        self.infobar_persistence.set_visible(False)
         self.image_storage_state.set_from_icon_name('tails-unlocked',
                                                     Gtk.IconSize.BUTTON)
 
