@@ -126,3 +126,12 @@ Feature: Tails persistence
     And I shutdown Tails and wait for the computer to power off
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
     Then the expected persistent dotfile is present in the filesystem
+
+  Scenario: Feature activation fails
+    Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
+    And I create a symlink "/home/amnesia/Persistent" to "/etc"
+    When I enable persistence
+    Then the Welcome Screen tells me that the Persistent Folder feature couldn't be activated
+    When I log in to a new session after having activated the Persistent Storage
+    Then the Persistent Storage settings tell me that the Persistent Folder feature couldn't be activated
+    And /home/amnesia/Persistent is configured to persist

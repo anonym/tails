@@ -1421,3 +1421,18 @@ When /^I delete the data of the Persistent Folder feature$/ do
   end
   @screen.press('alt', 'F4')
 end
+
+Then /^the Welcome Screen tells me that the Persistent Folder feature couldn't be activated$/ do
+  assert greeter.child('Failed to activate Persistent Folder.\n.*',
+                       roleName:    'label',
+                       showingOnly: true)
+end
+
+Then /^the Persistent Storage settings tell me that the Persistent Folder feature couldn't be activated$/ do
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+
+  persistent_folder_row = persistent_storage_frontend
+                          .child('Activate Persistent Folder').parent
+  assert persistent_folder_row
+    .child(description: 'Activation failed', showingOnly: true)
+end

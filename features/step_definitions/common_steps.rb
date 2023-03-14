@@ -1407,6 +1407,12 @@ Given /^I write a file "(\S+)" with contents "([^"]*)"$/ do |path, content|
   $vm.file_overwrite(path, content)
 end
 
+Given /^I create a symlink "(\S+)" to "(\S+)"$/ do |link, target|
+  $vm.execute_successfully(
+    "ln -s --no-target-directory '#{target}' '#{link}'"
+  )
+end
+
 def gnome_disks_app
   disks_app = Dogtail::Application.new('gnome-disks')
   # Give GNOME Shell some time to draw the minimize/maximize/close
