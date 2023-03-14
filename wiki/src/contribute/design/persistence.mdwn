@@ -21,107 +21,55 @@ volume.
 
 ## Design
 
-Technical overview:
+### Technical overview
 
 * Encrypted (LUKS) volume on the Tails device
 * Configuration file containing source paths and destination paths
 * Files are either bind-mounted or linked via symlinks
-* Hooks are executed on activation / deactivation 
-
-Components:
-
-* A privileged backend: A D-Bus activated systemd service which exposes 
-  an API via the D-Bus system bus
-* A GTK app which uses the API to allow the user to easily set up and
-  configure the Persistent Storage
-* A command-line tool and shell library to allow other components of
-  Tails to easily use the API to configure the Persistent Storage
-
-# XXX
-
-* Setup and configuration is done via the `Persistent Storage` app
-* 
-* User can choose which data and configuration (features) to 
-  store persistently from a pre-configured list 
+* Hooks are executed on activation / deactivation
+* Setup and configuration is done via the Persistent Storage settings
+  app
+* User can choose which data and configuration (features) to
+  store persistently from a pre-configured list
 * In addition, users can make arbitrary files persistent by editing
-  a config file manually
-  pre-configured list of  which files and directories 
-* Files and directories which are made persistent are copied to the 
+  the config file manually
+* Files and directories which are made persistent are copied to the
   Persistent Storage
-* Files and directories are 
 
+### Components
 
-## Backend
+* A privileged backend (tps backend): A D-Bus activated systemd service
+  which exposes an API via the D-Bus system bus.
+* A GTK app (Persistent Storage settings) which uses the API to allow
+  the user to easily set up and configure the Persistent Storage.
+* A command-line tool (`tpscli`) and shell library (`libtps.sh`) to
+  allow other components of Tails to easily use the API to configure the
+  Persistent Storage
+* The [[Welcome Screen|doc/first_steps/welcome_screen]] allows to unlock
+  and activate the Persistent Storage during boot.
+
+### Backend
 
 The backend is implemented as a D-Bus activated systemd service using
 the D-Bus system bus. It exposes two interfaces:
-XXX: link to the relevant code instead of copy-pasting a code block
+* [[!tails_gitweb desc="org.boum.tails.PersistentStorage" config/chroot_local-includes/usr/lib/python3/dist-packages/tps/service.py#L45]]
+* [[!tails_gitweb desc="org.boum.tails.PersistentStorage.Feature" config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/feature.py#L35]]
 
-```
-<interface name='org.boum.tails.PersistentStorage'>
-    <method name='Quit'/>
-    <method name='Create'>
-        <arg name='passphrase' direction='in' type='s'/>
-    </method>
-    <method name='ChangePassphrase'>
-        <arg name='passphrase' direction='in' type='s'/>
-        <arg name='new_passphrase' direction='in' type='s'/>
-    </method>
-    <method name='Delete'/>
-    <method name='Activate'/>
-    <method name='Unlock'>
-        <arg name='passphrase' direction='in' type='s'/>
-    </method>
-    <property name="State" type="s" access="read" />
-    <property name="Error" type="s" access="read" />
-    <property name="IsCreated" type="b" access="read"/>
-    <property name="IsUnlocked" type="b" access="read"/>
-    <property name="BootDeviceIsSupported" type="b" access="read"/>
-    <property name="Device" type="s" access="read"/>
-    <property name="Job" type="o" access="read"/>
-</interface>
-```
+These interfaces are used by the frontend to make the properties and
+methods available to the user.
 
-and
-
-```
-<interface name='org.boum.tails.PersistentStorage.Feature'>
-    <method name='Activate'/>
-    <method name='Deactivate'/>
-    <property name="Id" type="s" access="read"/>
-    <property name="IsActive" type="b" access="read"/>
-    <property name="Job" type="o" access="read"/>
-</interface>
-```
-
-
-
-XXX: this section used to be about the old implementation. linkfiles is the only bit we need to preserve about
-it.
-
-* add a "linkfiles" (inspired by [Joey Hess'
-  dircombine](http://git.kitenet.net/?p=joey/home.git;a=blob;f=bin/dircombine))
-  option to create symlinks from the root of a non-persistent
-  directory (e.g. `$HOME`) to regular files stored in
-  a persistent location (e.g. `.gitconfig`, `.vimrc`, etc.)
-
-### Example
-
-Example `persistence.conf` configuration file:
-
-	# destination       options
-	/var/cache/apt
-	/home/amnesia       linkfiles,source=dotfiles
-
-This will result in:
-
-* `$MEDIA/apt` is bind-mounted onto `/var/cache/apt`
-* `/home/amnesia/` contains symlinks to every file in `$MEDIA/dotfiles`
+The pre-configured features known to the backend are defined in
+[[!tails_gitweb config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/features.py]].
 
 ## Activating and deactivating Persistent Storage Features
 
-XXX: describe what activating and deactivating actually means. especially,
-clarify the non trivial bits:
+Each feature defines one or more files or directories which are stored
+on the Persistent Storage when the feature is enabled and which
+are made available in the filesystem via bindings. Two types of bindings
+are supported: Bind mounts and symlink bindings. Bind mounts are simply
+bind-mounted and the files of symlink bindings are made available via
+symlinks. For examples and further explanation, see the
+[[Configuration File|persistence#configuration-file]] section below.
 
 ### Initial activation
 
@@ -129,52 +77,88 @@ We want to support this user story:
  1. User opens an application and configures it
  2. Then, the user decides they want this configuration to persist
 
-To do this, we need to copy the volatile data to the persistent storage when
-activating the corresponding feature.
+To support that, we copy the existing data for the bind mounts of a
+feature to the Persistent Storage when the feature is activated and
+there are no corresponding directories on the Persistent Storage yet.
 
 ### Conflicting apps
 
 We have a pre-defined list of conflicting applications and processes that would
 interfere with activating/deactivating a feature. For example, if the user is
-activating Thunderbid feature, and they are running Thunderbird already, we
+activating the Thunderbird feature, and they are running Thunderbird already, we
 can't just `mount` the directory at the proper place: Thunderbird would never
-notice, and this would lead to all sort of incoherent states.
+notice, and this would lead to all sort of incoherent states. To avoid
+that, we check if any `thunderbird` processes are running and, if so,
+tell the user to close Thunderbird to continue.
 
 ### Hooks
 
-[Hooks](link to relevant directory) are executed on activation / deactivation . They are important to have
-because they enable proper integration. For example, making persistent
-printers available cannot be done only via `mount`ing: you also need to restart
-`cups.
+Hooks are executed on activation / deactivation:
+* [[!tails_gitweb config/chroot_local-includes/usr/local/lib/persistent-storage/on-activated-hooks]]
+* [[!tails_gitweb config/chroot_local-includes/usr/local/lib/persistent-storage/on-deactivated-hooks]]
 
+They allow us to integrate the persistent data better into the system,
+for example by adding a GNOME bookmark for the Persistent directory when
+it is activated and removing it when it is deactivated.
+
+<a id="configuration-file"></a>
+### Configuration file
+
+The configuration file is stored in
+`/live/persistence/TailsData_unlocked/persistence.conf`.
+
+When a feature is made persistent, a line is added to the config file
+for each bind mount or symlink binding that belongs to the feature.
+
+Example bind mount line:
+```
+# destination               options
+/home/amnesia/Persistent    source=Persistent
+```
+
+This will cause the file or directory
+`/live/persistence/TailsData_unlocked/Persistent` to be bind-mounted to
+`/home/amnesia/Persistent`.
+
+Example symlink line:
+```
+# destination   options
+/home/amnesia	source=dotfiles,link
+```
+
+This will cause symlinks to be created below `/home/amnesia` for all
+files in the `/live/persistence/TailsData_unlocked/dotfiles` directory.
+If there are files in subdirectories of the `dotfiles` directory, those
+subdirectories are also created below `/home/amnesia`.
+
+This can be used to make files in e.g. `.gitconfig` or `.vimrc`
+persistent.
 
 ## User interface
 
-We provide a unified interface for creating, configuring and deleting a Persistent Storage.
-Unlocking is, instead, performed by Welcome Scren.
+We provide a unified interface for creating, configuring and deleting a
+Persistent Storage. Unlocking is done in the Welcome Screen during boot.
 
-### Create persistent storage
-
+### Create Persistent Storage
 
 #### Design
 
 Running the Persistent Storage UI:
 
-Brings the user to the configuration screen if they have an unlocked Persistent Storage.
+Brings the user to the configuration screen if they have an unlocked
+Persistent Storage.
 
-Else, we create:
-
- * on the USB stick Tails is running from
- * ask the user an encryption passphrase (welcome bonus: pointing to
+Else, we:
+ * ask the user for a passphrase for the encryption (welcome bonus: pointing to
    the relevant documentation about choosing a *strong* passphrase)
  * create a LUKS-encrypted partition on the Tails USB stick
    - uses all the free space
    - labeled `TailsData`
    - create an ext4 filesystem in the encrypted container
-   - set appropriate ownership XXX: link to code
- * switch to the Configuration screen
+   - set appropriate ownership: [[!tails_gitweb config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py#L312-317]]
+ * switch to the settings view
 
-### Configure persistent storage features (ie: which bits are persistent)
+### Configure Persistent Storage features (i.e. which bits are persistent)
 
 This is automatically run right after the Persistent Storage bootstrap
 step. The user is enabled to change the configuration later.
@@ -183,43 +167,44 @@ Changes to the Persistent Storage settings are taken into account immediately.
 #### Design
 
 When the user sees this UI, it means either:
- - they have unlocked the Persistent Storage at the Welcome Scren
+ - they have unlocked the Persistent Storage at the Welcome Screen
  - or, they just created it
 
 By default, the "Create" UI will activate those features:
- - Persistent directory
+ - Persistent Folder
  - Additional Software
-
-A few _Features_ are made available. See section "Application-specific configuration"
-XXX: proper link
 
 ### Unlock the Persistent Storage at boot time
 
-The Welcome Screen allows the user to unlock their persistent storage.
+The Welcome Screen allows the user to unlock their Persistent Storage.
 
-The decision of doing this so late in the boot process is a conscious one: the Welcome Screen is a GTK
-application that can easily support accessibility, an easy to use interface, keyboard layouts and input
+The decision of doing this so late in the boot process is a conscious
+one: the Welcome Screen is a GTK application that can easily support
+accessibility, an easy to use interface, keyboard layouts and input
 systems.
 
-We also don't support activating persistent storage after logging into the
-GNOME Session.  It's full of corner cases, and we consider that doing this in a
-way that gives a consistent interface to the user is very expensive and not
-worth it.
+We also don't support activating Persistent Storage after logging into
+the GNOME Session.  It's full of corner cases, and we consider that
+doing this in a way that gives a consistent interface to the user is
+very expensive and not worth it.
+XXX: Which corner cases? What's expensive about that? I think I already
+implemented that.
 
-Unlocking the Persistent Storage is optional: a user can start Tails without activating persistence. If they
-do so, they won't be able to unlock it later without rebooting.
+Unlocking the Persistent Storage is optional: a user can start Tails
+without unlocking it. If they do so, they won't be able to unlock it
+later without rebooting.
 
 #### Design
 
- 0. `tails-greeter` asks `tps` whether there's an available Persistent Storage
- 0. The user chooses to unlock the Persistent Storage in the Welcome
-    Screen, aka. `tails-greeter`.
- 0. `tails-greeter` asks the user to enter the
-    passphrase, and asks `tps` to unlock and activate.
-    `tails-greeter` deals with error catching, retrying, etc. as appropriate.
-     - Activation is all or nothing: all enabled
-       Persistent Storage Features will be activated
-
+ 1. The Welcome Screen asks the tps backend if there's a
+    Persistent Storage available.
+ 2. The user enters the passphrase and clicks `Unlock` in the
+    Welcome Screen.
+ 3. The Welcome Screen calls the tps backend to unlock and activate
+    the Persistent Storage.
+ 4. The tps backend decrypts the partition, mounts it, reads the
+    config file and activates the bindings configured in the config file.
+ 5. The Welcome Screen displays a success or error message.
 
 #### Implementation details
 
@@ -238,41 +223,42 @@ For details see [[additional_software_packages]].
 Security
 --------
 
-### storage access
+### Storage access
 
-XXX: check if that is true. Both the username and the ACL part
+The root directory of the Persistent Storage
+(`/live/persistence/TailsData_unlocked`) is created by the tps backend.
+It's owned by `root:root` with permissions `0770`.
+It is group-writable so that we can grant write access to other users 
+with ACLs.
+XXX: Is it really necessary for the directory to be group-writable to
+be able to grant write access to other users with ACLs?
 
-The root directory of the Persistent Storage is created
-by the persistence configuration assistant, owned by `root:root`, with
-permissions 0770. It is group-writable so that we can grant write access
-to other users with ACLs.
+Additionally, ACLs grant search (`x`) access to the `amnesia` user, so
+that it can follow the symlinks generated by the dotfiles feature.
 
-Additionally, ACLs grant, on this directory:
+### How can an unprivileged user have a privileged UI
 
-* full (`rwx`) access to the `tails-persistence-setup` user, so that it can edit the
-  persistence configuration;
-* search (`x`) access to the `amnesia` user, so that it can follow the symlinks
-  generated by the dotfiles feature.
+Because the tps backend runs as root and performs privileged operations,
+we only allow the Persistent Storage settings (tps frontend) and the
+Welcome Screen to access call the privileged methods. The unprivileged
+`amnesia` user is only allowed to read properties (so that we can
+figure out in other unprivileged components in Tails if a feature is
+active or not).
+See [[!tails_gitweb config/chroot_local-includes/etc/dbus-1/system.d/org.boum.tails.PersistentStorage.conf]].
 
-### how can an unprivileged user have a privileged UI
+The Welcome Screen is only started during boot and runs as its own user
+(`Debian-gdm`), which we allow access to the backend.
 
-XXX: update all that, also taking bits from the intro written on top of this document
-
- - A daemon, `tps` is run as root
- - How do we give the UI full access to the TPS D-Bus service
- - How do we prevent any other code running as `amnesia` to do the same
- - There is a tps CLI. What access do they provide? Who can use that to do what? How is that secure?
-
-XXX: check this!
-It creates and updates a configuration file called `persistence.conf`, that is
-owned by `tails-persistence-setup:tails-persistence-setup`, with permissions
-0600 and no ACLs. It refuses to read configuration files with different
-permissions.
-
-`live-persist` checks these permissions on the root directory of the
-Persistent Storage, on `persistence.conf` and on
-`live-additional-software.conf`. Then, `live-persist` disables every
-such file, and refuses to set up any feature of the Persistent Storage, if the
-Persistent Storage has wrong permissions. It also disables every such
-file that has wrong permissions itself.
-
+The Persistent Storage settings app is started by the user in the
+running Tails session and runs as the unprivileged `amnesia` user. To
+still allow it access to the privileged methods, we do this:
+* A wrapper script runs as the user `tails-persistent-storage` which is
+  allowed to access the `org.boum.tails.PersistentStorage` bus via D-Bus:
+  * [[!tails_gitweb config/chroot_local-includes/usr/local/bin/tps-frontend-wrapper]]
+  * [[!tails_gitweb config/chroot_local-includes/etc/dbus-1/system.d/org.boum.tails.PersistentStorage.conf]]
+* The wrapper script opens a file descriptor for the D-Bus system bus
+  and drops privileges by executing the tps frontend as `amnesia` but
+  passes the open file descriptor on to the tps frontend:
+  * [[!tails_gitweb config/chroot_local-includes/usr/local/lib/connect-drop-tps]]
+* The tps frontend uses the open file descriptor to access the
+  `org.boum.tails.PersistentStorage` bus.
