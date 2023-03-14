@@ -158,9 +158,9 @@ installed or removed.
 <img src="https://gitlab.tails.boum.org/tails/ux/-/raw/master/additional software/png/notification - add.png"/>
 
 When *Add To Persistent Storage* is clicked,
-`/usr/bin/tails-persistence-setup` is started as
-`tails-persistence-setup` without a GUI to enable the
-`AdditionalSoftware` preset. The new additional packages are then added
+`/usr/local/lib/tpscli` is used to enable the `AdditionalSoftware`
+Persistent Storage feature.
+The new additional packages are then added
 atomically to the `live-additional-software.conf` configuration file
 (this logic is handled by
 [[!tails_gitweb config/chroot_local-includes/usr/lib/python3/dist-packages/tailslib/additionalsoftware.py]]).
@@ -169,14 +169,11 @@ atomically to the `live-additional-software.conf` configuration file
 
 <img src="https://gitlab.tails.boum.org/tails/ux/-/raw/master/additional software/png/notification - add without persistent storage.png"/>
 
-When *Add To Persistent Storage* is clicked,
-`/usr/bin/tails-persistence-setup` is started as
-`tails-persistence-setup` with a GUI to lead the user through the process
+When *Add To Persistent Storage* is clicked, the Persistent Storage app
+is started to lead the user through the process
 of creating a Persistent Storage. The `AdditionalSoftware` preset is
 automatically enabled. The new additional packages are then added to the
-`live-additional-software.conf` configuration file, which is in this
-case mounted to `/media/tails-persistence-setup/TailsData` instead of
-`/live/persistence/TailsData_unlocked` (this logic in handled by
+`live-additional-software.conf` configuration file (this logic in handled by
 [[!tails_gitweb config/chroot_local-includes/usr/lib/python3/dist-packages/tailslib/persistence.py]]).
 
 #### With the Persistent Storage locked
