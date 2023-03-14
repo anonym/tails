@@ -36,7 +36,7 @@ Feature: Browsing the web using the Unsafe Browser
     When I successfully start the Unsafe Browser
     When I open the Tails homepage in the Unsafe Browser
     Then the Tails homepage loads in the Unsafe Browser
-    And the clearnet user has sent packets out to the Internet
+    And the Unsafe Browser has sent packets out to the Internet
 
   @not_release_blocker
   Scenario: Closing the Unsafe Browser shows a stop notification and properly tears down the chroot
@@ -74,7 +74,7 @@ Feature: Browsing the web using the Unsafe Browser
     When I successfully start the Unsafe Browser
     Then the Unsafe Browser has started
     And I wait 120 seconds
-    And the clearnet user has not sent packets out to the Internet
+    And the Unsafe Browser has not sent packets out to the Internet
 
   @not_release_blocker
   Scenario: The Unsafe Browser cannot be started when I am offline
