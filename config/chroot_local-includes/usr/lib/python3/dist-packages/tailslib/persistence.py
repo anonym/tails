@@ -46,8 +46,9 @@ def has_unlocked_persistence():
 
 def is_tails_media_writable():
     """Return true iff tails is started from a writable media."""
-    return not subprocess.run(
-        "/usr/local/lib/tails-boot-device-can-have-persistence").returncode
+    return subprocess.run(
+        "/usr/local/lib/tails-boot-device-can-have-persistence"
+    ).returncode == 0
 
 
 def spawn_tps_frontend(*args):
