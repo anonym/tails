@@ -518,7 +518,7 @@ def tails_persistence_enabled?
               'tps_is_unlocked').success?
 end
 
-Given /^all tps features(| from the old Tails version)(| but the first one) are active$/ do |old_tails_str, except_first_str|
+Then /^all tps features(| from the old Tails version)(| but the first one) are active$/ do |old_tails_str, except_first_str|
   old_tails = !old_tails_str.empty?
   except_first = !except_first_str.empty?
   assert(!old_tails || !except_first, 'Unsupported case.')
@@ -538,7 +538,7 @@ Given /^all tps features(| from the old Tails version)(| but the first one) are 
   end
 end
 
-Given /^all tps features(| but the first one) are enabled$/ do |except_first_str|
+Then /^all tps features(| but the first one) are enabled$/ do |except_first_str|
   except_first = !except_first_str.empty?
   tps_reload
   tps_features.each do |feature|
@@ -551,7 +551,7 @@ Given /^all tps features(| but the first one) are enabled$/ do |except_first_str
   end
 end
 
-Given /^all tps features(| but the first one) are enabled and active$/ do |except_first_str|
+Then /^all tps features(| but the first one) are enabled and active$/ do |except_first_str|
   except_first = !except_first_str.empty?
   if except_first
     step 'all tps features but the first one are enabled'
@@ -562,7 +562,7 @@ Given /^all tps features(| but the first one) are enabled and active$/ do |excep
   end
 end
 
-Given /^persistence is disabled$/ do
+Then /^persistence is disabled$/ do
   assert(!tails_persistence_enabled?, 'Persistence is enabled')
 end
 
