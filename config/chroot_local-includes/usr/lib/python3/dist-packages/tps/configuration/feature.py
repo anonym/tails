@@ -301,6 +301,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             except Exception as e:
                 if exceptions: logging.exception(e)
                 exceptions.append(e)
+                # Figuring out if there is data or not failed. We set
+                # HasData to True in this case because then we display
+                # a "Delete Data" button in the frontend which the user
+                # could use to try and fix the issue (if they don't care
+                # about the data).
+                self._has_data = True
 
         if "IsActive" in properties:
             try:
