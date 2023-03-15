@@ -71,15 +71,6 @@ def persistent_volumes_mountpoints
   $vm.execute('ls -1 -d /live/persistence/*_unlocked/').stdout.chomp.split
 end
 
-# Returns the list of mountpoints which are configured in persistence.conf
-def configured_persistent_mountpoints
-  $vm.file_content(
-    '/live/persistence/TailsData_unlocked/persistence.conf'
-  ).split("\n").map do |line|
-    line.split[0]
-  end
-end
-
 def persistent_storage_frontend
   Dogtail::Application.new('tps-frontend')
 end
@@ -560,6 +551,31 @@ Then /^all tps features(| but the first one) are enabled and active$/ do |except
     step 'all tps features are enabled'
     step 'all tps features are active'
   end
+end
+
+Then /^the "(\S+)" tps feature is(| not) enabled$/ do |feature, not_str|
+  check_not_enabled = !not_str.empty?
+  is_enabled = tps_feature_is_enabled(feature)
+  if check_not_enabled
+    assert !is_enabled, "Feature '#{feature}' is enabled"
+  else
+    assert is_enabled, "Feature '#{feature}' is not enabled"
+  end
+end
+
+Then /^the "(\S+)" tps feature is(| not) active$/ do |feature, not_str|
+  check_not_active = !not_str.empty?
+  is_active = tps_feature_is_active(feature)
+  if check_not_active
+    assert !is_active, "Feature '#{feature}' is active"
+  else
+    assert is_active, "Feature '#{feature}' is not active"
+  end
+end
+
+Then /^the "(\S+)" tps feature is(| not) enabled and(| not) active$/ do |feature, not_enabled_str, not_active_str|
+  step "the \"#{feature}\" tps feature is#{not_enabled_str} enabled"
+  step "the \"#{feature}\" tps feature is#{not_active_str} active"
 end
 
 Then /^persistence is disabled$/ do
@@ -1374,14 +1390,6 @@ Then /^(no )?persistent Greeter options were restored$/ do |no|
     $language = 'German'
     @screen.wait('TailsGreeterPersistentSettingsRestoredGerman.png', 10)
   end
-end
-
-Then /^(.*) is (?:still )?configured to persist$/ do |dir|
-  assert(configured_persistent_mountpoints.include?(dir))
-end
-
-Then /^(.*) is not configured to persist$/ do |dir|
-  assert(!configured_persistent_mountpoints.include?(dir))
 end
 
 Then /^the Tails Persistent Storage behave tests pass$/ do

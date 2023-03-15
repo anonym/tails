@@ -11,13 +11,13 @@ Feature: Using persistent Tor bridges and pluggable transports
     And the computer reboots Tails
     And I enable persistence
     And I log in to a new session
-    And /var/lib/tca is not configured to persist
+    Then the "TorConfiguration" tps feature is not enabled
     When the network is plugged
     And the Tor Connection Assistant autostarts
     And I configure some persistent obfs4 bridges in the Tor Connection Assistant
     And I wait until Tor is ready
     Then tca.conf includes the configured bridges
-    And /var/lib/tca is configured to persist
+    And the "TorConfiguration" tps feature is enabled and active
     When I cold reboot the computer
     And the computer reboots Tails
     And I enable persistence
@@ -33,7 +33,7 @@ Feature: Using persistent Tor bridges and pluggable transports
     And I click "Connect to Tor"
     Then I wait until Tor is ready
     And tca.conf includes the configured bridges
-    And /var/lib/tca is still configured to persist
+    And the "TorConfiguration" tps feature is enabled and active
     And all Internet traffic has only flowed through the configured bridges or connectivity check service
 
   Scenario: Disabling persistence of Tor bridges
@@ -43,5 +43,5 @@ Feature: Using persistent Tor bridges and pluggable transports
     And I configure a direct connection in the Tor Connection Assistant
     Then I wait until Tor is ready
     And tca.conf includes no bridge
-    And /var/lib/tca is not configured to persist
+    And the "TorConfiguration" tps feature is not enabled and not active
     And all Internet traffic has only flowed through Tor or connectivity check service
