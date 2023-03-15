@@ -46,6 +46,27 @@ def tps_bind_mounts
   get_tps_bindings(true)
 end
 
+def tps_features
+  c = $vm.execute_successfully('/usr/local/lib/tpscli get-features')
+  eval(c.stdout.chomp)
+end
+
+def tps_feature_is_enabled(feature, reload = true)
+  tps_reload if reload
+  c = $vm.execute("/usr/local/lib/tpscli is-enabled #{feature}")
+  c.success?
+end
+
+def tps_feature_is_active(feature, reload = true)
+  tps_reload if reload
+  c = $vm.execute("/usr/local/lib/tpscli is-active #{feature}")
+  c.success?
+end
+
+def tps_reload
+  $vm.execute_successfully('systemctl reload tails-persistent-storage.service')
+end
+
 def persistent_volumes_mountpoints
   $vm.execute('ls -1 -d /live/persistence/*_unlocked/').stdout.chomp.split
 end
@@ -497,35 +518,47 @@ def tails_persistence_enabled?
               'tps_is_unlocked').success?
 end
 
-Given /^all tps features(| from the old Tails version)(| but the first one) are active$/ do |old_tails, except_first|
-  assert(old_tails.empty? || except_first.empty?, 'Unsupported case.')
+Given /^all tps features(| from the old Tails version)(| but the first one) are active$/ do |old_tails_str, except_first_str|
+  old_tails = !old_tails_str.empty?
+  except_first = !except_first_str.empty?
+  assert(!old_tails || !except_first, 'Unsupported case.')
   try_for(120, msg: 'Persistence is disabled') do
     tails_persistence_enabled?
   end
-  unexpected_mounts = []
-  # Check that all persistent directories are mounted
-  if old_tails.empty?
-    expected_mounts = tps_bind_mounts
-    unless except_first.empty?
-      first_expected_mount_source      = expected_mounts.keys[0]
-      first_expected_mount_destination = expected_mounts[
-        first_expected_mount_source
-      ]
-      expected_mounts.delete(first_expected_mount_source)
-      unexpected_mounts = [first_expected_mount_destination]
+
+  tps_reload
+  features = old_tails ? $remembered_tps_features : tps_features
+  features.each do |feature|
+    is_active = tps_feature_is_active(feature, reload: false)
+    if except_first && feature == 'PersistentDirectory'
+      assert !is_active, "Feature '#{feature}' is active"
+    else
+      assert is_active, "Feature '#{feature}' is not active"
     end
+  end
+end
+
+Given /^all tps features(| but the first one) are enabled$/ do |except_first_str|
+  except_first = !except_first_str.empty?
+  tps_reload
+  tps_features.each do |feature|
+    is_enabled = tps_feature_is_enabled(feature, reload: false)
+    if except_first && feature == 'PersistentDirectory'
+      assert !is_enabled, "Feature '#{feature}' is enabled"
+    else
+      assert is_enabled,  "Feature '#{feature}' is not enabled"
+    end
+  end
+end
+
+Given /^all tps features(| but the first one) are enabled and active$/ do |except_first_str|
+  except_first = !except_first_str.empty?
+  if except_first
+    step 'all tps features but the first one are enabled'
+    step 'all tps features but the first one are active'
   else
-    assert_not_nil($remembered_tps_bind_mounts)
-    expected_mounts = $remembered_tps_bind_mounts
-  end
-  mount = $vm.execute('mount').stdout.chomp
-  expected_mounts.each do |_, dir|
-    assert(mount.include?("on #{dir} "),
-           "Persistent directory '#{dir}' is not mounted")
-  end
-  unexpected_mounts.each do |dir|
-    assert(!mount.include?("on #{dir} "),
-           "Persistent directory '#{dir}' is mounted")
+    step 'all tps features are enabled'
+    step 'all tps features are active'
   end
 end
 
@@ -755,6 +788,7 @@ When /^I write some files not expected to persist$/ do
 end
 
 When /^I take note of which tps features are available$/ do
+  $remembered_tps_features = tps_features
   $remembered_tps_bind_mounts = tps_bind_mounts
   $remembered_tps_bindings = tps_bindings
 end

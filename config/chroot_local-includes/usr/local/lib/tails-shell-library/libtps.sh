@@ -28,6 +28,35 @@ tps_feature_is_active() {
     return 1
 }
 
+tps_feature_is_enabled() {
+    local feature="${1}"
+    local object_path="/org/boum/tails/PersistentStorage/Features/${feature}"
+    local out
+    out="$(gdbus call --system --dest org.boum.tails.PersistentStorage \
+           --object-path "${object_path}" \
+           --method org.freedesktop.DBus.Properties.Get \
+           org.boum.tails.PersistentStorage.Feature IsEnabled)"
+
+    if [ "${out}" = "(<true>,)" ]; then
+        return 0
+    fi
+    return 1
+}
+
+tps_get_features() {
+    # Notes:
+    # - Only tails-persistent-storage and Debian-gdm have the required
+    #   permissions to call this
+    local object_path="/org/boum/tails/PersistentStorage"
+    res=$(gdbus call --system --dest org.boum.tails.PersistentStorage \
+         --object-path "${object_path}" \
+         --method org.boum.tails.PersistentStorage.GetFeatures)
+    # Strip the leading and trailing parenthesis and comma
+    res=${res#"("}
+    res=${res%",)"}
+    echo "${res}"
+}
+
 tps_activate_feature() {
     # Notes:
     # - Only tails-persistent-storage and Debian-gdm have the required

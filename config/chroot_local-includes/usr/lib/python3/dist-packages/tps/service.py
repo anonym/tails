@@ -48,6 +48,9 @@ class Service(DBusObject, ServiceUsingJobs):
             <interface name='org.boum.tails.PersistentStorage'>
                 <method name='Quit'/>
                 <method name='Reload'/>
+                <method name='GetFeatures'>
+                    <arg name='features' direction='out' type='as'/>
+                </method>
                 <method name='Create'>
                     <arg name='passphrase' direction='in' type='s'/>
                 </method>
@@ -125,6 +128,11 @@ class Service(DBusObject, ServiceUsingJobs):
         """Reload the state of the service and all features"""
         self.refresh_state()
         self.refresh_features()
+
+    def GetFeatures(self) -> List[str]:
+        """List the IDs of all features"""
+        self.refresh_features()
+        return [f.Id for f in self.features]
 
     def Create(self, passphrase: str):
         """Create the Persistent Storage partition and activate the
