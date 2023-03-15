@@ -47,6 +47,7 @@ class Service(DBusObject, ServiceUsingJobs):
         <node>
             <interface name='org.boum.tails.PersistentStorage'>
                 <method name='Quit'/>
+                <method name='Reload'/>
                 <method name='Create'>
                     <arg name='passphrase' direction='in' type='s'/>
                 </method>
@@ -119,6 +120,11 @@ class Service(DBusObject, ServiceUsingJobs):
         self.unregister(self.connection)
         self.wait_for_method_calls_to_finish(True)
         self.stop()
+
+    def Reload(self):
+        """Reload the state of the service and all features"""
+        self.refresh_state()
+        self.refresh_features()
 
     def Create(self, passphrase: str):
         """Create the Persistent Storage partition and activate the
