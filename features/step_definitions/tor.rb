@@ -37,21 +37,11 @@ def ip6tables_rules(chain, table = 'filter')
   iptables_rules_parse('ip6tables', chain, table)
 end
 
-def ip4tables_packet_counter_sum(**filters)
-  pkts = 0
-  ip4tables_chains do |name, _, rules|
-    next if filters[:tables] && !filters[:tables].include?(name)
-
-    rules.each do |rule|
-      if filters[:uid] &&
-         !rule.elements["conditions/owner/uid-owner[text()=#{filters[:uid]}]"]
-        next
-      end
-
-      pkts += rule.attribute('packet-count').to_s.to_i
-    end
-  end
-  pkts
+def ip4tables_packet_counter_sum(chain, iface, table = 'filter')
+  cmd = "iptables -t #{table} -L #{chain} -v | grep 'ACCEPT.*#{iface}' | awk '{ print $1 }'"
+  output = $vm.execute_successfully(cmd).stdout
+  incoming_packets, outgoing_packets = output.split(/\n/)
+  Integer(incoming_packets) + Integer(outgoing_packets)
 end
 
 def iptables_filter_add(add, target, address, port)
