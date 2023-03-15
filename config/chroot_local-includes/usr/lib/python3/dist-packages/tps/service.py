@@ -1,3 +1,4 @@
+import logging
 import threading
 
 from gi.repository import Gio, GLib
@@ -255,8 +256,7 @@ class Service(DBusObject, ServiceUsingJobs):
                 logger.exception(e)
                 failed_feature_names.append(feature.translatable_name)
             finally:
-                feature.refresh_state()
-                feature.signal_properties_changed()
+                feature.refresh_state(emit_properties_changed_signal=True)
 
         self.run_on_activated_hooks()
 
@@ -527,9 +527,15 @@ class Service(DBusObject, ServiceUsingJobs):
                 self.features.remove(known_custom_feature)
 
         # Refresh state of all features
+        exceptions = list()
         for feature in self.features:
-            feature.refresh_state()
-            feature.signal_properties_changed()
+            try:
+                feature.refresh_state(emit_properties_changed_signal=True)
+            except Exception as e:
+                if exceptions: logging.exception(e)
+                exceptions.append(exceptions)
+        if exceptions:
+            raise exceptions[0]
 
     def refresh_state(self, overwrite_in_progress: bool = False):
         if not self._boot_device:

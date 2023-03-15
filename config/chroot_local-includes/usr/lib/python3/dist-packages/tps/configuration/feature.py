@@ -1,4 +1,5 @@
 import abc
+import logging
 from enum import Enum
 from gi.repository import GLib
 import os
@@ -99,8 +100,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             with self.new_job() as job:
                 self.do_activate(job)
         finally:
-            self.refresh_state()
-            self.signal_properties_changed()
+            self.refresh_state(emit_properties_changed_signal=True)
 
     def do_activate(self, job: Optional["Job"], non_blocking=False):
         logger.info(f"Activating feature {self.Id}")
@@ -150,8 +150,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             with self.new_job() as job:
                 self.do_deactivate(job)
         finally:
-            self.refresh_state()
-            self.signal_properties_changed()
+            self.refresh_state(emit_properties_changed_signal=True)
 
     def do_deactivate(self, job: Optional["Job"]):
         logger.info(f"Deactivating feature {self.Id}")
@@ -280,20 +279,41 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         hooks_dir = Path(ON_DEACTIVATED_HOOKS_DIR, self.Id)
         executil.execute_hooks(hooks_dir)
 
-    def refresh_state(self, properties: List[str] = None):
+    def refresh_state(self, properties: List[str] = None,
+                      emit_properties_changed_signal=False):
         if not properties:
             properties = ["IsEnabled", "HasData", "IsActive"]
 
+        exceptions = list()
+
         if "IsEnabled" in properties:
-            config_file = self.service.config_file
-            self._is_enabled = config_file.exists() and \
-                               config_file.contains(self)
+            try:
+                config_file = self.service.config_file
+                self._is_enabled = config_file.exists() and \
+                                   config_file.contains(self)
+            except Exception as e:
+                if exceptions: logging.exception(e)
+                exceptions.append(e)
 
         if "HasData" in properties:
-            self._has_data = any(mount.has_data() for mount in self.Mounts)
+            try:
+                self._has_data = any(mount.has_data() for mount in self.Mounts)
+            except Exception as e:
+                if exceptions: logging.exception(e)
+                exceptions.append(e)
 
         if "IsActive" in properties:
-            self._is_active = all(mount.is_active() for mount in self.Mounts)
+            try:
+                self._is_active = all(mount.is_active() for mount in self.Mounts)
+            except Exception as e:
+                if exceptions: logging.exception(e)
+                exceptions.append(e)
+
+        if emit_properties_changed_signal:
+            self.signal_properties_changed()
+
+        if exceptions:
+            raise exceptions[0]
 
     def signal_properties_changed(self):
         changed_properties = dict()
