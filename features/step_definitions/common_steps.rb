@@ -900,7 +900,7 @@ When /^I copy "([^"]+)" to "([^"]+)" as user "([^"]+)"$/ do |source, destination
 end
 
 def is_persistence_active?(app)
-  conf = get_persistence_presets_config(true)[app.to_s]
+  conf = get_tps_bindings(true)[app.to_s]
   c = $vm.execute("findmnt --noheadings --output SOURCE --target '#{conf}'")
   c.success? && (c.stdout.chomp != 'overlay')
 end

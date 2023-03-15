@@ -1,9 +1,9 @@
 require 'securerandom'
 
-# Returns a hash that for each persistence preset the running Tails is aware of,
-# for each of the corresponding configuration lines,
-# maps the source to the destination.
-def get_persistence_presets_config(skip_links = false)
+# Returns a mapping from the source of a binding to its destination
+# for all bindings of all pre-configured tps features that the running
+# Tails is aware of.
+def get_tps_bindings(skip_links = false)
   # Python script that prints all persistence configuration lines (one per
   # line) in the form: <mount_point>\t<comma-separated-list-of-options>
   script = [
@@ -13,7 +13,7 @@ def get_persistence_presets_config(skip_links = false)
     '        print(mount)',
   ]
   c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
-  assert(c.success?, 'Python script for get_persistence_presets_config failed')
+  assert(c.success?, 'Python script for get_tps_bindings failed')
   presets_configs = c.stdout.chomp.split("\n")
   assert presets_configs.size >= 10,
          "Got #{presets_configs.size} persistence preset configuration " \
@@ -38,12 +38,12 @@ def get_persistence_presets_config(skip_links = false)
   persistence_mapping
 end
 
-def persistent_dirs
-  get_persistence_presets_config
+def tps_bindings
+  get_tps_bindings
 end
 
-def persistent_mounts
-  get_persistence_presets_config(true)
+def tps_bind_mounts
+  get_tps_bindings(true)
 end
 
 def persistent_volumes_mountpoints
@@ -505,7 +505,7 @@ Given /^all persistence presets(| from the old Tails version)(| but the first on
   unexpected_mounts = []
   # Check that all persistent directories are mounted
   if old_tails.empty?
-    expected_mounts = persistent_mounts
+    expected_mounts = tps_bind_mounts
     unless except_first.empty?
       first_expected_mount_source      = expected_mounts.keys[0]
       first_expected_mount_destination = expected_mounts[
@@ -515,8 +515,8 @@ Given /^all persistence presets(| from the old Tails version)(| but the first on
       unexpected_mounts = [first_expected_mount_destination]
     end
   else
-    assert_not_nil($remembered_persistence_mounts)
-    expected_mounts = $remembered_persistence_mounts
+    assert_not_nil($remembered_tps_bind_mounts)
+    expected_mounts = $remembered_tps_bind_mounts
   end
   mount = $vm.execute('mount').stdout.chomp
   expected_mounts.each do |_, dir|
@@ -678,13 +678,13 @@ end
 
 Then /^all persistent directories(| from the old Tails version) have safe access rights$/ do |old_tails|
   if old_tails.empty?
-    expected_dirs = persistent_dirs
+    expected_bindings = tps_bindings
   else
-    assert_not_nil($remembered_persistence_dirs)
-    expected_dirs = $remembered_persistence_dirs
+    assert_not_nil($remembered_tps_bindings)
+    expected_bindings = $remembered_tps_bindings
   end
   persistent_volumes_mountpoints.each do |mountpoint|
-    expected_dirs.each do |src, dest|
+    expected_bindings.each do |src, dest|
       full_src = "#{mountpoint}/#{src}"
       assert_vmcommand_success $vm.execute("test -d #{full_src}")
       dir_perms = $vm.execute_successfully("stat -c %a '#{full_src}'")
@@ -715,7 +715,7 @@ Then /^all persistent directories(| from the old Tails version) have safe access
 end
 
 When /^I write some files expected to persist$/ do
-  persistent_mounts.each do |_, dir|
+  tps_bind_mounts.each do |_, dir|
     owner = $vm.execute("stat -c %U #{dir}").stdout.chomp
     assert_vmcommand_success(
       $vm.execute("touch #{dir}/XXX_persist", user: owner),
@@ -735,7 +735,7 @@ When /^I write some dotfile expected to persist$/ do
 end
 
 When /^I remove some files expected to persist$/ do
-  persistent_mounts.each do |_, dir|
+  tps_bind_mounts.each do |_, dir|
     owner = $vm.execute("stat -c %U #{dir}").stdout.chomp
     assert_vmcommand_success(
       $vm.execute("rm #{dir}/XXX_persist", user: owner),
@@ -745,7 +745,7 @@ When /^I remove some files expected to persist$/ do
 end
 
 When /^I write some files not expected to persist$/ do
-  persistent_mounts.each do |_, dir|
+  tps_bind_mounts.each do |_, dir|
     owner = $vm.execute("stat -c %U #{dir}").stdout.chomp
     assert_vmcommand_success(
       $vm.execute("touch #{dir}/XXX_gone", user: owner),
@@ -755,16 +755,16 @@ When /^I write some files not expected to persist$/ do
 end
 
 When /^I take note of which persistence presets are available$/ do
-  $remembered_persistence_mounts = persistent_mounts
-  $remembered_persistence_dirs = persistent_dirs
+  $remembered_tps_bind_mounts = tps_bind_mounts
+  $remembered_tps_bindings = tps_bindings
 end
 
 Then /^the expected persistent files(| created with the old Tails version) are present in the filesystem$/ do |old_tails|
   if old_tails.empty?
-    expected_mounts = persistent_mounts
+    expected_mounts = tps_bind_mounts
   else
-    assert_not_nil($remembered_persistence_mounts)
-    expected_mounts = $remembered_persistence_mounts
+    assert_not_nil($remembered_tps_bind_mounts)
+    expected_mounts = $remembered_tps_bind_mounts
   end
   expected_mounts.each do |_, dir|
     assert_vmcommand_success(
@@ -779,14 +779,14 @@ Then /^the expected persistent files(| created with the old Tails version) are p
 end
 
 Then /^the expected persistent dotfile is present in the filesystem$/ do
-  expected_dirs = persistent_dirs
+  expected_bindings = tps_bindings
   assert_vmcommand_success(
-    $vm.execute("test -L #{expected_dirs['dotfiles']}/.XXX_persist"),
+    $vm.execute("test -L #{expected_bindings['dotfiles']}/.XXX_persist"),
     'Could not find expected persistent dotfile link.'
   )
   assert_vmcommand_success(
     $vm.execute(
-      "test -e $(readlink -f #{expected_dirs['dotfiles']}/.XXX_persist)"
+      "test -e $(readlink -f #{expected_bindings['dotfiles']}/.XXX_persist)"
     ),
     'Could not find expected persistent dotfile link target.'
   )
@@ -815,8 +815,8 @@ Then /^only the expected files are present on the persistence partition on USB d
     luks_dev = "/dev/mapper/#{luks_mapping}"
     mount_point = '/'
     g.mount(luks_dev, mount_point)
-    assert_not_nil($remembered_persistence_mounts)
-    $remembered_persistence_mounts.each do |dir, _|
+    assert_not_nil($remembered_tps_bind_mounts)
+    $remembered_tps_bind_mounts.each do |dir, _|
       # Guestfs::exists may have a bug; if the file exists, 1 is
       # returned, but if it doesn't exist false is returned. It seems
       # the translation of C types into Ruby types is glitchy.
