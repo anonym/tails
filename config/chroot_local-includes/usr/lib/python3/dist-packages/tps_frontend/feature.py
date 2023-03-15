@@ -1,3 +1,4 @@
+import contextlib
 import logging
 from gi.repository import Gio, GLib, GObject, Gtk, Handy
 import os
@@ -53,6 +54,7 @@ class Feature(object):
             DBUS_FEATURE_INTERFACE,
             None,
         )  # type: Gio.DBusProxy
+        self._ignore_switch_state_change = False
 
         self.is_enabled = self.proxy.get_cached_property("IsEnabled").get_boolean()
         self.is_active = self.proxy.get_cached_property("IsActive").get_boolean()
@@ -115,10 +117,9 @@ class Feature(object):
         # feature is enabled in the config file and we want it's
         # underlying state (blue or gray color) to represent whether
         # the feature is currently active.
+        self.switch.set_state(self.is_active)
         self.switch.set_active(self.is_enabled)
         self.switch.connect("notify::active", self.on_is_enabled_changed)
-
-        self.switch.set_state(self.is_active)
 
         self.refresh_ui()
 
@@ -186,6 +187,9 @@ class Feature(object):
 
     def on_is_enabled_changed(self, switch: Gtk.Switch, pspec: GObject.ParamSpec):
         is_enabled = self.proxy.get_cached_property("IsEnabled").get_boolean()
+
+        if self._ignore_switch_state_change:
+            return
         if switch.get_active() == is_enabled:
             # The feature is already enabled.
             return
@@ -380,9 +384,20 @@ class Feature(object):
         if "IsActive" in keys:
             self.is_active = changed_properties["IsActive"]
 
-            self.switch.set_state(changed_properties["IsActive"])
+            with self.ignore_switch_state_change():
+                self.switch.set_state(changed_properties["IsActive"])
+                # Calling Gtk.Switch.set_state also sets the
+                # Gtk.Switch.active property, which defines if the
+                # switch is in the on/off position. We only want to
+                # change the underlying state here, so we set the
+                # Gtk.Switch.active property according to the IsEnabled
+                # property again.
+                if self.is_active != self.is_enabled:
+                    self.switch.set_active(self.is_enabled)
+
             for widget in self.widgets_to_show_while_active:
                 widget.set_visible(changed_properties["IsActive"])
+
             self.hide_spinner()
 
         if "HasData" in keys:
@@ -450,6 +465,14 @@ class Feature(object):
         # Translators: Don't translate {app} and {pids}, they
         # are placeholders.
         return _("{app} (PIDs: {pids})").format(app=app, pids=pids_repr)
+
+    @contextlib.contextmanager
+    def ignore_switch_state_change(self):
+        try:
+            self._ignore_switch_state_change = True
+            yield
+        finally:
+            self._ignore_switch_state_change = False
 
 def camel_to_snake(name):
     """From https://stackoverflow.com/a/1176023
