@@ -105,7 +105,7 @@ class PersistentStorageSettings(object):
                 features = [config.gettext(feature) for feature in features]
                 # Translators: Don't translate {features}, it's a placeholder
                 # and will be replaced.
-                msg = config.gettext("Failed to activate {features}.").\
+                msg = config.gettext("Failed to activate some features of the Persistent Storage: {features}.").\
                     format(features=", ".join(features))
                 raise tailsgreeter.errors.FeatureActivationFailedError(msg)
             self.failed_with_unexpected_error = True
