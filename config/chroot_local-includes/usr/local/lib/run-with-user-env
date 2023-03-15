@@ -11,6 +11,7 @@
 set -eu
 
 USER_ENV_FILE=/run/user/1000/user-env
+DUMP_USER_ENV_SERVICE=tails-dump-user-env.service
 
 if [ "$#" -lt 1 ]; then
   echo >&2 "Usage: $0 COMMAND [ARG]..."
@@ -19,7 +20,13 @@ fi
 
 # Ensure that we're running as amnesia
 if [ "$(id -u)" -ne "1000"  ]; then
-  exec runuser -u amnesia -- /usr/local/lib/run-with-env --env-file "${USER_ENV_FILE}" -- "$@"
-else
-  exec /usr/local/lib/run-with-env --env-file "${USER_ENV_FILE}" -- "$@"
+  exec runuser -u amnesia -- "$0" "$@"
 fi
+
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+export XDG_RUNTIME_DIR=/run/user/1000
+
+exec systemd-run --user --scope \
+  --property=Requires="${DUMP_USER_ENV_SERVICE}" \
+  --property=After="${DUMP_USER_ENV_SERVICE}" \
+  /usr/local/lib/run-with-env --env-file "${USER_ENV_FILE}" -- "$@"
