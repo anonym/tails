@@ -97,6 +97,7 @@ Options for '@product' features:
                      This is useful when you need something to be patched early
                      in the boot process; or if you need to run arbitrary
                      commands, not just copying files
+  --all-tests        Don't skip tests which have a @fragile or @skip_by_default tag.
   --tmpdir           Directory where various temporary files are written
                      during a test, e.g. VM snapshots and memory dumps,
                      failure screenshots, pcap files and disk images
@@ -236,8 +237,9 @@ TAILS_ISO=${TAILS_ISO-}
 OLD_TAILS_ISO=${OLD_TAILS_ISO-}
 EARLY_PATCH=${EARLY_PATCH-}
 EXTRA_BOOT_OPTIONS=${EXTRA_BOOT_OPTIONS-}
+ALL_TESTS=${ALL_TESTS-}
 
-LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,disable-chutney,late-patch:,early-patch,extra-boot-options:,iso:,old-iso:,interactive-debugging,image-bumping-mode"
+LONGOPTS="allow-non-root,artifacts-base-uri:,view,view-interact,vnc-server-only,capture,capture-all,help,tmpdir:,keep-chutney,keep-snapshots,disable-chutney,late-patch:,early-patch,extra-boot-options:,all-tests,iso:,old-iso:,interactive-debugging,image-bumping-mode"
 OPTS=$(getopt -o "" --longoptions $LONGOPTS -n "${NAME}" -- "$@")
 eval set -- "$OPTS"
 while [ $# -gt 0 ]; do
@@ -307,6 +309,9 @@ while [ $# -gt 0 ]; do
             shift
             export EXTRA_BOOT_OPTIONS="$1"
             ;;
+        --all-tests)
+            ALL_TESTS="yes"
+            ;;
         --tmpdir)
             shift
             TMPDIR="$(readlink -f "$1")"
@@ -371,7 +376,8 @@ if [ -n "${JENKINS_URL:-}" ]; then
        || git_on_a_tag \
        || [ "${GIT_BRANCH#origin/}" = feature/bullseye ] \
        || [ "${GIT_BRANCH#origin/}" = testing ] \
-       || [ "${GIT_BRANCH#origin/}" = devel ] ; then
+       || [ "${GIT_BRANCH#origin/}" = devel ] \
+       || [ -n "${ALL_TESTS:-}" ]; then
         TAGS_ARGS=""
     else
         TAGS_ARGS="${TAGS_ARGS} --tag ~@fragile --tag ~@skip_by_default"
