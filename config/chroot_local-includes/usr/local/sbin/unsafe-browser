@@ -73,22 +73,14 @@ show_start_notification () {
     local title body
     title="$(gettext "Starting the Unsafe Browser...")"
     body="$(gettext "This may take a while, so please be patient.")"
-    # XXX: this was introduced for 5.11. If we have this,
-    #      problems to notification startup will be hidden and we will not notice
-    #      so please get rid of this
-    if ! tails-notify-user "${title}" "${body}" 10000; then
-        echo "ERROR: couldn't show_start_notification" >&2
-    fi
+    tails-notify-user "${title}" "${body}" 10000
 }
 
 show_shutdown_notification () {
     local title body
     title="$(gettext "Shutting down the Unsafe Browser...")"
     body="$(gettext "This may take a while, and you may not restart the Unsafe Browser until it is properly shut down.")"
-    # XXX: same as show_start_notification
-    if ! tails-notify-user "${title}" "${body}" 10000; then
-        echo "ERROR: couldn't show_shutdown_notification" >&2
-    fi
+    tails-notify-user "${title}" "${body}" 10000
 }
 
 # Main script:
