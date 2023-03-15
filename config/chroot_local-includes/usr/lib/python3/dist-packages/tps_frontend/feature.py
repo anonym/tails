@@ -272,6 +272,9 @@ class Feature(object):
             # Ensure that the switch displays the correct state
             is_enabled = self.proxy.get_cached_property("IsEnabled").get_boolean()
             self.switch.set_active(is_enabled)
+            # Refresh the UI because we hid the delete button when we
+            # started the activation and we might have to show it again
+            self.refresh_ui()
             return
 
         logger.debug(f"Feature {self.name} successfully activated")
