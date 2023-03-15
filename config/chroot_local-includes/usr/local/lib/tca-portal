@@ -8,7 +8,7 @@ exposing require root privileges. Some others are not (see UserCommand), so in
 theory we could split this portal into a privileged one and an unprivileged
 one. However, that wouldn't reduce the attack surface much, if at all.
 """
-
+import logging
 import re
 import os
 import sys
@@ -16,6 +16,7 @@ import stat
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import socketserver
 from logging import getLogger
+from pathlib import Path
 import socket
 import time
 from subprocess import Popen, PIPE
@@ -407,7 +408,6 @@ def main():
         "--log-level",
         metavar="LEVEL",
         choices=("DEBUG", "INFO", "WARNING", "CRITICAL"),
-        default="INFO",
     )
     p.add_argument("--doctest-only",
         action="store_true",
@@ -416,7 +416,16 @@ def main():
 
     args = p.parse_args()
 
-    log_conf = {'level': args.log_level}
+    if args.log_level:
+        level = args.log_level
+    elif os.getenv("DEBUG") or \
+            "debug" in Path("/proc/cmdline").read_text().split():
+        level = logging.DEBUG
+    else:
+        level = logging.INFO
+
+    log_conf = {'level': level}
+
     configure_logging(hint='syslog', ident='tca-portal', **log_conf)
 
     if args.doctest_only:
