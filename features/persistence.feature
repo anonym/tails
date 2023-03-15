@@ -33,6 +33,7 @@ Feature: Tails persistence
     And all persistence presets are active
     And all persistent directories have safe access rights
     When I disable the first persistence preset
+    Then all persistence presets but the first one are active
     And I shutdown Tails and wait for the computer to power off
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
     Then all persistence presets but the first one are active
