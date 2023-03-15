@@ -14,12 +14,12 @@ def get_tps_bindings(skip_links = false)
   ]
   c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
   assert(c.success?, 'Python script for get_tps_bindings failed')
-  presets_configs = c.stdout.chomp.split("\n")
-  assert presets_configs.size >= 10,
-         "Got #{presets_configs.size} persistence preset configuration " \
+  binding_configs = c.stdout.chomp.split("\n")
+  assert binding_configs.size >= 10,
+         "Got #{binding_configs.size} binding configuration " \
          'lines, which is too few'
-  persistence_mapping = {}
-  presets_configs.each do |line|
+  bindings_mapping = {}
+  binding_configs.each do |line|
     destination, options_str = line.split("\t")
     options = options_str.split(',')
     is_link = options.include? 'link'
@@ -33,9 +33,9 @@ def get_tps_bindings(skip_links = false)
              else
                source_str.split('=')[1]
              end
-    persistence_mapping[source] = destination
+    bindings_mapping[source] = destination
   end
-  persistence_mapping
+  bindings_mapping
 end
 
 def tps_bindings
@@ -206,7 +206,7 @@ Given(/^I plug and mount a USB drive containing a Tails USB image$/) do
   @usb_image_path = "#{usb_image_dir}/#{File.basename(TAILS_IMG)}"
 end
 
-def enable_all_persistence_presets
+def enable_all_tps_features
   assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   switches = persistent_storage_main_frame.children(roleName: 'toggle button')
   switches.each do |switch|
@@ -222,7 +222,7 @@ def enable_all_persistence_presets
   end
 end
 
-When /^I (enable|disable) the first persistence preset$/ do |mode|
+When /^I (enable|disable) the first tps feature$/ do |mode|
   step 'I start "Persistent Storage" via GNOME Activities Overview'
   assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   persistent_folder_switch = persistent_storage_main_frame.child(
@@ -277,7 +277,7 @@ Given /^I create a persistent partition( with the default settings| for Addition
   try_for(300) do
     persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   end
-  enable_all_persistence_presets unless default_settings
+  enable_all_tps_features unless default_settings
 end
 
 Given /^I change the passphrase of the Persistent Storage( back to the original)?$/ do |change_back|
@@ -497,7 +497,7 @@ def tails_persistence_enabled?
               'tps_is_unlocked').success?
 end
 
-Given /^all persistence presets(| from the old Tails version)(| but the first one) are active$/ do |old_tails, except_first|
+Given /^all tps features(| from the old Tails version)(| but the first one) are active$/ do |old_tails, except_first|
   assert(old_tails.empty? || except_first.empty?, 'Unsupported case.')
   try_for(120, msg: 'Persistence is disabled') do
     tails_persistence_enabled?
@@ -754,7 +754,7 @@ When /^I write some files not expected to persist$/ do
   end
 end
 
-When /^I take note of which persistence presets are available$/ do
+When /^I take note of which tps features are available$/ do
   $remembered_tps_bind_mounts = tps_bind_mounts
   $remembered_tps_bindings = tps_bindings
 end

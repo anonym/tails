@@ -99,7 +99,7 @@ CHECKPOINTS =
       steps:             [
         'I enable persistence',
         'I log in to a new session',
-        'all persistence presets are active',
+        'all tps features are active',
         'all persistent filesystems have safe access rights',
         'all persistence configuration files have safe access rights',
         'all persistent directories have safe access rights',
