@@ -5,7 +5,6 @@ from gi.repository import GLib
 import os
 from pathlib import Path
 import psutil
-import shutil
 import time
 from typing import TYPE_CHECKING, Dict, List, Optional
 
@@ -197,7 +196,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         logger.info(f"Deleting feature {self.Id}")
 
         for mount in self.Mounts:
-            shutil.rmtree(mount.src)
+            executil.check_call(["rm", "-rf", mount.src])
 
         self.refresh_state(["HasData"])
         if self.HasData:
