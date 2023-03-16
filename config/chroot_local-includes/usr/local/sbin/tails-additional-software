@@ -13,6 +13,7 @@ import sys
 import time
 
 import apt.cache
+from systemd.journal import JournalHandler
 
 from tailslib import LIVE_USERNAME
 
@@ -662,6 +663,14 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print_help()
         sys.exit(2)
+
+    if sys.argv[1] == "apt-pre" or sys.argv[1] == "apt-post":
+        # Log to the journal instead of stderr because stderr is either
+        # connected to the user's terminal (which we don't want to spam
+        # with these messages) or, if the package was installed by Synaptic,
+        # the stderr is not shown at all.
+        logger = logging.getLogger()
+        logger.addHandler(JournalHandler())
 
     if sys.argv[1] == "install":
         if not install_additional_packages():
