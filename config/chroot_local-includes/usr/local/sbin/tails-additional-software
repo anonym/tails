@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import gettext
-import json
 import logging
 import logging.handlers
+from pathlib import Path
 import os
 import os.path
 import pwd
@@ -36,10 +36,11 @@ from tailslib.persistence import (
 
 from tailslib.utils import run_with_user_env
 
-ASP_STATE_DIR = "/run/live-additional-software"
-ASP_STATE_PACKAGES = os.path.join(ASP_STATE_DIR, "packages")
-ASP_STATE_INSTALLER_ASKED = os.path.join(ASP_STATE_DIR, "installer-asked")
-ASP_LOG_FILE = os.path.join(ASP_STATE_DIR, "log")
+PACKAGES_STATE_DIR = "/run/live-additional-software/packages"
+INSTALLED_PACKAGES_FILE = "/run/live-additional-software/packages/installed"
+REMOVED_PACKAGES_FILE = "/run/live-additional-software/packages/removed"
+ASP_STATE_INSTALLER_ASKED = "/run/live-additional-software/installer-asked"
+ASP_LOG_FILE = "/run/live-additional-software/log"
 OLD_APT_LISTS_DIR = os.path.join(PERSISTENCE_DIR, 'apt', 'lists.old')
 APT_ARCHIVES_DIR = "/var/cache/apt/archives"
 APT_LISTS_DIR = "/var/lib/apt/lists"
@@ -466,9 +467,14 @@ def apt_hook_pre():
         elif action.endswith("**REMOVE**"):
             removed_packages.append(package_name)
 
-    result = {"installed": installed_packages, "removed": removed_packages}
-    with open(ASP_STATE_PACKAGES, 'w') as f:
-        json.dump(result, f)
+    packages_state_dir = Path(PACKAGES_STATE_DIR)
+    packages_state_dir.mkdir(mode=0o0600, parents=True, exist_ok=True)
+
+    installed_packages_file = Path(INSTALLED_PACKAGES_FILE)
+    installed_packages_file.write_text("\n".join(installed_packages))
+
+    removed_packages_file = Path(REMOVED_PACKAGES_FILE)
+    removed_packages_file.write_text("\n".join(removed_packages))
 
 
 def apt_hook_post():
@@ -480,9 +486,17 @@ def apt_hook_post():
     _exit_if_in_live_build()
     logging.info("Examining package changes")
 
-    with open(ASP_STATE_PACKAGES) as f:
-        packages = json.load(f)
-    os.remove(ASP_STATE_PACKAGES)
+    installed_packages = list()
+    installed_packages_file = Path(INSTALLED_PACKAGES_FILE)
+    if installed_packages_file.exists():
+        installed_packages = installed_packages_file.read_text().splitlines()
+        installed_packages_file.unlink()
+
+    removed_packages = list()
+    removed_packages_file = Path(REMOVED_PACKAGES_FILE)
+    if removed_packages_file.exists():
+        removed_packages = removed_packages_file.read_text().splitlines()
+        removed_packages_file.unlink()
 
     additional_packages_names = {
         filter_package_details(pkg) for pkg in
@@ -493,7 +507,7 @@ def apt_hook_post():
     # Filter automatically installed packages and packages already configured
     # as additional software
     new_manually_installed_packages = {
-        pkg for pkg in packages["installed"] if (
+        pkg for pkg in installed_packages if (
             not apt_cache[pkg].is_auto_installed and
             pkg not in additional_packages_names)
     }
@@ -502,7 +516,7 @@ def apt_hook_post():
         handle_installed_packages(new_manually_installed_packages)
 
     # Filter non-additional software packages
-    additional_packages_removed = set(packages["removed"]).intersection(
+    additional_packages_removed = set(removed_packages).intersection(
         additional_packages_names)
     if additional_packages_removed:
         handle_removed_packages(additional_packages_removed)
