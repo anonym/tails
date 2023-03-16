@@ -5,13 +5,13 @@ import grp
 import logging
 import os
 import os.path
+import tempfile
 from pathlib import Path
 import pwd
 import re
 import subprocess
 from typing import Optional
 
-import atomicwrites
 import systemd.journal
 
 from tailslib import PERSISTENT_STORAGE_USERNAME
@@ -59,17 +59,19 @@ def _write_config(packages):
     config_file_owner_gid = grp.getgrnam(PERSISTENT_STORAGE_USERNAME).gr_gid
 
     packages_list_path = get_packages_list_path()
-    try:
-        os.setegid(config_file_owner_gid)
-        os.seteuid(config_file_owner_uid)
-        with atomicwrites.atomic_write(packages_list_path,
-                                       overwrite=True) as f:
-            for package in sorted(packages):
-                f.write(package + '\n')
-        os.chmod(packages_list_path, 0o0644)
-    finally:
-        os.seteuid(0)
-        os.setegid(0)
+
+    # Create a temporary file in the same directory which we
+    # will write to and then rename to make saving the config
+    # file an atomic operation (so we can't end up with a
+    # partially written config file if e.g. the user unplugs the
+    # Tails device in the wrong moment).
+    dir_ = Path(packages_list_path).parent
+    fd, tmpfile = tempfile.mkstemp(dir=dir_, text=True)
+    os.fchown(fd, uid=config_file_owner_uid, gid=config_file_owner_gid)
+    os.fchmod(fd, 0o0644)
+    path = Path(tmpfile)
+    path.write_text('\n'.join(sorted(packages)))
+    path.rename(packages_list_path)
 
 
 def filter_package_details(pkg):
