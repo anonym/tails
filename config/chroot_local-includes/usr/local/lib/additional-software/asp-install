@@ -101,6 +101,8 @@ def install_additional_packages(upgrade_mode=False):
     if not packages:
         logging.warning("Warning: no packages to install, exiting")
         return True
+
+    installing_notification_id = None
     if not upgrade_mode:
         installing_notification_id = _notify(
             _("Installing your additional software from persistent "
