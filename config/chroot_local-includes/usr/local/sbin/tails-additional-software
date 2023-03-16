@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import sys
 import time
+from typing import List, Optional, Set
 
 import apt.cache
 from systemd.journal import JournalHandler
@@ -50,7 +51,7 @@ def _exit_if_in_live_build():
         sys.exit(0)
 
 
-def _launch_apt_get(specific_args):
+def _launch_apt_get(specific_args: List[str]):
     """Launch apt-get with given arguments.
 
     Launch apt-get with given arguments list, log its standard and error output
@@ -82,7 +83,8 @@ def _launch_apt_get(specific_args):
 
 
 def _notify(title, body="", accept_label="", deny_label="",
-            documentation_target="", urgent=False, return_id=False):
+            documentation_target="", urgent=False, return_id=False,
+            ) -> Optional[int]:
     """Display a notification to the user of the live system.
 
     The notification will show title and body.
@@ -281,7 +283,7 @@ def restore_old_apt_lists(srcdir=OLD_APT_LISTS_DIR, dstdir=APT_LISTS_DIR):
         shutil.move(path, dstdir)
 
 
-def handle_installed_packages(packages):
+def handle_installed_packages(packages: Set[str]):
     """Configure packages as additional software packages if the user wants to.
 
     Ask the user if packages should be added to additional software, and
@@ -351,7 +353,7 @@ def handle_installed_packages(packages):
                     urgent=True)
 
 
-def handle_removed_packages(packages):
+def handle_removed_packages(packages: Set[str]):
     """Removes packages from additional software packages if the user wants to.
 
     Ask the user if packages should be removed from additional software, and
@@ -382,7 +384,7 @@ def setup_additional_packages():
     subprocess.check_call(["/usr/local/lib/tpscli", "ensure-is-active", "AdditionalSoftware"])
 
 
-def create_persistence_and_setup_additional_packages(packages):
+def create_persistence_and_setup_additional_packages(packages: Set[str]):
     """Create persistence and add packages to its configuration.
 
     Create a new persistence with additional packages enabled.
