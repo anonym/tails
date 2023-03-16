@@ -5,6 +5,7 @@
 Retrieve the list of packages saved by apt_hook_pre, filter packages not
 interesting and pass the resulting list to the appropriate method.
 """
+import gettext
 import logging
 import os
 import subprocess
@@ -15,12 +16,16 @@ from typing import Set
 import apt.cache
 
 import additional_software
-from additional_software import _notify, _, _notify_failure, \
+from additional_software import notify, notify_failure, \
     ASP_STATE_INSTALLER_ASKED, remove_additional_packages, \
-    get_additional_packages, _write_config
+    get_additional_packages, write_config
 from tailslib.persistence import has_unlocked_persistence, has_persistence,\
     is_tails_media_writable, spawn_tps_frontend, \
     additional_software_persistence_feature_is_active
+
+
+gettext.install("tails")
+_ = gettext.gettext
 
 
 def handle_installed_packages(packages: Set[str]):
@@ -33,20 +38,20 @@ def handle_installed_packages(packages: Set[str]):
     if has_unlocked_persistence():
         # Translators: Don't translate {packages}, it's a placeholder and will
         # be replaced.
-        if _notify(_("Add {packages} to your additional software?").format(
+        if notify(_("Add {packages} to your additional software?").format(
                     packages=_format_iterable(packages)),
-                   _("To install it automatically from your persistent "
-                     "storage when starting Tails."),
-                   _("Install Every Time"),
-                   _("Install Only Once"),
-                   urgent=True):
+                  _("To install it automatically from your persistent "
+                    "storage when starting Tails."),
+                  _("Install Every Time"),
+                  _("Install Only Once"),
+                  urgent=True):
             try:
                 setup_additional_packages()
                 add_additional_packages(packages)
             except Exception as e:
                 logging.exception("failed to add additional packages")
-                _notify_failure(_("The configuration of your additional "
-                                  "software failed."))
+                notify_failure(_("The configuration of your additional "
+                                 "software failed."))
                 raise e
     elif has_persistence():
         # When a package is installed with a persistent storage locked, don't
@@ -64,22 +69,22 @@ def handle_installed_packages(packages: Set[str]):
     elif is_tails_media_writable():
         # Translators: Don't translate {packages}, it's a placeholder and will
         # be replaced.
-        if _notify(_("Add {packages} to your additional software?").format(
+        if notify(_("Add {packages} to your additional software?").format(
                     packages=_format_iterable(packages)),
-                   _("To install it automatically when starting Tails, you "
-                     "can create a persistent storage and activate the "
-                     "<b>Additional Software</b> feature."),
-                   _("Create Persistent Storage"),
-                   _("Install Only Once"),
-                   urgent=True):
+                  _("To install it automatically when starting Tails, you "
+                    "can create a persistent storage and activate the "
+                    "<b>Additional Software</b> feature."),
+                  _("Create Persistent Storage"),
+                  _("Install Only Once"),
+                  urgent=True):
             try:
                 create_persistence_and_setup_additional_packages(packages)
             except Exception as e:
                 logging.exception("failed to create Persistent Storage")
-                _notify_failure(_("The configuration of your additional "
-                                  "software failed."),
-                                _("Creating your persistent storage "
-                                  "failed."))
+                notify_failure(_("The configuration of your additional "
+                                 "software failed."),
+                               _("Creating your persistent storage "
+                                 "failed."))
                 raise e
     else:   # It's impossible to have a persistent storage
         logging.warning("Cannot create persistent storage on this media.")
@@ -87,12 +92,12 @@ def handle_installed_packages(packages: Set[str]):
             open(ASP_STATE_INSTALLER_ASKED, 'a').close()
             # Translators: Don't translate {packages}, it's a placeholder and
             # will be replaced.
-            _notify(_("You could install {packages} automatically when "
-                      "starting Tails").format(
+            notify(_("You could install {packages} automatically when "
+                     "starting Tails").format(
                         packages=_format_iterable(packages)),
-                    _("To do so, you need to run Tails from a USB stick."),
-                    documentation_target="install/clone",
-                    urgent=True)
+                   _("To do so, you need to run Tails from a USB stick."),
+                   documentation_target="install/clone",
+                   urgent=True)
 
 
 def create_persistence_and_setup_additional_packages(packages: Set[str]):
@@ -130,21 +135,21 @@ def handle_removed_packages(packages: Set[str]):
     logging.info("Additional packages removed: %s" % packages)
     # Translators: Don't translate {packages}, it's a placeholder and will be
     # replaced.
-    if _notify(_("Remove {packages} from your additional software?").format(
+    if notify(_("Remove {packages} from your additional software?").format(
                  packages=_format_iterable(packages)),
-               # Translators: Don't translate {packages}, it's a placeholder
-               # and will be replaced.
-               _("This will stop installing {packages} automatically.").format(
-                 packages=_format_iterable(packages)),
-               _("Remove"),
-               _("Cancel"),
-               urgent=True):
+              # Translators: Don't translate {packages}, it's a placeholder
+              # and will be replaced.
+              _("This will stop installing {packages} automatically.").format(
+                packages=_format_iterable(packages)),
+              _("Remove"),
+              _("Cancel"),
+              urgent=True):
         try:
             remove_additional_packages(packages)
         except Exception as e:
             logging.exception("failed to remove additional packages")
-            _notify_failure(_("The configuration of your additional "
-                              "software failed."))
+            notify_failure(_("The configuration of your additional "
+                             "software failed."))
             raise e
 
 
@@ -176,7 +181,7 @@ def add_additional_packages(new_packages):
     # so we don't check the names.
     packages |= new_packages
 
-    _write_config(packages)
+    write_config(packages)
 
 
 def main():

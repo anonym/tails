@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import gettext
 import logging
 import os
 import pwd
@@ -9,10 +10,13 @@ import subprocess
 from typing import List
 
 import additional_software
-from additional_software import _notify_failure, _, \
-    OLD_APT_LISTS_DIR, get_additional_packages, _notify, \
+from additional_software import notify_failure, \
+    OLD_APT_LISTS_DIR, get_additional_packages, notify, \
     APT_LISTS_DIR, get_packages_list_path
 from tailslib import LIVE_USERNAME
+
+gettext.install("tails")
+_ = gettext.gettext
 
 
 def upgrade_additional_packages():
@@ -31,19 +35,19 @@ def upgrade_additional_packages():
     apt_get_returncode = _launch_apt_get(["update"])
     if apt_get_returncode:
         logging.warning("Warning: the update failed.")
-        _notify_failure(_("The check for upgrades of your additional software "
-                          "failed"),
-                        _("Please check your network connection, "
-                          "restart Tails, or read the system log to "
-                          "understand the problem."))
+        notify_failure(_("The check for upgrades of your additional software "
+                         "failed"),
+                       _("Please check your network connection, "
+                         "restart Tails, or read the system log to "
+                         "understand the problem."))
         return False
     if install_additional_packages(upgrade_mode=True):
         logging.info("The upgrade was successful.")
     else:
-        _notify_failure(_("The upgrade of your additional software failed"),
-                        _("Please check your network connection, "
-                          "restart Tails, or read the system log to "
-                          "understand the problem."))
+        notify_failure(_("The upgrade of your additional software failed"),
+                       _("Please check your network connection, "
+                         "restart Tails, or read the system log to "
+                         "understand the problem."))
         return False
 
     # We now know that the APT packages cache is up-to-date wrt. the APT lists,
@@ -104,7 +108,7 @@ def install_additional_packages(upgrade_mode=False):
 
     installing_notification_id = None
     if not upgrade_mode:
-        installing_notification_id = _notify(
+        installing_notification_id = notify(
             _("Installing your additional software from persistent "
               "storage..."),
             _("This can take several minutes."),
@@ -120,8 +124,8 @@ def install_additional_packages(upgrade_mode=False):
                         % " ".join(packages))
         if not upgrade_mode:
             _close_notification(installing_notification_id)
-            _notify_failure(_("The installation of your additional software "
-                              "failed"))
+            notify_failure(_("The installation of your additional software "
+                             "failed"))
         return False
     else:
         logging.info("Installation completed successfully.")
@@ -135,7 +139,7 @@ def install_additional_packages(upgrade_mode=False):
             #  if _notify(_("Additional software installed successfully"),
             #             accept_label=_("Configure")):
             #      show_configuration_window()
-            _notify(_("Additional software installed successfully"))
+            notify(_("Additional software installed successfully"))
         return True
 
 

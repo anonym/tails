@@ -18,9 +18,6 @@ from tailslib import PERSISTENT_STORAGE_USERNAME
 from tailslib.persistence import get_persistence_path, PERSISTENCE_DIR
 from tailslib.utils import run_with_user_env
 
-gettext.install("tails")
-_ = gettext.gettext
-
 PACKAGES_STATE_DIR = "/run/live-additional-software/packages"
 INSTALLED_PACKAGES_FILE = "/run/live-additional-software/packages/installed"
 REMOVED_PACKAGES_FILE = "/run/live-additional-software/packages/removed"
@@ -30,6 +27,10 @@ OLD_APT_LISTS_DIR = os.path.join(PERSISTENCE_DIR, 'apt', 'lists.old')
 APT_ARCHIVES_DIR = "/var/cache/apt/archives"
 APT_LISTS_DIR = "/var/lib/apt/lists"
 PACKAGES_LIST_FILE = "live-additional-software.conf"
+
+
+gettext.install("tails")
+_ = gettext.gettext
 
 
 class ASPError(Exception):
@@ -54,7 +55,7 @@ def set_up_logging(log_to_journal=False):
     logging.basicConfig(level=log_level, format=log_format, handlers=handlers)
 
 
-def _write_config(packages):
+def write_config(packages):
     config_file_owner_uid = pwd.getpwnam(PERSISTENT_STORAGE_USERNAME).pw_uid
     config_file_owner_gid = grp.getgrnam(PERSISTENT_STORAGE_USERNAME).gr_gid
 
@@ -116,12 +117,12 @@ def remove_additional_packages(old_packages):
     # so we don't check the names.
     packages -= old_packages
 
-    _write_config(packages)
+    write_config(packages)
 
 
-def _notify(title, body="", accept_label="", deny_label="",
-            documentation_target="", urgent=False, return_id=False,
-            ):
+def notify(title, body="", accept_label="", deny_label="",
+           documentation_target="", urgent=False, return_id=False,
+           ):
     """Display a notification to the user of the live system.
 
     The notification will show title and body.
@@ -180,7 +181,7 @@ def _notify(title, body="", accept_label="", deny_label="",
             return None
 
 
-def _notify_failure(summary, details=None):
+def notify_failure(summary, details=None):
     """Display a failure notification to the user of the live system.
 
     The user has the option to edit the configuration or to view the system
@@ -198,8 +199,8 @@ def _notify_failure(summary, details=None):
                     "software or read the system log to "
                     "understand the problem.")
 
-    action_clicked = _notify(summary, details, _("Show Log"), _("Configure"),
-                             urgent=True)
+    action_clicked = notify(summary, details, _("Show Log"), _("Configure"),
+                            urgent=True)
     if action_clicked == 1:
         show_system_log()
     elif action_clicked == 0:
