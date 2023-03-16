@@ -123,7 +123,7 @@ def _notify(title, body="", accept_label="", deny_label="",
             text=True
         )
         if completed_process.stderr:
-            print(completed_process.stderr, file=sys.stderr)
+            logging.warning(completed_process.stderr)
         if completed_process.returncode == 1:
             # sudo failed to execute the command
             raise OSError(completed_process.stderr)
