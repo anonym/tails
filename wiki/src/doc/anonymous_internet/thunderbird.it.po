@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2023-01-27 18:26+0100\n"
-"PO-Revision-Date: 2022-12-20 10:07+0000\n"
+"POT-Creation-Date: 2023-03-17 10:11+0000\n"
+"PO-Revision-Date: 2023-03-13 17:31+0000\n"
 "Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: ita <transitails@inventati.org>\n"
 "Language: it\n"
@@ -433,22 +433,35 @@ msgstr ""
 "(https://support.mozilla.org/kb/openpgp-thunderbird-howto-and-faq)."
 
 #. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"master-password\">Setting up a Master Password (recommended)</h2>\n"
+#, fuzzy, no-wrap
+#| msgid "<h2 id=\"master-password\">Setting up a Master Password (recommended)</h2>\n"
+msgid "<h2 id=\"primary-password\">Setting up a Primary Password (recommended)</h2>\n"
 msgstr "<h2 id=\"master-password\">Impostazione di una Master Password (consigliato)</h2>\n"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "In *Thunderbird*, OpenPGP private keys are not protected by a "
+#| "passphrase.  That's why we recommend that you set up a Master Password."
 msgid ""
 "In *Thunderbird*, OpenPGP private keys are not protected by a passphrase.  "
-"That's why we recommend that you set up a Master Password."
+"That's why we recommend that you set up a Primary Password."
 msgstr ""
 "Su *Thunderbird*, le chiavi private OpenPGP non sono protette da una "
 "passphrase.  Ecco perché ti consigliamo di configurare una Password "
 "Principale."
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "With a Master Password, your private key is encrypted in your "
+#| "*Thunderbird* profile and is only unlocked while *Thunderbird* is "
+#| "running.  If your *Thunderbird* profile is stored in your Persistent "
+#| "Storage, then your private key is encrypted twice: once by *Thunderbird* "
+#| "in your profile and a second time by the encryption of the Persistent "
+#| "Storage."
 msgid ""
-"With a Master Password, your private key is encrypted in your *Thunderbird* "
+"With a Primary Password, your private key is encrypted in your *Thunderbird* "
 "profile and is only unlocked while *Thunderbird* is running.  If your "
 "*Thunderbird* profile is stored in your Persistent Storage, then your "
 "private key is encrypted twice: once by *Thunderbird* in your profile and a "
@@ -465,28 +478,35 @@ msgstr ""
 #, fuzzy
 #| msgid ""
 #| "Choose **[[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link="
-#| "\"no\"]]&nbsp;▸ Preferences**."
+#| "\"no\"]]&nbsp;▸ Account Settings**."
 msgid ""
 "Choose **[[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link=\"no"
-"\"]]&nbsp;▸ Preferences**."
+"\"]]&nbsp;▸ Settings**."
 msgstr ""
-"Scegli **[[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link=\"no"
-"\"]]&nbsp;▸ Preferenze**."
+"Seleziona **[[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link="
+"\"no\"]]&nbsp;▸ Impostazioni dell'Account**."
 
 #. type: Bullet: '1. '
 msgid "Choose **Privacy & Security**."
 msgstr "Scegli **Privacy & Sicurezza**."
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "In the **Passwords** section, select the option **Use a master password**."
 msgid ""
-"In the **Passwords** section, select the option **Use a master password**."
+"In the **Passwords** section, select the option **Use a Primary Password**."
 msgstr ""
 "Nella sezione **Password**, seleziona l'opzione **Usa una password "
 "principale**."
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "In the **Change Master Password** dialog, enter your Master Password and "
+#| "click **Ok**."
 msgid ""
-"In the **Change Master Password** dialog, enter your Master Password and "
+"In the **Change Primary Password** dialog, enter your Primary Password and "
 "click **Ok**."
 msgstr ""
 "Nella finestra di dialogo **Cambia Password Principale**, inserisci la tua "
@@ -588,8 +608,12 @@ msgid "In the right pane, click the **Add Key…** button."
 msgstr "Nel riquadro a destra fai clic sul pulsante **Aggiungi chiave...**."
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "In the **Add a Personal OpenPGP Key** dialog, choose **Import an existing "
+#| "OpenPGP Key** and click **Continue**."
 msgid ""
-"In the **Add a Personal OpenPGP Key** dialog, choose **Import an existing "
+"In the **Create a Personal OpenPGP Key** dialog, choose **Import an existing "
 "OpenPGP Key** and click **Continue**."
 msgstr ""
 "Nella finestra di dialogo **Aggiungi una Chiave OpenPGP Personale** "
@@ -654,9 +678,13 @@ msgstr ""
 "nuova chiave privata OpenPGP  e scegli **Crittografia End-to-End**."
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "In the **Add a Personal OpenPGP Key** dialog, choose **Create a new "
+#| "OpenPGP Key**."
 msgid ""
-"In the **Add a Personal OpenPGP Key** dialog, choose **Create a new OpenPGP "
-"Key**."
+"In the **Create a Personal OpenPGP Key** dialog, choose **Create a new "
+"OpenPGP Key**."
 msgstr ""
 "Nella finestra di dialogo **Aggiungi una chiave personale OpenPGP ** scegli "
 "**Crea una nuova chiave OpenPGP**."
@@ -675,169 +703,193 @@ msgid "<h2 id=\"encrypting\">Encrypting an email</h2>\n"
 msgstr "<h2 id=\"encrypting\">Crittare una email</h2>\n"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "To prevent you from sending unencrypted emails by mistake, *Thunderbird* "
+#| "in Tails is configured with the option **Require Encryption** turned on "
+#| "by default."
 msgid ""
 "To prevent you from sending unencrypted emails by mistake, *Thunderbird* in "
-"Tails is configured with the option **Require Encryption** turned on by "
-"default."
+"Tails is configured with the option **Enable encryption for new messages** "
+"turned on by default in the account settings."
 msgstr ""
 "Per evitarti di inviare per errore e-mail non crittate, *Thunderbird* in "
 "Tails è configurato con l'opzione **Richiede crittografia** attivata di "
 "default."
 
 #. type: Plain text
+#, fuzzy
+#| msgid "When sending an encrypted email:"
+msgid "When composing an email:"
+msgstr "Quando si invia una email crittata:"
+
+#. type: Bullet: '- '
+#, fuzzy
+#| msgid ""
+#| "With the option **Require Encryption**, *Thunderbird* tries to encrypt "
+#| "every email before sending it."
 msgid ""
-"With the option **Require Encryption**, *Thunderbird* tries to encrypt every "
-"email before sending it."
+"If the **Encrypt** toggle button is on, *Thunderbird* will encrypt the email "
+"before sending."
 msgstr ""
 "Con l'opzione **Richiede crittografia**, *Thunderbird* cerca di "
 "crittografare ogni email prima di inviarla."
 
 #. type: Plain text
-msgid ""
-"To send an unencrypted email, in the composition window, choose **Security** "
-"and deselect the option **Require Encryption**."
-msgstr ""
-"Per inviare un'email non crittata, nella finestra di componimento, scegliere "
-"**Sicurezza** e deselezionare l'opzione **Richiede crittografia**."
-
-#. type: Plain text
 #, no-wrap
-msgid "<div class=\"bug\">\n"
-msgstr "<div class=\"bug\">\n"
+msgid ""
+"  *Thunderbird* warns you if you miss the key of some of the recipients\n"
+"  or if you still have to accept some of their keys.\n"
+msgstr ""
 
 #. type: Plain text
 #, no-wrap
 msgid ""
-"<p>We are unsatisfied with how the option <strong>Require\n"
-"Encryption</strong> works. Instead, <em>Thunderbird</em> should\n"
-"automatically encrypt when a public key is available and not try to\n"
-"encrypt otherwise.</p>\n"
+"  Choose **Security**&nbsp;▸ **Key Assistant** to see the keys of the\n"
+"  receipts and solve any issue.\n"
 msgstr ""
-"<p>Non siamo soddisfatti di come funziona l'opzione <strong>Richiede\n"
-"Crittografia</strong>.  Invece, <em>Thunderbird</em> dovrebbe\n"
-"crittare automaticamente quando una chiave pubblica è disponibile e non cercare di\n"
-"crittare nell'altro caso.</p>\n"
 
 #. type: Plain text
+msgid "- To send an unencrypted email, turn off the **Encrypt** toggle button."
+msgstr ""
+
+#, fuzzy
+#~| msgid ""
+#~| "Choose **[[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link="
+#~| "\"no\"]]&nbsp;▸ Preferences**."
+#~ msgid ""
+#~ "Choose **[[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link="
+#~ "\"no\"]]&nbsp;▸ Preferences**."
+#~ msgstr ""
+#~ "Scegli **[[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link="
+#~ "\"no\"]]&nbsp;▸ Preferenze**."
+
+#~ msgid ""
+#~ "To send an unencrypted email, in the composition window, choose "
+#~ "**Security** and deselect the option **Require Encryption**."
+#~ msgstr ""
+#~ "Per inviare un'email non crittata, nella finestra di componimento, "
+#~ "scegliere **Sicurezza** e deselezionare l'opzione **Richiede "
+#~ "crittografia**."
+
 #, no-wrap
-msgid ""
-"<p>The developers of <em>Thunderbird</em> want to provide such an\n"
-"<a href=\"https://bugzilla.mozilla.org/show_bug.cgi?id=135636\">option to\n"
-"\"encrypt when possible\"</a> in future versions.</p>\n"
-msgstr ""
-"<p> Gli sviluppatori di <em>Thunderbird</em> vogliono fornire questa\n"
-"<a href=\"https://bugzilla.mozilla.org/show_bug.cgi?id=135636\">opzione\n"
-"\"crittare quando possibile\"</a> nelle versioni future.</p>\n"
+#~ msgid "<div class=\"bug\">\n"
+#~ msgstr "<div class=\"bug\">\n"
 
-#. type: Plain text
-msgid "When sending an encrypted email:"
-msgstr "Quando si invia una email crittata:"
-
-#. type: Bullet: '- '
-msgid ""
-"If you already have a public key for the recipient and have marked it as "
-"accepted, *Thunderbird* encrypts the email and sends it."
-msgstr ""
-"Se hai già una chiave pubblica per il destinatario e l'hai contrassegnata "
-"come accettata, *Thunderbird* critta l'email e la invia."
-
-#. type: Bullet: '- '
-msgid ""
-"If you already have a public key for the recipient but have not marked it as "
-"accepted yet, *Thunderbird* fails to send the email."
-msgstr ""
-"Se hai già una chiave pubblica per il destinatario ma non l'hai ancora "
-"contrassegnata come accettata, *Thunderbird* non invia l'email."
-
-#. type: Plain text
 #, no-wrap
-msgid "  To mark the public key as accepted:\n"
-msgstr "  Per contrassegnare la chiave pubblica come accettata:\n"
+#~ msgid ""
+#~ "<p>We are unsatisfied with how the option <strong>Require\n"
+#~ "Encryption</strong> works. Instead, <em>Thunderbird</em> should\n"
+#~ "automatically encrypt when a public key is available and not try to\n"
+#~ "encrypt otherwise.</p>\n"
+#~ msgstr ""
+#~ "<p>Non siamo soddisfatti di come funziona l'opzione <strong>Richiede\n"
+#~ "Crittografia</strong>.  Invece, <em>Thunderbird</em> dovrebbe\n"
+#~ "crittare automaticamente quando una chiave pubblica è disponibile e non cercare di\n"
+#~ "crittare nell'altro caso.</p>\n"
 
-#. type: Bullet: '  1. '
-msgid "In the error message, click **Close**."
-msgstr "Nel messaggio di errore, fai clic su **Chiudi**."
-
-#. type: Bullet: '  1. '
-msgid ""
-"In the **OpenPGP Message Security** dialog, select the recipient that is "
-"marked as **not accepted key** and click the **Manage keys for selected "
-"recipient&hellip;** button."
-msgstr ""
-"Nella finestra di dialogo **OpenPGP Message Security** seleziona il "
-"destinatario contrassegnato come **chiave non accettata** e fai clic su "
-"**Gestisci chiavi per il destinatario selezionato&hellip;***."
-
-#. type: Plain text
 #, no-wrap
-msgid ""
-"     If the recipient is marked as **no key available**, you don't yet\n"
-"     have a public key for them.\n"
-msgstr ""
-"     Se il destinatario è contrassegnato con  **nessuna chiave disponibile**, non hai ancora\n"
-"     una loro chiave pubblica.\n"
+#~ msgid ""
+#~ "<p>The developers of <em>Thunderbird</em> want to provide such an\n"
+#~ "<a href=\"https://bugzilla.mozilla.org/show_bug.cgi?id=135636\">option to\n"
+#~ "\"encrypt when possible\"</a> in future versions.</p>\n"
+#~ msgstr ""
+#~ "<p> Gli sviluppatori di <em>Thunderbird</em> vogliono fornire questa\n"
+#~ "<a href=\"https://bugzilla.mozilla.org/show_bug.cgi?id=135636\">opzione\n"
+#~ "\"crittare quando possibile\"</a> nelle versioni future.</p>\n"
 
-#. type: Bullet: '  1. '
-msgid ""
-"In the next dialog, select the public key of your recipient and click the "
-"**Open details and edit acceptance&hellip;** button."
-msgstr ""
-"Nella finestra di dialogo successiva seleziona la chiave pubblica del "
-"destinatario e fai clic sul tasto **Apri dettagli e modifica "
-"accettazione&hellip;***."
+#~ msgid ""
+#~ "If you already have a public key for the recipient and have marked it as "
+#~ "accepted, *Thunderbird* encrypts the email and sends it."
+#~ msgstr ""
+#~ "Se hai già una chiave pubblica per il destinatario e l'hai contrassegnata "
+#~ "come accettata, *Thunderbird* critta l'email e la invia."
 
-#. type: Bullet: '  1. '
-msgid ""
-"In the **Your Acceptance** tab of the **Key Properties** dialog, select the "
-"option that applies to how much you verified the public key."
-msgstr ""
-"Nella scheda **Accettazione** della finestra di dialogo **Proprietà "
-"Chiave**, seleziona l'opzione di verifica  applicabile alla chiave pubblica."
+#~ msgid ""
+#~ "If you already have a public key for the recipient but have not marked it "
+#~ "as accepted yet, *Thunderbird* fails to send the email."
+#~ msgstr ""
+#~ "Se hai già una chiave pubblica per il destinatario ma non l'hai ancora "
+#~ "contrassegnata come accettata, *Thunderbird* non invia l'email."
 
-#. type: Bullet: '- '
-msgid ""
-"If you don't have a public key for the recipient, *Thunderbird* also fails "
-"to send the email."
-msgstr ""
-"Se non hai una chiave pubblica per il destinatario, *Thunderbird* non invia "
-"l'email."
-
-#. type: Plain text
 #, no-wrap
-msgid ""
-"  To look for a public key for this email address on the\n"
-"  [keys.openpgp.org](https://keys.openpgp.org/) keyserver:\n"
-msgstr ""
-"  Per cercare una chiave pubblica per questo indirizzo email sul\n"
-"  [keys.openpgp.org](https://keys.openpgp.org/) server delle chiavi:\n"
+#~ msgid "  To mark the public key as accepted:\n"
+#~ msgstr "  Per contrassegnare la chiave pubblica come accettata:\n"
 
-#. type: Bullet: '  1. '
-msgid "Click the **Discover new or updated key** button."
-msgstr "Clicca il tasto **Trova o aggiorna chiavi**."
+#~ msgid "In the error message, click **Close**."
+#~ msgstr "Nel messaggio di errore, fai clic su **Chiudi**."
 
-#. type: Plain text
+#~ msgid ""
+#~ "In the **OpenPGP Message Security** dialog, select the recipient that is "
+#~ "marked as **not accepted key** and click the **Manage keys for selected "
+#~ "recipient&hellip;** button."
+#~ msgstr ""
+#~ "Nella finestra di dialogo **OpenPGP Message Security** seleziona il "
+#~ "destinatario contrassegnato come **chiave non accettata** e fai clic su "
+#~ "**Gestisci chiavi per il destinatario selezionato&hellip;***."
+
 #, no-wrap
-msgid ""
-"     If no public key can be found, ask the recipient to send you their public\n"
-"     key.\n"
-msgstr ""
-"     Se non si trova una chiave pubblica, chiedi al destinatario di mandarti la loro chiave \n"
-"     pubblica.\n"
+#~ msgid ""
+#~ "     If the recipient is marked as **no key available**, you don't yet\n"
+#~ "     have a public key for them.\n"
+#~ msgstr ""
+#~ "     Se il destinatario è contrassegnato con  **nessuna chiave disponibile**, non hai ancora\n"
+#~ "     una loro chiave pubblica.\n"
 
-#. type: Plain text
+#~ msgid ""
+#~ "In the next dialog, select the public key of your recipient and click the "
+#~ "**Open details and edit acceptance&hellip;** button."
+#~ msgstr ""
+#~ "Nella finestra di dialogo successiva seleziona la chiave pubblica del "
+#~ "destinatario e fai clic sul tasto **Apri dettagli e modifica "
+#~ "accettazione&hellip;***."
+
+#~ msgid ""
+#~ "In the **Your Acceptance** tab of the **Key Properties** dialog, select "
+#~ "the option that applies to how much you verified the public key."
+#~ msgstr ""
+#~ "Nella scheda **Accettazione** della finestra di dialogo **Proprietà "
+#~ "Chiave**, seleziona l'opzione di verifica  applicabile alla chiave "
+#~ "pubblica."
+
+#~ msgid ""
+#~ "If you don't have a public key for the recipient, *Thunderbird* also "
+#~ "fails to send the email."
+#~ msgstr ""
+#~ "Se non hai una chiave pubblica per il destinatario, *Thunderbird* non "
+#~ "invia l'email."
+
 #, no-wrap
-msgid "     If a public key for this email address is found, choose to import it.\n"
-msgstr "     Se per questo indirizzo email viene trovata una chiave pubblica, scegli di importarla.\n"
+#~ msgid ""
+#~ "  To look for a public key for this email address on the\n"
+#~ "  [keys.openpgp.org](https://keys.openpgp.org/) keyserver:\n"
+#~ msgstr ""
+#~ "  Per cercare una chiave pubblica per questo indirizzo email sul\n"
+#~ "  [keys.openpgp.org](https://keys.openpgp.org/) server delle chiavi:\n"
 
-#. type: Bullet: '  1. '
-msgid ""
-"In the **OpenPGP Message Security** dialog, select the public key that was "
-"imported in the previous step and click the **Open details and edit "
-"acceptance&hellip;** button."
-msgstr ""
-"Nella finestra di dialogo **OpenPGP Message Security**, seleziona la chiave "
-"pubblica importata nel precedente passaggio e clicca il tasto  **Apri "
-"dettagli e modifica l'accettazione&hellip;**."
+#~ msgid "Click the **Discover new or updated key** button."
+#~ msgstr "Clicca il tasto **Trova o aggiorna chiavi**."
+
+#, no-wrap
+#~ msgid ""
+#~ "     If no public key can be found, ask the recipient to send you their public\n"
+#~ "     key.\n"
+#~ msgstr ""
+#~ "     Se non si trova una chiave pubblica, chiedi al destinatario di mandarti la loro chiave \n"
+#~ "     pubblica.\n"
+
+#, no-wrap
+#~ msgid "     If a public key for this email address is found, choose to import it.\n"
+#~ msgstr "     Se per questo indirizzo email viene trovata una chiave pubblica, scegli di importarla.\n"
+
+#~ msgid ""
+#~ "In the **OpenPGP Message Security** dialog, select the public key that "
+#~ "was imported in the previous step and click the **Open details and edit "
+#~ "acceptance&hellip;** button."
+#~ msgstr ""
+#~ "Nella finestra di dialogo **OpenPGP Message Security**, seleziona la "
+#~ "chiave pubblica importata nel precedente passaggio e clicca il tasto  "
+#~ "**Apri dettagli e modifica l'accettazione&hellip;**."
 
 #, no-wrap
 #~ msgid ""

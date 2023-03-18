@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2023-01-27 18:26+0100\n"
+"POT-Creation-Date: 2023-03-17 10:11+0000\n"
 "PO-Revision-Date: 2022-12-20 18:06+0000\n"
 "Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -412,21 +412,34 @@ msgstr ""
 "inglês)](https://support.mozilla.org/kb/openpgp-thunderbird-howto-and-faq)."
 
 #. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"master-password\">Setting up a Master Password (recommended)</h2>\n"
+#, fuzzy, no-wrap
+#| msgid "<h2 id=\"master-password\">Setting up a Master Password (recommended)</h2>\n"
+msgid "<h2 id=\"primary-password\">Setting up a Primary Password (recommended)</h2>\n"
 msgstr "<h2 id=\"master-password\">Definindo uma senha principal (recomendado)</h2>\n"
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "In *Thunderbird*, OpenPGP private keys are not protected by a "
+#| "passphrase.  That's why we recommend that you set up a Master Password."
 msgid ""
 "In *Thunderbird*, OpenPGP private keys are not protected by a passphrase.  "
-"That's why we recommend that you set up a Master Password."
+"That's why we recommend that you set up a Primary Password."
 msgstr ""
 "No *Thunderbird*, chaves privadas do OpenPGP não são protegidas com uma "
 "senha.  É por isso que recomendamos que você defina uma senha principal."
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "With a Master Password, your private key is encrypted in your "
+#| "*Thunderbird* profile and is only unlocked while *Thunderbird* is "
+#| "running.  If your *Thunderbird* profile is stored in your Persistent "
+#| "Storage, then your private key is encrypted twice: once by *Thunderbird* "
+#| "in your profile and a second time by the encryption of the Persistent "
+#| "Storage."
 msgid ""
-"With a Master Password, your private key is encrypted in your *Thunderbird* "
+"With a Primary Password, your private key is encrypted in your *Thunderbird* "
 "profile and is only unlocked while *Thunderbird* is running.  If your "
 "*Thunderbird* profile is stored in your Persistent Storage, then your "
 "private key is encrypted twice: once by *Thunderbird* in your profile and a "
@@ -442,7 +455,7 @@ msgstr ""
 #. type: Bullet: '1. '
 msgid ""
 "Choose **[[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link=\"no"
-"\"]]&nbsp;▸ Preferences**."
+"\"]]&nbsp;▸ Settings**."
 msgstr ""
 
 #. type: Bullet: '1. '
@@ -451,12 +464,12 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid ""
-"In the **Passwords** section, select the option **Use a master password**."
+"In the **Passwords** section, select the option **Use a Primary Password**."
 msgstr ""
 
 #. type: Bullet: '1. '
 msgid ""
-"In the **Change Master Password** dialog, enter your Master Password and "
+"In the **Change Primary Password** dialog, enter your Primary Password and "
 "click **Ok**."
 msgstr ""
 
@@ -541,7 +554,7 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid ""
-"In the **Add a Personal OpenPGP Key** dialog, choose **Import an existing "
+"In the **Create a Personal OpenPGP Key** dialog, choose **Import an existing "
 "OpenPGP Key** and click **Continue**."
 msgstr ""
 
@@ -587,8 +600,8 @@ msgstr ""
 
 #. type: Bullet: '1. '
 msgid ""
-"In the **Add a Personal OpenPGP Key** dialog, choose **Create a new OpenPGP "
-"Key**."
+"In the **Create a Personal OpenPGP Key** dialog, choose **Create a new "
+"OpenPGP Key**."
 msgstr ""
 
 #. type: Bullet: '1. '
@@ -605,130 +618,41 @@ msgstr ""
 #. type: Plain text
 msgid ""
 "To prevent you from sending unencrypted emails by mistake, *Thunderbird* in "
-"Tails is configured with the option **Require Encryption** turned on by "
-"default."
+"Tails is configured with the option **Enable encryption for new messages** "
+"turned on by default in the account settings."
 msgstr ""
 
 #. type: Plain text
-msgid ""
-"With the option **Require Encryption**, *Thunderbird* tries to encrypt every "
-"email before sending it."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"To send an unencrypted email, in the composition window, choose **Security** "
-"and deselect the option **Require Encryption**."
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<div class=\"bug\">\n"
-msgstr "<div class=\"bug\">\n"
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<p>We are unsatisfied with how the option <strong>Require\n"
-"Encryption</strong> works. Instead, <em>Thunderbird</em> should\n"
-"automatically encrypt when a public key is available and not try to\n"
-"encrypt otherwise.</p>\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<p>The developers of <em>Thunderbird</em> want to provide such an\n"
-"<a href=\"https://bugzilla.mozilla.org/show_bug.cgi?id=135636\">option to\n"
-"\"encrypt when possible\"</a> in future versions.</p>\n"
-msgstr ""
-
-#. type: Plain text
-msgid "When sending an encrypted email:"
+msgid "When composing an email:"
 msgstr ""
 
 #. type: Bullet: '- '
 msgid ""
-"If you already have a public key for the recipient and have marked it as "
-"accepted, *Thunderbird* encrypts the email and sends it."
-msgstr ""
-
-#. type: Bullet: '- '
-msgid ""
-"If you already have a public key for the recipient but have not marked it as "
-"accepted yet, *Thunderbird* fails to send the email."
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "  To mark the public key as accepted:\n"
-msgstr ""
-
-#. type: Bullet: '  1. '
-msgid "In the error message, click **Close**."
-msgstr ""
-
-#. type: Bullet: '  1. '
-msgid ""
-"In the **OpenPGP Message Security** dialog, select the recipient that is "
-"marked as **not accepted key** and click the **Manage keys for selected "
-"recipient&hellip;** button."
+"If the **Encrypt** toggle button is on, *Thunderbird* will encrypt the email "
+"before sending."
 msgstr ""
 
 #. type: Plain text
 #, no-wrap
 msgid ""
-"     If the recipient is marked as **no key available**, you don't yet\n"
-"     have a public key for them.\n"
-msgstr ""
-
-#. type: Bullet: '  1. '
-msgid ""
-"In the next dialog, select the public key of your recipient and click the "
-"**Open details and edit acceptance&hellip;** button."
-msgstr ""
-
-#. type: Bullet: '  1. '
-msgid ""
-"In the **Your Acceptance** tab of the **Key Properties** dialog, select the "
-"option that applies to how much you verified the public key."
-msgstr ""
-
-#. type: Bullet: '- '
-msgid ""
-"If you don't have a public key for the recipient, *Thunderbird* also fails "
-"to send the email."
+"  *Thunderbird* warns you if you miss the key of some of the recipients\n"
+"  or if you still have to accept some of their keys.\n"
 msgstr ""
 
 #. type: Plain text
 #, no-wrap
 msgid ""
-"  To look for a public key for this email address on the\n"
-"  [keys.openpgp.org](https://keys.openpgp.org/) keyserver:\n"
-msgstr ""
-
-#. type: Bullet: '  1. '
-msgid "Click the **Discover new or updated key** button."
+"  Choose **Security**&nbsp;▸ **Key Assistant** to see the keys of the\n"
+"  receipts and solve any issue.\n"
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
-msgid ""
-"     If no public key can be found, ask the recipient to send you their public\n"
-"     key.\n"
+msgid "- To send an unencrypted email, turn off the **Encrypt** toggle button."
 msgstr ""
 
-#. type: Plain text
 #, no-wrap
-msgid "     If a public key for this email address is found, choose to import it.\n"
-msgstr ""
-
-#. type: Bullet: '  1. '
-msgid ""
-"In the **OpenPGP Message Security** dialog, select the public key that was "
-"imported in the previous step and click the **Open details and edit "
-"acceptance&hellip;** button."
-msgstr ""
+#~ msgid "<div class=\"bug\">\n"
+#~ msgstr "<div class=\"bug\">\n"
 
 #, no-wrap
 #~ msgid ""
