@@ -319,7 +319,7 @@ end
 Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_apt_sources|
   enter_boot_menu_cmdline
   boot_key = @os_loader == 'UEFI' ? 'F10' : 'Return'
-  early_patch = $config['EARLY_PATCH'] ? ' early_patch=umount' : ''
+  early_patch = config_bool('EARLY_PATCH') ? ' early_patch=umount' : ''
   extra_boot_options = $config['EXTRA_BOOT_OPTIONS'] || ''
   @screen.type(' autotest_never_use_this_option' \
                ' blacklist=psmouse' \
@@ -331,7 +331,7 @@ Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_a
   end
 
   post_vm_start_hook
-  configure_simulated_Tor_network unless $config['DISABLE_CHUTNEY']
+  configure_simulated_Tor_network unless config_bool('DISABLE_CHUTNEY')
   # This is required to use APT in the test suite as explained in
   # commit e2510fae79870ff724d190677ff3b228b2bf7eac
   step 'I configure APT to use non-onion sources' unless keep_apt_sources
@@ -788,7 +788,7 @@ Then /^Tails eventually (shuts down|restarts)$/ do |mode|
 end
 
 Given /^I shutdown Tails and wait for the computer to power off$/ do
-  $vm.spawn('poweroff')
+  $vm.spawn('systemctl poweroff')
   step 'Tails eventually shuts down'
 end
 

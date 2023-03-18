@@ -11,8 +11,10 @@ import shutil
 import subprocess
 import sys
 import time
+from typing import List, Optional, Set
 
 import apt.cache
+from systemd.journal import JournalHandler
 
 from tailslib import LIVE_USERNAME
 
@@ -32,7 +34,7 @@ from tailslib.persistence import (
     spawn_tps_frontend,
     PERSISTENCE_DIR)
 
-from tailslib.utils import launch_x_application
+from tailslib.utils import run_with_user_env
 
 ASP_STATE_DIR = "/run/live-additional-software"
 ASP_STATE_PACKAGES = os.path.join(ASP_STATE_DIR, "packages")
@@ -42,6 +44,8 @@ OLD_APT_LISTS_DIR = os.path.join(PERSISTENCE_DIR, 'apt', 'lists.old')
 APT_ARCHIVES_DIR = "/var/cache/apt/archives"
 APT_LISTS_DIR = "/var/lib/apt/lists"
 
+_ = gettext.gettext
+
 
 def _exit_if_in_live_build():
     """Exits with success if running inside live-build."""
@@ -49,7 +53,7 @@ def _exit_if_in_live_build():
         sys.exit(0)
 
 
-def _launch_apt_get(specific_args):
+def _launch_apt_get(specific_args: List[str]):
     """Launch apt-get with given arguments.
 
     Launch apt-get with given arguments list, log its standard and error output
@@ -81,7 +85,8 @@ def _launch_apt_get(specific_args):
 
 
 def _notify(title, body="", accept_label="", deny_label="",
-            documentation_target="", urgent=False, return_id=False):
+            documentation_target="", urgent=False, return_id=False,
+            ):
     """Display a notification to the user of the live system.
 
     The notification will show title and body.
@@ -109,14 +114,16 @@ def _notify(title, body="", accept_label="", deny_label="",
     try:
         completed_process = subprocess.run(
             [
-                "sudo", "-u", LIVE_USERNAME,
+                "/usr/local/lib/run-with-user-env",
                 cmd, title, body, accept_label, deny_label,
                 documentation_target, urgent
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            universal_newlines=True
+            text=True
         )
+        if completed_process.stderr:
+            logging.warning("%s", completed_process.stderr)
         if completed_process.returncode == 1:
             # sudo failed to execute the command
             raise OSError(completed_process.stderr)
@@ -278,7 +285,7 @@ def restore_old_apt_lists(srcdir=OLD_APT_LISTS_DIR, dstdir=APT_LISTS_DIR):
         shutil.move(path, dstdir)
 
 
-def handle_installed_packages(packages):
+def handle_installed_packages(packages: Set[str]):
     """Configure packages as additional software packages if the user wants to.
 
     Ask the user if packages should be added to additional software, and
@@ -348,7 +355,7 @@ def handle_installed_packages(packages):
                     urgent=True)
 
 
-def handle_removed_packages(packages):
+def handle_removed_packages(packages: Set[str]):
     """Removes packages from additional software packages if the user wants to.
 
     Ask the user if packages should be removed from additional software, and
@@ -379,7 +386,7 @@ def setup_additional_packages():
     subprocess.check_call(["/usr/local/lib/tpscli", "ensure-is-active", "AdditionalSoftware"])
 
 
-def create_persistence_and_setup_additional_packages(packages):
+def create_persistence_and_setup_additional_packages(packages: Set[str]):
     """Create persistence and add packages to its configuration.
 
     Create a new persistence with additional packages enabled.
@@ -402,13 +409,13 @@ def create_persistence_and_setup_additional_packages(packages):
 
 def show_configuration_window():
     """Show additional packages configuration window."""
-    launch_x_application("/usr/local/bin/tails-additional-software-config")
+    run_with_user_env("/usr/local/bin/tails-additional-software-config")
 
 
 def show_system_log():
     """Show additional packages configuration window."""
-    launch_x_application("/usr/bin/gedit",
-                         ASP_LOG_FILE)
+    run_with_user_env("/usr/bin/gedit",
+                      ASP_LOG_FILE)
 
 
 def apt_hook_pre():
@@ -660,6 +667,14 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print_help()
         sys.exit(2)
+
+    if sys.argv[1] == "apt-pre" or sys.argv[1] == "apt-post":
+        # Log to the journal instead of stderr because stderr is either
+        # connected to the user's terminal (which we don't want to spam
+        # with these messages) or, if the package was installed by Synaptic,
+        # the stderr is not shown at all.
+        logger = logging.getLogger()
+        logger.addHandler(JournalHandler())
 
     if sys.argv[1] == "install":
         if not install_additional_packages():

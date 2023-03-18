@@ -30,17 +30,8 @@ fi
 echo >&2 "$BASENAME: $1 up: restarting tor@default.service"
 systemctl restart tor@default.service
 
-echo >&2 "$BASENAME: $1 up: waiting for gnome-shell"
-while ! pgrep --euid amnesia -x gnome-shell > /dev/null; do
-    sleep 1
-done
-echo >&2 "$BASENAME: $1 up: waiting for user@1000.service"
-while ! systemctl is-active -q user@1000.service; do
-    sleep 1
-done
-
 echo >&2 "$BASENAME: $1 up: starting tca.service"
-/usr/local/lib/systemctl-user amnesia start tca.service
+/usr/local/lib/run-with-user-env systemctl --user start tca.service
 
 # that's not what it looks: htpdate will not really be started until Tor has bootstrapped
 echo >&2 "$BASENAME: $1 up: restarting htpdate.service"

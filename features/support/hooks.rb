@@ -224,7 +224,7 @@ BeforeFeature('@product') do
     $vmstorage = VMStorage.new($virt, VM_XML_PATH)
     $started_first_product_feature = true
   end
-  ensure_chutney_is_running unless $config['DISABLE_CHUTNEY']
+  ensure_chutney_is_running unless config_bool('DISABLE_CHUTNEY')
 end
 
 AfterFeature('@product') do
@@ -244,7 +244,7 @@ end
 # *first* Before hook matching @product listed in this file.
 Before('@product') do |scenario|
   $failure_artifacts = []
-  if $config['CAPTURE']
+  if config_bool('CAPTURE')
     video_name = sanitize_filename("#{scenario.name}.mkv")
     @video_path = "#{ARTIFACTS_DIR}/#{video_name}"
     capture = IO.popen(['ffmpeg',
@@ -259,7 +259,7 @@ Before('@product') do |scenario|
                         { err: ['/dev/null', 'w'] },])
     @video_capture_pid = capture.pid
   end
-  @screen = if $config['IMAGE_BUMPING_MODE']
+  @screen = if config_bool('IMAGE_BUMPING_MODE')
               ImageBumpingScreen.new
             else
               Screen.new
@@ -399,13 +399,13 @@ After('@product') do |scenario|
       info_log
       info_log_artifact_location(desc, artifact_path)
     end
-    if $config['INTERACTIVE_DEBUGGING']
+    if config_bool('INTERACTIVE_DEBUGGING')
       pause(
         "Scenario failed: #{scenario.name}. " \
         "The error was: #{scenario.exception.class.name}: #{scenario.exception}"
       )
     end
-  elsif @video_path && File.exist?(@video_path) && !(($config['CAPTURE_ALL']))
+  elsif @video_path && File.exist?(@video_path) && !config_bool('CAPTURE_ALL')
     FileUtils.rm(@video_path)
   end
   begin

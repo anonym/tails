@@ -13,7 +13,7 @@ from logging import getLogger, basicConfig
 from typing import List
 
 from tailslib import LIVE_USERNAME
-from tailslib.gnome import gnome_env_vars
+from tailslib.userenv import user_env_vars
 from tailslib.greeter import get_greeter_variable_bool
 from tailslib.persistence import (
     has_persistence,
@@ -106,7 +106,7 @@ def main():
     inherit_env = ["{}={}".format(var, os.environ.get(var, "")) for var in inherit_vars]
     envcmd = [
         "env",
-        *gnome_env_vars(),
+        *user_env_vars(LIVE_USERNAME),
         *inherit_env,
         f"AT_SPI_BUS_ADDRESS=unix:path={A11Y_BUS_SANDBOX_PATH}",
         f"IBUS_ADDRESS=unix:path={IBUS_SANDBOX_PATH}",

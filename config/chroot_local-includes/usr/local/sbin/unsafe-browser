@@ -19,21 +19,13 @@ export TEXTDOMAIN
 # Import nm_is_connected
 . /usr/local/lib/tails-shell-library/network.sh
 
-# Import export_gnome_env()
-. /usr/local/lib/tails-shell-library/gnome.sh
-
 
 _zenity () {
-    DBUS_SESSION_BUS_ADDRESS="$(
-        export_gnome_env
-        echo "${DBUS_SESSION_BUS_ADDRESS}"
-    )"
     AT_SPI_BUS_ADDRESS="$(
-        sudo -u "${SUDO_USER}" \
-            env DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
-            dbus-send --session --print-reply=literal \
-                --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress \
-                | sed 's/^ *//'
+        /usr/local/lib/run-with-user-env \
+        dbus-send --session --print-reply=literal \
+            --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress \
+            | sed 's/^ *//'
     )"
     sudo -u "${SUDO_USER}" \
          env AT_SPI_BUS_ADDRESS="${AT_SPI_BUS_ADDRESS}" \
@@ -81,22 +73,14 @@ show_start_notification () {
     local title body
     title="$(gettext "Starting the Unsafe Browser...")"
     body="$(gettext "This may take a while, so please be patient.")"
-    # XXX: this was introduced for 5.11. If we have this,
-    #      problems to notification startup will be hidden and we will not notice
-    #      so please get rid of this
-    if ! tails-notify-user "${title}" "${body}" 10000; then
-        echo "ERROR: couldn't show_start_notification" >&2
-    fi
+    tails-notify-user "${title}" "${body}" 10000
 }
 
 show_shutdown_notification () {
     local title body
     title="$(gettext "Shutting down the Unsafe Browser...")"
     body="$(gettext "This may take a while, and you may not restart the Unsafe Browser until it is properly shut down.")"
-    # XXX: same as show_start_notification
-    if ! tails-notify-user "${title}" "${body}" 10000; then
-        echo "ERROR: couldn't show_shutdown_notification" >&2
-    fi
+    tails-notify-user "${title}" "${body}" 10000
 }
 
 # Main script:

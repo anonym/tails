@@ -590,7 +590,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
     if bridge_type == 'default'
       assert_equal(:easy, config_mode)
 
-      @bridge_hosts = if $config['DISABLE_CHUTNEY']
+      @bridge_hosts = if config_bool('DISABLE_CHUTNEY')
                         bridges_to_ipport(
                           $vm.file_content('/usr/share/tails/tca/default_bridges.txt')
                         )
@@ -845,7 +845,7 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?
   when 'Tor'
     allowed_hosts = allowed_hosts_under_tor_enforcement
   when 'the default bridges'
-    allowed_hosts = if $config['DISABLE_CHUTNEY']
+    allowed_hosts = if config_bool('DISABLE_CHUTNEY')
                       bridges_to_ipport(
                         $vm.file_content('/usr/share/tails/tca/default_bridges.txt')
                       )
