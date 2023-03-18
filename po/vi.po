@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-15 08:44+0100\n"
-"PO-Revision-Date: 2023-01-25 11:40+0000\n"
-"Last-Translator: emma peel <emma.peel@riseup.net>\n"
+"POT-Creation-Date: 2023-03-18 14:06+0100\n"
+"PO-Revision-Date: 2023-02-24 19:39+0000\n"
+"Last-Translator: tictactoe <phandinhminh@protonmail.ch>\n"
 "Language-Team: Vietnamese <https://hosted.weblate.org/projects/tor/tails-gui/"
 "vi/>\n"
 "Language: vi\n"
@@ -32,12 +32,16 @@ msgid ""
 "You can install additional software automatically from your persistent "
 "storage when starting Tails."
 msgstr ""
+"Bạn có thể cài đặt thêm phần mềm một cách tự động từ dung lượng lưu trữ liên "
+"tục của bạn khi khởi động hệ điều hành Tails."
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:77
 msgid ""
 "The following software is installed automatically from your persistent "
 "storage when starting Tails."
 msgstr ""
+"Phần mềm sau đây được cài đặt tự động từ bộ lưu trữ liên tục của bạn khi "
+"khởi động Tails."
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:180
@@ -46,10 +50,13 @@ msgid ""
 "desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
 "desktop\">APT on the command line</a>."
 msgstr ""
+"Để thêm vào nữa, hãy cài đặt một số phần mềm sử dụng <a href=\"synaptic."
+"desktop\">Trình quản lý gói Synaptic</a> hoặc <a href=\"org.gnome.Terminal."
+"desktop\">APT trên dòng lệnh command line</a>."
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:154
 msgid "_Create persistent storage"
-msgstr ""
+msgstr "_Khởi tạo vùng lưu trữ liên tục kéo dài"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:72
 msgid "Persistence is disabled for Electrum"
@@ -62,23 +69,26 @@ msgid ""
 "It is strongly recommended to only run Electrum when its persistence feature "
 "is activated."
 msgstr ""
+"Khi bạn khởi động lại Tails, tất cả các dữ liệu của Electrum sẽ bị mất đi, "
+"bao gồm cả ví điện tử Bitcoin của bạn.\n"
+"Một khuyến cáo vô cùng thiết yếu là chỉ chạy Electrum khi tính năng liên tục "
+"kéo dài của nó được kích hoạt."
 
 #: config/chroot_local-includes/usr/local/bin/electrum:75
 msgid "Do you want to start Electrum anyway?"
 msgstr "Bạn có muốn khởi động Electrum dù thế nào đi nữa?"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:78
-#, fuzzy
 msgid "_Launch"
-msgstr "_Launch"
+msgstr "_Khởi động"
 
 #: config/chroot_local-includes/usr/local/bin/electrum:79
 msgid "_Exit"
-msgstr "__Exit"
+msgstr "_Thoát"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/DownloadProgress.pm:59
 msgid "Unknown time"
-msgstr ""
+msgstr "Thời gian không xác định"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -87,7 +97,7 @@ msgstr ""
 #, perl-brace-format
 msgid "1y"
 msgid_plural "{count}y"
-msgstr[0] ""
+msgstr[0] "{count} năm"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -96,7 +106,7 @@ msgstr[0] ""
 #, perl-brace-format
 msgid "1d"
 msgid_plural "{count}d"
-msgstr[0] ""
+msgstr[0] "{count} ngày"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -105,7 +115,7 @@ msgstr[0] ""
 #, perl-brace-format
 msgid "1h"
 msgid_plural "{count}h"
-msgstr[0] ""
+msgstr[0] "{count} giờ"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -114,7 +124,7 @@ msgstr[0] ""
 #, perl-brace-format
 msgid "1m"
 msgid_plural "{count}m"
-msgstr[0] ""
+msgstr[0] "{count} phút"
 
 #. Translators: Don't translate {count}, it's a place holder and
 #. will be replaced.
@@ -123,14 +133,14 @@ msgstr[0] ""
 #, perl-brace-format
 msgid "1s"
 msgid_plural "{count}s"
-msgstr[0] ""
+msgstr[0] "{count} giây"
 
 #. Translators: don't translate {time}, {downloaded}, {size}
 #. and {speed}, they are placeholders and will be replaced.
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/DownloadProgress.pm:139
 #, perl-brace-format
 msgid "#{time} left — {downloaded} of {size} ({speed}/sec)\n"
-msgstr ""
+msgstr "#{time} còn lại — {downloaded} trong {size} ({speed}/giây)\n"
 
 #. Translators: KB is the short form for kilobyte
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Role/FormatByte.pm:33
@@ -158,7 +168,7 @@ msgid ""
 "For debugging information, execute the following command: sudo tails-"
 "debugging-info"
 msgstr ""
-"Để có thông tin gỡ rỗi, thực thi dòng lệnh dưới đây: sudo tails-debugging-"
+"Để có thông tin gỡ rối, thực thi dòng lệnh dưới đây: sudo tails-debugging-"
 "info"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
@@ -169,18 +179,24 @@ msgid ""
 "again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
 "website/doc/upgrade/error/check.en.html"
 msgstr ""
+"<b>Đã có một lỗi đã xảy ra trong khi cập nhật khoá key chữ ký.</"
+"b>\\n\\n<b>Điều này ngăn chặn việc xác định rằng một bản cập nhật có khả "
+"dụng từ trang web của chúng tôi không.</b>\\n\\nKiểm tra kết nối mạng của "
+"bạn, và khởi động lại Tails để thử nâng cấp lại.\\n\\nNếu vấn đề vẫn tồn "
+"tại, hãy tới tập tin:///usr/share/doc/tails/website/doc/upgrade/error/check."
+"en.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:303
 msgid "Error while downloading the signing key"
-msgstr ""
+msgstr "Đã có lỗi trong khi tải khóa key chữ ký xuống"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:314
 msgid "Error while updating the signing key"
-msgstr ""
+msgstr "Đã có lỗi trong khi cập nhật khoá key chữ ký"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:341
 msgid "Error while checking for upgrades"
-msgstr "Có lỗi khi kiểm tra các bản cập nhật"
+msgstr "Đã có lỗi khi kiểm tra các bản cập nhật"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:343
 msgid ""
@@ -208,6 +224,8 @@ msgstr "không có sẵn việc tự động nâng cấp từ website cho phiên
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:364
 msgid "your device was not created using a USB image or Tails Installer"
 msgstr ""
+"thiết bị của bạn đã không được khởi tạo bằng cách sử dụng ổ đĩa image USB "
+"hoặc trình cài đặt Tails Installer"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:369
 msgid "Tails was started from a DVD or a read-only device"
@@ -224,11 +242,11 @@ msgstr "không có đủ bộ nhớ sẵn có trên hệ thống"
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:384
 #, perl-brace-format
 msgid "No explanation available for reason '{reason}'."
-msgstr ""
+msgstr "Không có giải thích nào là khả dụng cho lý do '{reason}'."
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:407
 msgid "The system is up-to-date"
-msgstr "Hệ thống được cập nhật mới nhất"
+msgstr "Hệ thống đang ở trạng thái mới nhất"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:412
 msgid "This version of Tails is outdated, and may have security issues."
@@ -240,6 +258,8 @@ msgid ""
 "The available incremental upgrade requires {space_needed} of free space on "
 "Tails system partition,  but only {free_space} is available."
 msgstr ""
+"Nâng cấp gia tăng khả dụng yêu cầu {space_needed} của không gian trống trên "
+"phẩn ổ đĩa hệ thống Tails,  nhưng chỉ {free_space} là khả dụng."
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:454
 #, perl-brace-format
@@ -247,12 +267,16 @@ msgid ""
 "The available incremental upgrade requires {memory_needed} of free memory, "
 "but only {free_memory} is available."
 msgstr ""
+"Nâng cấp gia tăng khả dụng yêu cầu {memory_needed} của bộ nhớ trống, nhưng "
+"chỉ {free_memory} là khả dụng."
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:465
 msgid ""
 "An error ocurred while detecting available upgrades.\n"
 "This should not happen. Please report a bug."
 msgstr ""
+"Đã có một lỗi xảy ra trong khi dò tìm các bản cập nhật khả dụng.\n"
+"Điều này không nên xảy ra. Xin vui lòng báo cáo lại lỗi bug."
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:468
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:487
@@ -282,6 +306,18 @@ msgid ""
 "\n"
 "Do you want to upgrade now?"
 msgstr ""
+"<b>Bạn nên cập nhật lên tới phiên bản {name} {version}.</b>\n"
+"\n"
+"Để biết thêm thông tin chi tiết về phiên bản mới này, đi tới {details_url}\n"
+"\n"
+"Chúng tôi khuyến cáo bạn hãy đóng tất cả các ứng dụng khác trong lúc nâng "
+"cấp.\n"
+"Việc tải bản nâng cấp có thể mất nhiều thời gian, từ vài phút cho tới vài "
+"giờ.\n"
+"\n"
+"Kích thước tải xuống: {size}\n"
+"\n"
+"Bạn có muốn nâng cấp ngay bây giờ không?"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:509
 msgid "Upgrade available"
@@ -307,6 +343,16 @@ msgid ""
 "\n"
 "To learn how to do a manual upgrade, go to {manual_upgrade_url}"
 msgstr ""
+"<b>Bạn nên thực hiện việc nâng cấp thủ công lên phiên bản mới nhất của "
+"{name}.</b>\n"
+"\n"
+"Để biết thêm thông tin chi tiết về phiên bản mới này, đi tới {details_url}\n"
+"\n"
+"Việc nâng cấp tự động phiên bản Tails của bạn lên phiên bản mới này là không "
+"khả thi: {explanation}.\n"
+"\n"
+"Để tìm hiểu cách làm thế nào để thực hiện nâng cấp thủ công, đi tới "
+"{manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:528
 msgid "New version available"
@@ -319,7 +365,7 @@ msgstr "Đang tải bản cập nhật"
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:611
 #, perl-brace-format
 msgid "Downloading the upgrade to {name} {version}..."
-msgstr ""
+msgstr "Đang tải xuống bản cập nhật cho {name} {version}..."
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:700
 msgid ""
@@ -343,6 +389,8 @@ msgid ""
 "Output file '{output_file}' does not exist, but tails-iuk-get-target-file "
 "did not complain. Please report a bug."
 msgstr ""
+"Tập tin trích xuất '{output_file}' không tồn tại, nhưng tập tin tails-iuk-"
+"get-target-file đã không phàn nàn gì cả. Xin hãy báo cáo lại một lỗi bug."
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:737
 msgid "Error while creating temporary downloading directory"
@@ -360,14 +408,19 @@ msgid ""
 "\n"
 "Please save your work and close all other applications."
 msgstr ""
+"Bản cập nhật đã được tải xuống thành công.\n"
+"\n"
+"Kết nối mạng sẽ được vô hiệu hoá trong khi áp dụng bản cập nhật.\n"
+"\n"
+"Xin vui lòng sao lưu lại công việc của bạn và đóng tất cả các ứng dụng khác."
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:757
 msgid "Upgrade successfully downloaded"
-msgstr ""
+msgstr "Bản cập nhật đã được tải xuống thành công"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:758
 msgid "Apply upgrade"
-msgstr ""
+msgstr "Áp dụng nâng cấp"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:765
 msgid ""
@@ -415,11 +468,11 @@ msgstr "Tắt mạng lưới thất bại"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:807
 msgid "Error while cancelling the upgrade download"
-msgstr ""
+msgstr "Có lỗi trong khi dừng tải xuống bản cập nhật"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:808
 msgid "Failed to cancel the upgrade download"
-msgstr ""
+msgstr "Đã thất bại khi dừng tải xuống bản cập nhật"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:814
 msgid "Upgrading the system"
@@ -431,6 +484,9 @@ msgid ""
 "\n"
 "For security reasons, the network connection is now disabled."
 msgstr ""
+"<b>Thiết bị Tails của bạn đang được cập nhật...</b>\n"
+"\n"
+"Vì những lý do bảo mật, kết nối mạng hiện đang được vô hiệu hoá."
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:853
 msgid ""
@@ -450,12 +506,12 @@ msgstr "Có lỗi khi đang cài đặt bản cập nhật"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:32
 msgid "Additional Settings"
-msgstr "Những cài đặt thêm"
+msgstr "Cài đặt bổ sung"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:591
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:374
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
 msgid "Cancel"
 msgstr "Hủy bỏ"
@@ -466,56 +522,53 @@ msgstr "Thêm vào"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:54
 msgid "Back"
-msgstr "Lùi"
+msgstr "Quay lại"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:63
 msgid "_Administration Password"
-msgstr "_Administration Password"
+msgstr "_Mật khẩu quản trị"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:186
 msgid "_MAC Address Anonymization"
-msgstr ""
+msgstr "_Ẩn danh hoá địa chỉ MAC"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:249
 msgid "_Offline Mode"
-msgstr ""
+msgstr "_Chế độ ngoại tuyến"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:258
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:413
 msgid "Enable networking (default)"
-msgstr ""
+msgstr "Kích hoạt kết nối mạng (mặc định)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:260
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:459
 msgid "Disable all networking"
-msgstr "Vô hiệu tất cả mạng lưới"
+msgstr "Vô hiệu hoá tất cả các chức năng mạng"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:315
-#, fuzzy
 msgid "_Network Connection"
-msgstr "_Network Connection"
+msgstr "_Kết nối Mạng"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:323
 msgid "Obsolete"
-msgstr ""
+msgstr "Lỗi thời"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:338
 msgid "_Unsafe Browser"
-msgstr ""
+msgstr "_Trình duyệt không an toàn"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:347
-#, fuzzy
 msgid "Enabled (default)"
-msgstr "Mở (mặc định)"
+msgstr "Đã bật (mặc định)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:349
-#, fuzzy
 msgid "Disabled"
-msgstr "Vô hiệu"
+msgstr "Đã vô hiệu hoá"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:400
 msgid "On (default)"
-msgstr "Mở (mặc định)"
+msgstr "Bật (mặc định)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:402
 msgid "On"
@@ -523,57 +576,53 @@ msgstr "Bật"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:404
 msgid "Off"
-msgstr "tắt"
+msgstr "Tắt"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/additional_settings.py:406
 msgid "Off (default)"
 msgstr "Tắt (mặc định)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
-#, fuzzy
-msgid "Persistent Storage Not Unlocked"
-msgstr "Encrypted _Persistent Storage"
-
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
 #, fuzzy
+msgid "Persistent Storage Still Locked"
+msgstr "Ổ đĩa lưu trữ liên tục kéo dài không được mở khóa"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
 msgid ""
 "Do you really want to start Tails without unlocking your Persistent Storage?"
-msgstr "Nhập mật khẩu của bạn để mở khóa dung lượng bền vững"
+msgstr ""
+"Bạn có thực sự muốn khởi động Tails mà không mở khoá ổ đĩa lưu trữ liên tục "
+"kéo dài của bạn chứ?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:171
 #, fuzzy
-msgid "Continue Without Persistent Storage"
-msgstr "Encrypted _Persistent Storage"
+msgid "Start Without Persistent Storage"
+msgstr "Tiếp tục mà Không có ổ đĩa lưu trữ liên tục kéo dài"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
-#, fuzzy
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:411
 msgid "Don't _Create Persistent Storage"
-msgstr "Encrypted _Persistent Storage"
+msgstr "Không _Khởi tạo ổ đĩa lưu trữ liên tục kéo dài"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:413
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
-#, fuzzy
 msgid "_Create Persistent Storage"
-msgstr "Encrypted _Persistent Storage"
+msgstr "_Khởi tạo ổ đĩa lưu trữ liên tục kéo dài"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
-#, fuzzy
 msgid "Error unlocking Persistent Storage: {}"
-msgstr "Encrypted _Persistent Storage"
+msgstr "Có lỗi xảy ra khi mở khoá Ổ đĩa lưu trữ liên tục kéo dài: {}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
-#, fuzzy
 msgid "Error activating Persistent Storage: {}"
-msgstr "Encrypted _Persistent Storage"
+msgstr "Có lỗi xảy ra khi kích hoạt Ổ đĩa lưu trữ liên tục kéo dài: {}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:68
 msgid "Unlocking…"
-msgstr "Đang mở khóa..."
+msgstr "Đang mở khóa…"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:94
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:118
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:508
 msgid "Unlock"
 msgstr "Mở khóa"
 
@@ -587,27 +636,28 @@ msgid ""
 "Failed to unlock the Persistent Storage. Please start Tails and send an "
 "error report."
 msgstr ""
+"Đã thất bại khi mở khoá Ổ đĩa liên tục kéo dài. Xin vui lòng khởi động Tails "
+"và gửi một báo cáo lỗi."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
 msgid ""
 "Failed to activate the Persistent Storage. Please start Tails and send an "
 "error report."
 msgstr ""
+"Đã thất bại khi kích hoạt Ổ đĩa liên tục kéo dài. Xin vui lòng khởi động "
+"Tails và gửi một báo cáo lỗi."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py:164
-#, fuzzy
 msgid "_Language"
-msgstr "_Language"
+msgstr "_Ngôn ngữ"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py:207
-#, fuzzy
 msgid "_Formats"
-msgstr "_Formats"
+msgstr "_Định dạng"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py:244
-#, fuzzy
 msgid "_Keyboard Layout"
-msgstr "_Keyboard Layout"
+msgstr "_Bố cục bàn phím"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:288
 #, python-format
@@ -638,6 +688,9 @@ msgid ""
 "There was a problem executing the following command: `%(command)s`.\n"
 "A more detailed error log has been written to \"%(filename)s\"."
 msgstr ""
+"Đã có một vấn đề xảy ra khi thực thi dòng lệnh command sau đây: "
+"`%(command)s`.\n"
+"Một nhật ký lỗi bug chi tiết hơn đã được ghi nhận vào \"%(filename)s\"."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:462
 #, python-format
@@ -645,6 +698,9 @@ msgid ""
 "Not enough free space on device.\n"
 "%(iso_size)dMB ISO + %(overlay_size)dMB overlay > %(free_space)dMB free space"
 msgstr ""
+"Không đủ không gian trống trên thiết bị.\n"
+"%(iso_size)dMB ISO + %(overlay_size)dMB đè lên > %(free_space)dMB không gian "
+"trống"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:471
 #, python-format
@@ -658,12 +714,12 @@ msgstr "Không thể chép %(infile)s tới %(outfile)s: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:535
 msgid "Removing existing Tails system"
-msgstr ""
+msgstr "Loại bỏ hệ thống Tails đang tồn tại"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:545
 #, python-format
 msgid "Unable to remove file from previous Tails system: %(message)s"
-msgstr ""
+msgstr "Không thể loại bỏ tập tin khỏi hệ thống Tails trước đó: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:552
 #, python-format
@@ -673,7 +729,7 @@ msgstr "Không thể chmod %(file)s: %(message)s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:559
 #, python-format
 msgid "Unable to remove directory from previous Tails system: %(message)s"
-msgstr ""
+msgstr "Không thể loại bỏ thư mục khỏi hệ thống Tails trước đó: %(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:607
 #, python-format
@@ -684,7 +740,7 @@ msgstr "Không thể tìm thấy thiết bị %s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:904
 msgid "Unknown filesystem.  Your device may need to be reformatted."
 msgstr ""
-"Định dạng không xác định. Thiết bị của bạn có thể cần được định dạng lại."
+"Định dạng không xác định.  Thiết bị của bạn có thể cần được định dạng lại."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:660
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:907
@@ -695,7 +751,9 @@ msgstr "Tập tin hệ thống không được hỗ trợ: %s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:678
 #, python-format
 msgid "Unknown GLib exception while trying to mount device: %(message)s"
-msgstr "Ngoại lệ GLib chưa biết khi kết nối thiết bị: %(message)s"
+msgstr ""
+"Ngoại lệ GLib không xác định trong khi cố gắng gắn kết nối thiết bị: "
+"%(message)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:683
 #, python-format
@@ -709,17 +767,18 @@ msgstr "Không có ổ đĩa được tìm thấy"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:699
 #, python-format
 msgid "Entering unmount_device for \"%(device)s\""
-msgstr ""
+msgstr "Đang nhập _thiết bị rời unmount cho \"%(device)s\""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:708
 #, python-format
 msgid "Unmounting mounted filesystems on \"%(device)s\""
 msgstr ""
+"Đang tách rời unmount hệ thống tập tin đã gắn mounted trên \"%(device)s\""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:712
 #, python-format
 msgid "Unmounting \"%(udi)s\" on \"%(device)s\""
-msgstr ""
+msgstr "Đang tách rời unmount \"%(udi)s\" trên \"%(device)s\""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:723
 #, python-format
@@ -734,15 +793,15 @@ msgstr "Đang phân vùng thiết bị %(device)s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:889
 #, python-format
 msgid "Unsupported device '%(device)s', please report a bug."
-msgstr "Thiết bị không được hỗ trợ  '%(device)s', vui lòng báo lỗi."
+msgstr "Thiết bị không được hỗ trợ '%(device)s', vui lòng báo lỗi."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:892
 msgid "Trying to continue anyway."
-msgstr "Cứ tiếp tục."
+msgstr "Dù sao cũng cứ cố gắng tiếp tục."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:901
 msgid "Verifying filesystem..."
-msgstr "Đang xác minh tập tin hệ thống..."
+msgstr "Đang xác minh hệ thống tập tin..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:925
 #, python-format
@@ -780,7 +839,7 @@ msgstr "Đọc MBR được giải nén từ %s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1125
 #, python-format
 msgid "Could not read the extracted MBR from %(path)s"
-msgstr "Đã không thể đọc MBR được giải nén từ %(path)s"
+msgstr "Đã không thể đọc nổi MBR được giải nén từ %(path)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1138
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1139
@@ -796,7 +855,7 @@ msgstr "Ổ đĩa là loopback, bỏ qua việc thiết lập lại MBR"
 msgid "Synchronizing data on disk..."
 msgstr "Đang đồng bộ hóa dữ liệu trên ổ đĩa..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:146
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:147
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
@@ -804,71 +863,74 @@ msgstr ""
 "Lỗi: Không thể gán nhãn hoặc lấy UUID từ thiết bị của bạn. Không thể tiếp "
 "tục."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:180
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:181
 #, python-format
 msgid "Installation complete! (%s)"
 msgstr "Cài đặt hoàn tất! (%s)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:185
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:186
 msgid "Tails installation failed!"
 msgstr "Việc cài đặt Tails đã thất bại!"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:274
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:275
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:1
 msgid "Tails Installer"
 msgstr "Trình cài đặt Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:316
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:163
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:317
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:164
 msgid "Clone the current Tails"
-msgstr ""
+msgstr "Tạo bản sao clone của Tails hiện tại"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:323
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:184
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:324
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:185
 msgid "Use a downloaded Tails ISO image"
-msgstr ""
+msgstr "Sử dụng tập tin image ISO Tails đã được tải xuống"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:361
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:368
 msgid "Upgrade"
 msgstr "Nâng cấp"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:362
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:369
 msgid "Manual Upgrade Instructions"
-msgstr ""
+msgstr "Hướng dẫn nâng cấp thủ công"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:373
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:572
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:358
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:380
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:579
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:359
 msgid "Install"
 msgstr "Cài đặt"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:376
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:383
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:131
 msgid "Installation Instructions"
-msgstr ""
+msgstr "Hướng dẫn cài đặt"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:383
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:390
 #, python-format
 msgid "%(size)s %(vendor)s %(model)s device (%(device)s)"
 msgstr "%(size)s %(vendor)s %(model)s thiết bị (%(device)s)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:395
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:402
 msgid "No ISO image selected"
-msgstr "Không có hình ảnh ISO nào được chọn"
+msgstr "Không có tập tin image ISO nào được chọn"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:396
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:403
 msgid "Please select a Tails ISO image."
-msgstr ""
+msgstr "Xin vui lòng lựa chọn một tập tin image ISO Tails."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:458
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:465
 #, python-format
 msgid ""
 "The USB stick \"%(pretty_name)s\" is configured as non-removable by its "
 "manufacturer and Tails will fail to start from it. Please try installing on "
 "a different model."
 msgstr ""
+"Thẻ nhớ USB \"%(pretty_name)s\" được cấu hình không thể loại bỏ được bởi nhà "
+"sản xuất của nó và Tails sẽ bị hỏng nếu khởi chạy từ nó. Xin vui lòng thử "
+"cài đặt trên một mô-đen khác."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:468
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:475
 #, python-format
 msgid ""
 "The device \"%(pretty_name)s\" is too small to install Tails (at least "
@@ -877,95 +939,104 @@ msgstr ""
 "Thiết bị \"%(pretty_name)s\" quá nhỏ để cài đặt Tails (yêu cầu ít nhất "
 "%(size)s GB)."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:481
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:488
 #, python-format
 msgid ""
 "To upgrade device \"%(pretty_name)s\" from this Tails, you need to use a "
 "downloaded Tails ISO image:\n"
 "%(dl_url)s"
 msgstr ""
+"Để nâng cấp thiết bị \"%(pretty_name)s\" từ Tails này, bạn cần phải sử dụng "
+"một đĩa image ISO Tails đã được tải xuống:\n"
+"%(dl_url)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:501
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:508
 msgid "No device suitable to install Tails could be found"
 msgstr "Đã không thể tìm thấy thiết bị nào phù hợp cho việc cài đặt Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:503
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:510
 #, python-format
 msgid "Please plug a USB flash drive or SD card of at least %0.1f GB."
 msgstr "Hãy cắm một ổ USB di động hay thẻ SD với dung lượng ít nhất %0.1f GB."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:515
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:522
 msgid "An error happened while installing Tails"
 msgstr "Một lỗi đã xuất hiện trong khi cài đặt Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:567
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:574
 msgid "Installation complete!"
 msgstr "Cài đặt hoàn tất!"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:622
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:629
 msgid "Unable to mount device"
 msgstr "Không thể gắn thiết bị"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:628
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:635
 #, python-format
 msgid "%(parent_size)s %(vendor)s %(model)s device (%(device)s)"
-msgstr ""
+msgstr "%(parent_size)s %(vendor)s %(model)s thiết bị (%(device)s)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:637
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:644
 msgid ""
 "\n"
 "\n"
 "The persistent storage on this USB stick will be lost."
 msgstr ""
+"\n"
+"\n"
+"Ổ lưu trữ liên tục kéo dài trên thẻ nhớ USB này sẽ bị mất."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:638
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:645
 msgid "Delete Persistent Storage and Reinstall"
-msgstr ""
+msgstr "Xoá Ổ đĩa lưu trữ liên tục kéo dài và Cài đặt lại"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:640
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:647
 msgid ""
 "\n"
 "\n"
 "All data on this USB stick will be lost."
 msgstr ""
+"\n"
+"\n"
+"Mọi dữ liệu trên chiếc thẻ nhớ USB này sẽ bị mất."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:641
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:648
 msgid "Delete All Data and Install"
-msgstr ""
+msgstr "Xoá tất cả Dữ liệu và Cài đặt"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:642
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:649
 #, python-format
 msgid "%(description)s%(delete_message)s"
-msgstr ""
+msgstr "%(description)s%(delete_message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:646
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:653
 msgid "Confirm the target USB stick"
-msgstr ""
+msgstr "Hãy xác nhận thẻ nhớ USB đích đến"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:687
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:694
 msgid ""
 "The selected file is unreadable. Please fix its permissions or select "
 "another file."
 msgstr ""
-"Những tập tin được chọn không thể đọc được. Vui lòng sửa quyền của nó hoặc "
+"Tập tin được chọn không thể đọc được. Vui lòng sửa quyền hạn của nó hoặc "
 "chọn một tập tin khác."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:693
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:700
 msgid ""
 "Unable to use the selected file.  You may have better luck if you move your "
 "ISO to the root of your drive (ie: C:\\)"
 msgstr ""
-"Không thể sử dụng tập tin được chọn. Bạn có thể may mắn hơn nếu bạn di duyển "
-"ISO của bạn tới nền của thiết bị của bạn (ví dụ: C:\\)"
+"Không thể sử dụng tập tin được chọn.  Bạn có thể may mắn hơn nếu bạn di "
+"chuyển ISO của bạn tới root gốc ổ đĩa của bạn (ví dụ như: C:\\)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:699
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:706
 #, python-format
 msgid "%(filename)s selected"
 msgstr "%(filename)s được chọn"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:31
 msgid "Unable to find Tails on ISO"
-msgstr ""
+msgstr "Không thể tìm thấy Tails trên file ISO"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:37
 #, python-format
@@ -979,21 +1050,24 @@ msgid ""
 "%(out)s\n"
 "%(err)s"
 msgstr ""
+"Đã có một vấn đề khi thực thi `%(cmd)s`.\n"
+"%(out)s\n"
+"%(err)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:64
 #, python-format
 msgid "\"%s\" does not exist"
-msgstr ""
+msgstr "\"%s\" không tồn tại"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:66
 #, python-format
 msgid "\"%s\" is not a directory"
-msgstr ""
+msgstr "\"%s\" không phải là một thư mục"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/source.py:77
 #, python-format
 msgid "Skipping \"%(filename)s\""
-msgstr ""
+msgstr "Bỏ qua \"%(filename)s\""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/utils.py:54
 #, python-format
@@ -1001,6 +1075,8 @@ msgid ""
 "There was a problem executing `%(cmd)s`.%(out)s\n"
 "%(err)s"
 msgstr ""
+"Đã có một vấn đề khi thực thi `%(cmd)s`.%(out)s\n"
+"%(err)s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/utils.py:126
 msgid "Could not open device for writing."
@@ -1018,22 +1094,32 @@ msgid ""
 "Renaming your database to <i>${default_filename}</i> would allow "
 "<i>KeePassXC</i> to open it automatically in the future."
 msgstr ""
+"<b><big>Bạn có muốn đổi tên cơ sở dữ liệu <i>KeePassXC</i> của bạn không?</"
+"big></b>\n"
+"\n"
+"Bạn có một cơ sở dữ liệu <i>KeePassXC</i> ở trong thư mục <i>Persistent</i> "
+"liên tục kéo dài của bạn:\n"
+"\n"
+"<i>${filename}</i>\n"
+"\n"
+"Đổi tên cơ sở dữ liệu <i>${default_filename}</i> của bạn sẽ cho phép "
+"<i>KeePassXC</i> mở nó một cách tự động trong tương lai."
 
 #: config/chroot_local-includes/usr/local/bin/keepassxc:28
 msgid "Rename"
-msgstr ""
+msgstr "Đặt lại tên"
 
 #: config/chroot_local-includes/usr/local/bin/keepassxc:30
 msgid "Keep current name"
-msgstr ""
+msgstr "Giữ tên hiện tại"
 
 #: config/chroot_local-includes/usr/local/bin/replace-su-with-sudo:19
 msgid "su is disabled. Please use sudo instead."
-msgstr ""
+msgstr "su đã được vô hiệu hoá. Xin hãy sử dụng sudo thay thế."
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:46
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:38
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:314
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:460
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:593
@@ -1046,20 +1132,24 @@ msgid ""
 "The device Tails is running from cannot be found. Maybe you used the 'toram' "
 "option?"
 msgstr ""
+"Thiết bị mà Tails đang chạy từ đó ra không thể được tìm thấy. Có lẽ bạn đã "
+"sử dụng tuỳ chọn 'toram'?"
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:251
 msgid ""
 "The drive Tails is running from cannot be found. Maybe you used the 'toram' "
 "option?"
 msgstr ""
+"Ổ đĩa mà Tails đang chạy từ đó ra không thể được tìm thấy. Có lẽ bạn đã sử "
+"dụng tuỳ chọn 'toram'?"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/status-menu-helper@tails.boum.org/extension.js:78
 msgid "Lock screen"
-msgstr ""
+msgstr "Khóa màn hình"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/status-menu-helper@tails.boum.org/extension.js:82
 msgid "Suspend"
-msgstr ""
+msgstr "Tạm ngưng"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/status-menu-helper@tails.boum.org/extension.js:86
 msgid "Restart"
@@ -1086,7 +1176,7 @@ msgid ""
 "Build information:\n"
 "%s"
 msgstr ""
-"Xây dựng thông tin\n"
+"Thông tin phiên bản:\n"
 "%s"
 
 #: config/chroot_local-includes/usr/local/bin/tails-about:54
@@ -1095,143 +1185,152 @@ msgstr "không có sẵn"
 
 #. Translators: Don't translate {details}, it's a placeholder and will
 #. be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:150
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:157
 #, python-brace-format
 msgid ""
 "{details} Please check your list of additional software or read the system "
 "log to understand the problem."
 msgstr ""
+"{details} Xin vui lòng kiểm tra danh sách các phần mềm bổ sung hoặc đọc nhật "
+"ký log hệ thống để hiểu vấn đề."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:155
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:162
 msgid ""
 "Please check your list of additional software or read the system log to "
 "understand the problem."
 msgstr ""
+"Xin vui lòng kiểm tra danh sách các phần mềm bổ sung hoặc đọc nhật ký log hệ "
+"thống để hiểu vấn đề."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:166
 msgid "Show Log"
-msgstr "Hiển Đăng nhập"
+msgstr "Hiển thị nhật ký Log"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:166
 msgid "Configure"
 msgstr "Cấu hình"
 
 #. Translators: Don't translate {beginning} or {last}, they are
 #. placeholders and will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:225
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:232
 #, python-brace-format
 msgid "{beginning} and {last}"
-msgstr ""
+msgstr "{beginning} và {last}"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:226
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:233
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #. Translators: Don't translate {packages}, it's a placeholder and will
 #. be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:291
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:321
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:298
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:328
 #, python-brace-format
 msgid "Add {packages} to your additional software?"
-msgstr ""
+msgstr "Thêm {packages} vào phần mềm bổ sung của bạn chứ?"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:293
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:300
 msgid ""
 "To install it automatically from your persistent storage when starting Tails."
 msgstr ""
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:295
-msgid "Install Every Time"
-msgstr ""
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:296
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:327
-msgid "Install Only Once"
-msgstr ""
+"Để cài đặt nó tự động từ ổ lưu trữ liên tục kéo dài khi khởi chạy Tails."
 
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:302
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:332
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:372
-msgid "The configuration of your additional software failed."
-msgstr ""
+msgid "Install Every Time"
+msgstr "Cài đặt vào mọi lần"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:323
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:303
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:334
+msgid "Install Only Once"
+msgstr "Chỉ cài đặt một lần"
+
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:309
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:339
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:379
+msgid "The configuration of your additional software failed."
+msgstr "Cấu hình của phần mềm bổ sung của bạn đã thất bại."
+
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:330
 msgid ""
 "To install it automatically when starting Tails, you can create a persistent "
 "storage and activate the <b>Additional Software</b> feature."
 msgstr ""
+"Để tự động cài đặt nó khi khởi động Tails, bạn có thể tạo một vùng lưu trữ "
+"liên tục kéo dài và kích hoạt tính năng <b>Phần mềm bổ sung</b>."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:326
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:265
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:333
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:246
 msgid "Create Persistent Storage"
-msgstr ""
+msgstr "Tạo một vùng lưu trữ liên tục kéo dài"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:334
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:341
 msgid "Creating your persistent storage failed."
-msgstr ""
+msgstr "Việc khởi tạo vùng lưu trữ liên tục kéo dài của bạn đã thất bại."
 
 #. Translators: Don't translate {packages}, it's a placeholder and
 #. will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:343
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:350
 #, python-brace-format
 msgid "You could install {packages} automatically when starting Tails"
-msgstr ""
+msgstr "Bạn có thể cài đặt {packages} một cách tự động khi khởi chạy Tails"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:346
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:353
 msgid "To do so, you need to run Tails from a USB stick."
-msgstr ""
+msgstr "Để làm điều đó, bạn cần phải chạy Tails từ một thẻ nhớ USB."
 
 #. Translators: Don't translate {packages}, it's a placeholder and will be
 #. replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:360
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
 #, python-brace-format
 msgid "Remove {packages} from your additional software?"
-msgstr ""
+msgstr "Loại bỏ {packages} khỏi phần mềm bổ sung của bạn chứ?"
 
 #. Translators: Don't translate {packages}, it's a placeholder
 #. and will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:364
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:371
 #, python-brace-format
 msgid "This will stop installing {packages} automatically."
-msgstr ""
+msgstr "Điều này sẽ dừng việc cài đặt {packages} một cách tự động."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:366
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:373
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:163
 msgid "Remove"
 msgstr "Gỡ bỏ"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:543
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:550
 msgid "Installing your additional software from persistent storage..."
-msgstr ""
+msgstr "Đang cài đặt phần mềm bổ sung từ bộ nhớ liên tục kéo dài..."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:545
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:552
 msgid "This can take several minutes."
-msgstr ""
+msgstr "Điều này có thể mất một vài phút."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:558
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:565
 msgid "The installation of your additional software failed"
-msgstr ""
+msgstr "Việc cài đặt phần mềm bổ sung của bạn đã thất bại"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:573
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:580
 msgid "Additional software installed successfully"
-msgstr ""
+msgstr "Phần mềm bổ sung đã được cài đặt thành công"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:593
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:600
 msgid "The check for upgrades of your additional software failed"
-msgstr ""
+msgstr "Việc kiểm tra cập nhật của phần mềm bổ sung của bạn đã thất bại"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:595
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:603
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:602
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:610
 msgid ""
 "Please check your network connection, restart Tails, or read the system log "
 "to understand the problem."
 msgstr ""
+"Xin hãy kiểm tra kết nối internet của bạn, khởi động lại Tails, hoặc đọc "
+"nhật ký log hệ thống để hiểu vấn đề."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:602
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:609
 msgid "The upgrade of your additional software failed"
-msgstr ""
+msgstr "Việc nâng cấp phần mềm bổ sung của bạn đã thất bại"
 
-#: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:37
+#: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:36
 msgid "Documentation"
 msgstr "Tài liệu"
 
@@ -1242,22 +1341,24 @@ msgid ""
 "Remove {package} from your additional software? This will stop installing "
 "the package automatically."
 msgstr ""
+"Loại bỏ {package} khỏi phần mềm bổ sung của bạn chứ? Điều này sẽ dừng việc "
+"cài đặt gói package một cách tự động."
 
 #. Translators: Don't translate {pkg}, it's a placeholder and will be replaced.
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:106
 #, python-brace-format
 msgid "Failed to remove {pkg}"
-msgstr ""
+msgstr "Loại bỏ đã thất bại {pkg}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:131
 msgid "Failed to read additional software configuration"
-msgstr ""
+msgstr "Đã thất bại khi đọc cấu hình phần mềm bổ sung"
 
 #. Translators: Don't translate {package}, it's a placeholder and will be replaced.
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:161
 #, python-brace-format
 msgid "Stop installing {package} automatically"
-msgstr ""
+msgstr "Dừng cài đặt {package} một cách tự động"
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:187
 msgid ""
@@ -1265,6 +1366,9 @@ msgid ""
 "Package Manager</a> or <a href=\"org.gnome.Terminal.desktop\">APT on the "
 "command line</a>."
 msgstr ""
+"Để làm điều đó, hãy cài đặt một số phần mềm sử dụng <a href=\"synaptic."
+"desktop\">Trình quản lý gói Synaptic</a> hoặc <a href=\"org.gnome.Terminal."
+"desktop\">APT trên dòng lệnh command</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:196
 msgid ""
@@ -1272,6 +1376,10 @@ msgid ""
 "some software using <a href=\"synaptic.desktop\">Synaptic Package Manager</"
 "a> or <a href=\"org.gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
+"Để làm điều đó, mở khoá ổ đĩa liên tục kéo dài của bạn khi bắt đầu khởi động "
+"Tails vầ cài đặt một số phần mềm sử dụng <a href=\"synaptic.desktop\">Trình "
+"quản lý gói package Synaptic</a> hoặc <a href=\"org.gnome.Terminal."
+"desktop\">APT trên dòng lệnh command</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:206
 msgid ""
@@ -1279,14 +1387,20 @@ msgid ""
 "href=\"synaptic.desktop\">Synaptic Package Manager</a> or <a href=\"org."
 "gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
+"Để làm điều đó, khởi tạo một vùng lưu trữ liên tục kéo dài và cài đặt một số "
+"phần mềm sử dụng <a href=\"synaptic.desktop\">Trình quản lý gói package "
+"Synaptic</a> hoặc <a href=\"org.gnome.Terminal.desktop\">APT trên dòng lệnh "
+"command</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:214
 msgid "To do so, install Tails on a USB stick and create a persistent storage."
 msgstr ""
+"Để làm như vậy, hãy cài đặt Tails trên thẻ nhớ hoặc USB và tạo một ổ lưu trữ "
+"liên tục lâu dài."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:258
 msgid "[package not available]"
-msgstr ""
+msgstr "[gói package không khả dụng]"
 
 #: config/chroot_local-includes/usr/local/lib/tails-htp-notify-user:68
 msgid "Failed to synchronize the clock!"
@@ -1294,15 +1408,15 @@ msgstr "Thất bại trong việc đồng bộ đồng hồ!"
 
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:110
 msgid "Lock Screen"
-msgstr ""
+msgstr "Khóa màn hình"
 
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:125
 msgid "Screen Locker"
-msgstr ""
+msgstr "Bộ khoá màn hình"
 
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:131
 msgid "Set up a password to unlock the screen."
-msgstr ""
+msgstr "Cài đặt một mật khẩu để mở khoá màn hình."
 
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:149
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2227
@@ -1334,10 +1448,14 @@ msgid ""
 "is temporarily disabled.\n"
 "You might prefer to restart Tails and disable MAC address anonymization."
 msgstr ""
+"Ẩn danh hoá địa chỉ MAC đã thất bại cho card mạng ${nic_name} (${nic}) do đó "
+"nó đã bị vô hiệu hoá tạm thời.\n"
+"Có lẽ sẽ thích hợp hơn cho bạn khi khởi động lại Tails và vô hiệu hoá ẩn "
+"danh địa chỉ MAC."
 
 #: config/chroot_local-includes/usr/local/lib/tails-spoof-mac:66
 msgid "All networking disabled"
-msgstr "Tất cả mạng lưới đã bị vô hiệu"
+msgstr "Tất cả mạng lưới đã bị vô hiệu hoá"
 
 #: config/chroot_local-includes/usr/local/lib/tails-spoof-mac:67
 #, sh-format
@@ -1346,6 +1464,10 @@ msgid ""
 "error recovery also failed so all networking is disabled.\n"
 "You might prefer to restart Tails and disable MAC address anonymization."
 msgstr ""
+"Ẩn danh hoá địa chỉ MAC đã thất bại đối với card mạng ${nic_name} (${nic}). "
+"Lỗi khôi phục cũng đã thất bại do đó tất cả mạng lưới đã bị vô hiệu hoá.\n"
+"Có lẽ sẽ phù hợp hơn đối với bạn khi khởi động lại Tails và vô hiệu hoá ẩn "
+"danh địa chỉ MAC."
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:36
 #, python-brace-format
@@ -1360,21 +1482,30 @@ msgid ""
 "Or do a manual upgrade.\n"
 "See {manual_upgrade_url}"
 msgstr ""
+"<b>Không đủ bộ nhớ khả dụng để kiểm tra bản cập nhật.</b>\n"
+"\n"
+"Hãy chắc chắn rằng hệ thống này thoả mãn các điều kiện để chạy Tails.\n"
+"Hãy xem file:///usr/share/doc/tails/website/doc/about/requirements.en.html\n"
+"\n"
+"Hãy thử khởi động lại Tails để kiểm tra lại cập nhật.\n"
+"\n"
+"Hoặc thực hiện cập nhật thủ công.\n"
+"Hãy xem {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:76
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:45
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:37
 msgid "error:"
 msgstr "lỗi:"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:23
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:21
 msgid "Warning: virtual machine detected!"
 msgstr "Cảnh báo: máy ảo được phát hiện!"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:25
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:23
 msgid "Warning: non-free virtual machine detected!"
-msgstr "Cảnh báo: máy ảo không miễn phí được phát hiện!"
+msgstr "Cảnh báo: máy ảo không tự do được phát hiện!"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:27
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:25
 msgid ""
 "Both the host operating system and the virtualization software are able to "
 "monitor what you are doing in Tails. Only free software can be considered "
@@ -1382,116 +1513,129 @@ msgid ""
 "software."
 msgstr ""
 "Cả hệ thống vận hành máy chủ và phần mềm ảo hóa đều có thể theo dõi những gì "
-"bạn đang làm trên Tails. Chỉ có phần mềm miễn phí có thể được xem xét đáng "
-"tin cậy, dành cho cả hệ thống vận hành máy chủ và phần mềm ảo hóa."
+"bạn đang làm trên Tails. Chỉ có phần mềm tự do có thể được xem xét đáng tin "
+"cậy, dành cho cả hệ thống vận hành máy chủ và phần mềm ảo hóa."
+
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:38
+msgid "Don't Show Again"
+msgstr "Không hiện lại"
 
 #: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:40
-msgid "Don't Show Again"
-msgstr ""
-
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:42
 msgid "Learn More"
 msgstr "Tìm hiểu thêm"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/config.py:9
 #: ../config/chroot_local-includes/usr/share/applications/tca.desktop.in.h:1
 msgid "Tor Connection"
-msgstr ""
+msgstr "Kết nối Tor"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:200
 msgid "_Use a bridge that you already know"
-msgstr ""
+msgstr "_Sử dụng một cầu Bridge mà bạn đã biết"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:242
 msgid ""
 "To save your bridge, <a href=\"doc/persistent_storage\">unlock your "
 "Persistent Storage</a>."
 msgstr ""
+"Để sao lưu lại cầu Bridge của bạn, <a href=\"doc/persistent_storage\">mở "
+"khoá ổ đĩa lưu trữ liên tục kéo dài của bạn</a>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
 msgid ""
 "To save your bridge, <a href=\"doc/persistent_storage\">create a Persistent "
 "Storage</a> on your Tails USB stick."
 msgstr ""
+"Để sao lưu cầu Bridge của bạn, <a href=\"doc/persistent_storage\">khởi tạo "
+"một ổ đĩa lưu trữ liên tục kéo dài</a> trên thẻ nhớ USB Tails của bạn."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:269
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:773
 #, python-brace-format
 msgid "Invalid: {exception}"
-msgstr ""
+msgstr "Không hợp lệ: {exception}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:281
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:786
 msgid "You need to configure an obfs4 bridge to hide that you are using Tor"
 msgstr ""
+"Bạn cần phải định cấu hình một cầu Bridge obfs4 để ẩn đi rằng bạn đang sử "
+"dụng Tor"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:334
 msgid "Failed to configure your Persistent Storage"
 msgstr ""
+"Đã thất bại khi định cấu hình cho Dung lượng lưu trữ liên tục dài hạn của bạn"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:385
 msgid "Failed to detect a webcam. Maybe your webcam is too old."
-msgstr ""
+msgstr "Đã thất bại khi dò tìm một webcam. Có lẽ webcam của bạn quá cũ."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:394
 msgid "Failed to scan QR code. Try with more light or closer to the camera."
 msgstr ""
+"Đã thất bại khi quét mã code QR. Hãy thử lại với một camera đặt gần hơn hoặc "
+"rọi sáng sủa hơn."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:401
 msgid "Invalid QR code. Try sending another email and scanning again."
 msgstr ""
+"Mã code QR không hợp lệ. Hãy thử gửi một email khác và quét lại lần nữa."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:451
 msgid "Synchronizing the system's clock…"
-msgstr ""
+msgstr "Đang đồng bộ hoá đồng hồ của hệ thống…"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:500
 msgid "Connecting to Tor without bridges…"
-msgstr ""
+msgstr "Đang kết nối tới Tor mà không có cầu Bridge…"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:507
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:531
 msgid "Connecting to Tor with default bridges…"
-msgstr ""
+msgstr "Đang kết nối tới Tor với cầu Bridge mặc định…"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:514
 msgid "Connecting to Tor with a custom bridge…"
-msgstr ""
+msgstr "Đang kết nối tới Tor với một cầu Bridge tuỳ chỉnh…"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:622
 msgid "Connected to Tor successfully with bridges"
-msgstr ""
+msgstr "Đã kết nối tới Tor thành công với cầu Bridge"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:624
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1960
 msgid "Connected to Tor successfully"
-msgstr ""
+msgstr "Đã kết nối tới Tor thành công"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:628
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1985
 msgid "You can now browse the Internet anonymously and uncensored."
 msgstr ""
+"Giờ đây bạn có thể duyệt internet một cách ẩn danh và không bị kiểm duyệt."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:703
 msgid "This local network seems to be blocking access to Tor."
-msgstr ""
+msgstr "Mạng lưới cục bộ này có vẻ như đang chặn truy cập tới Tor."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:776
 msgid "Bridge address malformed"
-msgstr ""
+msgstr "Địa chỉ cầu Bridge không đúng dạng"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:794
 msgid "Setting a bridge is needed if you want to hide that you are using Tor"
 msgstr ""
+"Cài đặt một cầu Bridge là cần thiết nếu bạn muốn ẩn giấu rằng bạn đang sử "
+"dụng Tor"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1011
 #, python-brace-format
 msgid "Scanned {bridge_type} bridge: <b>{bridge_info}</b>."
-msgstr ""
+msgstr "Đã quét scan {bridge_type} cầu Bridge: <b>{bridge_info}</b>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1102
 msgid "Are you sure you want to lose progress?"
-msgstr ""
+msgstr "Bạn có chắc chắn rằng bạn muốn mất tiến độ không?"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
 msgid ""
@@ -1501,18 +1645,23 @@ msgid ""
 "If connecting to Tor fails, you will have to wait again until the end of the "
 "progress bar to be able to troubleshoot your connection."
 msgstr ""
+"Tails sẽ tiếp tục kết nối tới Tor sau khi bạn đóng trình hỗ trợ kết nối "
+"Tor.\n"
+"\n"
+"Nếu kết nối tới Tor thất bại, bạn sẽ phải đợi lần nữa cho tới khi kết thúc "
+"của thanh tiến trình để có thể truy xét kết nối của bạn."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1112
 msgid "Close and Lose Progress"
-msgstr ""
+msgstr "Đóng và Mất đi Tiến trình"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1113
 msgid "Wait"
-msgstr ""
+msgstr "Chờ"
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:41
 msgid "You need to migrate your OpenPGP keys"
-msgstr ""
+msgstr "Bạn cần di tản các khoá key OpenPGP của bạn"
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:43
 msgid ""
@@ -1520,14 +1669,17 @@ msgid ""
 "in support for OpenPGP encryption. To continue using your OpenPGP keys in "
 "<i>Thunderbird</i>, follow our migration instructions."
 msgstr ""
+"<i>Thunderbird</i> 78 hiện thay thế cho tiện ích <i>Enigmail</i> với hỗ trợ "
+"tích hợp sẵn cho mã hoá OpenPGP. Để tiếp tụp sử dụng khoá key OpenPGP trong "
+"<i>Thunderbird</i>, hãy theo bước các chỉ dẫn dịch chuyển của chúng tôi."
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:45
 msgid "_Open Migration Instructions"
-msgstr ""
+msgstr "_Mở các chỉ dẫn dịch chuyển"
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:46
 msgid "_Migrate Later"
-msgstr ""
+msgstr "_Dịch chuyển sau"
 
 #: config/chroot_local-includes/usr/bin/tor-browser:49
 msgid "Tor is not ready"
@@ -1535,15 +1687,15 @@ msgstr "Tor chưa sẵn sàng"
 
 #: config/chroot_local-includes/usr/bin/tor-browser:50
 msgid "Tor is not ready. Start Tor Browser anyway?"
-msgstr "Tor chưa sẵn sàng. Bắt đầu Tor Browser dù thế nào đi nữa?"
+msgstr "Tor chưa sẵn sàng. Khởi chạy Tor Browser dù thế nào chăng nữa chứ?"
 
 #: config/chroot_local-includes/usr/bin/tor-browser:51
 msgid "Start Tor Browser Offline"
-msgstr ""
+msgstr "Khởi chạy trình duyệt Tor Browser ngoại tuyến"
 
 #: config/chroot_local-includes/usr/bin/tor-browser:52
 msgid "Open Tor Connection"
-msgstr ""
+msgstr "Mở kết nối Tor"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/torstatus@tails.boum.org/extension.js:37
 msgid "Tor Status"
@@ -1551,7 +1703,7 @@ msgstr "Trạng thái Tor"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/torstatus@tails.boum.org/extension.js:46
 msgid "Open Onion Circuits"
-msgstr ""
+msgstr "Mở các mạch nối Onion"
 
 #. Translators: Don't translate {volume_label} or {volume_size},
 #. they are placeholders and will be replaced. They need
@@ -1559,7 +1711,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:65
 #, python-brace-format
 msgid "{volume_label} ({volume_size})"
-msgstr ""
+msgstr "{volume_label} ({volume_size})"
 
 #. Translators: Don't translate {partition_name} or {partition_size},
 #. they are placeholders and will be replaced. They need
@@ -1567,7 +1719,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:71
 #, python-brace-format
 msgid "{partition_name} ({partition_size})"
-msgstr ""
+msgstr "{partition_name} ({partition_size})"
 
 #. Translators: Don't translate {volume_size}, it's a placeholder
 #. and will be replaced. It needs to be present in the translated
@@ -1575,14 +1727,14 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:77
 #, python-brace-format
 msgid "{volume_size} Volume"
-msgstr ""
+msgstr "{volume_size} Âm lượng"
 
 #. Translators: Don't translate {volume_name}, it's a placeholder and
 #. will be replaced. It needs to be present in the translated string.
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:116
 #, python-brace-format
 msgid "{volume_name} (Read-Only)"
-msgstr ""
+msgstr "{volume_name} (Chỉ được đọc)"
 
 #. Translators: Don't translate {partition_name} and {container_path}, they
 #. are placeholders and will be replaced. They need to be present
@@ -1590,7 +1742,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:125
 #, python-brace-format
 msgid "{partition_name} in {container_path}"
-msgstr ""
+msgstr "{partition_name} trong {container_path}"
 
 #. Translators: Don't translate {volume_name} and {path_to_file_container},
 #. they are placeholders and will be replaced. You should only have to translate
@@ -1598,7 +1750,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:132
 #, python-brace-format
 msgid "{volume_name} – {path_to_file_container}"
-msgstr ""
+msgstr "{volume_name} – {path_to_file_container}"
 
 #. Translators: Don't translate {partition_name} and {drive_name}, they
 #. are placeholders and will be replaced. They need to be present
@@ -1606,7 +1758,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:139
 #, python-brace-format
 msgid "{partition_name} on {drive_name}"
-msgstr ""
+msgstr "{partition_name} trên {drive_name}"
 
 #. Translators: Don't translate {volume_name} and {drive_name},
 #. they are placeholders and will be replaced. You should only have to translate
@@ -1614,15 +1766,15 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:146
 #, python-brace-format
 msgid "{volume_name} – {drive_name}"
-msgstr ""
+msgstr "{volume_name} – {drive_name}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:234
 msgid "Wrong passphrase or parameters"
-msgstr ""
+msgstr "Cụm mật khẩu hoặc thông số sai"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:236
 msgid "Error unlocking volume"
-msgstr ""
+msgstr "Lỗi mở khoá âm lượng"
 
 #. Translators: Don't translate {volume_name} or {error_message},
 #. they are placeholder and will be replaced.  They need
@@ -1633,10 +1785,12 @@ msgid ""
 "Couldn't unlock volume {volume_name}:\n"
 "{error_message}"
 msgstr ""
+"Không thể mở khoá âm lượng {volume_name}:\n"
+"{error_message}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:343
 msgid "One or more applications are keeping the volume busy."
-msgstr ""
+msgstr "Một hoặc nhiều ứng dụng đang giữ âm lượng bận rộn."
 
 #. Translators: Don't translate {volume_name} or {error_message},
 #. they are placeholder and will be replaced. They need
@@ -1647,36 +1801,38 @@ msgid ""
 "Couldn't lock volume {volume_name}:\n"
 "{error_message}"
 msgstr ""
+"Đã không thể khoá âm lượng {volume_name}:\n"
+"{error_message}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:352
 msgid "Locking the volume failed"
-msgstr ""
+msgstr "Khoá âm lượng đã thất bại"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_list.py:83
 msgid "No file containers added"
-msgstr ""
+msgstr "Không có tập tin container chứa nào đã được thêm vào"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_list.py:98
 msgid "No VeraCrypt devices detected"
-msgstr ""
+msgstr "Không thiết bị VeraCrypt nào đã được phát hiện"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:40
 #: ../config/chroot_local-includes/usr/share/applications/unlock-veracrypt-volumes.desktop.in.h:1
 msgid "Unlock VeraCrypt Volumes"
-msgstr ""
+msgstr "Mở khoá các âm lượng VeraCrypt"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:114
 msgid "Container already added"
-msgstr ""
+msgstr "Container chứa đã được thêm vào"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:115
 #, python-format
 msgid "The file container %s should already be listed."
-msgstr ""
+msgstr "Tập tin container chứa %s nên được lên danh sách."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:131
 msgid "Container opened read-only"
-msgstr ""
+msgstr "Container chứa chỉ được đọc đã mở"
 
 #. Translators: Don't translate {path}, it's a placeholder  and will be replaced.
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:133
@@ -1687,23 +1843,27 @@ msgid ""
 "container.\n"
 "{error_message}"
 msgstr ""
+"Tập tin container chứa {path} không thể được mở với quyền truy cập viết. "
+"Thay vì thế, nó đã được mở chỉ được đọc. Bạn sẽ không thể chỉnh sửa nội dung "
+"của container chứa.\n"
+"{error_message}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:138
 msgid "Error opening file"
-msgstr ""
+msgstr "Lỗi khi mở tập tin"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:160
 msgid "Not a VeraCrypt container"
-msgstr ""
+msgstr "Không phải container chứa VeraCrypt"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:161
 #, python-format
 msgid "The file %s does not seem to be a VeraCrypt container."
-msgstr ""
+msgstr "Tập tin %s không trông như một container chứa VeraCrypt."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:163
 msgid "Failed to add container"
-msgstr ""
+msgstr "Đã thất bại khi thêm container chứa"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:164
 #, python-format
@@ -1711,100 +1871,112 @@ msgid ""
 "Could not add file container %s: Timeout while waiting for loop setup.\n"
 "Please try using the <i>Disks</i> application instead."
 msgstr ""
+"Đã không thể thêm tập tin container chứa %s: Đã hết thời gian trong khi đợi "
+"cài đặt vòng loop.\n"
+"Xin vui lòng thử sử dụng <i>Các đĩa</i> ứng dụng thay thế."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:209
 msgid "Choose File Container"
-msgstr ""
+msgstr "Lựa chọn tập tin Container chứa"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:48
 msgid "The Unsafe Browser was disabled in the Welcome Screen.\\n\\n"
 msgstr ""
+"Trình duyệt không an toàn đã được vô hiệu hoá trong màn hình chào mừng. "
+"\\n\\n"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:51
 msgid ""
 "To use the Unsafe Browser, restart Tails and make sure that the Unsafe "
 "Browser is enabled in the additional settings of the Welcome Screen."
 msgstr ""
+"Để sử dụng trình duyệt không an toàn, hãy khởi động lại Tails và chắc chắn "
+"rằng trình duyệt không an toàn đã được kích hoạt trong cài đặt bổ sung của "
+"Màn hình Chào mừng."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:53
 msgid "To use the Unsafe Browser, restart Tails."
-msgstr ""
+msgstr "Để sử dụng trình duyệt không an toàn, khởi động lại Tails."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:64
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
 msgid "_Restart"
-msgstr ""
+msgstr "_Khởi động lại"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
-#, fuzzy
 msgid "_Cancel"
-msgstr "Hủy bỏ"
+msgstr "_Hủy bỏ"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:66
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
 msgid ""
 "Do you really want to restart Tails now?\\n\\nAll your current work will be "
 "lost."
 msgstr ""
+"Bạn có thật sự muốn khởi động lại Tails ngay bây giờ không?\\n\\nTất cả công "
+"việc hiện tại của bạn sẽ bị mất."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:67
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
 msgid "Restart Now"
-msgstr ""
+msgstr "Khởi động lại ngay"
+
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:66
+msgid "Failed to restart the system."
+msgstr "Đã thất bại khi khởi động lại hệ thống."
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
-msgid "Failed to restart the system."
-msgstr ""
-
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
 msgid "Starting the Unsafe Browser..."
-msgstr "Đang bắt đầu trình duyệt không an toàn..."
+msgstr "Đang khởi chạy trình duyệt không an toàn..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:83
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:75
 msgid "This may take a while, so please be patient."
 msgstr "Việc này có thể mất chút thời gian, nên hay kiên nhẫn."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:89
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:81
 msgid "Shutting down the Unsafe Browser..."
-msgstr "Đang tắt Trình duyệt không an toàn..."
+msgstr "Đang tắt Trình duyệt Không an toàn..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:90
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
 msgid ""
 "This may take a while, and you may not restart the Unsafe Browser until it "
 "is properly shut down."
 msgstr ""
 "Việc này có thể mất chút thời gian, và bạn có thể không khởi động lại Trình "
-"duyệt không an toàn cho tới khi nó được tắt chính xác."
+"duyệt Không an toàn cho tới khi nó được tắt một cách đúng đắn."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:95
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:1
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:512
 msgid "Unsafe Browser"
-msgstr "Trình duyệt không an toàn"
+msgstr "Trình duyệt Không an toàn"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:117
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:109
 msgid ""
 "Another Unsafe Browser is currently running, or being cleaned up. Please "
 "retry in a while."
 msgstr ""
-"Một Trình duyệt không an toàn khác đang chạy, hoặc đang được dọn dẹp. Vui "
+"Một Trình duyệt Không an toàn khác đang chạy, hoặc đang được dọn dẹp. Vui "
 "lòng thử lại trong chốc lát."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:124
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:116
 msgid "Failed to setup chroot."
 msgstr "Thất bại khi cài đặt chroot."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:130
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:122
 msgid "Failed to configure browser."
 msgstr "Thất bại khi cấu hình trình duyệt."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:132
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:124
 msgid ""
 "You are not connected to a local network yet.\\n\\nTo be able to start the "
 "Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile "
 "network."
 msgstr ""
+"Bạn vẫn chưa được kết nối tới một mạng lưới cục bộ.\\n\\nĐể có thể bắt đầu "
+"khởi động Trình duyệt Không an toàn, trước tiên bạn phải kết nối tới một Wi-"
+"Fi, nối dây, hoặc mạng lưới di động."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:155
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:147
 msgid "Failed to run browser."
 msgstr "Thất bại khi chạy trình duyệt."
 
@@ -1814,6 +1986,8 @@ msgid ""
 "The %s variable was not found in the configuration file: /etc/whisperback/"
 "config.py"
 msgstr ""
+"Biến %s đã không được tìm thấy trong tập tin cấu hình: /etc/whisperback/"
+"config.py"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:113
 msgid "Name of the affected software"
@@ -1821,7 +1995,7 @@ msgstr "Tên của phần mềm bị ảnh hưởng"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:115
 msgid "Exact steps to reproduce the error"
-msgstr "Số bước chính xác để tạo lại lỗi"
+msgstr "Các bước chính xác để tạo lại lỗi sai"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:117
 msgid "Actual result and description of the error"
@@ -1849,15 +2023,15 @@ msgstr "Việc này có thể mất chút thời gian..."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:188
 msgid "The contact email address doesn't seem valid."
-msgstr ""
+msgstr "Địa chỉ email liên hệ có vẻ không hợp lệ."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:205
 msgid "Unable to send the mail: SMTP error."
-msgstr "Không thể gửi thư: lỗi SMTP."
+msgstr "Không thể gửi thư email: lỗi SMTP."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:207
 msgid "Unable to connect to the server."
-msgstr "Không thể kết nối với máy chủ."
+msgstr "Không thể kết nối tới máy chủ."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:209
 msgid "Unable to create or to send the mail."
@@ -1874,23 +2048,23 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Báo cáo lỗi không thể gửi đi được, có thể do vấn đề mạng lưới. Vui lòng thử "
-"kết nối lại với mạng lưới và bấm gửi lại.\n"
+"Báo cáo lỗi bug không thể được gửi đi, có thể do vấn đề về mạng. Vui lòng "
+"thử kết nối lại tới mạng và bấm gửi lại.\n"
 "\n"
-"Nếu nó không hoạt động, bạn sẽ được đề nghị lưu lại báo cáo lỗi."
+"Nếu nó không hoạt động, bạn sẽ được đề nghị lưu lại báo cáo lỗi bug."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:225
 msgid "Your message has been sent."
-msgstr "Thông điệp của bạn đã được gửi đi."
+msgstr "Tin nhắn của bạn đã được gửi đi."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:232
 msgid "An error occured during encryption."
-msgstr "Một lỗi xảy ra trong quá trình mã hóa."
+msgstr "Một lỗi đã xảy ra trong quá trình mã hóa."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:252
 #, python-format
 msgid "Unable to save %s."
-msgstr "Không thể lưu %s."
+msgstr "Không thể sao lưu %s."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:275
 #, python-format
@@ -1905,15 +2079,15 @@ msgid ""
 "\n"
 "Do you want to save the bug report to a file?"
 msgstr ""
-"Báo cáo lỗi không thể được gửi đi, có thể do lỗi mạng lưới.\n"
+"Báo cáo lỗi bug không thể được gửi đi, có thể do lỗi mạng.\n"
 "\n"
-"Như là một người gõ rối bạn có thể lưu báo cáo lỗi như một tập tin trên ổ "
-"USB và cố gắng gửi nó đến chúng tôi tại %s từ email của bạn dùng một hệ "
-"thống khác. Lưu ý rằng báo cáo lỗi của bạn sẽ không ẩn danh khi làm nhưng "
-"vậy, do đó trừ khi tự bạn có những bước xa hơn (ví dụ sử dụng Tor với một "
-"tài khoản email bỏ đi).\n"
+"Như một biện pháp gỡ rối, bạn có thể sao lưu báo cáo lỗi bug như một tập tin "
+"trên ổ USB và cố gắng gửi nó cho chúng tôi tại %s từ tài khoản email của bạn "
+"sử dụng một hệ thống khác. Hãy lưu ý rằng báo cáo lỗi bug của bạn sẽ không "
+"được ẩn danh khi làm như vậy trừ khi tự bạn có thể thực hiện một số biện "
+"pháp bổ sung (ví dụ như sử dụng Tor với một tài khoản email bỏ đi).\n"
 "\n"
-"Bạn có muốn lưu báo cáo lỗi vào một tập tin?"
+"Bạn có muốn sao lưu báo cáo lỗi bug vào một tập tin không?"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:337
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:280
@@ -1927,19 +2101,19 @@ msgstr "Gửi phản hồi trong thư được mã hóa."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:341
 msgid "Copyright © 2009-2018 Tails developers (tails@boum.org)"
-msgstr ""
+msgstr "Bản quyền © 2009-2018 Các lập trình viên Tails (tails@boum.org)"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:342
 msgid "Tails developers <tails@boum.org>"
-msgstr "Những nhà phát triển Tails <tails@boum.org>"
+msgstr "Các nhà phát triển Tails <tails@boum.org>"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:343
 msgid "translator-credits"
-msgstr "người dịch-những sự đóng góp"
+msgstr "phiên dịch viên-những sự đóng góp"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/gui.py:376
 msgid "This doesn't seem to be a valid URL or OpenPGP key."
-msgstr "Việc này dường như là một URL hợp lệ hoặc khóa OpenPGP."
+msgstr "Đây dường như không phải là một URL hợp lệ hoặc khóa key OpenPGP."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:62
 #, python-format
@@ -1949,27 +2123,29 @@ msgstr "Email liên lạc không hợp lệ: %s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:82
 #, python-format
 msgid "Invalid contact OpenPGP key: %s"
-msgstr "Khóa OpenPGP liên lạc không hợp lệ: %s"
+msgstr "Khóa key OpenPGP liên lạc không hợp lệ: %s"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:84
 msgid "Invalid contact OpenPGP public key block"
-msgstr "Khối khóa công khai của danh bạ OpenPGP không hợp lệ"
+msgstr "Khối block khóa key liên lạc công cộng OpenPGP không hợp lệ"
 
 #: config/chroot_local-includes/usr/local/bin/tca:154
 msgid "You turned on Offline Mode in the Welcome Screen."
-msgstr ""
+msgstr "Bạn đã bật Chế độ Ngoại tuyến trong Màn hình Chào mừng."
 
 #: config/chroot_local-includes/usr/local/bin/tca:155
 msgid "It is impossible to connect to Tor in Offline Mode."
-msgstr ""
+msgstr "Kết nối tới Tor trong chế độ ngoại tuyến là bất khả khi."
 
 #: config/chroot_local-includes/usr/local/bin/tca:156
 msgid "To connect to Tor and the Internet, restart Tails without Offline Mode."
 msgstr ""
+"Để kết nối tới Tor và Internet, khởi động lại Tails mà không có Chế độ Ngoại "
+"tuyến."
 
 #: ../config/chroot_local-includes/etc/skel/Desktop/Report_an_error.desktop.in.h:1
 msgid "Report an error"
-msgstr "Báo lỗi."
+msgstr "Báo cáo một lỗi"
 
 #: ../config/chroot_local-includes/etc/skel/Desktop/tails-documentation.desktop.in.h:1
 #: ../config/chroot_local-includes/usr/share/applications/tails-documentation.desktop.in.h:1
@@ -1977,24 +2153,28 @@ msgid "Tails documentation"
 msgstr "Tài liệu về Tails"
 
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:379
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
-#, fuzzy
 msgid "Persistent Storage"
-msgstr "Encrypted _Persistent Storage"
+msgstr "Ổ đĩa lưu trữ liên tục kéo dài"
 
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:2
 msgid ""
 "Configure which files and application configuration are saved between "
 "working sessions"
 msgstr ""
+"Định cấu hình tập tin nào và cấu hình ứng dụng nào được sao lưu giữa các "
+"phiên làm việc"
 
 #: ../config/chroot_local-includes/usr/share/applications/root-terminal.desktop.in.h:1
 msgid "Root Terminal"
-msgstr ""
+msgstr "Mở Terminal Root với tư cách quản lý hệ thống"
 
 #: ../config/chroot_local-includes/usr/share/applications/root-terminal.desktop.in.h:2
 msgid "Opens a terminal as the root user, using gksu to ask for the password"
 msgstr ""
+"Mở một Terminal với tư cách quản lý hệ thống, sử dụng gksu để yêu cầu mật "
+"khẩu"
 
 #: ../config/chroot_local-includes/usr/share/applications/tails-documentation.desktop.in.h:2
 msgid "Learn how to use Tails"
@@ -2004,51 +2184,66 @@ msgstr "Tìm hiểu cách sử dụng Tails"
 msgid "Learn more about Tails"
 msgstr "Tìm hiểu thêm về Tails"
 
+#: ../config/chroot_local-includes/usr/share/applications/tails-backup.desktop.in.h:1
+#, fuzzy
+msgid "Back Up Persistent Storage"
+msgstr "Ổ đĩa lưu trữ liên tục kéo dài"
+
+#: ../config/chroot_local-includes/usr/share/applications/tails-backup.desktop.in.h:2
+#, fuzzy
+msgid ""
+"Make a backup of the Tails Persistent Storage to another Tails USB stick"
+msgstr ""
+"Bật các tính năng của ổ đĩa lưu trữ liên tục kéo dài cho dữ liệu mà bạn muốn "
+"sao lưu tới thẻ nhớ USB Tails của bạn."
+
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:2
 msgid "Install, clone, upgrade Tails"
-msgstr ""
+msgstr "Cài đặt, tạo bản sao clone, nâng cấp Tails"
 
 #: ../config/chroot_local-includes/usr/share/applications/tca.desktop.in.h:2
 msgid "Connect Tails to the Tor network"
-msgstr ""
+msgstr "Kết nối Tails tới mạng lưới Tor Network"
 
 #: ../config/chroot_local-includes/usr/share/applications/tor-browser.desktop.in.h:1
 msgid "Tor Browser"
-msgstr "Trình duyệt Tor"
+msgstr "Trình duyệt Tor Browser"
 
 #: ../config/chroot_local-includes/usr/share/applications/tor-browser.desktop.in.h:2
 msgid "Anonymous Web Browser"
-msgstr "Trình duyệt trang ẩn danh"
+msgstr "Trình duyệt Web ẩn danh"
 
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:2
 msgid "Browse the World Wide Web without anonymity"
-msgstr "Duyệt Word Wide Web mà không có sự ẩn danh"
+msgstr "Duyệt World Wide Web mà không có ẩn danh"
 
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:3
 msgid "Unsafe Web Browser"
-msgstr "Trình duyệt trang không an toàn"
+msgstr "Trình duyệt Web Không an toàn"
 
 #: ../config/chroot_local-includes/usr/share/applications/unlock-veracrypt-volumes.desktop.in.h:2
 msgid "Mount VeraCrypt encrypted file containers and devices"
-msgstr ""
+msgstr "Gắn Container chứa tập tin đã mã hoá VeraCrypt và thiết bị"
 
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:2
 msgid ""
 "Configure the additional software installed from your persistent storage "
 "when starting Tails"
 msgstr ""
+"Định cấu hình phần mềm bổ sung được cài đặt từ ổ đĩa lưu trữ liên tục kéo "
+"dài khi bắt đầu khởi chạy Tails"
 
 #: ../config/chroot_local-includes/usr/share/applications/whisperback.desktop.in.h:1
 msgid "WhisperBack Error Reporting"
-msgstr ""
+msgstr "Báo cáo lỗi WhisperBack"
 
 #: ../config/chroot_local-includes/usr/share/applications/whisperback.desktop.in.h:2
 msgid "Send feedback via encrypted e-mail"
-msgstr ""
+msgstr "Gửi phản hồi thông qua thư email được mã hoá"
 
 #: ../config/chroot_local-includes/usr/share/applications/whisperback.desktop.in.h:3
 msgid "feedback;bug;report;tails;error;"
-msgstr ""
+msgstr "phản hồi; lỗi bug;báo cáo;tails;lỗi;"
 
 #: ../config/chroot_local-includes/usr/share/desktop-directories/Tails.directory.in.h:2
 msgid "Tails specific tools"
@@ -2056,21 +2251,23 @@ msgstr "Những công cụ đặc biệt của Tails"
 
 #: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.root-terminal.policy.in.h:1
 msgid "To start a Root Terminal, you need to authenticate."
-msgstr "Để khởi động một Thiết bị gốc, bạn cần phải xác thực"
+msgstr "Để khởi động một Root Terminal gốc, bạn cần phải xác thực."
 
 #: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.additional-software.policy.in.h:1
 msgid "Remove an additional software package"
-msgstr ""
+msgstr "Loại bỏ một gói package phần mềm bổ sung"
 
 #: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.additional-software.policy.in.h:2
 msgid ""
 "Authentication is required to remove a package from your additional software "
 "($(command_line))"
 msgstr ""
+"Việc xác thực được yêu cầu đề gỡ bỏ một gói package khỏi phần mềm bổ sung "
+"của bạn ($(command_line))"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:18
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:56
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:739
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:744
 msgid "Administration Password"
 msgstr "Mật khẩu Quản trị"
 
@@ -2096,9 +2293,9 @@ msgid "Disable"
 msgstr "Vô hiệu"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:154
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:743
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:748
 msgid "MAC Address Anonymization"
-msgstr ""
+msgstr "Ẩn danh hoá địa chỉ MAC"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:170
 msgid ""
@@ -2107,17 +2304,21 @@ msgid ""
 "generally safer as it helps you hide your geographical location. But it "
 "might also create connectivity problems or look suspicious."
 msgstr ""
+"Ẩn danh hoá địa chỉ MAC giúp ẩn đi số sê-ri của giao diện mạng (Wi-Fi hoặc "
+"nối dây) từ mạng cục bộ. Ẩn danh hoá địa chỉ MAC thông thường an toàn hơn "
+"bởi nó giúp bạn ẩn đi vị trí địa lý của bạn. Nhưng nó cũng đồng thời tạo ra "
+"một số vấn đề kết nối hoặc trông khả nghi."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:212
 msgid "Anonymize all MAC addresses (default)"
-msgstr ""
+msgstr "Ẩn danh hoá tất cả các địa chỉ MAC (mặc định)"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:258
 msgid "Don't anonymize MAC addresses"
-msgstr ""
+msgstr "Không ẩn danh các địa chỉ MAC"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:311
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:747
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:752
 msgid "Network Configuration"
 msgstr "Cấu hình mạng lưới"
 
@@ -2132,16 +2333,26 @@ msgid ""
 "If you want to work offline, enable the Offline Mode in the additional "
 "settings."
 msgstr ""
+"Chúng tôi đã thay thế cài đặt bổ sung này trong Tails 4.19 (tháng sáu 2021) "
+"với một trình hỗ trợ kết nối Tor được tích hợp trong màn hình Desktop.\n"
+"\n"
+"Bạn sẽ được hỏi rằng, liệu bạn có muốn sử dụng cầu Bridge Tor khi kết nối "
+"tới Tor sau khi khởi chạy Tails không.\n"
+"\n"
+"Nếu bạn muốn làm việc ngoại tuyến, hãy kích hoạt Chế độ Ngoại tuyến trong "
+"phần cài đặt bổ sung."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:357
 msgid "Offline Mode"
-msgstr ""
+msgstr "Chế độ Ngoại tuyến"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:373
 msgid ""
 "If you want to work completely offline, you can disable all networking for "
 "increased security."
 msgstr ""
+"Nếu bạn muốn làm việc hoàn toàn ngoại tuyến, bạn có thể tắt tất cả mạng để "
+"tăng cường bảo mật."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:528
 msgid ""
@@ -2159,143 +2370,153 @@ msgid ""
 "2022), after we fixed the security vulnerabilities that made us disable it "
 "by default in Tails 4.8 (June 2020)."
 msgstr ""
+"Trình duyệt Không an toàn cho phép bạn đăng nhập vào một mạng lưới sử dụng "
+"một cổng thông tin đóng.\n"
+"\n"
+"Một cổng thông tin đóng là một trang web được hiển thị trước khi bạn có thể "
+"truy cập Internet. Cổng thông tin đóng thông thường yêu cầu bạn đăng nhập "
+"vào mạng lưới hoặc nhập thông tin ví dụ như một địa chỉ email.\n"
+"\n"
+"Trình duyệt Không an toàn là không ẩn danh và có thể gỡ ẩn danh bạn. Cho nên "
+"chỉ sử dụng nó để đăng nhập vào mạng lưới.\n"
+"\n"
+"Trình duyệt Không an toàn được bật kích hoạt theo mặc định trở lại kể từ "
+"Tails 5.8 (Tháng mười hai 2022), sau khi chúng tôi sửa chữa các lỗ hổng nguy "
+"cơ bảo mật mà khiến chúng ta tắt nó đi theo mặc định trong Tails 4.8 (tháng "
+"sáu 2020)."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:576
-#, fuzzy
 msgid "Enable the Unsafe Browser (default)"
-msgstr "Đang bắt đầu trình duyệt không an toàn..."
+msgstr "Bật Trình duyệt Không an toàn (mặc định)"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:622
-#, fuzzy
 msgid "Disable the Unsafe Browser"
-msgstr "Đang bắt đầu trình duyệt không an toàn..."
+msgstr "Tắt Trình duyệt Không an toàn"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:100
 msgid "Settings were loaded from the persistent storage."
-msgstr ""
+msgstr "Cài đặt được tải từ ổ đĩa lưu trữ liên tục kéo dài."
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:152
 msgid "Welcome to Tails!"
 msgstr "Chào mừng đến với Tails!"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:186
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:181
 msgid "_Persistent Storage"
-msgstr "Encrypted _Persistent Storage"
+msgstr "_Ổ đĩa lưu trữ liên tục kéo dài"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:232
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:213
 msgid ""
 "You can save some of your files and configuration in an encrypted Persistent "
 "Storage on your Tails USB stick: your documents, browser bookmarks, Wi-Fi "
 "passwords, and so on."
 msgstr ""
+"Bạn có thể sao lưu một số tập tin của bạn và cấu hình trong một ổ đĩa lưu "
+"trữ liên tục kéo dài đã mã hoá trên thẻ nhớ USB Tails của bạn: tài liệu của "
+"bạn, các dấu trang trình duyệt, mật khẩu Wi-Fi, và nhiều nữa."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:246
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:227
 msgid ""
 "You will create and configure your Persistent Storage after starting Tails."
 msgstr ""
+"Bạn sẽ có thể tạo và định cấu hình ổ đĩa lưu trữ liên tục kéo dài của bạn "
+"sau khi khởi chạy Tails."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:300
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:280
 msgid "Language & Region"
-msgstr "Ngôn ngữ và Vùng"
+msgstr "Ngôn ngữ và Vùng miền"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:336
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:316
 msgid "Default Settings"
 msgstr "Những cài đặt mặc định"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:399
-#, fuzzy
-msgid "Encrypted _Persistent Storage"
-msgstr "Encrypted _Persistent Storage"
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:440
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:418
 msgid "Show Passphrase"
-msgstr "Hiển thị đoạn mật khẩu"
+msgstr "Hiển thị cụm mật khẩu"
 
-#. The label for this placeholder text is not very big, so keep this string short.
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:493
-msgid "Enter your passphrase to unlock the persistent storage"
-msgstr "Nhập mật khẩu của bạn để mở khóa dung lượng bền vững"
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:541
-msgid "Your persistent storage is unlocked. Restart Tails to lock it again."
-msgstr ""
-"Phân vùng lưu trữ bền vững của bạn bị mở khoá. Khởi động lại Tails để khoá "
-"nó lại."
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:579
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:471
 #, fuzzy
+msgid "_Passphrase"
+msgstr "Cụm mật khẩu:"
+
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:506
+msgid "Unlock Encryption"
+msgstr ""
+
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:547
+#, fuzzy
+msgid ""
+"Your Persistent Storage is unlocked. Its content will be available until you "
+"shut down Tails."
+msgstr ""
+"Ổ đĩa lưu trữ liên tục kéo dài của bạn được mở khoá. Khởi động lại Tails để "
+"khoá nó lại."
+
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:584
 msgid "_Additional Settings"
-msgstr "_Additional Settings"
+msgstr "_Cài đặt bổ sung"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:662
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:667
 msgid "Add an additional setting"
-msgstr "Thêm một cài đặt nữa"
+msgstr "Thêm một cài đặt bổ sung"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:711
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:716
 msgid ""
 "The default settings are safe in most situations. To add a custom setting, "
 "press the \"+\" button below."
 msgstr ""
-"Những cài đặt mặc định là an toàn trong hầu hết tình huống. Để thêm những "
-"cài đặt riêng, bấm nút \"+\" bên dưới."
+"Những cài đặt mặc định là an toàn trong hầu hết các tình huống. Để thêm vào "
+"một cài đặt tuỳ chọn, nhấp vào nút \"+\" bên dưới."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:755
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:760
 msgid "Shutdown"
-msgstr "Tắt trình duyệt"
+msgstr "Tắt đi"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:766
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:771
 msgid "_Start Tails"
-msgstr "_Start Tails"
+msgstr "_Khởi chạy Tails"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:8
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:56
-#, fuzzy
 msgid "Change Passphrase"
-msgstr "Hiển thị đoạn mật khẩu"
+msgstr "Thay đổi cụm mật khẩu"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:95
-#, fuzzy
 msgid "Current _Passphrase"
-msgstr "Đoạn mật khẩu:"
+msgstr "_Cụm mật khẩu hiện tại"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:131
-#, fuzzy
 msgid "_New Passphrase"
-msgstr "Hiển thị đoạn mật khẩu"
+msgstr "_Cụm mật khẩu mới"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:179
-#, fuzzy
 msgid "_Confirm New Passphrase"
-msgstr "Hiển thị đoạn mật khẩu"
+msgstr "_Xác nhận cụm mật khẩu mới"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:215
-#, fuzzy
 msgid "_Show Passphrases"
-msgstr "Hiển thị đoạn mật khẩu"
+msgstr "_Hiển thị cụm mật khẩu"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:253
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:213
-#, fuzzy
 msgid "The passphrases do not match"
-msgstr "Đoạn mật khẩu không đúng"
+msgstr "Cụm mật khẩu không trùng khớp"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:317
 msgid "Ch_ange"
-msgstr ""
+msgstr "Thay _đổi"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/deleted_view.ui.in:21
-#, fuzzy
 msgid "The Persistent Storage was successfully deleted."
-msgstr "Dữ liệu bền vững của bạn sẽ bị xóa."
+msgstr "Ổ đĩa lưu trữ liên tục kéo dài của bạn đã được xóa thành công."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/deleted_view.ui.in:32
 msgid "_Close"
-msgstr ""
+msgstr "_Đóng"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/fail_view.ui.in:30
 msgid "Oh no! Something has gone wrong."
-msgstr ""
+msgstr "Ồ không! Có điều gì đó sai sót đã xảy ra."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/fail_view.ui.in:45
 msgid ""
@@ -2304,10 +2525,14 @@ msgid ""
 "You can send an error report or check the output of the following commands "
 "to investigate:"
 msgstr ""
+"Dịch vụ ổ đĩa lưu trữ liên tục kéo dài đã thoát một cách bất ngờ.\n"
+"\n"
+"Bạn có thể gửi một báo cáo lõi hoặc kiểm tra các thông tin xuất của các dòng "
+"lệnh command sau để điều tra:"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/fail_view.ui.in:74
 msgid "Send Error Report"
-msgstr ""
+msgstr "Gửi báo cáo lỗi"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:61
 msgid ""
@@ -2318,99 +2543,111 @@ msgid ""
 "<a href=\"doc/persistent_storage/backup\">Learn how to make a backup of your "
 "Persistent Storage.</a>"
 msgstr ""
+"Ổ đĩa lưu trữ liên tục kéo dài của bạn đã được mở khoá.\n"
+"\n"
+"Nội dung của nó sẽ vẫn khả dụng cho tới khi bạn tắt Tails đi.\n"
+"\n"
+"<a href=\"doc/persistent_storage/backup\">Tìm hiểu làm thế nào để tạo ra một "
+"bản backup cho ổ đĩa lưu trữ liên tục kéo dài của bạn.</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:89
 msgid ""
 "Turn on the features of the Persistent Storage for the data that you want to "
 "save to your Tails USB stick."
 msgstr ""
+"Bật các tính năng của ổ đĩa lưu trữ liên tục kéo dài cho dữ liệu mà bạn muốn "
+"sao lưu tới thẻ nhớ USB Tails của bạn."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:106
-#, fuzzy
 msgid "Personal Documents"
-msgstr "Dữ liệu cá nhân"
+msgstr "Các tài liệu cá nhân"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:134
 msgid "Persistent Folder"
-msgstr ""
+msgstr "Thư mục lưu trữ liên tục kéo dài"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:153
-#, fuzzy
 msgid "Open Persistent Folder"
-msgstr "Encrypted _Persistent Storage"
+msgstr "Mở Thư mục lưu trữ liên tục kéo dài"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:166
-#, fuzzy
 msgid "Activate Persistent Folder"
-msgstr "Encrypted _Persistent Storage"
+msgstr "Kích hoạt Thư mục lưu trữ liên tục kéo dài"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:191
-#, fuzzy
 msgid "System Settings"
-msgstr "Những cài đặt mặc định"
+msgstr "Cài đặt hệ thống"
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:219
+#, fuzzy
+msgid "Welcome Screen"
+msgstr "Kích hoạt Màn hình Chào mừng"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:229
 msgid "Activate Welcome Screen"
-msgstr ""
+msgstr "Kích hoạt Màn hình Chào mừng"
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:240
+#, fuzzy
+msgid "Printers"
+msgstr "Kích hoạt máy in"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:250
-#, fuzzy
 msgid "Activate Printers"
-msgstr "Những máy in"
+msgstr "Kích hoạt máy in"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:275
 msgid "Network"
-msgstr ""
+msgstr "Mạng lưới"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:303
 msgid "Network Connections"
-msgstr "Những kết nối mạng lưới"
+msgstr "Các kết nối mạng"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:304
 msgid "Save Wi-Fi passwords and mobile broadband configuration."
-msgstr ""
+msgstr "Sao lưu mật khẩu Wi-Fi và cấu hình băng thông di động."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:314
-#, fuzzy
 msgid "Activate Network Connections"
-msgstr "Những kết nối mạng lưới"
+msgstr "Kích hoạt các kết nối mạng"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:325
 msgid "Tor Bridge"
-msgstr ""
+msgstr "Cầu Bridge Tor"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:335
-#, fuzzy
 msgid "Activate Tor Bridge"
-msgstr "Bắt đầu trình duyệt Tor"
+msgstr "Kích hoạt cầu Bridge Tor"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:360
 msgid "Applications"
-msgstr ""
+msgstr "Ứng dụng"
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:388
+#, fuzzy
+msgid "Tor Browser Bookmarks"
+msgstr "Kích hoạt Dấu trang trình duyệt Tor Browser"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:398
-#, fuzzy
 msgid "Activate Tor Browser Bookmarks"
-msgstr "Dấu trang trình duyệt"
+msgstr "Kích hoạt Dấu trang trình duyệt Tor Browser"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:409
-#, fuzzy
 msgid "Electrum Bitcoin Wallet"
-msgstr "Ví bitcoin Electrum và cấu hình"
+msgstr "Ví tiền điện tử Bitcoin Electrum"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:419
-#, fuzzy
 msgid "Activate Electrum Bitcoin Wallet"
-msgstr "Ví bitcoin Electrum và cấu hình"
+msgstr "Kích hoạt ví tiền điện tử Bitcoin Electrum"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:430
-#, fuzzy
 msgid "Thunderbird Email Client"
-msgstr "Thunderbird"
+msgstr "Email khách Thunderbird"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:440
 msgid "Activate Thunderbird Email Client"
-msgstr ""
+msgstr "Kích hoạt Email khách Thunderbird"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:451
 msgid "GnuPG"
@@ -2418,62 +2655,55 @@ msgstr "GnuPG"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:452
 msgid "OpenPGP keys outside of Thunderbird."
-msgstr ""
+msgstr "Khoá key OpenPGP bên ngoài Thunderbird."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:462
 msgid "Activate GnuPG"
-msgstr ""
+msgstr "Kích hoạt GnuPG"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:473
 msgid "Pidgin Internet Messenger"
-msgstr ""
+msgstr "Trình nhắn tin Pidgin Internet Messenger"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:483
 msgid "Activate Pidgin Internet Messenger"
-msgstr ""
+msgstr "Kích hoạt trình nhắn tin Pidgin Internet Messenger"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:494
 msgid "SSH Client"
-msgstr "Máy trạm SSH"
+msgstr "Máy khách SSH"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:504
-#, fuzzy
 msgid "Activate SSH Client"
-msgstr "Máy trạm SSH"
+msgstr "Kích hoạt Máy khách SSH"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:529
-#, fuzzy
 msgid "Advanced Settings"
-msgstr "Những cài đặt thêm"
+msgstr "Cài đặt nâng cao"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:558
-#, fuzzy
 msgid "Install additional software automatically when starting Tails."
-msgstr "Phần mềm đã được cài đặt khi khởi động Tails"
+msgstr "Tự động cài đặt phần mềm bổ sung khi khởi chạy Tails."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:577
-#, fuzzy
 msgid "Configure Additional Software"
-msgstr "Phần mềm bổ sung"
+msgstr "Cấu hình phần mềm bổ sung"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:590
-#, fuzzy
 msgid "Activate Additional Software"
-msgstr "Phần mềm bổ sung"
+msgstr "Kích hoạt phần mềm bổ sung"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:601
-#, fuzzy
 msgid "Dotfiles"
-msgstr "Dotfiles"
+msgstr "Tập tin Dotfiles"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:602
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
-msgstr ""
+msgstr "Symlink mọi tập tin trong thư mục Dotfiles vào trong thư mục chủ Home."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
-#, fuzzy
 msgid "Activate Dotfiles"
-msgstr "Dotfiles"
+msgstr "Kích hoạt Dotfiles"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
 msgid "Custom"
@@ -2484,12 +2714,16 @@ msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
 msgstr ""
+"Để thêm hoặc loại bỏ các tính năng tuỳ chỉnh, hãy chỉnh sửa /live/"
+"persistence/TailsData_unlocked/persistence.conf."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
 msgid ""
 "<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
 "a>"
 msgstr ""
+"<a href=\"doc/persistent_storage\">Tìm hiểu thêm về ổ đĩa lưu trữ liên tục "
+"kéo dài.</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/locked_view.ui.in:52
 msgid ""
@@ -2501,6 +2735,13 @@ msgid ""
 "To delete your Persistent Storage, click <b>Delete</b> on the right of the "
 "title bar."
 msgstr ""
+"<b>Ổ đĩa lưu trữ liên tục kéo dài của bạn đã khoá lại.</b>\n"
+"\n"
+"Để sử dụng hoặc định cấu hình ổ đĩa lưu trữ liên tục kéo dài của bạn, hãy mở "
+"khoá nó trong Màn hình Chào mừng khi khởi chạy Tails.\n"
+"\n"
+"Để xoá bỏ Ổ đĩa lưu trữ liên tục kéo dài của bạn, hãy nhấp vào <b>Xoá bỏ</b> "
+"ở phía bên phải của thanh tiêu đề."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:52
 msgid ""
@@ -2509,25 +2750,26 @@ msgid ""
 "\n"
 "We recommend a long passphrase of 5 to 7 random words."
 msgstr ""
+"Lựa chọn một cụm mật khẩu mà bạn sẽ sử dụng để mở khoá mã hoá Ổ đĩa lưu trữ "
+"liên tục kéo dài của bạn và tất cả các dữ liệu của nó.\n"
+"\n"
+"Chúng tôi khuyến cáo một cụm mật khẩu dài tầm 5 cho tới 7 ký tự ngẫu nhiên."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:82
 msgid "Passphrase:"
-msgstr "Đoạn mật khẩu:"
+msgstr "Cụm mật khẩu:"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:101
-#, fuzzy
 msgid "Confirm:"
-msgstr "Xác nhận"
+msgstr "Xác nhận:"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:178
-#, fuzzy
 msgid "_Show Passphrase"
-msgstr "Hiển thị đoạn mật khẩu"
+msgstr "_Hiển thị cụm mật khẩu"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:265
-#, fuzzy
 msgid "_Back"
-msgstr "Lùi"
+msgstr "_Quay lại"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:56
 msgid ""
@@ -2544,6 +2786,19 @@ msgid ""
 "<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
 "a>"
 msgstr ""
+"Mọi thứ mà bạn thực hiện sẽ biến mất một cách tự động khi bạn tắt Tails đi.\n"
+"\n"
+"Nhưng bạn có thể sao lưu một số tập tin của bạn và định cấu hình trong một Ổ "
+"đĩa lưu trữ liên tục kéo dài đã mã hoá trên thẻ nhớ USB Tails của bạn, ví "
+"dụ:\n"
+"\n"
+"• Các tài liệu của bạn\n"
+"• Các mật khẩu Wi-Fi của bạn\n"
+"• Các dấu trang trình duyệt của bạn\n"
+"• ...\n"
+"\n"
+"<a href=\"doc/persistent_storage\">Tìm hiểu thêm về Ổ đĩa lưu trữ liên tục "
+"kéo dài.</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:92
 msgid ""
@@ -2552,80 +2807,84 @@ msgid ""
 "To be able to use Tails with a Persistent Storage, please follow our "
 "instructions on <a href=\"install\">installing Tails on a USB stick</a>."
 msgstr ""
+"Xin lỗi, việc khởi tạo một Ổ đĩa lưu trữ liên tục kéo dài trên thiết bị này "
+"là bất khả thi.\n"
+"\n"
+"Để có thể sử dụng Tails với một Ổ đĩa lưu trữ liên tục kéo dài, xin vui lòng "
+"theo sát các hướng dẫn của chúng tôi về <a href=\"install\">việc cài đặt "
+"Tails trên một thẻ nhớ USB</a>."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:137
 msgid "Co_ntinue"
-msgstr ""
+msgstr "Tiếp _tục"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:29
-#, fuzzy
 msgid "_Delete..."
-msgstr "Đang xóa..."
+msgstr "_Đang xóa..."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
-#, fuzzy
 msgid "Delete Persistent Storage"
-msgstr "Encrypted _Persistent Storage"
+msgstr "Xoá Ổ đĩa lưu trữ liên tục kéo dài"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:49
-#, fuzzy
 msgid "_Change Passphrase..."
-msgstr "Hiển thị đoạn mật khẩu"
+msgstr "_Thay đổi cụm mật khẩu..."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:66
-#, fuzzy
 msgid "_Restart Tails"
-msgstr "Khởi động lại Tails"
+msgstr "_Khởi động lại Tails"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:61
 msgid "File Containers"
-msgstr ""
+msgstr "Container chứa tập tin"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:80
 msgid "_Add"
-msgstr ""
+msgstr "_Thêm"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:86
 msgid "Add a file container"
-msgstr ""
+msgstr "Thêm một container chứa tập tin"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:103
 msgid "Partitions and Drives"
-msgstr ""
+msgstr "Phân vùng và ổ đĩa"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/main.ui.in:121
 msgid ""
 "This application is not affiliated with or endorsed by the VeraCrypt project "
 "or IDRIX."
 msgstr ""
+"Ứng dụng này không được liên kết cùng hoặc được xác nhận bởi dự án VeraCrypt "
+"hoặc IDRIX."
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/volume.ui.in:29
 msgid "_Open"
-msgstr ""
+msgstr "_Mở"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/volume.ui.in:38
 msgid "Lock this volume"
-msgstr ""
+msgstr "Khoá vùng ổ đĩa này lại"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/volume.ui.in:52
 msgid "_Unlock"
-msgstr ""
+msgstr "_Mở khoá"
 
 #: ../config/chroot_local-includes/usr/share/tails/unlock-veracrypt-volumes/volume.ui.in:61
 msgid "Detach this volume"
-msgstr ""
+msgstr "Tách vùng ổ đĩa này"
 
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:265
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:266
 msgid "Target USB stick:"
-msgstr ""
+msgstr "Thẻ nhớ USB đích đến:"
 
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:341
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:342
 msgid "Reinstall (delete all data)"
-msgstr ""
+msgstr "Cài đặt lại (xoá toàn bộ dữ liệu)"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:11
 msgid "Copyright © 2009-2018 tails@boum.org"
-msgstr ""
+msgstr "Bản quyền © 2009-2018 tails@boum.org"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:15
 msgid ""
@@ -2645,15 +2904,33 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
 msgstr ""
+"WhisperBack - Gửi phản hồi trong thư được mã hóa\n"
+"Bản quyền (C) 2009-2018 Nhà phát triển Tails <tails@boum.org>\n"
+"\n"
+"Chương trình này là  phần mềm miễn phí; bạn có thể phân phối lại  nó và/hoặc "
+"sửa đổi\n"
+"nó theo  các điều khoản của Giấy phép Công cộng Chung GNU  được phát hành "
+"bởi\n"
+"Tổ chức Phần mềm Tự do; hoặc  phiên bản 3 của Giấy phép, hoặc (tại\n"
+"tùy chọn của bạn) bất kỳ phiên bản nào sau này.\n"
+"\n"
+"Chương trình này  được phân phối với  hy vọng rằng nó sẽ  hữu ích, nhưng\n"
+"KHÔNG CÓ   BẤT KỲ  BẢO HÀNH NÀO;   thậm chí  còn không có   bảo đảm   về\n"
+"KHẢ NĂNG THƯƠNG MẠI  hoặc PHÙ HỢP  CHO MỘT  MỤC ĐÍCH CỤ THỂ .   Xem  GNU\n"
+"Giấy phép Công cộng Chung để biết thêm chi tiết.\n"
+"\n"
+"Bạn nên nhận được một bản sao Giấy phép Công cộng Chung GNU\n"
+"cùng với chương trình này.  Nếu không, hãy xem <http://www.gnu.org/licenses/"
+">.\n"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:122
 msgid ""
 "If you want us to encrypt messages when we respond to you, add your key ID, "
 "a link to your key, or the key as a public key block:"
 msgstr ""
-"Nếu bạn muốn chúng tôi mã hóa thông điệp khi chúng tôi phản hồi bạn, thêm ID "
-"của khóa của bạn, một kết nối tới khóa của bạn, hoặc khóa như là một chuỗi "
-"khóa công khai:"
+"Nếu bạn muốn chúng tôi mã hóa tin nhắn khi chúng tôi phản hồi cho bạn, hãy "
+"thêm khoá key ID của bạn, một đường dẫn tới khóa key của bạn, hoặc khóa key "
+"như là một chuỗi khóa key công khai:"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:308
 msgid "Summary"
@@ -2662,27 +2939,28 @@ msgstr "Tóm tắt"
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:337
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:485
 msgid "Bug description"
-msgstr "Mô tả lỗi"
+msgstr "Mô tả lỗi bug"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:378
 msgid "Help:"
-msgstr ""
+msgstr "Trợ giúp:"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:388
 msgid "Read our bug reporting guidelines."
-msgstr ""
+msgstr "Hãy đọc hướng dẫn báo cáo lỗi bug của chúng tôi."
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:416
 msgid "Email address (if you want an answer from us)"
-msgstr ""
+msgstr "Địa chỉ Email (nếu bạn muốn một câu trả lời từ chúng tôi)"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:445
 msgid "optional PGP key"
-msgstr "khóa PGP tùy chọn"
+msgstr "khóa key PGP tùy chọn"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:470
 msgid "Please know that we are not able to reply to every bug report."
 msgstr ""
+"Xin hãy lưu ý rằng chúng tôi không thể phản hồi cho mọi báo cáo lỗi bug được."
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:502
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:613
@@ -2691,37 +2969,41 @@ msgstr "Những chi tiết kỹ thuật để bao gồm"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:540
 msgid "headers"
-msgstr "những đầu đề"
+msgstr "các đầu đề"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:588
 msgid "debugging info"
-msgstr "thông tin gỡ rối"
+msgstr "thông tin gỡ rối debug"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:680
 msgid "Send"
-msgstr "Gởi"
+msgstr "Gửi đi"
 
 #: ../config/chroot_local-includes/usr/local/share/mime/packages/unlock-veracrypt-volumes.xml.in.h:1
 msgid "TrueCrypt/VeraCrypt container"
-msgstr ""
+msgstr "Container chứa TrueCrypt/VeraCrypt"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:82
 msgid "Configure a Tor bridge"
-msgstr ""
+msgstr "Định cấu hình một cầu Bridge Tor"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:106
 msgid ""
 "Bridges are secret Tor relays. Use a bridge as your first Tor relay if "
 "accessing Tor is blocked from where you are."
 msgstr ""
+"Cầu Bridge là các rơ-le Tor bí mật. Hãy sử dụng cầu Bridge làm rơ-le Tor đầu "
+"tiên của bạn nếu việc truy cập Tor bị chặn từ nơi bạn đang ở."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:122
 msgid "<a href=\"doc/anonymous_internet/tor\">Learn more about Tor bridges</a>"
 msgstr ""
+"<a href=\"doc/anonymous_internet/tor\">Tìm hiểu thêm về các cầu Bridge Tor</"
+"a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:157
 msgid "Use a _default bridge"
-msgstr ""
+msgstr "Sử dụng một_cầu Bridge mặc định"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:180
 msgid "obfs4 (recommended)"
@@ -2738,7 +3020,7 @@ msgstr "Không có"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:240
 msgid "_Ask for a Tor bridge by email"
-msgstr ""
+msgstr "_Hỏi xin một cầu Bridge Tor bằng email"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:259
 msgid ""
@@ -2746,86 +3028,94 @@ msgid ""
 "Riseup email address with your phone and scan the QR code that is attached "
 "to the automatic reply."
 msgstr ""
+"Gửi một thư email rỗng tới <tt>bridges@torproject.org</tt> từ một địa chỉ "
+"email Gmail hoặc Riseup với số điện thoại của bạn và quét scan mã code QR "
+"được đính kèm vào phản hồi tự động."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:272
 msgid "Scan _QR code"
-msgstr ""
+msgstr "Quét scan_mã code QR"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:373
 msgid "_Enter a bridge that you already know"
-msgstr ""
+msgstr "_Nhập một cầu Bridge mà bạn đã biết"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:399
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1040
 msgid "Bridge"
-msgstr ""
+msgstr "Cầu Bridge"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:412
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1053
 msgid "obfs4 ..."
-msgstr ""
+msgstr "obfs4 ..."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:485
 msgid "Save bridge to _Persistent Storage"
-msgstr ""
+msgstr "Lưu cầu Bridge tới _Ổ lưu trữ liên tục kéo dài"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:510
 msgid "Save bridge to Persistent Storage"
-msgstr ""
+msgstr "Lưu cầu Bridge tới Ổ lưu trữ liên tục kéo dài"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:650
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1158
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1556
 msgid "_Connect to Tor"
-msgstr ""
+msgstr "_Kết nối tới Tor"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:692
 msgid "Error connecting to Tor"
-msgstr ""
+msgstr "Lỗi khi kết nối tới Tor"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:736
 msgid "• Wrong clock"
-msgstr ""
+msgstr "• Đồng hồ sai"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:756
 msgid "Your clock and time zone need to be correct to connect to Tor."
-msgstr ""
+msgstr "Đồng hồ của bạn và múi giờ cần được chỉnh sửa để kết nối tới Tor."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:769
 msgid "Fix _Clock"
-msgstr ""
+msgstr "Sửa _Đồng hồ"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:807
 msgid "• Public network"
-msgstr ""
+msgstr "• Mạng công cộng"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:827
 msgid ""
 "If you are in a shop, hotel, or airport, you might need to sign in to the "
 "local network using the Unsafe Browser."
 msgstr ""
+"Nếu bạn đang trong một cửa hàng, khách sạn, hoặc sân bay, bạn có thể cần "
+"phải đăng nhập vào mạng lưới cục bộ bằng cách sử dụng Trình duyệt Không an "
+"toàn."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:840
 msgid "Try _Signing in to the Network"
-msgstr ""
+msgstr "Thử _Đăng nhập vào Mạng lưới"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:879
 msgid "• Local proxy"
-msgstr ""
+msgstr "• Proxy cục bộ"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:899
 msgid ""
 "If you are on a corporate or university network, you might need to configure "
 "a local proxy."
 msgstr ""
+"Nếu bạn đang ở trên mạng lưới của công ty hoặc trường đại học, bạn có thể "
+"cần phải định cấu hình một proxy cục bộ."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:912
 msgid "Configure a Local _Proxy"
-msgstr ""
+msgstr "Định cấu hình một _Proxy Cục bộ"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:951
 msgid "• Tor bridge by email"
-msgstr ""
+msgstr "• Cầu Bridge Tor qua email"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:971
 msgid ""
@@ -2833,6 +3123,10 @@ msgid ""
 "connections to Tor are blocked, for example in some countries, by some "
 "public networks, or by some parental controls."
 msgstr ""
+"Các cầu Bridge Tor là các rơ-le Tor bí mật. Sử dụng một cầu Bridge như chiếc "
+"rơ-le Tor đầu tiên của bạn nếu các kết nối tới Tor bị chặn, ví dụ như ở một "
+"số quốc gia, thông qua một số mạng lưới công cộng, hoặc bởi một số phương "
+"thức kiểm soát của phụ huynh."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:991
 msgid ""
@@ -2840,22 +3134,29 @@ msgid ""
 "a Gmail or Riseup email address with your phone and scan the QR code that is "
 "attached to the automatic reply."
 msgstr ""
+"Để lấy một cầu Bridge, gửi một email rỗng tới <tt>bridges@torproject.org</"
+"tt> từ một địa chỉ email Gmail hoặc Riseup với điện thoại của bạn và quét "
+"scan mã code QR được đính kèm vào phản hồi tự động."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1014
 msgid "Scan QR Code"
-msgstr ""
+msgstr "Quét mã QR"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1145
 msgid ""
 "<a href=\"doc/anonymous_internet/tor/troubleshoot\">Troubleshooting "
 "connecting to Tor</a>"
 msgstr ""
+"<a href=\"doc/anonymous_internet/tor/troubleshoot\">Khắc phục sự cố kết nối "
+"tới Tor</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1191
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1599
 msgid ""
 "Everything you do on the Internet from Tails goes through the Tor network."
 msgstr ""
+"Tất cả mọi thứ bạn làm trên Internet từ Tails được truyền qua mạng lưới Tor "
+"Network."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1205
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1614
@@ -2864,16 +3165,23 @@ msgid ""
 "Tor relays are servers operated by different organizations and volunteers "
 "around the world."
 msgstr ""
+"Tor mã hoá và ẩn danh hoá kết nối của bạn bằng cách dẫn nó thông qua 3 rơ-"
+"le.\n"
+"Rơ-le Tor là các máy chủ được vận hành bởi các tổ chức khác nhau và các tình "
+"nguyện viên trên toàn thế giới."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1241
 msgid "<b>Connect to Tor _automatically</b>"
-msgstr ""
+msgstr "<b>Kết nối tới Tor _một cách tự động</b>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1291
 msgid ""
 "We recommend connecting to Tor automatically if you are on a public Wi-Fi "
 "network or if many people in your country use Tor to circumvent censorship."
 msgstr ""
+"Chúng tôi khuyến cáo bạn kết nối tới Tor một cách tự động nếu bạn đang ở "
+"trên mạng lưới Wi-Fi công cộng hoặc nếu có nhiều người trong quốc gia của "
+"bạn sử dụng Tor để vượt qua kiểm duyệt."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1309
 msgid ""
@@ -2882,10 +3190,15 @@ msgid ""
 "Someone monitoring your Internet connection could identify these attempts as "
 "coming from a Tails user."
 msgstr ""
+"Tails sẽ thử nhiều cách kết nối tới Tor khác nhau cho tới khi nó thành "
+"công.\n"
+"\n"
+"Ai đó theo dõi kết nối Internet của bạn có thể nhận diện những cố gắng này "
+"như nó đến từ một người sử dụng Tails."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1343
 msgid "Configure a Tor _bridge"
-msgstr ""
+msgstr "Định cấu hình một _Cầu Bridge Tor"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1389
 msgid ""
@@ -2897,16 +3210,26 @@ msgid ""
 "Tails will autodetect whether you need a bridge to connect to Tor from your "
 "local network."
 msgstr ""
+"Các cầu Bridge Tor là các rơ-le Tor bí mật. Sử dụng một cầu Bridge như chiếc "
+"rơ-le Tor đầu tiên của bạn nếu các kết nối tới Tor bị chặn, ví dụ như đối "
+"với một số quốc gia, thông qua một số mạng lưới công cộng, hoặc thông qua "
+"một số phương thức kiểm soát của phụ huynh.\n"
+"\n"
+"Chọn lấy lựa chọn này nếu bạn đã biết rằng bạn cần một cầu Bridge. Nếu "
+"không, Tails sẽ tự động phát hiện cho bạn nếu như bạn cần một cầu Bridge để "
+"kết nối tới Tor từ mạng cục bộ của bạn."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1431
 msgid "<b>_Hide to my local network that I'm connecting to Tor</b>"
-msgstr ""
+msgstr "<b>_Ẩn khỏi mạng lưới cục bộ của tôi rằng tôi đang kết nối tới Tor</b>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1481
 msgid ""
 "You might need to go unnoticed if using Tor could look suspicious to someone "
 "who monitors your Internet connection."
 msgstr ""
+"Bạn có thể cần phải tiến hành mà không được thông báo nếu việc sử dụng Tor "
+"có thể trông khả nghi đối với ai đó đang theo soát kết nối Internet của bạn."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1499
 msgid ""
@@ -2920,90 +3243,106 @@ msgid ""
 "yet, if you connect from a public Wi-Fi network, or if you are in the "
 "Eastern Hemisphere."
 msgstr ""
+"Tails sẽ chỉ kết nối tới Tor sau khi bạn đã định cấu hình một cầu Bridge "
+"Tor. Các cầu Bridge là các rơ-le Tor bí mật giúp ẩn đi rằng bạn đang kết nối "
+"tới Tor.\n"
+"\n"
+"Đội ngũ của chúng tôi đang làm tất cả những gì trong khả năng của mình một "
+"cách tốt nhất để giúp bạn kết nối tới Tor sử dụng các kiểu cầu Bridge Tor "
+"kín đáo nhất có thể.\n"
+"\n"
+"Bạn sẽ phải làm một số việc định cấu hình bổ sung thêm nếu như bạn vẫn chưa "
+"biết bất kỳ chiếc cầu Bridge Tor nào cả, nếu bạn kết nối từ một mạng Wi-Fi "
+"công cộng, hoặc nếu bạn đang ở Bán cầu Đông của địa cầu."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1544
 msgid ""
 "<a href=\"doc/anonymous_internet/tor\">Learn more about how Tails connects "
 "to Tor</a>"
 msgstr ""
+"<a href=\"doc/anonymous_internet/tor\">Tìm hiểu thêm về cách thức làm thế "
+"nào Tails kết nối tới Tor</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1629
 msgid "Connect to a local network"
-msgstr ""
+msgstr "Kết nối tới một mạng cục bộ"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1646
 msgid ""
 "You are not connected to a local network yet. To be able to connect to the "
 "Tor network, you first need to connect to a Wi-Fi, wire, or mobile network."
 msgstr ""
+"Bạn vẫn chưa kết nối tới một mạng cục bộ nào. Để có thể kết nối tới mạng "
+"lưới Tor Network, trước tiên bạn cần phải kết nối tới một mạng lưới Wi-Fi, "
+"nối dây, hoặc di động."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1658
 msgid "Open Wi-Fi settings"
-msgstr ""
+msgstr "Mở cài đặt Wi-Fi"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1707
 msgid "Testing Internet access…"
-msgstr ""
+msgstr "Đang test thử truy cập Internet…"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1747
 msgid "You have access to the Internet"
-msgstr ""
+msgstr "Bạn đã có truy cập Internet"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1781
 msgid "Testing access to Tor…"
-msgstr ""
+msgstr "Đang test thử truy cập tới Tor…"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1824
 msgid "You can connect to Tor"
-msgstr ""
+msgstr "Bạn có thể kết nối tới Tor"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1854
 msgid "Failed to connect to Tor without bridges."
-msgstr ""
+msgstr "Đã thất bại khi kết nối tới Tor mà không có cầu Bridge."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1870
 msgid "This local network is blocking access to Tor."
-msgstr ""
+msgstr "Mạng lưới cục bộ này đang chặn truy cập tới Tor."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1902
 msgid "Connecting to Tor…"
-msgstr ""
+msgstr "Đang kết nối tới Tor…"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2007
 msgid "Start Tor Browser"
-msgstr "Bắt đầu trình duyệt Tor"
+msgstr "Khởi động trình duyệt Tor Browser"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2026
 msgid "Open Network Monitor"
-msgstr ""
+msgstr "Mở trình theo dõi Mạng"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2039
 msgid "View Tor Circuits"
-msgstr ""
+msgstr "Hiện các mạch nối Tor Circuit"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2053
 msgid "Reset Tor Connection"
-msgstr ""
+msgstr "Khởi động lại kết nối Tor"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2093
 msgid "Configure a Local Proxy"
-msgstr ""
+msgstr "Định cấu hình một Proxy cục bộ"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2119
 msgid "Proxy Type"
-msgstr "Loại proxy"
+msgstr "Kiểu proxy"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2136
 msgid "No proxy"
-msgstr ""
+msgstr "Không proxy"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2137
 msgid "SOCKS 4"
-msgstr "SOCK 4"
+msgstr "SOCKS 4"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2138
 msgid "SOCKS 5"
-msgstr "SOCK 5"
+msgstr "SOCKS 5"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2139
 msgid "HTTP / HTTPS"
@@ -3011,15 +3350,15 @@ msgstr "HTTP / HTTPS"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2158
 msgid "Address"
-msgstr "Địa chỉ nhà"
+msgstr "Địa chỉ"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2175
 msgid "Username"
-msgstr "Tên đăng nhập"
+msgstr "Tên người dùng"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2192
 msgid "IP address or hostname"
-msgstr "Địa chỉ IP hoặc hostname"
+msgstr "Địa chỉ IP hoặc tên máy chủ hostname"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2210
 msgid "Port"
@@ -3027,11 +3366,11 @@ msgstr "Cổng"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:2334
 msgid "_Save Proxy Settings"
-msgstr ""
+msgstr "_Lưu Cài đặt Proxy"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:7
 msgid "Tor Connection - Fix Clock"
-msgstr ""
+msgstr "Kết nối Tor - Chỉnh sửa đồng hồ"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:76
 msgid ""
@@ -3039,10 +3378,13 @@ msgid ""
 "never be sent over the network and will only be used to fix your clock and "
 "connect to Tor."
 msgstr ""
+"Múi giờ của bạn không thể được sử dụng để xác định hoặc định vị bạn. Múi giờ "
+"của bạn sẽ không bao giờ được gửi qua mạng và sẽ chỉ được sử dụng để sửa "
+"đồng hồ của bạn và kết nối tới Tor."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:142
 msgid "Time zone"
-msgstr ""
+msgstr "Múi giờ"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:186
 msgid "Time"
@@ -3054,59 +3396,65 @@ msgstr ":"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:277
 msgid "Date"
-msgstr "Ngày tháng"
+msgstr "Ngày"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:311
 msgid "January"
-msgstr ""
+msgstr "Tháng một"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:312
 msgid "February"
-msgstr ""
+msgstr "Tháng hai"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:313
 msgid "March"
-msgstr ""
+msgstr "Tháng ba"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:314
 msgid "April"
-msgstr ""
+msgstr "Tháng tư"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:315
 msgid "May"
-msgstr "05"
+msgstr "Tháng năm"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:316
 msgid "June"
-msgstr ""
+msgstr "Tháng sáu"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:317
 msgid "July"
-msgstr ""
+msgstr "Tháng bảy"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:318
 msgid "August"
-msgstr ""
+msgstr "Tháng tám"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:319
 msgid "September"
-msgstr ""
+msgstr "Tháng chín"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:320
 msgid "October"
-msgstr ""
+msgstr "Tháng mười"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:321
 msgid "November"
-msgstr ""
+msgstr "Tháng mười một"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:322
 msgid "December"
-msgstr ""
+msgstr "Tháng mười hai"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:368
 msgid "Clock"
-msgstr ""
+msgstr "Đồng hồ"
+
+#~ msgid "Encrypted _Persistent Storage"
+#~ msgstr "Đã mã hoá _Ổ đĩa lưu trữ liên tục kéo dài"
+
+#~ msgid "Enter your passphrase to unlock the persistent storage"
+#~ msgstr "Nhập cụm mật khẩu của bạn để mở khóa ổ đĩa lưu trữ liên tục kéo dài"
 
 #, python-format
 #~ msgid ""
@@ -3158,7 +3506,19 @@ msgstr ""
 #~ msgstr "Có lỗi khi chọn máy chủ tải về"
 
 #~ msgid "The Amnesic Incognito Live System"
-#~ msgstr "Hệ thống cải trang tự xóa sống"
+#~ msgstr "Hệ thống Cải trang Ẩn danh tự xóa Trực tuyến"
+
+#~ msgid "Launch the Unsafe Browser?"
+#~ msgstr "Khởi chạy trình duyệt không an toàn chứ?"
+
+#~ msgid ""
+#~ "The Unsafe Browser is not anonymous and the websites that you visit can "
+#~ "see your real IP address.\\n\\nOnly use the Unsafe Browser to sign in to "
+#~ "a network, then close it."
+#~ msgstr ""
+#~ "Trình duyệt không an toàn không hề ẩn danh và các trang web mà bạn truy "
+#~ "cập có thể thấy rõ ràng địa chỉ IP thật của bạn.\\n\\n Chỉ sử dụng trình "
+#~ "duyệt không an toàn để đăng nhập vào một mạng lưới, và rồi đóng nó lại."
 
 #~ msgid "Enabled"
 #~ msgstr "Được bật lên"
