@@ -135,7 +135,7 @@ def _notify(title, body="", accept_label="", deny_label="",
     if return_id:
         for line in completed_process.stdout.splitlines():
             if line.startswith("id="):
-                return int(line[3:])
+                return line[3:]
     else:
         if completed_process.returncode == 0:
             return 1
