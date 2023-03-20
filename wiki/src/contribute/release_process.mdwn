@@ -993,6 +993,7 @@ To build the IUKS, run this command:
        git clone "$PUPPET_TAILS_REMOTE"
        time                                                                   \
        sudo                                                                   \
+       nice                                                                   \
        ./puppet-tails/files/jenkins/slaves/isobuilders/wrap_tails_create_iuks \
            --tails-git-remote "file://${RELEASE_CHECKOUT?:}/.git"             \
            --tails-git-commit "${TAG?:}"                                      \
