@@ -718,7 +718,8 @@ Given /^all notifications have disappeared$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
     @screen.press('super', 'v') # Show the notification list
-    @screen.wait('GnomeDoNotDisturb.png', 5)
+    gnome_shell.child('Do Not Disturb',
+                      roleName: 'label', showingOnly: true)
     begin
       @screen.click(
         *gnome_shell.child(
