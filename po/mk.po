@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-18 14:06+0100\n"
+"POT-Creation-Date: 2023-03-20 23:39+0100\n"
 "PO-Revision-Date: 2023-02-09 11:36+0000\n"
 "Last-Translator: emma peel <emma.peel@riseup.net>\n"
 "Language-Team: Macedonian <https://hosted.weblate.org/projects/tor/tails-gui/"
@@ -26,7 +26,7 @@ msgstr ""
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:557
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:645
 msgid "Additional Software"
 msgstr "Дополнителен софтвер"
 
@@ -516,10 +516,11 @@ msgid "Additional Settings"
 msgstr "Дополнителни поставки"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:591
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:374
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:340
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -591,12 +592,12 @@ msgstr "Исклучено"
 msgid "Off (default)"
 msgstr "Исклучено (стандардно)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:165
 #, fuzzy
 msgid "Persistent Storage Still Locked"
 msgstr "Создај Постојан склад"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:166
 #, fuzzy
 msgid ""
 "Do you really want to start Tails without unlocking your Persistent Storage?"
@@ -604,56 +605,67 @@ msgstr ""
 "Дали навистина сакате повторно да го стартувате Tails сега?\\n\\nЦелата ваша "
 "моментална работа ќе биде загубена."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:171
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
 #, fuzzy
 msgid "Start Without Persistent Storage"
 msgstr "Создај Постојан склад"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:411
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
 #, fuzzy
 msgid "Don't _Create Persistent Storage"
 msgstr "Создај Постојан склад"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:413
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
 #, fuzzy
 msgid "_Create Persistent Storage"
 msgstr "Создај Постојан склад"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:84
 #, fuzzy
 msgid "Error unlocking Persistent Storage: {}"
 msgstr "Енкриптиран_Постојан склад: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
+#. Translators: Don't translate {features}, it's a placeholder
+#. and will be replaced.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:108
+#, fuzzy, python-brace-format
+msgid "Failed to activate some features of the Persistent Storage: {features}."
+msgstr "Не успеа кофигурирањето на вашиот Постојан склад."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:113
 msgid "Error activating Persistent Storage: {}"
 msgstr "Создај Постојан склад: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:68
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:69
 msgid "Unlocking…"
 msgstr "Отклучување…"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:94
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:118
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:95
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:109
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
 msgid "Unlock"
 msgstr "Отклучи"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:99
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:100
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:40
 msgid "Cannot unlock encrypted storage with this passphrase."
 msgstr "Не може да се отклучи енкриптираниот скалд со оваа лозинка"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:112
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
 msgid ""
 "Failed to unlock the Persistent Storage. Please start Tails and send an "
 "error report."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:120
 msgid ""
 "Failed to activate the Persistent Storage. Please start Tails and send an "
 "error report."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:136
+msgid "Start Tails and open the Persistent Storage settings to find out more."
 msgstr ""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py:164
@@ -1132,6 +1144,7 @@ msgstr "su е оневозможен. Ве молиме користете sudo"
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:72
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:38
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:314
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:460
@@ -1720,6 +1733,208 @@ msgstr "Tor статус"
 msgid "Open Onion Circuits"
 msgstr "Отвори Onion кругови"
 
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:23
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:47
+#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:379
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
+#, fuzzy
+msgid "Persistent Storage"
+msgstr "Создај Постојан склад"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:46
+#, fuzzy
+msgid "Failed to start the Persistent Storage service"
+msgstr "Не успеа кофигурирањето на вашиот Постојан склад."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:73
+msgid "Could not find the WhisperBack application"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:78
+#, fuzzy
+msgid "Delete Data…"
+msgstr "Избриши"
+
+#. Translators: Don't translate {feature}, it's a placeholder
+#. and will be replaced.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:84
+#, python-brace-format
+msgid "Delete {feature} data"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:103
+#, fuzzy
+msgid "Activation failed"
+msgstr "Дотдатотеки"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:159
+msgid "Activation failed. Try again or delete data."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:161
+msgid "Activation failed. Try again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:163
+msgid "The data of this feature is still saved."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:264
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:269
+#, fuzzy
+msgid "Error activating feature {}"
+msgstr "Создај Постојан склад: {}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:307
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:312
+#, fuzzy
+msgid "Error deactivating feature {}"
+msgstr "Создај Постојан склад: {}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:331
+msgid ""
+"Delete all the data of the {} feature that is saved in the Persistent "
+"Storage?\n"
+"\n"
+"If you cancel, the data will be restored when you turn this feature on again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:341
+#, fuzzy
+msgid "_Delete Data"
+msgstr "Избриши"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:369
+msgid "Error deleting data of feature {}"
+msgstr ""
+
+#. Translators: Don't translate {applications}, it's a placeholder
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:453
+#, python-brace-format
+msgid "Close {applications} to continue"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:454
+msgid " and "
+msgstr ""
+
+#. Translators: Don't translate {app} and {pid}, they
+#. are placeholders.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:465
+#, python-brace-format
+msgid "{app} (PID: {pid})"
+msgstr ""
+
+#. Translators: Don't translate {app} and {pids}, they
+#. are placeholders.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:470
+#, python-brace-format
+msgid "{app} (PIDs: {pids})"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:36
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:8
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:56
+#, fuzzy
+msgid "Change Passphrase"
+msgstr "Покажи лозинка"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:83
+#, fuzzy
+msgid "The current passphrase is incorrect"
+msgstr "Лозинките не се исти"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:92
+#, fuzzy
+msgid "Changing the passphrase failed"
+msgstr "Покажи лозинка"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:41
+msgid "Weak"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:44
+msgid "Fair"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:47
+msgid "Good"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:50
+msgid "Strong"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/error_dialog.py:36
+msgid "You can send an error report to help solve the issue."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/error_dialog.py:42
+#, fuzzy
+msgid "_Send Error Report"
+msgstr "ШепотиНазад Пријавување грешка"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:144
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:175
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
+#, fuzzy
+msgid "Delete Persistent Storage"
+msgstr "Создај Постојан склад"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:146
+msgid ""
+"Are you sure that you want to delete your Persistent Storage? This action "
+"cannot be undone."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:149
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
+msgid "_Cancel"
+msgstr "_Исклучи"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:150
+#, fuzzy
+msgid "_Delete Persistent Storage"
+msgstr "Создај Постојан склад"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:160
+#, fuzzy
+msgid "Deleting your Persistent Storage"
+msgstr "Создај Постојан склад"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:177
+msgid ""
+"To delete the Persistent Storage, restart Tails without unlocking the "
+"Persistent Storage and open the Persistent Storage settings again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:181
+msgid "_OK"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:189
+msgid ""
+"Sorry, you can't close this app until the ongoing operation has completed."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:191
+msgid "Please wait"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:211
+#, fuzzy
+msgid "Failed to create Persistent Storage"
+msgstr "Не успеа кофигурирањето на вашиот Постојан склад."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:230
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:234
+#, fuzzy
+msgid "Error deleting Persistent Storage"
+msgstr "Енкриптиран_Постојан склад: {}"
+
 #. Translators: Don't translate {volume_label} or {volume_size},
 #. they are placeholders and will be replaced. They need
 #. to be present in the translated string.
@@ -1912,12 +2127,6 @@ msgstr "Оневозможи го Небезбедниот Прелистува�
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
 msgid "_Restart"
 msgstr "_Повторно стартувај"
-
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
-msgid "_Cancel"
-msgstr "_Исклучи"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
 msgid ""
@@ -2165,13 +2374,6 @@ msgstr "Пријави грешка"
 #: ../config/chroot_local-includes/usr/share/applications/tails-documentation.desktop.in.h:1
 msgid "Tails documentation"
 msgstr "Tails документација"
-
-#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:379
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
-#, fuzzy
-msgid "Persistent Storage"
-msgstr "Создај Постојан склад"
 
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:2
 msgid ""
@@ -2485,12 +2687,6 @@ msgstr "Исклучување"
 msgid "_Start Tails"
 msgstr "_Стартување на Tails"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:8
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:56
-#, fuzzy
-msgid "Change Passphrase"
-msgstr "Покажи лозинка"
-
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:95
 #, fuzzy
 msgid "Current _Passphrase"
@@ -2573,176 +2769,176 @@ msgstr "Лични податоци"
 msgid "Persistent Folder"
 msgstr "Избриши го постојаниот простор"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:153
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:159
 #, fuzzy
 msgid "Open Persistent Folder"
 msgstr "Избриши го постојаниот простор"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:166
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:172
 #, fuzzy
 msgid "Activate Persistent Folder"
 msgstr "Создај Постојан склад"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:191
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:199
 #, fuzzy
 msgid "System Settings"
 msgstr "Основни поставки"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:219
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:227
 #, fuzzy
 msgid "Welcome Screen"
 msgstr "Екран за Добредојде"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:229
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:243
 #, fuzzy
 msgid "Activate Welcome Screen"
 msgstr "Екран за Добредојде"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:240
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:256
 #, fuzzy
 msgid "Printers"
 msgstr "Печатачи"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:250
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:272
 #, fuzzy
 msgid "Activate Printers"
 msgstr "Печатачи"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:275
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:299
 msgid "Network"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:303
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:327
 msgid "Network Connections"
 msgstr "Поврзување на мрежа"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:304
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:328
 msgid "Save Wi-Fi passwords and mobile broadband configuration."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:314
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:344
 #, fuzzy
 msgid "Activate Network Connections"
 msgstr "Поврзување на мрежа"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:325
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:357
 msgid "Tor Bridge"
 msgstr "Tor Мост"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:335
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:373
 #, fuzzy
 msgid "Activate Tor Bridge"
 msgstr "Tor Мост"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:360
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:400
 msgid "Applications"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:388
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:428
 #, fuzzy
 msgid "Tor Browser Bookmarks"
 msgstr "Облежувачи на прелистувачот"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:398
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:444
 #, fuzzy
 msgid "Activate Tor Browser Bookmarks"
 msgstr "Облежувачи на прелистувачот"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:409
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:457
 #, fuzzy
 msgid "Electrum Bitcoin Wallet"
 msgstr "Биткоин паричник и конфигурирање на Electrum"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:419
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:473
 #, fuzzy
 msgid "Activate Electrum Bitcoin Wallet"
 msgstr "Биткоин паричник и конфигурирање на Electrum"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:430
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:486
 #, fuzzy
 msgid "Thunderbird Email Client"
 msgstr "Thunderbird"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:440
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:502
 msgid "Activate Thunderbird Email Client"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:451
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:515
 msgid "GnuPG"
 msgstr "GnuPG"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:452
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:516
 msgid "OpenPGP keys outside of Thunderbird."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:462
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:532
 msgid "Activate GnuPG"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:473
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:545
 msgid "Pidgin Internet Messenger"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:483
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:561
 msgid "Activate Pidgin Internet Messenger"
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:494
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:574
 msgid "SSH Client"
 msgstr "SSH клиент"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:504
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:590
 #, fuzzy
 msgid "Activate SSH Client"
 msgstr "SSH клиент"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:529
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:617
 #, fuzzy
 msgid "Advanced Settings"
 msgstr "Дополнителни поставки"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:558
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:646
 #, fuzzy
 msgid "Install additional software automatically when starting Tails."
 msgstr ""
 "Може да инсталирате дополнителен софтвер автоматски од вашиот постојан склад "
 "кога се стартува Tails."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:577
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:671
 #, fuzzy
 msgid "Configure Additional Software"
 msgstr "Дополнителен софтвер"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:590
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:684
 #, fuzzy
 msgid "Activate Additional Software"
 msgstr "Дополнителен софтвер"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:601
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:697
 msgid "Dotfiles"
 msgstr "Дотдатотеки"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:602
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:698
 #, fuzzy
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
 msgstr "Симлинкувај ја секоја датотека во Dotfiles фолдерот во Дома фолдерот"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:731
 #, fuzzy
 msgid "Activate Dotfiles"
 msgstr "Дотдатотеки"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:763
 msgid "Custom"
 msgstr "Прилагодено"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:678
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:782
 msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
 msgstr ""
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:824
 #, fuzzy
 msgid ""
 "<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
@@ -2819,17 +3015,12 @@ msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:29
 #, fuzzy
-msgid "_Delete..."
-msgstr "Бришење..."
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
-#, fuzzy
-msgid "Delete Persistent Storage"
-msgstr "Создај Постојан склад"
+msgid "_Delete…"
+msgstr "Избриши"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:49
 #, fuzzy
-msgid "_Change Passphrase..."
+msgid "_Change Passphrase…"
 msgstr "Покажи лозинка"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:66
@@ -3457,6 +3648,14 @@ msgstr "Декември"
 msgid "Clock"
 msgstr "Часовник"
 
+#, fuzzy
+#~ msgid "_Delete..."
+#~ msgstr "Бришење..."
+
+#, fuzzy
+#~ msgid "_Change Passphrase..."
+#~ msgstr "Покажи лозинка"
+
 #~ msgid "Encrypted _Persistent Storage"
 #~ msgstr "Енкриптиран_Постојан склад"
 
@@ -3658,9 +3857,6 @@ msgstr "Часовник"
 #~ msgstr ""
 #~ "Постојаниот простор {partition} ({size}), на <b>{vendor} {model}</b> "
 #~ "уред, ќе биде избришан."
-
-#~ msgid "Delete"
-#~ msgstr "Избриши"
 
 #~ msgid "Deleting the persistent volume..."
 #~ msgstr "Бришење на постојаниот простор..."

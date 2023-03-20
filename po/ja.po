@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-18 14:06+0100\n"
+"POT-Creation-Date: 2023-03-20 23:39+0100\n"
 "PO-Revision-Date: 2023-03-10 11:36+0000\n"
 "Last-Translator: isikawarento <Nippon2023secure@proton.me>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/tor/tails-gui/"
@@ -47,7 +47,7 @@ msgstr ""
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:557
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:645
 msgid "Additional Software"
 msgstr "追加ソフトウェア"
 
@@ -536,10 +536,11 @@ msgid "Additional Settings"
 msgstr "追加の設定"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:591
 #: config/chroot_local-includes/usr/local/sbin/tails-additional-software:374
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:340
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -609,54 +610,61 @@ msgstr "オフ"
 msgid "Off (default)"
 msgstr "オフ (既定)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:165
 #, fuzzy
 msgid "Persistent Storage Still Locked"
 msgstr "ロック解除されていない永続ストレージ"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:166
 msgid ""
 "Do you really want to start Tails without unlocking your Persistent Storage?"
 msgstr "永続ストレージのロックを解除せずに Tails を開始してもよろしいですか?"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:171
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
 #, fuzzy
 msgid "Start Without Persistent Storage"
 msgstr "永続ストレージを使用せずに継続する"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:411
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
 msgid "Don't _Create Persistent Storage"
 msgstr "永続的ストレージを作成_しない"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:413
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
 msgid "_Create Persistent Storage"
 msgstr "_永続ストレージの作成"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:84
 msgid "Error unlocking Persistent Storage: {}"
 msgstr "暗号化された永続的ストレージ: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
+#. Translators: Don't translate {features}, it's a placeholder
+#. and will be replaced.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:108
+#, fuzzy, python-brace-format
+msgid "Failed to activate some features of the Persistent Storage: {features}."
+msgstr "永続的ストレージの構成に失敗しました"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:113
 msgid "Error activating Persistent Storage: {}"
 msgstr "永続ストレージのアクティブ化エラー：{}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:68
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:69
 msgid "Unlocking…"
 msgstr "ロック解除しています…"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:94
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:118
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:95
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:109
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
 msgid "Unlock"
 msgstr "ロック解除"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:99
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:100
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:40
 msgid "Cannot unlock encrypted storage with this passphrase."
 msgstr "このパスフレーズでは暗号化されたストレージをロック解除できません。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:112
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
 msgid ""
 "Failed to unlock the Persistent Storage. Please start Tails and send an "
 "error report."
@@ -664,13 +672,20 @@ msgstr ""
 "永続ストレージのロックを解除できませんでした。 Tails を起動して、エラー レ"
 "ポートを送信してください。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:120
 msgid ""
 "Failed to activate the Persistent Storage. Please start Tails and send an "
 "error report."
 msgstr ""
 "永続ストレージのアクティブ化に失敗しました。 Tails を起動して、エラー レポー"
 "トを送信してください。"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:136
+#, fuzzy
+msgid "Start Tails and open the Persistent Storage settings to find out more."
+msgstr ""
+"永続ストレージのロックを解除できませんでした。 Tails を起動して、エラー レ"
+"ポートを送信してください。"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py:164
 msgid "_Language"
@@ -1138,6 +1153,7 @@ msgstr "su は無効になっています。代わりに sudo を使ってくだ
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:72
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:38
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:314
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:460
@@ -1720,6 +1736,205 @@ msgstr "Tor の状態"
 msgid "Open Onion Circuits"
 msgstr "Onion 回線を開きます"
 
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:23
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:47
+#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:379
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
+msgid "Persistent Storage"
+msgstr "永続ストレージ"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:46
+#, fuzzy
+msgid "Failed to start the Persistent Storage service"
+msgstr "永続的ストレージの構成に失敗しました"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:73
+msgid "Could not find the WhisperBack application"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:78
+#, fuzzy
+msgid "Delete Data…"
+msgstr "削除"
+
+#. Translators: Don't translate {feature}, it's a placeholder
+#. and will be replaced.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:84
+#, python-brace-format
+msgid "Delete {feature} data"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:103
+#, fuzzy
+msgid "Activation failed"
+msgstr "ドットファイルを有効にする"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:159
+msgid "Activation failed. Try again or delete data."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:161
+msgid "Activation failed. Try again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:163
+msgid "The data of this feature is still saved."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:264
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:269
+#, fuzzy
+msgid "Error activating feature {}"
+msgstr "永続ストレージのアクティブ化エラー：{}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:307
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:312
+#, fuzzy
+msgid "Error deactivating feature {}"
+msgstr "永続ストレージのアクティブ化エラー：{}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:331
+msgid ""
+"Delete all the data of the {} feature that is saved in the Persistent "
+"Storage?\n"
+"\n"
+"If you cancel, the data will be restored when you turn this feature on again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:341
+#, fuzzy
+msgid "_Delete Data"
+msgstr "削除"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:369
+msgid "Error deleting data of feature {}"
+msgstr ""
+
+#. Translators: Don't translate {applications}, it's a placeholder
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:453
+#, python-brace-format
+msgid "Close {applications} to continue"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:454
+msgid " and "
+msgstr ""
+
+#. Translators: Don't translate {app} and {pid}, they
+#. are placeholders.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:465
+#, python-brace-format
+msgid "{app} (PID: {pid})"
+msgstr ""
+
+#. Translators: Don't translate {app} and {pids}, they
+#. are placeholders.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:470
+#, python-brace-format
+msgid "{app} (PIDs: {pids})"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:36
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:8
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:56
+msgid "Change Passphrase"
+msgstr "パスフレーズを変更する"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:83
+#, fuzzy
+msgid "The current passphrase is incorrect"
+msgstr "パスフレーズが一致しません"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:92
+#, fuzzy
+msgid "Changing the passphrase failed"
+msgstr "パスフレーズを変更する"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:41
+msgid "Weak"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:44
+msgid "Fair"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:47
+msgid "Good"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:50
+msgid "Strong"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/error_dialog.py:36
+msgid "You can send an error report to help solve the issue."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/error_dialog.py:42
+#, fuzzy
+msgid "_Send Error Report"
+msgstr "エラーレポートを送信する"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:144
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:175
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
+msgid "Delete Persistent Storage"
+msgstr "永続ストレージの削除"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:146
+msgid ""
+"Are you sure that you want to delete your Persistent Storage? This action "
+"cannot be undone."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:149
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
+msgid "_Cancel"
+msgstr "キャンセル(_C)"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:150
+#, fuzzy
+msgid "_Delete Persistent Storage"
+msgstr "永続ストレージの削除"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:160
+#, fuzzy
+msgid "Deleting your Persistent Storage"
+msgstr "永続ストレージの削除"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:177
+msgid ""
+"To delete the Persistent Storage, restart Tails without unlocking the "
+"Persistent Storage and open the Persistent Storage settings again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:181
+msgid "_OK"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:189
+msgid ""
+"Sorry, you can't close this app until the ongoing operation has completed."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:191
+msgid "Please wait"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:211
+#, fuzzy
+msgid "Failed to create Persistent Storage"
+msgstr "永続的ストレージの構成に失敗しました"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:230
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:234
+#, fuzzy
+msgid "Error deleting Persistent Storage"
+msgstr "暗号化された永続的ストレージ: {}"
+
 #. Translators: Don't translate {volume_label} or {volume_size},
 #. they are placeholders and will be replaced. They need
 #. to be present in the translated string.
@@ -1913,12 +2128,6 @@ msgstr "Unsafe Browserを使用するには、Tailsを再起動してくださ�
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
 msgid "_Restart"
 msgstr "再起動 (_R)"
-
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
-msgid "_Cancel"
-msgstr "キャンセル(_C)"
 
 #: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
 msgid ""
@@ -2160,12 +2369,6 @@ msgstr "エラーを報告"
 #: ../config/chroot_local-includes/usr/share/applications/tails-documentation.desktop.in.h:1
 msgid "Tails documentation"
 msgstr "Tails ドキュメント"
-
-#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:379
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
-msgid "Persistent Storage"
-msgstr "永続ストレージ"
 
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:2
 msgid ""
@@ -2474,11 +2677,6 @@ msgstr "停止"
 msgid "_Start Tails"
 msgstr "Tails を起動 (_S)"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:8
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:56
-msgid "Change Passphrase"
-msgstr "パスフレーズを変更する"
-
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:95
 msgid "Current _Passphrase"
 msgstr "現在の_パスフレーズ"
@@ -2563,152 +2761,152 @@ msgstr "個人文書"
 msgid "Persistent Folder"
 msgstr "永続フォルダー"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:153
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:159
 msgid "Open Persistent Folder"
 msgstr "永続フォルダーを開く"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:166
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:172
 msgid "Activate Persistent Folder"
 msgstr "永続フォルダを有効化"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:191
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:199
 msgid "System Settings"
 msgstr "システム設定"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:219
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:227
 #, fuzzy
 msgid "Welcome Screen"
 msgstr "ウェルカムスクリーンを有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:229
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:243
 msgid "Activate Welcome Screen"
 msgstr "ウェルカムスクリーンを有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:240
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:256
 #, fuzzy
 msgid "Printers"
 msgstr "プリンターの有効化"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:250
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:272
 msgid "Activate Printers"
 msgstr "プリンターの有効化"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:275
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:299
 msgid "Network"
 msgstr "ネットワーク"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:303
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:327
 msgid "Network Connections"
 msgstr "ネットワーク接続"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:304
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:328
 msgid "Save Wi-Fi passwords and mobile broadband configuration."
 msgstr "Wi-Fi パスワードとモバイル ブロードバンド構成を保存します。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:314
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:344
 msgid "Activate Network Connections"
 msgstr "ネットワーク接続を有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:325
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:357
 msgid "Tor Bridge"
 msgstr "Tor ブリッジ"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:335
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:373
 msgid "Activate Tor Bridge"
 msgstr "Tor ブリッジを有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:360
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:400
 msgid "Applications"
 msgstr "アプリケーション"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:388
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:428
 #, fuzzy
 msgid "Tor Browser Bookmarks"
 msgstr "Tor Browserのブックマークを有効化する"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:398
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:444
 msgid "Activate Tor Browser Bookmarks"
 msgstr "Tor Browserのブックマークを有効化する"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:409
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:457
 msgid "Electrum Bitcoin Wallet"
 msgstr "Electrum Bitcoin ウォレット"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:419
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:473
 msgid "Activate Electrum Bitcoin Wallet"
 msgstr "Electrum Bitcoin ウォレットを有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:430
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:486
 msgid "Thunderbird Email Client"
 msgstr "Thunderbird メールクライアント"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:440
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:502
 msgid "Activate Thunderbird Email Client"
 msgstr "Thunderbird メール クライアントを有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:451
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:515
 msgid "GnuPG"
 msgstr "GnuPG"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:452
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:516
 msgid "OpenPGP keys outside of Thunderbird."
 msgstr "Thunderbird 以外の OpenPGP キー。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:462
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:532
 msgid "Activate GnuPG"
 msgstr "GnuPG を有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:473
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:545
 msgid "Pidgin Internet Messenger"
 msgstr "Pidgin インターネットメッセンジャー"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:483
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:561
 msgid "Activate Pidgin Internet Messenger"
 msgstr "Pidginインターネットメッセンジャーをアクティベートする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:494
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:574
 msgid "SSH Client"
 msgstr "SSH クライアント"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:504
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:590
 msgid "Activate SSH Client"
 msgstr "SSH クライアントを有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:529
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:617
 msgid "Advanced Settings"
 msgstr "高度な設定"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:558
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:646
 msgid "Install additional software automatically when starting Tails."
 msgstr "Tails起動時に自動的に追加ソフトをインストールする。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:577
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:671
 msgid "Configure Additional Software"
 msgstr "追加のソフトウェアを構成する"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:590
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:684
 msgid "Activate Additional Software"
 msgstr "追加のソフトウェアを有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:601
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:697
 msgid "Dotfiles"
 msgstr "ドットファイル"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:602
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:698
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
 msgstr ""
 "Dotfiles フォルダー内のすべてのファイルをホーム フォルダーにシンボリック リン"
 "クする。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:731
 msgid "Activate Dotfiles"
 msgstr "ドットファイルを有効にする"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:763
 msgid "Custom"
 msgstr "カスタム"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:678
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:782
 msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
@@ -2716,7 +2914,7 @@ msgstr ""
 "カスタム機能を追加または削除するには、/live/persistence/TailsData_unlocked/"
 "persistence.confを修正します。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:824
 msgid ""
 "<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
 "a>"
@@ -2814,16 +3012,14 @@ msgid "Co_ntinue"
 msgstr "Co_ntinue"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:29
-msgid "_Delete..."
-msgstr "_削除中..."
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
-msgid "Delete Persistent Storage"
-msgstr "永続ストレージの削除"
+#, fuzzy
+msgid "_Delete…"
+msgstr "削除"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:49
-msgid "_Change Passphrase..."
-msgstr "_パスフレーズの変更..."
+#, fuzzy
+msgid "_Change Passphrase…"
+msgstr "パスフレーズを変更する"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:66
 msgid "_Restart Tails"
@@ -3431,6 +3627,12 @@ msgstr "12 月"
 msgid "Clock"
 msgstr "時間"
 
+#~ msgid "_Delete..."
+#~ msgstr "_削除中..."
+
+#~ msgid "_Change Passphrase..."
+#~ msgstr "_パスフレーズの変更..."
+
 #~ msgid "Encrypted _Persistent Storage"
 #~ msgstr "暗号化された永続的ストレージ (_P)"
 
@@ -3626,9 +3828,6 @@ msgstr "時間"
 #~ msgstr ""
 #~ "<b>{vendor} {model}</b>のデバイス上の永続的ボリューム {partition} "
 #~ "({size}) は削除されます。"
-
-#~ msgid "Delete"
-#~ msgstr "削除"
 
 #~ msgid "Deleting the persistent volume..."
 #~ msgstr "永続的ボリュームを削除中..."
