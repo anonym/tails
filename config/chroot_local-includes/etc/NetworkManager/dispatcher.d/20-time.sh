@@ -6,14 +6,6 @@
 set -e
 set -u
 
-# Get LIVE_USERNAME
-# shellcheck source=../../live/config.d/username.conf
-. /etc/live/config.d/username.conf
-
-# Import export_gnome_env().
-# shellcheck source=../../../usr/local/lib/tails-shell-library/gnome.sh
-. /usr/local/lib/tails-shell-library/gnome.sh
-
 ### Exit conditions
 
 # Run only when the interface is not "lo":
@@ -26,14 +18,4 @@ if [ "$2" != "up" ]; then
 	exit 0
 fi
 
-### Functions
-
-start_notification_helper() {
-	export_gnome_env
-	exec /bin/su -c /usr/local/lib/tails-htp-notify-user "$LIVE_USERNAME" &
-}
-
-
-### Main
-
-start_notification_helper
+/usr/local/lib/run-with-user-env systemctl --user restart tails-htpdate-notify-user.service

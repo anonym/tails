@@ -3,6 +3,22 @@ require 'resolv'
 require 'yaml'
 require "#{Dir.pwd}/features/support/helpers/misc_helpers.rb"
 
+TRUE_VALUES = ['1', 'y', 'yes', 'true']
+def config_bool(name)
+  value = $config[name]
+
+  if value.nil?
+    return false
+  end
+
+  if value.is_a?(TrueClass) || value.is_a?(FalseClass)
+    return value
+  end
+
+  # It's not a boolean so we assume it's a string
+  TRUE_VALUES.include?(value.downcase)
+end
+
 # These files deal with options like some of the settings passed
 # to the `run_test_suite` script, and "secrets" like credentials
 # (passwords, SSH keys) to be used in tests.
@@ -46,6 +62,7 @@ KEEP_SNAPSHOTS = !ENV['KEEP_SNAPSHOTS'].nil?
 DISABLE_CHUTNEY = !ENV['DISABLE_CHUTNEY'].nil?
 LATE_PATCH = ENV['LATE_PATCH']
 EARLY_PATCH = !ENV['EARLY_PATCH'].nil?
+EXTRA_BOOT_OPTIONS = ENV['EXTRA_BOOT_OPTIONS']
 LIVE_USER = cmd_helper(
   '. config/chroot_local-includes/etc/live/config.d/username.conf; ' \
   'echo ${LIVE_USERNAME}'

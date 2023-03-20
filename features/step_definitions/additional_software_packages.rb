@@ -38,14 +38,15 @@ end
 
 def click_gnome_shell_notification_button(title)
   # The notification buttons do not expose any actions through AT-SPI,
-  # so Dogtail is unable to click it. Luckily the buttons report the
-  # correct position (unlike most applications under Wayland) so we
-  # at least can learn where to click using other methods.
-  @screen.click(
-    *Dogtail::Application.new('gnome-shell')
-       .child(title, roleName: 'push button')
-       .position
-  )
+  # so Dogtail is unable to click it directly. We let it grab focus
+  # and activate it via the keyboard instead.
+  try_for(10) do
+    button = Dogtail::Application.new('gnome-shell')
+                                 .child(title, roleName: 'push button')
+    button.grabFocus
+    button.focused
+  end
+  @screen.press('Return')
 end
 
 Then /^I create a persistent storage and activate the Additional Software feature$/ do
@@ -110,6 +111,7 @@ When /^I (refuse|accept) (adding|removing) "([^"]*)" (?:to|from) Additional Soft
   end
   try_for(300) do
     click_gnome_shell_notification_button(button_title)
+    true
   end
 end
 

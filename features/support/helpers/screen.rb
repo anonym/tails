@@ -134,8 +134,8 @@ class Screen
   end
 
   def check_and_raise_display_output_not_active
-      p = match_screen('DisplayOutputIsNotActive.png', OPENCV_MIN_SIMILARITY, false)
-      raise DisplayOutputIsNotActive, 'screen reached "Display output is not active"' unless p.nil?
+    p = match_screen('DisplayOutputIsNotActive.png', OPENCV_MIN_SIMILARITY, false)
+    raise DisplayOutputIsNotActive, 'screen reached "Display output is not active"' unless p.nil?
   end
 
   def real_find(pattern, **opts)

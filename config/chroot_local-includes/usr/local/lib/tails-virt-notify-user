@@ -4,8 +4,6 @@ import gettext
 import subprocess
 import sys
 
-from tailslib.gnome import gnome_env_vars
-
 import gi
 
 from gi.repository import GLib
@@ -54,7 +52,7 @@ class VirtNotifier(object):
             )
         elif action == "documentation":
             subprocess.run(
-                ["env", *gnome_env_vars(), "tails-documentation",
+                ["/usr/local/lib/run-with-user-env", "tails-documentation",
                  'doc/advanced_topics/virtualization', 'security']
             )
         sys.exit(0)

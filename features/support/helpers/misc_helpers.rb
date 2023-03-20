@@ -90,9 +90,20 @@ def try_for(timeout, **options)
         # Most other exceptions, that inherit from StandardError, are ignored
         # while trying the block. We save the last exception so we can
         # print it in case of a timeout.
+        e = Cucumber::Formatter::BacktraceFilter.new(e).exception
+        if options[:log]
+          msg = "try_for: failed with exception: #{e.class}: #{e}"
+          # Log the stack trace unless the exception is the same as the
+          # last exception
+          if last_exception.nil? || (
+            e.class != last_exception.class &&
+            e.message != last_exception.message
+          )
+            msg += "\n#{e.backtrace.join("\n")}"
+          end
+          debug_log(msg)
+        end
         last_exception = e
-        debug_log('try_for: failed with exception: ' \
-                  "#{last_exception.class}: #{last_exception}") if options[:log]
       rescue Exception => e # rubocop:disable Lint/RescueException
         # Any other exception is rethrown as-is: it is probably not
         # the kind of failure that try_for is supposed to mask.
@@ -129,6 +140,7 @@ rescue unique_timeout_exception
   if last_exception
     msg += "\nLast ignored exception was: " \
            "#{last_exception.class}: #{last_exception}"
+    msg += "\n#{last_exception.backtrace.join("\n")}"
   end
   raise exc_class, msg
 end
@@ -193,36 +205,34 @@ def retry_action(max_retries, **options, &block)
 
   retries = 1
   loop do
-    begin
-      debug_log("retry_action: trying #{options[:operation_name]} (attempt " \
-                "#{retries} of #{max_retries})...")
-      block.call
-      debug_log('retry_action: success!')
-      return
-    rescue NameError => e
-      # NameError most likely means typos, and hiding that is rarely
-      # (never?) a good idea, so we rethrow them.
-      raise e
-    rescue StandardError => e
-      if retries <= max_retries
-        debug_log("retry_action: #{options[:operation_name]} failed with " \
-                  "exception: #{e.class}: #{e.message}")
-        options[:recovery_proc]&.call
-        retries += 1
-        sleep options[:delay]
-      else
-        raise MaxRetriesFailure,
-              "#{options[:operation_name]} failed (despite retrying " \
-              "#{max_retries} times) with\n" \
-              "#{e.class}: #{e.message}"
-      end
-    rescue Exception => e # rubocop:disable Lint/RescueException
-      # Any other exception is rethrown as-is: it is probably not
-      # the kind of failure that retry_action is supposed to mask.
-      # For example, retry_action should not prevent a SignalException
-      # from being handled by Ruby.
-      raise e
+    debug_log("retry_action: trying #{options[:operation_name]} (attempt " \
+              "#{retries} of #{max_retries})...")
+    block.call
+    debug_log('retry_action: success!')
+    return
+  rescue NameError => e
+    # NameError most likely means typos, and hiding that is rarely
+    # (never?) a good idea, so we rethrow them.
+    raise e
+  rescue StandardError => e
+    if retries <= max_retries
+      debug_log("retry_action: #{options[:operation_name]} failed with " \
+                "exception: #{e.class}: #{e.message}")
+      options[:recovery_proc]&.call
+      retries += 1
+      sleep options[:delay]
+    else
+      raise MaxRetriesFailure,
+            "#{options[:operation_name]} failed (despite retrying " \
+            "#{max_retries} times) with\n" \
+            "#{e.class}: #{e.message}"
     end
+  rescue Exception => e # rubocop:disable Lint/RescueException
+    # Any other exception is rethrown as-is: it is probably not
+    # the kind of failure that retry_action is supposed to mask.
+    # For example, retry_action should not prevent a SignalException
+    # from being handled by Ruby.
+    raise e
   end
 end
 
@@ -395,11 +405,15 @@ end
 def dbus_send_ret_conv(ret)
   type, val = /^\s*(\S+)\s+(.+)$/m.match(ret)[1, 2]
   case type
+  when 'variant'
+    dbus_send_ret_conv(val)
   when 'string'
     # Unquote
     val[1...-1]
   when 'int32'
     val.to_i
+  when 'boolean'
+    val == 'true'
   when 'array'
     # Drop array start/stop markers ([])
     val.split("\n")[1...-1].map { |e| dbus_send_ret_conv(e) }
@@ -410,6 +424,9 @@ end
 
 def dbus_send_get_shellcommand(service, object_path, method, *args, **opts)
   opts ||= {}
+  opts[:use_system_bus] ||= false
+  bus_arg = opts[:use_system_bus] ? '--system' : '--session'
+
   ruby_type_to_dbus_type = {
     String  => 'string',
     Integer => 'int32',
@@ -420,8 +437,10 @@ def dbus_send_get_shellcommand(service, object_path, method, *args, **opts)
                    "No D-Bus type conversion for Ruby type '#{arg.class}'")
     "#{type}:#{arg}"
   end
+
   $vm.execute(
-    "dbus-send --print-reply --dest=#{service} #{object_path} " \
+    "dbus-send #{bus_arg} --print-reply " \
+    "--dest=#{service} #{object_path} " \
     "    #{method} #{typed_args.join(' ')}",
     **opts
   )

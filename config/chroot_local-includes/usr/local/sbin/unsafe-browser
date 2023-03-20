@@ -19,21 +19,13 @@ export TEXTDOMAIN
 # Import nm_is_connected
 . /usr/local/lib/tails-shell-library/network.sh
 
-# Import export_gnome_env()
-. /usr/local/lib/tails-shell-library/gnome.sh
-
 
 _zenity () {
-    DBUS_SESSION_BUS_ADDRESS="$(
-        export_gnome_env
-        echo "${DBUS_SESSION_BUS_ADDRESS}"
-    )"
     AT_SPI_BUS_ADDRESS="$(
-        sudo -u "${SUDO_USER}" \
-            env DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
-            dbus-send --session --print-reply=literal \
-                --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress \
-                | sed 's/^ *//'
+        /usr/local/lib/run-with-user-env \
+        dbus-send --session --print-reply=literal \
+            --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress \
+            | sed 's/^ *//'
     )"
     sudo -u "${SUDO_USER}" \
          env AT_SPI_BUS_ADDRESS="${AT_SPI_BUS_ADDRESS}" \

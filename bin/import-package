@@ -52,7 +52,7 @@ set -e
 set -u
 
 umask 0022
-sed --regexp-extended -e 's,^deb(\s+.*),deb\1 contrib non-free,' \
+sed --regexp-extended -e 's,^deb(\s+.*),deb\1 contrib non-free non-free-firmware,' \
    /etc/apt/sources.list \
    > /etc/apt/sources.list.d/tmp-deb.list
 sed --regexp-extended -e 's,^deb(\s+),deb-src\1,' \

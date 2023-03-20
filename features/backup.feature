@@ -10,7 +10,7 @@ Feature: Backing up the persistent storage
     And I shutdown Tails and wait for the computer to power off
     And I clone USB drive "__internal" to a temporary USB drive "backup"
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
-    And I write a file /live/persistence/TailsData_unlocked/new with contents "foo"
+    And I write a file "/live/persistence/TailsData_unlocked/new" with contents "foo"
     When I start Tails' custom backup tool
     Then the backup tool displays "Plug in your backup Tails USB stick"
     When I plug USB drive "backup"

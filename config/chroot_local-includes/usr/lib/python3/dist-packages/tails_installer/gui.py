@@ -28,6 +28,7 @@ A graphical interface for the Tails Installer
 
 import os
 import logging
+import subprocess
 import threading
 import traceback
 import time
@@ -333,6 +334,12 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         self.live.log.debug('Calling populate_devices()'
                             ' from on_radio_button_source_iso_toggled')
         self.populate_devices()
+
+    def on_activate_link_button(self, link_button: Gtk.LinkButton):
+        uri = link_button.get_uri()
+        self.live.log.debug("Opening Documentation: %s", uri)
+        subprocess.run(["tails-documentation", uri])
+        return True
 
     def on_force_reinstall_clicked(self, button):
         # If the user has chosen install from ISO, but no ISO is selected

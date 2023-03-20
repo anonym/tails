@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-15 08:44+0100\n"
-"PO-Revision-Date: 2023-02-10 22:39+0000\n"
+"POT-Creation-Date: 2023-03-18 14:06+0100\n"
+"PO-Revision-Date: 2023-03-09 08:38+0000\n"
 "Last-Translator: george kitsoukakis <norhorn@gmail.com>\n"
 "Language-Team: Greek <https://hosted.weblate.org/projects/tor/tails-gui/el/"
 ">\n"
@@ -43,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16-dev\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
@@ -366,7 +366,7 @@ msgid "Upgrade later"
 msgstr "Αναβάθμιση αργότερα"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:518
-#, fuzzy, perl-brace-format
+#, perl-brace-format
 msgid ""
 "<b>You should do a manual upgrade to the latest version of {name}.</b>\n"
 "\n"
@@ -383,7 +383,7 @@ msgstr ""
 "Για περισσότερες πληροφορίες σχετικά με τη νέα έκδοση, δείτε το "
 "{details_url}\n"
 "\n"
-"Είναι δυνατή η αυτόματη αναβάθμιση του Tails στη νέα έκδοση.\n"
+"Είναι δυνατή η αυτόματη αναβάθμιση του Tails στη νέα έκδοση: {explanation}.\n"
 "\n"
 "Για να μάθετε πως να κάνετε χειροκίνητη αναβάθμιση, δείτε το "
 "{manual_upgrade_url}"
@@ -545,9 +545,9 @@ msgid "Additional Settings"
 msgstr "Πρόσθετες Ρυθμίσεις"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:591
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:374
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
 msgid "Cancel"
 msgstr "Ακύρωση"
@@ -618,29 +618,28 @@ msgstr "Κλειστό"
 msgid "Off (default)"
 msgstr "Κλειστό (προεπιλογή)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
-#, fuzzy
-msgid "Persistent Storage Not Unlocked"
-msgstr "Μόνιμος αποθηκευτικός χώρος"
-
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
 #, fuzzy
+msgid "Persistent Storage Still Locked"
+msgstr "Ο μόνιμος αποθηκευτικός χώρος δεν ξεκλειδώθηκε"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
 msgid ""
 "Do you really want to start Tails without unlocking your Persistent Storage?"
 msgstr ""
-"Θέλετε να επανεκκινήσετε το Tails τώρα;\\n\\nΟι εργασίες σας θα χαθούν."
+"Θέλετε να εκκινήσετε το Tails χωρίς να ξεκλειδώσετε τον μόνιμο αποθηκευτικό "
+"χώρο;"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:171
 #, fuzzy
-msgid "Continue Without Persistent Storage"
-msgstr "Δημιουργία Μόνιμου αποθηκευτικού χώρου"
+msgid "Start Without Persistent Storage"
+msgstr "Συνέχεια χωρίς το μόνιμο αποθηκευτικό χώρο"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
-#, fuzzy
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:411
 msgid "Don't _Create Persistent Storage"
-msgstr "_Δημιουργία μόνιμου αποθηκευτικού χώρου"
+msgstr "Να μην _δημιουργηθεί μόνιμος αποθηκευτικός χώρος"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:413
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
 msgid "_Create Persistent Storage"
 msgstr "_Δημιουργία μόνιμου αποθηκευτικού χώρου"
@@ -660,7 +659,6 @@ msgstr "Ξεκλειδώνεται…"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:94
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:118
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:508
 msgid "Unlock"
 msgstr "Ξεκλείδωμα"
 
@@ -898,7 +896,7 @@ msgstr "Η συσκευή είναι loopback. Παρακάμπτεται η ε�
 msgid "Synchronizing data on disk..."
 msgstr "Γίνεται συγχρονισμός των δεδομένων δίσκου..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:146
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:147
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
@@ -906,63 +904,63 @@ msgstr ""
 "Σφάλμα: Αδυναμία ορισμού της ετικέτας ή λήψης του UUID της συσκευής σας. "
 "Αδυναμία συνέχειας."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:180
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:181
 #, python-format
 msgid "Installation complete! (%s)"
 msgstr "Η εγκατάσταση ολοκληρώθηκε! (%s)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:185
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:186
 msgid "Tails installation failed!"
 msgstr "Η εγκατάσταση του Tails απέτυχε!"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:274
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:275
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:1
 msgid "Tails Installer"
 msgstr "Πρόγραμμα εγκατάστασης Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:316
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:163
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:317
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:164
 msgid "Clone the current Tails"
 msgstr "Κλωνοποίηση του τρέχοντος Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:323
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:184
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:324
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:185
 msgid "Use a downloaded Tails ISO image"
 msgstr "Χρησιμοποιήστε μια κατεβασμένη ISO image του Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:361
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:368
 msgid "Upgrade"
 msgstr "Αναβάθμιση"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:362
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:369
 msgid "Manual Upgrade Instructions"
 msgstr "Οδηγίες χειροκίνητης αναβάθμισης"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:373
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:572
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:358
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:380
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:579
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:359
 msgid "Install"
 msgstr "Εγκατάσταση"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:376
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:383
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:131
 msgid "Installation Instructions"
 msgstr "Οδηγίες εγκατάστασης"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:383
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:390
 #, python-format
 msgid "%(size)s %(vendor)s %(model)s device (%(device)s)"
 msgstr "%(size)s %(vendor)s %(model)s συσκευή (%(device)s)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:395
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:402
 msgid "No ISO image selected"
 msgstr "Δεν έχει επιλεχθεί ISO image"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:396
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:403
 msgid "Please select a Tails ISO image."
 msgstr "Παρακαλούμε επιλέξτε ένα ISO image του Tails."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:458
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:465
 #, python-format
 msgid ""
 "The USB stick \"%(pretty_name)s\" is configured as non-removable by its "
@@ -973,16 +971,16 @@ msgstr ""
 "αφαιρέσιμο από τον κατασκευαστή του και το Tails θα αποτύχουν να εκκινηθούν "
 "σε αυτό. Παρακαλώ προσπαθήστε να εγκαταστήσετε σε διαφορετικό μοντέλο."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:468
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:475
 #, python-format
 msgid ""
 "The device \"%(pretty_name)s\" is too small to install Tails (at least "
 "%(size)s GB is required)."
 msgstr ""
-"Η συσκευή  \"%(pretty_name)s\" είναι πολύ μικρή για να εγκαταστήσετε το "
-"Tails (απαιτούνται τουλάχιστον %(size)s GB)."
+"Η συσκευή \"%(pretty_name)s\" είναι πολύ μικρή για να εγκαταστήσετε το Tails "
+"(απαιτούνται τουλάχιστον %(size)s GB)."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:481
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:488
 #, python-format
 msgid ""
 "To upgrade device \"%(pretty_name)s\" from this Tails, you need to use a "
@@ -994,36 +992,36 @@ msgstr ""
 "κατεβάσει:\n"
 "%(dl_url)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:501
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:508
 msgid "No device suitable to install Tails could be found"
 msgstr ""
 "Δε βρέθηκε συσκευή που να πληρεί τις προϋποθέσεις για την εγκατάσταση του "
-"Tails "
+"Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:503
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:510
 #, python-format
 msgid "Please plug a USB flash drive or SD card of at least %0.1f GB."
 msgstr ""
 "Παρακαλώ εισάγετε μονάδα δίσκου usb ή κάρτα SD μεγέθους τουλάχιστον %0.1f GB."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:515
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:522
 msgid "An error happened while installing Tails"
 msgstr "Προέκυψε σφάλμα κατά την εγκατάσταση του Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:567
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:574
 msgid "Installation complete!"
 msgstr "Η εγκατάσταση ολοκληρώθηκε!"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:622
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:629
 msgid "Unable to mount device"
 msgstr "Αδυναμία προσάρτησης συσκευής"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:628
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:635
 #, python-format
 msgid "%(parent_size)s %(vendor)s %(model)s device (%(device)s)"
 msgstr "%(parent_size)s %(vendor)s %(model)s συσκευή (%(device)s)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:637
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:644
 msgid ""
 "\n"
 "\n"
@@ -1033,11 +1031,11 @@ msgstr ""
 "\n"
 "Ο μόνιμος χώρος του αφαιρούμενου μέσου USB θα χαθεί."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:638
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:645
 msgid "Delete Persistent Storage and Reinstall"
 msgstr "Διαγραφή του μόνιμου αποθηκευτικού χώρου και επανεγκατάσταση"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:640
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:647
 msgid ""
 "\n"
 "\n"
@@ -1047,20 +1045,20 @@ msgstr ""
 "\n"
 "Όλα τα δεδομένα αυτής της μονάδας USB θα χαθούν."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:641
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:648
 msgid "Delete All Data and Install"
 msgstr "Διαγραφή όλων των δεδομένων και εγκατάσταση"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:642
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:649
 #, python-format
 msgid "%(description)s%(delete_message)s"
 msgstr "%(description)s%(delete_message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:646
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:653
 msgid "Confirm the target USB stick"
 msgstr "Επιβεβαιώστε τη μονάδα USB προορισμού"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:687
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:694
 msgid ""
 "The selected file is unreadable. Please fix its permissions or select "
 "another file."
@@ -1068,7 +1066,7 @@ msgstr ""
 "Το συγκεκριμένο αρχείο δεν μπορεί να αναγνωσθεί. Παρακαλώ διορθώστε τα "
 "δικαιώματά του ή διαλέξτε άλλο αρχείο."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:693
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:700
 msgid ""
 "Unable to use the selected file.  You may have better luck if you move your "
 "ISO to the root of your drive (ie: C:\\)"
@@ -1076,7 +1074,7 @@ msgstr ""
 "Αδυναμία χρήσης του επιλεγμένου αρχείου. Μπορεί να έχετε καλύτερη τύχη αν "
 "μετακινήσετε το ISO στη ρίζα του δίσκου σας (π.χ.: C:\\)."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:699
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:706
 #, python-format
 msgid "%(filename)s selected"
 msgstr "επιλέχθηκαν %(filename)s"
@@ -1167,7 +1165,7 @@ msgstr ""
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:46
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:38
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:314
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:460
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:593
@@ -1233,7 +1231,7 @@ msgstr "μη διαθέσιμο"
 
 #. Translators: Don't translate {details}, it's a placeholder and will
 #. be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:150
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:157
 #, python-brace-format
 msgid ""
 "{details} Please check your list of additional software or read the system "
@@ -1242,7 +1240,7 @@ msgstr ""
 "{details} Παρακαλώ, ελέγξτε τη λίστα σας με τα επιπρόσθετα λογισμικά ή "
 "διαβάστε το αρχείο συστήματος για να κατανοήσετε το πρόβλημα."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:155
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:162
 msgid ""
 "Please check your list of additional software or read the system log to "
 "understand the problem."
@@ -1250,56 +1248,56 @@ msgstr ""
 "[λεπτομέρειες] Παρακαλώ, ελέγξτε τη λίστα σας με τα επιπρόσθετα λογισμικά ή "
 "διαβάστε το αρχείο συστήματος για να κατανοήσετε το πρόβλημα."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:166
 msgid "Show Log"
 msgstr "Εμφάνιση αρχείου καταγραφής"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:166
 msgid "Configure"
 msgstr "Διαμόρφωση"
 
 #. Translators: Don't translate {beginning} or {last}, they are
 #. placeholders and will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:225
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:232
 #, python-brace-format
 msgid "{beginning} and {last}"
 msgstr "{beginning} και {last}"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:226
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:233
 msgid ", "
 msgstr ", "
 
 #. Translators: Don't translate {packages}, it's a placeholder and will
 #. be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:291
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:321
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:298
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:328
 #, python-brace-format
 msgid "Add {packages} to your additional software?"
 msgstr "Να προστεθούν τα {packages} στο επιπρόθετο λογισμικό σας;"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:293
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:300
 msgid ""
 "To install it automatically from your persistent storage when starting Tails."
 msgstr ""
 "Μπορείτε να εγκαταστήσετε επιπλέον λογισμικό αυτόματα από το μόνιμο "
 "αποθηκευτικό σας χώρο ξεκινώντας το Tails."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:295
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:302
 msgid "Install Every Time"
 msgstr "Εγκατάσταση κάθε φορά"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:296
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:327
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:303
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:334
 msgid "Install Only Once"
 msgstr "Εγκατάσταση μόνο μία φορά"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:302
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:332
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:372
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:309
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:339
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:379
 msgid "The configuration of your additional software failed."
 msgstr "Η διαμόρφωση για το επιπρόσθετο λογισμικό απέτυχε."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:323
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:330
 msgid ""
 "To install it automatically when starting Tails, you can create a persistent "
 "storage and activate the <b>Additional Software</b> feature."
@@ -1308,69 +1306,69 @@ msgstr ""
 "δημιουργήσετε ένα μόνιμο αποθηκευτικό χώρο και να ενεργοποιήσετε τη "
 "λειτουργία <b>Πρόσθετο λογισμικό</b>."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:326
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:265
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:333
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:246
 msgid "Create Persistent Storage"
 msgstr "Δημιουργία Μόνιμου αποθηκευτικού χώρου"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:334
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:341
 msgid "Creating your persistent storage failed."
 msgstr "Η δημιουργία μόνιμου αποθηκευτικού χώρου απέτυχε."
 
 #. Translators: Don't translate {packages}, it's a placeholder and
 #. will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:343
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:350
 #, python-brace-format
 msgid "You could install {packages} automatically when starting Tails"
 msgstr ""
 "Θα μπορούσατε να εγκαταστήσετε {packages} αυτόματα ξεκινώντας το Tails."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:346
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:353
 msgid "To do so, you need to run Tails from a USB stick."
 msgstr "Για να το κάνετε, χρειάζεται να τρέξετε το Tails από USB."
 
 #. Translators: Don't translate {packages}, it's a placeholder and will be
 #. replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:360
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
 #, python-brace-format
 msgid "Remove {packages} from your additional software?"
 msgstr "Να αφαιρεθούν τα {packages} από το επιπρόθετο λογισμικό σας;"
 
 #. Translators: Don't translate {packages}, it's a placeholder
 #. and will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:364
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:371
 #, python-brace-format
 msgid "This will stop installing {packages} automatically."
 msgstr "Αυτό θα σταματήσει την εγκατάσταση των {packages} αυτόματα."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:366
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:373
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:163
 msgid "Remove"
 msgstr "Απομάκρυνση"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:543
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:550
 msgid "Installing your additional software from persistent storage..."
 msgstr ""
 "Εγκαθιστάται το πρόσθετο λογισμικό σας από το μόνιμο αποθηκευτικό χώρο..."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:545
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:552
 msgid "This can take several minutes."
 msgstr "Αυτό μπορεί να πάρει μερικά λεπτά."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:558
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:565
 msgid "The installation of your additional software failed"
 msgstr "Η εγκατάσταση του πρόσθετου λογισμικού απέτυχε."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:573
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:580
 msgid "Additional software installed successfully"
 msgstr "Το πρόσθετο λογισμικό εγκαταστάθηκε επιτυχώς."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:593
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:600
 msgid "The check for upgrades of your additional software failed"
 msgstr "Ο έλεγχος για αναβαθμίσεις για τα πρόσθετα λογισμικά σας απέτυχε."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:595
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:603
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:602
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:610
 msgid ""
 "Please check your network connection, restart Tails, or read the system log "
 "to understand the problem."
@@ -1378,11 +1376,11 @@ msgstr ""
 "Ελέγξτε την σύνδεσή σας στο διαδίκτυο, επανεκκινήστε το Tails ή διαβάστε το "
 "ιστορικό συστήματος για να κατανοήσετε το πρόβλημα."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:602
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:609
 msgid "The upgrade of your additional software failed"
 msgstr "Η αναβάθμιση του πρόσθετού σας λογισμικού απέτυχε."
 
-#: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:37
+#: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:36
 msgid "Documentation"
 msgstr "Τεκμηρίωση"
 
@@ -1545,19 +1543,19 @@ msgstr ""
 "Δείτε το {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:76
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:45
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:37
 msgid "error:"
 msgstr "σφάλμα:"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:23
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:21
 msgid "Warning: virtual machine detected!"
 msgstr "Προειδοποίηση: ανιχνεύτηκε εικονικό μηχάνημα!"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:25
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:23
 msgid "Warning: non-free virtual machine detected!"
 msgstr "Προσοχή: ανελεύθερη εικονική μηχανή εντοπίστηκε!"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:27
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:25
 msgid ""
 "Both the host operating system and the virtualization software are able to "
 "monitor what you are doing in Tails. Only free software can be considered "
@@ -1569,11 +1567,11 @@ msgstr ""
 "Tails. Έμπιστο πρέπει να θεωρείται μόνο το ελεύθερο λογισμικό, τόσο για το "
 "λογισμικό εικονοποίησης όσο και για το λειτουργικό σύστημα."
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:40
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:38
 msgid "Don't Show Again"
 msgstr "Να μην εμφανιστεί ξανά"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:42
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:40
 msgid "Learn More"
 msgstr "Μάθε περισσότερα"
 
@@ -1587,23 +1585,21 @@ msgid "_Use a bridge that you already know"
 msgstr "_Χρήση γέφυρας που γνωρίζετε"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:242
-#, fuzzy
 msgid ""
 "To save your bridge, <a href=\"doc/persistent_storage\">unlock your "
 "Persistent Storage</a>."
 msgstr ""
-"Για να αποθηκεύσετε τη γέφυρα, <a href=\"doc/first_steps/"
-"persistence\">ξεκλειδώστε το μόνιμο αποθηκευτικό χώρο</a>."
+"Για να αποθηκεύσετε τη γέφυρα σας, <a href=\"doc/"
+"persistent_storage\">ξεκλειδώστε το μόνιμο αποθηκευτικό χώρο σας</a>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
-#, fuzzy
 msgid ""
 "To save your bridge, <a href=\"doc/persistent_storage\">create a Persistent "
 "Storage</a> on your Tails USB stick."
 msgstr ""
-"Για να αποθηκεύσετε τη γέφυρά σας, <a href=\"doc/first_steps/"
-"persistence\">δημιουργήστε ένα Μόνιμο αποθηκευτικό χώρο</a> στο στικάκι USB "
-"του Tails."
+"Για να αποθηκεύσετε τη γέφυρά σας, <a href=\"doc/"
+"persistent_storage\">δημιουργήστε ένα Μόνιμο αποθηκευτικό χώρο</a> στο "
+"στικάκι USB του Tails."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:269
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:773
@@ -1671,9 +1667,8 @@ msgstr ""
 "Μπορείτε τώρα να περιηγηθείτε στο Διαδίκτυο ανώνυμα και χωρίς λογοκρισία."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:703
-#, fuzzy
 msgid "This local network seems to be blocking access to Tor."
-msgstr "Το τοπικό σας δίκτυο δεν επιτρέπει την πρόσβαση στο Tor."
+msgstr "Το τοπικό σας δίκτυο φαίνεται πως εμποδίζει την πρόσβαση στο Tor."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:776
 msgid "Bridge address malformed"
@@ -1709,11 +1704,11 @@ msgstr ""
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1112
 msgid "Close and Lose Progress"
-msgstr ""
+msgstr "Κλείσιμο και απώλεια προόδου"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1113
 msgid "Wait"
-msgstr ""
+msgstr "Αναμονή"
 
 #: config/chroot_local-includes/usr/local/bin/thunderbird:41
 msgid "You need to migrate your OpenPGP keys"
@@ -1799,7 +1794,7 @@ msgstr "{volume_name} (Μόνο-για-ανάγνωση)"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume.py:125
 #, python-brace-format
 msgid "{partition_name} in {container_path}"
-msgstr "{partition_name}  στο {container_path}"
+msgstr "{partition_name} στο {container_path}"
 
 #. Translators: Don't translate {volume_name} and {path_to_file_container},
 #. they are placeholders and will be replaced. You should only have to translate
@@ -1929,18 +1924,19 @@ msgid ""
 "Please try using the <i>Disks</i> application instead."
 msgstr ""
 "Δεν μπόρεσε να προστεθεί ο φορέας αρχείου %s: Σφάλμα κατά την αναμονή "
-"εγκατάστασης. Παρακαλούμε προσπαθήστε να χρησιμοποιήσετε την εφαρμογή "
-"<i>δίσκων</i>αντ' αυτού."
+"εγκατάστασης.\n"
+"Παρακαλούμε προσπαθήστε να χρησιμοποιήσετε την εφαρμογή <i>δίσκων</i>αντ' "
+"αυτού."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/unlock_veracrypt_volumes/volume_manager.py:209
 msgid "Choose File Container"
 msgstr "Επιλέξτε φορέα αρχείων"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:48
 msgid "The Unsafe Browser was disabled in the Welcome Screen.\\n\\n"
 msgstr "Το Unsafe Browser είναι απενεργοποιημένο στην Οθόνη Υποδοχής.\\n\\n"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:51
 msgid ""
 "To use the Unsafe Browser, restart Tails and make sure that the Unsafe "
 "Browser is enabled in the additional settings of the Welcome Screen."
@@ -1949,48 +1945,48 @@ msgstr ""
 "το Unsafe Browser είναι ενεργοποιημένο από τις ρυθμίσεις της Οθόνης "
 "Καλωσορίσματος."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:53
 msgid "To use the Unsafe Browser, restart Tails."
 msgstr "Για χρήση του Unsafe Browser, επανεκκινήστε το Tails."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:64
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
 msgid "_Restart"
 msgstr "_Επανεκκίνηση"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
 msgid "_Cancel"
 msgstr "_Ακύρωση"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:66
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
 msgid ""
 "Do you really want to restart Tails now?\\n\\nAll your current work will be "
 "lost."
 msgstr ""
 "Θέλετε να επανεκκινήσετε το Tails τώρα;\\n\\nΟι εργασίες σας θα χαθούν."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:67
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
 msgid "Restart Now"
 msgstr "Επανεκκίνηση τώρα"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:66
 msgid "Failed to restart the system."
 msgstr "Η επανεκκίνηση του συστήματος απέτυχε."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
 msgid "Starting the Unsafe Browser..."
 msgstr "Εκκίνηση του μη ασφαλούς περιηγητή..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:83
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:75
 msgid "This may take a while, so please be patient."
 msgstr "Αυτό μπορεί να πάρει λίγο χρόνο· παρακαλούμε περιμένετε."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:89
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:81
 msgid "Shutting down the Unsafe Browser..."
 msgstr "Τερματισμός του μη ασφαλούς περιηγητή..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:90
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
 msgid ""
 "This may take a while, and you may not restart the Unsafe Browser until it "
 "is properly shut down."
@@ -1998,13 +1994,13 @@ msgstr ""
 "Αυτό μπορεί να πάρει λίγη ώρα, και δεν πρέπει να επανεκκινήσετε τον μη "
 "ασφαλή περιηγητή προτού τερματιστεί σωστά."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:95
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:1
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:512
 msgid "Unsafe Browser"
 msgstr "Unsafe Browser"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:117
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:109
 msgid ""
 "Another Unsafe Browser is currently running, or being cleaned up. Please "
 "retry in a while."
@@ -2012,15 +2008,15 @@ msgstr ""
 "Ένα άλλο Unsafe Browser εκτελείται αυτή τη στιγμή ή είναι υπό εκκαθάριση. "
 "Παρακαλούμε προσπαθήστε σε λίγο."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:124
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:116
 msgid "Failed to setup chroot."
 msgstr "Αποτυχία ρύθμισης chroot."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:130
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:122
 msgid "Failed to configure browser."
 msgstr "Αποτυχία ρύθμισης του περιηγητή."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:132
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:124
 msgid ""
 "You are not connected to a local network yet.\\n\\nTo be able to start the "
 "Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile "
@@ -2030,7 +2026,7 @@ msgstr ""
 "ασφαλή περιηγητή, πρέπει αρχικά να συνδεθείτε σε ένα ασύρματο ή ενσύρματο "
 "δίκτυο."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:155
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:147
 msgid "Failed to run browser."
 msgstr "Αποτυχία εκτέλεσης του φυλλομετρητή."
 
@@ -2208,6 +2204,7 @@ msgid "Tails documentation"
 msgstr "Τεκμηρίωση του Tails"
 
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:379
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
 msgid "Persistent Storage"
 msgstr "Μόνιμος αποθηκευτικός χώρος"
@@ -2235,6 +2232,19 @@ msgstr "Μάθετε πώς να χρησιμοποιείτε το Tails"
 #: ../config/chroot_local-includes/usr/share/applications/tails-about.desktop.in.h:2
 msgid "Learn more about Tails"
 msgstr "Μάθετε περισσότερα σχετικά με Tails"
+
+#: ../config/chroot_local-includes/usr/share/applications/tails-backup.desktop.in.h:1
+#, fuzzy
+msgid "Back Up Persistent Storage"
+msgstr "Μόνιμος αποθηκευτικός χώρος"
+
+#: ../config/chroot_local-includes/usr/share/applications/tails-backup.desktop.in.h:2
+#, fuzzy
+msgid ""
+"Make a backup of the Tails Persistent Storage to another Tails USB stick"
+msgstr ""
+"Ενεργοποιήστε τη δυνατότητα του Μόνιμου αποθηκευτικού χώρου για τα δεδομένα "
+"που θέλετε να αποθηκεύσετε στη συσκευή USB Tails."
 
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:2
 msgid "Install, clone, upgrade Tails"
@@ -2311,7 +2321,7 @@ msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:18
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:56
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:739
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:744
 msgid "Administration Password"
 msgstr "Κωδικός διαχειριστή"
 
@@ -2338,7 +2348,7 @@ msgid "Disable"
 msgstr "Απενεργοοίηση"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:154
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:743
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:748
 msgid "MAC Address Anonymization"
 msgstr "Ανωνυμοποίηση διευθύνσεων MAC"
 
@@ -2363,7 +2373,7 @@ msgid "Don't anonymize MAC addresses"
 msgstr "Χωρίς ανωνυμοποίηση των διευθύνσεων MAC"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:311
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:747
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:752
 msgid "Network Configuration"
 msgstr "Ρύθμιση δικτύου"
 
@@ -2445,11 +2455,11 @@ msgstr "Οι ρυθμίσεις φορτώθηκαν από τον μόνιμο 
 msgid "Welcome to Tails!"
 msgstr "Καλωσήρθατε στο Tails!"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:186
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:181
 msgid "_Persistent Storage"
 msgstr "_Μόνιμος αποθηκευτικός χώρος"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:232
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:213
 msgid ""
 "You can save some of your files and configuration in an encrypted Persistent "
 "Storage on your Tails USB stick: your documents, browser bookmarks, Wi-Fi "
@@ -2459,49 +2469,52 @@ msgstr ""
 "κρυπτογραφημένο αποθηκευτικό χώρο της συσκευής USB Tails σας: έγγραφα, "
 "σελιδοδείκτες, κωδικοί πρόσβασης Wi-Fi κτλ."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:246
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:227
 msgid ""
 "You will create and configure your Persistent Storage after starting Tails."
 msgstr ""
 "Μπορείτε να δημιουργήσετε και να ρυθμίσετε τον αποθηκευτικό χώρος σας μετά "
 "την εκκίνηση του Tails."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:300
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:280
 msgid "Language & Region"
 msgstr "Γλώσσα και περιοχή"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:336
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:316
 msgid "Default Settings"
 msgstr "Προεπιλεγμένες ρυθμίσεις"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:399
-msgid "Encrypted _Persistent Storage"
-msgstr "Κρυπτογραφημένος _Μόνιμος αποθηκευτικός χώρος"
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:440
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:418
 msgid "Show Passphrase"
 msgstr "Εμφάνιση συνθηματικού"
 
-#. The label for this placeholder text is not very big, so keep this string short.
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:493
-msgid "Enter your passphrase to unlock the persistent storage"
-msgstr "Εισάγετε το συνθηματικό για να ξεκλειδώσετε το μόνιμο χώρο αποθήκευσης"
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:471
+#, fuzzy
+msgid "_Passphrase"
+msgstr "Συνθηματικό:"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:541
-msgid "Your persistent storage is unlocked. Restart Tails to lock it again."
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:506
+msgid "Unlock Encryption"
+msgstr ""
+
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:547
+#, fuzzy
+msgid ""
+"Your Persistent Storage is unlocked. Its content will be available until you "
+"shut down Tails."
 msgstr ""
 "Ο μόνιμος αποθηκευτικός χώρος σας είναι ξεκλειδωμένος. Επανεκκινήστε το "
 "Tails για να το ξανακλειδώσετε."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:579
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:584
 msgid "_Additional Settings"
 msgstr "_Πρόσθετες Ρυθμίσεις"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:662
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:667
 msgid "Add an additional setting"
 msgstr "Προσθήκη πρόσθετης ρύθμισης"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:711
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:716
 msgid ""
 "The default settings are safe in most situations. To add a custom setting, "
 "press the \"+\" button below."
@@ -2510,11 +2523,11 @@ msgstr ""
 "Για να προσθέσετε μια προσαρμοσμένη ρύθμιση, πατήστε το κουμπί \"+\" "
 "παρακάτω."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:755
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:760
 msgid "Shutdown"
 msgstr "Κλείσιμο"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:766
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:771
 msgid "_Start Tails"
 msgstr "_Έναρξη Tails"
 
@@ -2577,7 +2590,6 @@ msgid "Send Error Report"
 msgstr "Υποβολή αναφοράς σφάλματος"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:61
-#, fuzzy
 msgid ""
 "Your Persistent Storage is unlocked.\n"
 "\n"
@@ -2590,7 +2602,7 @@ msgstr ""
 "\n"
 "Τα περιεχόμενά του θα είναι διαθέσιμα έως να τερματίσετε το Tails.\n"
 "\n"
-"<a href=\"doc/first_steps/persistence/backup\">Μάθετε πώς μπορείτε να "
+"<a href=\"doc/persistent_storage/backup\">Μάθετε πώς μπορείτε να "
 "δημιουργήσετε αντίγραφο ασφαλείας του αποθηκευτικού χώρου σας.</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:89
@@ -2621,9 +2633,19 @@ msgstr "Ενεργοποίηση Μόνιμου αποθηκευτικού φα�
 msgid "System Settings"
 msgstr "Ρυθμίσεις συστήματος"
 
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:219
+#, fuzzy
+msgid "Welcome Screen"
+msgstr "Ενεργοποίηση Οθόνης υποδοχής"
+
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:229
 msgid "Activate Welcome Screen"
 msgstr "Ενεργοποίηση Οθόνης υποδοχής"
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:240
+#, fuzzy
+msgid "Printers"
+msgstr "Ενεργοποίηση Εκτυπωτών"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:250
 msgid "Activate Printers"
@@ -2657,6 +2679,11 @@ msgstr "Ενεργοποίηση Γέφυρας Tor"
 msgid "Applications"
 msgstr "Εφαρμογές"
 
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:388
+#, fuzzy
+msgid "Tor Browser Bookmarks"
+msgstr "Ενεργοποίηση Σελιδοδεικτών Tor Browser"
+
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:398
 msgid "Activate Tor Browser Bookmarks"
 msgstr "Ενεργοποίηση Σελιδοδεικτών Tor Browser"
@@ -2666,7 +2693,6 @@ msgid "Electrum Bitcoin Wallet"
 msgstr "Πορτοφόλι Electrum Bitcoin"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:419
-#, fuzzy
 msgid "Activate Electrum Bitcoin Wallet"
 msgstr "Ενεργοποίηση Πορτοφολιού Electrum Bitcoin"
 
@@ -2749,16 +2775,14 @@ msgstr ""
 "live/persistence/TailsData_unlocked/persistence.conf."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
-#, fuzzy
 msgid ""
 "<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
 "a>"
 msgstr ""
-"<a href=\"doc/first_steps/persistence\">Μάθετε περισσότερα για τον μόνιμο "
-"αποθηκευτικό χώρο</a>"
+"<a href=\"doc/persistent_storage\">Μάθετε περισσότερα για τον μόνιμο "
+"αποθηκευτικό χώρο.</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/locked_view.ui.in:52
-#, fuzzy
 msgid ""
 "<b>Your Persistent Storage is locked.</b>\n"
 "\n"
@@ -2771,7 +2795,10 @@ msgstr ""
 "<b>Ο αποθηκευτικός χώρος σας είναι κλειδωμένος.</b>\n"
 "\n"
 "Για χρήση ή ρύθμιση του αποθηκευτικού χώρου σας, ξεκλειδώστε τον από την "
-"οθόνη καλωσορίσματος κατά την έναρξη του Tails."
+"οθόνη καλωσορίσματος κατά την έναρξη του Tails.\n"
+"\n"
+"Για διαγραφή του αποθηκευτικού χώρου σας, κάντε κλικ στο <b>Διαγραφή</b> στα "
+"δεξιά της γραμμής τίτλου."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:52
 msgid ""
@@ -2802,7 +2829,6 @@ msgid "_Back"
 msgstr "_Πίσω"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:56
-#, fuzzy
 msgid ""
 "Everything you do disappears automatically when you shut down Tails.\n"
 "\n"
@@ -2817,34 +2843,32 @@ msgid ""
 "<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
 "a>"
 msgstr ""
-"Γίνεται αυτόματη εκκαθάριση κατά τον τερματισμό του Tails.\n"
+"Γίνεται αυτόματη εκκαθάριση των ενεργειών σας κατά τον τερματισμό του "
+"Tails.\n"
 "\n"
 "Μπορείτε να αποθηκεύσετε ορισμένα αρχεία και ρυθμίσεις στον κρυπτογραφημένο "
-"αποθηκευτικό χώρο στο Tails USB:\n"
+"αποθηκευτικό χώρο στο Tails USB για παράδειγμα:\n"
 "\n"
 "• Τα έγγραφά σας\n"
 "• Τους κωδικούς πρόσβασης Wi-Fi\n"
 "• Τους σελιδοδείκτες σας\n"
 "• και πολλά άλλα\n"
 "\n"
-"<a href=\"doc/first_steps/persistence\">Μάθετε περισσότερα για τον μόνιμο "
-"αποθηκευτικό χώρο</a>"
+"<a href=\"doc/persistent_storage\">Μάθετε περισσότερα για τον μόνιμο "
+"αποθηκευτικό χώρο.</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:92
-#, fuzzy
 msgid ""
 "Sorry, it is impossible to create a Persistent Storage on this device.\n"
 "\n"
 "To be able to use Tails with a Persistent Storage, please follow our "
 "instructions on <a href=\"install\">installing Tails on a USB stick</a>."
 msgstr ""
-"Δυστυχώς, αυτή η συσκευή Tails δεν υποστηρίζει τη δημιουργία μόνιμου "
-"αποθηκευτικού χώρου.\n"
+"Δυστυχώς, δεν είναι δυνατή η δημιουργία μόνιμου αποθηκευτικού χώρου σε αυτή "
+"τη συσκευή.\n"
 "\n"
 "Για χρήση του Tails με μόνιμο αποθηκευτικό χώρο, παρακαλούμε δείτε την "
-"τεκμηρίωση εγκατάστασης του Tails σε USB συσκευή:\n"
-"\n"
-"<a href=\"install\">Εγκατάσταση Tails</a>"
+"τεκμηρίωση <a href=\"install\">εγκατάστασης του Tails σε USB συσκευή</a>."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:137
 msgid "Co_ntinue"
@@ -2906,11 +2930,11 @@ msgstr "_Ξεκλείδωμα"
 msgid "Detach this volume"
 msgstr "Αποσύνδεση αυτού του τομέα"
 
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:265
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:266
 msgid "Target USB stick:"
 msgstr "USB stick προορισμού:"
 
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:341
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:342
 msgid "Reinstall (delete all data)"
 msgstr "Επανεγκατάσταση (διαγραφή όλων των δεδομένων)"
 
@@ -2937,22 +2961,22 @@ msgid ""
 "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
 msgstr ""
 "WhisperBack - Επικοινωνήστε μαζί μας με κρυπτογραφημένο μήνυμα\n"
-"Πνευματική ιδιοκτησία (C) 2009-2018 Tails developers <tails@boum.org\n"
+"Πνευματική ιδιοκτησία (C) 2009-2018 Tails developers <tails@boum.org>\n"
 "\n"
 "Το πρόγραμμα αυτό αποτελεί δωρεάν λογισμικό· μπορείτε να το αναδιανέμετε ή/"
-"και να το τροποποιήσετε \n"
+"και να το τροποποιήσετε\n"
 "υπό τους όρους της GNU General Public License όπως αυτή δημοσιεύεται από\n"
-"το Free Software Foundation· είτε η έκδοση 3 της Άδειας, \n"
+"το Free Software Foundation· είτε η έκδοση 3 της Άδειας,\n"
 "είτε (με δική σας επιλογή) κάθε παλαιότερη έκδοσή της.\n"
 "\n"
-"Το πρόγραμμα διανέμεται με την ελπίδα ότι θα φανεί χρήσιμο, αλλά \n"
-"ΧΩΡΙΣ ΟΥΔΕΜΙΑ ΕΓΓΥΗΣΗ· χωρίς καν την υπονοούμενη εγγύηση \n"
-"ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΚΑΠΟΙΟΝ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ. \n"
-"Για περισσότερες πληροφορίες, δείτε την Άδεια GNU \n"
-"General Public License. \n"
+"Το πρόγραμμα διανέμεται με την ελπίδα ότι θα φανεί χρήσιμο, αλλά\n"
+"ΧΩΡΙΣ ΟΥΔΕΜΙΑ ΕΓΓΥΗΣΗ· χωρίς καν την υπονοούμενη εγγύηση\n"
+"ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΚΑΠΟΙΟΝ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ.\n"
+"Για περισσότερες πληροφορίες, δείτε την Άδεια GNU\n"
+"General Public License.\n"
 "\n"
 "Μαζί με το πρόγραμμα αυτό θα πρέπει να έχετε λάβει και ένα αντίγραφο της GNU "
-"General Public License. \n"
+"General Public License.\n"
 "Αν όχι, δείτε την ιστοσελίδα <http://www.gnu.org/licenses/>.\n"
 
 #: ../config/chroot_local-includes/usr/share/whisperback/whisperback.ui.in:122
@@ -3051,9 +3075,8 @@ msgid "None"
 msgstr "Καμία"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:240
-#, fuzzy
 msgid "_Ask for a Tor bridge by email"
-msgstr "_Αίτηση γέφυρας μέσω email"
+msgstr "_Αίτηση γέφυρας Tor μέσω email"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:259
 msgid ""
@@ -3148,36 +3171,29 @@ msgid "Configure a Local _Proxy"
 msgstr "Ρύθμιση τοπικού _διακομιστή μεσολάβησης"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:951
-#, fuzzy
 msgid "• Tor bridge by email"
-msgstr "• Γέφυρα μέσω email"
+msgstr "• Γέφυρα Tor μέσω email"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:971
-#, fuzzy
 msgid ""
 "Tor bridges are secret Tor relays. Use a bridge as your first Tor relay if "
 "connections to Tor are blocked, for example in some countries, by some "
 "public networks, or by some parental controls."
 msgstr ""
-"Οι γέφυρες Tor είναι μυστικοί αναμεταδότες Tor. Χρησιμοποιείστε μια γέφυρα "
-"ως τον πρώτο σας αναμεταδότη Tor αν οι συνδέσεις στο Tor είναι "
+"Οι γέφυρες Tor είναι μυστικοί αναμεταδότες του Tor. Χρησιμοποιείστε μια "
+"γέφυρα ως τον πρώτο σας αναμεταδότη Tor αν οι συνδέσεις στο Tor είναι "
 "αποκλεισμένες, για παράδειγμα σε ορισμένες χώρες, σε ορισμένα δημόσια δίκτυα "
-"ή από ορισμένους γονικούς ελέγχους.\n"
-"\n"
-"Επιλέξτε αυτή την επιλογή αν ήδη γνωρίζετε πως χρειάζεστε μια γέφυρα. "
-"Αλλιώς, το Tails θα εντοπίσει αυτόματα αν χρειάζεστε γέφυρα για να "
-"συνδεθείτε στο Tor από το τοπικό δίκτυό σας."
+"ή από ορισμένους γονικούς ελέγχους."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:991
-#, fuzzy
 msgid ""
 "To get a bridge, send an empty email to <tt>bridges@torproject.org</tt> from "
 "a Gmail or Riseup email address with your phone and scan the QR code that is "
 "attached to the automatic reply."
 msgstr ""
-"Στείλτε ένα κενό email στο <tt>bridges@torproject.org</tt> από διεύθυνση "
-"Gmail ή Riseup από το τηλέφωνό σας και σαρώστε τον συνημμένο κωδικό QR που "
-"θα λάβετε αυτόματα ως απάντηση."
+"Για λήψη γέφυρας, στείλτε ένα κενό email στο <tt>bridges@torproject.org</tt> "
+"από διεύθυνση Gmail ή Riseup από το τηλέφωνό σας και σαρώστε τον συνημμένο "
+"κωδικό QR που θα λάβετε αυτόματα ως απάντηση."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1014
 msgid "Scan QR Code"
@@ -3339,9 +3355,8 @@ msgid "Failed to connect to Tor without bridges."
 msgstr "Αποτυχία σύνδεσης στο Tor χωρίς γέφυρες."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1870
-#, fuzzy
 msgid "This local network is blocking access to Tor."
-msgstr "Το τοπικό σας δίκτυο δεν επιτρέπει την πρόσβαση στο Tor."
+msgstr "Το τοπικό σας δίκτυο εμποδίζει την πρόσβαση στο Tor."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1902
 msgid "Connecting to Tor…"
@@ -3488,6 +3503,13 @@ msgstr "Δεκέμβριος"
 #: ../config/chroot_local-includes/usr/share/tails/tca/time-dialog.ui.in:368
 msgid "Clock"
 msgstr "Ρολόι"
+
+#~ msgid "Encrypted _Persistent Storage"
+#~ msgstr "Κρυπτογραφημένος _Μόνιμος αποθηκευτικός χώρος"
+
+#~ msgid "Enter your passphrase to unlock the persistent storage"
+#~ msgstr ""
+#~ "Εισάγετε το συνθηματικό για να ξεκλειδώσετε το μόνιμο χώρο αποθήκευσης"
 
 #, python-format
 #~ msgid ""

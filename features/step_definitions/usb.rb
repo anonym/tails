@@ -67,11 +67,28 @@ def persistent_storage_main_frame
   persistent_storage_frontend.child('Persistent Storage', roleName: 'frame')
 end
 
+def persistent_directory_is_active(**opts)
+  opts[:user] = 'root'
+  opts[:use_system_bus] = true
+  dbus_send(
+    'org.boum.tails.PersistentStorage',
+    '/org/boum/tails/PersistentStorage/Features/PersistentDirectory',
+    'org.freedesktop.DBus.Properties.Get',
+    'org.boum.tails.PersistentStorage.Feature',
+    'IsActive',
+    **opts
+  )
+end
+
 def recover_from_upgrader_failure
   $vm.execute('pkill --full tails-upgrade-frontend-wrapper')
   $vm.execute('killall tails-upgrade-frontend zenity')
   # Do not sleep when retrying
   $vm.spawn('tails-upgrade-frontend-wrapper --no-wait', user: LIVE_USER)
+end
+
+def greeter
+  Dogtail::Application.new('Welcome to Tails!', user: 'Debian-gdm')
 end
 
 Given /^I clone USB drive "([^"]+)" to a (new|temporary) USB drive "([^"]+)"$/ do |from, mode, to|
@@ -205,16 +222,32 @@ def enable_all_persistence_presets
   end
 end
 
-When /^I disable the first persistence preset$/ do
+When /^I (enable|disable) the first persistence preset$/ do |mode|
   step 'I start "Persistent Storage" via GNOME Activities Overview'
   assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   persistent_folder_switch = persistent_storage_main_frame.child(
     'Activate Persistent Folder',
     roleName: 'toggle button'
   )
-  assert persistent_folder_switch.checked
+  if mode == 'enable'
+    assert !persistent_folder_switch.checked
+  else
+    assert persistent_folder_switch.checked
+  end
+
   persistent_folder_switch.toggle
-  try_for(10) { !persistent_folder_switch.checked }
+  try_for(10) do
+    # GtkSwitch does not expose its underlying state via AT-SPI (the
+    # accessible has the "check" state when the switch is on but the
+    # underlying state is false) so we check the state via D-Bus.
+    if mode == 'enable'
+      assert persistent_folder_switch.checked
+      persistent_directory_is_active
+    else
+      assert !persistent_folder_switch.checked
+      !persistent_directory_is_active
+    end
+  end
   @screen.press('alt', 'F4')
 end
 
@@ -245,6 +278,53 @@ Given /^I create a persistent partition( with the default settings| for Addition
     persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   end
   enable_all_persistence_presets unless default_settings
+end
+
+Given /^I change the passphrase of the Persistent Storage( back to the original)?$/ do |change_back|
+  if change_back
+    current_passphrase = @changed_persistence_password
+    new_passphrase = @persistence_password
+  else
+    current_passphrase = @persistence_password
+    new_passphrase = @changed_persistence_password
+  end
+
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+
+  # We can't use the click action here because this button causes a
+  # modal dialog to be run via gtk_dialog_run() which causes the
+  # application to hang when triggered via a ATSPI action. See
+  # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
+  persistent_storage_main_frame.button('Change Passphrase').grabFocus
+  @screen.press('Return')
+  change_passphrase_dialog = persistent_storage_frontend.child(
+    'Change Passphrase', roleName: 'dialog'
+  )
+  change_passphrase_dialog
+    .child('Current Passphrase', roleName: 'label')
+    .labelee
+    .grabFocus
+  @screen.type(current_passphrase)
+  change_passphrase_dialog
+    .child('New Passphrase', roleName: 'label')
+    .labelee
+    .grabFocus
+  @screen.type(new_passphrase)
+  change_passphrase_dialog
+    .child('Confirm New Passphrase', roleName: 'label')
+    .labelee
+    .grabFocus
+  @screen.type(new_passphrase)
+  change_passphrase_dialog.button('Change').click
+  # Wait for the dialog to close
+  try_for(30) do
+    persistent_storage_frontend.child('Change Passphrase', roleName: 'dialog')
+  rescue Dogtail::Failure
+    # The dialog couldn't be found, which is what we want
+    true
+  else
+    false
+  end
 end
 
 def check_disk_integrity(name, dev, scheme)
@@ -371,11 +451,44 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
   $vm.execute("cryptsetup luksClose #{name}")
 end
 
-Given /^I enable persistence$/ do
-  @screen.wait('TailsGreeterPersistencePassphrase.png', 60).click
-  sleep 1
-  @screen.type(@persistence_password, ['Return'])
-  @screen.wait_any(['TailsGreeterPersistenceUnlocked.png', 'TailsGreeterPersistenceUnlockedGerman.png'], 30)
+Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
+  # @type [Dogtail::Node]
+  passphrase_entry = nil
+  try_for(60) do
+    passphrase_entry = greeter
+                       .child(roleName: 'password text', showingOnly: true)
+    passphrase_entry.grabFocus
+    passphrase_entry.focused
+  end
+  assert !passphrase_entry.nil?
+
+  password = if with_changed_passphrase
+               @changed_persistence_password
+             else
+               @persistence_password
+             end
+  passphrase_entry.text = password
+  @screen.press('Return')
+
+  # Wait until the Persistent Storage was unlocked. We use the fact that
+  # the unlock button is made invisible when the Persistent Storage is
+  # unlocked.
+  try_for(30) do
+    !greeter.child?('Unlock', roleName: 'push button', showingOnly: true)
+  end
+
+  # Figure out which language is set now that the Persistent Storage is
+  # unlocked
+  english_label = 'English - United States'
+  german_label = 'Deutsch - Deutschland (German - Germany)'
+  try_for(30) do
+    greeter.child(english_label, roleName: 'label', showingOnly: true)
+    $language = ''
+  rescue Dogtail::Failure
+    greeter.child(german_label, roleName: 'label', showingOnly: true)
+    $language = 'German'
+    true
+  end
 end
 
 def tails_persistence_enabled?
@@ -1246,4 +1359,21 @@ When /^I give the Persistent Storage on drive "([^"]+)" its own UUID$/ do |name|
   dev = $vm.persistent_storage_dev_on_disk(name)
   uuid = SecureRandom.uuid
   $vm.execute_successfully("cryptsetup luksUUID --uuid #{uuid} #{dev}")
+end
+
+When /^I create a file in the Persistent directory$/ do
+  step 'I create a directory "/home/amnesia/Persistent"'
+  step 'I write a file "/home/amnesia/Persistent/foo" with contents "foo"'
+end
+
+Then /^the file I created was copied to the Persistent Storage$/ do
+  file = '/live/persistence/TailsData_unlocked/Persistent/foo'
+  step "the file \"#{file}\" exists"
+  step "the file \"#{file}\" has the content \"foo\""
+end
+
+Then /^the file I created in the Persistent directory exists$/ do
+  file = '/home/amnesia/Persistent/foo'
+  step "the file \"#{file}\" exists"
+  step "the file \"#{file}\" has the content \"foo\""
 end
