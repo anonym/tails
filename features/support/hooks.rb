@@ -142,6 +142,15 @@ def save_journal
   )
 end
 
+def save_boot_log
+  save_vm_command_output(
+    command:  'cat /var/log/boot.log*',
+    id:       'boot-log',
+    basename: 'artifact.boot-log',
+    desc:     'boot log'
+  )
+end
+
 def save_vm_file_content(file, desc: nil)
   _save_vm_file_content(
     file:     file,
@@ -215,7 +224,7 @@ BeforeFeature('@product') do
     $vmstorage = VMStorage.new($virt, VM_XML_PATH)
     $started_first_product_feature = true
   end
-  ensure_chutney_is_running unless $config['DISABLE_CHUTNEY']
+  ensure_chutney_is_running unless config_bool('DISABLE_CHUTNEY')
 end
 
 AfterFeature('@product') do
@@ -235,7 +244,7 @@ end
 # *first* Before hook matching @product listed in this file.
 Before('@product') do |scenario|
   $failure_artifacts = []
-  if $config['CAPTURE']
+  if config_bool('CAPTURE')
     video_name = sanitize_filename("#{scenario.name}.mkv")
     @video_path = "#{ARTIFACTS_DIR}/#{video_name}"
     capture = IO.popen(['ffmpeg',
@@ -250,7 +259,7 @@ Before('@product') do |scenario|
                         { err: ['/dev/null', 'w'] },])
     @video_capture_pid = capture.pid
   end
-  @screen = if $config['IMAGE_BUMPING_MODE']
+  @screen = if config_bool('IMAGE_BUMPING_MODE')
               ImageBumpingScreen.new
             else
               Screen.new
@@ -262,6 +271,7 @@ Before('@product') do |scenario|
   # as a regression test for #17792
   @sudo_password = 'asdf !'
   @persistence_password = 'asdf !'
+  @changed_persistence_password = 'foo123'
   @has_been_reset = false
   # See comment for add_extra_allowed_host() above.
   @extra_allowed_hosts ||= []
@@ -295,7 +305,7 @@ After('@product') do |scenario|
     mins = format('%<mins>02d', mins: (time_of_fail / 60) % 60)
     hrs  = format('%<hrs>02d',  hrs: time_of_fail / (60 * 60))
     elapsed = "#{hrs}:#{mins}:#{secs}"
-    info_log("Scenario failed at time #{elapsed}")
+    info_log("SCENARIO FAILED: '#{scenario.name}' (at time #{elapsed})")
     unless $vm.display.nil?
       screenshot_path = sanitize_filename("#{scenario.name}.png")
       $vm.display.screenshot(screenshot_path)
@@ -354,6 +364,7 @@ After('@product') do |scenario|
     # on the remote shell here:
     if $vm&.remote_shell_is_up?
       save_journal
+      save_boot_log
       if scenario.feature.file \
          == 'features/additional_software_packages.feature'
         save_vm_command_output(
@@ -388,13 +399,13 @@ After('@product') do |scenario|
       info_log
       info_log_artifact_location(desc, artifact_path)
     end
-    if $config['INTERACTIVE_DEBUGGING']
+    if config_bool('INTERACTIVE_DEBUGGING')
       pause(
         "Scenario failed: #{scenario.name}. " \
         "The error was: #{scenario.exception.class.name}: #{scenario.exception}"
       )
     end
-  elsif @video_path && File.exist?(@video_path) && !(($config['CAPTURE_ALL']))
+  elsif @video_path && File.exist?(@video_path) && !config_bool('CAPTURE_ALL')
     FileUtils.rm(@video_path)
   end
   begin

@@ -993,6 +993,7 @@ To build the IUKS, run this command:
        git clone "$PUPPET_TAILS_REMOTE"
        time                                                                   \
        sudo                                                                   \
+       nice                                                                   \
        ./puppet-tails/files/jenkins/slaves/isobuilders/wrap_tails_create_iuks \
            --tails-git-remote "file://${RELEASE_CHECKOUT?:}/.git"             \
            --tails-git-commit "${TAG?:}"                                      \
@@ -1769,8 +1770,7 @@ Go wild!
 Wait for the HTTP mirrors to catch up
 -------------------------------------
 
-Look at the mirror status. Wait for each of these pages to include at least 6
-working mirrors:
+Look at the mirror status.
 
     (
       base='https://download.tails.net/tails/stable'
@@ -1780,11 +1780,10 @@ working mirrors:
         "${base}/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.img?mirrorlist" \
     )
 
-Check if every active mirror in the pool has the new version:
+Wait for each of these pages to include:
+ - at least 6 working mirrors
+ - at least one among the fallback mirrors: https://download.tails.net/tails/?mirrorlist
 
-	./check-mirrors.rb --channel ${DIST:?} \
-        --allow-multiple --fast --stats \
-        tails-amd64-${VERSION:?}
 
 To disable mirrors that are lagging behind:
 
@@ -1950,7 +1949,7 @@ If you just released a final release
          ssh bittorrent.lizard transmission-remote --list | grep --fixed-strings "tails-amd64-${PREVIOUS_VERSION:?}-i"
 
      Then delete them with (`PREVIOUS_VERSION_TRANSMISSION_IDS` must be a
-     comma-separated list of IDs, based on the previous commnad):
+     comma-separated list of IDs, based on the previous command):
 
          ssh bittorrent.lizard transmission-remote \
              -t "${PREVIOUS_VERSION_TRANSMISSION_IDS:?}" --remove-and-delete

@@ -1,3 +1,248 @@
+tails (5.11) unstable; urgency=medium
+
+  * Upgrade Thunderbird to 102.9.0-1~deb11u1
+
+  * Upgrade Tor Browser to 12.0.4-build2 (tails/tails!1082)
+
+    Closes issues:
+      - Upgrade to Tor Browser 12.0.4 based on Firefox 102.9 (tails/tails#19450)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0.4-build2
+
+  * Upgrade Tor Browser to 12.0.4-build1 (tails/tails!1078)
+
+    Closes issues:
+      - Upgrade to Tor Browser 12.0.4 based on Firefox 102.9 (tails/tails#19450)
+
+    Commits:
+      - workaround failure
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0.4-build1
+
+  * Fix root exporting unsafe env (tails/tails!1067)
+
+    Closes issues:
+      - LPE via Environment Key Injection (tails/tails#19464)
+
+    Commits:
+      - remove inaccurate type hint
+      - Revert "tails-additional-software: Fix string returned instead of int"
+      - tails-additional-software: Fix logging command
+      - tails-additional-software: Fix string returned instead of int
+      - tails-additional-software: Log stderr of the executed command to Journal
+      - tails-additional-software: Fix _ (gettext.gettext) not defined
+      - tails-additional-software: Add type hints
+      - tails-additional-software: Print logs of apt hooks to journal
+      - Remote shell: Don't capture stderr of "sh_spawn" commands
+      - tailslib: Make code easier to read
+      - Start tails-dump-user-env.service automatically again
+      - Revert "workaround failure"
+      - 10-tor.sh: Remove obsolete wait loops
+      - run-with-user-env: Depend on tails-dump-user-env.service
+      - run-with-env: Fix current environment not passed to the command
+      - tails-additional-software: Log stderr of the executed command
+      - let's use standard logging methods
+      - Remote shell: Fix some log output not printed to stderr
+      - Apply 1 suggestion(s) to 1 file(s)
+      - Rename exec-with-env -> run-with-env
+      - INHERIT_FD is needed for connect-drop to work
+      - port exec-with-env to argparse
+      - fix allowed_env
+      - Use exec in some places
+      - tails-dump-user-env.service: Be explicit about which users the service should
+        run for
+      - userenv.py: Don't use current env in read_allowed_env_vars_from_file
+      - dump-user-env: Use logging module
+      - userenv.py: Fix all env vars from the current env passed
+      - exec-with-env: Move read_allowed_env_vars_from_file() to userenv.py
+      - exec-with-env: Only export allow-listed environment variables
+      - tailslib: Move NOSYMFOLLOW_MOUNTPOINT back to tps package
+      - exec-with-env: Fix error message
+      - dump-user-env: Fix error message
+      - dump-user-env: Don't set $EUID
+      - userenv.py: Log invalid environment variables
+      - dump-user-env: Only dump specific environment variables
+      - Remote shell: Remove unused imports
+      - Test Suite: Use "systemctl poweroff" instead of "poweroff"
+      - Remote shell: Don't fail if user env is not found
+      - Remote shell: Use user env in commands executed as root
+      - refactor: Rename loadenv-exec -> exec-with-env
+      - Run tails-additional-software-notify as amnesia with user env
+      - exec-with-user-env: Fix comment and add usage message
+      - refactor: Rename launch_x_application -> run_with_user_env
+      - refactor: Rename gnome-env -> user-env
+      - dump-user-env: Print error message when required variables could not be set
+      - tps-frontend-wrapper: Pass current user environment
+      - Reimplement loadenv-exec in Python
+      - Replace most usages of gnome_env in Python scripts
+      - netnsdrop.py: Remove unused argument user
+      - tails-additional-software-notify: Fix error when printing usage message
+      - tails-additional-software-notify: Fix unresolved reference '_'
+      - Replace systemctl-user with exec-in-gnome-env
+      - Avoid exporting gnome environment file in privileged processes
+      - Dump gnome-shell env as amnesia
+      - tails-notify-user: Use consistent indentation
+      - 20-time.sh: Don't export amnesia-controlled gnome env
+      - tailslib: Don't export gnome env
+      - Test suite: Fix unset environment variables evaluating to true
+      - tca-portal: Support setting debug log level via environment and kernel cmdline
+
+  * Sanitize input (tails/tails!1058)
+
+    Closes issues:
+      - LPE via Environment Key Injection (tails/tails#19464)
+
+    Commits:
+      - sanitize WAYLAND_DISPLAY
+      - Sanitize input
+
+  * Test new tps functionality (tails/tails!1052)
+
+    Closes issues:
+      - Ensure Cucumber tests cover new tps functionality (tails/tails#19225)
+
+    Commits:
+      - Quote variable used in shell command
+      - rubocop --auto-correct
+      - Test Suite: Improve Gherkin of "Creating a Persistent Storage" scenario
+      - Test Suite: Add scenario "Changing the Persistent Storage passphrase"
+      - Test Suite: Add scenario "Activating and deactivating Persistent Storage
+        features"
+      - Test Suite: Add scenario "Creating a Persistent Storage"
+
+  * Test suite: Fix step "the clearnet user has not sent packets out to the
+    Internet" (tails/tails!1074)
+
+    Closes issues:
+      - Test suite step "the clearnet user has not sent packets out to the Internet" is
+        now irrelevant to Unsafe Browser (tails/tails#19370)
+
+    Commits:
+      - fix step name
+      - Test suite: Add anti test for packets sent by the Unsafe Browser
+      - Test suite: Fix step "the clearnet user has not sent packets out to the
+        Internet"
+
+  * Remove custom window-center extension (tails/tails!1072)
+
+    Closes issues:
+      - Consider replacing our custom window-center GNOME Shell extension with the
+        center-new-windows Mutter option (tails/tails#19489)
+
+    Commits:
+      - Remove custom window-center extension
+
+  * 10-tor.sh: Add log output (tails/tails!1070)
+
+    Commits:
+      - Remote shell: Improve log output
+      - 10-tor.sh: Add log output
+
+  * Use zram (tails/tails!1064)
+
+    Closes issues:
+      - Consider using zram (tails/tails#5740)
+
+    Commits:
+      - remove unused variable
+      - chdir / makes paths more predictable
+      - move swapon.tails in its own file
+      - 05-replace_swapon: Use exec to run the original swapon
+      - 05-replace_swapon: Improve device check
+      - 05-replace_swapon: Fail if any argument contains non-zram device
+      - Use zram
+      - Replace swapon
+
+  * Welcome Screen: UI changes (tails/tails!1063)
+
+    Commits:
+      - Help new users understand better the encryption model (#18732)
+      - Test suite: Make output easier to search for
+      - Remote Shell: Automatically restart service when it fails
+      - Test Suite: Use Dogtail to check if the Greeter has started
+      - Test Suite: Avoid spamming log with stacktrace of the same error
+      - Test Suite: Fix failure because of outdated screenshot
+      - Test Suite: Use Dogtail to open GNOME Shell menus
+      - Test Suite: Use Dogtail for some Greeter steps
+      - Welcome Screen: Fix excessive height
+      - Welcome Screen: Replace passphrase entry placeholder with a label
+      - Welcome Screen: Align section header icons / link buttons
+      - Welcome Screen: Remove unnecessary GtkBox
+      - Welcome Screen: Update label
+      - Welcome Screen: Update string shown when Persistent Storage is unlocked
+
+  * Upgrade to Linux 6.1.12-1 from sid (stable branch) (tails/tails!1062)
+
+    Closes issues:
+      - Upgrade Linux kernel to 6.1.7+ (tails/tails#19444)
+
+    Commits:
+      - Test suite: disable bridge QR code automated tests
+      - Upgrade to Linux 6.1.12-1 from sid
+
+  * Welcome Screen: Don't allow unlocking with empty passphrase (tails/tails!1059)
+
+    Closes issues:
+      - Disable "Unlock" button until a passphrase has been entered (tails/tails#19357)
+
+    Commits:
+      - Welcome Screen: Don't allow unlocking with empty passphrase
+
+  * Upgrade to Linux 6.1.12-1 from sid (devel branch) (tails/tails!1055)
+
+    Commits:
+      - Test suite: relax timeout
+      - Test suite: disable bridge QR code automated tests
+      - Upgrade to Linux 6.1.12-1 from sid
+
+  * tps: Fix strings not translatable (tails/tails!1053)
+
+    Closes issues:
+      - Missing translations of UI strings about Persistent Storage (tails/tails#19415)
+
+    Commits:
+      - tails-backup: Fix strings not translatable
+      - tps: Fix strings not translatable
+
+  * Set screencast feature to never stop automatically (#12723) (tails/tails!1049)
+
+    Commits:
+      - Set screencast feature to never stop automatically (#12723)
+
+  * Avoid double negation (tails/tails!1048)
+
+    Commits:
+      - Be more explicit
+      - Avoid double negation
+
+  * Unlock VeraCrypt Volumes: Use Gtk.show_uri_on_window to open directories
+    (tails/tails!1045)
+
+    Closes issues:
+      - Opening VeraCrypt volume spawns zombie process (tails/tails#19423)
+
+    Commits:
+      - Unlock VeraCrypt Volumes: Use Gtk.show_uri_on_window to open directories
+
+  * Enable non-free-firmware archive area for distributions that support it
+    (tails/tails!1036)
+
+    Closes issues:
+      - devel FTBFS (tails/tails#19456)
+      - devel branch FTBFS: uBlock diff (tails/tails#19398)
+      - Enable non-free-firmware APT component (tails/tails#19411)
+
+    Commits:
+      - fix FTBFS: patch wasnt applying
+      - Fix FTBFS by installing b43-fwcutter from bullseye instead of sid
+      - Bump the debian APT snapshot to one that supports the non-free-firmware archive
+        area
+      - Enable non-free-firmware archive area for distributions that support it
+
+ -- Tails developers <tails@boum.org>  Sat, 18 Mar 2023 15:21:33 +0000
+
 tails (5.10) unstable; urgency=medium
 
   * Upgrade Tor Browser to 12.0.3-build1 (tails/tails!1046)

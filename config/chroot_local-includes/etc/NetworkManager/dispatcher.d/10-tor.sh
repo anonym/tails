@@ -8,9 +8,12 @@ if [ -z "$1" ] || [ "$1" = "lo" ]; then
     exit 0
 fi
 
+BASENAME=$(basename "$0")
+
 if [ "$2" = "up" ]; then
     : # go on, that's what this script is for
 elif [ "${2}" = "down" ]; then
+    echo >&2 "$BASENAME: $1 down: stopping tails-tor-has-bootstrapped.target"
     systemctl --no-block stop tails-tor-has-bootstrapped.target
     exit 0
 else
@@ -24,21 +27,20 @@ fi
 # * https://gitlab.torproject.org/tpo/core/tor/-/issues/1247
 # * https://gitlab.tails.boum.org/tails/tails/-/blob/7fae4a761a06e5a14048baff21e0bdb71a1f7226/wiki/src/bugs/tor_vs_networkmanager.mdwn
 # To work around this we restart Tor.
+echo >&2 "$BASENAME: $1 up: restarting tor@default.service"
 systemctl restart tor@default.service
 
-while ! pgrep --euid amnesia -x gnome-shell > /dev/null; do
-    sleep 1
-done
-while ! systemctl is-active -q user@1000.service; do
-    sleep 1
-done
-
-/usr/local/lib/systemctl-user amnesia start tca.service
+echo >&2 "$BASENAME: $1 up: starting tca.service"
+/usr/local/lib/run-with-user-env systemctl --user start tca.service
 
 # that's not what it looks: htpdate will not really be started until Tor has bootstrapped
+echo >&2 "$BASENAME: $1 up: restarting htpdate.service"
 systemctl --no-block restart htpdate.service
 
 # Wait until the user is done with configuring Tor
+echo >&2 "$BASENAME: $1 up: waiting until Tor was configured"
 until [ "$(/usr/local/lib/tor_variable get --type=conf DisableNetwork)" = 0 ]; do
     sleep 1
 done
+
+echo >&2 "$BASENAME: $1 up: Finished"

@@ -243,10 +243,7 @@ class VolumeManager(object):
         self.remove_volume(Volume(self, gio_volume, with_udisks=False))
 
     def open_uri(self, uri: str):
-        # This is the recommended way, but it turns the cursor into wait status for up to
-        # 10 seconds after the file manager was already opened.
-        # Gtk.show_uri_on_window(self.window, uri, Gtk.get_current_event_time())
-        subprocess.Popen(["xdg-open", uri])
+        Gtk.show_uri_on_window(self.window, uri, Gtk.get_current_event_time())
 
     def show_warning(self, title: str, body: str):
         dialog = Gtk.MessageDialog(self.window,

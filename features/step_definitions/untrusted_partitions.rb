@@ -11,14 +11,13 @@ Then /^an? "([^"]+)" partition was detected by Tails on drive "([^"]+)"$/ do |ty
 end
 
 Then /^Tails has no disk swap enabled$/ do
-  # Skip first line which contain column headers
-  swap_info = $vm.execute_successfully('tail -n+2 /proc/swaps').stdout
+  # Skip first line which contain column headers and skip lines which
+  # contain a zram device
+  swap_info = $vm.execute_successfully(
+    'grep -v ^/dev/zram < /proc/swaps | tail -n+2'
+  ).stdout
   assert(swap_info.empty?,
          "Disk swapping is enabled according to /proc/swaps:\n" + swap_info)
-  mem_info = $vm.execute_successfully("grep '^Swap' /proc/meminfo").stdout
-  assert(mem_info.match(/^SwapTotal:\s+0 kB$/),
-         "Disk swapping is enabled according to /proc/meminfo:\n" +
-         mem_info)
 end
 
 Given /^I create an?( (\d+) ([[:alpha:]]+))? ([[:alnum:]]+) partition( labeled "([^"]+)")? with an? ([[:alnum:]]+) filesystem( encrypted with password "([^"]+)")? on disk "([^"]+)"$/ do |with_size, size, unit, parttype, has_label, label, fstype, is_encrypted, luks_password, name| # rubocop:disable Metrics/ParameterLists
@@ -65,8 +64,10 @@ end
 
 Then /^Tails Greeter has( not)? detected a persistence partition$/ do |no_persistence|
   expecting_persistence = no_persistence.nil?
-  @screen.find('TailsGreeter.png')
-  found_persistence = @screen.exists('TailsGreeterPersistencePassphrase.png')
+  assert !greeter.nil?
+  found_persistence = greeter
+                      .child?('Unlock', roleName:    'push button',
+                                        showingOnly: true)
   assert_equal(expecting_persistence, found_persistence,
                "Persistence is unexpectedly#{no_persistence} enabled")
 end

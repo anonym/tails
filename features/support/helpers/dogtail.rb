@@ -7,52 +7,6 @@ module Dogtail
   private_constant :MIDDLE_CLICK
   private_constant :RIGHT_CLICK
 
-  TREE_API_NODE_SEARCHES = [
-    :button,
-    :child,
-    :childLabelled,
-    :childNamed,
-    :dialog,
-    :menu,
-    :menuItem,
-    :panel,
-    :tab,
-    :textentry,
-  ].freeze
-  private_constant :TREE_API_NODE_SEARCHES
-
-  TREE_API_NODE_SEARCH_FIELDS = [
-    :labelee,
-    :parent,
-  ].freeze
-  private_constant :TREE_API_NODE_SEARCH_FIELDS
-
-  TREE_API_NODE_ACTIONS = [
-    :click,
-    :doActionNamed,
-    :doubleClick,
-    :grabFocus,
-    :keyCombo,
-    :point,
-  ].freeze
-  private_constant :TREE_API_NODE_ACTIONS
-
-  TREE_API_NODE_AT_SPI_ACTIONS = [
-    :activate,
-    :click,
-    :open,
-    :press,
-    :select,
-    :toggle,
-  ].freeze
-  private_constant :TREE_API_NODE_AT_SPI_ACTIONS
-
-  TREE_API_APP_SEARCHES = TREE_API_NODE_SEARCHES + [
-    :dialog,
-    :window,
-  ]
-  private_constant :TREE_API_APP_SEARCHES
-
   class Failure < StandardError
   end
 
@@ -78,14 +32,25 @@ module Dogtail
       @opts = opts
       @opts[:user] ||= LIVE_USER
       @find_code = "dogtail.tree.root.application('#{@app_name}')"
-      init = [
-        'import dogtail.config',
+
+      init = []
+      if @opts[:user] == LIVE_USER
+        cmd = 'dbus-send --print-reply=literal --session --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress'
+        c = RemoteShell::ShellCommand.new($vm, cmd, user: @opts[:user], debug_log: false)
+        if c.returncode != 0
+          raise Failure, "dbus-send exited with exit code #{c.returncode}"
+        end
+
+        a11y_bus = c.stdout.strip
+        init = [
+          'import os',
+          "os.environ['AT_SPI_BUS_ADDRESS'] = '#{a11y_bus}'",
+        ]
+      end
+
+      init += [
         'import dogtail.tree',
         'import dogtail.predicate',
-        'dogtail.config.logDebugToFile = False',
-        'dogtail.config.logDebugToStdOut = False',
-        'dogtail.config.blinkOnActions = True',
-        'dogtail.config.searchShowingOnly = True',
       ]
       code = [
         "#{@var} = #{@find_code}",
@@ -101,11 +66,17 @@ module Dogtail
       if init
         init = init.join("\n") if init.instance_of?(Array)
         c = RemoteShell::PythonCommand.new($vm, init, user: @opts[:user], debug_log: false)
-        raise Failure, "The Dogtail init script raised: #{c.exception}" if c.failure?
+        if c.failure?
+          msg = "The Dogtail init script raised: #{c.exception}\nSTDOUT:\n#{c.stdout}\nSTDERR:\n#{c.stderr}\n"
+          raise Failure, msg
+        end
       end
       code = code.join("\n") if code.instance_of?(Array)
       c = RemoteShell::PythonCommand.new($vm, code, user: @opts[:user])
-      raise Failure, "The Dogtail script raised: #{c.exception}" if c.failure?
+      if c.failure?
+        msg = "The Dogtail init script raised: #{c.exception}\nSTDOUT:\n#{c.stdout.strip}\nSTDERR:\n#{c.stderr.strip}\n"
+        raise Failure, msg
+      end
 
       c
     end
@@ -197,6 +168,21 @@ module Dogtail
       end
     end
 
+    def focused_child
+      node_var = "node#{@@node_counter += 1}"
+      find_script_lines = [
+        'class IsFocused(dogtail.predicate.Predicate):',
+        '    def __init__(self):',
+        '        self.satisfiedByNode = lambda node: node.focused',
+        '    def describeSearchResult(self):',
+        "        return 'focused'",
+        '',
+        "#{node_var} = #{@var}.findChild(IsFocused(), recursive=True, showingOnly=True)",
+      ]
+      run(find_script_lines)
+      Node.new(node_var.to_s, **@opts)
+    end
+
     def get_field(key)
       run("print(#{@var}.#{key})").stdout.chomp
     end
@@ -215,6 +201,14 @@ module Dogtail
 
     def checked
       get_field('checked') == 'True'
+    end
+
+    def focused
+      get_field('focused') == 'True'
+    end
+
+    def sensitive
+      get_field('sensitive') == 'True'
     end
 
     def text
@@ -237,45 +231,64 @@ module Dogtail
       get_field('showing') == 'True'
     end
 
-    TREE_API_APP_SEARCHES.each do |method|
-      define_method(method) do |*args, **kwargs|
-        args[0] = translate(args[0], **@opts) if args[0].instance_of?(String)
-        args_str = self.class.args_to_s(*args, **kwargs)
-        method_call = "#{method}(#{args_str})"
-        Node.new("#{@var}.#{method_call}", **@opts)
-      end
+    def call_tree_api_method(method, *args, **kwargs)
+      args[0] = translate(args[0], **@opts) if args[0].instance_of?(String)
+      args_str = self.class.args_to_s(*args, **kwargs)
+      method_call = "#{method}(#{args_str})"
+      Node.new("#{@var}.#{method_call}", **@opts)
     end
 
-    TREE_API_NODE_SEARCH_FIELDS.each do |field|
-      define_method(field) do
-        Node.new("#{@var}.#{field}", **@opts)
-      end
+    def button(*args, **kwargs)
+      call_tree_api_method('button', *args, **kwargs)
     end
 
-    # Override the `child` method to add support for regex matching of
-    # node names, which offers much greater flexibility.
-    def override_child(pattern = nil, **opts)
-      if pattern.instance_of?(Regexp)
-        retries = 20
-        if opts.key?(:retry)
-          retries = 1 unless opts[:retry]
-          opts.delete(:retry)
-        end
-        child = nil
-        retry_action(retries, delay: 1, exception: Failure, msg: "Found no child matching /#{pattern.source}/") do
-          child = children(**opts).find do |c|
-            pattern.match(c.name)
-          end
-          assert_not_nil(child)
-        end
-        child
-      else
-        original_child_method(pattern, **opts)
-      end
+    def child(*args, **kwargs)
+      call_tree_api_method('child', *args, **kwargs)
     end
 
-    alias original_child_method child
-    alias child override_child
+    def childLabelled(*args, **kwargs)
+      call_tree_api_method('childLabelled', *args, **kwargs)
+    end
+
+    def childNamed(*args, **kwargs)
+      call_tree_api_method('childNamed', *args, **kwargs)
+    end
+
+    def menu(*args, **kwargs)
+      call_tree_api_method('menu', *args, **kwargs)
+    end
+
+    def menuItem(*args, **kwargs)
+      call_tree_api_method('menuItem', *args, **kwargs)
+    end
+
+    def panel(*args, **kwargs)
+      call_tree_api_method('panel', *args, **kwargs)
+    end
+
+    def tab(*args, **kwargs)
+      call_tree_api_method('tab', *args, **kwargs)
+    end
+
+    def textentry(*args, **kwargs)
+      call_tree_api_method('textentry', *args, **kwargs)
+    end
+
+    def dialog(*args, **kwargs)
+      call_tree_api_method('dialog', *args, **kwargs)
+    end
+
+    def window(*args, **kwargs)
+      call_tree_api_method('window', *args, **kwargs)
+    end
+
+    def labelee
+      Node.new("#{@var}.labelee", **@opts)
+    end
+
+    def parent
+      Node.new("#{@var}.parent", **@opts)
+    end
   end
 
   class Node < Application
@@ -288,23 +301,42 @@ module Dogtail
       run("#{@var} = #{@find_code}")
     end
 
-    TREE_API_NODE_ACTIONS.each do |method|
-      define_method(method) do |*args, **kwargs|
-        args_str = self.class.args_to_s(*args, **kwargs)
-        method_call = "#{method}(#{args_str})"
-        run("#{@var}.#{method_call}")
-      end
+    def call_tree_node_method(method, *args, **kwargs)
+      args_str = self.class.args_to_s(*args, **kwargs)
+      method_call = "#{method}(#{args_str})"
+      run("#{@var}.#{method_call}")
     end
 
-    # Custom methods that use at-spi actions instead of actions
-    # that rely on rawinput (which don't work on Wayland)
-    TREE_API_NODE_AT_SPI_ACTIONS.each do |action|
-      define_method(action) { doActionNamed(action.to_s) }
+    def doActionNamed(action_name)
+      call_tree_node_method('doActionNamed', action_name)
     end
 
-    def doubleClick
+    def grabFocus
+      call_tree_node_method('grabFocus')
+    end
+
+    def activate
+      doActionNamed('activate')
+    end
+
+    def click
       doActionNamed('click')
-      doActionNamed('click')
+    end
+
+    def open
+      doActionNamed('open')
+    end
+
+    def press
+      doActionNamed('press')
+    end
+
+    def select
+      doActionNamed('select')
+    end
+
+    def toggle
+      doActionNamed('toggle')
     end
 
     def position

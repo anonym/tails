@@ -102,6 +102,9 @@ by the local configuration file:
 * `CAPTURE_ALL`: Keep videos for all scenarios, including those that
   succeed (implies `CAPTURE`). Defaults to `false`.
 
+* `EXTRA_BOOT_OPTIONS`: String value. Specify additional kernel
+  command-line options for the VM, for example `"rootpw=root"`.
+
 * `MAX_NEW_TOR_CIRCUIT_RETRIES`: Integer. Upon failure, some test steps may be
   run again after requesting that connections are made using new Tor circuits. This
   configuration variable limits how many times forcing a circuit will be
@@ -123,6 +126,12 @@ by the local configuration file:
   run. There's also an automatic mode that tries to update image for
   you (and display the match in a pop-up, so you can confirm) but
   YMMV. Defaults to `false`.
+
+* `RESTRICT_CHUTNEY_MEMORY`: Boolean value. If set to `true`, the
+  simulated Tor network (Chutney) will be run in a systemd scope with
+  memory restriction. By default, `MemoryHigh=4G` and `MemoryMax=6G` are
+  used. To use different values, set the `CHUTNEY_MEMORY_HIGH` and
+  `CHUTNEY_MEMORY_MAX` environment variables.
 
 * `TMPDIR`: String value. Directory where various temporary files
   are written during a test, e.g. VM snapshots and memory dumps,

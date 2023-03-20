@@ -37,21 +37,11 @@ def ip6tables_rules(chain, table = 'filter')
   iptables_rules_parse('ip6tables', chain, table)
 end
 
-def ip4tables_packet_counter_sum(**filters)
-  pkts = 0
-  ip4tables_chains do |name, _, rules|
-    next if filters[:tables] && !filters[:tables].include?(name)
-
-    rules.each do |rule|
-      if filters[:uid] &&
-         !rule.elements["conditions/owner/uid-owner[text()=#{filters[:uid]}]"]
-        next
-      end
-
-      pkts += rule.attribute('packet-count').to_s.to_i
-    end
-  end
-  pkts
+def ip4tables_packet_counter_sum(chain, iface, table = 'filter')
+  cmd = "iptables -t #{table} -L #{chain} -v | grep 'ACCEPT.*#{iface}' | awk '{ print $1 }'"
+  output = $vm.execute_successfully(cmd).stdout
+  incoming_packets, outgoing_packets = output.split(/\n/)
+  Integer(incoming_packets) + Integer(outgoing_packets)
 end
 
 def iptables_filter_add(add, target, address, port)
@@ -481,7 +471,7 @@ When(/^I look at the hide mode but then I go back$/) do
       '_Back',
       roleName: 'push button'
     )
-    assert_equal('True', btn.get_field('sensitive'))
+    assert btn.sensitive
     btn.click
   end
 end
@@ -600,7 +590,7 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
     if bridge_type == 'default'
       assert_equal(:easy, config_mode)
 
-      @bridge_hosts = if $config['DISABLE_CHUTNEY']
+      @bridge_hosts = if config_bool('DISABLE_CHUTNEY')
                         bridges_to_ipport(
                           $vm.file_content('/usr/share/tails/tca/default_bridges.txt')
                         )
@@ -779,7 +769,7 @@ def click_connect_to_tor
     '_Connect to Tor',
     roleName: 'push button'
   )
-  assert_equal('True', btn.get_field('sensitive'))
+  assert btn.sensitive
   btn.click
 end
 
@@ -788,10 +778,7 @@ When /^(?:I click "Connect to Tor"|I retry connecting to Tor)$/ do
 end
 
 Then /^I cannot click the "Connect to Tor" button$/ do
-  assert_equal(
-    'False',
-    tor_connection_assistant.child('_Connect to Tor').get_field('sensitive')
-  )
+  assert !tor_connection_assistant.child('_Connect to Tor').sensitive
 end
 
 When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
@@ -858,7 +845,7 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?
   when 'Tor'
     allowed_hosts = allowed_hosts_under_tor_enforcement
   when 'the default bridges'
-    allowed_hosts = if $config['DISABLE_CHUTNEY']
+    allowed_hosts = if config_bool('DISABLE_CHUTNEY')
                       bridges_to_ipport(
                         $vm.file_content('/usr/share/tails/tca/default_bridges.txt')
                       )

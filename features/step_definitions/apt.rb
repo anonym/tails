@@ -205,12 +205,12 @@ Then /^I install "(.+)" using Synaptic$/ do |package_name|
     # search has completed.
     try_for(10) do
       package_entry.grabFocus
-      package_entry.get_field('selected')
+      package_entry.focused
     end
     @screen.press('Return')
     # Now we have marked the package for installation and we have to
     # wait for the Apply button to become available
-    try_for(10) { @synaptic.button('Apply').get_field('sensitive') }
+    try_for(10) { @synaptic.button('Apply').sensitive }
     # This button is also problematic when clicking with Dogtail
     @synaptic.button('Apply').grabFocus
     @screen.press('Return')

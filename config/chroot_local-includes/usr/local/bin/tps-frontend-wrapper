@@ -15,4 +15,6 @@
 # See also the corresponding sudoers policies in
 # config/chroot_local-includes/etc/sudoers.d/zzz_tps-frontend.
 
-sudo -u tails-persistent-storage /usr/local/lib/connect-drop-tps
+user_env=$(mktemp --suffix -env)
+env --null > "${user_env}"
+sudo -u tails-persistent-storage /usr/local/lib/connect-drop-tps "${user_env}"

@@ -18,4 +18,5 @@ with open('debian/changelog', 'w') as f:
     f.write(subprocess.check_output(
         ['bin/generate-changelog', '--version', args.version]
     ).decode('utf-8'))
+    f.write("\n")
     changelog_minus_first_entry.write_to_open_file(f)

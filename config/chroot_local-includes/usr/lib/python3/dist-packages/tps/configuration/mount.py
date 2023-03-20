@@ -6,15 +6,17 @@ import subprocess
 import sys
 from typing import List, Union, Optional
 
-from tailslib import LIVE_USERNAME, LIVE_USER_UID, NOSYMFOLLOW_MOUNTPOINT
+from tailslib import LIVE_USERNAME, LIVE_USER_UID
 import tps.logging
 from tps import _, TPS_MOUNT_POINT
 from tps import executil
-from tps.mountutil import mount, MOUNTFLAG_BIND
+from tps.mountutil import mount, MOUNTFLAG_BIND, MOUNTFLAG_NOSYMFOLLOW, \
+    MOUNTFLAG_REMOUNT
 from tps.dbus.errors import TargetIsBusyError
 
 logger = tps.logging.get_logger(__name__)
 
+NOSYMFOLLOW_MOUNTPOINT = "/run/nosymfollow"
 
 class FailedPrecondition(Exception):
     pass
@@ -288,7 +290,19 @@ class Mount(object):
         # command, because the latter calls readlink(2) on the target
         # path, which makes it resolve symlinks even though the
         # nosymfollow option is set on the target filesystem.
+        # Note that this actually creates two bind mounts, one below
+        # the nosymfollow mount point (self.dest) and (because the
+        # nosymfollow mount point is a bind mount itself) one in the
+        # actual destination (self.dest_orig).
+        logger.debug(f"Executing: mount --bind {self.src} {self.dest}")
         mount(self.src, self.dest, MOUNTFLAG_BIND)
+        # Remount the mount point with the nosymfollow option. This only
+        # remounts the mount point below the nosymfollow mountpoint
+        # (self.dest) not the actual destination (self.dest_orig).
+        logger.debug(f"Executing: mount -o remount,nosymfollow {self.dest}")
+        mount(src="", dest=self.dest,
+              flags=MOUNTFLAG_REMOUNT | MOUNTFLAG_NOSYMFOLLOW,
+        )
 
     def deactivate(self):
         try:

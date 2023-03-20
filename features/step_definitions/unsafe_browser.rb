@@ -127,9 +127,8 @@ But /^checking for updates is disabled in the Unsafe Browser's configuration$/ d
   assert($vm.file_content(prefs).include?('pref("app.update.enabled", false)'))
 end
 
-Then /^the clearnet user has (|not )sent packets out to the Internet$/ do |sent|
-  uid = $vm.execute_successfully('id -u clearnet').stdout.chomp.to_i
-  pkts = ip4tables_packet_counter_sum(tables: ['OUTPUT'], uid: uid)
+Then /^the Unsafe Browser has (|not )sent packets out to the Internet$/ do |sent|
+  pkts = ip4tables_packet_counter_sum('FORWARD', 'veth-clearnet')
   case sent
   when ''
     assert(pkts.positive?, 'Packets have not gone out to the internet.')

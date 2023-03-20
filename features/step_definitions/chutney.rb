@@ -1,7 +1,3 @@
-def chutney_src_dir
-  "#{GIT_DIR}/submodules/chutney"
-end
-
 def chutney_status_log(cmd)
   action = case cmd
            when 'start'
@@ -34,11 +30,7 @@ def ensure_chutney_is_running
   return if $chutney_initialized
 
   chutney_listen_address = $vmnet.bridge_ip_addr
-  chutney_script = "#{chutney_src_dir}/chutney"
-  assert(
-    File.executable?(chutney_script),
-    "It does not look like '#{chutney_src_dir}' is the Chutney source tree"
-  )
+  chutney_script = "#{GIT_DIR}/features/scripts/chutney"
   network_definition = "#{GIT_DIR}/features/chutney/test-network"
   env = {
     'CHUTNEY_LISTEN_ADDRESS' => chutney_listen_address,
@@ -57,9 +49,7 @@ def ensure_chutney_is_running
   chutney_cmd = proc do |cmd|
     chutney_status_log(cmd)
     cmd = 'stop' if cmd == 'stop_old'
-    Dir.chdir(chutney_src_dir) do
-      cmd_helper([chutney_script, cmd, network_definition], env: env)
-    end
+    cmd_helper([chutney_script, cmd, network_definition], env: env)
   end
 
   # After an unclean shutdown of the test suite (e.g. Ctrl+C) the
@@ -77,13 +67,21 @@ def ensure_chutney_is_running
   if KEEP_CHUTNEY
     begin
       chutney_cmd.call('start')
-    rescue Test::Unit::AssertionFailedError
+    rescue Test::Unit::AssertionFailedError => e
       if File.directory?(env['CHUTNEY_DATA_DIR'])
-        raise 'You are running with --keep-snapshots or --keep-chutney, ' \
-              'but Chutney failed ' \
-              'to start with its current data directory. To recover you ' \
-              "likely want to delete '#{env['CHUTNEY_DATA_DIR']}' and " \
-              'all test suite snapshots and then start over.'
+        raise e, %{#{e.message}
+
+Note: You are running with --keep-snapshots or --keep-chutney, but Chutney
+failed to start with its current data directory. To recover you likely
+want to delete Chutney's data directory and all test suite snapshots:
+
+    sudo rm -r #{env['CHUTNEY_DATA_DIR']}
+
+    for snapshot in $(virsh snapshot-list --name TailsToaster); do
+      virsh snapshot-delete TailsToaster --snapshotname "${snapshot}"
+    done
+
+}
       else
         chutney_cmd.call('configure')
         chutney_cmd.call('start')

@@ -127,6 +127,7 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
                                   PREFERRED_WIDTH),
                               min(Gdk.Screen.get_default().get_height(),
                                   PREFERRED_HEIGHT))
+        self.set_valign(Gtk.Align.START)
 
         # Add our icon dir to icon theme
         icon_theme = Gtk.IconTheme.get_default()
@@ -164,10 +165,10 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         # Add confirm dialog
         self.confirm_dialog = MessageDialog(
             message_type=Gtk.MessageType.WARNING,
-            title=_("Persistent Storage Not Unlocked"),
+            title=_("Persistent Storage Still Locked"),
             text=_("Do you really want to start Tails without unlocking your Persistent Storage?"),
             cancel_label=_("Cancel"),
-            ok_label=_("Continue Without Persistent Storage"),
+            ok_label=_("Start Without Persistent Storage"),
         )
         self.confirm_dialog.set_transient_for(self)
 
@@ -393,8 +394,10 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         # button was clicked, but changed that behavior (see #17136), so
         # we now force users to click the "Unlock" button first before
         # they can click "Start Tails".
-        allow_start = not bool(editable.get_text())
-        self.button_start.set_sensitive(allow_start)
+        passphrase_empty = not bool(editable.get_text())
+        self.button_start.set_sensitive(passphrase_empty)
+        button_unlock = self.persistent_storage.button_storage_unlock
+        button_unlock.set_sensitive(not passphrase_empty)
         return False
 
     def _storagecreate_updateui(self, enabled=None):
