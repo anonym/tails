@@ -720,7 +720,15 @@ Given /^all notifications have disappeared$/ do
     @screen.press('super', 'v') # Show the notification list
     gnome_shell.child('Do Not Disturb',
                       roleName: 'label', showingOnly: true)
-    begin
+    # Check if there are notifications or if the "No Notifications"
+    # label is visible. Don't retry to avoid long delays - if there are
+    # no notifications, the button should be visible when the
+    # "Do Not Disturb" button is visible.
+    no_notifications = gnome_shell.child?(
+      'No Notifications',
+      roleName: 'label', showingOnly: true, retry: false
+    )
+    unless no_notifications
       @screen.click(
         *gnome_shell.child(
           'Clear',
@@ -728,12 +736,8 @@ Given /^all notifications have disappeared$/ do
           showingOnly: true
         ).position
       )
-    rescue StandardError
-      # Ignore exceptions: there might be no notification to clear, in
-      # which case there will be a "No Notifications" label instead of
-      # a "Clear" button.
+      gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
     end
-    gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
   end
   @screen.press('Escape')
   # Increase the chances that by the time we leave this step, the
