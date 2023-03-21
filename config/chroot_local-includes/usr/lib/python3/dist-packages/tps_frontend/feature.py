@@ -32,8 +32,7 @@ class Feature(object):
     @property
     def widget_name_prefix(self) -> str:
         """The string which widgets of this feature are prefixed with.
-        By default, the class name converted to snake_case with
-        "_switch" appended is used."""
+        By default, the class name converted to snake_case is used."""
         return camel_to_snake(self.__class__.__name__)
 
     @property
