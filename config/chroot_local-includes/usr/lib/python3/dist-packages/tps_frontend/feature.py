@@ -69,6 +69,9 @@ class Feature(object):
 
         action_row_name = self.widget_name_prefix + "_row"
         self.action_row = self.builder.get_object(action_row_name)  # type: Handy.ActionRow
+        if not self.action_row:
+            raise RuntimeError(f"Could not find {action_row_name}")
+
         self.name = self.dbus_object_name
         self.translated_name = self.action_row.get_title()
 
