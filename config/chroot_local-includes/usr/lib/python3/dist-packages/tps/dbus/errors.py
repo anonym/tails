@@ -28,7 +28,7 @@ class DBusError(Exception):
             err.message = err.message[len(prefix):]
             return
 
-        prefix = f"GDBus.Error:"
+        prefix = "GDBus.Error:"
         if err.message.startswith(prefix):
             err.message = err.message[len(prefix):]
 
