@@ -41,7 +41,7 @@ class MockMount(Mock):
 # functions, but pretending that it is provides code completion.
 class TestContext(object):
     tps_feature: Feature
-    # These are set in environment.py before* functions
+    # These are set in environment.py *before* functions
     tmpdir: Path
     mount_point: str
     service: Service
