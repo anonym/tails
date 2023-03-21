@@ -20,6 +20,8 @@ def _run(cmd: List, *args, **kwargs) -> subprocess.CompletedProcess:
     This allows us to have stderr both in the logs of the tps service
     and in the error message which might be returned to the client."""
     cmd = [str(s) for s in cmd]
+    # This method will be called from executil.run() (or check_call, or check_output),
+    # and we want to attribute the log message to its caller
     logger.debug(f"Executing command {' '.join(cmd)}", stacklevel=3)
 
     if tps.PROFILING:
