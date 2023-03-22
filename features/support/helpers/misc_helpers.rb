@@ -169,7 +169,7 @@ import stem
 import stem.connection
 
 def main():
-  controller = stem.connection.connect(control_port=("127.0.0.1", 9051))
+  controller = stem.connection.connect(control_port=("127.0.0.1", 9052))
   if controller is None:
     raise stem.SocketError("Cannot connect to Tor\'s control port")
   controller.authenticate()
