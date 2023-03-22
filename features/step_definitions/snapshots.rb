@@ -113,9 +113,6 @@ CHECKPOINTS =
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
 def reach_checkpoint(name, num_try = 0)
-  scenario_indent = ' ' * 4
-  step_indent = ' ' * 6
-
   step 'a computer'
   if VM.snapshot_exists?(name)
     $vm.restore_snapshot(name)
@@ -132,26 +129,23 @@ def reach_checkpoint(name, num_try = 0)
       end
       post_snapshot_restore_hook(parent_checkpoint, num_try)
     end
-    debug_log(scenario_indent + "Checkpoint: #{checkpoint_description}",
-              color: :white, timestamp: false)
+    log_scenario("Checkpoint: #{checkpoint_description}")
     step_action = 'Given'
     if parent_checkpoint
       parent_description = CHECKPOINTS[parent_checkpoint][:description]
-      debug_log(step_indent + "#{step_action} #{parent_description}",
-                color: :green, timestamp: false)
+      step_name = "#{step_action} #{parent_description}"
+      log_step_succeeded(step_name)
       step_action = 'And'
     end
     steps.each do |s|
+      step_name = "#{step_action} #{s}"
       begin
         step(s)
       rescue StandardError => e
-        debug_log(scenario_indent +
-                  "Step failed while creating checkpoint: #{s}",
-                  color: :red, timestamp: false)
+        log_step_failed(step_name)
         raise e
       end
-      debug_log(step_indent + "#{step_action} #{s}",
-                color: :green, timestamp: false)
+      log_step_succeeded(step_name)
       step_action = 'And'
     end
     $vm.save_snapshot(name)

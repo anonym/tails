@@ -1,6 +1,10 @@
 # Now that we stopped supporting Cucumber<2.0, we could probably do
 # this differently.
 
+SCENARIO_INDENT = ' ' * 4
+STEP_INDENT = ' ' * 6
+SUBSTEP_INDENT = ' ' * 8
+
 begin
   unless Cucumber::Core::Ast::Feature.instance_methods.include?(:accept_hook?)
     require 'cucumber/core/gherkin/tag_expression'
@@ -78,6 +82,28 @@ def debug_log(message, **options)
     message = "#{elapsed}: #{message}"
   end
   $debug_log_fns.each { |fn| fn.call(message, **options) }
+end
+
+def log_scenario(message, **options)
+  options[:color] = :white unless options.key?(:color)
+  options[:timestamp] = false unless options.key?(:timestamp)
+  debug_log(SCENARIO_INDENT + message, **options)
+end
+
+def log_step_succeeded(message, **options)
+  options[:color] = :green unless options.key?(:color)
+  options[:timestamp] = false unless options.key?(:timestamp)
+  debug_log(STEP_INDENT + message, **options)
+end
+
+def log_step_failed(message, **options)
+  options[:color] = :red unless options.key?(:color)
+  options[:timestamp] = false unless options.key?(:timestamp)
+  debug_log(STEP_INDENT + message, **options)
+end
+
+def log_substep(message, **options)
+  debug_log(SUBSTEP_INDENT + message, **options)
 end
 
 require 'cucumber/formatter/pretty'
