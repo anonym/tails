@@ -164,19 +164,20 @@ def force_new_tor_circuit
     # We sleep an extra second to avoid tight timings.
     sleep interval - elapsed + 1 if elapsed.positive? && elapsed < interval
   end
-  script = [
-    'import stem',
-    'import stem.connection',
-    'try:',
-    '    controller = stem.connection.connect(control_port=("127.0.0.1", 9051))',
-    '    if controller is None:',
-    '        raise stem.SocketError("Cannot connect to Tor\'s control port")',
-    '    controller.authenticate()',
-    '    controller.signal(stem.Signal.NEWNYM)',
-    'except Exception as e:',
-    '    exit(e)',
-  ]
-  c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
+  script = '
+import stem
+import stem.connection
+
+def main():
+  controller = stem.connection.connect(control_port=("127.0.0.1", 9051))
+  if controller is None:
+    raise stem.SocketError("Cannot connect to Tor\'s control port")
+  controller.authenticate()
+  controller.signal(stem.Signal.NEWNYM)
+
+main()
+'
+  c = RemoteShell::PythonCommand.new($vm, script)
   assert(c.success?, 'NEWNYM failed')
   $__last_newnym = Time.now
 end
