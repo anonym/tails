@@ -52,8 +52,8 @@ volume.
 
 The backend is implemented as a D-Bus activated systemd service using
 the D-Bus system bus. It exposes two interfaces:
-* [[!tails_gitweb desc="org.boum.tails.PersistentStorage" config/chroot_local-includes/usr/lib/python3/dist-packages/tps/service.py#L45]]
-* [[!tails_gitweb desc="org.boum.tails.PersistentStorage.Feature" config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/feature.py#L35]]
+* [[!tails_gitweb desc="org.boum.tails.PersistentStorage" config/chroot_local-includes/usr/lib/python3/dist-packages/tps/service.py]]
+* [[!tails_gitweb desc="org.boum.tails.PersistentStorage.Feature" config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/feature.py]]
 
 These interfaces are used by the frontend to make the properties and
 methods available to the user.
@@ -155,7 +155,7 @@ Else, we:
    - uses all the free space
    - labeled `TailsData`
    - create an ext4 filesystem in the encrypted container
-   - set appropriate ownership: [[!tails_gitweb config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py#L312-317]]
+   - set appropriate ownership (`CleartextDevice.mount()` in [[!tails_gitweb config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py]])
  * switch to the settings view
 
 ### Configure Persistent Storage features (i.e. which bits are persistent)
