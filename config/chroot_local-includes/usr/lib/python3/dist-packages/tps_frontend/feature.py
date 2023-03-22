@@ -107,7 +107,7 @@ class Feature(object):
 
         switch_name = self.widget_name_prefix + "_switch"
         self.switch = self.builder.get_object(switch_name)  # type: Gtk.Switch
-        if not self.switch:
+        if self.switch is None:
             raise RuntimeError(f"Could not find {switch_name}")
 
         self.switch.connect("state-set", self.on_state_set)
