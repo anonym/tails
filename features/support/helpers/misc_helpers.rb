@@ -174,7 +174,7 @@ def force_new_tor_circuit
     '    controller.authenticate()',
     '    controller.signal(stem.Signal.NEWNYM)',
     'except Exception as e:',
-    '    exit(1)',
+    '    exit(e)',
   ]
   c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
   assert(c.success?, 'NEWNYM failed')
