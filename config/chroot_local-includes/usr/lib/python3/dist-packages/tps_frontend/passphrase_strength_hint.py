@@ -52,3 +52,18 @@ def set_passphrase_strength_hint(progress_bar: Gtk.ProgressBar,
 
     progress_bar.set_fraction(strength)
     progress_bar.set_text(hint)
+
+def get_passphrase_suggestion():
+    try:
+        passphrase = ''
+        p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", "en_securedrop"],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.DEVNULL,
+                        text=True)
+        if p.returncode == 0:
+            passphrase = p.stdout.rstrip()
+    except:
+        pass
+
+    finally:
+        return passphrase

@@ -3,7 +3,7 @@ from gi.repository import Gio, GLib, Gtk
 from typing import TYPE_CHECKING
 
 from tps_frontend import PASSPHRASE_VIEW_UI_FILE
-from tps_frontend.passphrase_strength_hint import set_passphrase_strength_hint
+from tps_frontend.passphrase_strength_hint import set_passphrase_strength_hint,get_passphrase_suggestion
 from tps_frontend.view import View
 
 if TYPE_CHECKING:
@@ -22,6 +22,9 @@ class PassphraseView(View):
         self.progress_bar = self.builder.get_object("passphrase_hint_progress_bar")  # type: Gtk.ProgressBar
         self.verify_hint_box = self.builder.get_object("verify_hint_box")  # type: Gtk.Box
         self.create_button = self.builder.get_object("create_button")  # type: Gtk.Button
+        self.passphrase_hint = self.builder.get_object("passphrase_suggestion_label")
+        self.passphrase_hint.set_can_focus(False)
+        self.on_refresh_image_clicked()
 
     def show(self):
         super().show()
@@ -48,6 +51,10 @@ class PassphraseView(View):
             cancellable=None,
             callback=self.window.on_create_call_finished,
         )
+
+    def on_refresh_image_clicked(self, *args):
+        label_text = get_passphrase_suggestion()
+        self.passphrase_hint.set_text(label_text)
 
     def on_passphrase_entry_changed(self, entry: Gtk.Entry):
         passphrase = entry.get_text()
