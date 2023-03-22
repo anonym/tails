@@ -68,6 +68,7 @@ def post_snapshot_restore_hook(snapshot_name, num_try)
   if $vm.connected_to_network? &&
      $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
      check_disable_network != '1'
+    debug_log('Restarting Tor...')
     $vm.execute('systemctl stop tor@default.service')
     $vm.host_to_guest_time_sync
     already_synced_time_host_to_guest = true
