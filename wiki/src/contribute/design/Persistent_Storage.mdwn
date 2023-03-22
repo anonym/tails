@@ -300,6 +300,6 @@ symbolic links - so it's important that operations on the target path
 do not call `readlink` (or `readlinkat`).
 
 The on-activated/on-deactivated hooks are also executed as root and
-some of them operate on directores controlled by unprivileged users,
+some of them operate on directories controlled by unprivileged users,
 so there we also have to use the `/run/nosymfollow` mountpoint to avoid
 symlink attacks.
