@@ -101,7 +101,9 @@ def recover_from_upgrader_failure
 end
 
 def greeter
-  Dogtail::Application.new('Welcome to Tails!', user: 'Debian-gdm')
+  Dogtail::Application.new('Welcome to Tails!',
+                           user:               'Debian-gdm',
+                           translation_domain: 'tails')
 end
 
 Given /^I clone USB drive "([^"]+)" to a (new|temporary) USB drive "([^"]+)"$/ do |from, mode, to|
@@ -492,15 +494,20 @@ Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_p
 
   # Figure out which language is set now that the Persistent Storage is
   # unlocked
+  $language, $lang_code = get_greeter_language
+end
+
+def get_greeter_language
   english_label = 'English - United States'
   german_label = 'Deutsch - Deutschland (German - Germany)'
   try_for(30) do
     greeter.child(english_label, roleName: 'label', showingOnly: true)
-    $language = ''
+    # We have to set the language to '' for English, setting it to
+    # 'English' doesn't work.
+    return '', 'en'
   rescue Dogtail::Failure
     greeter.child(german_label, roleName: 'label', showingOnly: true)
-    $language = 'German'
-    true
+    return 'German', 'de'
   end
 end
 
@@ -1385,11 +1392,16 @@ Then /^all Greeter options are set to (non-)?default values$/ do |non_default|
 end
 
 Then /^(no )?persistent Greeter options were restored$/ do |no|
+  $language, $lang_code = get_greeter_language
+  # Our Dogtail wrapper code automatically translates strings to $language
+  settings_restored = greeter
+                      .child?('Settings were loaded from the persistent storage.',
+                              roleName:    'label',
+                              showingOnly: true)
   if no
-    assert(!@screen.exists('TailsGreeterToast.png'))
+    assert(!settings_restored)
   else
-    $language = 'German'
-    @screen.wait('TailsGreeterPersistentSettingsRestoredGerman.png', 10)
+    assert(settings_restored)
   end
 end
 
