@@ -234,7 +234,7 @@ apt-snapshots-expiry:
   - "! ./https-get-expired -reject-expired https://expired.badssl.com/"
   - echo "Invalid host"
   - "! ./https-get-expired -reject-expired https://nxdomain.tails.boum.org/"
-  - " ( set -x;     retry() {         for i in 1 2 3; do \"$@\" && return 0; echo try again: $i; sleep 0.5; done; return 1;     };     . config/chroot_local-includes/etc/default/htpdate.pools; err=0; for url in $(echo $HTP_POOL_1 $HTP_POOL_2 $HTP_POOL_3 | tr ',' ' '); do echo $url; if ! retry ./https-get-expired -reject-expired https://$url; then echo ERROR on $url; err=1; fi; done; exit $err; )"
+  - "./bin/test-utils/https-get-expired-test-all"
 
 https-get-expired:
   rules:
