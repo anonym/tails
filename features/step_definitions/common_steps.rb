@@ -12,10 +12,25 @@ def post_vm_start_hook
 end
 
 def post_snapshot_restore_hook(snapshot_name)
+  # Press escape to wake up the display
+  @screen.press('Escape')
+
   $vm.wait_until_remote_shell_is_up
-  unless snapshot_name.end_with?('tails-greeter')
-    @screen.wait("GnomeApplicationsMenu#{$language}.png", 20)
+  pattern = if snapshot_name.end_with?('tails-greeter')
+              'TailsGreeter.png'
+            else
+              "GnomeApplicationsMenu#{$language}.png"
+            end
+  try_for(40, delay: 0) do
+    # We use @screen.real_find here instead of @screen.wait because we
+    # don't want check_and_raise_display_output_not_active() to be called.
+    @screen.real_find(pattern)
+  rescue FindFailed
+    # Press escape to wake up the display
+    @screen.press('Escape')
+    next
   end
+
   post_vm_start_hook
 
   # Increase the chances that by the time we leave this function, if
