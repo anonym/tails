@@ -51,7 +51,12 @@ tps_get_features() {
     res=$(gdbus call --system --dest org.boum.tails.PersistentStorage \
          --object-path "${object_path}" \
          --method org.boum.tails.PersistentStorage.GetFeatures)
-    # Strip the leading and trailing parenthesis and comma
+    # gdbus prints return values as a tuple, like this:
+    # (['feature1', 'feature2'],)
+    # We only want to return the list of features in the form
+    # ['feature1', 'feature2'], so we strip the leading and trailing
+    # parenthesis and comma. That format allows Python/Ruby callers to
+    # use `eval` to turn the list into a Python list/Ruby array.
     res=${res#"("}
     res=${res%",)"}
     echo "${res}"
