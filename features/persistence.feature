@@ -93,7 +93,7 @@ Feature: Tails persistence
     When I enable persistence
     Then no persistent Greeter options were restored
     When I set all Greeter options to non-default values
-    And I log in to a new session in German after having activated the Persistent Storage
+    And I log in to a new session in German (de) after having activated the Persistent Storage
     Then all Greeter options are set to non-default values
     When I cold reboot the computer
     And the computer reboots Tails

@@ -506,10 +506,15 @@ end
 
 # We discard unused keyword parameters by adding `**_` to the definition
 def translate(str, translation_domain: nil, drop_accelerator: true, drop_markup: true, **_)
-  rv = if $language.empty? || translation_domain.nil? || translation_domain.empty?
+  rv = if $lang_code.empty? || translation_domain.nil? || translation_domain.empty?
          str
        else
-         $vm.execute_successfully("gettext '#{translation_domain}' '#{str}'").stdout
+         # It's important that we use double quotes instead of single
+         # quotes here around str because a single quote between single
+         # quotes can't be escaped.
+         cmd = "gettext '#{translation_domain}' \"#{str}\""
+         env = { 'LANGUAGE' => $lang_code }
+         $vm.execute_successfully(cmd, env: env).stdout
        end
   if drop_accelerator
     assert(str.count('_') <= 1, 'translate() are supposed to drop the ' \
