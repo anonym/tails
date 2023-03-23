@@ -47,18 +47,12 @@ tps_get_features() {
     # Notes:
     # - Only tails-persistent-storage and Debian-gdm have the required
     #   permissions to call this
-    local object_path="/org/boum/tails/PersistentStorage"
-    res=$(gdbus call --system --dest org.boum.tails.PersistentStorage \
-         --object-path "${object_path}" \
-         --method org.boum.tails.PersistentStorage.GetFeatures)
-    # gdbus prints return values as a tuple, like this:
-    # (['feature1', 'feature2'],)
-    # We only want to return the list of features in the form
-    # ['feature1', 'feature2'], so we strip the leading and trailing
-    # parenthesis and comma. That format allows Python/Ruby callers to
-    # use `eval` to turn the list into a Python list/Ruby array.
-    res=${res#"("}
-    res=${res%",)"}
+    # Output format: ['Feature1', 'Feature2']
+    res=$(busctl --json=short call org.boum.tails.PersistentStorage \
+          /org/boum/tails/PersistentStorage \
+          org.boum.tails.PersistentStorage \
+          GetFeatures | \
+          python3 -c "import sys, json; print(json.dumps(json.load(sys.stdin)['data'][0]))")
     echo "${res}"
 }
 

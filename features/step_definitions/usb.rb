@@ -1,4 +1,5 @@
 require 'securerandom'
+require 'json'
 
 # Returns a mapping from the source of a binding to its destination
 # for all bindings of all pre-configured tps features that the running
@@ -48,7 +49,7 @@ end
 
 def tps_features
   c = $vm.execute_successfully('/usr/local/lib/tpscli get-features')
-  eval(c.stdout.chomp)
+  JSON.parse(c.stdout.chomp)
 end
 
 def tps_feature_is_enabled(feature, reload = true)
