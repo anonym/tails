@@ -488,8 +488,8 @@ class Service(DBusObject, ServiceUsingJobs):
 
     def disable_feature(self, feature: Feature):
         with self.enable_features_lock:
-            enabled_features = [feature for feature in self.features
-                                if feature.IsEnabled]
+            enabled_features = [ftr for ftr in self.features
+                                if ftr.IsEnabled]
             enabled_features.remove(feature)
             self.config_file.save(enabled_features)
             feature.refresh_state(["IsEnabled"])
