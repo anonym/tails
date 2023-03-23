@@ -12,8 +12,10 @@ def main():
     Path(SOCKET_FILE).parent.mkdir(mode=0o700, parents=True, exist_ok=True)
 
     output = subprocess.check_output(["/usr/bin/ibus", "address"]).decode().strip()
-    # address = output
-    address, guid = output.split(",")
+    try:
+        address, guid = output.split(",")
+    except Exception as e:
+        raise RuntimeError(f"Failed to split output from `/usr/bin/ibus address`: '{output}'") from e
     subprocess.run(["/usr/local/lib/tails-dbus-proxy", "--pid-file", PID_FILE,
                     address, SOCKET_FILE])
 
