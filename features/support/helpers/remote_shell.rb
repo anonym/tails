@@ -98,9 +98,26 @@ module RemoteShell
       opts[:user] ||= 'root'
       opts[:spawn] = false unless opts.key?(:spawn)
       opts[:debug_log] = true unless opts.key?(:debug_log)
-      type = opts[:spawn] ? 'spawn' : 'call'
-      debug_log("Remote shell: #{type}ing as #{opts[:user]}: #{cmd}") if opts[:debug_log]
-      ret = RemoteShell.communicate(vm, 'sh_' + type, opts[:user], cmd, **opts)
+      opts[:env] ||= {}
+      cmd_str = cmd
+      unless opts[:env].empty?
+        env_str = opts[:env].map { |k, v| "#{k}=#{v}" }.join(' ')
+        cmd_str = "#{env_str} #{cmd_str}"
+      end
+      if opts[:spawn]
+        type = 'sh_spawn'
+        verb = 'spawning'
+      else
+        type = 'sh_call'
+        verb = 'calling'
+      end
+
+      if opts[:debug_log]
+        debug_log("Remote shell: #{verb} as #{opts[:user]}: #{cmd_str}")
+      end
+
+      args = [type, opts[:user], opts[:env], cmd]
+      ret = RemoteShell.communicate(vm, *args, **opts)
       if opts[:debug_log] && !(opts[:spawn])
         debug_log("Remote shell: #{type} returned: #{ret}")
       end
@@ -135,6 +152,7 @@ module RemoteShell
     def self.execute(vm, code, **opts)
       opts[:user] ||= 'root'
       opts[:debug_log] = true unless opts.key?(:debug_log)
+      opts[:env] ||= {}
       show_code = code.chomp
       if show_code["\n"]
         show_code = "\n" +
@@ -142,9 +160,17 @@ module RemoteShell
                              .map { |l| ' ' * 4 + l.chomp }
                              .join("\n")
       end
-      debug_log("executing Python as #{opts[:user]}: #{show_code}") if opts[:debug_log]
+
+      if opts[:debug_log]
+        if !opts[:env].empty?
+          env_str = opts[:env].map { |k, v| "#{k}=#{v}" }.join(' ')
+          debug_log("executing Python as #{opts[:user]} with #{env_str}: #{show_code}")
+        else
+          debug_log("executing Python as #{opts[:user]}: #{show_code}")
+        end
+      end
       ret = RemoteShell.communicate(
-        vm, 'python_execute', opts[:user], code, **opts
+        vm, 'python_execute', opts[:user], opts[:env], code, **opts
       )
       debug_log('execution complete') if opts[:debug_log]
       ret
