@@ -281,13 +281,11 @@ Given /^I create a persistent partition( with the default settings| for Addition
   persistent_storage_main_frame
     .child('Passphrase:', roleName: 'label')
     .labelee
-    .grabFocus
-  @screen.type(@persistence_password)
+    .text = @persistence_password
   persistent_storage_main_frame
     .child('Confirm:', roleName: 'label')
     .labelee
-    .grabFocus
-  @screen.type(@persistence_password)
+    .text = @persistence_password
   persistent_storage_main_frame.button('_Create Persistent Storage').click
   try_for(300) do
     persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
