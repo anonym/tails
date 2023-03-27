@@ -120,6 +120,8 @@ class Service(DBusObject, ServiceUsingJobs):
         """Create the Persistent Storage partition and activate the
         default features"""
 
+        logger.info("Creating Persistent Storage...")
+
         # Check if we can create the Persistent Storage
         if self.state != State.NOT_CREATED:
             msg = "Can't create Persistent Storage when state is '%s'" % \
@@ -131,6 +133,8 @@ class Service(DBusObject, ServiceUsingJobs):
         finally:
             self.refresh_state(overwrite_in_progress=True)
             self.refresh_features()
+
+        logger.info("Done creating Persistent Storage")
 
     def do_create(self, passphrase: str):
         self.State = State.CREATING
@@ -267,11 +271,16 @@ class Service(DBusObject, ServiceUsingJobs):
     def ChangePassphrase(self, passphrase: str, new_passphrase: str):
         """Change the passphrase of the Persistent Storage encrypted
         partition"""
+
+        logger.info("Changing passphrase...")
+
         partition = Partition.find()
         if not partition:
             raise NotCreatedError("No Persistent Storage found")
 
         partition.change_passphrase(passphrase, new_passphrase)
+
+        logger.info("Done changing passphrase")
 
     # ----- Exported properties ----- #
 
