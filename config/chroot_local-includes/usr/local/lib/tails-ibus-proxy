@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import time
 from pathlib import Path
 import subprocess
 
@@ -11,11 +11,21 @@ def main():
     Path(PID_FILE).parent.mkdir(mode=0o700, parents=True, exist_ok=True)
     Path(SOCKET_FILE).parent.mkdir(mode=0o700, parents=True, exist_ok=True)
 
-    output = subprocess.check_output(["/usr/bin/ibus", "address"]).decode().strip()
+    # XXX: Bookworm: Replace this busy wait with an After= dependency on
+    # org.freedesktop.IBus.session.GNOME.service
+    # Refs: #19575
+    output = None
+    while output is None:
+        output = subprocess.check_output(["/usr/bin/ibus", "address"]).decode().strip()
+        if output == '(null)':
+            output = None
+            time.sleep(1)
+
     try:
         address, guid = output.split(",")
     except Exception as e:
         raise RuntimeError(f"Failed to split output from `/usr/bin/ibus address`: '{output}'") from e
+
     subprocess.run(["/usr/local/lib/tails-dbus-proxy", "--pid-file", PID_FILE,
                     address, SOCKET_FILE])
 

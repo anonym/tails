@@ -2,6 +2,9 @@
 Description=Proxy the IBus
 StopWhenUnneeded=true
 ConditionUser=1000
+# XXX: Bookworm: Replace this with an After= dependency on
+# org.freedesktop.IBus.session.GNOME.service
+# Refs: #19575
 After=org.gnome.Shell@wayland.service
 
 [Service]
