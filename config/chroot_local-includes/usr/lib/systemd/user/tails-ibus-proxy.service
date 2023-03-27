@@ -10,6 +10,7 @@ After=org.gnome.Shell@wayland.service
 [Service]
 Type=forking
 ExecStart=/usr/local/lib/tails-ibus-proxy
+PIDFile=/run/user/1000/.dbus-proxy/ibus-proxy.pid
 
 [Install]
 WantedBy=desktop.target
