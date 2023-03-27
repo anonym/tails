@@ -11,7 +11,9 @@ def post_vm_start_hook
   @screen.click(@screen.w - 1, @screen.h / 2)
 end
 
-def post_snapshot_restore_hook(snapshot_name)
+def post_snapshot_restore_hook(snapshot_name, num_try)
+  scenario_indent = ' ' * 4
+
   # Press escape to wake up the display
   @screen.press('Escape')
 
@@ -21,14 +23,25 @@ def post_snapshot_restore_hook(snapshot_name)
             else
               "GnomeApplicationsMenu#{$language}.png"
             end
-  try_for(40, delay: 0) do
-    # We use @screen.real_find here instead of @screen.wait because we
-    # don't want check_and_raise_display_output_not_active() to be called.
-    @screen.real_find(pattern)
-  rescue FindFailed
-    # Press escape to wake up the display
-    @screen.press('Escape')
-    next
+  begin
+    try_for(10, delay: 0) do
+      # We use @screen.real_find here instead of @screen.wait because we
+      # don't want check_and_raise_display_output_not_active() to be called.
+      @screen.real_find(pattern)
+    rescue FindFailed
+      # Press escape to wake up the display
+      @screen.press('Escape')
+      next
+    end
+  rescue Timeout::Error
+    if num_try == 3
+      raise 'Failed to restore snapshot'
+    end
+
+    debug_log(scenario_indent + 'Failed to restore snapshot, retrying...',
+              color: :yellow, timestamp: false)
+    reach_checkpoint(snapshot_name, num_try + 1)
+    return
   end
 
   post_vm_start_hook
