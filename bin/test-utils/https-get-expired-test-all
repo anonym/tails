@@ -1,11 +1,15 @@
 #!/bin/sh
 
-set -x
+set -eu
+
 retry() {
     for i in 1 2 3; do
-        "$@" && return 0
-        echo try again: $i
-        sleep 0.5
+        if "$@"; then
+            return 0
+        else
+            echo "try again: $i"
+            sleep 0.5
+        fi
     done
     return 1
 }
