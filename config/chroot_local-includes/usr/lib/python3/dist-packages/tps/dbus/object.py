@@ -195,10 +195,10 @@ class DBusObject(object, metaclass=ABCMeta):
                 error_name = module.__name__ + "." + type(e).__name__
             else:
                 error_name = type(e).__name__
-            if e.__class__.__module__ == "__builtin__":
-                error_name = "builtin." + error_name
+            if e.__class__.__module__ in ("__builtin__", "builtins"):
+                error_name = "python." + error_name
             if not Gio.dbus_is_name(error_name):
-                logger.warning(f"Error name {error_name} is not a valid D-Bus name")
+                logger.warning(f"Can't use \"{error_name}\" as a D-Bus error name, using \"python.UnknownError\" instead")
                 error_name = "python.UnknownError"
             invocation.return_dbus_error(error_name, str(e))
 
