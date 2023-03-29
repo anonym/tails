@@ -12,7 +12,23 @@ cat config/chroot_local-packageslists/tails-perl5lib.list \
        grep -E -v "^#" |
        xargs apt-get -qy install
 
-apt-get -qy install apt-file libdist-zilla-plugin-test-notabs-perl libdist-zilla-plugin-test-perl-critic-perl libdist-zilla-app-command-authordebs-perl libmodule-build-perl sudo attr libarchive-tools libdevice-cdio-perl faketime genisoimage gnutls-bin libdata-dumper-concise-perl libdatetime-perl libfile-copy-recursive-perl libtest-lwp-useragent-perl
+apt-get -qy install \
+    apt-file \
+    libdist-zilla-plugin-test-notabs-perl \
+    libdist-zilla-plugin-test-perl-critic-perl \
+    libdist-zilla-app-command-authordebs-perl \
+    libmodule-build-perl \
+    sudo \
+    attr \
+    libarchive-tools \
+    libdevice-cdio-perl \
+    faketime \
+    genisoimage \
+    gnutls-bin \
+    libdata-dumper-concise-perl \
+    libdatetime-perl \
+    libfile-copy-recursive-perl \
+    libtest-lwp-useragent-perl
 
 apt-get update -qq # Take into account APT configuration added by apt-file
 
