@@ -2,6 +2,11 @@
 
 set -eu
 
+if [ -z "${GITLAB_CI:-}" ]; then
+    echo "Error: not running in a throw-away container" >&2
+    exit 1
+fi
+
 cat config/chroot_local-packageslists/tails-perl5lib.list \
     config/chroot_local-packageslists/tails-iuk.list |
        grep -E -v "^#" |
