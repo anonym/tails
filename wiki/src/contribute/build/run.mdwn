@@ -1,0 +1,18 @@
+[[!meta title="Developer tricks"]]
+
+<div class="caution">
+Tricks mentioned here are only intended for <strong>development</strong>. Please don't use them in your
+regular Tails!
+</div>
+
+# Kernel options
+
+ - `early_patch`: see [[contribute/build/early-patch]]
+ - `login`: skip the greeter, using the default options
+
+ - `rootpw` set the root password (not the amnesia password)
+
+ - `break=init` stop boot before starting the init and give you a shell. Useful for small customizations that
+   must be done before boot.
+   If you need to do the same thing over and over, consider using [[contribute/build/early-patch]] instead
+
