@@ -22,6 +22,7 @@ import gettext
 import gi
 import logging
 import os
+from pathlib import Path
 
 from tailsgreeter import config
 from tailsgreeter.config import persistent_settings_dir, transient_settings_dir
@@ -121,6 +122,9 @@ class GreeterApplication(object):
         self.ready = True
         logging.info("tails-greeter is ready.")
         self.mainwindow.show()
+
+        if "login" in Path("/proc/cmdline").read_text().split():
+            self.login()
 
     def on_language_changed(self, locale_code: str):
         """Translate to the given locale"""
