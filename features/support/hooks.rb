@@ -267,6 +267,7 @@ Before('@product') do |scenario|
             end
   # English will be assumed if this is not overridden
   $language = ''
+  $lang_code = ''
   @os_loader = 'MBR'
   # Passwords includes shell-special chars (space, "!")
   # as a regression test for #17792

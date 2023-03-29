@@ -138,6 +138,7 @@ When /^I start the computer$/ do
          'Trying to start a VM that is already running')
   $vm.start
   $language = ''
+  $lang_code = ''
 end
 
 Given /^I start Tails( from DVD)?( with network unplugged)?( and genuine APT sources)?( and I login)?$/ do |dvd_boot, network_unplugged, keep_apt_sources, do_login|
@@ -337,8 +338,9 @@ Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_a
   step 'I configure APT to use non-onion sources' unless keep_apt_sources
 end
 
-Given /^I set the language to (.*)$/ do |lang|
+Given /^I set the language to (.*) \((.*)\)$/ do |lang, lang_code|
   $language = lang
+  $lang_code = lang_code
   # The listboxrow does not expose any actions through AT-SPI,
   # so Dogtail is unable to click it directly. We let it grab focus
   # and activate it via the keyboard instead.
@@ -359,7 +361,7 @@ Given /^I set the language to (.*)$/ do |lang|
   @screen.press('Return')
 end
 
-Given /^I log in to a new session(?: in ([^ ]*))?( without activating the Persistent Storage)?( after having activated the Persistent Storage| expecting no warning about the Persistent Storage not being activated)?$/ do |lang, expect_warning, expect_no_warning|
+Given /^I log in to a new session(?: in ([^ ]*) \(([^ ]*)\))?( without activating the Persistent Storage)?( after having activated the Persistent Storage| expecting no warning about the Persistent Storage not being activated)?$/ do |lang, lang_code, expect_warning, expect_no_warning|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
@@ -373,7 +375,7 @@ Given /^I log in to a new session(?: in ([^ ]*))?( without activating the Persis
                  end
   login_button_region = @screen.wait_any(login_button, 15)[:match]
   if lang && lang != 'English'
-    step "I set the language to #{lang}"
+    step "I set the language to #{lang} (#{lang_code})"
     # After selecting options (language, administration password,
     # etc.), the Greeter needs some time to focus the main window
     # back, so that typing the accelerator for the "Start Tails"

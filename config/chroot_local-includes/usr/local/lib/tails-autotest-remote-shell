@@ -47,7 +47,7 @@ import logging
 
 from tailslib.userenv import read_user_env
 
-from typing import Tuple
+from typing import Dict, Tuple
 
 REMOTE_SHELL_DEV = '/dev/virtio-ports/org.tails.remote_shell.0'
 
@@ -197,14 +197,15 @@ class PythonSession:
             return exc_str, "", ""
 
 
-def execute_cmd_as_user(cmd, user, **kwargs):
+def execute_cmd_as_user(cmd, env: Dict, user, **kwargs):
     switch_user_fn = mk_switch_user_fn(user)
-    env = get_user_env(user)
-    cwd = env.get('HOME', '/')
+    user_env = get_user_env(user)
+    user_env.update(env)
+    cwd = user_env.get('HOME', '/')
     return subprocess.Popen(cmd,
                             shell=True,  # nosec subprocess_popen_with_shell_equals_true
                             text=True,
-                            env=env,
+                            env=user_env,
                             cwd=cwd,
                             preexec_fn=switch_user_fn,
                             **kwargs)
@@ -254,13 +255,13 @@ def main():
             id, cmd_type, *rest = json.loads(line)
             ret = ""
             if cmd_type in ['sh_call', 'sh_spawn']:
-                user, cmd = rest
+                user, env, cmd = rest
                 logging.info(f"Executing as {user}: {cmd}")
                 if cmd_type == "sh_spawn":
-                    execute_cmd_as_user(cmd, user)
+                    execute_cmd_as_user(cmd, env, user)
                     returncode, stdout, stderr = 0, "", ""
                 else:
-                    p = execute_cmd_as_user(cmd, user,
+                    p = execute_cmd_as_user(cmd, env, user,
                                             stderr=subprocess.PIPE,
                                             stdout=subprocess.PIPE)
                     stdout, stderr = p.communicate()
@@ -268,7 +269,7 @@ def main():
                 ret = json.dumps([id, 'success', returncode, stdout, stderr])
                 logging.info(f"Result: {ret}")
             elif cmd_type == 'python_execute':
-                user, code = rest
+                user, env, code = rest
                 if user not in python_sessions or \
                         python_sessions[user].process.poll() is not None:
                     python_sessions[user] = PythonSession(user)
