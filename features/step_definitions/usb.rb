@@ -308,30 +308,32 @@ Given /^I change the passphrase of the Persistent Storage( back to the original)
   # modal dialog to be run via gtk_dialog_run() which causes the
   # application to hang when triggered via a ATSPI action. See
   # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
-  persistent_storage_main_frame.button('Change Passphrase').grabFocus
+  persistent_storage_main_frame
+    .button('Change Passphrase', showingOnly: true)
+    .grabFocus
   @screen.press('Return')
-  change_passphrase_dialog = persistent_storage_frontend.child(
-    'Change Passphrase', roleName: 'dialog'
-  )
+  change_passphrase_dialog = persistent_storage_frontend
+                             .child('Change Passphrase', roleName: 'dialog', showingOnly: true)
   change_passphrase_dialog
-    .child('Current Passphrase', roleName: 'label')
+    .child('Current Passphrase', roleName: 'label', showingOnly: true)
     .labelee
     .grabFocus
   @screen.type(current_passphrase)
   change_passphrase_dialog
-    .child('New Passphrase', roleName: 'label')
+    .child('New Passphrase', roleName: 'label', showingOnly: true)
     .labelee
     .grabFocus
   @screen.type(new_passphrase)
   change_passphrase_dialog
-    .child('Confirm New Passphrase', roleName: 'label')
+    .child('Confirm New Passphrase', roleName: 'label', showingOnly: true)
     .labelee
     .grabFocus
   @screen.type(new_passphrase)
   change_passphrase_dialog.button('Change').click
   # Wait for the dialog to close
   try_for(30) do
-    persistent_storage_frontend.child('Change Passphrase', roleName: 'dialog')
+    persistent_storage_frontend
+      .child('Change Passphrase', roleName: 'dialog')
   rescue Dogtail::Failure
     # The dialog couldn't be found, which is what we want
     true
