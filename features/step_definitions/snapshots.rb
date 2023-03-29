@@ -110,7 +110,6 @@ CHECKPOINTS =
   }.freeze
 
 # XXX: giving up on a few worst offenders for now
-# rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
 def reach_checkpoint(name, num_try = 0)
   step 'a computer'
@@ -156,7 +155,6 @@ def reach_checkpoint(name, num_try = 0)
   # it in all cases, including even when've just saved a new snapshot.
   post_snapshot_restore_hook(name, num_try)
 end
-# rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 
 # For each checkpoint we generate a step to reach it.
