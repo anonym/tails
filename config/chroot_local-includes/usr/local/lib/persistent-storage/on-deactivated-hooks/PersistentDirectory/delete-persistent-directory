@@ -5,4 +5,6 @@ set -u
 
 NOSYMFOLLOW_MOUNTPOINT='/run/nosymfollow'
 PERSISTENT_DIR="${NOSYMFOLLOW_MOUNTPOINT}/home/amnesia/Persistent"
-rmdir "${PERSISTENT_DIR}"
+if [ -e "${PERSISTENT_DIR}" ]; then
+  rmdir "${PERSISTENT_DIR}"
+fi

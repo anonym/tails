@@ -319,39 +319,29 @@ projector), you can save the configuration of your displays using the
    your <span class="filename">Home</span> folder to
    <span class="filename">/live/persistence/TailsData_unlocked/dotfiles/.config</span>.
 
-<!-- Remove after #8447. -->
-
 Deleting the data corresponding to a feature
 ============================================
 
-If you turn off a feature, it is unavailable after restarting Tails but the
-corresponding data is still saved on the USB stick.
+When you turn off a feature of the Persistent Storage:
 
-To delete the data corresponding to a feature:
+- The data of the feature is not available anymore in Tails.
 
-1. When starting Tails, set up an [[administration
-   password|doc/first_steps/welcome_screen/administration_password]].
+  For example:
 
-1. In Tails, choose **Applications**&nbsp;▸ **System Tools**&nbsp;▸ **Root
-   Terminal** to open a terminal with administration rights.
+  - If you turn off the Persistent Folder feature, the documents saved in
+    **Places** &nbsp;▸ **Persistent** are not available anymore.
 
-1. Execute the <span class="command">nautilus</span> command to open the
-   *Files* browser with administration rights.
+  - If you turn off the Electrum Bitcoin Wallet feature, the wallet used by
+    *Electrum* is not available anymore.
 
-1. In the *Files* browser, navigate to */live/persistence/TailsData_unlocked*.
+- The data of the feature is still saved in the USB stick.
 
-1. Delete the folder corresponding to the feature for which you want to delete the data:
+  A **Delete Data** button appears in the setting of the feature.
 
-   - **Persistent Folder**: *Persistent* folder
-   - **Welcome Screen**: *greeter-settings* folder
-   - **Printers**: *cups-configuration* folder
-   - **Network Connections**: *nm-system-connections* folder
-   - **Tor Bridge**: *tca* folder
-   - **Tor Browser Bookmarks**: *bookmarks* folder
-   - **Electrum Bitcoin Wallet**: *electrum* folder
-   - **Thunderbird Email Client**: *thunderbird* folder
-   - **GnuPG**: *gnupg* folder
-   - **Pidgin Internet Messenger**: *pidgin* folder
-   - **SSH Client**: *openssh-client* folder
-   - **Additional Software**: *apt* and *apt-sources.list.d* folders and *live-additional-software.conf* file
-   - **Dotfiles**: *dotfiles* folder
+  [[!img delete_data.png link="no" alt=""]]
+
+  * Click the **Delete Data** button to delete the corresponding data from the
+    USB stick.
+
+  * Turn on the feature again to restore the data and make it available in
+    Tails again.

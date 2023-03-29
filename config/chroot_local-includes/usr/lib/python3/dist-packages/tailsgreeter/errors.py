@@ -26,6 +26,10 @@ class PersistentStorageError(TailsGreeterError):
     pass
 
 
+class FeatureActivationFailedError(TailsGreeterError):
+    pass
+
+
 class WrongPassphraseError(TailsGreeterError):
     pass
 

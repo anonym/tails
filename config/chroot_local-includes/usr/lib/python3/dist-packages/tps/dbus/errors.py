@@ -26,19 +26,24 @@ class DBusError(Exception):
         prefix = f"GDBus.Error:{cls.name}: "
         if err.message.startswith(prefix):
             err.message = err.message[len(prefix):]
+            return
+
+        prefix = "GDBus.Error:"
+        if err.message.startswith(prefix):
+            err.message = err.message[len(prefix):]
 
 
 class ActivationFailedError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.ActivationFailed"
 
-class AlreadyActivatedError(DBusError):
-    name = "org.boum.tails.PersistentStorage.Error.AlreadyActivated"
+class DeactivationFailedError(DBusError):
+    name = "org.boum.tails.PersistentStorage.Error.DeactivationFailed"
+
+class DeletionFailedError(DBusError):
+    name = "org.boum.tails.PersistentStorage.Error.DeletionFailed"
 
 class FailedPreconditionError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.FailedPrecondition"
-
-class NotActivatedError(DBusError):
-    name = "org.boum.tails.PersistentStorage.Error.NotActivated"
 
 class JobCancelledError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.JobCancelled"
@@ -54,3 +59,6 @@ class SymlinkSourceDirectoryError(DBusError):
 
 class InvalidConfigFileError(DBusError):
     name = "org.boum.tails.PersistentStorage.Error.InvalidConfigFileError"
+
+class FeatureActivationFailedError(DBusError):
+    name = "org.boum.tails.PersistentStorage.Error.FeatureActivationFailedError"

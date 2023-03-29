@@ -1,9 +1,10 @@
 require 'securerandom'
+require 'json'
 
-# Returns a hash that for each persistence preset the running Tails is aware of,
-# for each of the corresponding configuration lines,
-# maps the source to the destination.
-def get_persistence_presets_config(skip_links = false)
+# Returns a mapping from the source of a binding to its destination
+# for all bindings of all pre-configured tps features that the running
+# Tails is aware of.
+def get_tps_bindings(skip_links = false)
   # Python script that prints all persistence configuration lines (one per
   # line) in the form: <mount_point>\t<comma-separated-list-of-options>
   script = [
@@ -13,13 +14,13 @@ def get_persistence_presets_config(skip_links = false)
     '        print(mount)',
   ]
   c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
-  assert(c.success?, 'Python script for get_persistence_presets_config failed')
-  presets_configs = c.stdout.chomp.split("\n")
-  assert presets_configs.size >= 10,
-         "Got #{presets_configs.size} persistence preset configuration " \
+  assert(c.success?, 'Python script for get_tps_bindings failed')
+  binding_configs = c.stdout.chomp.split("\n")
+  assert binding_configs.size >= 10,
+         "Got #{binding_configs.size} binding configuration " \
          'lines, which is too few'
-  persistence_mapping = {}
-  presets_configs.each do |line|
+  bindings_mapping = {}
+  binding_configs.each do |line|
     destination, options_str = line.split("\t")
     options = options_str.split(',')
     is_link = options.include? 'link'
@@ -33,30 +34,42 @@ def get_persistence_presets_config(skip_links = false)
              else
                source_str.split('=')[1]
              end
-    persistence_mapping[source] = destination
+    bindings_mapping[source] = destination
   end
-  persistence_mapping
+  bindings_mapping
 end
 
-def persistent_dirs
-  get_persistence_presets_config
+def tps_bindings
+  get_tps_bindings
 end
 
-def persistent_mounts
-  get_persistence_presets_config(true)
+def tps_bind_mounts
+  get_tps_bindings(true)
+end
+
+def tps_features
+  c = $vm.execute_successfully('/usr/local/lib/tpscli get-features')
+  JSON.parse(c.stdout.chomp)
+end
+
+def tps_feature_is_enabled(feature, reload = true)
+  tps_reload if reload
+  c = $vm.execute("/usr/local/lib/tpscli is-enabled #{feature}")
+  c.success?
+end
+
+def tps_feature_is_active(feature, reload = true)
+  tps_reload if reload
+  c = $vm.execute("/usr/local/lib/tpscli is-active #{feature}")
+  c.success?
+end
+
+def tps_reload
+  $vm.execute_successfully('systemctl reload tails-persistent-storage.service')
 end
 
 def persistent_volumes_mountpoints
   $vm.execute('ls -1 -d /live/persistence/*_unlocked/').stdout.chomp.split
-end
-
-# Returns the list of mountpoints which are configured in persistence.conf
-def configured_persistent_mountpoints
-  $vm.file_content(
-    '/live/persistence/TailsData_unlocked/persistence.conf'
-  ).split("\n").map do |line|
-    line.split[0]
-  end
 end
 
 def persistent_storage_frontend
@@ -206,7 +219,7 @@ Given(/^I plug and mount a USB drive containing a Tails USB image$/) do
   @usb_image_path = "#{usb_image_dir}/#{File.basename(TAILS_IMG)}"
 end
 
-def enable_all_persistence_presets
+def enable_all_tps_features
   assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   switches = persistent_storage_main_frame.children(roleName: 'toggle button')
   switches.each do |switch|
@@ -222,7 +235,7 @@ def enable_all_persistence_presets
   end
 end
 
-When /^I (enable|disable) the first persistence preset$/ do |mode|
+When /^I (enable|disable) the first tps feature$/ do |mode|
   step 'I start "Persistent Storage" via GNOME Activities Overview'
   assert persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   persistent_folder_switch = persistent_storage_main_frame.child(
@@ -277,7 +290,7 @@ Given /^I create a persistent partition( with the default settings| for Addition
   try_for(300) do
     persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
   end
-  enable_all_persistence_presets unless default_settings
+  enable_all_tps_features unless default_settings
 end
 
 Given /^I change the passphrase of the Persistent Storage( back to the original)?$/ do |change_back|
@@ -497,39 +510,76 @@ def tails_persistence_enabled?
               'tps_is_unlocked').success?
 end
 
-Given /^all persistence presets(| from the old Tails version)(| but the first one) are enabled$/ do |old_tails, except_first|
-  assert(old_tails.empty? || except_first.empty?, 'Unsupported case.')
+Then /^all tps features(| from the old Tails version)(| but the first one) are active$/ do |old_tails_str, except_first_str|
+  old_tails = !old_tails_str.empty?
+  except_first = !except_first_str.empty?
+  assert(!old_tails || !except_first, 'Unsupported case.')
   try_for(120, msg: 'Persistence is disabled') do
     tails_persistence_enabled?
   end
-  unexpected_mounts = []
-  # Check that all persistent directories are mounted
-  if old_tails.empty?
-    expected_mounts = persistent_mounts
-    unless except_first.empty?
-      first_expected_mount_source      = expected_mounts.keys[0]
-      first_expected_mount_destination = expected_mounts[
-        first_expected_mount_source
-      ]
-      expected_mounts.delete(first_expected_mount_source)
-      unexpected_mounts = [first_expected_mount_destination]
+
+  tps_reload
+  features = old_tails ? $remembered_tps_features : tps_features
+  features.each do |feature|
+    is_active = tps_feature_is_active(feature, reload: false)
+    if except_first && feature == 'PersistentDirectory'
+      assert !is_active, "Feature '#{feature}' is active"
+    else
+      assert is_active, "Feature '#{feature}' is not active"
     end
-  else
-    assert_not_nil($remembered_persistence_mounts)
-    expected_mounts = $remembered_persistence_mounts
-  end
-  mount = $vm.execute('mount').stdout.chomp
-  expected_mounts.each do |_, dir|
-    assert(mount.include?("on #{dir} "),
-           "Persistent directory '#{dir}' is not mounted")
-  end
-  unexpected_mounts.each do |dir|
-    assert(!mount.include?("on #{dir} "),
-           "Persistent directory '#{dir}' is mounted")
   end
 end
 
-Given /^persistence is disabled$/ do
+Then /^all tps features(| but the first one) are enabled$/ do |except_first_str|
+  except_first = !except_first_str.empty?
+  tps_reload
+  tps_features.each do |feature|
+    is_enabled = tps_feature_is_enabled(feature, reload: false)
+    if except_first && feature == 'PersistentDirectory'
+      assert !is_enabled, "Feature '#{feature}' is enabled"
+    else
+      assert is_enabled,  "Feature '#{feature}' is not enabled"
+    end
+  end
+end
+
+Then /^all tps features(| but the first one) are enabled and active$/ do |except_first_str|
+  except_first = !except_first_str.empty?
+  if except_first
+    step 'all tps features but the first one are enabled'
+    step 'all tps features but the first one are active'
+  else
+    step 'all tps features are enabled'
+    step 'all tps features are active'
+  end
+end
+
+Then /^the "(\S+)" tps feature is(| not) enabled$/ do |feature, not_str|
+  check_not_enabled = !not_str.empty?
+  is_enabled = tps_feature_is_enabled(feature)
+  if check_not_enabled
+    assert !is_enabled, "Feature '#{feature}' is enabled"
+  else
+    assert is_enabled, "Feature '#{feature}' is not enabled"
+  end
+end
+
+Then /^the "(\S+)" tps feature is(| not) active$/ do |feature, not_str|
+  check_not_active = !not_str.empty?
+  is_active = tps_feature_is_active(feature)
+  if check_not_active
+    assert !is_active, "Feature '#{feature}' is active"
+  else
+    assert is_active, "Feature '#{feature}' is not active"
+  end
+end
+
+Then /^the "(\S+)" tps feature is(| not) enabled and(| not) active$/ do |feature, not_enabled_str, not_active_str|
+  step "the \"#{feature}\" tps feature is#{not_enabled_str} enabled"
+  step "the \"#{feature}\" tps feature is#{not_active_str} active"
+end
+
+Then /^persistence is disabled$/ do
   assert(!tails_persistence_enabled?, 'Persistence is enabled')
 end
 
@@ -678,13 +728,13 @@ end
 
 Then /^all persistent directories(| from the old Tails version) have safe access rights$/ do |old_tails|
   if old_tails.empty?
-    expected_dirs = persistent_dirs
+    expected_bindings = tps_bindings
   else
-    assert_not_nil($remembered_persistence_dirs)
-    expected_dirs = $remembered_persistence_dirs
+    assert_not_nil($remembered_tps_bindings)
+    expected_bindings = $remembered_tps_bindings
   end
   persistent_volumes_mountpoints.each do |mountpoint|
-    expected_dirs.each do |src, dest|
+    expected_bindings.each do |src, dest|
       full_src = "#{mountpoint}/#{src}"
       assert_vmcommand_success $vm.execute("test -d #{full_src}")
       dir_perms = $vm.execute_successfully("stat -c %a '#{full_src}'")
@@ -715,7 +765,7 @@ Then /^all persistent directories(| from the old Tails version) have safe access
 end
 
 When /^I write some files expected to persist$/ do
-  persistent_mounts.each do |_, dir|
+  tps_bind_mounts.each do |_, dir|
     owner = $vm.execute("stat -c %U #{dir}").stdout.chomp
     assert_vmcommand_success(
       $vm.execute("touch #{dir}/XXX_persist", user: owner),
@@ -735,7 +785,7 @@ When /^I write some dotfile expected to persist$/ do
 end
 
 When /^I remove some files expected to persist$/ do
-  persistent_mounts.each do |_, dir|
+  tps_bind_mounts.each do |_, dir|
     owner = $vm.execute("stat -c %U #{dir}").stdout.chomp
     assert_vmcommand_success(
       $vm.execute("rm #{dir}/XXX_persist", user: owner),
@@ -745,7 +795,7 @@ When /^I remove some files expected to persist$/ do
 end
 
 When /^I write some files not expected to persist$/ do
-  persistent_mounts.each do |_, dir|
+  tps_bind_mounts.each do |_, dir|
     owner = $vm.execute("stat -c %U #{dir}").stdout.chomp
     assert_vmcommand_success(
       $vm.execute("touch #{dir}/XXX_gone", user: owner),
@@ -754,17 +804,18 @@ When /^I write some files not expected to persist$/ do
   end
 end
 
-When /^I take note of which persistence presets are available$/ do
-  $remembered_persistence_mounts = persistent_mounts
-  $remembered_persistence_dirs = persistent_dirs
+When /^I take note of which tps features are available$/ do
+  $remembered_tps_features = tps_features
+  $remembered_tps_bind_mounts = tps_bind_mounts
+  $remembered_tps_bindings = tps_bindings
 end
 
 Then /^the expected persistent files(| created with the old Tails version) are present in the filesystem$/ do |old_tails|
   if old_tails.empty?
-    expected_mounts = persistent_mounts
+    expected_mounts = tps_bind_mounts
   else
-    assert_not_nil($remembered_persistence_mounts)
-    expected_mounts = $remembered_persistence_mounts
+    assert_not_nil($remembered_tps_bind_mounts)
+    expected_mounts = $remembered_tps_bind_mounts
   end
   expected_mounts.each do |_, dir|
     assert_vmcommand_success(
@@ -779,14 +830,14 @@ Then /^the expected persistent files(| created with the old Tails version) are p
 end
 
 Then /^the expected persistent dotfile is present in the filesystem$/ do
-  expected_dirs = persistent_dirs
+  expected_bindings = tps_bindings
   assert_vmcommand_success(
-    $vm.execute("test -L #{expected_dirs['dotfiles']}/.XXX_persist"),
+    $vm.execute("test -L #{expected_bindings['dotfiles']}/.XXX_persist"),
     'Could not find expected persistent dotfile link.'
   )
   assert_vmcommand_success(
     $vm.execute(
-      "test -e $(readlink -f #{expected_dirs['dotfiles']}/.XXX_persist)"
+      "test -e $(readlink -f #{expected_bindings['dotfiles']}/.XXX_persist)"
     ),
     'Could not find expected persistent dotfile link target.'
   )
@@ -815,8 +866,8 @@ Then /^only the expected files are present on the persistence partition on USB d
     luks_dev = "/dev/mapper/#{luks_mapping}"
     mount_point = '/'
     g.mount(luks_dev, mount_point)
-    assert_not_nil($remembered_persistence_mounts)
-    $remembered_persistence_mounts.each do |dir, _|
+    assert_not_nil($remembered_tps_bind_mounts)
+    $remembered_tps_bind_mounts.each do |dir, _|
       # Guestfs::exists may have a bug; if the file exists, 1 is
       # returned, but if it doesn't exist false is returned. It seems
       # the translation of C types into Ruby types is glitchy.
@@ -1342,14 +1393,6 @@ Then /^(no )?persistent Greeter options were restored$/ do |no|
   end
 end
 
-Then /^(.*) is (?:still )?configured to persist$/ do |dir|
-  assert(configured_persistent_mountpoints.include?(dir))
-end
-
-Then /^(.*) is not configured to persist$/ do |dir|
-  assert(!configured_persistent_mountpoints.include?(dir))
-end
-
 Then /^the Tails Persistent Storage behave tests pass$/ do
   $vm.execute_successfully('/usr/lib/python3/dist-packages/tps/configuration/behave-tests/run-tests.sh')
 end
@@ -1362,7 +1405,9 @@ When /^I give the Persistent Storage on drive "([^"]+)" its own UUID$/ do |name|
 end
 
 When /^I create a file in the Persistent directory$/ do
-  step 'I create a directory "/home/amnesia/Persistent"'
+  unless $vm.file_exist?('/home/amnesia/Persistent')
+    step 'I create a directory "/home/amnesia/Persistent"'
+  end
   step 'I write a file "/home/amnesia/Persistent/foo" with contents "foo"'
 end
 
@@ -1372,8 +1417,65 @@ Then /^the file I created was copied to the Persistent Storage$/ do
   step "the file \"#{file}\" has the content \"foo\""
 end
 
+Then /^the file I created does not exist on the Persistent Storage$/ do
+  file = '/live/persistence/TailsData_unlocked/Persistent/foo'
+  step "the file \"#{file}\" does not exist"
+end
+
 Then /^the file I created in the Persistent directory exists$/ do
   file = '/home/amnesia/Persistent/foo'
   step "the file \"#{file}\" exists"
   step "the file \"#{file}\" has the content \"foo\""
+end
+
+Then /^the Persistent directory does not exist$/ do
+  step 'the directory "/home/amnesia/Persistent" does not exist'
+end
+
+When /^I delete the data of the Persistent Folder feature$/ do
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+
+  def persistent_folder_delete_button(**opts)
+    persistent_storage_main_frame.child(
+      'Delete Persistent Folder data',
+      roleName: 'push button', showingOnly: true, **opts
+    )
+  end
+
+  # We can't use the click action here because this button causes a
+  # modal dialog to be run via gtk_dialog_run() which causes the
+  # application to hang when triggered via a ATSPI action. See
+  # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
+  persistent_folder_delete_button.grabFocus
+  @screen.press('Return')
+  confirm_deletion_dialog = persistent_storage_frontend.child(
+    'Warning', roleName: 'alert'
+  )
+  confirm_deletion_dialog.button('Delete Data').click
+
+  # Wait for the delete data button to disappear
+  try_for(10) do
+    persistent_folder_delete_button(retry: false)
+  rescue Dogtail::Failure
+    # The button couldn't be found, which is what we want
+    true
+  else
+    false
+  end
+  @screen.press('alt', 'F4')
+end
+
+Then /^the Welcome Screen tells me that the Persistent Folder feature couldn't be activated$/ do
+  assert greeter.child('Failed to activate some features of the Persistent Storage: Persistent Folder.\n.*',
+                       roleName:    'label',
+                       showingOnly: true)
+end
+
+Then /^the Persistent Storage settings tell me that the Persistent Folder feature couldn't be activated$/ do
+  step 'I start "Persistent Storage" via GNOME Activities Overview'
+
+  persistent_folder_row = persistent_storage_frontend
+                          .child('Activate Persistent Folder').parent
+  assert persistent_folder_row
+    .child(description: 'Activation failed', showingOnly: true)
 end

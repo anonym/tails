@@ -24,37 +24,45 @@ Feature: Tails persistence
     Then the file I created was copied to the Persistent Storage
     When I shutdown Tails and wait for the computer to power off
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
-    Then persistence for "Persistent" is enabled
+    Then persistence for "Persistent" is active
     And the file I created in the Persistent directory exists
 
   Scenario: Booting Tails from a USB drive with an enabled persistent partition and reconfiguring it
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     Then Tails is running from USB drive "__internal"
-    And all persistence presets are enabled
+    And all tps features are active
     And all persistent directories have safe access rights
-    When I disable the first persistence preset
+    When I disable the first tps feature
+    Then all tps features but the first one are active
     And I shutdown Tails and wait for the computer to power off
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
-    Then all persistence presets but the first one are enabled
+    Then all tps features but the first one are active
 
   Scenario: Activating and deactivating Persistent Storage features
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
-    Then persistence for "Persistent" is enabled
-    And the directory "/home/amnesia/Persistent" exists
-    When I write a file "/home/amnesia/Persistent/foo" with contents "foo"
-    Then the file "/live/persistence/TailsData_unlocked/Persistent/foo" exists
-    When I disable the first persistence preset
-    Then persistence for "Persistent" is not enabled
-    And the directory "/home/amnesia/Persistent" does not exist
-    When I enable the first persistence preset
-    Then persistence for "Persistent" is enabled
-    And the file "/home/amnesia/Persistent/foo" exists
+    Then persistence for "Persistent" is active
+    And I create a file in the Persistent directory
+    Then the file I created was copied to the Persistent Storage
+    When I disable the first tps feature
+    Then persistence for "Persistent" is not active
+    And the Persistent directory does not exist
+    When I enable the first tps feature
+    Then persistence for "Persistent" is active
+    And the file I created in the Persistent directory exists
+
+  Scenario: Deleting data of a Persistent Storage feature
+    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
+    Then persistence for "Persistent" is active
+    When I create a file in the Persistent directory
+    And I disable the first tps feature
+    And I delete the data of the Persistent Folder feature
+    Then the file I created does not exist on the Persistent Storage
 
   Scenario: Writing files to a read/write-enabled persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And the network is plugged
     And Tor is ready
-    And I take note of which persistence presets are available
+    And I take note of which tps features are available
     When I write some files expected to persist
     And I shutdown Tails and wait for the computer to power off
     # XXX: The next step succeeds (and the --debug output confirms that it's actually looking for the files) but will fail in a subsequent scenario restoring the same snapshot. This exactly what we want, but why does it work? What is guestfs's behaviour when qcow2 internal snapshots are involved?
@@ -119,3 +127,13 @@ Feature: Tails persistence
     And I shutdown Tails and wait for the computer to power off
     And I start Tails from USB drive "__internal" with network unplugged and I login with persistence enabled
     Then the expected persistent dotfile is present in the filesystem
+
+  Scenario: Feature activation fails
+    Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
+    And I create a symlink "/home/amnesia/Persistent" to "/etc"
+    When I enable persistence
+    Then the Welcome Screen tells me that the Persistent Folder feature couldn't be activated
+    When I log in to a new session after having activated the Persistent Storage
+    Then the Persistent Storage settings tell me that the Persistent Folder feature couldn't be activated
+    And all tps features are enabled
+    And all tps features but the first one are active

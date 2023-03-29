@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from gi.repository import Gtk
 from typing import TYPE_CHECKING
 
-from tps_frontend import _, TRANSLATION_DOMAIN
+from tps_frontend import TRANSLATION_DOMAIN
 
 if TYPE_CHECKING:
     from tps_frontend.window import Window

@@ -18,7 +18,14 @@ if TYPE_CHECKING:
 logger = getLogger(__name__)
 
 class PersistentDirectory(Feature):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.open_button = self.builder.get_object("persistent_directory_open_button")  # type: Gtk.Button
+        self.open_button.set_visible(self.switch.get_state())
+
+    @property
+    def widgets_to_show_while_active(self) -> List[Gtk.Widget]:
+        return [self.open_button]
 
 class BrowserBookmarks(Feature):
     pass
@@ -42,7 +49,7 @@ class Thunderbird(Feature):
     pass
 
 class GnuPG(Feature):
-    switch_name = "gnupg_switch"
+    widget_name_prefix = "gnupg"
 
 class Pidgin(Feature):
     pass
