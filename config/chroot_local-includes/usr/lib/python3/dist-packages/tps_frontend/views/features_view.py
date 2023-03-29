@@ -158,7 +158,7 @@ class FeaturesView(View):
         launch_context = display.get_app_launch_context()  # type: Gdk.AppLaunchContext
         launch_context.set_timestamp(Gtk.get_current_event_time())
         # noinspection PyArgumentList
-        app = Gio.DesktopAppInfo.new("org.boum.tails.additional-software-config.desktop")
+        app = Gio.DesktopAppInfo.new("org.boum.tails.AdditionalSoftware.desktop")
         app.launch(context=launch_context)
 
     def on_activate_link(self, label: Gtk.Label, uri: str):
