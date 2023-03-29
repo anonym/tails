@@ -112,7 +112,7 @@ CHECKPOINTS =
 # XXX: giving up on a few worst offenders for now
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
-def reach_checkpoint(name)
+def reach_checkpoint(name, num_try = 0)
   scenario_indent = ' ' * 4
   step_indent = ' ' * 6
 
@@ -130,7 +130,7 @@ def reach_checkpoint(name)
       else
         reach_checkpoint(parent_checkpoint)
       end
-      post_snapshot_restore_hook(parent_checkpoint)
+      post_snapshot_restore_hook(parent_checkpoint, num_try)
     end
     debug_log(scenario_indent + "Checkpoint: #{checkpoint_description}",
               color: :white, timestamp: false)
@@ -160,7 +160,7 @@ def reach_checkpoint(name)
   # after saving it, in which case post_snapshot_restore_hook is
   # useful to ensure we've reached a good starting point, so we run
   # it in all cases, including even when've just saved a new snapshot.
-  post_snapshot_restore_hook(name)
+  post_snapshot_restore_hook(name, num_try)
 end
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
