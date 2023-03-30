@@ -62,6 +62,18 @@ new versions of Tails:
 - Add .donate and locale bits to `wiki/src/local.css`
 - Add the new language to `wiki/src/contribute/l10n_tricks/language_statistics.sh`
 
+Fix missing not-in-production languages
+=======================================
+
+If our integration scripts for some reason fail to add to a component the
+languages that are only enabled in Weblate and not in production, you may fix
+it (or at least try to reproduce the issue) by doing the following:
+
+1. Force the creation of the language files: `weblate_status.py --modify`
+2. Pull the changes from the Weblate repo and manually push them to the canonical repo.
+3. Wait for or manually run `cron.sh`.
+4. Tell Weblate to load the new `.po` files: `weblate loadpo --foreground tails/wikisrcnewsversion_58po`
+
 Manually fix issues
 ===================
 
