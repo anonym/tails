@@ -24,7 +24,7 @@ import multiprocessing
 from typing import List, Optional
 
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol, JSONRPCParseError
-from tinyrpc.protocols import RPCRequest, RPCResponse
+from tinyrpc.protocols import RPCRequest, RPCResponse, RPCErrorResponse
 from tinyrpc.exc import InvalidRequestError
 
 import systemd.daemon
@@ -86,6 +86,13 @@ class InvalidArgsError(InvalidRequestError):
     pass
 
 
+def create_error_response(error: str, code: Optional[int]) -> RPCResponse:
+    data = {'message': error}
+    if code is not None:
+        data['code'] = code
+    return RPCErrorResponse(error=data)
+
+
 class BaseCommand:
     def __init__(self, cmd: List[str], arguments: bool):
         self.cmd = cmd
@@ -120,6 +127,19 @@ class BaseCommand:
         cmd = self.full_command(request)
         log.debug("Running %s", cmd)
         return Popen(cmd, stdin=PIPE, stdout=PIPE, universal_newlines=True)
+
+    def create_response(self, returncode: int, stdout, stderr) -> tuple[bool, dict]:
+        '''
+        First returnvalue is False iff it's an error
+
+        Second returnvalue is a dictionary to be sent to the user
+        '''
+        if returncode == 0:
+            return True, dict(result={"returncode": returncode, "stdout": stdout})
+        else:
+            return False, dict(
+                    error="Command failed with returncode %d" % returncode,
+                    code=1)
 
 
 class RootCommand(BaseCommand):
@@ -328,12 +348,15 @@ class Handler(socketserver.StreamRequestHandler):
         process = cmd.run(req)
         # stdout and stderr from the process
         stdout, _ = process.communicate(cmd.stdin)
-        if process.returncode == 0:
-            response = req.respond(result={"returncode": process.returncode, "stdout": stdout})
+        ok, data = cmd.create_response(process.returncode, stdout, None)
+        log.warning("Got results: %r, %r", ok, data)
+
+        if ok:
+            response = req.respond(**data)
         else:
             # The library we use doesn't seem to support adding the optional "data" parameter to error
             # responses. We could definitely implement our own subclass, if we ever need that.
-            response = req.error_respond(error="Command failed with returncode %d" % process.returncode)
+            response = create_error_response(**data)
         self.outgoing_q.put(response)
 
     def send(self, response: RPCResponse):
