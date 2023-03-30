@@ -30,17 +30,17 @@ class GJsonRpcClient(GObject.GObject):
         "response": (
             GObject.SIGNAL_RUN_LAST | GObject.SIGNAL_DETAILED,
             GObject.TYPE_NONE,
-            [GObject.TYPE_PYOBJECT, GObject.TYPE_STRING],
+            [GObject.TYPE_PYOBJECT, GObject.TYPE_STRING, GObject.TYPE_PYOBJECT],
         ),
         "response-error": (
             GObject.SIGNAL_RUN_LAST | GObject.SIGNAL_DETAILED,
             GObject.TYPE_NONE,
-            [GObject.TYPE_STRING],
+            [GObject.TYPE_STRING, GObject.TYPE_PYOBJECT],
         ),
         "response-success": (
             GObject.SIGNAL_RUN_LAST | GObject.SIGNAL_DETAILED,
             GObject.TYPE_NONE,
-            [GObject.TYPE_PYOBJECT],
+            [GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT],
         ),
     }
 
@@ -79,11 +79,14 @@ class GJsonRpcClient(GObject.GObject):
             except BadReplyError:
                 return
             if hasattr(response, "error"):
-                self.emit("response-error::%d" % response.unique_id, response.error)
-                self.emit("response::%d" % response.unique_id, None, response.error)
+                errordata = {}
+                if hasattr(response, '_jsonrpc_error_code'):
+                    errordata['code'] = response._jsonrpc_error_code
+                self.emit("response-error::%d" % response.unique_id, response.error, errordata)
+                self.emit("response::%d" % response.unique_id, None, response.error, errordata)
             else:
-                self.emit("response-success::%d" % response.unique_id, response.result)
-                self.emit("response::%d" % response.unique_id, response.result, None)
+                self.emit("response-success::%d" % response.unique_id, response.result, None)
+                self.emit("response::%d" % response.unique_id, response.result, None, None)
         return True
 
 

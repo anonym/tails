@@ -468,7 +468,7 @@ class TorLauncherUtils:
 
         log.debug("Loading configuration from file")
 
-        def on_done_reading_conf_from_file_cb(gjsonrpcclient, result, error):
+        def on_done_reading_conf_from_file_cb(gjsonrpcclient, result, error, _):
             if result is not None and result.get("returncode", 1) == 0:
                 if len(result["stdout"]) == 0:
                     data = {}
@@ -496,7 +496,7 @@ class TorLauncherUtils:
         if self.tor_connection_config is None:
             return
 
-        def on_done_writing_conf_to_file_cb(gjsonrpcclient, result, error):
+        def on_done_writing_conf_to_file_cb(gjsonrpcclient, result, error, _):
             if result is not None and result.get("returncode", 1) == 0:
                 # Save configuration to torrc
                 self.stem_controller.save_conf()

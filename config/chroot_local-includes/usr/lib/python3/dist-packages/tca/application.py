@@ -153,10 +153,10 @@ class TCAApplication(Gtk.Application):
     def is_network_link_ok(self) -> bool:
         return self.last_nm_state is not None and self.last_nm_state >= 60
 
-    def on_portal_response(self, portal, result: dict):
+    def on_portal_response(self, portal, result: dict, _):
         self.log.debug("response from portal : %s", result)
 
-    def on_portal_error(self, portal, error: str):
+    def on_portal_error(self, portal, error: str, _):
         self.log.error("response-error from portal : %s", error)
 
     def cb_dbus_nm_state(self, val):
@@ -267,13 +267,13 @@ class TCAApplication(Gtk.Application):
         return False
 
     def set_time_from_network(self, callback):
-        def on_set_system_time(portal, result, error):
+        def on_set_system_time(portal, result, error, _):
             self.log.debug(
                 "System time set: error=%s, result=%s", str(error), str(result)
             )
             GLib.idle_add(callback, result, error)
 
-        def on_get_network_time(portal, result, error):
+        def on_get_network_time(portal, result, error, _):
             if error:
                 self.get_network_time_result["status"] = "error"
                 if (
