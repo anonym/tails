@@ -86,13 +86,6 @@ class InvalidArgsError(InvalidRequestError):
     pass
 
 
-def create_error_response(error: str, code: Optional[int]) -> RPCResponse:
-    data = {'message': error}
-    if code is not None:
-        data['code'] = code
-    return RPCErrorResponse(error=data)
-
-
 class BaseCommand:
     def __init__(self, cmd: List[str], arguments: bool):
         self.cmd = cmd
@@ -364,9 +357,14 @@ class Handler(socketserver.StreamRequestHandler):
         if ok:
             response = req.respond(**data)
         else:
+            assert data['error'] is not None
+
             # The library we use doesn't seem to support adding the optional "data" parameter to error
             # responses. We could definitely implement our own subclass, if we ever need that.
-            response = create_error_response(**data)
+            # Meanwhile, we are using this hackish way of specifying a return code
+            response = req.error_respond(data['error'])
+            if data.get('code', None) is not None:
+                response._jsonrpc_error_code = data['code']
         self.outgoing_q.put(response)
 
     def send(self, response: RPCResponse):
