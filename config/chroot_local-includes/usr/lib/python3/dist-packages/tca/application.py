@@ -273,12 +273,11 @@ class TCAApplication(Gtk.Application):
             )
             GLib.idle_add(callback, result, error)
 
-        def on_get_network_time(portal, result, error, _):
+        def on_get_network_time(portal, result, error, errordata):
             if error:
                 self.get_network_time_result["status"] = "error"
                 if (
-                        result is not None and
-                        result.get("returncode", 1) ==
+                        errordata.get("code") ==
                         GET_NETWORK_TIME_RETURN_CODE["captive-portal"]
                         ):
                     self.get_network_time_result["reason"] = "captive-portal"
