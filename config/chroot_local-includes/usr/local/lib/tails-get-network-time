@@ -16,6 +16,8 @@ import datetime
 from tailslib.release import get_release_date
 from tailslib.logutils import configure_logging
 
+from tca.timeutils import GET_NETWORK_TIME_RETURN_CODE
+
 LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
 
@@ -26,19 +28,10 @@ HEADER_STATUS_ONLINE = {"name": "X-NetworkManager-Status", "value": "online"}
 # https://fedoraproject.org/static/hotspot.txt
 EXPECTED_RESPONSE = b"OK"
 
-RETURN_CODE = {
-    "missing-date-header": 2,
-    "malformed-date-header": 3,
-    "http-failure": 4,
-    "captive-portal": 5,
-    "date-in-past": 6,
-    "timeout": 7,
-}
-
 
 def fail(error: str):
     print(error)
-    sys.exit(RETURN_CODE[error])
+    sys.exit(GET_NETWORK_TIME_RETURN_CODE[error])
 
 
 class NMishCurlClient:

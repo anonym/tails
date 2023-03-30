@@ -22,6 +22,7 @@ from tca.torutils import (
     TorLauncherUtils,
     TorLauncherNetworkUtils,
 )
+from tca.timeutils import GET_NETWORK_TIME_RETURN_CODE
 from tca.ui.asyncutils import GJsonRpcClient
 from tailslib.logutils import configure_logging
 
@@ -275,7 +276,11 @@ class TCAApplication(Gtk.Application):
         def on_get_network_time(portal, result, error):
             if error:
                 self.get_network_time_result["status"] = "error"
-                if result is not None and result.get("returncode", 1) == 5:
+                if (
+                        result is not None and
+                        result.get("returncode", 1) ==
+                        GET_NETWORK_TIME_RETURN_CODE["captive-portal"]
+                        ):
                     self.get_network_time_result["reason"] = "captive-portal"
                     self.log.info("Detected captive portal")
                 else:
