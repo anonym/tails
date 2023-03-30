@@ -7,5 +7,5 @@ Feature: Electrum Bitcoin client
   Scenario: I am warned if Electrum is not persistent
     Given I have started Tails from DVD without network and logged in
     When I start Electrum through the GNOME menu
-    But persistence for "electrum" is not enabled
+    But the "electrum" tps feature is not enabled
     And I see a warning that Electrum is not persistent
