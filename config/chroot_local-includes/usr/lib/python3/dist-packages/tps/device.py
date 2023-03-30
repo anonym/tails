@@ -20,9 +20,6 @@ PARTITION_GUID = "8DA63339-0007-60C0-C436-083AC8230908" # Linux reserved
 PARTITION_LABEL = "TailsData"
 
 
-class PartitionNotFoundError(Exception):
-    pass
-
 class InvalidPartitionError(Exception):
     pass
 
@@ -153,8 +150,8 @@ class Partition(object):
 
     @classmethod
     def find(cls) -> Optional["Partition"]:
-        """Return the Persistent Storage encrypted partition or raise
-        a PartitionNotFoundError."""
+        """Return the Persistent Storage encrypted partition or None
+        if it couldn't be found."""
         parent_device = BootDevice.get_tails_boot_device()
         partitions = parent_device.partition_table.props.partitions
         for partition_name in sorted(partitions):
