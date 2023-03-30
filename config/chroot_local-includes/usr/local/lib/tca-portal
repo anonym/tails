@@ -169,6 +169,16 @@ class GetNetworkTimeCommand(BaseCommand):
         args = [*drop, "--", *(super().full_command(request))]
         return args
 
+    def create_response(self, returncode: int, stdout, stderr) -> tuple[bool, dict]:
+        '''
+        The returncode is important to know the reason of the failure
+        '''
+        ok, data = super().create_response(returncode, stdout, stderr)
+        if not ok:
+            data['code'] = returncode
+
+        return ok, data
+
 
 class SetTimeCommand(RootCommand):
     """
