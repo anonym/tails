@@ -55,6 +55,31 @@ unless $at_exit_print_artifacts_dir_patching_done
       @io.puts
       old_print_stats(...) if self.class.method_defined?(:old_print_stats)
     end
+
+    STATUS_STR = {
+      passed:    'passed',
+      failed:    'failed',
+      undefined: 'undefined',
+      pending:   'pending',
+      skipped:   'skipped',
+    }
+
+    # Support printing the step status. For the original function body,
+    # see https://salsa.debian.org/ruby-team/cucumber/-/blob/9899bc47c0eac62b623208f5e8032ec7285fe257/lib/cucumber/formatter/console.rb#L33-44
+    alias old_format_step format_step
+    def format_step(keyword, step_match, status, source_indent, print_status = false)
+      comment = if source_indent
+                  c = ('# ' + step_match.location.to_s).indent(source_indent)
+                  format_string(c, :comment)
+                else
+                  ''
+                end
+
+      format = format_for(status, :param)
+      status_suffix = print_status ? " (#{STATUS_STR[status]})" : ''
+      line = keyword + step_match.format_args(format) + status_suffix + comment
+      format_string(line, status)
+    end
   end
   $at_exit_print_artifacts_dir_patching_done = true
 end
@@ -123,6 +148,18 @@ module ExtraFormatters
       options[:color] ||= :cyan
       @io.puts(format_string(message, options[:color]))
       @io.flush
+    end
+
+    # Print the status after the step name (useful for build tools which
+    # parse the logs). For the original function body,
+    # see https://salsa.debian.org/ruby-team/cucumber/-/blob/9899bc47c0eac62b623208f5e8032ec7285fe257/lib/cucumber/formatter/pretty.rb#L149-155
+    def step_name(keyword, step_match, status, source_indent, ...)
+      return if @hide_this_step
+
+      source_indent = nil unless @options[:source]
+      name_to_report = format_step(keyword, step_match, status, source_indent, print_status: true)
+      @io.puts(name_to_report.indent(@scenario_indent + 2))
+      print_messages
     end
 
     # Recursively print the exception and all previous exceptions
