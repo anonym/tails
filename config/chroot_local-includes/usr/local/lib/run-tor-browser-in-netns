@@ -4,4 +4,10 @@ import sys
 
 from tailslib.netnsdrop import run_in_netns
 
-run_in_netns("/usr/bin/tor-browser", *sys.argv[1:], netns="tbb")
+args = sys.argv[1:]
+for arg in args:
+    if arg.startswith('-'):
+        print(f"invalid argument '{arg}'", file=sys.stderr)
+        sys.exit(2)
+
+run_in_netns("/usr/bin/tor-browser", *args, netns="tbb")
