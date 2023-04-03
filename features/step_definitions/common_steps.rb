@@ -28,6 +28,13 @@ def post_snapshot_restore_hook(snapshot_name, num_try)
       # We use @screen.real_find here instead of @screen.wait because we
       # don't want check_and_raise_display_output_not_active() to be called.
       @screen.real_find(pattern)
+      # Sometimes the display becomes inactive 1 to 2 seconds after the
+      # snapshot was restored. To catch those cases, we wait a short time
+      # and make sure that we can still find the pattern.
+      # We don't want this to be longer than necessary, because this will
+      # slow down all tests which restore snapshots.
+      sleep 3
+      @screen.real_find(pattern)
     rescue FindFailed
       # Press escape to wake up the display
       @screen.press('Escape')
