@@ -11,7 +11,7 @@ Feature: Localization
     When I double-click on the Report an Error launcher on the desktop
     Then the support documentation page opens in Tor Browser
 
-  @slow @not_release_blocker
+  @doc @slow @not_release_blocker
   Scenario Outline: Tails is localized for every tier-1 language
     Given I have started Tails from DVD without network and stopped at Tails Greeter's login screen
     When I log in to a new session in <language> (<lang_code>)
