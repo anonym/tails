@@ -1,3 +1,6 @@
+import locale
+import os
+import re
 import subprocess
 from gi.repository import Gtk
 
@@ -53,13 +56,30 @@ def set_passphrase_strength_hint(progress_bar: Gtk.ProgressBar,
     progress_bar.set_fraction(strength)
     progress_bar.set_text(hint)
 
+def get_wordlist_name():
+    wordlist         = {'pt_BR':'pt-br', 'de_DE':'de'}
+    default_wordlist = 'en_securedrop'
+    wordlists_dir    = '/usr/lib/python3/dist-packages/diceware/wordlists/'
+    wordlist_name    = wordlist.get(locale.getlocale()[0], default_wordlist)
+
+    for filename in os.listdir(wordlists_dir):
+        if not os.path.isfile(os.path.join(wordlists_dir, filename)):
+            continue
+        match = re.match(r'^wordlist_([\w-]+)\.[\w][\w\.]+[\w]+$', filename)
+        if match and match.groups()[0] == wordlist_name:
+            return wordlist_name
+
+    return default_wordlist
+
+WORDLIST = get_wordlist_name()
+
 def get_passphrase_suggestion():
     try:
         passphrase = ''
-        p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", "en_securedrop"],
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.DEVNULL,
-                        text=True)
+        p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", WORDLIST],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.DEVNULL,
+                           text=True)
         if p.returncode == 0:
             passphrase = p.stdout.rstrip()
     except:
