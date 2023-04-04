@@ -5,6 +5,8 @@ import sys
 from tailslib.netnsdrop import run_in_netns
 
 args = sys.argv[1:]
+
+# Validate arguments, so that URIs can be passed but options cannot. See #19595
 for arg in args:
     if arg.startswith('-'):
         print(f"invalid argument '{arg}'", file=sys.stderr)
