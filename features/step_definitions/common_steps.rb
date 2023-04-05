@@ -1187,15 +1187,26 @@ Given /^a web server is running on the LAN$/ do
   # lot of complex cucumber stuff (like our hooks!) ending up in the
   # child process, breaking stuff in the parent process. After asking
   # some supposed ruby pros, I've settled on the following.
+
+  @captive_portal_login_file = "#{$config['TMPDIR']}/logged-in"
+  File.delete(@captive_portal_login_file) if File.exist?(@captive_portal_login_file)
+
   code = <<-CODE
   require "webrick"
   STDOUT.reopen("/dev/null", "w")
   STDERR.reopen("/dev/null", "w")
-  server = WEBrick::HTTPServer.new(:BindAddress => "#{@web_server_ip_addr}",
+  server = WEBrick::HTTPServer.new(:BindAddress => '#{@web_server_ip_addr}',
                                    :Port => #{@web_server_port},
                                    :DocumentRoot => "/dev/null")
-  server.mount_proc("/") do |req, res|
-    res.body = "#{web_server_hello_msg}"
+  server.mount_proc('/') do |req, res|
+    res.body = '#{web_server_hello_msg}'
+  end
+  server.mount_proc('/captive') do |req, res|
+    res.body = File.read('#{GIT_DIR}/features/webserver/htdocs/captive.html')
+  end
+  server.mount_proc('/login') do |req, res|
+      File.write('#{@captive_portal_login_file}', 'OK')
+      res.body = 'Logged in'
   end
   server.start
   CODE

@@ -365,3 +365,17 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   @screen.wait_any(osk_key_images, 20)[:match].click
   @screen.wait(browser_bar_x, 20)
 end
+
+
+When /^I log-in to the Captive Portal$/ do
+  step 'a web server is running on the LAN'
+  captive_portal_page = "#{@web_server_url}/captive"
+  redirect_url = "http://httpbin.org/redirect-to?url=#{CGI.escape(captive_portal_page)}"
+  step "I open the address \"#{redirect_url}\" in the Unsafe Browser"
+
+  try_for(30) do
+    File.exist?(@captive_portal_login_file)
+  end
+
+  step 'I close the Unsafe Browser'
+end

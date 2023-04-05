@@ -1007,3 +1007,10 @@ Then /^tca.conf includes the configured bridges$/ do
     end
   )
 end
+
+When /^I open the Unsafe Browser from Tor Connection$/ do
+  tor_connection_assistant.child('Try Signing in to the Network').click
+  try_for(30) do
+    Dogtail::Application.new('Firefox')
+  end
+end
