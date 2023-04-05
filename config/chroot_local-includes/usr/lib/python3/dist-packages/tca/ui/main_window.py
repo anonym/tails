@@ -703,16 +703,13 @@ class StepErrorMixin:
 
         for box in ["wrong_clock", "captive_portal", "proxy"]:
             self.get_object(f"box_{box}").set_visible(not time_synced)
+        label_explain.set_text(
+            _("This local network seems to be blocking access to Tor.")
+        )
         if time_sync_failure_reason == 'captive-portal':
             self.get_object("box_wrong_clock").set_visible(False)
-            label_explain.set_text(
-                _("You need to log-in to your network.")
-                )
             label_explain.set_visible(True)
         else:
-            label_explain.set_text(
-                _("This local network seems to be blocking access to Tor.")
-            )
             label_explain.set_visible(time_synced)
 
         self._step_error_submit_allowed()
