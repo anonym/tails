@@ -78,7 +78,7 @@ def get_passphrase_suggestion():
         passphrase = ''
         p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", WORDLIST],
                            stdout=subprocess.PIPE,
-                           stderr=subprocess.DEVNULL,
+                           check=True,
                            text=True)
         if p.returncode == 0:
             passphrase = p.stdout.rstrip()
