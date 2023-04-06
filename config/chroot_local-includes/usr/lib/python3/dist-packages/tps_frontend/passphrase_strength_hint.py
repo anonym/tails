@@ -2,10 +2,12 @@ import locale
 import os
 import re
 import subprocess
+from logging import getLogger
 from gi.repository import Gtk
 
 from tps_frontend import _
 
+logger = getLogger(__name__)
 
 def set_passphrase_strength_hint(progress_bar: Gtk.ProgressBar,
                                  passhrase: str):
@@ -82,8 +84,7 @@ def get_passphrase_suggestion():
                            text=True)
         if p.returncode == 0:
             passphrase = p.stdout.rstrip()
-    except:
-        pass
-
+    except Exception as e:
+        logger.warning("Couldn't generate a diceware suggestion:%s", e )
     finally:
         return passphrase
