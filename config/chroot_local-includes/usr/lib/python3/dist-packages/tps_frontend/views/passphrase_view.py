@@ -24,7 +24,7 @@ class PassphraseView(View):
         self.create_button = self.builder.get_object("create_button")  # type: Gtk.Button
         self.passphrase_hint = self.builder.get_object("passphrase_suggestion_label")
         self.passphrase_hint.set_can_focus(False)
-        self.on_refresh_image_clicked()
+        self.set_new_passphrase_hint()
 
     def show(self):
         super().show()
@@ -53,8 +53,7 @@ class PassphraseView(View):
         )
 
     def on_refresh_image_clicked(self, *args):
-        label_text = get_passphrase_suggestion()
-        self.passphrase_hint.set_text(label_text)
+        self.set_new_passphrase_hint()
 
     def on_passphrase_entry_changed(self, entry: Gtk.Entry):
         passphrase = entry.get_text()
@@ -63,6 +62,10 @@ class PassphraseView(View):
 
     def on_verify_entry_changed(self, entry: Gtk.Entry):
         self.update_passphrase_match()
+
+    def set_new_passphrase_hint(self):
+        label_text = get_passphrase_suggestion()
+        self.passphrase_hint.set_text(label_text)
 
     def update_passphrase_match(self):
         verify = self.verify_entry.get_text()
