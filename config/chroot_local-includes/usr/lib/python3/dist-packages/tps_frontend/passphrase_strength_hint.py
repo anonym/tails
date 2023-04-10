@@ -64,6 +64,9 @@ def get_wordlist_name():
     wordlists_dir    = '/usr/lib/python3/dist-packages/diceware/wordlists/'
     wordlist_name    = wordlist.get(locale.getlocale()[0], default_wordlist)
 
+    if not os.path.isdir(wordlists_dir):
+         logger.warning("Directory %s doesn't exist", wordlists_dir)
+         return None
     for filename in os.listdir(wordlists_dir):
         if not os.path.isfile(os.path.join(wordlists_dir, filename)):
             continue
@@ -78,12 +81,13 @@ WORDLIST = get_wordlist_name()
 def get_passphrase_suggestion():
     try:
         passphrase = ''
-        p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", WORDLIST],
-                           stdout=subprocess.PIPE,
-                           check=True,
-                           text=True)
-        if p.returncode == 0:
-            passphrase = p.stdout.rstrip()
+        if WORDLIST is not None:
+            p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", WORDLIST],
+                               stdout=subprocess.PIPE,
+                               check=True,
+                               text=True)
+            if p.returncode == 0:
+                passphrase = p.stdout.rstrip()
     except Exception as e:
         logger.warning("Couldn't generate a diceware suggestion:%s", e )
     finally:
