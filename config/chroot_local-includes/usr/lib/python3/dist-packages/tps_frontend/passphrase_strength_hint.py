@@ -75,6 +75,6 @@ def get_passphrase_suggestion():
         if p.returncode == 0:
             passphrase = p.stdout.rstrip()
     except Exception as e:
-        logger.warning("Couldn't generate a diceware suggestion:%s", e )
+        logger.warning("Couldn't generate a diceware suggestion: %s", e)
     finally:
         return passphrase
