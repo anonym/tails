@@ -1,13 +1,8 @@
-import locale
-import os
-import re
 import subprocess
-from logging import getLogger
 from gi.repository import Gtk
 
 from tps_frontend import _
 
-logger = getLogger(__name__)
 
 def set_passphrase_strength_hint(progress_bar: Gtk.ProgressBar,
                                  passhrase: str):
@@ -57,24 +52,3 @@ def set_passphrase_strength_hint(progress_bar: Gtk.ProgressBar,
 
     progress_bar.set_fraction(strength)
     progress_bar.set_text(hint)
-
-def wordlist():
-    # XXX:Bookworm: These wordlists are supported on Bookworm (Bullseye only supports English)
-    # wordlist_dict = {'pt_BR':'pt-br', 'de_DE':'de'}
-    wordlist_dict = dict()
-    default_wordlist = 'en_securedrop'
-    return wordlist_dict.get(locale.getlocale()[0], default_wordlist)
-
-def get_passphrase_suggestion():
-    passphrase = ''
-    try:
-        p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", wordlist()],
-                           stdout=subprocess.PIPE,
-                           check=True,
-                           text=True)
-        if p.returncode == 0:
-            passphrase = p.stdout.rstrip()
-    except Exception as e:
-        logger.warning("Couldn't generate a diceware suggestion: %s", e)
-    finally:
-        return passphrase

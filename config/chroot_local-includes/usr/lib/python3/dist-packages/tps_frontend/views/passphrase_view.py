@@ -1,15 +1,39 @@
+import locale
+import subprocess
 from logging import getLogger
 from gi.repository import Gio, GLib, Gtk
 from typing import TYPE_CHECKING
 
 from tps_frontend import PASSPHRASE_VIEW_UI_FILE
-from tps_frontend.passphrase_strength_hint import set_passphrase_strength_hint,get_passphrase_suggestion
+from tps_frontend.passphrase_strength_hint import set_passphrase_strength_hint
 from tps_frontend.view import View
 
 if TYPE_CHECKING:
     from tps_frontend.window import Window
 
 logger = getLogger(__name__)
+
+
+def wordlist():
+    # XXX:Bookworm: These wordlists are supported on Bookworm (Bullseye only supports English)
+    # wordlist_dict = {'pt_BR':'pt-br', 'de_DE':'de'}
+    wordlist_dict = dict()
+    default_wordlist = 'en_securedrop'
+    return wordlist_dict.get(locale.getlocale()[0], default_wordlist)
+
+
+def get_passphrase_suggestion():
+    passphrase = ''
+    try:
+        p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", wordlist()],
+                           stdout=subprocess.PIPE,
+                           check=True,
+                           text=True)
+        if p.returncode == 0:
+            passphrase = p.stdout.rstrip()
+    except Exception as e:
+        logger.warning("Couldn't generate a diceware suggestion: %s", e)
+    return passphrase
 
 
 class PassphraseView(View):
