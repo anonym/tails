@@ -66,12 +66,12 @@ def wordlist():
     return wordlist_dict.get(locale.getlocale()[0], default_wordlist)
 
 def get_passphrase_suggestion():
+    passphrase = ''
     try:
-        passphrase = ''
         p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", wordlist()],
-                            stdout=subprocess.PIPE,
-                            check=True,
-                            text=True)
+                           stdout=subprocess.PIPE,
+                           check=True,
+                           text=True)
         if p.returncode == 0:
             passphrase = p.stdout.rstrip()
     except Exception as e:
