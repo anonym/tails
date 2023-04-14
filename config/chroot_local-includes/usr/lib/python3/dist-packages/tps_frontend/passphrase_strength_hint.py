@@ -72,8 +72,8 @@ def get_passphrase_suggestion():
                             stdout=subprocess.PIPE,
                             check=True,
                             text=True)
-            if p.returncode == 0:
-                passphrase = p.stdout.rstrip()
+        if p.returncode == 0:
+            passphrase = p.stdout.rstrip()
     except Exception as e:
         logger.warning("Couldn't generate a diceware suggestion:%s", e )
     finally:
