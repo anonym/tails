@@ -132,8 +132,7 @@ end
 
 When /^I revert the APT tweaks that made it prefer an old version of cowsay$/ do
   $vm.execute_successfully(
-    'rm -f /etc/apt/sources.list.d/asp-test-upgrade-cowsay.list ' \
-    '/etc/apt/preferences.d/asp-test-upgrade-cowsay'
+    'rm -f /etc/apt/preferences.d/asp-test-upgrade-cowsay'
   )
 end
 
