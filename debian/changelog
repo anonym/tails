@@ -1,8 +1,381 @@
 tails (5.12) UNRELEASED; urgency=medium
 
-  * Dummy entry for next release.
+  * Test suite: Try to catch another case of "Display output is not active"
+    (tails/tails!1106)
 
- -- intrigeri <intrigeri@debian.org>  Mon, 20 Mar 2023 12:35:07 +0000
+    Closes issues:
+      - Test suite breakage when restoring an old Bullseye snapshot: "Guest disabled
+        display", "Display output is not active" (tails/tails#18953)
+
+    Commits:
+      - Test suite: Try to catch another case of "Display output is not active"
+
+  * Test suite: Press escape to wake up the display (tails/tails!1089)
+
+    Closes issues:
+      - Test suite breakage when restoring an old Bullseye snapshot: "Guest disabled
+        display", "Display output is not active" (tails/tails#18953)
+
+    Commits:
+      - Test suite: Retry restoring snapshot 3 times
+      - Test suite: Press escape up wake up the display
+
+  * Upgrade to Linux 6.1.20-1 (stable branch) (tails/tails!1080)
+
+    Closes issues:
+      - Upgrade to Linux 6.1.15 (tails/tails#19484)
+      - Upgrade to Linux 6.1.20+ (tails/tails#19556)
+
+    Commits:
+      - Upgrade to Linux 6.1.20-1 from sid
+
+  * Upgrade to Linux 6.1.20-1 from sid (devel branch) (tails/tails!1079)
+
+    Commits:
+      - Upgrade to Linux 6.1.20-1 from sid
+
+  * Add icon for tails-backup (tails/tails!1111)
+
+    Closes issues:
+      - Have an icon for the backup utility (tails/tails#19363)
+
+    Commits:
+      - Update icon for Persistent Storage settings
+      - Add icon for tails-backup
+
+  * Additional Software: Fix launched apps not accessible via Dogtail
+    (tails/tails!1092)
+
+    Closes issues:
+      - tca-portal, tails-additional-software: don't run apps as amnesia under the
+        scope of the (root) systemd service (tails/tails#19131)
+      - Additional Software is in English when launched from a notification
+        (tails/tails#17365)
+      - tails-additional-software-config and gedit started from a notification are not
+        accessible ⇒ breaks test suite (tails/tails#19233)
+
+    Commits:
+      - Additional Software: Make tails-additional-software-config D-Bus activatable
+      - Additional Software: Launch apps with gtk-launch
+
+  * Resolve "myspace.com has become incompatible with our htpdate setup"
+    (tails/tails!1085)
+
+    Closes issues:
+      - myspace.com has become incompatible with our htpdate setup (tails/tails#19561)
+
+    Commits:
+      - test-iuk: list 1 package per line, for nicer future diffs
+      - test-iuk: make it breathe
+      - test-iuk: refuse running unless in a throw-away container
+      - convert shell script to set -eu
+      - move test-iuk to its own file
+      - refactor: put in its own file
+      - retry on failures
+      - replace myspace.com with facebook.com
+
+  * Test suite: Fix step "persistent Greeter options were restored"
+    (tails/tails!1084)
+
+    Closes issues:
+      - "Persistent Greeter options" test suite scenario always fails
+        (tails/tails#19558)
+
+    Commits:
+      - Test suite: Avoid an unnecessary reboot
+      - Test suite: Make clicking "Connect to Tor" button more robust
+      - Test suite: Add alternative persian comma image
+      - Test suite: Fix step "persistent Greeter options were restored"
+      - Test suite: Translate Dogtail args to $lang_code
+      - Remote shell: Support setting environment variables in remote commands
+      - Test suite: Support configuring chutney start time
+
+  * tps: Fix hook execution with --profiling option (tails/tails!1112)
+
+    Commits:
+      - tps: Fix hook execution with --profiling option
+
+  * Shell library: Validate LANG before using it (tails/tails!1110)
+
+    Closes issues:
+      - Validate LANG in localization.sh (tails/tails#19576)
+
+    Commits:
+      - Shell library: Validate LANG before using it
+
+  * Remove obsolete disabling of nf_conntrack_helper (tails/tails!1109)
+
+    Closes issues:
+      - Update disabling of netfilter's automatic conntrack helper assignment
+        (tails/tails#19557)
+
+    Commits:
+      - Remove obsolete disabling of nf_conntrack_helper
+
+  * Test suite: Fix Electrum test (tails/tails!1105)
+
+    Closes issues:
+      - Electrum test suite broken by !1010 (tails/tails#19589)
+
+    Commits:
+      - Test suite: Fix Electrum test
+
+  * Test suite: Fix additional software scenario (tails/tails!1102)
+
+    Closes issues:
+      - Test suite: Scenario "Recovering in offline mode after Additional Software
+        previously failed to upgrade and then succeed to upgrade when online" fails
+        (tails/tails#19574)
+
+    Commits:
+      - Remove @fragile tags that were only justified by #19233, which was solved via
+        !1092
+      - Test suite: Fix additional software scenario
+
+  * Additional Software: Use valid D-Bus name as app name (tails/tails!1099)
+
+    Closes issues:
+      - `gtk-launch org.boum.tails.additional-software-config.desktop` is broken
+        (tails/tails#19584)
+
+    Commits:
+      - Design doc: update path
+      - Additional Software: Use valid D-Bus name as app name
+
+  * Test suite: allow the pattern to cover slightly less of the write cache
+    (tails/tails!1098)
+
+    Closes issues:
+      - Test Suite: Feature "System memory erasure on shutdown" is fragile
+        (tails/tails#19583)
+
+    Commits:
+      - Test suite: allow the pattern to cover even less of the write cache
+      - Test suite: allow the pattern to cover slightly less of the write cache
+
+  * Upgrade Tor Browser to 12.0.5 (tails/tails!1097)
+
+    Closes issues:
+      - Upgrade to Tor Browser 12.0.5, based on Firefox 102.10 (tails/tails#19559)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0.5-build2
+      - Upgrade Tor Browser to 12.0.5-build1
+
+  * tps: Fix "python.UnknownError" returned for builtin errors (tails/tails!1095)
+
+    Closes issues:
+      - Buggy error handling in tps: OSError is not a valid D-Bus name
+        (tails/tails#19578)
+
+    Commits:
+      - tps: Fix "python.UnknownError" returned for builtin errors
+
+  * Welcome Screen: Support login kernel command-line option (tails/tails!1093)
+
+    Commits:
+      - Welcome Screen: Support login kernel command-line option
+
+  * Welcome Screen: Don't allow unlocking with empty passphrase by pressing Enter
+    (tails/tails!1091)
+
+    Closes issues:
+      - Welcome Screen: Don't allow unlocking with empty passphrase by pressing Enter
+        (tails/tails#19570)
+
+    Commits:
+      - Welcome Screen: Don't allow unlocking with empty passphrase by pressing Enter
+
+  * systemd: Use name in unit status messages (tails/tails!1088)
+
+    Closes issues:
+      - systemd: Use name instead of description in unit status messages
+        (tails/tails#19568)
+
+    Commits:
+      - systemd: Use both name and description in unit status messages
+
+  * Display a diceware suggestion when creating the Persistent Storage
+    (tails/tails!1087)
+
+    Closes issues:
+      - Display a diceware suggestion when creating the Persistent Storage
+        (tails/tails#18148)
+
+    Commits:
+      - tps-frontend: Move passphrase suggestion code to passphrase_view.py
+      - tps-frontend: Fix local variable 'passphrase' might be referenced before
+        assignment
+      - tps-frontend: Increase spacing between suggested passphrase and refresh button
+      - tps-frontend: Add missing space to error message
+      - tps-frontend: Fix indentation
+      - tps-frontend: hide relevant UI elements when diceware fails
+      - tps-frontend: give attribute an expressive name
+      - Wait Bookworm to use the non-English wordlists
+      - Determine passphrase suggestion width automatically
+      - tps-frontend: Remove default passphrase suggestion
+      - tps-frontend: refactoring
+      - tps-frontend: hide 'for example' label when diceware suggestion fails
+      - tps-frontend: don't break when wordlist directory doesn't exist
+      - tps-frontend: Use a method to set a new passphrase hint
+      - tps-frontend: Log the exceptions caused by diceware suggestion
+      - tps-frontend: print stderr when diceware fails
+      - tps-frontend: use a wordlist in the currently configured language when
+        available
+      - tps-frontend: adjust passphrase view UI
+      - Display a diceware suggestion when creating the Persistent Storage
+
+  * Fix race when starting tails-ibus-proxy.service (tails/tails!1086)
+
+    Commits:
+      - tails-dbus-proxy: Add missing PIDFile= property to systemd services
+      - tails-ibus-proxy: Busy wait on ibus-daemon
+      - tails-ibus-proxy: Fix missing whitespace (PEP-8)
+      - Fix race when starting tails-ibus-proxy.service
+
+  * Don't translate "known security vulnerabilities" (tails/tails!1081)
+
+    Commits:
+      - Don't translate "known security vulnerabilities"
+
+  * Fix progress information inconsistencies when resuming an automatic upgrade
+    download (tails/tails!1071)
+
+    Closes issues:
+      - Upgrader sometimes fails: Negative number not allowed in format_bytes at
+        /usr/local/share/perl/5.32.1/Tails/IUK/Role/FormatByte.pm line 45 (Fix progress
+        information inconsistencies when resuming an automatic upgrade download)
+        (tails/tails#18435)
+
+    Commits:
+      - Revert "Upgrader: Avoid display the progress dialog initial text"
+      - Untabify
+      - Make code style more consistent
+      - Add comment
+      - Upgrader: Avoid display the progress dialog initial text
+      - Tails::IUK::LWP::UserAgent::WithProgress: check if the temp file exists
+      - Tails::IUK::LWP::UserAgent::WithProgress: always display the total amount of
+        data downloaded
+
+  * Persistent Storage design docs (tails/tails!1035)
+
+    Closes issues:
+      - Persistent Storage: Update design doc (tails/tails#19223)
+
+    Commits:
+      - Remove XXX comments
+      - Remove glossary entry for tails-persistence-setup
+      - Link to contribute/Persistent_Storage in contribute.mdwn
+      - Persistent Storage design doc: Don't link to line numbers
+      - Revert "Rename persistence.mdwn -> Persistent_Storage.mdwn"
+      - Follow style guide
+      - Fix sentence
+      - Fix typo
+      - Improve Persistent Storage contribute doc
+      - Rename persistence.mdwn -> Persistent_Storage.mdwn
+      - Move persistent-storage/HACKING.md to website
+      - Update Additional Software design doc
+      - Persistent Storage design doc: Add section on symlink attacks
+      - Improve Persistent Storage design doc
+      - better draft of Persistent Storage design docs
+
+  * tps: Fix activation of feature in inconsistent state (tails/tails!1010)
+
+    Closes issues:
+      - Consider sync'ing data to disk after copying it to Persistent Storage when
+        activating a feature (tails/tails#19368)
+      - Seemingly spurious tps.configuration.mount.IsActiveException when deactivating
+        a Persistent Storage feature (tails/tails#19331)
+      - Delete corresponding data when a feature of the Persistent Storage is turned
+        off in the settings (tails/tails#8447)
+      - Switches of the new Persistent Storage are too slow to respond on some USB
+        sticks (tails/tails#19291)
+      - tps: Fix activation failing when in inconsistent state (tails/tails#19376)
+
+    Commits:
+      - Test suite: Update string
+      - less ambiguous variable name
+      - libtps.sh: Print JSON output
+      - Apply 1 suggestion(s) to 1 file(s)
+      - libtps.sh: Describe format returned by tps_get_features()
+      - Apply 1 suggestion(s) to 1 file(s)
+      - Make code easier to review
+      - tps-frontend: Check if action row is defined
+      - Fix comment
+      - Explain stacklevel option
+      - Use normal string instead of f-string
+      - Fix comment
+      - Update PO files.
+      - Update to !1010
+      - tps: Delete feature data via `rm -rf`
+      - tps: Set HasData to True if we can't figure it out
+      - tps-frontend: Ensure that the delete data button has the correct visibility
+      - tps-frontend: Fix feature deactivated when IsActive changes to False
+      - tps: Ensure that all feature properties are refreshed
+      - Welcome Screen: Improve error message
+      - Test suite: Use tpscli instead of parsing persistence.conf
+      - Test suite: Fix "Given" used instead of "Then"
+      - Test suite: Improve scenario "Feature activation fails"
+      - Test suite: Use consistent wording
+      - tps: Support reloading the service
+      - Test suite: Improve comment and variable names
+      - Test suite: Add another check that tps feature is deactivated immediately
+      - Test suite: Use "active" instead of "enabled" for Persistent Storage
+      - Test suite: Add scenario "Feature activation fails"
+      - Welcome Screen: Show unlocked message when features failed to activate
+      - Integrate tps-frontend Python files into our l10n framework
+      - tps: Don't return an error in Unlock when features have unexpected state
+      - Improve strings
+      - tps-frontend: Don't insert hyphens when breaking lines in the error message
+      - Test suite: Add scenario "Deleting data of a Persistent Storage feature"
+      - tps-frontend: Remove unused imports
+      - tps-frontend: Add accessible name to delete data button
+      - tps-frontend: Make title of error dialogs bold
+      - tps: Print stderr of failed commands in error messages
+      - Test suite: Improve Gherkin of "Activating and deactivating Persistent Storage
+        features" scenario
+      - tps: Strip the "GDBus.Error:" prefix from errors displayed to users
+      - tps: Check that enabling/disabling feature worked
+      - tps: Fix ActivationFailedError raised instead of DeactivationFailedError
+      - tps: Fix incorrect PropertiesChanged signal
+      - tps: Add behave test for deleting feature
+      - tps: Fix behave tests failing
+      - tps: Fix no PropertiesChanged emitted for HasData
+      - tps: Remove Error property
+      - tps-frontend: Use IsEnabled property
+      - tps: Don't raise AlreadyActivatedError and NotActivatedError
+      - tps: Fix race condition when adding/removing features from config file
+      - tps: Add new property Feature.IsEnabled
+      - Welcome Screen: Mention which features failed to activate
+      - tps-frontend: Move delete data button into first row
+      - tps-frontend: Remove separator between first and second row
+      - Welcome Screen: Document GtkInspector
+      - Fix terminology
+      - tps: Sync data copied to Persistent Storage
+      - tps: Improve error in Welcome Screen when features failed to activate
+      - tps-frontend: Show warning for features which failed to activate
+      - tps: Remove features which failed to activate
+      - tps: Store errors during service activation
+      - tps: Make error message label selectable
+      - tps-frontend: Use … instead of ... in button labels
+      - tps-frontend: Confirm data deletion
+      - tps: Treat Persistent directory with empty "Tor Browser" directory as empty
+      - tps: Fix "return" used instead of "raise"
+      - Add expander
+      - tps: Support deleting data
+      - tps-frontend: Show a spinner while activating/deactivating features
+      - tps-frontend: Hide persistent folder button when feature is inactive
+      - Also make on-deactived hooks work when run twice
+      - tps behave-tests: Test deactivating feature with inconsistent state
+      - tps: Make on-activated hooks work when run twice
+      - Fix shellcheck source comments
+      - tps: Fix deactivation of feature in inconsistent state
+      - tps behave-tests: Test activating feature with inconsistent state
+      - Revert "Don't try (and fail) to refresh features' IsActive when unlocking"
+      - tps: Fix activation of feature in inconsistent state
+
+ -- Tails developers <tails@boum.org>  Tue, 18 Apr 2023 15:31:12 +0000
 
 tails (5.11) unstable; urgency=medium
 
