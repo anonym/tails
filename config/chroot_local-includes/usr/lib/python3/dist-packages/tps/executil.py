@@ -67,11 +67,8 @@ def execute_hooks(hooks_dir: Union[str, PathLike]):
         if file.is_dir():
             continue
         logger.info(f"Executing hook {file}", stacklevel=2)
-        cmd = [str(file)]
-        if tps.PROFILING:
-            cmd = prepare_for_profiling(cmd)
         try:
-            check_call(cmd)
+            check_call([str(file)])
         finally:
             logger.debug(f"Done executing hook", stacklevel=2)
 

@@ -66,7 +66,7 @@ When /^I update APT using apt$/ do
   retry_tor(recovery_proc) do
     Timeout.timeout(15 * 60) do
       $vm.execute_successfully("echo #{@sudo_password} | " \
-                               'sudo -S apt update', user: LIVE_USER)
+                               'sudo -S apt --error-on=any update', user: LIVE_USER)
     end
   end
 end

@@ -75,6 +75,7 @@ def post_snapshot_restore_hook(snapshot_name, num_try)
   if $vm.connected_to_network? &&
      $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
      check_disable_network != '1'
+    debug_log('Restarting Tor...')
     $vm.execute('systemctl stop tor@default.service')
     $vm.host_to_guest_time_sync
     already_synced_time_host_to_guest = true
@@ -725,21 +726,28 @@ Given /^all notifications have disappeared$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
     @screen.press('super', 'v') # Show the notification list
-    @screen.wait('GnomeDoNotDisturb.png', 5)
-    begin
-      @screen.click(
-        *gnome_shell.child(
+    gnome_shell.child('Do Not Disturb',
+                      roleName: 'label', showingOnly: true)
+    # Check if there are notifications or if the "No Notifications"
+    # label is visible. Don't retry to avoid long delays - if there are
+    # no notifications, the button should be visible when the
+    # "Do Not Disturb" button is visible.
+    no_notifications = gnome_shell.child?(
+      'No Notifications',
+      roleName: 'label', showingOnly: true, retry: false
+    )
+    unless no_notifications
+      try_for(3) do
+        button = gnome_shell.child(
           'Clear',
-          roleName:    'push button',
-          showingOnly: true
-        ).position
-      )
-    rescue StandardError
-      # Ignore exceptions: there might be no notification to clear, in
-      # which case there will be a "No Notifications" label instead of
-      # a "Clear" button.
+          roleName: 'push button', showingOnly: true
+        )
+        button.grabFocus
+        button.focused
+      end
+      @screen.press('Return')
+      gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
     end
-    gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
   end
   @screen.press('Escape')
   # Increase the chances that by the time we leave this step, the
