@@ -1949,7 +1949,7 @@ If you just released a final release
          ssh bittorrent.lizard transmission-remote --list | grep --fixed-strings "tails-amd64-${PREVIOUS_VERSION:?}-i"
 
      Then delete them with (`PREVIOUS_VERSION_TRANSMISSION_IDS` must be a
-     comma-separated list of IDs, based on the previous commnad):
+     comma-separated list of IDs, based on the previous command):
 
          ssh bittorrent.lizard transmission-remote \
              -t "${PREVIOUS_VERSION_TRANSMISSION_IDS:?}" --remove-and-delete
