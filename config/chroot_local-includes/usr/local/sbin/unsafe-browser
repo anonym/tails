@@ -86,7 +86,7 @@ show_shutdown_notification () {
 # Main script:
 
 CMD="$(basename "${0}")"
-LOCK="/var/lock/${CMD}"
+LOCK="/run/lock/${CMD}"
 CONF_DIR="/var/lib/unsafe-browser"
 COW="${CONF_DIR}/cow"
 CHROOT="${CONF_DIR}/chroot"
