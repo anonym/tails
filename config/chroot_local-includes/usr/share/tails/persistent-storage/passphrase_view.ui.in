@@ -47,20 +47,124 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="placeholder_label1">
+                      <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Choose the passphrase that you will use to unlock the encryption of your Persistent Storage and all its data.
-
-We recommend a long passphrase of 5 to 7 random words.</property>
-                        <property name="use-markup">True</property>
-                        <property name="wrap">True</property>
-                        <property name="max-width-chars">50</property>
+                        <property name="can-focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">20</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="placeholder_label1">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">Choose the passphrase that you will use to unlock the encryption of your Persistent Storage and all its data.</property>
+                            <property name="use-markup">True</property>
+                            <property name="wrap">True</property>
+                            <property name="max-width-chars">50</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="placeholder_label2">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">We recommend a long passphrase of 5 to 7 random words.</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="placeholder_label3">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes"> For example:</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="spacing">10</property>
+                            <child>
+                              <object class="GtkLabel" id="passphrase_suggestion_label">
+                                <property name="visible">True</property>
+                                <property name="halign">start</property>
+				<property name="selectable">True</property>
+				<property name="can-focus">False</property>
+                                <property name="xalign">0</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEventBox">
+                                <property name="visible">True</property>
+                                <signal name="button-press-event" handler="on_refresh_image_clicked" swapped="no"/>
+                                <child>
+                                  <object class="GtkImage" id="refresh_image">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="stock">gtk-refresh</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>
@@ -173,23 +277,6 @@ We recommend a long passphrase of 5 to 7 random words.</property>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <child>
-                          <object class="GtkCheckButton" id="show_passphrase_checkbutton">
-                            <property name="label" translatable="yes">_Show Passphrase</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">True</property>
-                            <property name="receives-default">False</property>
-                            <property name="use-underline">True</property>
-                            <property name="xalign">0</property>
-                            <property name="draw-indicator">True</property>
-                            <signal name="toggled" handler="on_show_passphrase_button_toggled" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
                         <child type="center">
                           <object class="GtkBox" id="verify_hint_box">
                             <property name="halign">center</property>
@@ -197,6 +284,7 @@ We recommend a long passphrase of 5 to 7 random words.</property>
                             <child>
                               <object class="GtkImage">
                                 <property name="visible">True</property>
+                                <property name="can-focus">False</property>
                                 <property name="valign">start</property>
                                 <property name="icon-name">dialog-warning-symbolic</property>
                               </object>
@@ -226,12 +314,52 @@ We recommend a long passphrase of 5 to 7 random words.</property>
                               </packing>
                             </child>
                           </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkCheckButton" id="show_passphrase_checkbutton">
+                            <property name="label" translatable="yes">_Show Passphrase</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="receives-default">False</property>
+                            <property name="use-underline">True</property>
+                            <property name="xalign">0</property>
+                            <property name="draw-indicator">True</property>
+                            <signal name="toggled" handler="on_show_passphrase_button_toggled" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
                         <property name="top-attach">3</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>

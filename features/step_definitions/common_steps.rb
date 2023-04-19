@@ -11,11 +11,46 @@ def post_vm_start_hook
   @screen.click(@screen.w - 1, @screen.h / 2)
 end
 
-def post_snapshot_restore_hook(snapshot_name)
+def post_snapshot_restore_hook(snapshot_name, num_try)
+  scenario_indent = ' ' * 4
+
+  # Press escape to wake up the display
+  @screen.press('Escape')
+
   $vm.wait_until_remote_shell_is_up
-  unless snapshot_name.end_with?('tails-greeter')
-    @screen.wait("GnomeApplicationsMenu#{$language}.png", 20)
+  pattern = if snapshot_name.end_with?('tails-greeter')
+              'TailsGreeter.png'
+            else
+              "GnomeApplicationsMenu#{$language}.png"
+            end
+  begin
+    try_for(10, delay: 0) do
+      # We use @screen.real_find here instead of @screen.wait because we
+      # don't want check_and_raise_display_output_not_active() to be called.
+      @screen.real_find(pattern)
+      # Sometimes the display becomes inactive 1 to 2 seconds after the
+      # snapshot was restored. To catch those cases, we wait a short time
+      # and make sure that we can still find the pattern.
+      # We don't want this to be longer than necessary, because this will
+      # slow down all tests which restore snapshots.
+      sleep 3
+      @screen.real_find(pattern)
+    rescue FindFailed
+      # Press escape to wake up the display
+      @screen.press('Escape')
+      next
+    end
+  rescue Timeout::Error
+    if num_try == 3
+      raise 'Failed to restore snapshot'
+    end
+
+    debug_log(scenario_indent + 'Failed to restore snapshot, retrying...',
+              color: :yellow, timestamp: false)
+    reach_checkpoint(snapshot_name, num_try + 1)
+    return
   end
+
   post_vm_start_hook
 
   # Increase the chances that by the time we leave this function, if
@@ -40,6 +75,7 @@ def post_snapshot_restore_hook(snapshot_name)
   if $vm.connected_to_network? &&
      $vm.execute('systemctl --quiet is-active tor@default.service').success? &&
      check_disable_network != '1'
+    debug_log('Restarting Tor...')
     $vm.execute('systemctl stop tor@default.service')
     $vm.host_to_guest_time_sync
     already_synced_time_host_to_guest = true
@@ -138,6 +174,7 @@ When /^I start the computer$/ do
          'Trying to start a VM that is already running')
   $vm.start
   $language = ''
+  $lang_code = ''
 end
 
 Given /^I start Tails( from DVD)?( with network unplugged)?( and genuine APT sources)?( and I login)?$/ do |dvd_boot, network_unplugged, keep_apt_sources, do_login|
@@ -337,8 +374,9 @@ Given /^the computer (?:re)?boots Tails( with genuine APT sources)?$/ do |keep_a
   step 'I configure APT to use non-onion sources' unless keep_apt_sources
 end
 
-Given /^I set the language to (.*)$/ do |lang|
+Given /^I set the language to (.*) \((.*)\)$/ do |lang, lang_code|
   $language = lang
+  $lang_code = lang_code
   # The listboxrow does not expose any actions through AT-SPI,
   # so Dogtail is unable to click it directly. We let it grab focus
   # and activate it via the keyboard instead.
@@ -359,7 +397,7 @@ Given /^I set the language to (.*)$/ do |lang|
   @screen.press('Return')
 end
 
-Given /^I log in to a new session(?: in ([^ ]*))?( without activating the Persistent Storage)?( after having activated the Persistent Storage| expecting no warning about the Persistent Storage not being activated)?$/ do |lang, expect_warning, expect_no_warning|
+Given /^I log in to a new session(?: in ([^ ]*) \(([^ ]*)\))?( without activating the Persistent Storage)?( after having activated the Persistent Storage| expecting no warning about the Persistent Storage not being activated)?$/ do |lang, lang_code, expect_warning, expect_no_warning|
   # We'll record the location of the login button before changing
   # language so we only need one (English) image for the button while
   # still being able to click it in any language.
@@ -373,7 +411,7 @@ Given /^I log in to a new session(?: in ([^ ]*))?( without activating the Persis
                  end
   login_button_region = @screen.wait_any(login_button, 15)[:match]
   if lang && lang != 'English'
-    step "I set the language to #{lang}"
+    step "I set the language to #{lang} (#{lang_code})"
     # After selecting options (language, administration password,
     # etc.), the Greeter needs some time to focus the main window
     # back, so that typing the accelerator for the "Start Tails"
@@ -688,21 +726,28 @@ Given /^all notifications have disappeared$/ do
   gnome_shell = Dogtail::Application.new('gnome-shell')
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
     @screen.press('super', 'v') # Show the notification list
-    @screen.wait('GnomeDoNotDisturb.png', 5)
-    begin
-      @screen.click(
-        *gnome_shell.child(
+    gnome_shell.child('Do Not Disturb',
+                      roleName: 'label', showingOnly: true)
+    # Check if there are notifications or if the "No Notifications"
+    # label is visible. Don't retry to avoid long delays - if there are
+    # no notifications, the button should be visible when the
+    # "Do Not Disturb" button is visible.
+    no_notifications = gnome_shell.child?(
+      'No Notifications',
+      roleName: 'label', showingOnly: true, retry: false
+    )
+    unless no_notifications
+      try_for(3) do
+        button = gnome_shell.child(
           'Clear',
-          roleName:    'push button',
-          showingOnly: true
-        ).position
-      )
-    rescue StandardError
-      # Ignore exceptions: there might be no notification to clear, in
-      # which case there will be a "No Notifications" label instead of
-      # a "Clear" button.
+          roleName: 'push button', showingOnly: true
+        )
+        button.grabFocus
+        button.focused
+      end
+      @screen.press('Return')
+      gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
     end
-    gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
   end
   @screen.press('Escape')
   # Increase the chances that by the time we leave this step, the
@@ -899,18 +944,18 @@ When /^I copy "([^"]+)" to "([^"]+)" as user "([^"]+)"$/ do |source, destination
   assert(c.success?, "Failed to copy file:\n#{c.stdout}\n#{c.stderr}")
 end
 
-def persistent?(app)
-  conf = get_persistence_presets_config(true)[app.to_s]
+def is_persistence_active?(app)
+  conf = get_tps_bindings(true)[app.to_s]
   c = $vm.execute("findmnt --noheadings --output SOURCE --target '#{conf}'")
   c.success? && (c.stdout.chomp != 'overlay')
 end
 
-Then /^persistence for "([^"]+)" is (|not )enabled$/ do |app, enabled|
-  case enabled
+Then /^persistence for "([^"]+)" is (|not )active$/ do |app, active|
+  case active
   when ''
-    assert(persistent?(app), 'Persistence should be enabled.')
+    assert(is_persistence_active?(app), 'Persistence should be active.')
   when 'not '
-    assert(!persistent?(app), 'Persistence should not be enabled.')
+    assert(!is_persistence_active?(app), 'Persistence should not be active.')
   end
 end
 
@@ -1405,6 +1450,12 @@ end
 
 Given /^I write a file "(\S+)" with contents "([^"]*)"$/ do |path, content|
   $vm.file_overwrite(path, content)
+end
+
+Given /^I create a symlink "(\S+)" to "(\S+)"$/ do |link, target|
+  $vm.execute_successfully(
+    "ln -s --no-target-directory '#{target}' '#{link}'"
+  )
 end
 
 def gnome_disks_app

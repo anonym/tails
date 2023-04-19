@@ -22,6 +22,10 @@ if grep -qw "debug=greeter" /proc/cmdline && [ -z "${DEBUG_GREETER:-}" ]; then
 
   /usr/local/lib/tails-greeter
 
+To start the greeter with GtkInspector, run:
+
+  GTK_DEBUG=interactive /usr/local/lib/tails-greeter
+
 To spawn more terminals, run:
 
   gnome-terminal --app-id greeter.debug.Terminal -- /bin/bash

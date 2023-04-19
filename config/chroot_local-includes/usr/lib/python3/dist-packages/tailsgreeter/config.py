@@ -17,6 +17,9 @@
 #
 """Tails Greeter configuration"""
 
+from tailsgreeter import TRANSLATION_DOMAIN
+import locale
+import gettext as _gettext_orig
 import os.path
 
 # default Tails credentials
@@ -73,3 +76,16 @@ persistence_state_file = '/var/lib/live/config/tails.persistence'
 # Storage after login. Store this in the transient settings dir because
 # we don't want to persist this setting.
 persistence_create_file = os.path.join(transient_settings_dir, 'tails.create-persistence')
+
+locale.bindtextdomain(TRANSLATION_DOMAIN, system_locale_dir)
+current_language = 'en'
+gettext = _gettext_orig.gettext
+
+
+def set_current_language(lang: str):
+    global current_language
+    global gettext
+    current_language = lang
+    gettext = _gettext_orig.translation(
+        TRANSLATION_DOMAIN, system_locale_dir, [lang],
+    ).gettext

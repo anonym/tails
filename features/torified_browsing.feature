@@ -128,7 +128,7 @@ Feature: Browsing the web using the Tor Browser
 
   Scenario: Persistent browser bookmarks
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
-    And all persistence presets are enabled
+    And all tps features are active
     And all persistent filesystems have safe access rights
     And all persistence configuration files have safe access rights
     And all persistent directories have safe access rights

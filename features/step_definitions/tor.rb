@@ -765,11 +765,15 @@ Then /^the Tor Connection Assistant complains that normal bridges are not allowe
 end
 
 def click_connect_to_tor
-  btn = tor_connection_assistant.child(
-    '_Connect to Tor',
-    roleName: 'push button'
-  )
-  assert btn.sensitive
+  btn = nil
+  try_for(3) do
+    btn = tor_connection_assistant.child(
+      '_Connect to Tor',
+      roleName: 'push button'
+    )
+    btn.sensitive
+  end
+  assert !btn.nil?
   btn.click
 end
 

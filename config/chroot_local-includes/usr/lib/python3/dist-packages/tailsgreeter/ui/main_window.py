@@ -15,14 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import locale
 import logging
 from typing import TYPE_CHECKING
 import gi
 import os
 
 import tailsgreeter                                             # NOQA: E402
-import tailsgreeter.config                                      # NOQA: E402
+from tailsgreeter import config                                 # NOQA: E402
 from tailsgreeter.settings import SettingNotFoundError
 from tailsgreeter.translatable_window import TranslatableWindow
 from tailsgreeter.ui.popover import Popover
@@ -51,7 +50,6 @@ ICON_DIR = 'icons/'
 PREFERRED_WIDTH = 620
 PREFERRED_HEIGHT = 470
 IMG_PERSISTENT_STORAGE = '/usr/share/icons/tails-persistent-storage.svg'
-locale.bindtextdomain(TRANSLATION_DOMAIN, tailsgreeter.config.system_locale_dir)
 
 
 class GreeterMainWindow(Gtk.Window, TranslatableWindow):
@@ -61,7 +59,6 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         self.greeter = greeter
         self.persistence_setting = persistence_setting
         self.settings = settings
-        self.current_language = "en"
 
         # Set the main_window attribute for the settings. This is required
         # in order to allow the settings to trigger changes in the main
@@ -74,7 +71,7 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
 
         # Load custom CSS
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_path(tailsgreeter.config.data_path + CSS_FILE)
+        css_provider.load_from_path(config.data_path + CSS_FILE)
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(),
             css_provider,
@@ -83,7 +80,7 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         # Load UI interface definition
         builder = Gtk.Builder()
         builder.set_translation_domain(TRANSLATION_DOMAIN)
-        builder.add_from_file(tailsgreeter.config.data_path + MAIN_UI_FILE)
+        builder.add_from_file(config.data_path + MAIN_UI_FILE)
         builder.connect_signals(self)
 
         for widget in builder.get_objects():
@@ -132,7 +129,7 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         # Add our icon dir to icon theme
         icon_theme = Gtk.IconTheme.get_default()
         icon_theme.prepend_search_path(
-            tailsgreeter.config.data_path + ICON_DIR)
+            config.data_path + ICON_DIR)
 
         # Add placeholder to settings ListBox
         self.listbox_settings.set_placeholder(self.label_settings_default)
@@ -317,10 +314,10 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
 
         def localize_page(page: str) -> str:
             """Try to get a localized version of the page"""
-            if self.current_language == "en":
+            if config.current_language == "en":
                 return page
 
-            localized_page = page.replace(".en.", ".%s." % self.current_language)
+            localized_page = page.replace(".en.", ".%s." % config.current_language)
 
             # Strip the fragment identifier
             index = localized_page.find('#')
@@ -384,6 +381,10 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
         return False
 
     def cb_entry_storage_passphrase_activated(self, entry, user_data=None):
+        # Don't try to unlock if the entry is empty
+        if not entry.get_text():
+            return False
+
         self.persistent_storage.unlock()
         return False
 

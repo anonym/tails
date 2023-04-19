@@ -14,7 +14,18 @@ language_code_from_locale () {
 localized_tails_doc_page () {
     local page="${1}"
     local lang_code
-    lang_code="$(language_code_from_locale "${LANG}")"
+
+    # Check if LANG contains any '/' or '%' characters, which is the
+    # same sudo does to validate environment variables.
+    # See https://github.com/sudo-project/sudo/blob/d7b8f3ffbf278ba87946851f8d8c1b21e3fe4818/plugins/sudoers/env.c#L687
+    # Rationale: sudo and possibly other programs allow passing LANG.
+    # While sudo validates it, other programs might not.
+    if echo "${LANG}" | grep -q '[/%]'; then
+        echo >&2 "LANG contains invalid characters, not using it: '${LANG}'"
+    else
+        lang_code="$(language_code_from_locale "${LANG}")"
+    fi
+
     local try_page
     for locale in "${lang_code}" "en"; do
         try_page="${page}.${locale}.html"

@@ -56,6 +56,12 @@ setup_chroot_for_browser () {
     lowerdirs=${lowerdirs%?}
 
     mkdir -p "${cow}" "${chroot}"
+
+    # Ensure that the parent directory of the chroot and the cow dir
+    # is only writable by root, to avoid that amnesia can write it.
+    # Refs: #19585
+    chmod 0700 "$(dirname "${cow}")" "$(dirname "${chroot}")"
+
     mount -t tmpfs tmpfs "${cow}"
     mkdir "${cow}/rw" "${cow}/work"
     mount -t overlay -o "noatime,lowerdir=${lowerdirs},upperdir=${cow}/rw,workdir=${cow}/work" overlay "${chroot}"

@@ -139,8 +139,15 @@ WM_CLASS='Unsafe Browser'
 PROFILE="$(browser_profile_dir "${BROWSER_NAME}" "${BROWSER_USER}")"
 CHROOT_USER_UID="$(id --user "${BROWSER_USER}")"
 
-/usr/local/lib/unsafe-browser \
-    --chroot "$CHROOT" \
+# We use brwap here to make the /var/lib/unsafe-browser/chroot directory
+# accessible at /chroot to make it accessible to amnesia.
+# The former is not accessible by amnesia because it's below
+# /var/lib/unsafe-browser which has permissions 0700. That's to avoid
+# that amnesia outside of the Unsafe Browser sandbox can write to it.
+# Refs: #19585
+bwrap --bind / / --bind "$CHROOT" /chroot --proc /proc --dev /dev \
+    /usr/local/lib/unsafe-browser \
+    --chroot "/chroot" \
     --profile "$PROFILE" \
     --chroot-user-uid "$CHROOT_USER_UID" \
     --wm-class "$WM_CLASS" \

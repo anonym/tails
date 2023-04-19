@@ -99,7 +99,7 @@ CHECKPOINTS =
       steps:             [
         'I enable persistence',
         'I log in to a new session',
-        'all persistence presets are enabled',
+        'all tps features are active',
         'all persistent filesystems have safe access rights',
         'all persistence configuration files have safe access rights',
         'all persistent directories have safe access rights',
@@ -110,12 +110,8 @@ CHECKPOINTS =
   }.freeze
 
 # XXX: giving up on a few worst offenders for now
-# rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
-def reach_checkpoint(name)
-  scenario_indent = ' ' * 4
-  step_indent = ' ' * 6
-
+def reach_checkpoint(name, num_try = 0)
   step 'a computer'
   if VM.snapshot_exists?(name)
     $vm.restore_snapshot(name)
@@ -130,28 +126,25 @@ def reach_checkpoint(name)
       else
         reach_checkpoint(parent_checkpoint)
       end
-      post_snapshot_restore_hook(parent_checkpoint)
+      post_snapshot_restore_hook(parent_checkpoint, num_try)
     end
-    debug_log(scenario_indent + "Checkpoint: #{checkpoint_description}",
-              color: :white, timestamp: false)
+    log_scenario("Checkpoint: #{checkpoint_description}")
     step_action = 'Given'
     if parent_checkpoint
       parent_description = CHECKPOINTS[parent_checkpoint][:description]
-      debug_log(step_indent + "#{step_action} #{parent_description}",
-                color: :green, timestamp: false)
+      step_name = "#{step_action} #{parent_description}"
+      log_step_succeeded(step_name)
       step_action = 'And'
     end
     steps.each do |s|
+      step_name = "#{step_action} #{s}"
       begin
         step(s)
       rescue StandardError => e
-        debug_log(scenario_indent +
-                  "Step failed while creating checkpoint: #{s}",
-                  color: :red, timestamp: false)
+        log_step_failed(step_name)
         raise e
       end
-      debug_log(step_indent + "#{step_action} #{s}",
-                color: :green, timestamp: false)
+      log_step_succeeded(step_name)
       step_action = 'And'
     end
     $vm.save_snapshot(name)
@@ -160,9 +153,8 @@ def reach_checkpoint(name)
   # after saving it, in which case post_snapshot_restore_hook is
   # useful to ensure we've reached a good starting point, so we run
   # it in all cases, including even when've just saved a new snapshot.
-  post_snapshot_restore_hook(name)
+  post_snapshot_restore_hook(name, num_try)
 end
-# rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 
 # For each checkpoint we generate a step to reach it.

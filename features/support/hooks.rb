@@ -247,6 +247,7 @@ Before('@product') do |scenario|
   if config_bool('CAPTURE')
     video_name = sanitize_filename("#{scenario.name}.mkv")
     @video_path = "#{ARTIFACTS_DIR}/#{video_name}"
+    debug_log("Starting video capture of '#{@video_path}'")
     capture = IO.popen(['ffmpeg',
                         '-f', 'x11grab',
                         '-s', '1024x768',
@@ -266,6 +267,7 @@ Before('@product') do |scenario|
             end
   # English will be assumed if this is not overridden
   $language = ''
+  $lang_code = ''
   @os_loader = 'MBR'
   # Passwords includes shell-special chars (space, "!")
   # as a regression test for #17792
@@ -295,6 +297,7 @@ After('@product') do |scenario|
     # capture. Let's wait a few seconds more to make it easier to see
     # what the error was.
     sleep 3 if scenario.failed?
+    debug_log("Stopping video capture of '#{@video_path}'")
     Process.kill('INT', @video_capture_pid)
     Process.wait(@video_capture_pid)
     save_failure_artifact('Video', @video_path)

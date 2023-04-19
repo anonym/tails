@@ -1,4 +1,6 @@
 import abc
+import logging
+from enum import Enum
 from gi.repository import GLib
 import os
 from pathlib import Path
@@ -13,8 +15,8 @@ from tps import State, DBUS_FEATURE_INTERFACE, DBUS_FEATURES_PATH, \
 from tps.configuration.mount import Mount, IsActiveException, \
     IsInactiveException
 from tps.dbus.errors import ActivationFailedError, \
-    AlreadyActivatedError, NotActivatedError, JobCancelledError, \
-    FailedPreconditionError
+    DeletionFailedError, JobCancelledError, FailedPreconditionError, \
+    DeactivationFailedError
 from tps.dbus.object import DBusObject
 from tps.job import ServiceUsingJobs
 
@@ -35,9 +37,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         <interface name='org.boum.tails.PersistentStorage.Feature'>
             <method name='Activate'/>
             <method name='Deactivate'/>
+            <method name='Delete'/>
             <property name="Id" type="s" access="read"/>
             <property name="Description" type="s" access="read"/>
             <property name="IsActive" type="b" access="read"/>
+            <property name="IsEnabled" type="b" access="read"/>
+            <property name="HasData" type="b" access="read"/>
             <property name="Job" type="o" access="read"/>
         </interface>
     </node>
@@ -53,9 +58,14 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         self.service = service
         self.is_custom = is_custom
 
-        # Check if the feature is active
+        # Check if the feature is enabled in the config file
         config_file = self.service.config_file
-        self._is_active = config_file.exists() and config_file.contains(self)
+        self._is_enabled = config_file.exists() and config_file.contains(self)
+        self._last_signaled_is_enabled = self._is_enabled
+        self._is_active = all(mount.is_active() for mount in self.Mounts)
+        self._last_signaled_is_active = self._is_active
+        self._has_data = any(mount.has_data() for mount in self.Mounts)
+        self._last_signaled_has_data = self._has_data
 
     # ----- Exported functions ----- #
 
@@ -64,13 +74,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         if self.service.state != State.UNLOCKED:
             msg = "Can't activate features when state is '%s'" % \
                   self.service.state.name
-            return FailedPreconditionError(msg)
-
-        # Check if feature is active
-        is_active = self.refresh_is_active()
-        if is_active:
-            raise AlreadyActivatedError("Feature %r is already activated"
-                                        % self.Id)
+            raise FailedPreconditionError(msg)
 
         # If there is still a job running, cancel it
         if self._job:
@@ -95,7 +99,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             with self.new_job() as job:
                 self.do_activate(job)
         finally:
-            self.service.save_config_file()
+            self.refresh_state(emit_properties_changed_signal=True)
 
     def do_activate(self, job: Optional["Job"], non_blocking=False):
         logger.info(f"Activating feature {self.Id}")
@@ -125,19 +129,15 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             msg = f"Activation of feature '{self.Id}' failed unexpectedly"
             raise ActivationFailedError(msg) from e
 
-        self.IsActive = True
+        self.run_on_activated_hooks()
+        self.service.enable_feature(self)
 
     def Deactivate(self):
         # Check if we can deactivate the feature
         if self.service.state != State.UNLOCKED:
             msg = "Can't deactivate features when state is '%s'" % \
                   self.service.state.name
-            return FailedPreconditionError(msg)
-
-        # Check if feature is active
-        is_active = self.refresh_is_active()
-        if not is_active:
-            raise NotActivatedError("Feature %r is not activated" % self.Id)
+            raise FailedPreconditionError(msg)
 
         # If there is still a job running, cancel it
         if self._job:
@@ -149,7 +149,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             with self.new_job() as job:
                 self.do_deactivate(job)
         finally:
-            self.service.save_config_file()
+            self.refresh_state(emit_properties_changed_signal=True)
 
     def do_deactivate(self, job: Optional["Job"]):
         logger.info(f"Deactivating feature {self.Id}")
@@ -168,9 +168,40 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             for mount in self.Mounts: mount.check_is_inactive()
         except IsActiveException as e:
             msg = f"Deactivation of feature '{self.Id}' failed unexpectedly"
-            raise ActivationFailedError(msg) from e
+            raise DeactivationFailedError(msg) from e
 
-        self.IsActive = False
+        self.run_on_deactivated_hooks()
+        self.service.disable_feature(self)
+
+    def Delete(self):
+        try:
+            self.do_delete()
+        finally:
+            self.refresh_state()
+            self.signal_properties_changed()
+
+    def do_delete(self):
+        # Check if we can delete the feature
+        if self.service.state != State.UNLOCKED:
+            msg = "Can't delete features when state is '%s'" % \
+                  self.service.state.name
+            raise FailedPreconditionError(msg)
+
+        # Check if feature is active
+        self.refresh_state(["IsActive"])
+        if self.IsActive:
+            msg = f"Can't delete active feature '{self.Id}'"
+            raise FailedPreconditionError(msg)
+
+        logger.info(f"Deleting feature {self.Id}")
+
+        for mount in self.Mounts:
+            executil.check_call(["rm", "-rf", mount.src])
+
+        self.refresh_state(["HasData"])
+        if self.HasData:
+            msg = f"Deletion command successful but feature '{self.Id}' still has data"
+            raise DeletionFailedError(msg)
 
     # ----- Exported properties ----- #
 
@@ -178,20 +209,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
     def IsActive(self) -> bool:
         return self._is_active
 
-    @IsActive.setter
-    def IsActive(self, value: bool):
-        if self._is_active == value:
-            # Nothing to do
-            return
-        self._is_active = value
-        changed_properties = {"IsActive": GLib.Variant("b", value)}
-        self.emit_properties_changed_signal(self.service.connection,
-                                            DBUS_FEATURE_INTERFACE,
-                                            changed_properties)
-        if value:
-            self.on_activated()
-        else:
-            self.on_deactivated()
+    @property
+    def IsEnabled(self) -> bool:
+        return self._is_enabled
+    @property
+    def HasData(self) -> bool:
+        return self._has_data
 
     @property
     def Job(self) -> str:
@@ -208,8 +231,8 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
     @property
     @abc.abstractmethod
     def Id(self) -> str:
-        """The name of the feature. It must only contain the ASCII
-        characters "[A-Z][a-z][0-9]_"."""
+        """The name of the feature for internal usage and in logs. It
+        must only contain the ASCII characters "[A-Z][a-z][0-9]_"."""
         return str()
 
     @property
@@ -229,6 +252,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
     # ----- Non-exported properties ------ #
 
     @property
+    @abc.abstractmethod
+    def translatable_name(self) -> str:
+        """The name of the feature for usage in user-visible strings"""
+        return str()
+
+    @property
     def conflicting_apps(self) -> List["ConflictingApp"]:
         """A list of applications which must not be currently running
         when the feature is activated/deactivated."""
@@ -241,30 +270,75 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
 
     # ----- Non-exported functions ----- #
 
-    def on_activated(self):
-        # When there is an inconsistent state between the config file
-        # and the mounts (i.e. the config file contains the mount but
-        # the mounts are not actually mounted) running the hooks would
-        # make things even worse, so we check if the mounts are actually
-        # mounted and let any exception escalate.
-        for mount in self.Mounts: mount.check_is_active()
+    def run_on_activated_hooks(self):
         hooks_dir = Path(ON_ACTIVATED_HOOKS_DIR, self.Id)
         executil.execute_hooks(hooks_dir)
 
-    def on_deactivated(self):
-        # Same as in on_activated, we check if the mounts are actually
-        # deactivated here
-        # XXX: The persistence.conf file should be migrated to an
-        # internal state file to avoid users causing inconsistent state
-        for mount in self.Mounts: mount.check_is_inactive()
+    def run_on_deactivated_hooks(self):
         hooks_dir = Path(ON_DEACTIVATED_HOOKS_DIR, self.Id)
         executil.execute_hooks(hooks_dir)
 
-    def refresh_is_active(self) -> bool:
-        config_file = self.service.config_file
-        is_active = config_file.exists() and config_file.contains(self)
-        self.IsActive = is_active
-        return is_active
+    def refresh_state(self, properties: List[str] = None,
+                      emit_properties_changed_signal=False):
+        if not properties:
+            properties = ["IsEnabled", "HasData", "IsActive"]
+
+        exceptions = list()
+
+        if "IsEnabled" in properties:
+            try:
+                config_file = self.service.config_file
+                self._is_enabled = config_file.exists() and \
+                                   config_file.contains(self)
+            except Exception as e:
+                if exceptions: logging.exception(e)
+                exceptions.append(e)
+
+        if "HasData" in properties:
+            try:
+                self._has_data = any(mount.has_data() for mount in self.Mounts)
+            except Exception as e:
+                if exceptions: logging.exception(e)
+                exceptions.append(e)
+                # Figuring out if there is data or not failed. We set
+                # HasData to True in this case because then we display
+                # a "Delete Data" button in the frontend which the user
+                # could use to try and fix the issue (if they don't care
+                # about the data).
+                self._has_data = True
+
+        if "IsActive" in properties:
+            try:
+                self._is_active = all(mount.is_active() for mount in self.Mounts)
+            except Exception as e:
+                if exceptions: logging.exception(e)
+                exceptions.append(e)
+
+        if emit_properties_changed_signal:
+            self.signal_properties_changed()
+
+        if exceptions:
+            raise exceptions[0]
+
+    def signal_properties_changed(self):
+        changed_properties = dict()
+
+        if self._is_enabled != self._last_signaled_is_enabled:
+            changed_properties["IsEnabled"] = GLib.Variant("b", self._is_enabled)
+            self._last_signaled_is_enabled = self._is_enabled
+
+        if self._has_data != self._last_signaled_has_data:
+            changed_properties["HasData"] = GLib.Variant("b", self._has_data)
+            self._last_signaled_has_data = self._has_data
+
+        if self._is_active != self._last_signaled_is_active:
+            changed_properties["IsActive"] = GLib.Variant("b", self._is_active)
+            self._last_signaled_is_active = self._is_active
+
+        if changed_properties:
+            self.emit_properties_changed_signal(self.service.connection,
+                                                DBUS_FEATURE_INTERFACE,
+                                                changed_properties)
 
     def wait_for_conflicting_processes_to_terminate(self, job: "Job"):
         """Waits until all conflicting processes were terminated.
