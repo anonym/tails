@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 from gi.repository import Gio, GLib
 
 import tps.logging
-from tps import DBUS_JOBS_PATH, DBUS_JOB_INTERFACE
+from tps import _, DBUS_JOBS_PATH, DBUS_JOB_INTERFACE
 from tps.dbus.object import DBusObject
 
 logger = tps.logging.get_logger(__name__)

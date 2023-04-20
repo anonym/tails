@@ -170,41 +170,94 @@ class Partition(object):
     @classmethod
     def create(cls, job: Job, passphrase: str) -> "Partition":
         """Create the Persistent Storage encrypted partition"""
+
+        # This should be the number of next_step() calls
+        num_steps = 10
+        current_step = 0
+
+        def next_step(description: Optional[str] = None):
+            nonlocal current_step
+            progress = int((current_step / num_steps) * 100)
+            job.Status = description
+            job.Progress = progress
+            current_step += 1
+
         parent_device = BootDevice.get_tails_boot_device()
         offset = parent_device.get_beginning_of_free_space()
 
-        # Create and format the partition
+        # Create the partition
+        logger.info("Creating partition")
+        next_step(_("Creating partition"))
         partition_table = parent_device.partition_table
-        path = partition_table.call_create_partition_and_format_sync(
+        path = partition_table.call_create_partition_sync(
             arg_offset=offset,
             # Size 0 means maximal size
             arg_size=0,
             arg_type=PARTITION_GUID,
             arg_name=PARTITION_LABEL,
             arg_options=GLib.Variant('a{sv}', {}),
-            arg_format_type="ext4",
-            arg_format_options=GLib.Variant('a{sv}', {
-                "label": GLib.Variant('s', PARTITION_LABEL),
-                "encrypt.passphrase": GLib.Variant('s', passphrase),
-            }),
         )
 
         # Wait for all UDisks and udev events to finish
+        next_step()
         udisks.settle()
-        executil.check_call(["udevadm", "settle"])
+        executil.check_call(["udevadm", "trigger", "--settle"])
 
-        # Create the Partition object
+        # Get the UDisks partition object
         partition = Partition(udisks.get_object(path))
+
+        # Initialize the LUKS partition via cryptsetup. We can't use
+        # udisks for this because it doesn't support setting the key
+        # derivation function which we want to set to argon2id.
+        # See https://mjg59.dreamwidth.org/66429.html
+        logger.info("Initializing LUKS header")
+        next_step(_("Initializing LUKS header"))
+        cmd = ["cryptsetup", "luksFormat",
+               "--batch-mode",
+               "--key-file=-",
+               "--type=luks2",
+               "--pbkdf=argon2id",
+               partition.device_path]
+        executil.check_call(cmd, input=passphrase)
+
+        # Wait for all udev events to finish
+        next_step()
+        executil.check_call(["udevadm", "trigger", "--settle"])
+
+        # Unlock the partition
+        logger.info("Unlocking partition")
+        next_step(_("Unlocking partition"))
+        partition.unlock(passphrase)
+
+        # Wait for all UDisks and udev events to finish
+        next_step()
+        udisks.settle()
+        executil.check_call(["udevadm", "trigger", "--settle"])
 
         # Get the cleartext device
         cleartext_device = partition.get_cleartext_device()
 
-        # Rename the cleartext device to "TailsData_unlocked", so that
-        # is has the same name as after a reboot.
-        cleartext_device.rename_dm_device("TailsData_unlocked")
+        # Format the cleartext device
+        logger.info("Formatting filesystem")
+        next_step(_("Formatting filesystem"))
+        cleartext_device.block.call_format_sync(
+            arg_type="ext4",
+            arg_options=GLib.Variant('a{sv}', {
+                "label": GLib.Variant('s', PARTITION_LABEL),
+            }),
+        )
+
+        # Wait for all UDisks and udev events to finish
+        next_step()
+        udisks.settle()
+        executil.check_call(["udevadm", "trigger", "--settle"])
 
         # Mount the cleartext device
+        logger.info("Mounting filesystem")
+        next_step(_("Mounting filesystem"))
         cleartext_device.mount()
+
+        next_step(_("Finishing things up"))
 
         return partition
 

@@ -15,7 +15,6 @@ from tps.dbus.errors import InvalidConfigFileError, FailedPreconditionError, \
 from tps.dbus.object import DBusObject
 from tps.device import udisks, BootDevice, Partition, InvalidBootDeviceError
 from tps.job import ServiceUsingJobs
-from tps.udisks_monitor import UDisksCreationMonitor
 from tps import State, IN_PROGRESS_STATES, DBUS_ROOT_OBJECT_PATH, \
     DBUS_SERVICE_INTERFACE, TPS_MOUNT_POINT, \
     ON_ACTIVATED_HOOKS_DIR, ON_DEACTIVATED_HOOKS_DIR, \
@@ -158,8 +157,7 @@ class Service(DBusObject, ServiceUsingJobs):
     def do_create(self, passphrase: str):
         self.State = State.CREATING
         with self.new_job() as job:
-            with UDisksCreationMonitor(job, self._boot_device):
-                self._partition = Partition.create(job, passphrase)
+            self._partition = Partition.create(job, passphrase)
 
         # Activate all features that should be enabled by default
         for feature in (f for f in self.features if f.enabled_by_default):
