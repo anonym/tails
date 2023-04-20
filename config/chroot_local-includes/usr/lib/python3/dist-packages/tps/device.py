@@ -1,4 +1,5 @@
 import os
+import subprocess
 from pathlib import Path
 import time
 import re
@@ -20,6 +21,8 @@ logger = tps.logging.get_logger(__name__)
 TAILS_MOUNTPOINT = "/lib/live/mount/medium"
 PARTITION_GUID = "8DA63339-0007-60C0-C436-083AC8230908" # Linux reserved
 PARTITION_LABEL = "TailsData"
+VERSION_REGEX = re.compile(r'^Version:\s*(\d+)$')
+PBKDF_REGEX = re.compile(r'^\s*PBKDF:\s*(\S+)$')
 
 # Leave at lest 200 MiB of memory to the system to avoid triggering the
 # OOM killer.
@@ -162,6 +165,45 @@ class Partition(object):
         except (InvalidPartitionError, PartitionNotUnlockedError):
             return False
 
+    def is_upgraded(self) -> bool:
+        cmd = ["cryptsetup", "luksDump", self.device_path]
+        try:
+            luks_dump = executil.check_output(cmd)
+        except subprocess.CalledProcessError as e:
+            logger.exception(e)
+            return False
+
+        version = str()
+        pbkdf = str()
+        for line in luks_dump.splitlines():
+            match = VERSION_REGEX.match(line)
+            if match:
+                version = match.group(1)
+            match = PBKDF_REGEX.match(line)
+            if match:
+                pbkdf = match.group(1)
+
+        # LUKS version 1 does not print the PBKDF because it only
+        # supports PBKDF2.
+        if version == "1":
+            return False
+
+        err_msg = str()
+        if not version and not pbkdf:
+            err_msg = "Could not get LUKS version and PBKDF from LUKS dump"
+        elif not version:
+            err_msg = "Could not get LUKS version from LUKS dump"
+        elif not pbkdf:
+            err_msg = "Could not get PBKDF from LUKS dump"
+        if err_msg:
+            logger.error(f"{err_msg}\n"
+                         f"### Beginning of LUKS dump ###\n"
+                         f"{luks_dump}\n"
+                         f"### End of LUKS dump ###")
+            raise InvalidPartitionError(err_msg)
+
+        return version == "2" and pbkdf == "argon2id"
+
     @classmethod
     def exists(cls) -> bool:
         """Return true if the Persistent Storage partition exists and
@@ -302,6 +344,42 @@ class Partition(object):
         self.partition.call_delete_sync(arg_options=GLib.Variant('a{sv}', {
             "tear-down": GLib.Variant('b', True),
         }))
+
+    def test_passphrase(self, passphrase: str):
+        """Call cryptsetup to test the passphrase"""
+        try:
+            executil.check_call(
+                ["cryptsetup", "luksOpen", "--test-passphrase", "--key-file=-",
+                 self.device_path],
+                text=True,
+                input=passphrase,
+            )
+        except subprocess.CalledProcessError as err:
+            if err.returncode == 2:
+                raise IncorrectPassphraseError(err) from err
+            raise
+
+    def upgrade_luks2(self):
+        """Upgrade a LUKS1 header to LUKS2"""
+        try:
+            executil.check_call(
+                ["cryptsetup", "convert", "--type", "luks2", "--batch-mode",
+                 self.device_path],
+            )
+        except subprocess.CalledProcessError as err:
+            # Ignore the error if the device is already LUKS2
+            if err.returncode == 1 and \
+                    err.stderr.strip() == "Device is already LUKS2 type.":
+                return
+            raise
+
+    def convert_pbkdf_argon2id(self, passphrase: str):
+        """Convert the PBKDF to argon2id"""
+        executil.check_call(
+            ["cryptsetup", "luksConvertKey", "--pbkdf", "argon2id",
+             "--key-file=-", "--batch-mode", self.device_path],
+            input=passphrase,
+        )
 
     def unlock(self, passphrase: str):
         """Unlock the Persistent Storage encrypted partition"""

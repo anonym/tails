@@ -63,10 +63,14 @@ class Service(DBusObject, ServiceUsingJobs):
                 <method name='Unlock'>
                     <arg name='passphrase' direction='in' type='s'/>
                 </method>
+                <method name='UpgradeLUKS'>
+                    <arg name='passphrase' direction='in' type='s'/>
+                </method>
                 <property name="State" type="s" access="read" />
                 <property name="Error" type="s" access="read" />
                 <property name="IsCreated" type="b" access="read"/>
                 <property name="IsUnlocked" type="b" access="read"/>
+                <property name="IsUpgraded" type="b" access="read"/>
                 <property name="BootDeviceIsSupported" type="b" access="read"/>
                 <property name="Device" type="s" access="read"/>
                 <property name="Job" type="o" access="read"/>
@@ -89,6 +93,7 @@ class Service(DBusObject, ServiceUsingJobs):
         self.state = State.UNKNOWN
         self._error = ""
         self._unlocked = False
+        self._upgraded = False
         self._created = False
         self.enable_features_lock = threading.Lock()
 
@@ -308,6 +313,28 @@ class Service(DBusObject, ServiceUsingJobs):
         if not cleartext_device.is_mounted():
             cleartext_device.mount()
 
+    def UpgradeLUKS(self, passphrase: str):
+        """Upgrade the LUKS header and key derivation function"""
+
+        logger.info("Upgrading Persistent Storage...")
+
+        # Check if we can upgrade the Persistent Storage
+        if self.state != State.NOT_UNLOCKED:
+            msg = "Can't upgrade when state is '%s'" % self.state.name
+            raise FailedPreconditionError(msg)
+
+        try:
+            self.do_upgrade_luks(passphrase)
+        finally:
+            self.refresh_state(overwrite_in_progress=True)
+
+        logger.info("Done upgrading Persistent Storage")
+
+    def do_upgrade_luks(self, passphrase: str):
+        self.state = State.UPGRADING
+        self._partition.test_passphrase(passphrase)
+        self._partition.upgrade_luks2()
+        self._partition.convert_pbkdf_argon2id(passphrase)
 
     def ChangePassphrase(self, passphrase: str, new_passphrase: str):
         """Change the passphrase of the Persistent Storage encrypted
@@ -399,6 +426,26 @@ class Service(DBusObject, ServiceUsingJobs):
             return
         self._unlocked = value
         changed_properties = {"IsUnlocked": GLib.Variant("b", value)}
+        self.emit_properties_changed_signal(
+            self.connection,
+            DBUS_SERVICE_INTERFACE,
+            changed_properties,
+        )
+
+    @property
+    def IsUpgraded(self) -> bool:
+        """Whether the LUKS header and key derivation function have
+        been upgraded to LUKS2 and argon2id"""
+        self.refresh_state()
+        return self._upgraded
+
+    @IsUpgraded.setter
+    def IsUpgraded(self, value: bool):
+        if self._upgraded == value:
+            # Nothing to do
+            return
+        self._upgraded = value
+        changed_properties = {"IsUpgraded": GLib.Variant("b", value)}
         self.emit_properties_changed_signal(
             self.connection,
             DBUS_SERVICE_INTERFACE,
@@ -564,10 +611,12 @@ class Service(DBusObject, ServiceUsingJobs):
             self.Device = ""
             self.IsCreated = False
             self.IsUnlocked = False
+            self.IsUpgraded = False
             return
 
         self.Device = self._partition.device_path
         self.IsCreated = True
+        self.IsUpgraded = self._partition.is_upgraded()
 
         # Check if the partition is unlocked and mounted
         if not self._partition.is_unlocked_and_mounted():

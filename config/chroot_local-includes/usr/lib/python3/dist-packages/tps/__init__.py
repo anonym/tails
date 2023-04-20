@@ -38,6 +38,7 @@ class State(Enum):
     NOT_UNLOCKED = 5
     UNLOCKING = 6
     UNLOCKED = 7
+    UPGRADING = 8
 
 
 IN_PROGRESS_STATES = (State.CREATING, State.DELETING, State.UNLOCKING)
