@@ -57,5 +57,5 @@ Feature: Tor Connection helps the user in connecting to Tor
         And the Tor network and default bridges are unblocked
         And I allow time sync before Tor connects to work again
         And I click "Connect to Tor"
-        Then Tor is ready
+        Then I wait until Tor is ready
 
