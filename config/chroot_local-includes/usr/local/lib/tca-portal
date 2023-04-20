@@ -352,7 +352,6 @@ class Handler(socketserver.StreamRequestHandler):
         # stdout and stderr from the process
         stdout, _ = process.communicate(cmd.stdin)
         ok, data = cmd.create_response(process.returncode, stdout, None)
-        log.warning("Got results: %r, %r", ok, data)
 
         if ok:
             response = req.respond(**data)
