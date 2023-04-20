@@ -7,7 +7,7 @@ Feature: Time syncing
   Scenario: Clock with host's time
     Given I have started Tails from DVD without network and logged in
     When the network is plugged
-    And Tor is ready
+    And I successfully configure Tor
     Then the system clock is less than 5 minutes incorrect
 
   Scenario: Clock with host's time while using bridges

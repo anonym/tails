@@ -567,11 +567,6 @@ When /^I see the "(.+)" notification(?: after at most (\d+) seconds)?$/ do |titl
   end
 end
 
-Given /^Tor is ready$/ do
-  # deprecated: please choose between "I successfully configure Tor" and "I wait until Tor is ready"
-  step 'I successfully configure Tor'
-end
-
 ##
 # this is a #18293-aware version of `tor_variable get --type=conf DisableNetwork`
 def check_disable_network
