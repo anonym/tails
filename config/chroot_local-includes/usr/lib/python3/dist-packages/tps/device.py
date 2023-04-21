@@ -178,8 +178,7 @@ class Partition(object):
         def next_step(description: Optional[str] = None):
             nonlocal current_step
             progress = int((current_step / num_steps) * 100)
-            job.Status = description
-            job.Progress = progress
+            job.refresh_properties(description, progress)
             current_step += 1
 
         parent_device = BootDevice.get_tails_boot_device()
