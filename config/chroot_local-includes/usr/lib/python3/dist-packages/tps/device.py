@@ -211,7 +211,7 @@ class Partition(object):
         # derivation function which we want to set to argon2id.
         # See https://mjg59.dreamwidth.org/66429.html
         logger.info("Initializing LUKS header")
-        next_step(_("Initializing LUKS header"))
+        next_step(_("Initializing LUKS header (the system might become unresponsive for a few seconds)"))
         cmd = ["cryptsetup", "luksFormat",
                "--batch-mode",
                "--key-file=-",
