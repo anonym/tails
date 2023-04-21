@@ -200,7 +200,7 @@ class Partition(object):
         # Wait for all UDisks and udev events to finish
         next_step()
         udisks.settle()
-        executil.check_call(["udevadm", "trigger", "--settle"])
+        cls._wait_for_udev_events()
 
         # Get the UDisks partition object
         partition = Partition(udisks.get_object(path))
@@ -221,7 +221,7 @@ class Partition(object):
 
         # Wait for all udev events to finish
         next_step()
-        executil.check_call(["udevadm", "trigger", "--settle"])
+        cls._wait_for_udev_events()
 
         # Unlock the partition
         logger.info("Unlocking partition")
@@ -231,7 +231,7 @@ class Partition(object):
         # Wait for all UDisks and udev events to finish
         next_step()
         udisks.settle()
-        executil.check_call(["udevadm", "trigger", "--settle"])
+        cls._wait_for_udev_events()
 
         # Get the cleartext device
         cleartext_device = partition.get_cleartext_device()
@@ -249,7 +249,7 @@ class Partition(object):
         # Wait for all UDisks and udev events to finish
         next_step()
         udisks.settle()
-        executil.check_call(["udevadm", "trigger", "--settle"])
+        cls._wait_for_udev_events()
 
         # Mount the cleartext device
         logger.info("Mounting filesystem")
@@ -259,6 +259,13 @@ class Partition(object):
         next_step(_("Finishing things up"))
 
         return partition
+
+    @staticmethod
+    def _wait_for_udev_events():
+        """Wait for all udev events to finish"""
+        executil.check_call(["udevadm", "trigger"])
+        executil.check_call(["udevadm", "settle"])
+
 
     def delete(self):
         """Delete the Persistent Storage encrypted partition"""
