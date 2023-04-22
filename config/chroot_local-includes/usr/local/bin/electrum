@@ -30,6 +30,12 @@ TPS_FEATURE_NAME="Electrum"
 
 
 def main(*args):
+    # If we're called with arguments, don't show any messages or adjust
+    # any config and just start Electrum, to avoid breaking scripts /
+    # command-line usage.
+    if len(args) > 0:
+        exec_electrum(*args)
+
     if not electrum_config_is_persistent():
         if not verify_start():
             return
@@ -40,6 +46,10 @@ def main(*args):
     subprocess.run(['/usr/bin/electrum', '--offline',
                     'setconfig', 'check_updates', 'false'],
                    check=True, stdout=subprocess.DEVNULL)
+    exec_electrum(*args)
+
+
+def exec_electrum(*args):
     os.execv('/usr/bin/electrum', ['/usr/bin/electrum'] + list(args))
 
 
