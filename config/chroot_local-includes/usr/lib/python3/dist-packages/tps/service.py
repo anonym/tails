@@ -1,5 +1,7 @@
 import contextlib
 import logging
+import os
+import subprocess
 import threading
 from pathlib import Path
 
@@ -18,7 +20,7 @@ from tps.dbus.object import DBusObject
 from tps.device import udisks, BootDevice, TPSPartition, InvalidBootDeviceError
 from tps.job import ServiceUsingJobs
 from tps import State, IN_PROGRESS_STATES, DBUS_ROOT_OBJECT_PATH, \
-    DBUS_SERVICE_INTERFACE, TPS_MOUNT_POINT, \
+    DBUS_SERVICE_INTERFACE, TPS_MOUNT_POINT, TPS_BACKUP_MOUNT_POINT, \
     ON_ACTIVATED_HOOKS_DIR, ON_DEACTIVATED_HOOKS_DIR, \
     DBUS_FEATURES_PATH
 
@@ -56,6 +58,10 @@ class Service(DBusObject, ServiceUsingJobs):
                 <method name='Create'>
                     <arg name='passphrase' direction='in' type='s'/>
                 </method>
+                <method name='CreateBackup'>
+                    <arg name='passphrase' direction='in' type='s'/>
+                    <arg name='device' direction='in' type='s'/>
+                </method>
                 <method name='ChangePassphrase'>
                     <arg name='passphrase' direction='in' type='s'/>
                     <arg name='new_passphrase' direction='in' type='s'/>
@@ -67,6 +73,10 @@ class Service(DBusObject, ServiceUsingJobs):
                 </method>
                 <method name='UpgradeLUKS'>
                     <arg name='passphrase' direction='in' type='s'/>
+                </method>
+                <method name='TestPassphrase'>
+                    <arg name='passphrase' direction='in' type='s'/>
+                    <arg name='is_correct' direction='out' type='b'/>
                 </method>
                 <property name="State" type="s" access="read" />
                 <property name="Error" type="s" access="read" />
@@ -151,7 +161,7 @@ class Service(DBusObject, ServiceUsingJobs):
         if self.state != State.NOT_CREATED:
             msg = "Can't create Persistent Storage when state is '%s'" % \
                   self.state.name
-            return FailedPreconditionError(msg)
+            raise FailedPreconditionError(msg)
 
         try:
             self.do_create(passphrase)
@@ -181,6 +191,42 @@ class Service(DBusObject, ServiceUsingJobs):
                 feature.refresh_state()
 
         self.run_on_activated_hooks()
+
+    def CreateBackup(self, passphrase: str, device: str):
+        """Create a backup of the Persistent Storage partition"""
+        logger.info(f"Creating Persistent Storage backup on device {device}...")
+
+        if self.state != State.UNLOCKED:
+            msg = "Can't create backup of Persistent Storage when state is '%s'" % \
+                  self.state.name
+            raise FailedPreconditionError(msg)
+
+        dev_num = os.stat(device).st_rdev
+        device = BootDevice(udisks.get_block_for_dev(dev_num).get_object())
+        partition = TPSPartition.create(None, passphrase, device)
+
+        # Mount the cleartext device
+        Path(TPS_BACKUP_MOUNT_POINT).mkdir(parents=True, exist_ok=True)
+        cleartext_device_path = partition.get_cleartext_device().device_path
+        executil.check_call(["mount", cleartext_device_path,
+                             TPS_BACKUP_MOUNT_POINT])
+
+        # Copy the data from the Persistent Storage to the new device
+        executil.check_call(['/usr/local/lib/tails-backup-rsync'])
+
+        # Unmount the cleartext device. We don't do that in a finally
+        # block, because we want to keep the device mounted in case
+        # of an error, so that the user can inspect which files (if any)
+        # were copied.
+        partition.get_cleartext_device().force_unmount()
+
+        # Delete the mountpoint
+        Path(TPS_BACKUP_MOUNT_POINT).rmdir()
+
+        # Close the LUKS device
+        partition._get_encrypted().call_lock_sync(
+            arg_options=GLib.Variant('a{sv}', {}),
+        )
 
     def Delete(self):
         """Delete the Persistent Storage partition"""
@@ -306,6 +352,7 @@ class Service(DBusObject, ServiceUsingJobs):
 
     def do_unlock(self, passphrase: str):
         self.state = State.UNLOCKING
+
         # Unlock the Persistent Storage
         if not self._tps_partition.is_unlocked():
             self._tps_partition.unlock(passphrase)
@@ -387,6 +434,32 @@ class Service(DBusObject, ServiceUsingJobs):
         # Upgrade the LUKS header and key derivation function
         self._tps_partition.upgrade_luks2()
         self._tps_partition.convert_pbkdf_argon2id(passphrase)
+
+    def TestPassphrase(self, passphrase: str) -> bool:
+        """Do not unlock the Persistent Storage, just test if the
+        specified passphrase is correct. Return True if the passphrase
+        is correct, False otherwise."""
+
+        logger.info("Testing passphrase...")
+
+        partition = Partition.find()
+        if not partition:
+            raise NotCreatedError("No Persistent Storage found")
+
+        try:
+            executil.check_call(["cryptsetup", "luksOpen", "--test-passphrase",
+                                 "--key-file=-", partition.device_path],
+                                input=passphrase)
+            logger.info("Passphrase is correct")
+            return True
+        except subprocess.CalledProcessError as e:
+            if e.returncode == 2:
+                logger.info("Passphrase is incorrect")
+                return False
+            raise
+        finally:
+            logger.info("Done testing passphrase")
+
 
     def ChangePassphrase(self, passphrase: str, new_passphrase: str):
         """Change the passphrase of the Persistent Storage encrypted

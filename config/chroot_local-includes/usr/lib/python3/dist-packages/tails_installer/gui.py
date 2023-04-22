@@ -36,7 +36,10 @@ import time
 from time import sleep
 from datetime import datetime
 
-from gi.repository import Gdk, GLib, Gtk
+from gi.repository import Gdk, GLib, Gtk, Gio, GObject
+
+from tails_installer.passphrase_dialog import PassphraseDialog
+from tps.dbus.errors import DBusError
 
 from tails_installer import TailsInstallerCreator, TailsInstallerError, _
 from tails_installer.config import CONFIG
@@ -165,6 +168,8 @@ class TailsInstallerThread(threading.Thread):
             self.live.install_bootloader()
             # self.live.bootable_partition()
 
+            self.live.clone_persistent_storage()
+
             self.progress.stop()
 
             # Flush all filesystem buffers and unmount
@@ -224,9 +229,18 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         self.force_reinstall = False
         self.force_reinstall_button_available = False
 
+        try:
+            subprocess.check_call(['/usr/local/lib/tpscli', 'is-created'])
+            self.persistent_storage_is_created = True
+        except subprocess.CalledProcessError as e:
+            if e.returncode != 1:
+                raise
+            self.persistent_storage_is_created = False
+
         self._build_ui()
 
         self.opts.clone = True
+        self.opts.clone_persistent_storage_requested = False
         self.live = TailsInstallerCreator(opts=opts)
 
         # Intercept all tails_installer.INFO log messages, and display them
@@ -250,6 +264,7 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
             self.__filechooserbutton_source_file.set_sensitive(True)
 
         self.update_start_button()
+        self.update_clone_persistent_storage_check_button()
         self.downloader = None
         self.progress_thread = ProgressThread(parent=self)
         self.live_thread = TailsInstallerThread(live=self.live,
@@ -293,6 +308,7 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         self.__button_start = builder.get_object('button_start')
         self.__radio_button_source_iso = builder.get_object('radio_button_source_iso')
         self.__radio_button_source_device = builder.get_object('radio_button_source_device')
+        self.__check_button_clone_persistent_storage = builder.get_object('check_button_clone_persistent_storage')
         self.__button_force_reinstall = builder.get_object('check_force_reinstall')
         self.__help_link = builder.get_object('help_link')
 
@@ -334,6 +350,12 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         self.live.log.debug('Calling populate_devices()'
                             ' from on_radio_button_source_iso_toggled')
         self.populate_devices()
+        self.update_clone_persistent_storage_check_button()
+
+    def on_check_button_clone_persistent_storage_toggled(self, check_button):
+        self.live.log.debug('Entering on_check_button_clone_persistent_storage_toggled')
+        self.opts.clone_persistent_storage_requested = check_button.get_active()
+        self.update_start_button()
 
     def on_activate_link_button(self, link_button: Gtk.LinkButton):
         uri = link_button.get_uri()
@@ -408,6 +430,29 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         if not self.live.opts.clone and not self.is_ISO_selected():
             self.warn_ISO_not_selected()
             return
+
+        if self.opts.clone_persistent_storage_requested:
+            try:
+                subprocess.check_call(['/usr/local/lib/tpscli', 'is-unlocked'])
+            except subprocess.CalledProcessError as e:
+                if e.returncode == 1:
+                    dialog = Gtk.MessageDialog(parent=self,
+                                               flags=Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                               message_type=Gtk.MessageType.ERROR,
+                                               buttons=Gtk.ButtonsType.CLOSE,
+                                               message_format=_("Can't clone locked Persistent Storage"))
+                    dialog.run()
+                    dialog.destroy()
+                    return
+                raise
+
+            if not self.live.passphrase:
+                passphrase_dialog = PassphraseDialog(self, self.live)
+                passphrase_dialog.run()
+                if not passphrase_dialog.passphrase_is_correct:
+                    return
+                self.live.passphrase = passphrase_dialog.passphrase
+
         self.begin()
 
     def on_infobar_response(self, infobar, response):
@@ -428,10 +473,31 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
                                            0, False, 0, 0)
 
     def update_start_button(self):
-        if self.source_available and self.target_available:
-            self.__button_start.set_sensitive(True)
+        # Make the start button insensitive if the target device already
+        # contains a Tails installation (i.e. self.opts.partition is False)
+        # and the "Clone the current Persistent Storage" button is checked,
+        # because in that case we only support reinstalling (via the
+        # separate "Reinstall (delete all data)" button).
+        if not self.opts.partition and \
+                self.__check_button_clone_persistent_storage.get_active():
+            sensitive = False
+        elif self.source_available and self.target_available:
+            sensitive = True
         else:
-            self.__button_start.set_sensitive(False)
+            sensitive = False
+        self.__button_start.set_sensitive(sensitive)
+
+    def update_clone_persistent_storage_check_button(self):
+        if self.opts.partition:
+            label = _('Clone the current Persistent Storage')
+        else:
+            label = _('Clone the current Persistent Storage (requires reinstall)')
+        self.__check_button_clone_persistent_storage.set_label(label)
+
+        sensitive = self.persistent_storage_is_created and self.opts.clone
+        self.__check_button_clone_persistent_storage.set_sensitive(sensitive)
+        if not sensitive:
+            self.__check_button_clone_persistent_storage.set_active(False)
 
     def populate_devices(self, *args, **kw):
         if self.target_selected:

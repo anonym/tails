@@ -1,6 +1,10 @@
 require 'securerandom'
 require 'json'
 
+def tps_is_created
+  $vm.execute('/usr/local/lib/tpscli is-created').success?
+end
+
 # Returns a mapping from the source of a binding to its destination
 # for all bindings of all pre-configured tps features that the running
 # Tails is aware of.

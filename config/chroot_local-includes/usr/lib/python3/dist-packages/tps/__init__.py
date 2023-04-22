@@ -24,6 +24,7 @@ DBUS_FEATURE_INTERFACE = "org.boum.tails.PersistentStorage.Feature"
 DBUS_JOB_INTERFACE = "org.boum.tails.PersistentStorage.Job"
 
 TPS_MOUNT_POINT = "/live/persistence/TailsData_unlocked"
+TPS_BACKUP_MOUNT_POINT = "/media/amnesia/TailsData"
 
 SYSTEM_PARTITION_MOUNT_POINT = "/lib/live/mount/medium"
 LUKS_HEADER_BACKUP_PATH_FORMAT_STRING = SYSTEM_PARTITION_MOUNT_POINT + \
