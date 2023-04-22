@@ -19,12 +19,15 @@ import os
 import sys
 import subprocess
 import sh
+import random
+from pathlib import Path
 
 translation = gettext.translation("tails", '/usr/share/locale', fallback=True)
 _ = translation.gettext
 
 HOME_DIR = os.environ['HOME']
-CONF_DIR = os.path.join(HOME_DIR, '.electrum')
+CONF_DIR = Path(HOME_DIR, '.electrum')
+DONATION_BITCOIN_ADDRESS = 'bitcoin:bc1qjg53lww9jrm506dj0g0szmk4pxt6f55x8dncuv'
 
 TPS_FEATURE_NAME="Electrum"
 
@@ -46,11 +49,66 @@ def main(*args):
     subprocess.run(['/usr/bin/electrum', '--offline',
                     'setconfig', 'check_updates', 'false'],
                    check=True, stdout=subprocess.DEVNULL)
-    exec_electrum(*args)
+
+    if should_show_donation_message():
+        show_donation_message()
+    else:
+        exec_electrum(*args)
 
 
 def exec_electrum(*args):
     os.execv('/usr/bin/electrum', ['/usr/bin/electrum'] + list(args))
+
+
+def should_show_donation_message() -> bool:
+    # Check the environment variable
+    if os.environ.get('ELECTRUM_DONATION_MESSAGE') == '0':
+        return False
+    elif os.environ.get('ELECTRUM_DONATION_MESSAGE') == '1':
+        return True
+
+    # Don't show the message if electrum is not persistent
+    if not electrum_config_is_persistent():
+        return False
+
+    # Only show the message if the user has a wallet
+    if not any(Path(CONF_DIR, 'wallets').iterdir()):
+        return False
+
+    # If the other conditions are met, show the message in 1/20 of the
+    # cases.
+    return random.randint(0, 19) == 0
+
+
+def show_donation_message():
+    if random.randint(0, 1) == 0:
+        # In half of the cases, display a message with benevolent incentive
+        text = _('Tails needs your donation to keep everybody free and safe '
+                 'online.\nEvery bit helps in our fight against surveillance '
+                 'and censorship!'),
+    else:
+        # In the other half, display a message with a more selfish incentive
+        text = _('Tails is the strongest protection for your wallet.\n'
+                 'Help us keep your bitcoins safe!'),
+
+    # results 0 == True; 1 == False; 5 == Timeout
+    result = sh.zenity('--question',
+                       '--title', '',
+                       '--text', text,
+                       '--ok-label', _('Donate Now'),
+                       '--cancel-label', _('Later'),
+                       '--ellipsize',
+                       _ok_code=[0, 1, 5])
+    if result.exit_code == 0:
+        # Show a GNOME notification to let the user know that we're
+        # opening Electrum with our donation address.
+        sh.notify_send(
+            _('Electrum is now opened with our donation address.'),
+            _('Thank you for your support!'),
+        )
+        exec_electrum(DONATION_BITCOIN_ADDRESS)
+    else:
+        exec_electrum()
 
 
 def electrum_config_is_persistent():
