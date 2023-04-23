@@ -173,7 +173,7 @@ class Partition(object):
         """Create the Persistent Storage encrypted partition"""
 
         # This should be the number of next_step() calls
-        num_steps = 10
+        num_steps = 7
         current_step = 0
 
         def next_step(description: Optional[str] = None):
@@ -189,7 +189,7 @@ class Partition(object):
         logger.info("Creating partition")
         next_step(_("Creating partition"))
         partition_table = parent_device.partition_table
-        path = partition_table.call_create_partition_sync(
+        object_path = partition_table.call_create_partition_sync(
             arg_offset=offset,
             # Size 0 means maximal size
             arg_size=0,
@@ -197,14 +197,10 @@ class Partition(object):
             arg_name=PARTITION_LABEL,
             arg_options=GLib.Variant('a{sv}', {}),
         )
-
-        # Wait for the partition to become available to udisks
-        next_step()
         udisks.settle()
-        wait_for_udisks_object(udisks.get_object, path)
 
         # Get the UDisks partition object
-        partition = Partition(udisks.get_object(path))
+        partition = Partition(udisks.get_object(object_path))
 
         # Initialize the LUKS partition via cryptsetup. We can't use
         # udisks for this because it doesn't support setting the key
@@ -222,7 +218,8 @@ class Partition(object):
 
         # Wait for the encrypted partition to become available to udisks
         next_step()
-        wait_for_udisks_object(partition.udisks_object.get_encrypted)
+        wait_for_udisks_object(partition.device_path,
+                               partition.udisks_object.get_encrypted)
 
         # Unlock the partition
         logger.info("Unlocking partition")
@@ -241,11 +238,7 @@ class Partition(object):
                 "label": GLib.Variant('s', PARTITION_LABEL),
             }),
         )
-
-        # Wait for all UDisks and udev events to finish
-        next_step()
         udisks.settle()
-        cls._wait_for_udev_events()
 
         # Mount the cleartext device
         logger.info("Mounting filesystem")
@@ -255,13 +248,6 @@ class Partition(object):
         next_step(_("Finishing things up"))
 
         return partition
-
-    @staticmethod
-    def _wait_for_udev_events():
-        """Wait for all udev events to finish"""
-        executil.check_call(["udevadm", "trigger"])
-        executil.check_call(["udevadm", "settle"])
-
 
     def delete(self):
         """Delete the Persistent Storage encrypted partition"""
@@ -292,10 +278,7 @@ class Partition(object):
                 raise IncorrectPassphraseError(err) from err
             raise
 
-        # Wait for the cleartext device to become available to udisks
         udisks.settle()
-        cleartext_device_path = encrypted.props.cleartext_device
-        wait_for_udisks_object(udisks.get_object, cleartext_device_path)
 
         # Get the cleartext device
         cleartext_device = self.get_cleartext_device()
@@ -442,7 +425,8 @@ class CleartextDevice(object):
         executil.check_call(["dmsetup", "rename", dm_name, new_name])
 
 
-def wait_for_udisks_object(func: Callable[[...], Optional[UDisks.Object]],
+def wait_for_udisks_object(device: str,
+                           func: Callable[[...], Optional[UDisks.Object]],
                            *args,
                            timeout: int = 20) -> UDisks.Object:
     """Repeatedly call `udevadm trigger` and then func() until func()
