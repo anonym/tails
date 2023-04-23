@@ -1,8 +1,9 @@
 import os
 from pathlib import Path
+import time
 import re
 import stat
-from typing import Optional
+from typing import Optional, Callable
 
 from gi.repository import GLib, UDisks
 
@@ -197,10 +198,10 @@ class Partition(object):
             arg_options=GLib.Variant('a{sv}', {}),
         )
 
-        # Wait for all UDisks and udev events to finish
+        # Wait for the partition to become available to udisks
         next_step()
         udisks.settle()
-        cls._wait_for_udev_events()
+        wait_for_udisks_object(udisks.get_object, path)
 
         # Get the UDisks partition object
         partition = Partition(udisks.get_object(path))
@@ -219,19 +220,14 @@ class Partition(object):
                partition.device_path]
         executil.check_call(cmd, input=passphrase)
 
-        # Wait for all udev events to finish
+        # Wait for the encrypted partition to become available to udisks
         next_step()
-        cls._wait_for_udev_events()
+        wait_for_udisks_object(partition.udisks_object.get_encrypted)
 
         # Unlock the partition
         logger.info("Unlocking partition")
         next_step(_("Unlocking partition"))
         partition.unlock(passphrase)
-
-        # Wait for all UDisks and udev events to finish
-        next_step()
-        udisks.settle()
-        cls._wait_for_udev_events()
 
         # Get the cleartext device
         cleartext_device = partition.get_cleartext_device()
@@ -296,9 +292,10 @@ class Partition(object):
                 raise IncorrectPassphraseError(err) from err
             raise
 
-        # Wait for all UDisks and udev events to finish
+        # Wait for the cleartext device to become available to udisks
         udisks.settle()
-        executil.check_call(["udevadm", "settle"])
+        cleartext_device_path = encrypted.props.cleartext_device
+        wait_for_udisks_object(udisks.get_object, cleartext_device_path)
 
         # Get the cleartext device
         cleartext_device = self.get_cleartext_device()
@@ -443,3 +440,19 @@ class CleartextDevice(object):
             logger.warning("Can't rename dm device: dm name not found")
             return
         executil.check_call(["dmsetup", "rename", dm_name, new_name])
+
+
+def wait_for_udisks_object(func: Callable[[...], Optional[UDisks.Object]],
+                           *args,
+                           timeout: int = 20) -> UDisks.Object:
+    """Repeatedly call `udevadm trigger` and then func() until func()
+    returns a udisks object or timeout is reached."""
+    start = time.time()
+    while time.time() - start < timeout:
+        executil.check_call(["udevadm", "trigger"])
+        obj = func(*args)
+        if obj:
+            return obj
+        time.sleep(1)
+        continue
+    raise TimeoutError("Timeout while waiting for udisks object")
