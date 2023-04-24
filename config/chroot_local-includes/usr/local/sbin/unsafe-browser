@@ -86,7 +86,7 @@ show_shutdown_notification () {
 # Main script:
 
 CMD="$(basename "${0}")"
-LOCK="/var/lock/${CMD}"
+LOCK="/run/lock/${CMD}"
 CONF_DIR="/var/lib/unsafe-browser"
 COW="${CONF_DIR}/cow"
 CHROOT="${CONF_DIR}/chroot"
@@ -103,7 +103,8 @@ HOME_PAGE="$(localized_tails_doc_page "${WARNING_PAGE}")"
 # Check if the Unsafe Browser was disabled in the startup options
 unsafe_browser_is_enabled || exit_because_disabled
 
-# Prevent multiple instances of the script.
+# Prevent multiple instances of the script. Note that this is not
+# vulnerable to symlink attacks because fs.protected_symlinks is set.
 exec 9>"${LOCK}"
 if ! flock -x -n 9; then
     error "$(gettext "Another Unsafe Browser is currently running, or being cleaned up. Please retry in a while.")"
