@@ -20,9 +20,6 @@ PARTITION_GUID = "8DA63339-0007-60C0-C436-083AC8230908" # Linux reserved
 PARTITION_LABEL = "TailsData"
 
 
-class PartitionNotFoundError(Exception):
-    pass
-
 class InvalidPartitionError(Exception):
     pass
 
@@ -58,7 +55,8 @@ class BootDevice(object):
 
     @classmethod
     def get_tails_boot_device(cls) -> "BootDevice":
-        """Get the device which Tails was booted from"""
+        """Get the device which Tails was booted from. Raise a
+        InvalidBootDeviceError if it can't be found."""
         # Get the underlying block device of the Tails system partition
         try:
             dev_num = os.stat(TAILS_MOUNTPOINT).st_dev
@@ -153,9 +151,13 @@ class Partition(object):
 
     @classmethod
     def find(cls) -> Optional["Partition"]:
-        """Return the Persistent Storage encrypted partition or raise
-        a PartitionNotFoundError."""
-        parent_device = BootDevice.get_tails_boot_device()
+        """Return the Persistent Storage encrypted partition or None
+        if it couldn't be found."""
+        try:
+            parent_device = BootDevice.get_tails_boot_device()
+        except InvalidBootDeviceError:
+            return None
+
         partitions = parent_device.partition_table.props.partitions
         for partition_name in sorted(partitions):
             partition = udisks.get_object(partition_name)
