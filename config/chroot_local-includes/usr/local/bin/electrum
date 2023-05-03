@@ -85,11 +85,14 @@ def show_donation_message():
         # In half of the cases, display a message with benevolent incentive
         text = _('Tails needs your donation to keep everybody free and safe '
                  'online.\n\nEvery bit helps in our fight against surveillance '
-                 'and censorship!'),
+                 'and censorship!\n\n'
+                 '<a href="file:///usr/share/doc/tails/website/donate.en.html#expenses">How we spend our money.</a>'),
+
     else:
         # In the other half, display a message with a more selfish incentive
         text = _('Tails is the strongest protection for your wallet.\n\n'
-                 'Help us keep your bitcoins safe!'),
+                 'Help us keep your bitcoins safe!\n\n'
+                 '<a href="file:///usr/share/doc/tails/website/donate.en.html#expenses">How we spend our money.</a>'),
 
     # results 0 == True; 1 == False; 5 == Timeout
     result = sh.zenity('--question',
