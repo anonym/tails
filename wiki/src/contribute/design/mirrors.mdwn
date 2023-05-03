@@ -40,6 +40,10 @@ of *Tails Upgrader* included up to Tails 5.8, inclusive. So we still
 have a DNS dynamic update system, re-purposed from the one we already had
 (`dl.amnesia.boum.org`).
 
+It's configured via this Git repository:
+
+    tails_git@65wwrbljzca2cxztur6xz652c2zvhvj3ebgyestpgvfbzaamkamf57yd.onion:/srv/repositories/mirrors.git
+
 <a id="configuration"></a>
 
 # Mirror pool configuration
@@ -50,8 +54,8 @@ from our website: <https://tails.boum.org/mirrors.json>
 The configuration file is written in JSON, to avoid the
 need to use a third-party parser.
 
-The configuration file is stored in a dedicated Git repository
-([[!tails_gitweb_repo mirror-pool desc="public read-only mirror"]]),
+The configuration file is stored in a
+([[!tails_gitweb_repo mirror-pool desc="dedicated Git repository"]]),
 that is added to our website with the ikiwiki underlay mechanism.
 Using a separate Git repository gives us finer-grained access control
 possibilities in the long run, e.g. we may want to let people who
@@ -85,3 +89,9 @@ of them we need a few values:
 For a more formal, and probably more up-to-date definition of the data
 model, better see
 [its JSON schema](https://gitlab.tails.boum.org/tails/mirror-pool/-/blob/master/schema.json).
+
+# Documentation for mirror pool administrators
+
+See `README.mdwn` in this Git repository:
+
+    tails_git@65wwrbljzca2cxztur6xz652c2zvhvj3ebgyestpgvfbzaamkamf57yd.onion:/srv/repositories/mirrors.git

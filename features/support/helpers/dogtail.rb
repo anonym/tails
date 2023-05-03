@@ -232,7 +232,11 @@ module Dogtail
     end
 
     def call_tree_api_method(method, *args, **kwargs)
+      orig_arg = args[0]
       args[0] = translate(args[0], **@opts) if args[0].instance_of?(String)
+      if args[0] != orig_arg
+        debug_log("Translated '#{orig_arg}' to '#{args[0]}'")
+      end
       args_str = self.class.args_to_s(*args, **kwargs)
       method_call = "#{method}(#{args_str})"
       Node.new("#{@var}.#{method_call}", **@opts)

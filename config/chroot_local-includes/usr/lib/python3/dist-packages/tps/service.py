@@ -1,3 +1,6 @@
+import logging
+import threading
+
 from gi.repository import Gio, GLib
 from logging import getLogger
 import time
@@ -7,7 +10,8 @@ from tps import executil
 from tps.configuration import features
 from tps.configuration.config_file import ConfigFile, InvalidStatError
 from tps.configuration.feature import Feature, ConflictingProcessesError
-from tps.dbus.errors import InvalidConfigFileError, FailedPreconditionError
+from tps.dbus.errors import InvalidConfigFileError, FailedPreconditionError, \
+    FeatureActivationFailedError, ActivationFailedError, DeactivationFailedError
 from tps.dbus.object import DBusObject
 from tps.device import udisks, BootDevice, Partition, InvalidBootDeviceError
 from tps.job import ServiceUsingJobs
@@ -44,6 +48,10 @@ class Service(DBusObject, ServiceUsingJobs):
         <node>
             <interface name='org.boum.tails.PersistentStorage'>
                 <method name='Quit'/>
+                <method name='Reload'/>
+                <method name='GetFeatures'>
+                    <arg name='features' direction='out' type='as'/>
+                </method>
                 <method name='Create'>
                     <arg name='passphrase' direction='in' type='s'/>
                 </method>
@@ -83,6 +91,7 @@ class Service(DBusObject, ServiceUsingJobs):
         self._error = ""
         self._unlocked = False
         self._created = False
+        self.enable_features_lock = threading.Lock()
 
         # Check if the boot device is valid for creating a Persistent
         # Storage. We only do this once and not in refresh_state(),
@@ -116,9 +125,21 @@ class Service(DBusObject, ServiceUsingJobs):
         self.wait_for_method_calls_to_finish(True)
         self.stop()
 
+    def Reload(self):
+        """Reload the state of the service and all features"""
+        self.refresh_state()
+        self.refresh_features()
+
+    def GetFeatures(self) -> List[str]:
+        """List the IDs of all features"""
+        self.refresh_features()
+        return [f.Id for f in self.features]
+
     def Create(self, passphrase: str):
         """Create the Persistent Storage partition and activate the
         default features"""
+
+        logger.info("Creating Persistent Storage...")
 
         # Check if we can create the Persistent Storage
         if self.state != State.NOT_CREATED:
@@ -131,6 +152,8 @@ class Service(DBusObject, ServiceUsingJobs):
         finally:
             self.refresh_state(overwrite_in_progress=True)
             self.refresh_features()
+
+        logger.info("Done creating Persistent Storage")
 
     def do_create(self, passphrase: str):
         self.State = State.CREATING
@@ -150,7 +173,7 @@ class Service(DBusObject, ServiceUsingJobs):
                 # about the conflicting process.
                 logger.warning(e)
             finally:
-                self.save_config_file()
+                feature.refresh_state()
 
         self.run_on_activated_hooks()
 
@@ -228,11 +251,29 @@ class Service(DBusObject, ServiceUsingJobs):
             finally:
                 raise InvalidConfigFileError(e) from e
 
-        mounts = self.config_file.parse()
-        for mount in mounts:
-            mount.activate()
+        self.refresh_features()
+        failed_feature_names = list()
+        for feature in [f for f in self.features if f.IsEnabled]:
+            try:
+                feature.do_activate(None, non_blocking=True)
+            except Exception as e:
+                logger.exception(e)
+                failed_feature_names.append(feature.translatable_name)
+            finally:
+                feature.refresh_state(emit_properties_changed_signal=True)
 
         self.run_on_activated_hooks()
+
+        if any(failed_feature_names):
+            # We want to show a translatable error message to the user
+            # but because the Service.Activate method is called in the
+            # Welcome Screen (and only there), only the Welcome Screen
+            # knows which language the user has currently selected.
+            # So we let the Welcome Screen translate the error message
+            # instead and make it easy for it by just passing the list
+            # of translatable feature names in the error message.
+            msg = ":".join(failed_feature_names)
+            raise FeatureActivationFailedError(msg)
 
     def Unlock(self, passphrase: str):
         """Unlock and mount the Persistent Storage"""
@@ -248,7 +289,13 @@ class Service(DBusObject, ServiceUsingJobs):
             self.do_unlock(passphrase)
         finally:
             self.refresh_state(overwrite_in_progress=True)
-            self.refresh_features(refresh_is_active=False)
+            # We don't refresh the features here to avoid that any errors
+            # caused by unexpected state of the Persistent Storage are
+            # shown to the user as "Failed to Unlock", which would be
+            # misleading because it was unlocked successfully.
+            # We expect the caller to call Activate next after a
+            # successful Unlock call and we refresh the features there,
+            # so it should be fine to skip it here.
 
         logger.info("Done unlocking Persistent Storage")
 
@@ -267,11 +314,16 @@ class Service(DBusObject, ServiceUsingJobs):
     def ChangePassphrase(self, passphrase: str, new_passphrase: str):
         """Change the passphrase of the Persistent Storage encrypted
         partition"""
+
+        logger.info("Changing passphrase...")
+
         partition = Partition.find()
         if not partition:
             raise NotCreatedError("No Persistent Storage found")
 
         partition.change_passphrase(passphrase, new_passphrase)
+
+        logger.info("Done changing passphrase")
 
     # ----- Exported properties ----- #
 
@@ -433,13 +485,28 @@ class Service(DBusObject, ServiceUsingJobs):
             logger.debug("Waiting for mainloop events to be handled")
             time.sleep(0.1)
 
-    def save_config_file(self):
-        """Save all currently active features to the config file."""
-        active_features = [feature for feature in self.features
-                           if feature.IsActive]
-        self.config_file.save(active_features)
+    def enable_feature(self, feature: Feature):
+        with self.enable_features_lock:
+            enabled_features = [ftr for ftr in self.features
+                                if ftr.IsEnabled]
+            self.config_file.save(enabled_features + [feature])
+            feature.refresh_state(["IsEnabled"])
+            if not feature.IsEnabled:
+                msg = f"Failed to enable feature '{feature.Id}' in config file"
+                raise ActivationFailedError(msg)
 
-    def refresh_features(self, refresh_is_active: bool = True):
+    def disable_feature(self, feature: Feature):
+        with self.enable_features_lock:
+            enabled_features = [ftr for ftr in self.features
+                                if ftr.IsEnabled]
+            enabled_features.remove(feature)
+            self.config_file.save(enabled_features)
+            feature.refresh_state(["IsEnabled"])
+            if feature.IsEnabled:
+                msg = f"Failed to disable feature '{feature.Id}' in config file"
+                raise DeactivationFailedError(msg)
+
+    def refresh_features(self):
         # Refresh custom features
         mounts = list()
         if self.config_file.exists():
@@ -451,6 +518,7 @@ class Service(DBusObject, ServiceUsingJobs):
             for i, mount in enumerate(unknown_mounts):
                 class CustomFeature(Feature):
                     Id = f"CustomFeature{i}"
+                    translatable_name = f"Custom Feature ({mount.dest_orig})"
                     Description = str(mount.dest_orig)
                     Mounts = [mount]
                 custom_feature = CustomFeature(self, is_custom=True)
@@ -467,10 +535,16 @@ class Service(DBusObject, ServiceUsingJobs):
                 self.object_manager.unexport(known_custom_feature.dbus_path)
                 self.features.remove(known_custom_feature)
 
-        if refresh_is_active:
-            # Refresh IsActive of all features
-            for feature in self.features:
-                feature.refresh_is_active()
+        # Refresh state of all features
+        exceptions = list()
+        for feature in self.features:
+            try:
+                feature.refresh_state(emit_properties_changed_signal=True)
+            except Exception as e:
+                if exceptions: logging.exception(e)
+                exceptions.append(exceptions)
+        if exceptions:
+            raise exceptions[0]
 
     def refresh_state(self, overwrite_in_progress: bool = False):
         if not self._boot_device:

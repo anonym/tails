@@ -24,10 +24,11 @@ _ = gettext.gettext
 
 from gi.repository import Gio, GLib
 
-from tps.dbus.errors import IncorrectPassphraseError
+from tps.dbus.errors import IncorrectPassphraseError, \
+    FeatureActivationFailedError
 
 import tailsgreeter         # NOQA: E402
-import tailsgreeter.config  # NOQA: E402
+from tailsgreeter import config  # NOQA: E402
 import tailsgreeter.errors  # NOQA: E402
 
 
@@ -97,6 +98,16 @@ class PersistentStorageSettings(object):
                 timeout_msec=120000,
             )
         except GLib.GError as err:
+            if FeatureActivationFailedError.is_instance(err):
+                FeatureActivationFailedError.strip_remote_error(err)
+                features = err.message.split(":")
+                # translate feature names
+                features = [config.gettext(feature) for feature in features]
+                # Translators: Don't translate {features}, it's a placeholder
+                # and will be replaced.
+                msg = config.gettext("Failed to activate some features of the Persistent Storage: {features}.").\
+                    format(features=", ".join(features))
+                raise tailsgreeter.errors.FeatureActivationFailedError(msg)
             self.failed_with_unexpected_error = True
             raise tailsgreeter.errors.PersistentStorageError(
                 _("Error activating Persistent Storage: {}").format(err)

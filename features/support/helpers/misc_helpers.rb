@@ -164,19 +164,20 @@ def force_new_tor_circuit
     # We sleep an extra second to avoid tight timings.
     sleep interval - elapsed + 1 if elapsed.positive? && elapsed < interval
   end
-  script = [
-    'import stem',
-    'import stem.connection',
-    'try:',
-    '    controller = stem.connection.connect(control_port=("127.0.0.1", 9051))',
-    '    if controller is None:',
-    '        raise stem.SocketError("Cannot connect to Tor\'s control port")',
-    '    controller.authenticate()',
-    '    controller.signal(stem.Signal.NEWNYM)',
-    'except Exception as e:',
-    '    exit(1)',
-  ]
-  c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
+  script = '
+import stem
+import stem.connection
+
+def main():
+  controller = stem.connection.connect(control_port=("127.0.0.1", 9052))
+  if controller is None:
+    raise stem.SocketError("Cannot connect to Tor\'s control port")
+  controller.authenticate()
+  controller.signal(stem.Signal.NEWNYM)
+
+main()
+'
+  c = RemoteShell::PythonCommand.new($vm, script)
   assert(c.success?, 'NEWNYM failed')
   $__last_newnym = Time.now
 end
@@ -506,10 +507,15 @@ end
 
 # We discard unused keyword parameters by adding `**_` to the definition
 def translate(str, translation_domain: nil, drop_accelerator: true, drop_markup: true, **_)
-  rv = if $language.empty? || translation_domain.nil? || translation_domain.empty?
+  rv = if $lang_code.empty? || translation_domain.nil? || translation_domain.empty?
          str
        else
-         $vm.execute_successfully("gettext '#{translation_domain}' '#{str}'").stdout
+         # It's important that we use double quotes instead of single
+         # quotes here around str because a single quote between single
+         # quotes can't be escaped.
+         cmd = "gettext '#{translation_domain}' \"#{str}\""
+         env = { 'LANGUAGE' => $lang_code }
+         $vm.execute_successfully(cmd, env: env).stdout
        end
   if drop_accelerator
     assert(str.count('_') <= 1, 'translate() are supposed to drop the ' \

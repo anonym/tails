@@ -1,3 +1,5 @@
+import locale
+import subprocess
 from logging import getLogger
 from gi.repository import Gio, GLib, Gtk
 from typing import TYPE_CHECKING
@@ -12,6 +14,28 @@ if TYPE_CHECKING:
 logger = getLogger(__name__)
 
 
+def wordlist():
+    # XXX:Bookworm: These wordlists are supported on Bookworm (Bullseye only supports English)
+    # wordlist_dict = {'pt_BR':'pt-br', 'de_DE':'de'}
+    wordlist_dict = dict()
+    default_wordlist = 'en_securedrop'
+    return wordlist_dict.get(locale.getlocale()[0], default_wordlist)
+
+
+def get_passphrase_suggestion():
+    passphrase = ''
+    try:
+        p = subprocess.run(["/usr/bin/diceware", "-d", " ", "--wordlist", wordlist()],
+                           stdout=subprocess.PIPE,
+                           check=True,
+                           text=True)
+        if p.returncode == 0:
+            passphrase = p.stdout.rstrip()
+    except Exception as e:
+        logger.warning("Couldn't generate a diceware suggestion: %s", e)
+    return passphrase
+
+
 class PassphraseView(View):
     _ui_file = PASSPHRASE_VIEW_UI_FILE
 
@@ -22,6 +46,10 @@ class PassphraseView(View):
         self.progress_bar = self.builder.get_object("passphrase_hint_progress_bar")  # type: Gtk.ProgressBar
         self.verify_hint_box = self.builder.get_object("verify_hint_box")  # type: Gtk.Box
         self.create_button = self.builder.get_object("create_button")  # type: Gtk.Button
+        self.passphrase_hint_label = self.builder.get_object("passphrase_suggestion_label")
+        self.example_label = self.builder.get_object("placeholder_label3")
+        self.refresh_image = self.builder.get_object("refresh_image")
+        self.set_new_passphrase_hint()
 
     def show(self):
         super().show()
@@ -49,6 +77,9 @@ class PassphraseView(View):
             callback=self.window.on_create_call_finished,
         )
 
+    def on_refresh_image_clicked(self, *args):
+        self.set_new_passphrase_hint()
+
     def on_passphrase_entry_changed(self, entry: Gtk.Entry):
         passphrase = entry.get_text()
         set_passphrase_strength_hint(self.progress_bar, passphrase)
@@ -56,6 +87,25 @@ class PassphraseView(View):
 
     def on_verify_entry_changed(self, entry: Gtk.Entry):
         self.update_passphrase_match()
+
+    def set_new_passphrase_hint(self):
+        label_text = get_passphrase_suggestion()
+        if label_text:
+            self.show_passphrase_hint_ui()
+        else:
+            self.hide_passphrase_hint_ui()
+
+        self.passphrase_hint_label.set_text(label_text)
+
+    def show_passphrase_hint_ui(self):
+        self.example_label.show()
+        self.passphrase_hint_label.show()
+        self.refresh_image.show()
+
+    def hide_passphrase_hint_ui(self):
+        self.example_label.hide()
+        self.passphrase_hint_label.hide()
+        self.refresh_image.hide()
 
     def update_passphrase_match(self):
         verify = self.verify_entry.get_text()

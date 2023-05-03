@@ -163,6 +163,25 @@ class Mount(object):
             options.append("file")
         return options
 
+    def has_data(self) -> bool:
+        if self.is_file:
+            return self.src.exists()
+
+        # Special handling for the Persistent directory:
+        # Return False if the directory contains only an empty
+        # "Tor Browser" directory.
+        if self.src.name == "Persistent":
+            if not self.src.exists():
+                return False
+            if not any(self.src.iterdir()):
+                return False
+            if any(d.name != "Tor Browser" for d in self.src.iterdir()):
+                return True
+            return Path(self.src, "Tor Browser").exists() and \
+                any(Path(self.src, "Tor Browser").iterdir())
+
+        return self.src.exists() and any(self.src.iterdir())
+
     def activate(self):
         try:
             self.check_is_inactive()
@@ -280,10 +299,12 @@ class Mount(object):
         # If the source doesn't exist on the Persistent Storage, we
         # bootstrap it with the content of the destination, as it's done
         # by live-boot's activate_custom_mounts() function.
+        src_copied = False
         if not self.src.exists():
             # Create the parent directory
             self.src.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
             executil.check_call(["cp", "-a", self.dest, self.src])
+            src_copied = True
 
         # Bind-mount the source to the destination. To prevent symlink
         # attacks, we use mount(2) of the libc instead of the mount(8)
@@ -303,6 +324,12 @@ class Mount(object):
         mount(src="", dest=self.dest,
               flags=MOUNTFLAG_REMOUNT | MOUNTFLAG_NOSYMFOLLOW,
         )
+
+        # Wait until the source directory was synced to the Persistent
+        # Storage to make the call block and allow the frontend to
+        # display a spinner until the data was synced.
+        if src_copied:
+            executil.check_call(["sync", "--file-system", self.src])
 
     def deactivate(self):
         try:

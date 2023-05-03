@@ -66,7 +66,7 @@ When /^I update APT using apt$/ do
   retry_tor(recovery_proc) do
     Timeout.timeout(15 * 60) do
       $vm.execute_successfully("echo #{@sudo_password} | " \
-                               'sudo -S apt update', user: LIVE_USER)
+                               'sudo -S apt --error-on=any update', user: LIVE_USER)
     end
   end
 end
@@ -132,8 +132,7 @@ end
 
 When /^I revert the APT tweaks that made it prefer an old version of cowsay$/ do
   $vm.execute_successfully(
-    'rm -f /etc/apt/sources.list.d/asp-test-upgrade-cowsay.list ' \
-    '/etc/apt/preferences.d/asp-test-upgrade-cowsay'
+    'rm -f /etc/apt/preferences.d/asp-test-upgrade-cowsay'
   )
 end
 

@@ -142,7 +142,7 @@ class UxDebtChangesGenerator(object):
                 continue
             events = issue.resourcelabelevents.list()
             for event in events:
-                if event.action != 'add' or event.label['name'] != 'UX:debt':
+                if event.action != 'add' or event.label['name'] != 'UX:debt' or event.label != None:
                     continue
                 event_created_at = dateutil.parser.isoparse(event.created_at)
                 if event_created_at < self.after:

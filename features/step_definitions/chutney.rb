@@ -32,12 +32,14 @@ def ensure_chutney_is_running
   chutney_listen_address = $vmnet.bridge_ip_addr
   chutney_script = "#{GIT_DIR}/features/scripts/chutney"
   network_definition = "#{GIT_DIR}/features/chutney/test-network"
+  chutney_start_time = ENV['CHUTNEY_START_TIME']
+  chutney_start_time = '600' if chutney_start_time.nil?
   env = {
     'CHUTNEY_LISTEN_ADDRESS' => chutney_listen_address,
     'CHUTNEY_DATA_DIR'       => "#{$config['TMPDIR']}/chutney-data",
     # The default value (60s) is too short for "chutney wait_for_bootstrap"
     # to succeed reliably.
-    'CHUTNEY_START_TIME'     => '600',
+    'CHUTNEY_START_TIME'     => chutney_start_time,
   }
 
   chutney_data_dir_cleanup = proc do

@@ -5,12 +5,16 @@ set -eu
 # shellcheck source=tails-shell-library/libtps.sh
 . /usr/local/lib/tails-shell-library/libtps.sh
 
-[ $# = 2 ] || exit 2
-
 SUBCOMMAND="$1"
-FEATURE_NAME="$2"
+
+if [ -n "${2:-}" ]; then
+  FEATURE_NAME="${2}"
+fi
 
 case "$SUBCOMMAND" in
+    get-features)
+	tps_get_features
+	;;
     activate)
 	# This will fail if the feature is already active,
 	# so in some cases ensure-is-active is better suited.
@@ -23,6 +27,9 @@ case "$SUBCOMMAND" in
 	;;
     is-active)
 	tps_feature_is_active "${FEATURE_NAME}"
+	;;
+    is-enabled)
+	tps_feature_is_enabled "${FEATURE_NAME}"
 	;;
     ensure-is-active)
 	tps_ensure_feature_is_active "${FEATURE_NAME}"
