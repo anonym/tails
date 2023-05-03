@@ -103,8 +103,8 @@ def show_donation_message():
         # Show a GNOME notification to let the user know that we're
         # opening Electrum with our donation address.
         sh.notify_send(
-            _('Electrum is now opened with our donation address.'),
-            _('Thank you for your support!'),
+            _('Opening Electrum with our donation address...'),
+            _('Thank you for making the Internet a safer place!'),
         )
         exec_electrum(DONATION_BITCOIN_ADDRESS)
     else:
