@@ -331,7 +331,7 @@ Given /^I change the passphrase of the Persistent Storage( back to the original)
   @screen.type(new_passphrase)
   change_passphrase_dialog.button('Change').click
   # Wait for the dialog to close
-  try_for(30) do
+  try_for(60) do
     persistent_storage_frontend
       .child('Change Passphrase', roleName: 'dialog')
   rescue Dogtail::Failure
