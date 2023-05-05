@@ -2,6 +2,22 @@ def browser
   Dogtail::Application.new('Firefox')
 end
 
+def save_page_as
+  browser.child(
+    description: 'Open application menu',
+    roleName:    'push button',
+    showingOnly: true,
+  ).press
+  browser.child(
+    name: 'Save page as\u2026',
+    roleName:    'push button',
+    showingOnly: true,
+  ).press
+  browser.child('Save As',
+                roleName:    'file chooser',
+                showingOnly: true)
+end
+
 When /^I (?:try to )?start the Unsafe Browser$/ do
   # XXX:Bookworm: switch to "gio launch" and drop the whole
   # language_has_non_latin_input_source / switch_input_source system.
