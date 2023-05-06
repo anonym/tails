@@ -12,6 +12,9 @@ if [ -n "${2:-}" ]; then
 fi
 
 case "$SUBCOMMAND" in
+    is-unlocked)
+  tps_is_unlocked
+  ;;
     get-features)
 	tps_get_features
 	;;
