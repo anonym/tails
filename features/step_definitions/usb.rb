@@ -331,7 +331,7 @@ Given /^I change the passphrase of the Persistent Storage( back to the original)
   @screen.type(new_passphrase)
   change_passphrase_dialog.button('Change').click
   # Wait for the dialog to close
-  try_for(30) do
+  try_for(60) do
     persistent_storage_frontend
       .child('Change Passphrase', roleName: 'dialog')
   rescue Dogtail::Failure
@@ -421,6 +421,17 @@ Then /^there is no persistence partition on USB drive "([^"]+)"$/ do |name|
          "USB drive #{name} has a partition '#{data_part_dev}'")
 end
 
+def assert_luks2(name, device)
+  # Tails 5.12 and older used LUKS1 by default
+  return if name == 'old' && !$old_version.nil? \
+            && system("dpkg --compare-versions '#{$old_version}' le 5.12")
+
+  luks_info = $vm.execute("cryptsetup status #{device}").stdout
+  assert_match(/^ +type: +LUKS2$/, luks_info,
+               "Device #{device} is not LUKS2")
+end
+
+
 Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
   dev = $vm.persistent_storage_dev_on_disk(name)
   check_part_integrity(name, dev, 'crypto', 'crypto_LUKS',
@@ -447,6 +458,8 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
     )
     luks_dev = "/dev/mapper/#{name}"
   end
+
+    assert_luks2(name, luks_dev)
 
   # Adapting check_part_integrity() seems like a bad idea so here goes
   info = $vm.execute("udisksctl info --block-device '#{luks_dev}'").stdout

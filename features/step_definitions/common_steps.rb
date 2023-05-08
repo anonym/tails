@@ -1483,3 +1483,41 @@ def save_qrcode(str)
   assert(File.exist?(output_file))
   output_file
 end
+
+Given /^I write (|an old version of )the Tails (ISO|USB) image to disk "([^"]+)"$/ do |old, type, name|
+  if old != ''
+    match = /^tails-amd64-(\d+[.]\d+(?:[.]\d+)?)[.]img$/
+            .match(File.basename(OLD_TAILS_IMG))
+    $old_version = match.nil? ? nil : match[1]
+    if $old_version.nil?
+      debug_log('Failed to extract old version. This is expected, and OK,' \
+                'if you passed anything but a stable release to --old-iso')
+    else
+      debug_log("Old version: #{$old_version}")
+    end
+  end
+  src_disk = {
+    path: (if old == ''
+             type == 'ISO' ? TAILS_ISO : TAILS_IMG
+           else
+             type == 'ISO' ? OLD_TAILS_ISO : OLD_TAILS_IMG
+           end
+          ),
+    opts: {
+      format:   'raw',
+      readonly: true,
+    },
+  }
+  dest_disk = {
+    path: $vm.storage.disk_path(name),
+    opts: {
+      format: $vm.storage.disk_format(name),
+    },
+  }
+  $vm.storage.guestfs_disk_helper(
+    src_disk,
+    dest_disk
+  ) do |g, src_disk_handle, dest_disk_handle|
+    g.copy_device_to_device(src_disk_handle, dest_disk_handle, {})
+  end
+end
