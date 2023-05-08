@@ -42,7 +42,7 @@ def run_in_netns(*args, netns, root="/", bind_mounts=[]):
         #       should set it in the caller instead, but that's not
         #       supported currently.
         # Required by onioncircuits.
-        f"TOR_CONTROL_PORT=951",
+        "TOR_CONTROL_PORT=951",
     ]
     # We run tca with several wrappers to accomplish our privilege-isolation-magic:
     # connect_drop: opens a privileged file and pass FD to new process
