@@ -237,6 +237,24 @@ Below, importance level is evaluated based on:
     desc="`meeting.py` script"]]
 * importance: to be defined
 
+<a id="mirror-pool"></a>
+
+# Mirror pool
+
+* purpose: provide the HTTP and DNS mirror pools
+* documentation: [[design documentation|contribute/design/mirrors]]
+* access: public
+* tools: [[!debpts mirrorbits]]
+* configuration:
+  - [[!tails_gitlab tails/puppet-tails/-/blob/master/manifests/profile/mirrorbits.pp desc="`tails::profile::mirrorbits`"]]
+  - `gitolite3@git.puppet.tails.boum.org:mirror-pool.git`
+  - `tails_git@dns.lizard:/srv/repositories/mirrors.git` 
+* importance: critical (needed by users to download Tails)
+* responsibilities:
+  - Process offers of new mirrors.
+  - Identify and process broken and slow mirrors.
+  - Identify general health problems.
+
 <a id="mumble"></a>
 
 # Mumble
