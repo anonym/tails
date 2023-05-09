@@ -125,7 +125,7 @@ class BaseCommand:
         '''
         First returnvalue is False iff it's an error
 
-        Second returnvalue is a dictionary to be sent to the user
+        Second returnvalue is a dictionary to be sent to the client
         '''
         if returncode == 0:
             return True, dict(result={"returncode": returncode, "stdout": stdout})
