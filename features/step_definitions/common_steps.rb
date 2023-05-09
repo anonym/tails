@@ -1174,6 +1174,9 @@ Given /^a web server is running on the LAN$/ do
   @web_server_url = "http://#{@web_server_ip_addr}:#{@web_server_port}"
   web_server_hello_msg = 'Welcome to the LAN web server!'
 
+  @captive_portal_login_file = "#{$config['TMPDIR']}/logged-in"
+  File.delete(@captive_portal_login_file) if File.exist?(@captive_portal_login_file)
+
   # I've tested ruby Thread:s, fork(), etc. but nothing works due to
   # various strange limitations in the ruby interpreter. For instance,
   # apparently concurrent IO has serious limits in the thread
@@ -1182,9 +1185,6 @@ Given /^a web server is running on the LAN$/ do
   # lot of complex cucumber stuff (like our hooks!) ending up in the
   # child process, breaking stuff in the parent process. After asking
   # some supposed ruby pros, I've settled on the following.
-
-  @captive_portal_login_file = "#{$config['TMPDIR']}/logged-in"
-  File.delete(@captive_portal_login_file) if File.exist?(@captive_portal_login_file)
 
   code = <<-CODE
   require "webrick"
