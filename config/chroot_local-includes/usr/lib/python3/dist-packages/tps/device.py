@@ -171,8 +171,8 @@ class TPSPartition(object):
         cmd = ["cryptsetup", "luksDump", self.device_path]
         try:
             luks_dump = executil.check_output(cmd)
-        except subprocess.CalledProcessError as e:
-            logger.exception(e)
+        except subprocess.CalledProcessError:
+            logger.exception("Command 'cryptsetup luksDump' failed")
             return False
 
         version = str()
