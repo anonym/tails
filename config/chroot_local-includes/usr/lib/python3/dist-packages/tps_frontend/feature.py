@@ -69,6 +69,8 @@ class Feature(object):
 
         action_row_name = self.widget_name_prefix + "_row"
         self.action_row = self.builder.get_object(action_row_name)  # type: Handy.ActionRow
+        self.action_row.__setattr__('original_subtitle',
+                                    self.action_row.get_subtitle())
         if not self.action_row:
             raise RuntimeError(f"Could not find {action_row_name}")
 
@@ -165,7 +167,7 @@ class Feature(object):
             subtitle = _("The data of this feature is still saved.")
         else:
             self.delete_data_button.hide()
-            self.action_row.set_subtitle("")
+            self.action_row.set_subtitle(self.action_row.original_subtitle)
             return
 
         if error:
