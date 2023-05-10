@@ -41,15 +41,10 @@ def parse_args():
     parser.add_option('-P', '--partition', dest='partition', action='store_true', default=False,
                       help='Partition the device')
 
-    # Let's override argv to effectively ignore the command-line
-    # arguments until #8861 is solved. We do this (as opposed to
-    # removing this code) to cheaply ensure we get the same default
-    # options set.
-    override_argv = []
-    # But for our own debugging purposes we still allow these:
-    if '--verbose' in sys.argv or os.getenv('DEBUG') == '1':
-        override_argv.append('--verbose')
-    return parser.parse_args(override_argv)
+    argv = sys.argv[:]
+    if os.getenv('DEBUG'):
+        argv.append('--verbose')
+    return parser.parse_args(argv[1:])
 
 
 def main():
