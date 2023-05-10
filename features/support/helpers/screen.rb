@@ -133,11 +133,6 @@ class Screen
                          screenshot, sensitivity, show_image)
   end
 
-  def check_and_raise_display_output_not_active
-    p = match_screen('DisplayOutputIsNotActive.png', OPENCV_MIN_SIMILARITY, false)
-    raise DisplayOutputIsNotActive, 'screen reached "Display output is not active"' unless p.nil?
-  end
-
   def real_find(pattern, **opts)
     opts[:log] = true if opts[:log].nil?
     opts[:sensitivity] ||= OPENCV_MIN_SIMILARITY
@@ -167,7 +162,6 @@ class Screen
       return real_find(pattern, **opts)
     end
   rescue Timeout::Error
-    check_and_raise_display_output_not_active
     raise FindFailed, "cannot find #{pattern} on the screen"
   end
 
@@ -217,7 +211,6 @@ class Screen
       # looped through all patterns and found none of them.
     end
     # If we've reached this point, none of the patterns could be found.
-    check_and_raise_display_output_not_active
     raise FindFailed,
           "can not find any of the patterns #{patterns} on the screen"
   end
@@ -235,7 +228,6 @@ class Screen
       return find_any(patterns, **opts.clone.update(log: false))
     end
   rescue Timeout::Error
-    check_and_raise_display_output_not_active
     raise FindFailed, "can not find any of the patterns #{patterns} " \
                       'on the screen'
   end
