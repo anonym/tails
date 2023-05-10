@@ -12,3 +12,8 @@ Feature: Various checks for torified software
   Scenario: wget(1) with tricky options should work for HTTP and go through Tor
     When I wget "some Tails mirror" to stdout with the '--spider --header="Host: dl.amnesia.boum.org"' options
     Then the wget command is successful
+
+  Scenario: curl should work for HTTPS and go through Tor
+    When I curl "https://example.com/" to stdout
+    Then the curl command is successful
+    And the curl standard output contains "Example Domain"

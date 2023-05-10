@@ -1156,7 +1156,9 @@ Given /^a web server is running on the LAN$/ do
   # this forces us to capture traffic *after* this step in case
   # accessing this server matters, like when testing the Tor Browser..
   try_for(30, msg: 'Something is wrong with the LAN web server') do
-    msg = $vm.execute_successfully("curl #{@web_server_url}",
+    # Use /usr/bin/curl instead of our curl wrapper script because the
+    # wrapper script makes curl use Tor and we want to access the LAN.
+    msg = $vm.execute_successfully("/usr/bin/curl #{@web_server_url}",
                                    user: LIVE_USER).stdout.chomp
     web_server_hello_msg == msg
   end
