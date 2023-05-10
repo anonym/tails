@@ -311,7 +311,7 @@ Then /^I see that (.+) is properly stream isolated(?: after (\d+) seconds)?$/ do
   sleep delay.to_i if delay
   info = stream_isolation_info(application)
   expected_ports = [info[:socksport]]
-  expected_ports << 9051 if info[:controller]
+  expected_ports << 951 if info[:controller]
   expected_ports << 53 if info[:dns]
   assert_not_nil(@process_monitor_log)
   log_lines = $vm.file_content(@process_monitor_log).split("\n")
