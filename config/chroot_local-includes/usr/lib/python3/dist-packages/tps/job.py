@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 from gi.repository import Gio, GLib
 
 import tps.logging
-from tps import DBUS_JOBS_PATH, DBUS_JOB_INTERFACE
+from tps import _, DBUS_JOBS_PATH, DBUS_JOB_INTERFACE
 from tps.dbus.object import DBusObject
 
 logger = tps.logging.get_logger(__name__)
@@ -90,6 +90,23 @@ class Job(DBusObject):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.unregister(self.connection)
 
+    def refresh_properties(self, status: Optional[str] = None,
+                           progress: Optional[int] = None):
+        """Refresh the properties of the job"""
+        changed_properties = dict()
+        if status is not None and status != self._status:
+            self._status = status
+            changed_properties["Status"] = GLib.Variant("s", status)
+        if progress is not None and progress != self._progress:
+            self._progress = progress
+            changed_properties["Progress"] = GLib.Variant("u", progress)
+        if changed_properties:
+            self.emit_properties_changed_signal(
+                self.connection,
+                DBUS_JOB_INTERFACE,
+                changed_properties,
+            )
+
     # ----- Exported functions ----- #
 
     def Cancel(self):
@@ -103,35 +120,9 @@ class Job(DBusObject):
     def Status(self) -> str:
         return self._status
 
-    @Status.setter
-    def Status(self, status: str):
-        if self._status == status:
-            # Nothing to do
-            return
-        self._status = status
-        changed_properties = {"Status": GLib.Variant("s", status)}
-        self.emit_properties_changed_signal(
-            self.connection,
-            DBUS_JOB_INTERFACE,
-            changed_properties,
-        )
-
     @property
     def Progress(self) -> int:
         return self._progress
-
-    @Progress.setter
-    def Progress(self, progress: int):
-        if self._progress == progress:
-            # Nothing to do
-            return
-        self._progress = progress
-        changed_properties = {"Progress": GLib.Variant("u", progress)}
-        self.emit_properties_changed_signal(
-            self.connection,
-            DBUS_JOB_INTERFACE,
-            changed_properties,
-        )
 
     @property
     def ConflictingApps(self) -> Dict[str, List[int]]:

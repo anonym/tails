@@ -1,8 +1,9 @@
 import os
 from pathlib import Path
+import time
 import re
 import stat
-from typing import Optional
+from typing import Optional, Callable
 
 from gi.repository import GLib, UDisks
 
@@ -170,41 +171,81 @@ class Partition(object):
     @classmethod
     def create(cls, job: Job, passphrase: str) -> "Partition":
         """Create the Persistent Storage encrypted partition"""
+
+        # This should be the number of next_step() calls
+        num_steps = 7
+        current_step = 0
+
+        def next_step(description: Optional[str] = None):
+            nonlocal current_step
+            progress = int((current_step / num_steps) * 100)
+            job.refresh_properties(description, progress)
+            current_step += 1
+
         parent_device = BootDevice.get_tails_boot_device()
         offset = parent_device.get_beginning_of_free_space()
 
-        # Create and format the partition
+        # Create the partition
+        logger.info("Creating partition")
+        next_step(_("Creating partition"))
         partition_table = parent_device.partition_table
-        path = partition_table.call_create_partition_and_format_sync(
+        object_path = partition_table.call_create_partition_sync(
             arg_offset=offset,
             # Size 0 means maximal size
             arg_size=0,
             arg_type=PARTITION_GUID,
             arg_name=PARTITION_LABEL,
             arg_options=GLib.Variant('a{sv}', {}),
-            arg_format_type="ext4",
-            arg_format_options=GLib.Variant('a{sv}', {
-                "label": GLib.Variant('s', PARTITION_LABEL),
-                "encrypt.passphrase": GLib.Variant('s', passphrase),
-            }),
         )
-
-        # Wait for all UDisks and udev events to finish
         udisks.settle()
-        executil.check_call(["udevadm", "settle"])
 
-        # Create the Partition object
-        partition = Partition(udisks.get_object(path))
+        # Get the UDisks partition object
+        partition = Partition(udisks.get_object(object_path))
+
+        # Initialize the LUKS partition via cryptsetup. We can't use
+        # udisks for this because it doesn't support setting the key
+        # derivation function which we want to set to argon2id.
+        # See https://mjg59.dreamwidth.org/66429.html
+        logger.info("Initializing LUKS header")
+        next_step(_("Initializing LUKS header (the system might become unresponsive for a few seconds)"))
+        cmd = ["cryptsetup", "luksFormat",
+               "--batch-mode",
+               "--key-file=-",
+               "--type=luks2",
+               "--pbkdf=argon2id",
+               partition.device_path]
+        executil.check_call(cmd, input=passphrase)
+
+        # Wait for the encrypted partition to become available to udisks
+        next_step()
+        wait_for_udisks_object(partition.device_path,
+                               partition.udisks_object.get_encrypted)
+
+        # Unlock the partition
+        logger.info("Unlocking partition")
+        next_step(_("Unlocking partition"))
+        partition.unlock(passphrase)
 
         # Get the cleartext device
         cleartext_device = partition.get_cleartext_device()
 
-        # Rename the cleartext device to "TailsData_unlocked", so that
-        # is has the same name as after a reboot.
-        cleartext_device.rename_dm_device("TailsData_unlocked")
+        # Format the cleartext device
+        logger.info("Formatting filesystem")
+        next_step(_("Formatting filesystem"))
+        cleartext_device.block.call_format_sync(
+            arg_type="ext4",
+            arg_options=GLib.Variant('a{sv}', {
+                "label": GLib.Variant('s', PARTITION_LABEL),
+            }),
+        )
+        udisks.settle()
 
         # Mount the cleartext device
+        logger.info("Mounting filesystem")
+        next_step(_("Mounting filesystem"))
         cleartext_device.mount()
+
+        next_step(_("Finishing things up"))
 
         return partition
 
@@ -237,9 +278,7 @@ class Partition(object):
                 raise IncorrectPassphraseError(err) from err
             raise
 
-        # Wait for all UDisks and udev events to finish
         udisks.settle()
-        executil.check_call(["udevadm", "settle"])
 
         # Get the cleartext device
         cleartext_device = self.get_cleartext_device()
@@ -384,3 +423,20 @@ class CleartextDevice(object):
             logger.warning("Can't rename dm device: dm name not found")
             return
         executil.check_call(["dmsetup", "rename", dm_name, new_name])
+
+
+def wait_for_udisks_object(device: str,
+                           func: Callable[[...], Optional[UDisks.Object]],
+                           *args,
+                           timeout: int = 20) -> UDisks.Object:
+    """Repeatedly call `udevadm trigger` and then func() until func()
+    returns a udisks object or timeout is reached."""
+    start = time.time()
+    while time.time() - start < timeout:
+        executil.check_call(["udevadm", "trigger"])
+        obj = func(*args)
+        if obj:
+            return obj
+        time.sleep(1)
+        continue
+    raise TimeoutError("Timeout while waiting for udisks object")
