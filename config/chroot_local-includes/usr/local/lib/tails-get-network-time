@@ -101,8 +101,8 @@ class NMishCurlClient:
 
         self.body += data
 
-        if len(self.body) == len(EXPECTED_RESPONSE):
-            if self.body == EXPECTED_RESPONSE:
+        if len(self.body) >= len(EXPECTED_RESPONSE):
+            if self.body.startswith(EXPECTED_RESPONSE):
                 self.connectivity = True
                 log.info(
                     "Received the expected body ⇒ assuming no captive portal"
@@ -112,11 +112,6 @@ class NMishCurlClient:
                 log.info("Received unexpected body ⇒ assuming captive portal")
                 self.detected_error = "captive-portal"
                 return 0
-
-        elif len(self.body) > len(EXPECTED_RESPONSE):
-            log.info("Received too much data ⇒ assuming captive portal")
-            self.detected_error = "captive-portal"
-            return 0
 
         else:  # len(self.body) < len(EXPECTED_RESPONSE):
             if EXPECTED_RESPONSE.startswith(self.body):
