@@ -169,7 +169,6 @@ def main():
     url = Path(args.url_file).read_text().rstrip()
     c = NMishCurlClient(url=url, timeout=args.timeout)
 
-    code = None
     try:
         c.perform()
     except pycurl.error:
