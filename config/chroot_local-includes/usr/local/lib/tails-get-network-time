@@ -94,6 +94,11 @@ class NMishCurlClient:
     def write_cb(self, data: bytes) -> Optional[int]:
         """Like NetworkManager, we abort the connection as soon as
         we have enough information to draw conclusions."""
+
+        if len(data) == 0:
+            # From nm-connectivity.c: no data. That can happen, it's fine.
+            return None
+
         self.body += data
 
         if len(self.body) == len(EXPECTED_RESPONSE):
