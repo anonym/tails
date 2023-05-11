@@ -84,7 +84,7 @@ class NMishCurlClient:
             # header.
 
         # Abort the connection once we have the status and date headers,
-        # to mimick NetworkManager's behavior as closely as possible.
+        # to mimic NetworkManager's behavior as closely as possible.
         if self.connectivity and "date" in self.headers:
             log.debug("Received both status online and date headers")
             return 0
