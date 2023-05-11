@@ -57,6 +57,7 @@ class NMishCurlClient:
         c.setopt(c.HTTPHEADER, ["Connection: close"])
         c.setopt(c.IPRESOLVE, c.IPRESOLVE_V4)
         c.setopt(c.TIMEOUT, timeout)
+        c.setopt(c.USERAGENT, '')
         self.client = c
 
         self.connectivity: bool = False
