@@ -354,14 +354,23 @@ def get_parser():
     return p
 
 
+class RemoveUselessStemMessages(logging.Filter):
+    def filter(self, record):
+        """
+        Even when we want to debug messages to the control port,
+        let's avoid this frequent polling messages
+        """
+        return 'disablenetwork' not in record.getMessage()
+
+
 if __name__ == "__main__":
     prctl.set_name("tca")  # this get set as syslog identity!
     args = get_parser().parse_args()
 
     log_conf = {"level": logging.DEBUG if args.debug else args.log_level}
     configure_logging(hint=args.log_target, ident="tca", **log_conf)
-    # stem is a really really noisy logger. set it to debug only if really needed
     logging.getLogger("stem").setLevel(logging.DEBUG)
+    logging.getLogger("stem").addFilter(RemoveUselessStemMessages())
 
     GLib.set_prgname(tca.config.APPLICATION_TITLE)
     GLib.set_application_name(tca.config.LOCALIZED_APPLICATION_TITLE)
