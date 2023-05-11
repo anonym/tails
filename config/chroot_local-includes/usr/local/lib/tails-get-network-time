@@ -75,7 +75,7 @@ class NMishCurlClient:
 
         if (
             name == HEADER_STATUS_ONLINE["name"].lower()
-            and value == HEADER_STATUS_ONLINE["value"]
+            and value.lower() == HEADER_STATUS_ONLINE["value"].lower()
         ):
             log.debug("Received status online header")
             self.connectivity = True
