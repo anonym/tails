@@ -413,6 +413,18 @@ else
   raise 'TCA managed to connect to Tor but was expected to fail'
 end
 
+Then /^the Tor Connection Assistant knows that it's not the time sync that failed$/ do
+  if tor_connection_assistant.child?('Fix Clock', showingOnly: true)
+    raise 'TCA thinks that time sync might have failed'
+  end
+end
+
+Then /^the Tor Connection Assistant knows that there might be a captive portal$/ do
+  unless tor_connection_assistant.child?('Try Signing in to the Network', showingOnly: true)
+    raise 'TCA does not think that there might be a captive portal'
+  end
+end
+
 def tca_configure(mode, connect: true, &block)
   step 'the Tor Connection Assistant is running'
   # this is the default, so why bother setting it?

@@ -51,6 +51,8 @@ Feature: Tor Connection helps the user in connecting to Tor
         When I choose to connect to Tor automatically
         And I click "Connect to Tor"
         Then the Tor Connection Assistant fails to connect to Tor
+        And the Tor Connection Assistant knows that it's not the time sync that failed
+        And the Tor Connection Assistant knows that there might be a captive portal
         When I open the Unsafe Browser from Tor Connection
         And I log-in to the Captive Portal
         And I close the Unsafe Browser
