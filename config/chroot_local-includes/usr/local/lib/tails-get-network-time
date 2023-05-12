@@ -230,8 +230,8 @@ def main():
                 log.error("Time out")
                 fail("timeout")
             else:
-                log.error("Unexpected HTTP failure (code %s)", code)
-                fail("http-failure")
+                log.debug("Didn't receive enough data to compare to expected response ⇒ assuming captive portal")
+                fail("captive-portal")
 
 
 if __name__ == "__main__":
