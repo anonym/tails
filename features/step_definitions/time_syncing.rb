@@ -43,7 +43,7 @@ When /^I bump the (hardware clock's|system) time with "([^"]+)"$/ do |clock_type
 end
 
 When /^I allow time sync before Tor connects to work again$/ do
-  $vm.execute_successfully('mv /etc/tails-get-network-time-url.bak /etc/tails-get-network-time-url')
+  $vm.execute_successfully('mv /etc/tails-get-network-time.conf.bak /etc/tails-get-network-time.conf')
 end
 
 When /^I make sure time sync before Tor connects (fails|times out)$/ do |failure_mode|
@@ -55,10 +55,12 @@ When /^I make sure time sync before Tor connects (fails|times out)$/ do |failure
     add_extra_allowed_host(ip, 80)
   end
   path = force_timeout ? 'delay/30' : 'redirect-to?url=foobar'
-  $vm.execute_successfully('cp /etc/tails-get-network-time-url /etc/tails-get-network-time-url.bak')
+  url = "http://#{hostname}/#{path}"
+
+  $vm.execute_successfully('cp /etc/tails-get-network-time.conf /etc/tails-get-network-time.conf.bak')
   $vm.file_overwrite(
-    '/etc/tails-get-network-time-url',
-    "http://#{hostname}/#{path}"
+    '/etc/tails-get-network-time.conf',
+    %W[url=#{url} debug=true],
   )
 end
 

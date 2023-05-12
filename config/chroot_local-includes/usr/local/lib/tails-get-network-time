@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-
 # On success, prints the value of the date header in ISO 8601 format.
-
+import argparse
 # On supported failures, print the type of failure to stdout,
 # and exit with a well-defined return code.
 
@@ -21,6 +20,8 @@ from tca.timeutils import GET_NETWORK_TIME_RETURN_CODE
 LOG_FORMAT = "%(asctime)-15s %(levelname)s %(message)s"
 log = logging.getLogger()
 
+CONFIG_FILE = Path("/etc/tails-get-network-time.conf")
+
 # From nm-connectivity.c
 HEADER_STATUS_ONLINE = {"name": "X-NetworkManager-Status", "value": "online"}
 
@@ -32,6 +33,33 @@ EXPECTED_RESPONSE = b"OK"
 def fail(error: str):
     print(error)
     sys.exit(GET_NETWORK_TIME_RETURN_CODE[error])
+
+
+def parse_config_file() -> Dict[str, str]:
+    def str_to_bool(s: str) -> bool:
+        return s.lower() in ("true", "yes", "1")
+
+    res = {}
+    if not CONFIG_FILE.exists():
+        return res
+
+    text = CONFIG_FILE.read_text()
+    for line in text.splitlines():
+        if line.startswith("#"):
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip().lower()
+        value = value.strip()
+        if key in ("url", "log-target"):
+            res[key] = value
+        elif key == "debug":
+            res[key] = str_to_bool(value)
+        elif key == "timeout":
+            res[key] = int(value)
+        else:
+            fail("invalid-config")
+
+    return res
 
 
 class NMishCurlClient:
@@ -142,13 +170,12 @@ def on_date_found(dt: datetime.datetime):
 
 
 def main():
-    import argparse
-
+    config = parse_config_file()
     parser = argparse.ArgumentParser()
+    parser.set_defaults(**config)
     parser.add_argument(
-        "--url-file",
+        "--url",
         type=str,
-        default="/etc/tails-get-network-time-url",
         action="store",
     )
     parser.add_argument("--timeout", type=int, default=10)
@@ -162,12 +189,13 @@ def main():
     )
     args = parser.parse_args()
 
+    if not args.url:
+        fail("missing-url")
+
     configure_logging(hint=args.log_target, ident='tails-get-network-time', format=LOG_FORMAT,
             level=logging.DEBUG if args.debug else logging.INFO)
 
-
-    url = Path(args.url_file).read_text().rstrip()
-    c = NMishCurlClient(url=url, timeout=args.timeout)
+    c = NMishCurlClient(url=args.url, timeout=args.timeout)
 
     try:
         c.perform()
