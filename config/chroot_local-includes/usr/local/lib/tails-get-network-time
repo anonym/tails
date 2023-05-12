@@ -222,16 +222,14 @@ def main():
             fail("malformed-date-header")
         on_date_found(dt)
         sys.exit(0)
+    elif c.detected_error:
+        fail(c.detected_error)
+    elif code == 0:
+        log.error("Time out")
+        fail("timeout")
     else:
-        if c.detected_error is not None:
-            fail(c.detected_error)
-        else:
-            if code == 0:
-                log.error("Time out")
-                fail("timeout")
-            else:
-                log.debug("Didn't receive enough data to compare to expected response ⇒ assuming captive portal")
-                fail("captive-portal")
+        log.debug("Didn't receive enough data to compare to expected response ⇒ assuming captive portal")
+        fail("captive-portal")
 
 
 if __name__ == "__main__":
