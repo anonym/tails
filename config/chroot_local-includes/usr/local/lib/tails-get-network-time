@@ -66,7 +66,7 @@ class NMishCurlClient:
     """Wrapper around a curl client to emulate the fingerprintable
     network behavior of NetworkManager's connectivity check"""
 
-    def __init__(self, url: str, timeout: int = 10):
+    def __init__(self, url: str, timeout: int = 10, debug: bool = False):
         self.headers: Dict[str, str] = {}
         self.body = b''
         self.url = url
@@ -79,6 +79,10 @@ class NMishCurlClient:
         c.setopt(c.IPRESOLVE, c.IPRESOLVE_V4)
         c.setopt(c.TIMEOUT, timeout)
         c.setopt(c.USERAGENT, '')
+
+        if debug:
+            c.setopt(c.VERBOSE, True)
+
         self.client = c
 
         self.connectivity: bool = False
@@ -195,7 +199,7 @@ def main():
     configure_logging(hint=args.log_target, ident='tails-get-network-time', format=LOG_FORMAT,
             level=logging.DEBUG if args.debug else logging.INFO)
 
-    c = NMishCurlClient(url=args.url, timeout=args.timeout)
+    c = NMishCurlClient(url=args.url, timeout=args.timeout, debug=args.debug)
 
     try:
         c.perform()
