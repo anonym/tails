@@ -39,8 +39,9 @@ Check the images size has not changed much since the last release.
 In a directory with many Tails ISO and USB images
 ([archive](https://iso-history.tails.boum.org/)):
 
-    find \( -iname "tails*.iso" -o -iname "tails*.img" \) \
-	     -type f -exec ls -l --block-size=M '{}' \; | sort -rhk 5
+    find -L \( -iname "tails*.iso" -o -iname "tails*.img" \) \
+           -type f -ls | sort -k 7
+
 
 <a id="reproducibility-final-check"></a>
 
