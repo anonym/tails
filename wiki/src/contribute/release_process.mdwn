@@ -255,8 +255,8 @@ Freeze
 This section ensures freezing is done. Freezing is relevant for Release Candidates and for bugfix releases.
 You can skip this if you're releasing a final major version.
 
-Only for RC
--------------
+If preparing a RC
+-------------------
 
 Check that you are indeed preparing a RC:
 
@@ -298,8 +298,12 @@ Follow this part ONLY if you are preparing the release candidate for a major rel
         git checkout "$RELEASE_BRANCH" && \
         ./bin/bump-APT-snapshots-expiration-date 183
 
-Only for Bugfix release
-------------------------
+If preparing a Bugfix release
+------------------------------
+
+Check that you are indeed preparing a Bugfix:
+
+    [ "$DIST" = stable ] && [ "$MAJOR" -eq 0 ]
 
 Follow this part ONLY if you are preparing a bugfix release.
 
@@ -397,8 +401,8 @@ If preparing a final release
 If we're about to prepare the images for a final (non-RC) release, then
 follow these instructions:
 
-Only for Major release
--------------------------
+If preparing a Major release
+----------------------------
 
 Check that you are indeed preparing a major release:
 
@@ -409,8 +413,8 @@ Merge each APT overlay suite listed in the `testing` branch's
 
         ./bin/merge-APT-overlays testing
 
-Only for Bugfix release
-------------------------
+If preparing a Bugfix release
+-----------------------------
 
 Check that you are indeed preparing a bugfix release:
 
@@ -1649,8 +1653,8 @@ Make sure to:
 
 The technical writers will update the release notes after the release.
 
-If preparing a major or a bugfix release
--------------------------------------------
+If preparing a final release
+-------------------------------
 
 Skip this part if preparing a RC.
 
@@ -1852,7 +1856,11 @@ website:
 Wait for the release to be fully published, that is for the website to have been
 fully refreshed. To do so:
 
-### If you're publishing a final release,
+### If you're publishing a final release
+
+Check:
+
+    [ "$DIST" = stable ]
 
 wait until all these conditions are met:
  - <https://tails.boum.org/news/> includes the release notes
@@ -1860,12 +1868,16 @@ wait until all these conditions are met:
  - <https://tails.boum.org/torrents/files/> includes the files
    for the new release
 
-### Else
+### If you're publishing a RC
+
+Check:
+
+    [ "$DIST" = alpha ]
 
 wait until <https://tails.boum.org/news/test_$TAG/> is live.
 
-Bug tracker [only Final]
--------------------------
+Bug tracker [if preparing a final release]
+--------------------------------------------
 
 Skip this part if preparing a release candidate:
 
