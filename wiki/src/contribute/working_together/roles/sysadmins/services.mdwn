@@ -163,17 +163,6 @@ Below, importance level is evaluated based on:
 * documentation: currently none
 * importance: critical (needed to ensure that other, critical services are working)
 
-# Internal XMPP service
-
-* purpose: an internal XMPP service that can be used by Tails developers and some contributors.
-* access: at the moment everyone that is on the tails-summit mailinglist has and/or can
-  request an account.
-* tools: prosody
-* configuration:
-  - [[!tails_gitweb_puppet_tails manifests/prosody.pp
-    desc="`tails::prosody` class"]]
-* importance: low
-
 <a id="Jenkins"></a>
 
 # Jenkins
@@ -236,6 +225,24 @@ Below, importance level is evaluated based on:
     [[!tails_gitweb_puppet_tails files/meeting/meeting.py
     desc="`meeting.py` script"]]
 * importance: to be defined
+
+<a id="mirror-pool"></a>
+
+# Mirror pool
+
+* purpose: provide the HTTP and DNS mirror pools
+* documentation: [[design documentation|contribute/design/mirrors]]
+* access: public
+* tools: [[!debpts mirrorbits]]
+* configuration:
+  - [[!tails_gitlab tails/puppet-tails/-/blob/master/manifests/profile/mirrorbits.pp desc="`tails::profile::mirrorbits`"]]
+  - `gitolite3@git.puppet.tails.boum.org:mirror-pool.git`
+  - `tails_git@dns.lizard:/srv/repositories/mirrors.git` 
+* importance: critical (needed by users to download Tails)
+* responsibilities:
+  - Process offers of new mirrors.
+  - Identify and process broken and slow mirrors.
+  - Identify general health problems.
 
 <a id="mumble"></a>
 

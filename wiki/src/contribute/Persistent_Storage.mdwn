@@ -20,7 +20,7 @@ If you do, it's **important** that all privileged accesses of paths which
 are writable by an unprivileged user (e.g. `amnesia`) are done via the
 `/run/nosymfollow` mountpoint to avoid symlink attacks. For more
 information, see the section on symlink attacks in
-[[contribute/design/Persistent_Storage]].
+[[contribute/design/persistence]].
 
 Note that's is possible that on-activated hooks are run multiple times
 without the on-deactivated hooks being run in between, so they must
