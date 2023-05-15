@@ -46,7 +46,7 @@ When /^I allow time sync before Tor connects to work again$/ do
   $vm.execute_successfully('mv /etc/tails-get-network-time.conf.bak /etc/tails-get-network-time.conf')
 end
 
-When /^I make sure time sync before Tor connects (fails|times out|indicates a captive portal)$/ do |failure_mode|
+When /^I make sure time sync before Tor connects (fails|times out|indicates a captive portal|uses a fake connectivity check service)$/ do |failure_mode|
   step 'a web server is running on the LAN'
 
   if failure_mode == 'fails'
@@ -174,4 +174,75 @@ Then /^the hardware clock is still off by "([^"]+)"$/ do |timediff|
          'The hardware clock of the Tails VM should be between ' \
          "'#{expected_time_lower_bound}' and '#{expected_time_upper_bound}', " \
          "but is actually '#{hwclock}'")
+end
+
+Then /^I make NetworkManager perform a connectivity check$/ do
+  $vm.file_overwrite(
+    '/etc/NetworkManager/conf.d/connectivity.conf',
+    [
+      '[connectivity]',
+      "uri=#{@web_server_url}/concheck",
+      'response=OK',
+      '[logging]',
+      'level=DEBUG',
+      'domains=CORE,CONCHECK',
+    ]
+  )
+
+  # Get the journal cursor of the latest NetworkManager log line.
+  cursor_line = $vm.execute_successfully(
+    'journalctl -u NetworkManager.service -e -n1 --show-cursor | tail -n1'
+  ).stdout.chomp
+  cursor = cursor_line.match(/-- cursor: (.*)/)[1]
+
+  # Restart NetworkManager to make it use the new config and perform a
+  # connectivity check.
+  $vm.execute_successfully('systemctl restart NetworkManager.service')
+
+  # Wait until the connectivity check has been performed.
+  try_for(20) do
+    output = $vm.execute_successfully(
+      "journalctl -u NetworkManager.service --show-cursor --after-cursor '#{cursor}'"
+    ).stdout.chomp
+    assert(!output.empty?)
+    cursor = output.match(/-- cursor: (.*)/)[1]
+    # Return true if any line contains 'manager: connectivity checking indicates'
+    output.lines.any? { |l| l.include?('manager: connectivity checking indicates') }
+  end
+end
+
+Then /^the fake connectivity check service has received a new HTTP request$/ do\
+  @captured_request_headers ||= []
+  headers = []
+  try_for(10, msg: 'The fake connectivity check service has not received a new HTTP request') do
+    # List the files in the fake connectivity check service's headers
+    headers = Dir.glob("#{@lan_web_server_headers_dir}/*")
+
+    # Check that there are more headers than before
+    headers.size > @captured_request_headers.size
+  end
+
+  # Append the new headers to the list of captured headers
+  @captured_request_headers += headers
+end
+
+Then /^the HTTP requests received by the fake connectivity check service are identical$/ do
+  # We can only compare headers if there are at least two of them
+  assert(@captured_request_headers.size >= 2,
+         'There are not enough HTTP requests received by the fake connectivity ' \
+          'check service to compare them')
+  first_header = @captured_request_headers[0]
+
+  # Check that all headers are identical to the first one by executing
+  # `diff --unified=0 --from-file #{first_header} #{@lan_web_server_headers_dir}/*`
+  # on the host.
+  diff = cmd_helper([
+    'diff',
+    '--unified=0',
+    '--from-file', first_header,
+    *@captured_request_headers,
+  ])
+  assert(diff.empty?,
+          "The HTTP requests received by the fake connectivity check service " \
+          "are not identical:\n#{diff}")
 end

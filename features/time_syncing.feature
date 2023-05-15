@@ -102,3 +102,13 @@ Feature: Time syncing
     # check that htpdate has done its job
     And the system clock is less than 5 minutes incorrect
     And the displayed clock is less than 5 minutes incorrect in "+08:00"
+
+  Scenario: Time sync before Tor connects sets the same headers as the NetworkManager connectivity check
+    Given I have started Tails from DVD without network and logged in
+    And I make sure time sync before Tor connects uses a fake connectivity check service
+    And the network is plugged
+    And Tor is ready
+    Then the fake connectivity check service has received a new HTTP request
+    When I make NetworkManager perform a connectivity check
+    Then the fake connectivity check service has received a new HTTP request
+    And the HTTP requests received by the fake connectivity check service are identical

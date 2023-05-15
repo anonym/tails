@@ -1192,6 +1192,7 @@ def start_web_server
   FileUtils.mkdir_p(LAN_WEB_SERVER_DATA_DIR)
 
   @captive_portal_login_file = "#{LAN_WEB_SERVER_DATA_DIR}/logged-in"
+  @lan_web_server_headers_dir = "#{LAN_WEB_SERVER_DATA_DIR}/headers"
 
   add_extra_allowed_host(@web_server_ip_addr, @web_server_port)
 
@@ -1200,7 +1201,7 @@ def start_web_server
     '--address', @web_server_ip_addr,
     '--port', @web_server_port.to_s,
     '--hello-message', web_server_hello_msg,
-    '--login-file', @captive_portal_login_file,
+    '--data-dir', LAN_WEB_SERVER_DATA_DIR,
   )
 
   # Log all the web server output (stdout and stderr) to the debug log
@@ -1231,6 +1232,12 @@ def start_web_server
     msg = cmd_helper(['curl', '--silent', '--fail', @web_server_url])
     web_server_hello_msg == msg
   end
+
+  # Remove the header file that was saved by the web server for the
+  # previous request (we just remove all files in the headers directory
+  # because we don't know the filename and there shouldn't be any other
+  # files in there anyway).
+  FileUtils.rm_f(Dir.glob("#{@lan_web_server_headers_dir}/*"))
 end
 
 When /^I open a page on the LAN web server in the (.*)$/ do |browser|
