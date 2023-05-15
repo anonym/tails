@@ -47,15 +47,10 @@ When /^I allow time sync before Tor connects to work again$/ do
 end
 
 When /^I make sure time sync before Tor connects (fails|times out)$/ do |failure_mode|
+  step 'a web server is running on the LAN'
   force_timeout = failure_mode == 'times out'
-  hostname = FAKE_CONNECTIVITY_CHECK_HOSTNAME
-  @allowed_dns_queries = [hostname + '.']
-  ips = Resolv.getaddresses(hostname).sort
-  ips.each do |ip|
-    add_extra_allowed_host(ip, 80)
-  end
   path = force_timeout ? 'delay/30' : 'redirect-to?url=foobar'
-  url = "http://#{hostname}/#{path}"
+  url = "#{@web_server_url}/#{path}"
 
   $vm.execute_successfully('cp /etc/tails-get-network-time.conf /etc/tails-get-network-time.conf.bak')
   $vm.file_overwrite(

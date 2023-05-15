@@ -892,21 +892,18 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?
   # often "I have started Tails from DVD and logged in and the network
   # is connected").
   if !connectivity_check.empty?
-    # Allow connections to the local DNS resolver, used by
-    # tails-get-network-time
-    allowed_hosts << { address: $vmnet.bridge_ip_addr, port: 53 }
+    if connectivity_check.include? 'fake'
+      # The fake connectivity check service uses the LAN web server
+      allowed_hosts << { address: @web_server_ip_addr, port: @web_server_port }
+    else
+      # Allow connections to the local DNS resolver, used by
+      # tails-get-network-time to resolve the hostname of the
+      # connectivity check service
+      allowed_hosts << { address: $vmnet.bridge_ip_addr, port: 53 }
+      allowed_hosts += CONNECTIVITY_CHECK_ALLOWED_NODES
+      allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME + '.']
+    end
 
-    conn_host, conn_nodes = if connectivity_check.include? 'fake'
-                              host = FAKE_CONNECTIVITY_CHECK_HOSTNAME
-                              nodes = Resolv.getaddresses(host).map do |ip|
-                                { address: ip, port: 80 }
-                              end
-                              [host, nodes]
-                            else
-                              [CONNECTIVITY_CHECK_HOSTNAME, CONNECTIVITY_CHECK_ALLOWED_NODES]
-                            end
-    allowed_hosts += conn_nodes
-    allowed_dns_queries = [conn_host + '.']
   else
     allowed_dns_queries = []
   end

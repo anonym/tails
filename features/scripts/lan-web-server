@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import subprocess
+import sys
+import time
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+from pathlib import Path
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CAPTIVE_PORTAL_HTML = "features/webserver/htdocs/captive.html"
+
+git_dir = str()
+address = str()
+port = int()
+hello_message = str()
+login_file = str()
+
+
+class RequestHandler(SimpleHTTPRequestHandler):
+    """A HTTPRequestHandler that redirects all requests to / to /portal"""
+
+    def do_GET(self):
+        if self.path == "/":
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(hello_message.encode())
+        elif self.path.startswith("/redirect-to?"):
+            # Get the URL to redirect to from the url query string
+            url = self.path.split("?url=", 1)[1]
+            self.send_response(302)
+            self.send_header("Location", url)
+            self.end_headers()
+        elif self.path == "/captive":
+            self.send_response(200)
+            self.end_headers()
+            captive_portal_html_file = Path(git_dir, CAPTIVE_PORTAL_HTML)
+            self.wfile.write(captive_portal_html_file.read_bytes())
+        elif self.path.startswith("/login"):
+            self.send_response(200)
+            self.end_headers()
+            Path(login_file).write_text("OK")
+            self.wfile.write(b"Logged in")
+        elif self.path.startswith("/delay"):
+            # Get the URL to redirect to from the url query string
+            seconds = int(self.path.split("/")[-1])
+            time.sleep(seconds)
+            self.send_response(200)
+            self.end_headers()
+        else:
+            self.send_response(404)
+            self.end_headers()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--address", default="0.0.0.0")
+    parser.add_argument("--port", type=int, default=8080)
+    parser.add_argument("--hello-message", default="hello")
+    parser.add_argument("--login-file", default="/tmp/logged-in")
+    args = parser.parse_args()
+
+    global address, port, hello_message, login_file
+    address = args.address
+    port = args.port
+    hello_message = args.hello_message
+    login_file = args.login_file
+
+    global git_dir
+    git_dir = subprocess.check_output(
+        ["git", "-C", SCRIPT_DIR, "rev-parse", "--show-toplevel"],
+        text=True,
+    ).strip()
+
+    print(f"Initializing", file=sys.stderr)
+    server = HTTPServer((address, port), RequestHandler)
+    print(f"Listening on {address}:{port}", file=sys.stderr)
+
+    try:
+        server.serve_forever()
+    finally:
+        print("Shutting down", file=sys.stderr)
+        server.server_close()
+
+
+if __name__ == "__main__":
+    main()

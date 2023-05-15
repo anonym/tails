@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'tempfile'
+require 'open3'
 
 def post_vm_start_hook
   $vm.late_patch if $config['LATE_PATCH']
@@ -1174,44 +1175,41 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
 end
 
 Given /^a web server is running on the LAN$/ do
+  # Start a new web server unless one is already running
+  unless @web_server_url
+    start_web_server
+  end
+end
+
+def start_web_server
   @web_server_ip_addr = $vmnet.bridge_ip_addr
   @web_server_port = 8000
   @web_server_url = "http://#{@web_server_ip_addr}:#{@web_server_port}"
   web_server_hello_msg = 'Welcome to the LAN web server!'
 
-  @captive_portal_login_file = "#{$config['TMPDIR']}/logged-in"
-  File.delete(@captive_portal_login_file) if File.exist?(@captive_portal_login_file)
+  # Ensure that the LAN web server data directory is empty
+  FileUtils.rm_rf(LAN_WEB_SERVER_DATA_DIR)
+  FileUtils.mkdir_p(LAN_WEB_SERVER_DATA_DIR)
 
-  # I've tested ruby Thread:s, fork(), etc. but nothing works due to
-  # various strange limitations in the ruby interpreter. For instance,
-  # apparently concurrent IO has serious limits in the thread
-  # scheduler (e.g. when we used Sikuli, its wait() would block
-  # WEBrick from reading from its socket), and fork():ing results in a
-  # lot of complex cucumber stuff (like our hooks!) ending up in the
-  # child process, breaking stuff in the parent process. After asking
-  # some supposed ruby pros, I've settled on the following.
+  @captive_portal_login_file = "#{LAN_WEB_SERVER_DATA_DIR}/logged-in"
 
-  code = <<-CODE
-  require "webrick"
-  STDOUT.reopen("/dev/null", "w")
-  STDERR.reopen("/dev/null", "w")
-  server = WEBrick::HTTPServer.new(:BindAddress => '#{@web_server_ip_addr}',
-                                   :Port => #{@web_server_port},
-                                   :DocumentRoot => "/dev/null")
-  server.mount_proc('/') do |req, res|
-    res.body = '#{web_server_hello_msg}'
-  end
-  server.mount_proc('/captive') do |req, res|
-    res.body = File.read('#{GIT_DIR}/features/webserver/htdocs/captive.html')
-  end
-  server.mount_proc('/login') do |req, res|
-      File.write('#{@captive_portal_login_file}', 'OK')
-      res.body = 'Logged in'
-  end
-  server.start
-  CODE
   add_extra_allowed_host(@web_server_ip_addr, @web_server_port)
-  proc = IO.popen(['ruby', '-e', code])
+
+  _, out, proc = Open3.popen2e(
+    "#{GIT_DIR}/features/scripts/lan-web-server",
+    '--address', @web_server_ip_addr,
+    '--port', @web_server_port.to_s,
+    '--hello-message', web_server_hello_msg,
+    '--login-file', @captive_portal_login_file,
+  )
+
+  # Log all the web server output (stdout and stderr) to the debug log
+  Thread.new do
+    out.each_line do |line|
+      debug_log("LAN web server: #{line}")
+    end
+  end
+
   try_for(10, msg: 'It seems the LAN web server failed to start') do
     Process.kill(0, proc.pid) == 1
   end
@@ -1226,14 +1224,11 @@ Given /^a web server is running on the LAN$/ do
   # up. If e.g. the Unsafe Browser (which *should* be able to access
   # the web server) tries to access it too early, Firefox seems to
   # take some random amount of time to retry fetching. Curl gives a
-  # more consistent result, so let's rely on that instead. Note that
-  # this forces us to capture traffic *after* this step in case
-  # accessing this server matters, like when testing the Tor Browser..
+  # more consistent result, so let's rely on that instead.
   try_for(30, msg: 'Something is wrong with the LAN web server') do
     # Use /usr/bin/curl instead of our curl wrapper script because the
     # wrapper script makes curl use Tor and we want to access the LAN.
-    msg = $vm.execute_successfully("/usr/bin/curl #{@web_server_url}",
-                                   user: LIVE_USER).stdout.chomp
+    msg = cmd_helper(['curl', '--silent', '--fail', @web_server_url])
     web_server_hello_msg == msg
   end
 end
