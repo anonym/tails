@@ -370,8 +370,7 @@ end
 When /^I log-in to the Captive Portal$/ do
   step 'a web server is running on the LAN'
   captive_portal_page = "#{@web_server_url}/captive"
-  redirect_url = "http://httpbin.org/redirect-to?url=#{CGI.escape(captive_portal_page)}"
-  step "I open the address \"#{redirect_url}\" in the Unsafe Browser"
+  step "I open the address \"#{captive_portal_page}\" in the Unsafe Browser"
 
   try_for(30) do
     File.exist?(@captive_portal_login_file)
