@@ -46,11 +46,19 @@ When /^I allow time sync before Tor connects to work again$/ do
   $vm.execute_successfully('mv /etc/tails-get-network-time.conf.bak /etc/tails-get-network-time.conf')
 end
 
-When /^I make sure time sync before Tor connects (fails|times out)$/ do |failure_mode|
+When /^I make sure time sync before Tor connects (fails|times out|indicates a captive portal)$/ do |failure_mode|
   step 'a web server is running on the LAN'
-  force_timeout = failure_mode == 'times out'
-  path = force_timeout ? 'delay/30' : 'redirect-to?url=foobar'
-  url = "#{@web_server_url}/#{path}"
+
+  if failure_mode == 'fails'
+    endpoint = 'fail'
+  elsif failure_mode == 'indicates a captive portal'
+    endpoint = 'redirect-to?url=/'
+  elsif failure_mode == 'times out'
+    endpoint = 'delay/30'
+  else
+    endpoint = '/'
+  end
+  url = "#{@web_server_url}/#{endpoint}"
 
   $vm.execute_successfully('cp /etc/tails-get-network-time.conf /etc/tails-get-network-time.conf.bak')
   $vm.file_overwrite(

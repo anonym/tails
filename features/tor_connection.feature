@@ -46,7 +46,7 @@ Feature: Tor Connection helps the user in connecting to Tor
     Scenario: I can use a network with captive portal
         Given the network is plugged
         And the Tor network and default bridges are blocked
-        And I make sure time sync before Tor connects fails
+        And I make sure time sync before Tor connects indicates a captive portal
         And the Tor Connection Assistant autostarts
         When I choose to connect to Tor automatically
         And I click "Connect to Tor"
