@@ -258,6 +258,10 @@ You can skip this if you're releasing a final major version.
 Only for RC
 -------------
 
+Check that you are indeed preparing a RC:
+
+    [ "$DIST" = alpha ]
+
 Follow this part ONLY if you are preparing the release candidate for a major release.
 
 
@@ -396,6 +400,10 @@ follow these instructions:
 Only for Major release
 -------------------------
 
+Check that you are indeed preparing a major release:
+
+    [ "$DIST" = stable ] && [ "$MAJOR" -eq 1 ]
+
 Merge each APT overlay suite listed in the `testing` branch's
 `config/APT_overlays.d/` into the `testing` custom APT suite:
 
@@ -403,6 +411,10 @@ Merge each APT overlay suite listed in the `testing` branch's
 
 Only for Bugfix release
 ------------------------
+
+Check that you are indeed preparing a bugfix release:
+
+    [ "$DIST" = stable ] && [ "$MAJOR" -eq 0 ]
 
 <div class="note">
 For bugfix releases, we generally do not put any RC out, so freeze time
@@ -482,11 +494,13 @@ Update the Changelog entry for the release you're preparing:
 
 If you're preparing a release candidate:
 
+ - `[ "$DIST" = alpha ]`
  - Set the version for the new entry in `debian/changelog` to `$VERSION`: the
    above code has incorrectly set it to `$MILESTONE`.
 
 If you're preparing a release candidate or a major release:
 
+ - `[ "$DIST" = alpha ] || [ "$MAJOR" -eq 1 ]`
  - For each merge request listed in the new Changelog entry,
    copy the "Closes: #NNNNNN" string from the MR description into the relevant
    section of the Changelog.
@@ -903,16 +917,13 @@ and the build of every branch based on it, which would effectively
 block other development work. So the final steps towards publishing
 the release will be done in a new, dedicated branch.
 
-If preparing anything but a final release (e.g. an alpha, beta
-or RC):
-
+    if [ "$DIST" = alpha ]; then
         git checkout -b "${WEBSITE_RELEASE_BRANCH:?}" origin/master && \
         git push -u origin "${WEBSITE_RELEASE_BRANCH:?}"
-
-Else, if preparing a final release:
-
+    else
         git checkout -b "${WEBSITE_RELEASE_BRANCH:?}" "${TAG:?}" && \
         git push -u origin "${WEBSITE_RELEASE_BRANCH:?}"
+    fi
 
 Generate the OpenPGP signatures and Torrents
 ============================================
@@ -1278,7 +1289,9 @@ Prepare upgrade-description files
 Prepare the image description file for the download verification
 ----------------------------------------------------------------
 
-If preparing a RC, skip this part.
+If preparing a RC, skip this part:
+
+    [ "$DIST" = stable ]
 
 Update the image description file (IDF) used by the verification JavaScript:
 
@@ -1322,7 +1335,9 @@ above).
 Delete obsolete IUKs
 --------------------
 
-Skip this section if you're preparing a non-final release (beta, RC).
+Skip this section if you're preparing a non-final release (beta, RC):
+
+    [ "$DIST" = stable ]
 
 Delete the IUKs that upgrade to any beta or RC corresponding to the version you
 are preparing:
@@ -1639,6 +1654,8 @@ If preparing a major or a bugfix release
 
 Skip this part if preparing a RC.
 
+    [ "$DIST" = alpha ]
+
 Rename, copy, garbage collect and update various files:
 
 	./bin/add-release-files-to-website
@@ -1671,10 +1688,12 @@ Remove obsolete bits from `wiki/src/home/testing.html`. For example,
 remove any text that's specific to a release candidate we may have
 published for the version you are preparing.
 
-If preparing a release candidate
---------------------------------
+If preparing a RC
+------------------
 
-Skip this part if preparing a final release.
+Skip this part if preparing a final release:
+
+    [ "$DIST" = alpha ]
 
 Copy the signatures and the Torrents into the website repository:
 
@@ -1845,10 +1864,12 @@ wait until all these conditions are met:
 
 wait until <https://tails.boum.org/news/test_$TAG/> is live.
 
-Bug tracker
------------
+Bug tracker [only Final]
+-------------------------
 
-Skip this part if preparing a release candidate.
+Skip this part if preparing a release candidate:
+
+    [ "$DIST" = stable ]
 
 1. Ensure you have an up-to-date `tails:gitlab-triage-stable` container image:
 
@@ -1934,6 +1955,10 @@ Prepare for the next development cycle
 
 If you just released a final release
 ------------------------------------
+
+Check that you are indeed preparing a final release:
+
+    [ "$DIST" = stable ]
 
 1. If you just released a new stable release, remove the previous
    stable release from:
@@ -2169,6 +2194,10 @@ If you just released a final release
 
 If you just released an RC
 --------------------------
+
+Check that you are indeed preparing a RC:
+
+    [ "$DIST" = alpha ]
 
 1. If this command outputs anything:
 
