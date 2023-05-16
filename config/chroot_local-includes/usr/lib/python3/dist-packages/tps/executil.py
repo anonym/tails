@@ -27,16 +27,17 @@ def _run(cmd: List, *args, **kwargs) -> subprocess.CompletedProcess:
     if tps.PROFILING:
         cmd = prepare_for_profiling(cmd)
 
-    p = None
     kwargs["stderr"] = subprocess.PIPE
     kwargs["text"] = True
     try:
         p = subprocess.run(cmd, *args, **kwargs)
+    except subprocess.CalledProcessError as e:
+        print(e.stderr, file=sys.stderr)
+        raise
+    else:
+        print(p.stderr, file=sys.stderr)
         return p
     finally:
-        # Note that this if statement is run even if the command fails
-        if p is not None:
-            print(p.stderr, file=sys.stderr)
         logger.debug(f"Done executing command", stacklevel=3)
 
 

@@ -29,33 +29,6 @@ Given /^I create an?( (\d+) ([[:alpha:]]+))? ([[:alnum:]]+) partition( labeled "
   $vm.storage.disk_mkpartfs(name, parttype, fstype, **opts)
 end
 
-Given /^I write (|an old version of )the Tails (ISO|USB) image to disk "([^"]+)"$/ do |old, type, name|
-  src_disk = {
-    path: (if old == ''
-             type == 'ISO' ? TAILS_ISO : TAILS_IMG
-           else
-             type == 'ISO' ? OLD_TAILS_ISO : OLD_TAILS_IMG
-           end
-          ),
-    opts: {
-      format:   'raw',
-      readonly: true,
-    },
-  }
-  dest_disk = {
-    path: $vm.storage.disk_path(name),
-    opts: {
-      format: $vm.storage.disk_format(name),
-    },
-  }
-  $vm.storage.guestfs_disk_helper(
-    src_disk,
-    dest_disk
-  ) do |g, src_disk_handle, dest_disk_handle|
-    g.copy_device_to_device(src_disk_handle, dest_disk_handle, {})
-  end
-end
-
 Then /^drive "([^"]+)" is not mounted$/ do |name|
   dev = $vm.disk_dev(name)
   assert($vm.execute("grep -qs '^#{dev}' /proc/mounts").failure?,

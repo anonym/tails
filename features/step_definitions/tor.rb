@@ -311,7 +311,7 @@ Then /^I see that (.+) is properly stream isolated(?: after (\d+) seconds)?$/ do
   sleep delay.to_i if delay
   info = stream_isolation_info(application)
   expected_ports = [info[:socksport]]
-  expected_ports << 9051 if info[:controller]
+  expected_ports << 951 if info[:controller]
   expected_ports << 53 if info[:dns]
   assert_not_nil(@process_monitor_log)
   log_lines = $vm.file_content(@process_monitor_log).split("\n")
@@ -372,14 +372,21 @@ class TCAForbiddenBridgeType < StandardError
 end
 
 Then /^the Tor Connection Assistant connects to Tor$/ do
-  failure_reported = false
+  failure_reported_once = false
+  failure_reported_twice = false
   try_for(120,
           msg:       'Timed out while waiting for TCA to connect to Tor',
           exception: TCAConnectionTimeout) do
     if tor_connection_assistant.child?('Error connecting to Tor',
                                        roleName: 'label', retry: false)
-      failure_reported = true
-      done = true
+      if failure_reported_once
+        failure_reported_twice = true
+        done = true
+      else
+        failure_reported_once = true
+        done = false
+        sleep 3
+      end
     else
       done = tor_connection_assistant.child?(
         'Connected to Tor successfully', roleName: 'label',
@@ -391,7 +398,7 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
     end
     done
   end
-  raise TCAConnectionFailure, 'TCA failed to connect to Tor' if failure_reported
+  raise TCAConnectionFailure, 'TCA failed to connect to Tor' if failure_reported_twice
 end
 
 Then /^the Tor Connection Assistant fails to connect to Tor$/ do

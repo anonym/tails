@@ -43,6 +43,14 @@ class CreationView(View):
             cancellable=None,
         )  # type: Gio.DBusProxy
 
+        status_variant = self.backend_job.get_cached_property("Status")
+        if status_variant is not None:
+            self.set_status(status_variant.get_string())
+
+        progress_variant = self.backend_job.get_cached_property("Progress")
+        if progress_variant is not None:
+            self.set_progress(progress_variant.get_uint32())
+
         self.backend_job.connect("g-properties-changed",
                                  self.on_job_properties_changed)
 
@@ -50,12 +58,12 @@ class CreationView(View):
                                   changed_properties: GLib.Variant,
                                   invalidated_properties: List[str]):
         if "Status" in changed_properties.keys():
-            status = changed_properties["Status"]
-            # The status is already localized because it was retrieved
-            # via UDisksClient.get_job_description().
-            self.status_label.set_label(status)
+            self.set_status(changed_properties["Status"])
         if "Progress" in changed_properties.keys():
-            progress = changed_properties["Progress"]
-            # The status is already localized because it was retrieved
-            # via UDisksClient.get_job_description().
-            self.progress_bar.set_fraction(progress / 100)
+            self.set_progress(changed_properties["Progress"])
+
+    def set_status(self, status: str):
+        self.status_label.set_label(status)
+
+    def set_progress(self, progress: int):
+        self.progress_bar.set_fraction(progress / 100)

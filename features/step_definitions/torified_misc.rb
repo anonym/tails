@@ -1,6 +1,6 @@
 require 'resolv'
 
-When /^I wget "([^"]+)" to stdout(?:| with the '([^']+)' options)$/ do |target, options|
+When /^I (wget|curl) "([^"]+)" to stdout(?:| with the '([^']+)' options)$/ do |cmd, target, options|
   retry_tor do
     if target == 'some Tails mirror'
       host = 'dl.amnesia.boum.org'
@@ -10,30 +10,34 @@ When /^I wget "([^"]+)" to stdout(?:| with the '([^']+)' options)$/ do |target, 
     else
       url = target
     end
-    arguments = "-O - '#{url}'"
+    arguments = if cmd == 'wget'
+                  "-O - '#{url}'"
+                else
+                  "-s '#{url}'"
+                end
     arguments = "#{options} #{arguments}" if options
-    @vm_execute_res = $vm.execute("wget #{arguments}", user: LIVE_USER)
+    @vm_execute_res = $vm.execute("#{cmd} #{arguments}", user: LIVE_USER)
     if @vm_execute_res.failure?
-      raise "wget:ing #{url} with options #{options} failed with:\n" \
+      raise "#{cmd}:ing #{url} with options #{options} failed with:\n" \
             "#{@vm_execute_res.stdout}\n" +
             @vm_execute_res.stderr.to_s
     end
   end
 end
 
-Then /^the wget command is successful$/ do
+Then /^the (wget|curl) command is successful$/ do |cmd|
   assert(
     @vm_execute_res.success?,
-    "wget failed:\n" \
+    "#{cmd} failed:\n" \
     "#{@vm_execute_res.stdout}\n" +
     @vm_execute_res.stderr.to_s
   )
 end
 
-Then /^the wget standard output contains "([^"]+)"$/ do |text|
+Then /^the (wget|curl) standard output contains "([^"]+)"$/ do |cmd, text|
   assert(
     @vm_execute_res.stdout[text],
-    "The wget standard output does not contain #{text}:\n" \
+    "The #{cmd} standard output does not contain #{text}:\n" \
     "#{@vm_execute_res.stdout}\n" +
     @vm_execute_res.stderr.to_s
   )

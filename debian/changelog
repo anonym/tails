@@ -1,3 +1,120 @@
+tails (5.13) unstable; urgency=medium
+
+  * Resolve "Upgrade Tor Browser to 12.0.6, based on Firefox 102.11"
+    (tails/tails!1134)
+
+    Closes issues:
+      - Upgrade Tor Browser to 12.0.6, based on Firefox 102.11 (tails/tails#19621)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0.6-build1
+
+  * unsafe-browser: Explain why our use of flock is not vulnerable
+    (tails/tails!1113)
+
+    Closes issues:
+      - Unsafe Browser - Local Privilege Escalation (LPE) via symlink - Arbitrary File
+        Content Delete (tails/tails#19616)
+
+    Commits:
+      - Use /run/lock instead of /var/lock
+      - unsafe-browser: Explain why our use of flock is not vulnerable
+
+  * Make curl use Tor (tails/tails!1123)
+
+    Closes issues:
+      - Make curl work out of the box (tails/tails#19488)
+
+    Commits:
+      - test that curl works out of the box
+      - Make curl use Tor
+
+  * udisks2: Use LUKS2 by default (tails/tails!1115)
+
+    Closes issues:
+      - Persistent Storage: Use LUKS2 (tails/tails#15450)
+
+    Commits:
+      - Test suite: Increase timeout for changing the LUKS passphrase
+      - Test suite: Check that Persistent Storage uses LUKS2
+      - Test suite: record old version when installing one to disk
+      - Test suite: move step definition to a more suitable place
+      - udisks2: Use LUKS2 by default
+
+  * tails-documentation: Check that joined path is below website path
+    (tails/tails!1132)
+
+    Closes issues:
+      - tails-documentation - Limited Path Traversal (tails/tails#19576)
+
+    Commits:
+      - tails-documentation: Check that joined path is below website path
+
+  * Test suite: Don't check for "Display output is not active" screen
+    (tails/tails!1126)
+
+    Closes issues:
+      - Tests sometimes fail with "Display output is not active" after clicking login
+        button in Welcome Screen (tails/tails#19639)
+
+    Commits:
+      - Test suite: Don't check for "Display output is not active" screen
+      - Test suite: Print step status
+      - Welcome Screen: Make error message more useful
+
+  * Remove our public calendar (tails/tails!1125)
+
+    Commits:
+      - Add missing word
+      - Fix broken links
+      - Remove our public calendar
+
+  * tps: Use argon2id (tails/tails!1120)
+
+    Closes issues:
+      - Persistent Storage: Use argon2id (tails/tails#19633)
+
+    Commits:
+      - Test suite: Check that Persistent Storage uses argon2id
+      - tps: Reduce the number of triggered udev events
+      - tps: Fix creation sometimes failing because udisks object is not ready
+      - tps: Fix `udevadm trigger --settle` sometimes blocking forever
+      - tps-frontend: Fix first job update sometimes ignored
+      - tps: Send only one PropertiesChanged signal per job update
+      - tps: Don't restrict CPU usage during Persistent Storage creation
+      - tps: Keep the system responsive while creating Persistent Storage
+      - tps: Use argon2id
+
+  * tps: Fix stderr of failed commands not printed (tails/tails!1118)
+
+    Commits:
+      - tps: Fix stderr of failed commands not printed
+
+  * Test suite: Avoid TCA scenario failing if the error panel is briefly shown
+    (tails/tails!1114)
+
+    Closes issues:
+      - Fix "Scenario: The same Tor configuration is applied when the network is
+        reconnected" failing (tails/tails#19591)
+
+    Commits:
+      - Test suite: Avoid TCA scenario failing if the error panel is briefly shown
+
+  * tps: Fix InvalidBootDeviceError raised in finally block (tails/tails!1103)
+
+    Closes issues:
+      - "Persistent Greeter options" test suite scenario always fails
+        (tails/tails#19558)
+      - tps reports the need for "USB stick installed with a USB image or Tails
+        Installer" in unrelated failure modes (tails/tails#19588)
+
+    Commits:
+      - tps: Fix InvalidBootDeviceError raised in finally block
+      - tps: Remove unused exception
+
+ -- Tails developers <tails@boum.org>  Mon, 15 May 2023 12:22:05 +0200
+
 tails (5.12) unstable; urgency=medium
 
   * Test suite: Try to catch another case of "Display output is not active"

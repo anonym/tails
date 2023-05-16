@@ -4,6 +4,7 @@ import os
 import sys
 from argparse import ArgumentParser
 
+from tailslib.django import safe_join
 from tailslib.systemd import tor_has_bootstrapped
 
 WEBSITE_URL = "https://tails.boum.org"
@@ -21,9 +22,9 @@ def find_local_page(page: str) -> str:
 
 def get_local_path(page, lang_code: str) -> str:
     if lang_code:
-        return os.path.join(WEBSITE_LOCAL_PATH, page + "." + lang_code + ".html")
+        return safe_join(WEBSITE_LOCAL_PATH, page + "." + lang_code + ".html")
     else:
-        return os.path.join(WEBSITE_LOCAL_PATH, page + ".html")
+        return safe_join(WEBSITE_LOCAL_PATH, page + ".html")
 
 
 def get_parser():
