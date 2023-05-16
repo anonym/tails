@@ -9,7 +9,7 @@ pref("privacy.spoof_english", 2);
 
 // Tails-specific Torbutton preferences
 pref("extensions.torbutton.lastUpdateCheck", "9999999999.999");
-pref("extensions.torbutton.control_port", 9051);
+pref("extensions.torbutton.control_port", 951);
 
 // Skip migration of prefs from Tor Browser 5 or older
 pref("extensions.torbutton.pref_fixup_version", 1);

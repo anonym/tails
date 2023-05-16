@@ -38,6 +38,11 @@ def run_in_netns(*args, netns, root="/", bind_mounts=[]):
         *user_env_vars(LIVE_USERNAME),
         f"AT_SPI_BUS_ADDRESS=unix:path={A11Y_BUS_SANDBOX_PATH}",
         f"IBUS_ADDRESS=unix:path={IBUS_SANDBOX_PATH}",
+        # TODO: This has nothing to do with network namespaces and we
+        #       should set it in the caller instead, but that's not
+        #       supported currently.
+        # Required by onioncircuits.
+        "TOR_CONTROL_PORT=951",
     ]
     # We run tca with several wrappers to accomplish our privilege-isolation-magic:
     # connect_drop: opens a privileged file and pass FD to new process

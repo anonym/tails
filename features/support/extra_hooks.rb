@@ -118,13 +118,13 @@ end
 def log_step_succeeded(message, **options)
   options[:color] = :green unless options.key?(:color)
   options[:timestamp] = false unless options.key?(:timestamp)
-  debug_log(STEP_INDENT + message, **options)
+  debug_log(STEP_INDENT + message + ' (passed)', **options)
 end
 
 def log_step_failed(message, **options)
   options[:color] = :red unless options.key?(:color)
   options[:timestamp] = false unless options.key?(:timestamp)
-  debug_log(STEP_INDENT + message, **options)
+  debug_log(STEP_INDENT + message + ' (failed)', **options)
 end
 
 def log_substep(message, **options)

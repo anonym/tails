@@ -59,7 +59,7 @@ class GdmClient (object):
 
     def __on_problem(self, client, service_name, problem):
         logging.debug("Received problem %s from %s" % (problem, service_name))
-        raise tailsgreeter.errors.GdmServerError
+        raise tailsgreeter.errors.GdmServerError(problem)
 
     def __on_info_query(self, client, service_name, question):
         logging.debug("Received info_query %s from %s"
