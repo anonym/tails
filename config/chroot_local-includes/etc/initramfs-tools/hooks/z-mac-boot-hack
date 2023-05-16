@@ -14,10 +14,6 @@ set -x
 # net drivers
 rm -rf "$DESTDIR/usr$MODULESDIR/kernel/drivers/net"
 
-# graphics drivers (not needed in initramfs stage)
-rm -rf "$DESTDIR/usr/lib/firmware/amdgpu"
-rm -rf "$DESTDIR/usr/lib/firmware/nvidia"
-
 # drivers for storage and filesystems Tails cannot boot from
 rm -f  "$DESTDIR/usr$MODULESDIR/kernel/drivers/ata/pata_pcmcia.ko"
 rm -rf "$DESTDIR/usr$MODULESDIR/kernel/drivers/block/drbd/"
