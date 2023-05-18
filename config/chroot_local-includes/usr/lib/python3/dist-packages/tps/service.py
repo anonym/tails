@@ -98,6 +98,7 @@ class Service(DBusObject, ServiceUsingJobs):
         self._upgraded = False
         self._created = False
         self.enable_features_lock = threading.Lock()
+        self._boot_device = None  # type: Optional[BootDevice]
 
         # Check if the boot device is valid for creating a Persistent
         # Storage. We only do this once and not in refresh_state(),
@@ -107,7 +108,6 @@ class Service(DBusObject, ServiceUsingJobs):
             self._boot_device = BootDevice.get_tails_boot_device()
         except InvalidBootDeviceError as e:
             logger.warning("Invalid boot device: %s", e)
-            self._boot_device = None
             self.State = State.NOT_CREATED
             self.Error = str(e)
             return
