@@ -11,7 +11,7 @@ from gi.repository import GLib, UDisks
 
 from tailslib import LIVE_USER_UID, LIVE_USERNAME
 import tps.logging
-from tps import executil
+from tps import executil, LUKS_HEADER_BACKUP_PATH_FORMAT_STRING
 from tps import _, TPS_MOUNT_POINT, udisks
 from tps.dbus.errors import IncorrectPassphraseError, TargetIsBusyError, NotEnoughMemoryError
 from tps.job import Job
@@ -345,19 +345,43 @@ class Partition(object):
             "tear-down": GLib.Variant('b', True),
         }))
 
-    def test_passphrase(self, passphrase: str):
+    def test_passphrase(self, passphrase: str,
+                        header_file: Optional[Path] = None):
         """Call cryptsetup to test the passphrase"""
+        cmd = ["cryptsetup", "luksOpen", "--test-passphrase",
+               "--batch-mode", "--key-file=-", self.device_path]
+        if header_file:
+            cmd += ["--header", str(header_file)]
         try:
-            executil.check_call(
-                ["cryptsetup", "luksOpen", "--test-passphrase", "--key-file=-",
-                 self.device_path],
-                text=True,
-                input=passphrase,
-            )
+            executil.check_call(cmd, text=True, input=passphrase)
         except subprocess.CalledProcessError as err:
             if err.returncode == 2:
                 raise IncorrectPassphraseError(err) from err
             raise
+
+    def luks_header_backup_path(self) -> Path:
+        """Return the path to the LUKS header backup file.
+        Raise a subprocess.CalledProcessError if the partition is not
+        encrypted."""
+        uuid = executil.check_output(
+            ["cryptsetup", "luksUUID", "--batch-mode", self.device_path],
+            text=True,
+        ).strip()
+        return Path(LUKS_HEADER_BACKUP_PATH_FORMAT_STRING.format(uuid=uuid))
+
+    def backup_luks_header(self):
+        luks_header_backup = self.luks_header_backup_path()
+        executil.check_call(
+            ["cryptsetup", "luksHeaderBackup", "--batch-mode",
+             "--header-backup-file", luks_header_backup, self.device_path],
+        )
+
+    def restore_luks_header(self):
+        luks_header_backup = self.luks_header_backup_path()
+        executil.check_call(
+            ["cryptsetup", "luksHeaderRestore", "--batch-mode",
+             "--header-backup-file", luks_header_backup, self.device_path],
+        )
 
     def upgrade_luks2(self):
         """Upgrade a LUKS1 header to LUKS2"""
@@ -392,6 +416,32 @@ class Partition(object):
                 cancellable=None,
             )
         except GLib.Error as err:
+            logger.error(f"Failed to unlock {self.device_path}: {err.message}")
+
+            luks_header_backup = self.luks_header_backup_path()
+            if err.matches(UDisks.error_quark(), UDisks.Error.FAILED) and \
+                    luks_header_backup.exists():
+                logger.info(f"Trying to unlock LUKS header backup: {luks_header_backup}")
+                # Test the passphrase against the LUKS header backup
+                try:
+                    self.test_passphrase(passphrase, luks_header_backup)
+                except IncorrectPassphraseError as err:
+                    logger.info("Failed to unlock LUKS header backup with the "
+                                f"provided passphrase: {err}")
+                else:
+                    # Restore the LUKS header backup
+                    logger.info(f"Unlocking LUKS header backup succeeded, "
+                                f"restoring the backup header.")
+                    self.restore_luks_header()
+                    # Unlock the partition
+                    logger.info(f"Unlocking {self.device_path} with the "
+                                f"restored header.")
+                    encrypted.call_unlock_sync(
+                        arg_passphrase=passphrase,
+                        arg_options=GLib.Variant('a{sv}', {}),
+                        cancellable=None,
+                    )
+
             if err.matches(UDisks.error_quark(), UDisks.Error.FAILED) and \
                     re.search('Failed to activate device: (Operation not '
                               'permitted|Incorrect passphrase)', err.message):

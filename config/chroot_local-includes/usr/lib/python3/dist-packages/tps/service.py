@@ -1,12 +1,14 @@
+import contextlib
 import logging
 import threading
+from pathlib import Path
 
 from gi.repository import Gio, GLib
 from logging import getLogger
 import time
 from typing import TYPE_CHECKING, List, Optional
 
-from tps import executil
+from tps import executil, SYSTEM_PARTITION_MOUNT_POINT
 from tps.configuration import features
 from tps.configuration.config_file import ConfigFile, InvalidStatError
 from tps.configuration.feature import Feature, ConflictingProcessesError
@@ -288,6 +290,10 @@ class Service(DBusObject, ServiceUsingJobs):
             msg = "Can't unlock when state is '%s'" % self.state.name
             raise FailedPreconditionError(msg)
 
+        # Upgrade the LUKS header if necessary
+        if not self.IsUpgraded:
+            self.UpgradeLUKS(passphrase)
+
         try:
             self.do_unlock(passphrase)
         finally:
@@ -313,6 +319,13 @@ class Service(DBusObject, ServiceUsingJobs):
         if not cleartext_device.is_mounted():
             cleartext_device.mount()
 
+        # Remove the LUKS header backup if it exists, to avoid that
+        # it is restored on the next boot.
+        luks_header_backup = self._partition.luks_header_backup_path()
+        if luks_header_backup.exists():
+            with self.ensure_system_partition_mounted_read_write():
+                luks_header_backup.unlink()
+
     def UpgradeLUKS(self, passphrase: str):
         """Upgrade the LUKS header and key derivation function"""
 
@@ -324,7 +337,11 @@ class Service(DBusObject, ServiceUsingJobs):
             raise FailedPreconditionError(msg)
 
         try:
-            self.do_upgrade_luks(passphrase)
+            # The backup header is stored on the system partition which is
+            # not mounted read-write by default, so we need to mount it
+            # read-write first.
+            with self.ensure_system_partition_mounted_read_write():
+                self.do_upgrade_luks(passphrase)
         finally:
             self.refresh_state(overwrite_in_progress=True)
 
@@ -332,7 +349,23 @@ class Service(DBusObject, ServiceUsingJobs):
 
     def do_upgrade_luks(self, passphrase: str):
         self.state = State.UPGRADING
+
+        # Check that the passphrase is correct and the header is intact
         self._partition.test_passphrase(passphrase)
+
+        # To avoid that the backup call below fails because the file
+        # already exists, we remove the backup file if it exists. We
+        # don't need the backup file because we just checked that the
+        # header is intact.
+        luks_header_backup = self._partition.luks_header_backup_path()
+        if luks_header_backup.exists():
+            luks_header_backup.unlink()
+
+        # Create a backup of the LUKS header in case something goes
+        # wrong during the upgrade. This backup will be restored on the
+        # next boot if it still exists then (we remove it when the
+        # Persistent Storage was successfully unlocked).
+        self._partition.backup_luks_header()
         self._partition.upgrade_luks2()
         self._partition.convert_pbkdf_argon2id(passphrase)
 
@@ -634,3 +667,28 @@ class Service(DBusObject, ServiceUsingJobs):
     @staticmethod
     def run_on_deactivated_hooks():
         executil.execute_hooks(ON_DEACTIVATED_HOOKS_DIR)
+
+    @contextlib.contextmanager
+    def ensure_system_partition_mounted_read_write(self):
+        """Mount the system partition read-write if it isn't already,
+        and remount it read-only when the context manager exits."""
+        mount_options = executil.check_output([
+            'findmnt',
+            '--noheadings',
+            '--output', 'OPTIONS',
+            '--mountpoint', SYSTEM_PARTITION_MOUNT_POINT,
+        ]).strip().split(',')
+        already_mounted_read_write = 'rw' in mount_options
+
+        if not already_mounted_read_write:
+            executil.check_call([
+                'mount', '-o', 'remount,rw', SYSTEM_PARTITION_MOUNT_POINT,
+            ])
+
+        try:
+            yield
+        finally:
+            if not already_mounted_read_write:
+                executil.check_call([
+                    'mount', '-o', 'remount,ro', SYSTEM_PARTITION_MOUNT_POINT,
+                ])

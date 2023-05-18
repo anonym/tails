@@ -25,6 +25,10 @@ DBUS_JOB_INTERFACE = "org.boum.tails.PersistentStorage.Job"
 
 TPS_MOUNT_POINT = "/live/persistence/TailsData_unlocked"
 
+SYSTEM_PARTITION_MOUNT_POINT = "/lib/live/mount/medium"
+LUKS_HEADER_BACKUP_PATH_FORMAT_STRING = SYSTEM_PARTITION_MOUNT_POINT + \
+                                        "/luks-header-backup-{uuid}"
+
 ON_ACTIVATED_HOOKS_DIR = "/usr/local/lib/persistent-storage/on-activated-hooks"
 ON_DEACTIVATED_HOOKS_DIR = "/usr/local/lib/persistent-storage/on-deactivated-hooks"
 
