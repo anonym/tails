@@ -159,6 +159,11 @@ if __name__ == "__main__":
         help="Only consider users created at least this duration ago",
     )
     parser.add_argument(
+        "--max-creation-age",
+        type=django.utils.dateparse.parse_duration,
+        help="Only consider users created at most this duration ago",
+    )
+    parser.add_argument(
         "--min-inactivity",
         type=django.utils.dateparse.parse_duration,
         default="56 days",
@@ -239,6 +244,11 @@ if __name__ == "__main__":
     max_creation_date = now - args.min_creation_age
     log.debug("Max creation date: %s", max_creation_date)
 
+    min_creation_date = None
+    if args.max_creation_age:
+        min_creation_date = now - args.max_creation_age
+        log.debug("Min creation date: %s", min_creation_date)
+
     max_activity_date = now - args.min_inactivity
     log.debug("Max activity date: %s", max_activity_date)
 
@@ -272,7 +282,7 @@ if __name__ == "__main__":
     if args.search is not None:
         user_filters["search"] = args.search
 
-    users = gl.users.list(all=True, **user_filters)
+    users = gl.users.list(all=True, iterator=True, **user_filters)
 
     log.debug("Users: %s", users)
 
@@ -295,6 +305,20 @@ if __name__ == "__main__":
                 user_desc,
                 args.min_creation_age,
             )
+            if min_creation_date:
+                if dateutil.parser.isoparse(user.created_at) > min_creation_date:
+                    log.debug(
+                        "User %s was created less than %s ago",
+                        user_desc,
+                        args.max_creation_age,
+                    )
+                else:
+                    log.debug(
+                        "User %s was created more than %s ago ⇒ skipping",
+                        user_desc,
+                        args.max_creation_age,
+                    )
+                    continue
         else:
             log.debug(
                 "User %s was created less than %s ago ⇒ skipping",
