@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 #
-# Tails: https://tails.boum.org/
+# Tails: https://tails.net/
 # Copyright © 2012 Tails developers <tails@boum.org>
 #
 # This program is free software: you can redistribute it and/or modify

@@ -367,7 +367,7 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
             self.force_reinstall = False
             self.__button_start.set_label(_('Upgrade'))
             self.__help_link.set_label(_('Manual Upgrade Instructions'))
-            self.__help_link.set_uri('https://tails.boum.org/upgrade/')
+            self.__help_link.set_uri('https://tails.net/upgrade/')
             if device['is_device_big_enough_for_reinstall']:
                 self.force_reinstall_button_available = True
                 self.__button_force_reinstall.set_visible(True)
@@ -381,7 +381,7 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
             self.force_reinstall_button_available = False
             self.__button_force_reinstall.set_visible(False)
             self.__help_link.set_label(_('Installation Instructions'))
-            self.__help_link.set_uri('https://tails.boum.org/install/')
+            self.__help_link.set_uri('https://tails.net/install/')
 
     def get_device_pretty_name(self, device):
         size = _format_bytes_in_gb(device['parent_size']
@@ -490,7 +490,7 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
                                 ' a downloaded Tails ISO image:\n'
                                 '%(dl_url)s') % {
                                     'pretty_name': pretty_name,
-                                    'dl_url': 'https://tails.boum.org/install/download',
+                                    'dl_url': 'https://tails.net/install/download',
                                 }
                     self.status(message)
                     continue

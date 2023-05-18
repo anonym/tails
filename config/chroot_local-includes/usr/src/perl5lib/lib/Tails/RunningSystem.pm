@@ -171,7 +171,7 @@ method _build_initial_install_version () {
         'os_release_file' => $self->initial_install_os_release_file,
     )
 }
-method _build_baseurl () { 'https://tails.boum.org' }
+method _build_baseurl () { 'https://tails.net' }
 method _build_udisks () { Tails::UDisks->new(); }
 
 method _build_build_target () {
