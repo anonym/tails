@@ -15,7 +15,7 @@ from tps.configuration.feature import Feature, ConflictingProcessesError
 from tps.dbus.errors import InvalidConfigFileError, FailedPreconditionError, \
     FeatureActivationFailedError, ActivationFailedError, DeactivationFailedError
 from tps.dbus.object import DBusObject
-from tps.device import udisks, BootDevice, Partition, InvalidBootDeviceError
+from tps.device import udisks, BootDevice, TPSPartition, InvalidBootDeviceError
 from tps.job import ServiceUsingJobs
 from tps import State, IN_PROGRESS_STATES, DBUS_ROOT_OBJECT_PATH, \
     DBUS_SERVICE_INTERFACE, TPS_MOUNT_POINT, \
@@ -90,7 +90,7 @@ class Service(DBusObject, ServiceUsingJobs):
         self.config_file = ConfigFile(TPS_MOUNT_POINT)
         self.bus_id = None
         self.features = list()  # type: List[Feature]
-        self._partition = None  # type: Optional[Partition]
+        self._tps_partition = None  # type: Optional[TPSPartition]
         self._device = ""
         self.state = State.UNKNOWN
         self._error = ""
@@ -164,7 +164,7 @@ class Service(DBusObject, ServiceUsingJobs):
     def do_create(self, passphrase: str):
         self.State = State.CREATING
         with self.new_job() as job:
-            self._partition = Partition.create(job, passphrase)
+            self._tps_partition = TPSPartition.create(job, passphrase)
 
         # Activate all features that should be enabled by default
         for feature in (f for f in self.features if f.enabled_by_default):
@@ -208,7 +208,7 @@ class Service(DBusObject, ServiceUsingJobs):
     def do_delete(self):
         # Delete the partition
         self.State = State.DELETING
-        self._partition.delete()
+        self._tps_partition.delete()
 
     def Activate(self):
         """Activate all Persistent Storage features which are currently
@@ -226,7 +226,7 @@ class Service(DBusObject, ServiceUsingJobs):
                   self.state.name
             return FailedPreconditionError(msg)
 
-        partition = Partition.find()
+        partition = TPSPartition.find()
         if not partition:
             raise NotCreatedError("No Persistent Storage found")
 
@@ -311,17 +311,17 @@ class Service(DBusObject, ServiceUsingJobs):
     def do_unlock(self, passphrase: str):
         self.state = State.UNLOCKING
         # Unlock the Persistent Storage
-        if not self._partition.is_unlocked():
-            self._partition.unlock(passphrase)
+        if not self._tps_partition.is_unlocked():
+            self._tps_partition.unlock(passphrase)
 
         # Mount the Persistent Storage
-        cleartext_device = self._partition.get_cleartext_device()
+        cleartext_device = self._tps_partition.get_cleartext_device()
         if not cleartext_device.is_mounted():
             cleartext_device.mount()
 
         # Remove the LUKS header backup if it exists, to avoid that
         # it is restored on the next boot.
-        luks_header_backup = self._partition.luks_header_backup_path()
+        luks_header_backup = self._tps_partition.luks_header_backup_path()
         if luks_header_backup.exists():
             with self.ensure_system_partition_mounted_read_write():
                 luks_header_backup.unlink()
@@ -351,13 +351,13 @@ class Service(DBusObject, ServiceUsingJobs):
         self.state = State.UPGRADING
 
         # Check that the passphrase is correct and the header is intact
-        self._partition.test_passphrase(passphrase)
+        self._tps_partition.test_passphrase(passphrase)
 
         # To avoid that the backup call below fails because the file
         # already exists, we remove the backup file if it exists. We
         # don't need the backup file because we just checked that the
         # header is intact.
-        luks_header_backup = self._partition.luks_header_backup_path()
+        luks_header_backup = self._tps_partition.luks_header_backup_path()
         if luks_header_backup.exists():
             luks_header_backup.unlink()
 
@@ -365,9 +365,9 @@ class Service(DBusObject, ServiceUsingJobs):
         # wrong during the upgrade. This backup will be restored on the
         # next boot if it still exists then (we remove it when the
         # Persistent Storage was successfully unlocked).
-        self._partition.backup_luks_header()
-        self._partition.upgrade_luks2()
-        self._partition.convert_pbkdf_argon2id(passphrase)
+        self._tps_partition.backup_luks_header()
+        self._tps_partition.upgrade_luks2()
+        self._tps_partition.convert_pbkdf_argon2id(passphrase)
 
     def ChangePassphrase(self, passphrase: str, new_passphrase: str):
         """Change the passphrase of the Persistent Storage encrypted
@@ -375,7 +375,7 @@ class Service(DBusObject, ServiceUsingJobs):
 
         logger.info("Changing passphrase...")
 
-        partition = Partition.find()
+        partition = TPSPartition.find()
         if not partition:
             raise NotCreatedError("No Persistent Storage found")
 
@@ -638,8 +638,8 @@ class Service(DBusObject, ServiceUsingJobs):
             return
 
         # Check if the partition exists
-        self._partition = Partition.find()
-        if not self._partition:
+        self._tps_partition = TPSPartition.find()
+        if not self._tps_partition:
             self.State = State.NOT_CREATED
             self.Device = ""
             self.IsCreated = False
@@ -647,12 +647,12 @@ class Service(DBusObject, ServiceUsingJobs):
             self.IsUpgraded = False
             return
 
-        self.Device = self._partition.device_path
+        self.Device = self._tps_partition.device_path
         self.IsCreated = True
-        self.IsUpgraded = self._partition.is_upgraded()
+        self.IsUpgraded = self._tps_partition.is_upgraded()
 
         # Check if the partition is unlocked and mounted
-        if not self._partition.is_unlocked_and_mounted():
+        if not self._tps_partition.is_unlocked_and_mounted():
             self.State = State.NOT_UNLOCKED
             self.IsUnlocked = False
             return

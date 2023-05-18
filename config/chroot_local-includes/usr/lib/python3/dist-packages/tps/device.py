@@ -20,7 +20,7 @@ logger = tps.logging.get_logger(__name__)
 
 TAILS_MOUNTPOINT = "/lib/live/mount/medium"
 PARTITION_GUID = "8DA63339-0007-60C0-C436-083AC8230908" # Linux reserved
-PARTITION_LABEL = "TailsData"
+TPS_PARTITION_LABEL = "TailsData"
 VERSION_REGEX = re.compile(r'^Version:\s*(\d+)$')
 PBKDF_REGEX = re.compile(r'^\s*PBKDF:\s*(\S+)$')
 
@@ -119,7 +119,7 @@ class BootDevice(object):
         return max(partition_ends)
 
 
-class Partition(object):
+class TPSPartition(object):
     """The Persistent Storage encrypted partition"""
 
     def __init__(self, udisks_object: UDisks.Object):
@@ -211,7 +211,7 @@ class Partition(object):
         return bool(cls.find())
 
     @classmethod
-    def find(cls) -> Optional["Partition"]:
+    def find(cls) -> Optional["TPSPartition"]:
         """Return the Persistent Storage encrypted partition or None
         if it couldn't be found."""
         try:
@@ -224,12 +224,12 @@ class Partition(object):
             partition = udisks.get_object(partition_name)
             if not partition:
                 continue
-            if partition.get_partition().props.name == PARTITION_LABEL:
-                return Partition(partition)
+            if partition.get_partition().props.name == TPS_PARTITION_LABEL:
+                return TPSPartition(partition)
         return None
 
     @classmethod
-    def create(cls, job: Job, passphrase: str) -> "Partition":
+    def create(cls, job: Job, passphrase: str) -> "TPSPartition":
         """Create the Persistent Storage encrypted partition"""
 
         # This should be the number of next_step() calls
@@ -276,13 +276,13 @@ class Partition(object):
             # Size 0 means maximal size
             arg_size=0,
             arg_type=PARTITION_GUID,
-            arg_name=PARTITION_LABEL,
+            arg_name=TPS_PARTITION_LABEL,
             arg_options=GLib.Variant('a{sv}', {}),
         )
         udisks.settle()
 
         # Get the UDisks partition object
-        partition = Partition(udisks.get_object(object_path))
+        partition = TPSPartition(udisks.get_object(object_path))
 
         # Initialize the LUKS partition via cryptsetup. We can't use
         # udisks for this because it doesn't support setting the key
@@ -319,7 +319,7 @@ class Partition(object):
         cleartext_device.block.call_format_sync(
             arg_type="ext4",
             arg_options=GLib.Variant('a{sv}', {
-                "label": GLib.Variant('s', PARTITION_LABEL),
+                "label": GLib.Variant('s', TPS_PARTITION_LABEL),
             }),
         )
         udisks.settle()
