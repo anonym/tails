@@ -1,6 +1,7 @@
 import os
 import subprocess
 from pathlib import Path
+import psutil
 import time
 import re
 import stat
@@ -23,6 +24,7 @@ PARTITION_GUID = "8DA63339-0007-60C0-C436-083AC8230908" # Linux reserved
 TPS_PARTITION_LABEL = "TailsData"
 VERSION_REGEX = re.compile(r'^Version:\s*(\d+)$')
 PBKDF_REGEX = re.compile(r'^\s*PBKDF:\s*(\S+)$')
+MEMORY_COST_REGEX = re.compile(r'^\s*Memory:\s*(\d+)$')
 
 # Leave at lest 200 MiB of memory to the system to avoid triggering the
 # OOM killer.
@@ -175,6 +177,7 @@ class TPSPartition(object):
 
         version = str()
         pbkdf = str()
+        memory_cost_kib = int()
         for line in luks_dump.splitlines():
             match = VERSION_REGEX.match(line)
             if match:
@@ -182,6 +185,9 @@ class TPSPartition(object):
             match = PBKDF_REGEX.match(line)
             if match:
                 pbkdf = match.group(1)
+            match = MEMORY_COST_REGEX.match(line)
+            if match:
+                memory_cost_kib = int(match.group(1))
 
         # LUKS version 1 does not print the PBKDF because it only
         # supports PBKDF2.
@@ -202,7 +208,17 @@ class TPSPartition(object):
                          f"### End of LUKS dump ###")
             raise InvalidPartitionError(err_msg)
 
-        return version == "2" and pbkdf == "argon2id"
+        # The parameters we want for the LUKS header are:
+        # - LUKS version 2
+        # - Argon2id PBKDF
+        # - PBKDF memory cost of at least 1 GiB (1048576 KiB) or half of
+        #   the total RAM (because cryptsetup refuses to use more than
+        #   half of the total RAM for the memory cost), whichever is lower.
+        half_of_total_ram_kib = psutil.virtual_memory().total // 1024 // 2
+        required_memory_cost_kib = min(half_of_total_ram_kib, 1048576)
+
+        return version == "2" and pbkdf == "argon2id" and \
+            memory_cost_kib >= required_memory_cost_kib
 
     @classmethod
     def exists(cls) -> bool:
@@ -400,8 +416,18 @@ class TPSPartition(object):
     def convert_pbkdf_argon2id(self, passphrase: str):
         """Convert the PBKDF to argon2id"""
         executil.check_call(
-            ["cryptsetup", "luksConvertKey", "--pbkdf", "argon2id",
-             "--key-file=-", "--batch-mode", self.device_path],
+            ["cryptsetup", "luksConvertKey",
+             "--pbkdf", "argon2id",
+             # Instead of letting cryptsetup choose the memory cost for
+             # argon2id (which it does by benchmarking the system), we
+             # choose the highest memory cost that cryptsetup would
+             # choose (1 GiB), because that's still low enough to not
+             # break unlocking the Persistent Storage in the Welcome
+             # Screen on the lowest-end devices we support (2 GiB RAM).
+             "--pbkdf-memory", "1048576",
+             "--key-file=-",
+             "--batch-mode",
+             self.device_path],
             input=passphrase,
         )
 
