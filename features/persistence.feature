@@ -142,7 +142,7 @@ Feature: Tails persistence
   Scenario: Feature activation fails
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
     And I create a symlink "/home/amnesia/Persistent" to "/etc"
-    When I enable persistence
+    When I try to enable persistence
     Then the Welcome Screen tells me that the Persistent Folder feature couldn't be activated
     When I log in to a new session after having activated the Persistent Storage
     Then the Persistent Storage settings tell me that the Persistent Folder feature couldn't be activated

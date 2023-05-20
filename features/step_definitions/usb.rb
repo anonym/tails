@@ -574,7 +574,7 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
   $vm.execute("cryptsetup luksClose #{name}")
 end
 
-Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
+Given /^I try to enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
   # @type [Dogtail::Node]
   passphrase_entry = nil
   try_for(60) do
@@ -592,12 +592,21 @@ Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_p
              end
   passphrase_entry.text = password
   @screen.press('Return')
+end
+
+Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
+  step "I try to enable persistence#{with_changed_passphrase}"
 
   # Wait until the Persistent Storage was unlocked. We use the fact that
   # the unlock button is made invisible when the Persistent Storage is
   # unlocked.
-  try_for(30) do
-    !greeter.child?('Unlock', roleName: 'push button', showingOnly: true)
+  try_for(60) do
+    !greeter.child?('Unlock Encryption',
+                    roleName: 'push button',
+                    showingOnly: true) && \
+      !greeter.child?('Unlocking',
+                      roleName: 'push button',
+                      showingOnly: true)
   end
 
   # Figure out which language is set now that the Persistent Storage is
