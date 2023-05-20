@@ -92,7 +92,7 @@ class PersistentStorage(object):
         logging.debug("Storage unlock failed")
         self.entry_storage_passphrase.set_sensitive(True)
         self.button_storage_unlock.set_sensitive(True)
-        self.button_storage_unlock.set_label(_("Unlock"))
+        self.button_storage_unlock.set_label(_("Unlock Encryption"))
         self.checkbutton_storage_show_passphrase.set_visible(True)
         self.image_storage_state.set_visible(True)
         self.spinner_storage_unlock.set_visible(False)
@@ -106,7 +106,7 @@ class PersistentStorage(object):
         self.entry_storage_passphrase.grab_focus()
 
     def unlock_failed(self):
-        self.button_storage_unlock.set_label(_("Unlock"))
+        self.button_storage_unlock.set_label(_("Unlock Encryption"))
         self.image_storage_state.set_visible(True)
         self.spinner_storage_unlock.set_visible(False)
         self.label_infobar_persistence.set_label(
@@ -119,7 +119,7 @@ class PersistentStorage(object):
         if not label:
             label = _("Failed to activate the Persistent Storage. "
                       "Please start Tails and send an error report.")
-        self.button_storage_unlock.set_label(_("Unlock"))
+        self.button_storage_unlock.set_label(_("Unlock Encryption"))
         self.image_storage_state.set_visible(True)
         self.spinner_storage_unlock.set_visible(False)
         self.label_infobar_persistence.set_label(label)
