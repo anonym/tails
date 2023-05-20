@@ -337,7 +337,11 @@ class Service(DBusObject, ServiceUsingJobs):
                 ])
 
     def UpgradeLUKS(self, passphrase: str):
-        """Upgrade the LUKS header and key derivation function"""
+        """Upgrade the LUKS header and key derivation function.
+
+        Note that due to wear leveling, the old LUKS header can likely
+        be restored via forensic analysis (until the physical memory is
+        overwritten)."""
 
         logger.info("Upgrading Persistent Storage...")
 
