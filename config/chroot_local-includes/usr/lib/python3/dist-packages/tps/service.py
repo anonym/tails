@@ -321,10 +321,20 @@ class Service(DBusObject, ServiceUsingJobs):
 
         # Remove the LUKS header backup if it exists, to avoid that
         # it is restored on the next boot.
+        # Just unlinking the header allows it to be recovered until the
+        # physical memory is overwritten. Secure deletion on flash storage
+        # is a hard problem, simply overwriting the logical blocks once
+        # is not enough to ensure that the data is gone because of wear
+        # leveling. We still overwrite the header once with random data
+        # because that's what cryptsetup does when deleting a LUKS header
+        # on a non-rotational device (as of cryptsetup 2.6.1), see
+        # https://salsa.debian.org/cryptsetup-team/cryptsetup/-/blob/e99903d881ad15abacf16ffcb23207b85c052d55/lib/utils_wipe.c#L237-237
         luks_header_backup = self._tps_partition.luks_header_backup_path()
         if luks_header_backup.exists():
             with self.ensure_system_partition_mounted_read_write():
-                luks_header_backup.unlink()
+                executil.check_call([
+                    "shred", "--force", "-n", "1", "-u", luks_header_backup,
+                ])
 
     def UpgradeLUKS(self, passphrase: str):
         """Upgrade the LUKS header and key derivation function"""
