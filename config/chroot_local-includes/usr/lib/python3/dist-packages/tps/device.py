@@ -206,7 +206,7 @@ class TPSPartition(object):
                          f"### Beginning of LUKS dump ###\n"
                          f"{luks_dump}\n"
                          f"### End of LUKS dump ###")
-            raise InvalidPartitionError(err_msg)
+            return False
 
         # The parameters we want for the LUKS header are:
         # - LUKS version 2
@@ -467,6 +467,7 @@ class TPSPartition(object):
                         arg_options=GLib.Variant('a{sv}', {}),
                         cancellable=None,
                     )
+                    return
 
             if err.matches(UDisks.error_quark(), UDisks.Error.FAILED) and \
                     re.search('Failed to activate device: (Operation not '

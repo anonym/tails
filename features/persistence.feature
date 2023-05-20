@@ -148,3 +148,15 @@ Feature: Tails persistence
     Then the Persistent Storage settings tell me that the Persistent Folder feature couldn't be activated
     And all tps features are enabled
     And all tps features but the first one are active
+
+  Scenario: LUKS header is automatically upgraded when unlocking the Persistent Storage
+    Given I have started Tails without network from a USB drive with a LUKS 1 persistent partition and stopped at Tails Greeter's login screen
+    And I enable persistence
+    And I log in to a new session after having activated the Persistent Storage
+    Then a Tails persistence partition with LUKS version 2 and argon2id exists on USB drive "__internal"
+    And persistence is enabled
+
+  Scenario: LUKS backup header is restored if something goes wrong during upgrade
+    Given I have started Tails without network from a USB drive with a LUKS 1 persistent partition and stopped at Tails Greeter's login screen
+    And I enable persistence but something goes wrong during the LUKS header upgrade
+    Then the Tails persistence partition on USB drive "__internal" still has LUKS version 1

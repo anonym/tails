@@ -107,6 +107,14 @@ CHECKPOINTS =
       ],
     },
 
+    'usb-install-with-persistence-luks-1-tails-greeter'     => {
+      description:       "I have started Tails without network from a USB drive with a LUKS 1 persistent partition and stopped at Tails Greeter's login screen",
+      parent_checkpoint: 'usb-install-with-persistence-tails-greeter',
+      steps:             [
+        'the persistence partition on USB drive "__internal" uses LUKS version 1',
+      ],
+    },
+
   }.freeze
 
 # XXX: giving up on a few worst offenders for now

@@ -527,7 +527,24 @@ def assert_luks2_with_argon2id(name, device)
                "Device #{device} does not use argon2id")
 end
 
-Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
+def assert_luks1(device)
+  luks_info = $vm.execute("cryptsetup luksDump #{device}").stdout
+  assert_match(/^^Version:\s*1$/, luks_info,
+               "Device #{device} is not LUKS1")
+end
+
+Then /^a Tails persistence partition with LUKS version 2 and argon2id exists on USB drive "([^"]+)"$/ do |name|
+  # Step "a Tails persistence partition exists on USB drive" checks by
+  # default that the LUKS version is 2 and the key derivation function
+  # is argon2id.
+  step "a Tails persistence partition exists on USB drive \"#{name}\""
+end
+
+Then /^the Tails persistence partition on USB drive "([^"]+)" still has LUKS version 1$/ do |name|
+  step "a Tails persistence partition exists with LUKS version 1 on USB drive \"#{name}\""
+end
+
+Then /^a Tails persistence partition exists( with LUKS version 1)? on USB drive "([^"]+)"$/ do |luks1, name|
   dev = $vm.persistent_storage_dev_on_disk(name)
   check_part_integrity(name, dev, 'crypto', 'crypto_LUKS',
                        part_label: 'TailsData')
@@ -554,7 +571,11 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
     luks_dev = "/dev/mapper/#{name}"
   end
 
-  assert_luks2_with_argon2id(name, dev)
+  unless luks1.nil?
+    assert_luks1(dev)
+  else
+    assert_luks2_with_argon2id(name, dev)
+  end
 
   # Adapting check_part_integrity() seems like a bad idea so here goes
   info = $vm.execute("udisksctl info --block-device '#{luks_dev}'").stdout
@@ -612,6 +633,19 @@ Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_p
   # Figure out which language is set now that the Persistent Storage is
   # unlocked
   $language, $lang_code = get_greeter_language
+end
+
+Given /^I enable persistence but something goes wrong during the LUKS header upgrade$/ do
+  # Copy a cryptsetup wrapper to the VM which will call `cryptsetup luksErase`
+  # instead of `cryptsetup luksConvertKey` to simulate a failure during the LUKS
+  # header upgrade.
+  $vm.file_copy_local("#{GIT_DIR}/features/scripts/cryptsetup-wrapper",
+                      '/usr/local/sbin/cryptsetup')
+
+  step 'I enable persistence'
+
+  # Check that the LUKS header was erased by our wrapper script.
+  assert $vm.file_exist?('/tmp/luks-header-erased'), 'LUKS header was not erased'
 end
 
 def get_greeter_language
@@ -705,6 +739,10 @@ end
 
 Then /^persistence is disabled$/ do
   assert(!tails_persistence_enabled?, 'Persistence is enabled')
+end
+
+Then /^persistence is enabled$/ do
+  assert(tails_persistence_enabled?, 'Persistence is disabled')
 end
 
 def boot_device
@@ -1607,4 +1645,18 @@ Then /^the Persistent Storage settings tell me that the Persistent Folder featur
                           .child('Activate Persistent Folder').parent
   assert persistent_folder_row
     .child(description: 'Activation failed', showingOnly: true)
+end
+
+Given /^the persistence partition on USB drive "([^"]+)" uses LUKS version 1$/ do |name|
+  # Note: This step requires that the persistence partition is locked,
+  # else the `cryptsetup convert` command will fail.
+
+  dev = $vm.persistent_storage_dev_on_disk(name)
+  # First we need to configure a key derivation function which is supported by
+  # LUKS version 1.
+  $vm.execute_successfully(
+    "echo -n #{@persistence_password} | " \
+    "cryptsetup luksConvertKey --batch-mode --pbkdf pbkdf2 --key-file=- #{dev}"
+  )
+  $vm.execute_successfully("cryptsetup convert --batch-mode --type luks1 #{dev}")
 end
