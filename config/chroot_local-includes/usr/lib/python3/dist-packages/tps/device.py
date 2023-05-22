@@ -187,7 +187,7 @@ class Partition(object):
 
         # Create the partition
         logger.info("Creating partition")
-        next_step(_("Creating partition"))
+        next_step(_("Creating a partition for the Persistent Storage..."))
         partition_table = parent_device.partition_table
         object_path = partition_table.call_create_partition_sync(
             arg_offset=offset,
@@ -207,7 +207,7 @@ class Partition(object):
         # derivation function which we want to set to argon2id.
         # See https://mjg59.dreamwidth.org/66429.html
         logger.info("Initializing LUKS header")
-        next_step(_("Initializing LUKS header (the system might become unresponsive for a few seconds)"))
+        next_step(_("Initializing the LUKS encryption... The computer might stop responding for a few seconds."))
         cmd = ["cryptsetup", "luksFormat",
                "--batch-mode",
                "--key-file=-",
@@ -223,7 +223,7 @@ class Partition(object):
 
         # Unlock the partition
         logger.info("Unlocking partition")
-        next_step(_("Unlocking partition"))
+        next_step(_("Unlocking the encryption..."))
         partition.unlock(passphrase)
 
         # Get the cleartext device
@@ -231,7 +231,7 @@ class Partition(object):
 
         # Format the cleartext device
         logger.info("Formatting filesystem")
-        next_step(_("Formatting filesystem"))
+        next_step(_("Formatting the file system..."))
         cleartext_device.block.call_format_sync(
             arg_type="ext4",
             arg_options=GLib.Variant('a{sv}', {
@@ -242,10 +242,10 @@ class Partition(object):
 
         # Mount the cleartext device
         logger.info("Mounting filesystem")
-        next_step(_("Mounting filesystem"))
+        next_step(_("Activating the Persistent Storage..."))
         cleartext_device.mount()
 
-        next_step(_("Finishing things up"))
+        next_step(_("Finishing setting up the Persistent Storage..."))
 
         return partition
 
