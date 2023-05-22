@@ -1083,27 +1083,41 @@ end
 
 When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) directory$/ do |should_work, output_file, output_dir|
   should_work = should_work == 'can'
-  @screen.press('ctrl', 's')
-  @screen.wait('Gtk3SaveFileDialog.png', 10)
+
+  file_dialog = save_page_as
+
   case output_dir
   when 'persistent Tor Browser'
     output_dir = "/home/#{LIVE_USER}/Persistent/Tor Browser"
-    @screen.wait('GtkTorBrowserPersistentBookmark.png', 10).click
-    @screen.wait('GtkTorBrowserPersistentBookmarkSelected.png', 10)
-    # The output filename (without its extension) is already selected,
-    # let's use the keyboard shortcut to focus its field
-    @screen.press('alt', 'n')
-    @screen.wait('TorBrowserSaveOutputFileSelected.png', 10)
+    # Select the "Tor Browser (persistent)" bookmark in the file chooser's
+    # sidebar. It doesn't expose an action via the accessibility API, so we
+    # have to grab focus and use the keyboard to activate it.
+    try_for(3) do
+        bookmark = file_dialog.child(
+          description: output_dir,
+          roleName: 'list item',
+          showingOnly: true,
+        )
+        bookmark.grabFocus
+        bookmark.focused
+      end
+    @screen.press('Space')
   when 'default downloads'
     output_dir = "/home/#{LIVE_USER}/Tor Browser"
   else
-    @screen.paste("#{output_dir}/")
+    # Enter the output directory in the text entry
+    text_entry = file_dialog.child('Name', roleName: 'label').labelee
+    text_entry.text = output_dir
+    # Do the "activate" action of the text entry (same effect as
+    # pressing Enter) to open the directory.
+    text_entry.activate
   end
-  # Only the part of the filename before the .html extension can be easily
-  # replaced so we have to remove it before typing it into the arget filename
-  # entry widget.
-  @screen.paste(output_file.sub(/[.]html$/, ''))
-  @screen.press('Return')
+
+  # Enter the output filename in the text entry
+  text_entry = file_dialog.child('Name', roleName: 'label').labelee
+  text_entry.text = output_file
+  file_dialog.child('Save', roleName: 'push button').click
+
   if should_work
     try_for(20,
             msg: "The page was not saved to #{output_dir}/#{output_file}") do
@@ -1122,11 +1136,15 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                end
   @screen.press('ctrl', 'p')
   @torbrowser.child('Save', roleName: 'push button').press
-  @screen.wait('Gtk3SaveFileDialog.png', 10)
-  # Only the file's basename is selected when the file selector dialog opens,
-  # so we type only the desired file's basename to replace it
-  @screen.paste("#{output_dir}/#{output_file.sub(/[.]pdf$/, '')}")
-  @screen.press('Return')
+  file_dialog = @torbrowser.child('Save As',
+                                  roleName:    'file chooser',
+                                  showingOnly: true)
+  # Enter the output filename in the text entry
+  text_entry = file_dialog.child('Name', roleName: 'label').labelee
+  filename = "#{output_dir}/#{output_file}"
+  text_entry.text = filename
+  file_dialog.child('Save', roleName: 'push button').click
+
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do
     $vm.file_exist?("#{output_dir}/#{output_file}")
