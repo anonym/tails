@@ -27,6 +27,17 @@ Feature: Tails persistence
     Then persistence for "Persistent" is active
     And the file I created in the Persistent directory exists
 
+  Scenario: Creating a Persistent Storage when system is low on memory
+    Given I have started Tails without network from a USB drive without a persistent partition and logged in
+    And the system is very low on memory
+    When I create a file in the Persistent directory
+    When I try to create a persistent partition
+    Then The Persistent Storage app shows the error message "Not enough memory to create Persistent Storage"
+    When I close the Persistent Storage app
+    And I free up some memory
+    And I create a persistent partition with the default settings
+    Then the file I created was copied to the Persistent Storage
+
   Scenario: Booting Tails from a USB drive with an enabled persistent partition and reconfiguring it
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     Then Tails is running from USB drive "__internal"

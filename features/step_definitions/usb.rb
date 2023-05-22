@@ -72,8 +72,8 @@ def persistent_volumes_mountpoints
   $vm.execute('ls -1 -d /live/persistence/*_unlocked/').stdout.chomp.split
 end
 
-def persistent_storage_frontend
-  Dogtail::Application.new('tps-frontend')
+def persistent_storage_frontend (**opts)
+  Dogtail::Application.new('tps-frontend', **opts)
 end
 
 def persistent_storage_main_frame
@@ -270,10 +270,25 @@ Given(/^I enable persistence creation in Tails Greeter$/) do
   @screen.wait('TailsGreeterPersistenceCreate.png', 10).click
 end
 
-Given /^I create a persistent partition( with the default settings| for Additional Software)?( using the wizard that was already open)?$/ do |mode, dontrun|
-  # XXX: the wording here could be misleading. Pay attention when reading it! (or, please improve it)
-  default_settings = mode
-  asp = mode == ' for Additional Software'
+Given /^I create a persistent partition( with the default settings)?( for Additional Software)?( using the wizard that was already open)?$/ do |default_settings, asp, dontrun|
+  # When creating a persistent partition for Additional Software, we
+  # want to use the default settings.
+  default_settings = true if asp
+
+  mode = asp ? ' for Additional Software' : ''
+  step "I try to create a persistent partition#{mode}#{dontrun}"
+
+  # Check that the Persistent Storage was created by checking that the
+  # tps frontend shows the features view with the "Personal Documents"
+  # label.
+  try_for(300) do
+    persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
+  end
+
+  enable_all_tps_features unless default_settings
+end
+
+Given /^I try to create a persistent partition( for Additional Software)?( using the wizard that was already open)?$/ do |asp, dontrun|
   unless asp || dontrun
     step 'I start "Persistent Storage" via GNOME Activities Overview'
   end
@@ -287,10 +302,88 @@ Given /^I create a persistent partition( with the default settings| for Addition
     .labelee
     .text = @persistence_password
   persistent_storage_main_frame.button('_Create Persistent Storage').click
-  try_for(300) do
-    persistent_storage_main_frame.child('Personal Documents', roleName: 'label')
+end
+
+def available_memory_kib
+  meminfo = $vm.file_content('/proc/meminfo')
+  meminfo =~ /^MemAvailable:\s+(\d+) kB$/
+  Regexp.last_match(1).to_i
+end
+
+Given /^the system is( very)? low on memory$/ do |very_low|
+  # If we're asked to make the system very low on memory, then
+  # we leave only 200 MiB of memory available, otherwise we leave 500
+  # MiB (500 MiB is enough to create a Persistent Storage with the
+  # lowest PBKDF memory cost).
+  low_mem_kib = very_low ? 200 * 1024 : 500 * 1024
+
+  # Ensure that the zram swap is disabled, to avoid that the memory
+  # pressure is relieved by swapping.
+  $vm.execute_successfully('zramswap stop')
+
+  # Get the amount of available memory
+  mem_available_kib = available_memory_kib
+
+  # Calculate how much memory we need to fill up
+  mem_to_fill_kib = mem_available_kib - low_mem_kib
+  if mem_to_fill_kib <= 0
+    debug_log("Available memory is already low enough: #{mem_available_kib} KiB")
+    return
   end
-  enable_all_tps_features unless default_settings
+
+  # Write a file that will fill up the memory
+  $vm.execute_successfully(
+    "dd if=/dev/zero of=/fill bs=1M count=#{mem_to_fill_kib / 1024}",
+  )
+
+  # Wait for the memory to be filled up
+  try_for(20, msg: 'The system did not become low on memory') do
+    mem_available_kib = available_memory_kib
+    debug_log("Available memory after filling up: #{mem_available_kib} KiB")
+    # The memory is considered low if it's within 100 MiB of the low
+    # memory threshold.
+    low_mem_kib - 100 * 1024 <= mem_available_kib &&
+      mem_available_kib <= low_mem_kib + 100 * 1024
+  end
+end
+
+Given /^I free up some memory$/ do
+  # This assumes that the step 'the system is very low on memory' was
+  # run before.
+  $vm.execute_successfully('rm /fill')
+  step 'the system is low on memory'
+end
+
+Given /^I close the Persistent Storage app$/ do
+  # Close any alerts
+  alert = persistent_storage_frontend.child(roleName: 'alert', retry: false)
+  while alert
+    alert.button('Close').click
+    begin
+      alert = persistent_storage_frontend.child(roleName: 'alert', retry: false)
+    rescue StandardError
+      alert = nil
+    end
+  end
+
+  # Close the main window
+  persistent_storage_main_frame.button('Close').click
+
+  # Wait for the app to close
+  try_for(10) {
+    begin
+      persistent_storage_frontend(retry: false)
+      false
+    rescue StandardError
+      true
+    end
+  }
+end
+
+Then /^The Persistent Storage app shows the error message "([^"]*)"$/ do |message|
+  persistent_storage_frontend.child(message,
+                                    roleName: 'label',
+                                    showingOnly: true)
 end
 
 Given /^I change the passphrase of the Persistent Storage( back to the original)?$/ do |change_back|
