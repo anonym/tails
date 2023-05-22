@@ -5,12 +5,9 @@ set -x
 
 cd "${RELEASE_CHECKOUT:?}"
 find "${RELEASE_CHECKOUT:?}/wiki/src/upgrade/" \
-     -type f -name upgrades.yml -print0 | \
-     xargs -0 grep --files-with-matches --line-regexp " *version: '${VERSION}'" | \
+     -type f -name upgrades.yml | \
     while read -r udf; do
-        if [ -n "$(git status --porcelain "${udf:?}")" ] || \
-            ! gpg --verify "${udf}.pgp" "${udf}"; then
-            echo "sign ${udf:?}"
+        if [ -n "$(git status --porcelain "${udf:?}")" ]; then
             for _ in 1 2 3; do
                 if gpg -u "${TAILS_SIGNATURE_KEY:?}" \
                        --armor \
