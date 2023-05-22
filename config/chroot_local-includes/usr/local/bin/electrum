@@ -29,6 +29,14 @@ HOME_DIR = os.environ['HOME']
 CONF_DIR = Path(HOME_DIR, '.electrum')
 DONATION_BITCOIN_ADDRESS = 'bitcoin:bc1qjg53lww9jrm506dj0g0szmk4pxt6f55x8dncuv?label=Donation to Tails'
 
+# We use different addresses to track which version of the incentive leads to
+# more donations:
+#
+# - bc1qunww28s9za0jx7n2r49yy5mqsgtgfwszz39kfr: "benevolent"
+# - bc1qceyaeuv7pfedshv8wzwwcwknhzjjnwmuv5qck9: "selfish"
+# - bc1qdptm9qzul00aejye7vfwwlas0xr0srj04573w4: not used yet
+# - bc1ql9dltq68wvkscj7zlrj2ajtgeupc6whsf62uef: not used yet
+
 TPS_FEATURE_NAME="Electrum"
 
 
