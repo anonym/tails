@@ -367,10 +367,11 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         # If the user has chosen install from ISO, but no ISO is selected
         if not self.live.opts.clone and not self.is_ISO_selected():
             self.warn_ISO_not_selected()
-            return
+            return True
         self.force_reinstall = True
         self.opts.partition = True
         self.on_start_clicked(button)
+        return True
 
     def on_source_file_set(self, filechooserbutton):
         self.select_source_iso(filechooserbutton.get_filename())
