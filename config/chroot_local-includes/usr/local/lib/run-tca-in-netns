@@ -25,29 +25,6 @@ def main():
     python_bin = "/usr/bin/python3"
     program = "/usr/lib/python3/dist-packages/tca/application.py"
 
-    try:
-        running_processes = int(
-            check_output(
-                [
-                    "pgrep",
-                    "--count",
-                    "--uid",
-                    LIVE_USERNAME,
-                    "--full",
-                    "--exact",
-                    "%s %s" % (python_bin, program),
-                ]
-            )
-        )
-    except CalledProcessError as exc:
-        if exc.returncode == 1:
-            running_processes = 0
-        else:
-            raise
-    if running_processes:
-        print("TCA is already running", file=sys.stderr)
-        return
-
     confdir = Path("/var/lib/tca/")
     conffile = confdir / "tca.conf"
     confdir.mkdir(mode=0o700, exist_ok=True)
