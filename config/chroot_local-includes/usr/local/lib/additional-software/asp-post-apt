@@ -8,4 +8,4 @@ if [ -n "${SOURCE_DATE_EPOCH:-}" ]; then
 fi
 
 CMD=/usr/local/lib/additional-software/asp-handle-package-changes
-systemd-run --unit tails-additional-software-post-apt-hook "${CMD}" "$@"
+systemd-run --unit=tails-additional-software-post-apt-hook "${CMD}" "$@"
