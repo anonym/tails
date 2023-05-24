@@ -39,6 +39,27 @@ Feature: Installing Tails to a USB drive
     Then the running Tails is installed on USB drive "install"
     But there is no persistence partition on USB drive "install"
 
+  Scenario: Cloning Tails with Persistent Storage with Tails Installer to a used USB drive
+    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
+    And I create a file in the Persistent directory
+    And I temporarily create a 7200 MiB disk named "install"
+    And I create a gpt partition with a vfat filesystem on disk "install"
+    And I plug USB drive "install"
+    And I install Tails with Persistent Storage to USB drive "install" by cloning
+    Then the running Tails is installed on USB drive "install"
+    And there is a persistence partition on USB drive "install"
+    And the USB drive "install" contains the same files as my persistent storage
+
+    Scenario: Cloning Tails with Persistent Storage with Tails Installer to a pristine USB drive
+    Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
+    And I create a file in the Persistent directory
+    And I temporarily create a 7200 MiB disk named "install"
+    And I plug USB drive "install"
+    And I install Tails with Persistent Storage to USB drive "install" by cloning
+    Then the running Tails is installed on USB drive "install"
+    And there is a persistence partition on USB drive "install"
+    And the USB drive "install" contains the same files as my persistent storage
+
   Scenario: Re-installing Tails over an existing USB installation with a persistent partition
     # We reach this first checkpoint only to ensure that the ' __internal' disk has reached the state (Tails installed + persistent partition set up) we need before we clone it below.
     # This first part is done without Tails Installer (install from Tails USB image)
