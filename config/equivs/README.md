@@ -4,4 +4,4 @@
 2. Upload the resulting binary package to an adequate APT overlay in our custom
    APT repository:
 
-   https://tails.boum.org/contribute/APT_repository/custom/#workflow-import-package
+   https://tails.net/contribute/APT_repository/custom/#workflow-import-package

@@ -28,7 +28,7 @@ Feature: Localization
     And the layout of the screen keyboard is set to "<osk_layout>"
 
     # This list has to be kept in sync' with our list of tier-1 languages:
-    #   https://tails.boum.org/contribute/how/translate/#tier-1-languages
+    #   https://tails.net/contribute/how/translate/#tier-1-languages
 
     # Known issues, that this step effectively verifies are still present:
     #  - Not all localized layouts exist in the GNOME screen keyboard: #8444

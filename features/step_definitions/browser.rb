@@ -247,7 +247,7 @@ end
 
 When /^I download some file in the Tor Browser$/ do
   @some_file = 'tails-signing.key'
-  some_url = "https://tails.boum.org/#{@some_file}"
+  some_url = "https://tails.net/#{@some_file}"
   step "I open the address \"#{some_url}\" in the Tor Browser without waiting"
 end
 
@@ -263,7 +263,7 @@ Then /^the file is saved to the default Tor Browser download directory$/ do
 end
 
 When /^I open the Tails homepage in the (.+)$/ do |browser|
-  step "I open the address \"https://tails.boum.org\" in the #{browser}"
+  step "I open the address \"https://tails.net\" in the #{browser}"
 end
 
 Then /^the Tails homepage loads in the Unsafe Browser$/ do

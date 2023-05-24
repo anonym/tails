@@ -193,17 +193,17 @@ apt-snapshots-expiry:
 
 .test-https-get-expired: &test-https-get-expired
   - echo "Basic check:"
-  - ./https-get-expired -reject-expired https://tails.boum.org/
+  - ./https-get-expired -reject-expired https://tails.net/
   - echo "Let's pretend we are in the past. Then, this certificate is still good."
-  - ./https-get-expired -current-time 2000-01-01 -reject-expired https://tails.boum.org/
+  - ./https-get-expired -current-time 2000-01-01 -reject-expired https://tails.net/
   - echo "Let's pretend we are in the future. Then, this certificate is expired"
-  - "! ./https-get-expired -current-time 2090-01-01 -reject-expired https://tails.boum.org/"
+  - "! ./https-get-expired -current-time 2090-01-01 -reject-expired https://tails.net/"
   - "! ./https-get-expired -reject-expired https://wrong.host.badssl.com/"
   - "! ./https-get-expired -reject-expired https://self-signed.badssl.com/"
   - "! ./https-get-expired -reject-expired https://untrusted-root.badssl.com/"
   - "! ./https-get-expired -reject-expired https://expired.badssl.com/"
   - echo "Invalid host"
-  - "! ./https-get-expired -reject-expired https://nxdomain.tails.boum.org/"
+  - "! ./https-get-expired -reject-expired https://nxdomain.tails.net/"
   - "./bin/test-utils/https-get-expired-test-all"
 
 https-get-expired:

@@ -104,7 +104,7 @@ def format_gpus(gpus: list) -> str:
     True
     >>> gpu = {"Vendor": "X",  "Device": "Y", 'Vendor-code': 'NO','Device-code': 'NO'}
     >>> len(format_gpus([gpu]))
-    144
+    139
 
     The output is cropped to 254 chars
     >>> len(format_gpus([gpu] * 100))
@@ -126,7 +126,7 @@ def format_gpus(gpus: list) -> str:
         header = "Error starting GDM with your graphics card:\n"
     else:
         header = "Error starting GDM with your %d graphics cards:\n" % len(gpus)
-    footer = "\nPlease take note of this error and visit https://tails.boum.org/gdm for troubleshooting."
+    footer = "\nPlease take note of this error and visit https://tails.net/gdm for troubleshooting."
     msg = msg[: MAX_LENGTH - len(header) - len(footer)]
     msg = header + msg + footer
     return msg

@@ -51,7 +51,7 @@ Then /^I can watch a WebM video over HTTPs$/ do
   test_url = WEBM_VIDEO_URL
   host = URI(test_url).host
 
-  # These tricks are needed because on Jenkins, tails.boum.org
+  # These tricks are needed because on Jenkins, tails.net
   # resolves to a RFC 1918 address (#10442), which tor would not allow
   # connecting to, and the firewall leak checker would make a fuss
   # out of it.

@@ -274,7 +274,7 @@ fun generate_upgrade_description($output, $name, $initial_install_version, $targ
 upgrades:
   - version: 0.12.1
     type: minor
-    details-url: https://tails.boum.org/news/version_0.12.1/
+    details-url: https://tails.net/news/version_0.12.1/
     upgrade-paths:
 
 EOF
