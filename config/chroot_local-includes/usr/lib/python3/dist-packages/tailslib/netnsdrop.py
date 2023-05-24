@@ -20,7 +20,10 @@ A11Y_BUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/a11y-bus-proxy.sock"
 IBUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/ibus-proxy.sock"
 
 
-def run_in_netns(*args, netns, root="/", bind_mounts=[], connect_drop_cmd=None):
+def run_in_netns(*args, netns, root="/", bind_mounts=None, connect_drop_cmd=None):
+    if bind_mounts is None:
+        bind_mounts = []
+
     if connect_drop_cmd is None:
         connect_drop_cmd = []
 
