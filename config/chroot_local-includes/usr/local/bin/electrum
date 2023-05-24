@@ -105,18 +105,22 @@ def show_donation_message():
         bitcoin_address = BITCOIN_ADDRESS_SELFISH
 
     # results 0 == True; 1 == False; 5 == Timeout
-    result = sh.zenity('--question',
-                       '--title', '',
-                       '--text', text,
-                       '--ok-label', _('Donate Now'),
-                       '--cancel-label', _('Later'),
-                       '--icon-name', 'tails-logo-drawing',
-                       '--ellipsize',
-                       _ok_code=[0, 1, 5])
-    if result.exit_code == 0:
+    p = subprocess.run([
+        'zenity',
+        '--question',
+        '--title', '',
+        '--text', text,
+        '--ok-label', _('Donate Now'),
+        '--cancel-label', _('Later'),
+        '--icon-name', 'tails-logo-drawing',
+        '--modal',
+        '--ellipsize',
+    ])
+    if p.returncode == 0:
         # Show a GNOME notification to let the user know that we're
         # opening Electrum with our donation address.
-        sh.notify_send(
+        subprocess.check_call([
+            'notify-send',
             _('Opening Electrum with our donation address...'),
             _('Thank you for making the Internet a safer place!'),
         ])
@@ -160,16 +164,17 @@ def verify_start():
     launch_text = _('_Launch')
     exit_text = _('_Exit')
 
-    # results 0 == True; 1 == False; 5 == Timeout
-    results = sh.zenity('--question', '--title', '', '--default-cancel',
-                        '--ellipsize',
-                        '--ok-label', launch_text,
-                        '--cancel-label', exit_text,
-                        '--text', dialog_msg,
-                        _ok_code=[0, 1, 5])
-    start = results.exit_code == 0
-
-    return start
+    p = subprocess.run([
+        'zenity',
+        '--question',
+        '--title', '',
+        '--default-cancel',
+        '--ellipsize',
+        '--ok-label', launch_text,
+        '--cancel-label', exit_text,
+        '--text', dialog_msg,
+    ])
+    return p.returncode == 0
 
 
 if __name__ == '__main__':
