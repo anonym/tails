@@ -879,13 +879,19 @@ def open_gnome_system_menu
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|
-  image = if action == 'shutdown'
-            'TailsEmergencyShutdownHalt.png'
-          else
-            'TailsEmergencyShutdownReboot.png'
-          end
+  gnome_shell = Dogtail::Application.new('gnome-shell')
   open_gnome_system_menu
-  @screen.wait(image, 5).click
+  menu_item_name = if action == 'shutdown'
+                      'Power Off'
+                    else
+                      'Restart'
+                   end
+  try_for(5) do
+    menu_item = gnome_shell.child(menu_item_name, roleName: 'label')
+    menu_item.grabFocus
+    menu_item.focused
+  end
+  @screen.press('Return')
 end
 
 When /^I warm reboot the computer$/ do
