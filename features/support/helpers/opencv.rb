@@ -25,13 +25,11 @@ module OpenCV
       env, 'python3', "#{GIT_DIR}/features/scripts/opencv_match_template.py",
       screen, image, sensitivity.to_s, show_match.to_s
     )
-    case p.exitstatus
-    when 0
-      stdout.chomp.split.map(&:to_i)
-    when 1
+    raise OpenCVInternalError, stderr if p.exitstatus != 0
+    if stdout.chomp == 'FindFailed'
       nil
     else
-      raise OpenCVInternalError, stderr
+      stdout.chomp.split.map(&:to_i)
     end
   ensure
     Thread.report_on_exception = true
