@@ -1633,9 +1633,11 @@ When /^I delete the data of the Persistent Folder feature$/ do
 end
 
 Then /^the Welcome Screen tells me that the Persistent Folder feature couldn't be activated$/ do
-  assert greeter.child('Failed to activate some features of the Persistent Storage: Persistent Folder.\n.*',
-                       roleName:    'label',
-                       showingOnly: true)
+  try_for(60) do
+    greeter.child?('Failed to activate some features of the Persistent Storage: Persistent Folder.\n.*',
+                   roleName:    'label',
+                   showingOnly: true)
+  end
 end
 
 Then /^the Persistent Storage settings tell me that the Persistent Folder feature couldn't be activated$/ do
