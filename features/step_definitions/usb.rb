@@ -193,9 +193,10 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
             else
               action.capitalize
             end
-    # Despite being a normal "push button" this button doesn't respond
-    # to the "press" action. It has a "click" action, which works, but
-    # after that the installer is inaccessible for Dogtail.
+    # We can't use the click action here because this button causes a
+    # modal dialog to be run via gtk_dialog_run() which causes the
+    # application to hang when triggered via a ATSPI action. See
+    # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
     @installer.button(label).grabFocus
     @screen.press('Enter')
     unless action == 'upgrade'
@@ -1470,8 +1471,10 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   try_for(10) do
     !select_disk_image_dialog.showing
   end
-  # Clicking this button using Dogtail works, but afterwards GNOME
-  # Disks becomes inaccessible.
+  # We can't use the click action here because this button causes a
+  # modal dialog to be run via gtk_dialog_run() which causes the
+  # application to hang when triggered via a ATSPI action. See
+  # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
   restore_dialog.child('Start Restoring…',
                        roleName:    'push button',
                        showingOnly: true).grabFocus
