@@ -461,8 +461,14 @@ Given /^I log in to a new session(?: in ([^ ]*) \(([^ ]*)\))?( without activatin
 end
 
 def open_greeter_additional_settings
-  @screen.wait('TailsGreeterAddMoreOptions.png', 10).click
-  @screen.wait('TailsGreeterAdditionalSettingsDialog.png', 10)
+  button = greeter.child('Add an additional setting', roleName: 'push button')
+  try_for(5) do
+    button.grabFocus
+    button.focused
+  end
+  @screen.press('Return')
+
+  greeter.child('Additional Settings', roleName: 'dialog', showingOnly: true)
 end
 
 Given /^I open Tails Greeter additional settings dialog$/ do
@@ -470,10 +476,20 @@ Given /^I open Tails Greeter additional settings dialog$/ do
 end
 
 Given /^I disable networking in Tails Greeter$/ do
-  open_greeter_additional_settings
-  @screen.wait('TailsGreeterOfflineMode.png', 30).click
-  @screen.wait('TailsGreeterOfflineModeDisableNetwork.png', 10).click
-  @screen.wait('TailsGreeterAdditionalSettingsAdd.png', 10).click
+  dialog = open_greeter_additional_settings
+  row = dialog.child(description: 'Configure Offline Mode')
+  try_for(5) do
+    row.grabFocus
+    row.focused
+  end
+  @screen.press('Return')
+
+  row = dialog.child('Disable all networking').parent.parent
+  try_for(5) do
+    row.grabFocus
+    row.focused
+  end
+  @screen.press('Return')
 end
 
 Given /^I set an administration password$/ do
