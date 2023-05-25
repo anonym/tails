@@ -447,12 +447,11 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
                     return
                 raise
 
-            if not self.live.passphrase:
-                passphrase_dialog = PassphraseDialog(self, self.live)
-                passphrase_dialog.run()
-                if not passphrase_dialog.passphrase_is_correct:
-                    return
-                self.live.passphrase = passphrase_dialog.passphrase
+            passphrase_dialog = PassphraseDialog(self, self.live)
+            passphrase_dialog.run()
+            if not passphrase_dialog.passphrase:
+                return
+            self.live.passphrase = passphrase_dialog.passphrase
 
         self.begin()
 

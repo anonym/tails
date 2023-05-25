@@ -226,10 +226,17 @@ When /^I (install|reinstall|upgrade) Tails( with Persistent Storage)? (?:to|on) 
 
     if with_persistence
       # Enter the passphrase in the passphrase dialog
-      entry = @installer.child('Enter Passphrase', roleName: 'dialog')
-                        .child(roleName: 'password text')
-      entry.text = @persistence_password
-      entry.activate
+      passphrase_entry = @installer.child('Choose Passphrase',
+                                          roleName: 'dialog')
+                                   .child('Passphrase:', roleName: 'label')
+                                   .labelee
+      confirm_entry = @installer.child('Choose Passphrase',
+                                       roleName: 'dialog')
+                                .child('Confirm:', roleName: 'label')
+                                .labelee
+      passphrase_entry.text = @persistence_password
+      confirm_entry.text = @persistence_password
+      confirm_entry.activate
     end
 
     unless action == 'upgrade'
