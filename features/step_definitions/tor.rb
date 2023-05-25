@@ -638,9 +638,9 @@ When /^I configure (?:some|the) (persistent )?(\w+) bridges (from a QR code )?in
         # (for details, see label-for and labelled-by accessibility relations
         # in main.ui.in, aka. "Label For" and "Labeled By" in Glade)
         # however, this doesn't seem to work anymore
-        tor_connection_assistant.child(roleName: 'text').grabFocus
+        bridge_entry = tor_connection_assistant.child(roleName: 'text')
         chutney_bridges(bridge_type).each do |bridge|
-          @screen.paste(bridge[:line])
+          bridge_entry.text = bridge[:line]
           break # We currently support only 1 bridge
         end
       end
