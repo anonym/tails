@@ -178,7 +178,7 @@ of upgrade-description file files.
 
 #### upgrade-description file URL
 
-* `https://tails.boum.org/upgrade`
+* `https://tails.net/upgrade`
 * URL schema version (so we can change it in the future), that is currently `v2`
 * product name (e.g. *Tails*, but some day we may have *TailsServer*,
   *TailsHandheld* or whatever)
@@ -188,7 +188,7 @@ of upgrade-description file files.
 * channel (e.g. *stable* or *beta*)
 * `upgrade.yml`
 
-Example: <https://tails.boum.org/upgrade/v2/Tails/0.11/amd64/beta/upgrades.yml>
+Example: <https://tails.net/upgrade/v2/Tails/0.11/amd64/beta/upgrades.yml>
 
 Such a file shall be shipped along with its OpenPGP detached signature
 (`upgrades.yml.pgp`).
@@ -213,7 +213,7 @@ upgrade to an individual product version, with the following keys:
 * `type` -- *major* or *minor*
 * `details-url` (optional) -- a URL to a web page with more
   information about the specified upgrade (e.g.
-  <https://tails.boum.org/news/version_0.11.1/>)
+  <https://tails.net/news/version_0.11.1/>)
 * `upgrade-paths` -- a list of at least one and no more than two
   upgrade path elements.
 
@@ -239,7 +239,7 @@ Every target file element has the following keys:
   will need to be specified when this happens.)
 
 Example that would be found at
-<https://tails.boum.org/upgrade/v2/Tails/0.11.1/amd64/stable/upgrades.yml>:
+<https://tails.net/upgrade/v2/Tails/0.11.1/amd64/stable/upgrades.yml>:
 
 	product-name: Tails
 	initial-install-version: 0.11.1
@@ -249,7 +249,7 @@ Example that would be found at
 	upgrades:
 	  - version: 0.11.2
 	    type: minor
-	    details-url: https://tails.boum.org/news/version_0.11.2/
+	    details-url: https://tails.net/news/version_0.11.2/
 	    upgrade-paths:
 	      - type: incremental
 	        target-files:
@@ -476,7 +476,7 @@ their integrity.
 
 Given:
 
-* upgrade-description files are published on <https://tails.boum.org/>;
+* upgrade-description files are published on <https://tails.net/>;
   in the old Tails upgrade system, this is the canonical place where
   Tails users can check for upgrades availability.
 * The upgrade-description downloader and verifier checks the SSL
