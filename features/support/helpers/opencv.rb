@@ -29,7 +29,9 @@ module OpenCV
     if stdout.chomp == 'FindFailed'
       nil
     else
-      stdout.chomp.split.map(&:to_i)
+      match = stdout.chomp.split.map(&:to_i)
+      assert_equal(4, match.size)
+      match
     end
   ensure
     Thread.report_on_exception = true
