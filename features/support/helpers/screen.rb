@@ -202,10 +202,7 @@ class Screen
       debug_log("Screen: trying to find any of #{patterns.join(', ')}")
     end
     patterns.each do |pattern|
-      return {
-        found_pattern: pattern,
-        match:         real_find(pattern, **opts.clone.update(log: false)),
-      }
+      return real_find(pattern, **opts.clone.update(log: false))
     rescue FindFailed
       # Ignore. We'll throw an appropriate exception after having
       # looped through all patterns and found none of them.
