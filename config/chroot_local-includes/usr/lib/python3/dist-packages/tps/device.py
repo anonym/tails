@@ -479,7 +479,16 @@ class TPSPartition(object):
 
         if rename_dm_device:
             # Get the cleartext device
-            cleartext_device = self.get_cleartext_device()
+            try:
+                cleartext_device = self.get_cleartext_device()
+            except PartitionNotUnlockedError:
+                # Log the output of `udisksctl dump` to help debug spurious
+                # failures to get the cleartext device after unlocking
+                output = executil.check_output(["udisksctl", "dump"])
+                logger.error("Failed to get cleartext device after unlocking"
+                             " partition. udisksctl dump output:\n%s",
+                             output)
+                raise
 
             # Rename the cleartext device to "TailsData_unlocked", which
             # is the expected dm name for historical reasons
