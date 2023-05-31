@@ -332,9 +332,7 @@ class Service(DBusObject, ServiceUsingJobs):
         luks_header_backup = self._tps_partition.luks_header_backup_path()
         if luks_header_backup.exists():
             with self.ensure_system_partition_mounted_read_write():
-                executil.check_call([
-                    "shred", "--force", "-n", "1", "-u", luks_header_backup,
-                ])
+                self.erase_luks_header_backup(luks_header_backup)
 
     def UpgradeLUKS(self, passphrase: str):
         """Upgrade the LUKS header and key derivation function.
@@ -373,7 +371,7 @@ class Service(DBusObject, ServiceUsingJobs):
         # header is intact.
         luks_header_backup = self._tps_partition.luks_header_backup_path()
         if luks_header_backup.exists():
-            luks_header_backup.unlink()
+            self.erase_luks_header_backup(luks_header_backup)
 
         # Create a backup of the LUKS header in case something goes
         # wrong during the upgrade. This backup will be restored on the
@@ -681,6 +679,12 @@ class Service(DBusObject, ServiceUsingJobs):
     @staticmethod
     def run_on_deactivated_hooks():
         executil.execute_hooks(ON_DEACTIVATED_HOOKS_DIR)
+
+    @staticmethod
+    def erase_luks_header_backup(luks_header_backup: Path):
+        executil.check_call([
+            "shred", "--force", "-n", "1", "-u", str(luks_header_backup),
+        ])
 
     @contextlib.contextmanager
     def ensure_system_partition_mounted_read_write(self):
