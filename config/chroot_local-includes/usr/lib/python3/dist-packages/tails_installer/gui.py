@@ -247,8 +247,6 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         # in the GUI
         self.handler = TailsInstallerLogHandler(lambda x: self.append_to_log(str(x)))
         self.live.log.addHandler(self.handler)
-        if not self.opts.verbose:
-            self.live.log.removeHandler(self.live.stream_handler)
 
         # Initialize the visibility and state of the clone/ISO source
         # selection widgets. This triggers on_radio_button_source_iso_toggled
