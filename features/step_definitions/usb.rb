@@ -191,16 +191,16 @@ When /^I (install|reinstall|upgrade) Tails( with Persistent Storage)? (?:to|on) 
   # We use a wildcard in the label because in case that the target device
   # already contains a Tails installation, the check button label is
   # "Clone the current Persistent Storage (requires reinstall)".
-  clone_persistence_button = @installer.
-    child('Clone the current Persistent Storage.*',
-          roleName: 'check box',
-          retry: false)
+  clone_persistence_button = @installer
+                             .child('Clone the current Persistent Storage.*',
+                                    roleName: 'check box',
+                                    retry:    false)
 
   sensitive = clone_persistence_button.sensitive
   if tps_is_created
     assert(sensitive, "Couldn't find clone Persistent Storage check button (even though a Persistent Storage exists)")
   else
-    assert(!sensitive, "Found clone Persistent Storage check button (even though no Persistent Storage exists)")
+    assert(!sensitive, 'Found clone Persistent Storage check button (even though no Persistent Storage exists)')
   end
 
   if with_persistence
@@ -565,7 +565,6 @@ Then /^there is a persistence partition on USB drive "([^"]+)"$/ do |name|
   assert($vm.execute("test -b #{data_part_dev}").success?,
          "USB drive #{name} has no partition '#{data_part_dev}'")
 end
-
 
 def assert_luks2_with_argon2id(name, device)
   # Tails 5.12 and older used LUKS1 by default
