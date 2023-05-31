@@ -477,10 +477,11 @@ class TPSPartition(object):
         udisks.settle()
 
         if rename_dm_device:
-            # Get the cleartext device
+            # Wait for the cleartext device to become available to udisks
             try:
-                cleartext_device = self.get_cleartext_device()
-            except PartitionNotUnlockedError:
+                cleartext_device = wait_for_udisks_object(self.get_cleartext_device)
+                assert isinstance(cleartext_device, CleartextDevice)
+            except TimeoutError:
                 # Log the output of `udisksctl dump` to help debug spurious
                 # failures to get the cleartext device after unlocking
                 output = executil.check_output(["udisksctl", "dump"])
@@ -679,9 +680,9 @@ class CleartextDevice(object):
         executil.check_call(["dmsetup", "rename", dm_name, new_name])
 
 
-def wait_for_udisks_object(func: Callable[[...], Optional[UDisks.Object]],
+def wait_for_udisks_object(func: Callable[[...], Optional[object]],
                            *args,
-                           timeout: int = 20) -> UDisks.Object:
+                           timeout: int = 20) -> object:
     """Repeatedly call `udevadm trigger` and then func() until func()
     returns a udisks object or timeout is reached."""
     start = time.time()
