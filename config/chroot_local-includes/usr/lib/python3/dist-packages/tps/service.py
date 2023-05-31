@@ -290,10 +290,6 @@ class Service(DBusObject, ServiceUsingJobs):
             msg = "Can't unlock when state is '%s'" % self.state.name
             raise FailedPreconditionError(msg)
 
-        # Upgrade the LUKS header if necessary
-        if not self.IsUpgraded:
-            self.UpgradeLUKS(passphrase)
-
         try:
             self.do_unlock(passphrase)
         finally:

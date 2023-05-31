@@ -112,6 +112,7 @@ CHECKPOINTS =
       parent_checkpoint: 'usb-install-with-persistence-tails-greeter',
       steps:             [
         'the persistence partition on USB drive "__internal" uses LUKS version 1',
+        'I reload tails-persistent-storage.service'
       ],
     },
 

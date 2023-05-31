@@ -1662,3 +1662,7 @@ Given /^the persistence partition on USB drive "([^"]+)" uses LUKS version 1$/ d
   )
   $vm.execute_successfully("cryptsetup convert --batch-mode --type luks1 #{dev}")
 end
+
+Given /^I reload tails-persistent-storage.service$/ do
+  $vm.execute_successfully('systemctl reload tails-persistent-storage.service')
+end
