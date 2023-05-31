@@ -379,24 +379,26 @@ class TPSPartition(object):
         """Return the path to the LUKS header backup file.
         Raise a subprocess.CalledProcessError if the partition is not
         encrypted."""
-        uuid = executil.check_output(
-            ["cryptsetup", "luksUUID", "--batch-mode", self.device_path],
-            text=True,
-        ).strip()
+        try:
+            uuid = executil.check_output(
+                ["cryptsetup", "luksUUID", "--batch-mode", self.device_path],
+                text=True,
+            ).strip()
+        except subprocess.CalledProcessError as err:
+            logger.exception("Failed to get LUKS UUID")
+            raise InvalidPartitionError() from err
         return Path(LUKS_HEADER_BACKUP_PATH_FORMAT_STRING.format(uuid=uuid))
 
-    def backup_luks_header(self):
-        luks_header_backup = self.luks_header_backup_path()
+    def backup_luks_header(self, luks_header_backup: Path):
         executil.check_call(
             ["cryptsetup", "luksHeaderBackup", "--batch-mode",
              "--header-backup-file", luks_header_backup, self.device_path],
         )
 
-    def restore_luks_header(self):
-        luks_header_backup = self.luks_header_backup_path()
+    def restore_luks_header_backup(self, luks_header_backup: Path):
         executil.check_call(
             ["cryptsetup", "luksHeaderRestore", "--batch-mode",
-             "--header-backup-file", luks_header_backup, self.device_path],
+             "--header-backup-file", str(luks_header_backup), self.device_path],
         )
 
     def upgrade_luks2(self):
@@ -444,36 +446,17 @@ class TPSPartition(object):
         except GLib.Error as err:
             logger.error(f"Failed to unlock {self.device_path}: {err.message}")
 
-            luks_header_backup = self.luks_header_backup_path()
-            if err.matches(UDisks.error_quark(), UDisks.Error.FAILED) and \
-                    luks_header_backup.exists():
-                logger.info(f"Trying to unlock LUKS header backup: {luks_header_backup}")
-                # Test the passphrase against the LUKS header backup
-                try:
-                    self.test_passphrase(passphrase, luks_header_backup)
-                except IncorrectPassphraseError as err:
-                    logger.info("Failed to unlock LUKS header backup with the "
-                                f"provided passphrase: {err}")
-                else:
-                    # Restore the LUKS header backup
-                    logger.info(f"Unlocking LUKS header backup succeeded, "
-                                f"restoring the backup header.")
-                    self.restore_luks_header()
-                    # Unlock the partition
-                    logger.info(f"Unlocking {self.device_path} with the "
-                                f"restored header.")
-                    encrypted.call_unlock_sync(
-                        arg_passphrase=passphrase,
-                        arg_options=GLib.Variant('a{sv}', {}),
-                        cancellable=None,
-                    )
-                    return
+            unlocked = False
+            if err.matches(UDisks.error_quark(), UDisks.Error.FAILED):
+                unlocked = self._try_restore_luks_header_backup(passphrase)
 
-            if err.matches(UDisks.error_quark(), UDisks.Error.FAILED) and \
-                    re.search('Failed to activate device: (Operation not '
-                              'permitted|Incorrect passphrase)', err.message):
-                raise IncorrectPassphraseError(err) from err
-            raise
+            if not unlocked:
+                if err.matches(UDisks.error_quark(), UDisks.Error.FAILED) and \
+                        re.search('Failed to activate device: (Operation not '
+                                  'permitted|Incorrect passphrase)',
+                                  err.message):
+                    raise IncorrectPassphraseError(err) from err
+                raise
 
         udisks.settle()
 
@@ -483,6 +466,54 @@ class TPSPartition(object):
         # Rename the cleartext device to "TailsData_unlocked", so that
         # is has the same name as after a reboot.
         cleartext_device.rename_dm_device("TailsData_unlocked")
+
+    def _try_restore_luks_header_backup(self, passphrase: str) -> bool:
+        """Try to restore a LUKS header backup and unlock the Persistent
+        Storage with that header.
+        :returns: True if the LUKS header backup was restored and the
+                  Persistent Storage was unlocked, False otherwise.
+        """
+        try:
+            luks_header_backup = self.luks_header_backup_path()
+        except InvalidPartitionError:
+            # The LUKS header of the partition might be corrupted
+            # in a way that prevents us from getting the UUID.
+            # In that case, we can't get the path to the LUKS
+            # header backup (which includes the UUID), so we use
+            # the first file which matches the LUKS header backup
+            # path format string.
+            format_string = LUKS_HEADER_BACKUP_PATH_FORMAT_STRING.format(
+                uuid="*",
+            )
+            backup_dir = Path(format_string).parent
+            glob_pattern = Path(format_string).name
+            luks_header_backup = next(backup_dir.glob(glob_pattern), None)
+
+        if not luks_header_backup or not luks_header_backup.exists():
+            logger.info("No LUKS header backup found")
+            return False
+
+        logger.info(f"Trying to unlock LUKS header backup: {luks_header_backup}")
+        # Test the passphrase against the LUKS header backup
+        try:
+            self.test_passphrase(passphrase, luks_header_backup)
+        except IncorrectPassphraseError as err:
+            logger.info("Failed to unlock LUKS header backup with the "
+                        f"provided passphrase: {err}")
+            return False
+
+        # Restore the LUKS header backup
+        logger.info(f"Unlocking LUKS header backup succeeded, "
+                    f"restoring the backup header.")
+        self.restore_luks_header_backup(luks_header_backup)
+        # Unlock the partition
+        logger.info(f"Unlocking {self.device_path} with the restored header.")
+        self._get_encrypted().call_unlock_sync(
+            arg_passphrase=passphrase,
+            arg_options=GLib.Variant('a{sv}', {}),
+            cancellable=None,
+        )
+        return True
 
     def _ensure_unmounted(self):
         try:

@@ -377,7 +377,7 @@ class Service(DBusObject, ServiceUsingJobs):
         # wrong during the upgrade. This backup will be restored on the
         # next boot if it still exists then (we remove it when the
         # Persistent Storage was successfully unlocked).
-        self._tps_partition.backup_luks_header()
+        self._tps_partition.backup_luks_header(luks_header_backup)
 
         # Check that the backup header is intact
         try:

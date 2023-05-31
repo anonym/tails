@@ -6,8 +6,8 @@
 # Print the arguments to stderr for debugging purposes.
 echo >&2 "cryptsetup $*"
 
-# If the first argument is "luksConvertKey", then call "luksErase"
-# instead.
+# If the first argument is "luksConvertKey", then overwrite the LUKS
+# header with zeros instead.
 if [ "$1" = "luksConvertKey" ]; then
     # Get the device from the arguments, which is the only argument that
     # starts with "/dev".
@@ -24,10 +24,10 @@ if [ "$1" = "luksConvertKey" ]; then
     fi
 
     echo >&2 "Erasing LUKS header on $device"
-    /sbin/cryptsetup luksErase --batch-mode "$device"
+    dd if=/dev/zero of="$device" bs=1M count=2
 
     # Create a flag file to be able to check that this script was called
-    # and the luksErase command was executed.
+    # and the header was erased.
     touch /tmp/luks-header-erased
 else
     # Otherwise, just call cryptsetup with the arguments.
