@@ -378,6 +378,17 @@ class Service(DBusObject, ServiceUsingJobs):
         # next boot if it still exists then (we remove it when the
         # Persistent Storage was successfully unlocked).
         self._tps_partition.backup_luks_header()
+
+        # Check that the backup header is intact
+        try:
+            self._tps_partition.test_passphrase(passphrase, luks_header_backup)
+        except Exception as e:
+            # Remove the backup header because it is not intact, so we
+            # can't restore it if something goes wrong during the upgrade.
+            self.erase_luks_header_backup(luks_header_backup)
+            raise e
+
+        # Upgrade the LUKS header and key derivation function
         self._tps_partition.upgrade_luks2()
         self._tps_partition.convert_pbkdf_argon2id(passphrase)
 
