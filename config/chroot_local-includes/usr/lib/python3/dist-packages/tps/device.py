@@ -326,8 +326,7 @@ class TPSPartition(object):
 
         # Wait for the encrypted partition to become available to udisks
         next_step()
-        wait_for_udisks_object(partition.device_path,
-                               partition.udisks_object.get_encrypted)
+        wait_for_udisks_object(partition.udisks_object.get_encrypted)
 
         # Unlock the partition
         logger.info("Unlocking partition")
@@ -680,8 +679,7 @@ class CleartextDevice(object):
         executil.check_call(["dmsetup", "rename", dm_name, new_name])
 
 
-def wait_for_udisks_object(device: str,
-                           func: Callable[[...], Optional[UDisks.Object]],
+def wait_for_udisks_object(func: Callable[[...], Optional[UDisks.Object]],
                            *args,
                            timeout: int = 20) -> UDisks.Object:
     """Repeatedly call `udevadm trigger` and then func() until func()
