@@ -237,6 +237,14 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
                 raise
             self.persistent_storage_is_created = False
 
+        try:
+            subprocess.check_call(['/usr/local/lib/tpscli', 'is-unlocked'])
+            self.persistent_storage_is_unlocked = True
+        except subprocess.CalledProcessError as e:
+            if e.returncode != 1:
+                raise
+            self.persistent_storage_is_unlocked = False
+
         self._build_ui()
 
         self.opts.clone = True
@@ -431,20 +439,6 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
             return
 
         if self.opts.clone_persistent_storage_requested:
-            try:
-                subprocess.check_call(['/usr/local/lib/tpscli', 'is-unlocked'])
-            except subprocess.CalledProcessError as e:
-                if e.returncode == 1:
-                    dialog = Gtk.MessageDialog(parent=self,
-                                               flags=Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                               message_type=Gtk.MessageType.ERROR,
-                                               buttons=Gtk.ButtonsType.CLOSE,
-                                               message_format=_("Can't clone locked Persistent Storage"))
-                    dialog.run()
-                    dialog.destroy()
-                    return
-                raise
-
             passphrase_dialog = PassphraseDialog(self, self.live)
             passphrase_dialog.run()
             if not passphrase_dialog.passphrase:
@@ -486,13 +480,21 @@ class TailsInstallerWindow(Gtk.ApplicationWindow):
         self.__button_start.set_sensitive(sensitive)
 
     def update_clone_persistent_storage_check_button(self):
-        if self.opts.partition:
-            label = _('Clone the current Persistent Storage')
-        else:
-            label = _('Clone the current Persistent Storage (requires reinstall)')
-        self.__check_button_clone_persistent_storage.set_label(label)
+        if not self.persistent_storage_is_created:
+            self.__check_button_clone_persistent_storage.hide()
+            return
 
-        sensitive = self.persistent_storage_is_created and self.opts.clone
+        if not self.persistent_storage_is_unlocked:
+            text = _('Clone the current Persistent Storage\n'
+                     'Impossible to clone the Persistent Storage because it is locked.')
+        elif self.opts.partition:
+            text = _('Clone the current Persistent Storage')
+        else:
+            text = _('Clone the current Persistent Storage\n'
+                     'You can only choose to reinstall when cloning the Persistent Storage.')
+        self.__check_button_clone_persistent_storage.set_label(text)
+
+        sensitive = self.persistent_storage_is_unlocked and self.opts.clone
         self.__check_button_clone_persistent_storage.set_sensitive(sensitive)
         if not sensitive:
             self.__check_button_clone_persistent_storage.set_active(False)
