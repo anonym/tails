@@ -1,0 +1,84 @@
+[[!meta date="Tue, 14 Jun 2023 12:34:56 -0000"]]
+[[!meta title="$TITLE"]]
+[[!pagetemplate template="news.tmpl"]]
+
+[[!tag security/fixed]]
+
+### Explanation
+
+bruteforce to guess your passphrase
+make some calculation on each try
+how complicated and expensive is this calculation?
+make each try of a different passphrase combination more expensive
+
+PBKDF2 until Tails 5.13.
+
+Argon2id since Tails 5.13.
+
+Actually, not really a vulnerability but an arms race in terms of computer
+resources available to crack passphrases while provide usable encryption.
+
+### Likelihood
+
+This vulnerability might have been used already against activists in France:
+https://mjg59.dreamwidth.org/66429.html
+
+Persistent Storage and other encrypted volumes created with Tails 5.12 and
+earlier could have been decrypted by very powerful adversaries with physical
+access.
+
+Only practical for an adversay with very powerful computers, lots of money and
+time to spend, and very advanced technical team, like a State.
+
+I like the conversion into dollars and time!
+
+Diceware gives 13 bits of entropy per word.
+
+We recommend 5 to 7 words.
+
+If you followed our recommendations, you are safe. Congrats!
+
+  - 6 words or more (78 bits or more)
+    * Safe (even with 5.12 or earlier)
+    * Would take several milleniums to crack your passphrase even with 5.12 or earlier
+
+  - 5 words (65 bits)
+    * 5.12 or earlier: safe unless your adversay can spend at least $500k on cracking your passphrase
+    * 5.14 or later: safe
+
+  - 3 or 4 words (39 or 52 bits)
+    * 5.12 or earlier: not safe
+    * 5.14 or later: safe
+    * Still, consider boosting your passphrase to 5 words
+
+If you use a different password scheme than diceware, sorry but we can't
+estimate your safety. Consider changing to diceware.
+
+See [An information theoretic model of privacy and security
+metrics](https://media.libreplanet.org/u/libreplanet/m/an-information-theoretic-model-of-privacy-and-security-metrics/)
+
+### Mitigation
+
+- Persistent Storage:
+
+  Upgrade to Tails 5.14
+
+  Tails 5.14 converts automatically your Persistent Storage to argon2id.
+
+- Backup Tails USB stick:
+
+  Use the new backup feature of Tails Installer to update the header of your
+  backup Tails (and do a fresh copy of all your Persistent Storage).
+
+- Other encrypted volumes:
+
+  Create a new encrypted device and do a backup of all your data, or upgrade
+  from the command line.
+
+- Want to check?
+
+  Persistent Storage:
+
+      sudo cryptsetup luksDump /dev/sda2
+
+  Other: how to get device name from GNOME Disks (briefly)
