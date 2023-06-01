@@ -7,7 +7,8 @@
 echo >&2 "cryptsetup $*"
 
 # If the first argument is "luksConvertKey", then overwrite the LUKS
-# header with zeros instead.
+# header with zeros instead. See the "I enable persistence but something
+# goes wrong during the LUKS header upgrade" step to understand why.
 if [ "$1" = "luksConvertKey" ]; then
     # Get the device from the arguments, which is the only argument that
     # starts with "/dev".
