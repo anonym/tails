@@ -113,7 +113,7 @@ Feature: Browsing the web using the Tor Browser
   Scenario: The persistent Tor Browser directory is usable
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And the network is plugged
-    And Tor is ready
+    And I successfully configure Tor
     And available upgrades have been checked
     And all notifications have disappeared
     Then the persistent Tor Browser directory exists

@@ -38,7 +38,7 @@ def ip6tables_rules(chain, table = 'filter')
 end
 
 def ip4tables_packet_counter_sum(chain, iface, table = 'filter')
-  cmd = "iptables -t #{table} -L #{chain} -v | grep 'ACCEPT.*#{iface}' | awk '{ print $1 }'"
+  cmd = "iptables --wait 5 -t #{table} -L #{chain} -v | grep 'ACCEPT.*#{iface}' | awk '{ print $1 }'"
   output = $vm.execute_successfully(cmd).stdout
   incoming_packets, outgoing_packets = output.split(/\n/)
   Integer(incoming_packets) + Integer(outgoing_packets)
@@ -46,7 +46,7 @@ end
 
 def iptables_filter_add(add, target, address, port)
   manipulate = add ? 'I' : 'D'
-  command = "iptables -#{manipulate} OUTPUT " \
+  command = "iptables --wait 5 -#{manipulate} OUTPUT " \
     '-p tcp ' \
     "--destination #{address} " \
     "--destination-port #{port} " \
@@ -411,6 +411,18 @@ rescue StandardError => e
         "#{e.class.name}: #{e}"
 else
   raise 'TCA managed to connect to Tor but was expected to fail'
+end
+
+Then /^the Tor Connection Assistant knows that it's not the time sync that failed$/ do
+  if tor_connection_assistant.child?('Fix Clock', showingOnly: true)
+    raise 'TCA thinks that time sync might have failed'
+  end
+end
+
+Then /^the Tor Connection Assistant knows that there might be a captive portal$/ do
+  unless tor_connection_assistant.child?('Try Signing in to the Network', showingOnly: true)
+    raise 'TCA does not think that there might be a captive portal'
+  end
 end
 
 def tca_configure(mode, connect: true, &block)
@@ -880,21 +892,18 @@ Then /^all Internet traffic has only flowed through (Tor|the \w+ bridges)( or (?
   # often "I have started Tails from DVD and logged in and the network
   # is connected").
   if !connectivity_check.empty?
-    # Allow connections to the local DNS resolver, used by
-    # tails-get-network-time
-    allowed_hosts << { address: $vmnet.bridge_ip_addr, port: 53 }
+    if connectivity_check.include? 'fake'
+      # The fake connectivity check service uses the LAN web server
+      allowed_hosts << { address: @web_server_ip_addr, port: @web_server_port }
+    else
+      # Allow connections to the local DNS resolver, used by
+      # tails-get-network-time to resolve the hostname of the
+      # connectivity check service
+      allowed_hosts << { address: $vmnet.bridge_ip_addr, port: 53 }
+      allowed_hosts += CONNECTIVITY_CHECK_ALLOWED_NODES
+      allowed_dns_queries = [CONNECTIVITY_CHECK_HOSTNAME + '.']
+    end
 
-    conn_host, conn_nodes = if connectivity_check.include? 'fake'
-                              host = FAKE_CONNECTIVITY_CHECK_HOSTNAME
-                              nodes = Resolv.getaddresses(host).map do |ip|
-                                { address: ip, port: 80 }
-                              end
-                              [host, nodes]
-                            else
-                              [CONNECTIVITY_CHECK_HOSTNAME, CONNECTIVITY_CHECK_ALLOWED_NODES]
-                            end
-    allowed_hosts += conn_nodes
-    allowed_dns_queries = [conn_host + '.']
   else
     allowed_dns_queries = []
   end
@@ -1006,4 +1015,11 @@ Then /^tca.conf includes the configured bridges$/ do
       { address: bridge_info[0], port: bridge_info[1].to_i }
     end
   )
+end
+
+When /^I open the Unsafe Browser from Tor Connection$/ do
+  tor_connection_assistant.child('Try Signing in to the Network').click
+  try_for(30) do
+    Dogtail::Application.new('Firefox')
+  end
 end

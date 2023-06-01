@@ -65,5 +65,5 @@ Feature: The Tor enforcement is effective
     Given I have started Tails from DVD without network and logged in
     And the system DNS is using the local DNS resolver
     And the network is plugged
-    And Tor is ready
+    And I successfully configure Tor
     Then the system DNS is still using the local DNS resolver

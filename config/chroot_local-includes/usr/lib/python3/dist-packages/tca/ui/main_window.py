@@ -221,7 +221,7 @@ class StepChooseBridgeMixin:
         if self.app.has_persistence and self.app.has_unlocked_persistence:
             self.builder.get_object("step_bridge_persistence_help_box").hide()
 
-            def cb_set_up_persistence_switch(gjsonrpcclient, res, error):
+            def cb_set_up_persistence_switch(gjsonrpcclient, res, error, _):
                 log.debug("Persistence enabled: %s", res)
                 active = res is not None and res.get("returncode", 1) == 0
                 self.builder.get_object("step_bridge_persistence_switch").set_active(
@@ -318,7 +318,7 @@ class StepChooseBridgeMixin:
             self.builder.get_object(widget).set_sensitive(False)
         self.builder.get_object("step_bridge_persistence_spinner").set_visible(True)
 
-        def cb_persistence_config_changed(gjsonrpcclient, res, error):
+        def cb_persistence_config_changed(gjsonrpcclient, res, error, _):
             log.debug(
                 "cb_persistence_config_changed called with args: %s",
                 args,
@@ -374,7 +374,7 @@ class StepChooseBridgeMixin:
             error_label.set_label(msg)
             error_box.show_all()
 
-        def on_qrcode_scanned(gjsonrpcclient, res, error):
+        def on_qrcode_scanned(gjsonrpcclient, res, error, _):
             if self.state['step'] != step_called_from:
                 log.info("QR code scanned (exitcode: %d) too late, ignoring",
                          res.get('returncode', -1) if res else -1)
@@ -543,7 +543,7 @@ class StepConnectProgressMixin:
                 self.state["progress"]["error_data"] = error
                 self.change_box("error")
 
-            def conf_applied_cb(gjsonrpcclient, res, error):
+            def conf_applied_cb(gjsonrpcclient, res, error, _):
                 log.debug("tor configuration applied callback returned: %s", res)
                 success = res and res.get("returncode", 1) == 0
                 if not success:
@@ -691,6 +691,10 @@ class StepErrorMixin:
         time_synced: bool = (not hide_mode) and self.app.get_network_time_result[
             "status"
         ] == "success"
+        time_sync_failure_reason = (
+                None if time_synced
+                else self.app.get_network_time_result.get('reason')
+                )
 
         # Bridges are compulsory in hide mode, so the user has
         # already seen the explanation about bridges and we don't
@@ -702,7 +706,11 @@ class StepErrorMixin:
         label_explain.set_text(
             _("This local network seems to be blocking access to Tor.")
         )
-        label_explain.set_visible(time_synced)
+        if time_sync_failure_reason == 'captive-portal':
+            self.get_object("box_wrong_clock").set_visible(False)
+            label_explain.set_visible(True)
+        else:
+            label_explain.set_visible(time_synced)
 
         self._step_error_submit_allowed()
 
@@ -720,7 +728,7 @@ class StepErrorMixin:
     def on_time_dialog_complete(self, time_dialog, response):
         log.debug("time dialog closed: %s", response == Gtk.ResponseType.APPLY)
 
-        def on_set_system_time(portal, result, error):
+        def on_set_system_time(portal, result, error, _):
             if error:
                 log.error("Error setting system time! %s", error)
                 dialog = Gtk.MessageDialog(

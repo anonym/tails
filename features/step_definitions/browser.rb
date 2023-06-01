@@ -6,12 +6,12 @@ def save_page_as
   browser.child(
     description: 'Open application menu',
     roleName:    'push button',
-    showingOnly: true,
+    showingOnly: true
   ).press
   browser.child(
-    name: 'Save page as\u2026',
+    name:        'Save page as\u2026',
     roleName:    'push button',
-    showingOnly: true,
+    showingOnly: true
   ).press
   browser.child('Save As',
                 roleName:    'file chooser',
@@ -364,4 +364,16 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   @screen.wait('ScreenKeyboard.png', 20)
   @screen.wait_any(osk_key_images, 20)[:match].click
   @screen.wait(browser_bar_x, 20)
+end
+
+When /^I log-in to the Captive Portal$/ do
+  step 'a web server is running on the LAN'
+  captive_portal_page = "#{@web_server_url}/captive"
+  step "I open the address \"#{captive_portal_page}\" in the Unsafe Browser"
+
+  try_for(30) do
+    File.exist?(@captive_portal_login_file)
+  end
+
+  step 'I close the Unsafe Browser'
 end

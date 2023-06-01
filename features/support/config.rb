@@ -123,4 +123,5 @@ CONNECTIVITY_CHECK_HOSTS = Resolv.getaddresses(CONNECTIVITY_CHECK_HOSTNAME)
 CONNECTIVITY_CHECK_ALLOWED_NODES = (CONNECTIVITY_CHECK_HOSTS.map do |ip|
   { address: ip, port: 80 }
 end).freeze
-FAKE_CONNECTIVITY_CHECK_HOSTNAME = 'httpbin.org'.freeze
+
+LAN_WEB_SERVER_DATA_DIR = "#{$config['TMPDIR']}/lan-web-server".freeze

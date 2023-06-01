@@ -330,10 +330,14 @@ After('@product') do |scenario|
         )
         FileUtils.mkdir("#{ARTIFACTS_DIR}/#{chutney_logs}")
         FileUtils.rm(Dir.glob("#{$config['TMPDIR']}/chutney-data/**/control"))
-        FileUtils.copy_entry(
-          "#{$config['TMPDIR']}/chutney-data",
-          "#{ARTIFACTS_DIR}/#{chutney_logs}"
-        )
+        begin
+          FileUtils.copy_entry(
+            "#{$config['TMPDIR']}/chutney-data",
+            "#{ARTIFACTS_DIR}/#{chutney_logs}"
+          )
+        rescue StandardError => e
+          info_log("Failed to copy Chutney data: #{e}")
+        end
         info_log
         info_log_artifact_location(
           'Chutney logs',
