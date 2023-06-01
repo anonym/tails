@@ -68,7 +68,7 @@ Feature: Additional software
     Then "cowsay" is not in the list of Additional Software
 
   # Depends on scenario: My Additional Software list is configurable through a GUI or through notifications when I install or remove packages with APT or Synaptic
-  # See https://tails.boum.org/blueprint/additional_software_packages/offline_mode/#incomplete-online-upgrade for high level logic
+  # See https://tails.net/blueprint/additional_software_packages/offline_mode/#incomplete-online-upgrade for high level logic
   @not_release_blocker
   Scenario: Recovering in offline mode after Additional Software previously failed to upgrade and then succeed to upgrade when online
     Given a computer

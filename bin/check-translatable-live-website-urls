@@ -9,6 +9,8 @@ tails_live_website_urls = []
 for entry in [e for e in polib.pofile(sys.argv[1]) if not e.obsolete]:
     tails_live_website_urls += re.findall(
         '(http[s]?://tails.boum.org/[a-zA-Z/]*)', entry.msgid)
+    tails_live_website_urls += re.findall(
+        '(http[s]?://tails.net/[a-zA-Z/]*)', entry.msgid)
 
 if tails_live_website_urls:
     print("Error: found translatable URLs to the Tails live website:")

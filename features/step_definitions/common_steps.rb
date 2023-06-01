@@ -461,8 +461,14 @@ Given /^I log in to a new session(?: in ([^ ]*) \(([^ ]*)\))?( without activatin
 end
 
 def open_greeter_additional_settings
-  @screen.wait('TailsGreeterAddMoreOptions.png', 10).click
-  @screen.wait('TailsGreeterAdditionalSettingsDialog.png', 10)
+  button = greeter.child('Add an additional setting', roleName: 'push button')
+  try_for(5) do
+    button.grabFocus
+    button.focused
+  end
+  @screen.press('Return')
+
+  greeter.child('Additional Settings', roleName: 'dialog', showingOnly: true)
 end
 
 Given /^I open Tails Greeter additional settings dialog$/ do
@@ -470,10 +476,20 @@ Given /^I open Tails Greeter additional settings dialog$/ do
 end
 
 Given /^I disable networking in Tails Greeter$/ do
-  open_greeter_additional_settings
-  @screen.wait('TailsGreeterOfflineMode.png', 30).click
-  @screen.wait('TailsGreeterOfflineModeDisableNetwork.png', 10).click
-  @screen.wait('TailsGreeterAdditionalSettingsAdd.png', 10).click
+  dialog = open_greeter_additional_settings
+  row = dialog.child(description: 'Configure Offline Mode')
+  try_for(5) do
+    row.grabFocus
+    row.focused
+  end
+  @screen.press('Return')
+
+  row = dialog.child('Disable all networking').parent.parent
+  try_for(5) do
+    row.grabFocus
+    row.focused
+  end
+  @screen.press('Return')
 end
 
 Given /^I set an administration password$/ do
@@ -838,7 +854,7 @@ Given /^process "([^"]+)" has stopped running after at most (\d+) seconds$/ do |
 end
 
 Given /^I kill the process "([^"]+)"$/ do |process|
-  $vm.execute("killall #{process}")
+  $vm.execute_successfully("killall #{process}")
   try_for(10, msg: "Process '#{process}' could not be killed") do
     !$vm.process_running?(process)
   end
@@ -879,13 +895,19 @@ def open_gnome_system_menu
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|
-  image = if action == 'shutdown'
-            'TailsEmergencyShutdownHalt.png'
-          else
-            'TailsEmergencyShutdownReboot.png'
-          end
+  gnome_shell = Dogtail::Application.new('gnome-shell')
   open_gnome_system_menu
-  @screen.wait(image, 5).click
+  menu_item_name = if action == 'shutdown'
+                      'Power Off'
+                    else
+                      'Restart'
+                   end
+  try_for(5) do
+    menu_item = gnome_shell.child(menu_item_name, roleName: 'label')
+    menu_item.grabFocus
+    menu_item.focused
+  end
+  @screen.press('Return')
 end
 
 When /^I warm reboot the computer$/ do

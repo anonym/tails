@@ -1,4 +1,5 @@
 require 'English'
+require 'open3'
 
 class OpenCVInternalError < StandardError
 end
@@ -13,20 +14,26 @@ module OpenCV
     else
       env['DISPLAY'] = ENV['USER_DISPLAY']
     end
+    # We will often kill the threads run by Open3 thanks to our
+    # liberal use of try_for(), which raises an exception in those
+    # threads. Since Ruby 2.5 those exceptions are reported to stderr
+    # in the parent process, which will spam our log with useless
+    # information, so we disable such reports temporarily.
+    Thread.report_on_exception = false
     debug_log('OpenCV: starting opencv_match_template.py')
-    p = popen_wait(
-      [env, 'python3', "#{GIT_DIR}/features/scripts/opencv_match_template.py",
-       screen, image, sensitivity.to_s, show_match.to_s,],
-      err: [:child, :out]
+    stdout, stderr, p = Open3.capture3(
+      env, 'python3', "#{GIT_DIR}/features/scripts/opencv_match_template.py",
+      screen, image, sensitivity.to_s, show_match.to_s
     )
-    out = p.readlines.join("\n")
-    case $CHILD_STATUS.exitstatus
-    when 0
-      out.chomp.split.map(&:to_i)
-    when 1
+    raise OpenCVInternalError, stderr if p.exitstatus != 0
+    if stdout.chomp == 'FindFailed'
       nil
     else
-      raise OpenCVInternalError, out
+      match = stdout.chomp.split.map(&:to_i)
+      assert_equal(4, match.size)
+      match
     end
+  ensure
+    Thread.report_on_exception = true
   end
 end

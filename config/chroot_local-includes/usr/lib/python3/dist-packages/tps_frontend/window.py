@@ -10,7 +10,7 @@ Handy.init()
 
 from tps import State, IN_PROGRESS_STATES
 from tps.dbus.errors import \
-    TargetIsBusyError, DBusError
+    TargetIsBusyError, NotEnoughMemoryError, DBusError
 
 from tps_frontend import _, WINDOW_UI_FILE
 from tps_frontend.change_passphrase_dialog import ChangePassphraseDialog
@@ -206,10 +206,21 @@ class Window(Gtk.ApplicationWindow):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
-            DBusError.strip_remote_error(e)
             logger.error(f"failed to create Persistent Storage: {e.message}")
-            self.display_error(_("Failed to create Persistent Storage"),
-                               e.message)
+
+            if NotEnoughMemoryError.is_instance(e):
+                # The system doesn't have enough memory to create the
+                # Persistent Storage. This is an expected error which
+                # we don't want error reports for.
+                NotEnoughMemoryError.strip_remote_error(e)
+                self.display_error(_("Not enough memory to create Persistent Storage"),
+                                   e.message,
+                                   with_send_report_button=False)
+            else:
+                DBusError.strip_remote_error(e)
+                self.display_error(_("Failed to create Persistent Storage"),
+                                   e.message)
+
             if self.active_view == self.creation_view:
                 self.close()
             return
@@ -219,7 +230,6 @@ class Window(Gtk.ApplicationWindow):
         try:
             proxy.call_finish(res)
         except GLib.Error as e:
-            DBusError.strip_remote_error(e)
             logger.error(f"failed to delete Persistent Storage: {e.message}")
 
             if TargetIsBusyError.is_instance(e):
@@ -231,6 +241,7 @@ class Window(Gtk.ApplicationWindow):
                                    e.message,
                                    with_send_report_button=False)
             else:
+                DBusError.strip_remote_error(e)
                 self.display_error(_("Error deleting Persistent Storage"),
                                    e.message)
         self.refresh_view()

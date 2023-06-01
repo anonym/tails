@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
 echo "Checking UIDs and GIDs stability"
 
 for file in passwd group; do
-	if ! cmp "/usr/share/tails/build/${file}" "/etc/${file}"; then
+	if ! cmp <(sort "/usr/share/tails/build/${file}") <(sort "/etc/${file}"); then
 		echo "/etc/${file} differs from expected:" >&2
 		diff -Naur "/usr/share/tails/build/${file}" "/etc/${file}" >&2
 		echo "If these changes are innocuous, update " \
