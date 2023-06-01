@@ -5,13 +5,14 @@ import re
 import stat
 from typing import Optional, Callable
 
+import psutil
 from gi.repository import GLib, UDisks
 
 from tailslib import LIVE_USER_UID, LIVE_USERNAME
 import tps.logging
 from tps import executil
 from tps import _, TPS_MOUNT_POINT, udisks
-from tps.dbus.errors import IncorrectPassphraseError, TargetIsBusyError
+from tps.dbus.errors import IncorrectPassphraseError, TargetIsBusyError, NotEnoughMemoryError
 from tps.job import Job
 
 logger = tps.logging.get_logger(__name__)
@@ -19,6 +20,23 @@ logger = tps.logging.get_logger(__name__)
 TAILS_MOUNTPOINT = "/lib/live/mount/medium"
 PARTITION_GUID = "8DA63339-0007-60C0-C436-083AC8230908" # Linux reserved
 PARTITION_LABEL = "TailsData"
+
+# Leave at lest 200 MiB of memory to the system to avoid triggering the
+# OOM killer.
+MEMORY_LEFT_TO_SYSTEM_KIB = 200 * 1024
+
+# Use at least 256 MiB of memory for Argon2id. That should be low enough
+# that even when the system doesn't have enough available memory, the
+# user can free up some memory by closing applications and try again.
+# It's also well within the range that's chosen by cryptsetup by default
+# (32 KiB to 1 GiB).
+MINIMUM_PBKDF_MEMORY_KIB = 256 * 1024
+
+# Support up to 1 GiB of memory for Argon2id. This is the maximum value
+# that's chosen by cryptsetup by default and it's low enough that
+# systems with only 2 GiB of RAM can still unlock the Persistent Storage
+# in the Welcome Screen.
+MAXIMUM_PBKDF_MEMORY_KIB = 1 * 1024 * 1024
 
 
 class InvalidPartitionError(Exception):
@@ -185,6 +203,28 @@ class Partition(object):
         parent_device = BootDevice.get_tails_boot_device()
         offset = parent_device.get_beginning_of_free_space()
 
+        # Calculate the memory cost for Argon2id.
+        # When letting cryptsetup choose the memory cost for Argon2id,
+        # it sometimes triggers the OOM killer on low-memory systems.
+        # We choose a memory cost which leaves some free memory to avoid
+        # triggering the OOM killer.
+        available_mem_kib = int(psutil.virtual_memory().available / 1024)
+        mem_cost_kib = available_mem_kib - MEMORY_LEFT_TO_SYSTEM_KIB
+
+        # Check that the memory cost is not too low, as it would result
+        # in a weak key derivation function.
+        if mem_cost_kib < MINIMUM_PBKDF_MEMORY_KIB:
+            required_mem_kib = MEMORY_LEFT_TO_SYSTEM_KIB + MINIMUM_PBKDF_MEMORY_KIB
+            msg = _("Only {available_memory} KiB of memory is available, need "
+                    "at least {required_memory} KiB.\n\n"
+                    "Try again after closing some applications or rebooting."
+                    "").format(available_memory=available_mem_kib,
+                               required_memory=required_mem_kib)
+            raise NotEnoughMemoryError(msg)
+
+        # Check that the memory cost is not above the maximum.
+        mem_cost_kib = min(mem_cost_kib, MAXIMUM_PBKDF_MEMORY_KIB)
+
         # Create the partition
         logger.info("Creating partition")
         next_step(_("Creating partition"))
@@ -208,11 +248,13 @@ class Partition(object):
         # See https://mjg59.dreamwidth.org/66429.html
         logger.info("Initializing LUKS header")
         next_step(_("Initializing LUKS header (the system might become unresponsive for a few seconds)"))
+
         cmd = ["cryptsetup", "luksFormat",
                "--batch-mode",
                "--key-file=-",
                "--type=luks2",
                "--pbkdf=argon2id",
+               f"--pbkdf-memory={mem_cost_kib}",
                partition.device_path]
         executil.check_call(cmd, input=passphrase)
 
