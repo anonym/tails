@@ -38,7 +38,7 @@ def ip6tables_rules(chain, table = 'filter')
 end
 
 def ip4tables_packet_counter_sum(chain, iface, table = 'filter')
-  cmd = "iptables -t #{table} -L #{chain} -v | grep 'ACCEPT.*#{iface}' | awk '{ print $1 }'"
+  cmd = "iptables --wait 5 -t #{table} -L #{chain} -v | grep 'ACCEPT.*#{iface}' | awk '{ print $1 }'"
   output = $vm.execute_successfully(cmd).stdout
   incoming_packets, outgoing_packets = output.split(/\n/)
   Integer(incoming_packets) + Integer(outgoing_packets)
@@ -46,7 +46,7 @@ end
 
 def iptables_filter_add(add, target, address, port)
   manipulate = add ? 'I' : 'D'
-  command = "iptables -#{manipulate} OUTPUT " \
+  command = "iptables --wait 5 -#{manipulate} OUTPUT " \
     '-p tcp ' \
     "--destination #{address} " \
     "--destination-port #{port} " \
