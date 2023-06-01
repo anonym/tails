@@ -136,7 +136,7 @@ end
 def activate_gnome_shell_menu_entry(label)
   gnome_shell = Dogtail::Application.new('gnome-shell')
   menu_entry = gnome_shell.child(label,
-                                 roleName: 'label',
+                                 roleName:    'label',
                                  showingOnly: true)
   try_for(5) do
     menu_entry.grabFocus
@@ -899,9 +899,9 @@ When /^I request a (shutdown|reboot) using the system menu$/ do |action|
   gnome_shell = Dogtail::Application.new('gnome-shell')
   open_gnome_system_menu
   menu_item_name = if action == 'shutdown'
-                      'Power Off'
-                    else
-                      'Restart'
+                     'Power Off'
+                   else
+                     'Restart'
                    end
   try_for(5) do
     menu_item = gnome_shell.child(menu_item_name, roleName: 'label')
@@ -1116,14 +1116,14 @@ When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) dire
     # sidebar. It doesn't expose an action via the accessibility API, so we
     # have to grab focus and use the keyboard to activate it.
     try_for(3) do
-        bookmark = file_dialog.child(
-          description: output_dir,
-          roleName: 'list item',
-          showingOnly: true,
-        )
-        bookmark.grabFocus
-        bookmark.focused
-      end
+      bookmark = file_dialog.child(
+        description: output_dir,
+        roleName:    'list item',
+        showingOnly: true
+      )
+      bookmark.grabFocus
+      bookmark.focused
+    end
     @screen.press('Space')
   when 'default downloads'
     output_dir = "/home/#{LIVE_USER}/Tor Browser"
@@ -1201,7 +1201,7 @@ def start_web_server
     '--address', @web_server_ip_addr,
     '--port', @web_server_port.to_s,
     '--hello-message', web_server_hello_msg,
-    '--data-dir', LAN_WEB_SERVER_DATA_DIR,
+    '--data-dir', LAN_WEB_SERVER_DATA_DIR
   )
 
   # Log all the web server output (stdout and stderr) to the debug log

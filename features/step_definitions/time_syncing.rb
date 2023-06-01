@@ -49,21 +49,21 @@ end
 When /^I make sure time sync before Tor connects (fails|times out|indicates a captive portal|uses a fake connectivity check service)$/ do |failure_mode|
   step 'a web server is running on the LAN'
 
-  if failure_mode == 'fails'
-    endpoint = 'fail'
-  elsif failure_mode == 'indicates a captive portal'
-    endpoint = 'redirect-to?url=/'
-  elsif failure_mode == 'times out'
-    endpoint = 'delay/30'
-  else
-    endpoint = '/'
-  end
+  endpoint = if failure_mode == 'fails'
+               'fail'
+             elsif failure_mode == 'indicates a captive portal'
+               'redirect-to?url=/'
+             elsif failure_mode == 'times out'
+               'delay/30'
+             else
+               '/'
+             end
   url = "#{@web_server_url}/#{endpoint}"
 
   $vm.execute_successfully('cp /etc/tails-get-network-time.conf /etc/tails-get-network-time.conf.bak')
   $vm.file_overwrite(
     '/etc/tails-get-network-time.conf',
-    %W[url=#{url} debug=true],
+    ["url=#{url}", 'debug=true']
   )
 end
 
@@ -237,12 +237,12 @@ Then /^the HTTP requests received by the fake connectivity check service are ide
   # `diff --unified=0 --from-file #{first_header} #{@lan_web_server_headers_dir}/*`
   # on the host.
   diff = cmd_helper([
-    'diff',
-    '--unified=0',
-    '--from-file', first_header,
-    *@captured_request_headers,
-  ])
+                      'diff',
+                      '--unified=0',
+                      '--from-file', first_header,
+                      *@captured_request_headers,
+                    ])
   assert(diff.empty?,
-          "The HTTP requests received by the fake connectivity check service " \
-          "are not identical:\n#{diff}")
+         'The HTTP requests received by the fake connectivity check service ' \
+         "are not identical:\n#{diff}")
 end

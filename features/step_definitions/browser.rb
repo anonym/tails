@@ -6,12 +6,12 @@ def save_page_as
   browser.child(
     description: 'Open application menu',
     roleName:    'push button',
-    showingOnly: true,
+    showingOnly: true
   ).press
   browser.child(
-    name: 'Save page as\u2026',
+    name:        'Save page as\u2026',
     roleName:    'push button',
-    showingOnly: true,
+    showingOnly: true
   ).press
   browser.child('Save As',
                 roleName:    'file chooser',
@@ -365,7 +365,6 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   @screen.wait_any(osk_key_images, 20)[:match].click
   @screen.wait(browser_bar_x, 20)
 end
-
 
 When /^I log-in to the Captive Portal$/ do
   step 'a web server is running on the LAN'
