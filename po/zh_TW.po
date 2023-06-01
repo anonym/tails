@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 15:57+0200\n"
+"POT-Creation-Date: 2023-06-01 11:20+0200\n"
 "PO-Revision-Date: 2023-04-21 02:48+0000\n"
 "Last-Translator: jxt <chihsun.tsai@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -205,9 +205,9 @@ msgstr "在 Tails 啟動時會從永久性儲存裝置中安裝下列其他軟�
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:185
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
 "要加入更多其他軟體，可以使用<a href=\"synaptic.desktop\">Synaptic 套件管理程"
 "式</a>或<a href=\"org.gnome.Terminal.desktop\">透過終端機使用 APT</a>。"
@@ -328,15 +328,15 @@ msgstr "取得除錯資訊，請執行以下命令：sudo tails-debugging-info"
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
 "<b>更新簽署密鑰時發生錯誤。</b>\\n\\n<b>這樣會無法判斷我們的網站是否提供升級"
-"項目。</b>\\n\\n請檢查您的網路連線，然後將 Tails 重新啟動後再次嘗試升"
-"級。\\n\\n如果問題仍然存在，請前往 file:///usr/share/doc/tails/website/doc/"
-"upgrade/error/check.en.html"
+"項目。</b>\\n\\n請檢查您的網路連線，然後將 Tails 重新啟動後再次嘗試升級。\\n"
+"\\n如果問題仍然存在，請前往 file:///usr/share/doc/tails/website/doc/upgrade/"
+"error/check.en.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:303
 msgid "Error while downloading the signing key"
@@ -1358,9 +1358,9 @@ msgid ""
 "href=\"synaptic.desktop\">Synaptic Package Manager</a> or <a href=\"org."
 "gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
-"要實現以上操作，請建立一個永久性儲存，並使用 <a href=\"synaptic."
-"desktop\">Synaptic 套件管理程式</a>或<a href=\"org.gnome.Terminal.desktop\">"
-"透過終端機使用 APT</a> 安裝一些軟體。"
+"要實現以上操作，請建立一個永久性儲存，並使用 <a href=\"synaptic.desktop"
+"\">Synaptic 套件管理程式</a>或<a href=\"org.gnome.Terminal.desktop\">透過終端"
+"機使用 APT</a> 安裝一些軟體。"
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:219
 msgid "To do so, install Tails on a USB stick and create a persistent storage."
@@ -1655,6 +1655,60 @@ msgstr "Tor 狀態"
 msgid "Open Onion Circuits"
 msgstr "開啟 Onion 迴路"
 
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:218
+#, python-brace-format
+msgid ""
+"Only {available_memory} KiB of memory is available, need at least "
+"{required_memory} KiB.\n"
+"\n"
+"Try again after closing some applications or rebooting."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:230
+#, fuzzy
+msgid "Creating a partition for the Persistent Storage..."
+msgstr "修正永久性磁碟區的存取權限。"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:250
+msgid ""
+"Initializing the LUKS encryption... The computer might stop responding for a "
+"few seconds."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:268
+msgid "Unlocking the encryption..."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:276
+#, fuzzy
+msgid "Formatting the file system..."
+msgstr "正在驗證檔案系統..."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:287
+#, fuzzy
+msgid "Activating the Persistent Storage..."
+msgstr "啟用永久性儲存時出錯: {}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:290
+#, fuzzy
+msgid "Finishing setting up the Persistent Storage..."
+msgstr "刪除永久性儲存"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:345
+msgid ""
+"Can't unmount Persistent Storage, some process is still using it. Please "
+"close all applications that could be accessing it and try again. If that "
+"doesn't work, restart Tails and try deleting the Persistent Storage without "
+"unlocking it."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/mount.py:406
+#, python-brace-format
+msgid ""
+"Can't unmount target {target}, some process is still using it. Please close "
+"all applications that could be accessing the target and try again."
+msgstr ""
+
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:23
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:47
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
@@ -1843,13 +1897,18 @@ msgstr ""
 msgid "Please wait"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:211
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:216
+#, fuzzy
+msgid "Not enough memory to create Persistent Storage"
+msgstr "無法調置您的永久儲存"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:221
 #, fuzzy
 msgid "Failed to create Persistent Storage"
 msgstr "無法調置您的永久儲存"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:230
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:234
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:240
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:245
 #, fuzzy
 msgid "Error deleting Persistent Storage"
 msgstr "解鎖永久性儲存出錯: {}"
@@ -3622,9 +3681,6 @@ msgstr "時鐘"
 
 #~ msgid "The Tails persistence partition will be mounted."
 #~ msgstr "Tails 永久性分割區將會被掛載。"
-
-#~ msgid "Correcting permissions of the persistent volume."
-#~ msgstr "修正永久性磁碟區的存取權限。"
 
 #~ msgid "The permissions of the persistent volume will be corrected."
 #~ msgstr "永久性磁碟區的存取權限將被修正。"

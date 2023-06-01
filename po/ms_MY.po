@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 15:57+0200\n"
+"POT-Creation-Date: 2023-06-01 11:20+0200\n"
 "PO-Revision-Date: 2023-01-25 11:39+0000\n"
 "Last-Translator: emma peel <emma.peel@riseup.net>\n"
 "Language-Team: Malay <https://hosted.weblate.org/projects/tor/tails-gui/ms/"
@@ -205,9 +205,9 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:185
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
 "Untuk menambah lagi, pasang beberapa perisian menggunakan <a href=\"synaptic."
 "desktop\">Pengurus Pakej Synaptic</a> atau <a href=\"org.gnome.Terminal."
@@ -329,10 +329,10 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:303
@@ -505,9 +505,9 @@ msgid ""
 "download.en.html"
 msgstr ""
 "<b>Penataran tidak dapat dimuat turun.</b>\\n\\nPeriksa sambungan rangkaian "
-"anda, dan kemudian mulakan semula Tails untuk cuba menatarnya sekali lagi."
-"\\n\\nJika masalah masih berlaku, pergi ke file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/download.en.html"
+"anda, dan kemudian mulakan semula Tails untuk cuba menatarnya sekali lagi.\\n"
+"\\nJika masalah masih berlaku, pergi ke file:///usr/share/doc/tails/website/"
+"doc/upgrade/error/download.en.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:711
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:726
@@ -1613,6 +1613,60 @@ msgstr "Status Tor"
 msgid "Open Onion Circuits"
 msgstr "Buka Litar Onion"
 
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:218
+#, python-brace-format
+msgid ""
+"Only {available_memory} KiB of memory is available, need at least "
+"{required_memory} KiB.\n"
+"\n"
+"Try again after closing some applications or rebooting."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:230
+#, fuzzy
+msgid "Creating a partition for the Persistent Storage..."
+msgstr "Membetulkan keizinan volum berterusan."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:250
+msgid ""
+"Initializing the LUKS encryption... The computer might stop responding for a "
+"few seconds."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:268
+msgid "Unlocking the encryption..."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:276
+#, fuzzy
+msgid "Formatting the file system..."
+msgstr "Mengesahkan sistem fail..."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:287
+#, fuzzy
+msgid "Activating the Persistent Storage..."
+msgstr "Cipta Storan Berterusan"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:290
+#, fuzzy
+msgid "Finishing setting up the Persistent Storage..."
+msgstr "Cipta Storan Berterusan"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:345
+msgid ""
+"Can't unmount Persistent Storage, some process is still using it. Please "
+"close all applications that could be accessing it and try again. If that "
+"doesn't work, restart Tails and try deleting the Persistent Storage without "
+"unlocking it."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/mount.py:406
+#, python-brace-format
+msgid ""
+"Can't unmount target {target}, some process is still using it. Please close "
+"all applications that could be accessing the target and try again."
+msgstr ""
+
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:23
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:47
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
@@ -1804,13 +1858,18 @@ msgstr ""
 msgid "Please wait"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:211
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:216
+#, fuzzy
+msgid "Not enough memory to create Persistent Storage"
+msgstr "Cipta Storan Berterusan"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:221
 #, fuzzy
 msgid "Failed to create Persistent Storage"
 msgstr "Cipta Storan Berterusan"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:230
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:234
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:240
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:245
 #, fuzzy
 msgid "Error deleting Persistent Storage"
 msgstr "Storan _Berterusan Tersulit"
@@ -3569,9 +3628,6 @@ msgstr ""
 #~ msgid "The Tails persistence partition will be mounted."
 #~ msgstr "Sekatan berterusan Tails akan dilekapkan."
 
-#~ msgid "Correcting permissions of the persistent volume."
-#~ msgstr "Membetulkan keizinan volum berterusan."
-
 #~ msgid "The permissions of the persistent volume will be corrected."
 #~ msgstr "Keizinan volum berterusan akan dibetulkan."
 
@@ -3642,15 +3698,15 @@ msgstr ""
 #~ msgstr "Bestari berterusan - Selesai"
 
 #~ msgid ""
-#~ "Only use the Unsafe Browser to sign in to a network, then close it."
-#~ "\\n\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
+#~ "Only use the Unsafe Browser to sign in to a network, then close it.\\n"
+#~ "\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
 #~ "href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
 #~ "unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and "
 #~ "enable the Unsafe Browser in the additional settings of the Welcome "
 #~ "Screen."
 #~ msgstr ""
-#~ "Only use the Unsafe Browser to sign in to a network, then close it."
-#~ "\\n\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
+#~ "Only use the Unsafe Browser to sign in to a network, then close it.\\n"
+#~ "\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
 #~ "href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
 #~ "unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and "
 #~ "enable the Unsafe Browser in the additional settings of the Welcome "
