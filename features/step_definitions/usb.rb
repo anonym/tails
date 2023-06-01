@@ -571,10 +571,10 @@ Then /^a Tails persistence partition exists( with LUKS version 1)? on USB drive 
     luks_dev = "/dev/mapper/#{name}"
   end
 
-  unless luks1.nil?
-    assert_luks1(dev)
-  else
+  if luks1.nil?
     assert_luks2_with_argon2id(name, dev)
+  else
+    assert_luks1(dev)
   end
 
   # Adapting check_part_integrity() seems like a bad idea so here goes
@@ -623,10 +623,10 @@ Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_p
   # unlocked.
   try_for(60) do
     !greeter.child?('Unlock Encryption',
-                    roleName: 'push button',
+                    roleName:    'push button',
                     showingOnly: true) && \
       !greeter.child?('Unlocking',
-                      roleName: 'push button',
+                      roleName:    'push button',
                       showingOnly: true)
   end
 
@@ -1650,7 +1650,7 @@ Then /^the Persistent Storage settings tell me that the Persistent Folder featur
 end
 
 Given /^the persistence partition on USB drive "([^"]+)" uses LUKS version 1$/ do |name|
-  # Note: This step requires that the persistence partition is locked,
+  # NOTE: This step requires that the persistence partition is locked,
   # else the `cryptsetup convert` command will fail.
 
   dev = $vm.persistent_storage_dev_on_disk(name)
