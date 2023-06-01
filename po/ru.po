@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 15:57+0200\n"
+"POT-Creation-Date: 2023-06-01 11:20+0200\n"
 "PO-Revision-Date: 2023-04-02 07:38+0000\n"
 "Last-Translator: \"Bucket B. Bucketman\" <healtheries_deceptions@simplelogin."
 "com>\n"
@@ -56,9 +56,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Generator: Weblate 4.17-dev\n"
 
 #. Translators: Don't translate {details}, it's a placeholder and will
@@ -249,13 +249,13 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:185
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
-"Чтобы добавить больше, установите программное обеспечение с помощью <a "
-"href=\"synaptic.desktop\">менеджера пакетов Synaptic</a> или <a href=\"org."
-"gnome.Terminal.desktop\">APT в командной строке</a>."
+"Чтобы добавить больше, установите программное обеспечение с помощью <a href="
+"\"synaptic.desktop\">менеджера пакетов Synaptic</a> или <a href=\"org.gnome."
+"Terminal.desktop\">APT в командной строке</a>."
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:154
 msgid "_Create persistent storage"
@@ -392,10 +392,10 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
 "<b>Ошибка обновления ключа подписи.</b>\\n\\n<b>Это не позволяет определить, "
 "доступно ли обновление на нашем сайте.</b>\\n\\nПроверьте ваше интернет-"
@@ -1446,9 +1446,9 @@ msgid ""
 "a> or <a href=\"org.gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
 "Для этого разблокируйте ваше постоянное хранилище при запуске Tails и "
-"установите программное обеспечение при помощи <a href=\"synaptic."
-"desktop\">менеджера пакетов Synaptic</a> или <a href=\"org.gnome.Terminal."
-"desktop\">APT в командной строке</a>."
+"установите программное обеспечение при помощи <a href=\"synaptic.desktop"
+"\">менеджера пакетов Synaptic</a> или <a href=\"org.gnome.Terminal.desktop"
+"\">APT в командной строке</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:211
 msgid ""
@@ -1773,6 +1773,60 @@ msgstr "Статус Tor"
 msgid "Open Onion Circuits"
 msgstr "Открытые схемы луковицы"
 
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:218
+#, python-brace-format
+msgid ""
+"Only {available_memory} KiB of memory is available, need at least "
+"{required_memory} KiB.\n"
+"\n"
+"Try again after closing some applications or rebooting."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:230
+#, fuzzy
+msgid "Creating a partition for the Persistent Storage..."
+msgstr "Исправление прав доступа к постоянному хранилищу."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:250
+msgid ""
+"Initializing the LUKS encryption... The computer might stop responding for a "
+"few seconds."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:268
+msgid "Unlocking the encryption..."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:276
+#, fuzzy
+msgid "Formatting the file system..."
+msgstr "Проверка файловой системы..."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:287
+#, fuzzy
+msgid "Activating the Persistent Storage..."
+msgstr "Ошибка при активации Постоянного хранилища: {}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:290
+#, fuzzy
+msgid "Finishing setting up the Persistent Storage..."
+msgstr "Удалить Постоянное хранилище"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:345
+msgid ""
+"Can't unmount Persistent Storage, some process is still using it. Please "
+"close all applications that could be accessing it and try again. If that "
+"doesn't work, restart Tails and try deleting the Persistent Storage without "
+"unlocking it."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/mount.py:406
+#, python-brace-format
+msgid ""
+"Can't unmount target {target}, some process is still using it. Please close "
+"all applications that could be accessing the target and try again."
+msgstr ""
+
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:23
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:47
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
@@ -1961,13 +2015,18 @@ msgstr ""
 msgid "Please wait"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:211
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:216
+#, fuzzy
+msgid "Not enough memory to create Persistent Storage"
+msgstr "Не удалось настроить ваше постоянное хранилище"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:221
 #, fuzzy
 msgid "Failed to create Persistent Storage"
 msgstr "Не удалось настроить ваше постоянное хранилище"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:230
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:234
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:240
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:245
 #, fuzzy
 msgid "Error deleting Persistent Storage"
 msgstr "Ошибка при разблокировании Постоянного хранилища: {}"
@@ -3855,9 +3914,6 @@ msgstr "Часы"
 
 #~ msgid "The Tails persistence partition will be mounted."
 #~ msgstr "Постоянное хранилище Tails будет смонтировано."
-
-#~ msgid "Correcting permissions of the persistent volume."
-#~ msgstr "Исправление прав доступа к постоянному хранилищу."
 
 #~ msgid "The permissions of the persistent volume will be corrected."
 #~ msgstr "Прав доступа к постоянному хранилищу будут исправлены."

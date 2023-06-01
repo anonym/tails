@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 15:57+0200\n"
+"POT-Creation-Date: 2023-06-01 11:20+0200\n"
 "PO-Revision-Date: 2023-03-28 13:40+0000\n"
 "Last-Translator: Kishin Sagume <kishinsagi@riseup.net>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/tor/"
@@ -228,9 +228,9 @@ msgstr "在 Tails 启动时会从永久存储中安装下列附加软件。"
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:185
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
 "要添加更多附加软件，可以使用 <a href=\"synaptic.desktop\">新立得软件包管理器"
 "</a> 或<a href=\"org.gnome.Terminal.desktop\">通过终端使用 APT</a>。"
@@ -351,10 +351,10 @@ msgstr "如需调试信息，请执行命令：sudo tails-debugging-info"
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
 "<b>当更新密钥时出现了一个错误。</b>\\n\\n<b>这将无法通过我们的网站确定是否有"
 "可用更新。</b>\\n\\n检查您的网络连接状态，重启Tails并再次尝试更新。\\n\\n如果"
@@ -661,9 +661,9 @@ msgid ""
 "instructions at file:///usr/share/doc/tails/website/doc/upgrade/error/"
 "install.en.html"
 msgstr ""
-"<b>安装更新时出现错误</b>\\n\\n您的Tails设备需要修复，并且可能无法重"
-"启。\\n\\n请查看以下说明：file:///usr/share/doc/tails/website/doc/upgrade/"
-"error/install.en.html"
+"<b>安装更新时出现错误</b>\\n\\n您的Tails设备需要修复，并且可能无法重启。\\n"
+"\\n请查看以下说明：file:///usr/share/doc/tails/website/doc/upgrade/error/"
+"install.en.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:863
 msgid "Error while installing the upgrade"
@@ -1675,6 +1675,60 @@ msgstr "Tor 状态"
 msgid "Open Onion Circuits"
 msgstr "打开 Onion 链路"
 
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:218
+#, python-brace-format
+msgid ""
+"Only {available_memory} KiB of memory is available, need at least "
+"{required_memory} KiB.\n"
+"\n"
+"Try again after closing some applications or rebooting."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:230
+#, fuzzy
+msgid "Creating a partition for the Persistent Storage..."
+msgstr "正在纠正永久卷的权限。"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:250
+msgid ""
+"Initializing the LUKS encryption... The computer might stop responding for a "
+"few seconds."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:268
+msgid "Unlocking the encryption..."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:276
+#, fuzzy
+msgid "Formatting the file system..."
+msgstr "正在验证文件系统..."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:287
+#, fuzzy
+msgid "Activating the Persistent Storage..."
+msgstr "激活持久化存储出错：{}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:290
+#, fuzzy
+msgid "Finishing setting up the Persistent Storage..."
+msgstr "删除持久存储"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:345
+msgid ""
+"Can't unmount Persistent Storage, some process is still using it. Please "
+"close all applications that could be accessing it and try again. If that "
+"doesn't work, restart Tails and try deleting the Persistent Storage without "
+"unlocking it."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/mount.py:406
+#, python-brace-format
+msgid ""
+"Can't unmount target {target}, some process is still using it. Please close "
+"all applications that could be accessing the target and try again."
+msgstr ""
+
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:23
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:47
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
@@ -1863,13 +1917,18 @@ msgstr ""
 msgid "Please wait"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:211
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:216
+#, fuzzy
+msgid "Not enough memory to create Persistent Storage"
+msgstr "配置持久化存储失败"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:221
 #, fuzzy
 msgid "Failed to create Persistent Storage"
 msgstr "配置持久化存储失败"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:230
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:234
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:240
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:245
 #, fuzzy
 msgid "Error deleting Persistent Storage"
 msgstr "解锁持久化存储出错：{}"
@@ -3662,9 +3721,6 @@ msgstr "时钟"
 #~ msgid "The Tails persistence partition will be mounted."
 #~ msgstr "即将挂载 Tails 永久卷。"
 
-#~ msgid "Correcting permissions of the persistent volume."
-#~ msgstr "正在纠正永久卷的权限。"
-
 #~ msgid "The permissions of the persistent volume will be corrected."
 #~ msgstr "永久卷的权限已经被纠正。"
 
@@ -3809,8 +3865,8 @@ msgstr "时钟"
 #~ msgstr "Tails 正在配置持久化存储。请稍等片刻…"
 
 #~ msgid ""
-#~ "Only use the Unsafe Browser to sign in to a network, then close it."
-#~ "\\n\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
+#~ "Only use the Unsafe Browser to sign in to a network, then close it.\\n"
+#~ "\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
 #~ "href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
 #~ "unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and "
 #~ "enable the Unsafe Browser in the additional settings of the Welcome "

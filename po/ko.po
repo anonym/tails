@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 15:57+0200\n"
+"POT-Creation-Date: 2023-06-01 11:20+0200\n"
 "PO-Revision-Date: 2023-03-14 02:15+0000\n"
 "Last-Translator: 이정희 <daemul72@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/tor/tails-gui/ko/"
@@ -209,9 +209,9 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:185
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
 "더 추가를 하실려면, <a href=\"synaptic.desktop\">Synaptic Package Manager</a>"
 "나, <a href=\"org.gnome.Terminal.desktop\">APT on the command line</a> 을 이"
@@ -336,16 +336,16 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
 "<b>서명 키를 업데이트하는 동안 오류가 발생했습니다.</b>\\n\\n<b>이렇게 하면 "
-"웹 사이트에서 업그레이드를 사용할 수 있는지 여부를 확인할 수 없습니다.</"
-"b>\\n\\n네트워크 연결을 확인하고 Tails를 다시 시작하여 업그레이드를 다시 시도"
-"합니다. 문제가 지속되면 file:///usr/share/doc/tails/website/doc/upgrade/"
-"error/check.en.html로 이동합니다"
+"웹 사이트에서 업그레이드를 사용할 수 있는지 여부를 확인할 수 없습니다.</b>\\n"
+"\\n네트워크 연결을 확인하고 Tails를 다시 시작하여 업그레이드를 다시 시도합니"
+"다. 문제가 지속되면 file:///usr/share/doc/tails/website/doc/upgrade/error/"
+"check.en.html로 이동합니다"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:303
 msgid "Error while downloading the signing key"
@@ -1675,6 +1675,60 @@ msgstr "Tor 상태"
 msgid "Open Onion Circuits"
 msgstr "어니언 회로 열기"
 
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:218
+#, python-brace-format
+msgid ""
+"Only {available_memory} KiB of memory is available, need at least "
+"{required_memory} KiB.\n"
+"\n"
+"Try again after closing some applications or rebooting."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:230
+#, fuzzy
+msgid "Creating a partition for the Persistent Storage..."
+msgstr "영구적 볼륨의 권한 수정"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:250
+msgid ""
+"Initializing the LUKS encryption... The computer might stop responding for a "
+"few seconds."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:268
+msgid "Unlocking the encryption..."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:276
+#, fuzzy
+msgid "Formatting the file system..."
+msgstr "파일 시스템 확인 중..."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:287
+#, fuzzy
+msgid "Activating the Persistent Storage..."
+msgstr "퍼시스턴트 저장소 생성: {}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:290
+#, fuzzy
+msgid "Finishing setting up the Persistent Storage..."
+msgstr "퍼시스턴트 저장소 생성"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:345
+msgid ""
+"Can't unmount Persistent Storage, some process is still using it. Please "
+"close all applications that could be accessing it and try again. If that "
+"doesn't work, restart Tails and try deleting the Persistent Storage without "
+"unlocking it."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/mount.py:406
+#, python-brace-format
+msgid ""
+"Can't unmount target {target}, some process is still using it. Please close "
+"all applications that could be accessing the target and try again."
+msgstr ""
+
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:23
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:47
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
@@ -1865,13 +1919,18 @@ msgstr ""
 msgid "Please wait"
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:211
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:216
+#, fuzzy
+msgid "Not enough memory to create Persistent Storage"
+msgstr "퍼시스턴트 저장소를 구성하지 못함"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:221
 #, fuzzy
 msgid "Failed to create Persistent Storage"
 msgstr "퍼시스턴트 저장소를 구성하지 못함"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:230
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:234
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:240
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:245
 #, fuzzy
 msgid "Error deleting Persistent Storage"
 msgstr "영구 저장소 잠금 해제 오류: {}"
@@ -3691,9 +3750,6 @@ msgstr "시계"
 
 #~ msgid "The Tails persistence partition will be mounted."
 #~ msgstr "Tails 영구 파티션이 마운트됩니다."
-
-#~ msgid "Correcting permissions of the persistent volume."
-#~ msgstr "영구적 볼륨의 권한 수정"
 
 #~ msgid "The permissions of the persistent volume will be corrected."
 #~ msgstr "영구적 볼륨의 권한은 수정됩니다."
