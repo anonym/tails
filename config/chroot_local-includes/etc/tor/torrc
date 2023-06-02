@@ -43,3 +43,7 @@ Log notice syslog
 ## Tor Launcher will enable the network access for Tor once the user
 ## has provided the configuration they desire.
 DisableNetwork 1
+
+## Tor will store onion auth keys here. This is broken when Tor's
+## sandbox is enabled (tails/tails#19700).
+ClientOnionAuthDir /var/lib/tor/keys
