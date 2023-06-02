@@ -433,7 +433,7 @@ Given /^I log in to a new session(?: in ([^ ]*) \(([^ ]*)\))?( without activatin
                  else
                    ['TailsGreeterLoginButton.png', 'TailsGreeterLoginButtonGerman.png']
                  end
-  login_button_region = @screen.wait_any(login_button, 15)[:match]
+  login_button_region = @screen.wait_any(login_button, 15)
   if lang && lang != 'English'
     step "I set the language to #{lang} (#{lang_code})"
     # After selecting options (language, administration password,

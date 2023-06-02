@@ -362,7 +362,7 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   step 'I open a new tab in the Tor Browser'
   @screen.wait(xul_application_info('Tor Browser')[:address_bar_image], 10).click
   @screen.wait('ScreenKeyboard.png', 20)
-  @screen.wait_any(osk_key_images, 20)[:match].click
+  @screen.wait_any(osk_key_images, 20).click
   @screen.wait(browser_bar_x, 20)
 end
 
