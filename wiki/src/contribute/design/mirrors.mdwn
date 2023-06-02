@@ -34,15 +34,11 @@ geolocation data:
 
 ## DNS pool
 
-A DNS Round Robin pool points to a few fast and
-reliable mirrors. It is used as a fallback for the versions
-of *Tails Upgrader* included up to Tails 5.8, inclusive. So we still
-have a DNS dynamic update system, re-purposed from the one we already had
-(`dl.amnesia.boum.org`).
-
-It's configured via this Git repository:
-
-    tails_git@65wwrbljzca2cxztur6xz652c2zvhvj3ebgyestpgvfbzaamkamf57yd.onion:/srv/repositories/mirrors.git
+A DNS Round Robin pool (at `dl.amnesia.boum.org`) points to a few fast and
+reliable mirrors. It is used as a fallback for the versions of *Tails Upgrader*
+included up to Tails 5.8, inclusive. The DNS entries are managed by
+[[Sysadmins|contribute/working_together/roles/sysadmins/services#mirror-pool]]
+in the same way all the other DNS entries are managed.
 
 <a id="configuration"></a>
 
@@ -92,6 +88,4 @@ model, better see
 
 # Documentation for mirror pool administrators
 
-See `README.mdwn` in this Git repository:
-
-    tails_git@65wwrbljzca2cxztur6xz652c2zvhvj3ebgyestpgvfbzaamkamf57yd.onion:/srv/repositories/mirrors.git
+Documentation is maintained in the Sysadmins private documentation repository.
