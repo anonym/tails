@@ -267,7 +267,10 @@ When /^I (enable|disable) the first tps feature$/ do |mode|
 end
 
 Given(/^I enable persistence creation in Tails Greeter$/) do
-  @screen.wait('TailsGreeterPersistenceCreate.png', 10).click
+  greeter.child('Create Persistent Storage',
+                roleName: 'toggle button',
+                showingOnly: true)
+         .toggle
 end
 
 Given /^I create a persistent partition( with the default settings)?( for Additional Software)?( using the wizard that was already open)?$/ do |default_settings, asp, dontrun|
