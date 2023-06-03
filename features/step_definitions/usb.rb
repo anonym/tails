@@ -315,10 +315,10 @@ end
 
 Given /^the system is( very)? low on memory$/ do |very_low|
   # If we're asked to make the system very low on memory, then
-  # we leave only 200 MiB of memory available, otherwise we leave 500
-  # MiB (500 MiB is enough to create a Persistent Storage with the
+  # we leave only 200 MiB of memory available, otherwise we leave 550
+  # MiB (550 MiB is enough to create a Persistent Storage with the
   # lowest PBKDF memory cost).
-  low_mem_kib = very_low ? 200 * 1024 : 500 * 1024
+  low_mem_kib = very_low ? 200 * 1024 : 550 * 1024
 
   # Ensure that the zram swap is disabled, to avoid that the memory
   # pressure is relieved by swapping.
