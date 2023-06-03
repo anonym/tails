@@ -72,7 +72,7 @@ def persistent_volumes_mountpoints
   $vm.execute('ls -1 -d /live/persistence/*_unlocked/').stdout.chomp.split
 end
 
-def persistent_storage_frontend (**opts)
+def persistent_storage_frontend(**opts)
   Dogtail::Application.new('tps-frontend', **opts)
 end
 
@@ -268,7 +268,7 @@ end
 
 Given(/^I enable persistence creation in Tails Greeter$/) do
   greeter.child('Create Persistent Storage',
-                roleName: 'toggle button',
+                roleName:    'toggle button',
                 showingOnly: true)
          .toggle
 end
@@ -336,7 +336,7 @@ Given /^the system is( very)? low on memory$/ do |very_low|
 
   # Write a file that will fill up the memory
   $vm.execute_successfully(
-    "dd if=/dev/zero of=/fill bs=1M count=#{mem_to_fill_kib / 1024}",
+    "dd if=/dev/zero of=/fill bs=1M count=#{mem_to_fill_kib / 1024}"
   )
 
   # Wait for the memory to be filled up
@@ -373,19 +373,17 @@ Given /^I close the Persistent Storage app$/ do
   persistent_storage_main_frame.button('Close').click
 
   # Wait for the app to close
-  try_for(10) {
-    begin
-      persistent_storage_frontend(retry: false)
-      false
-    rescue StandardError
-      true
-    end
-  }
+  try_for(10) do
+    persistent_storage_frontend(retry: false)
+    false
+  rescue StandardError
+    true
+  end
 end
 
 Then /^The Persistent Storage app shows the error message "([^"]*)"$/ do |message|
   persistent_storage_frontend.child(message,
-                                    roleName: 'label',
+                                    roleName:    'label',
                                     showingOnly: true)
 end
 
@@ -528,7 +526,6 @@ def assert_luks2_with_argon2id(name, device)
   assert_match(/^\s*PBKDF:\s*argon2id$/, luks_info,
                "Device #{device} does not use argon2id")
 end
-
 
 Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
   dev = $vm.persistent_storage_dev_on_disk(name)
