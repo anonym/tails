@@ -87,7 +87,3 @@ def read_user_env(user=None, allow_root=False) -> dict:
         uid = pwd.getpwnam(user).pw_uid
 
     return read_allowed_env_from_file(user_env_file(uid), allow_root=allow_root)
-
-
-def user_env_vars(user=None) -> list:
-    return [f"{key}={value}" for key, value in read_user_env(user).items()]
