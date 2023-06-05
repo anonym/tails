@@ -59,20 +59,3 @@ def run_in_netns(*args, netns, root="/", bind_mounts=None, connect_drop_cmd=None
     ]
     logging.info("Running %s", cmd)
     os.execvp(cmd[0], cmd)
-
-
-def run(
-    real_executable: str,
-    netns: str,
-    wrapper_executable: str,
-    keep_env=True,
-    extra_env={},
-    extra_args=[],
-):
-    if os.getuid() == 0:
-        run_in_netns(real_executable, *extra_args, netns=netns)
-    else:
-        env = os.environ.copy() if keep_env else {}
-        env.update(extra_env)
-        args = ["sudo", "--non-interactive", wrapper_executable] + extra_args
-        os.execvpe(args[0], args, env=env)
