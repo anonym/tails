@@ -13,10 +13,10 @@ import logging
 
 from tailslib import LIVE_USERNAME
 
-A11Y_BUS_PROXY_PATH="/run/user/1000/.dbus-proxy/a11y-bus-proxy.sock"
-IBUS_PROXY_PATH="/run/user/1000/.dbus-proxy/ibus-proxy.sock"
-A11Y_BUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/a11y-bus-proxy.sock"
-IBUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/ibus-proxy.sock"
+A11Y_BUS_PROXY_PATH = "/run/user/1000/.dbus-proxy/a11y-bus-proxy.sock"
+IBUS_PROXY_PATH = "/run/user/1000/.dbus-proxy/ibus-proxy.sock"
+A11Y_BUS_SANDBOX_PATH = "/run/user/1000/tails-sandbox/a11y-bus-proxy.sock"
+IBUS_SANDBOX_PATH = "/run/user/1000/tails-sandbox/ibus-proxy.sock"
 
 
 def run_in_netns(*args, netns, root="/", bind_mounts=None, connect_drop_cmd=None):
