@@ -11,7 +11,6 @@ a somewhat similar structure. This is:
 import os
 import logging
 
-from tailslib.userenv import user_env_vars
 from tailslib import LIVE_USERNAME
 
 A11Y_BUS_PROXY_PATH="/run/user/1000/.dbus-proxy/a11y-bus-proxy.sock"
