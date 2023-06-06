@@ -1,6 +1,7 @@
 [[!meta  title="Improving Tails for human rights defenders in Latin America"]]
-[[!meta  date="Tue, 06 Jun 2023 12:34:56 +0000"]]
+[[!meta  date="Tue, 06 Jun 2023 14:00:00 +0000"]]
 [[!pagetemplate  template="news.tmpl"]]
+[[!tag announce]]
 
 Between 2021 and 2023 Tails, [Tor](https://torproject.org/), and the [Guardian
 Project](https://guardianproject.info/) partnered to organize training and
