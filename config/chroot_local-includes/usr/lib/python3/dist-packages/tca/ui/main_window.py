@@ -318,7 +318,7 @@ class StepChooseBridgeMixin:
             self.builder.get_object(widget).set_sensitive(False)
         self.builder.get_object("step_bridge_persistence_spinner").set_visible(True)
 
-        def cb_persistence_config_changed(gjsonrpcclient, res, error, _):
+        def cb_persistence_config_changed(gjsonrpcclient, res, error, errordata):
             log.debug(
                 "cb_persistence_config_changed called with args: %s",
                 args,
