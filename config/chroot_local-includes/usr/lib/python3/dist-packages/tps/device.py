@@ -380,6 +380,9 @@ class TPSPartition(object):
         Raise a subprocess.CalledProcessError if the partition is not
         encrypted."""
         try:
+            # We use the UUID of the LUKS header in the backup file name
+            # to avoid restoring the wrong header, for example if the
+            # Persistent Storage was deleted and recreated.
             uuid = executil.check_output(
                 ["cryptsetup", "luksUUID", "--batch-mode", self.device_path],
                 text=True,
