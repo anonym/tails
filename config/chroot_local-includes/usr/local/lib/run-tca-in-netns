@@ -37,6 +37,9 @@ def main():
 
     connect_drop_cmd = [
         "/usr/local/lib/connect-drop",
+        # The environment was already sanitized by sudo when this script was
+        # called (see /etc/sudoers.d/zzz_tca), so we can keep it as-is.
+        "--env-keep",
         "-c",
         "FILE:%s:r+" % statefile,
         "-c",
