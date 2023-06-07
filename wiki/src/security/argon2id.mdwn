@@ -1,84 +1,367 @@
 [[!meta date="Tue, 14 Jun 2023 12:34:56 -0000"]]
-[[!meta title="$TITLE"]]
+[[!meta title="Weak cryptographic parameters in LUKS1"]]
 [[!pagetemplate template="news.tmpl"]]
 
 [[!tag security/fixed]]
 
-### Explanation
+The cryptographic parameters of LUKS from Tails 5.12 or earlier are weak
+against state-sponsored attackers with physical access to your device.
 
-bruteforce to guess your passphrase
-make some calculation on each try
-how complicated and expensive is this calculation?
-make each try of a different passphrase combination more expensive
+We recommend you change the passphrase of your Persistent Storage and other
+[[encrypted volumes|doc/encryption_and_privacy/encrypted_volumes]] unless you
+use a long passphrase of 5 or more random words.
 
-PBKDF2 until Tails 5.13.
+[[!toc levels=2]]
 
-Argon2id since Tails 5.13.
+# Understanding the weakness and its solution
 
-Actually, not really a vulnerability but an arms race in terms of computer
-resources available to crack passphrases while provide usable encryption.
+## The arms race to protect from brute-force attacks
 
-### Likelihood
+In all encryption technology that protect data on a disk or USB stick with a
+password or a passphrase, an attacker can try all possible combinations until
+they guess your passphrase and unlock the encryption. This type of attack is
+called a *[[!wikipedia brute-force attack]]*.
 
-This vulnerability might have been used already against activists in France:
-https://mjg59.dreamwidth.org/66429.html
+A strong password makes brute-force attacks slower and more expensive. The
+longer the passphrase, the more expensive the brute-force attack becomes.
 
-Persistent Storage and other encrypted volumes created with Tails 5.12 and
-earlier could have been decrypted by very powerful adversaries with physical
-access.
+Some cryptographic parameters can also make each guess of a brute-force attack
+slower and more expensive, for example by having to some complicated
+calculations on each passphrase before being able to try to unlock the
+encryption with the result of this calculation.
 
-Only practical for an adversay with very powerful computers, lots of money and
-time to spend, and very advanced technical team, like a State.
+Over the years, computers become faster and cheaper. Encryption technologies
+regularly update their parameters to find a balance between making encryption
+fast and usable by users while making brute-force attacks as expensive as
+possible for attackers.
 
-I like the conversion into dollars and time!
+Strong encryption parameters *combined* with a strong passphrase make
+brute-force attacks so slow and so expensive that they are impossible to do in
+practice. For example, a brute-force attack is impossible to do in practice if
+would take thousands of years even with the most powerful supercomputers.
 
-Diceware gives 13 bits of entropy per word.
+## Strength of PBKDF2 compared to Argon2id
 
-We recommend 5 to 7 words.
+Until Tails 5.12 (April 2023), Tails created LUKS devices version 1 (LUKS1)
+with PBKDF2 as *key derivation function*, a calculation run on the passphrase
+before trying to unlock the encryption with the result.
 
-If you followed our recommendations, you are safe. Congrats!
+PBKDF2 is now considered too weak compared to available computing power.
 
-  - 6 words or more (78 bits or more)
-    * Safe (even with 5.12 or earlier)
-    * Would take several milleniums to crack your passphrase even with 5.12 or earlier
+Some cryptographers think this weakness might have already been [used against
+activists in France](https://mjg59.dreamwidth.org/66429.html) but the actual
+operations by the French police are kept secret.
 
-  - 5 words (65 bits)
-    * 5.12 or earlier: safe unless your adversay can spend at least $500k on cracking your passphrase
-    * 5.14 or later: safe
+Since Tails 5.13 (May 2023), Tails creates LUKS devices version 2 (LUKS2) with
+Argon2id as *key derivation function*.
 
-  - 3 or 4 words (39 or 52 bits)
-    * 5.12 or earlier: not safe
-    * 5.14 or later: safe
-    * Still, consider boosting your passphrase to 5 words
+Our team estimated that Argon2id make brute-force attacks 2 million times
+slower and 600 million times more expensive to perform than with PBKDF2.
 
-If you use a different password scheme than diceware, sorry but we can't
-estimate your safety. Consider changing to diceware.
+XXX: Notice that unlocking and creating takes more time.
 
-See [An information theoretic model of privacy and security
-metrics](https://media.libreplanet.org/u/libreplanet/m/an-information-theoretic-model-of-privacy-and-security-metrics/)
+We estimated how much electricity it would cost to guess different strengths of
+passphrase. As we recommend for the Persistent Storage, we evaluated
+passphrases made of several randoms words.
 
-### Mitigation
+<table>
+<tr><th>Passphrase length</th><th>PBKDF2</th><th>Argon2id</th></tr>
+<tr><td>3 random words</td><td>$0.01</td><td>$10&#8239;000&#8239;000</td></tr>
+<tr><td>4 random words</td><td>$100</td><td>$100&#8239;000&#8239;000&#8239;000</td></tr>
+<tr><td>5 random words</td><td>$1&#8239;000&#8239;000</td><td>$1&#8239;000&#8239;000&#8239;000&#8239;000&#8239;000</td></tr>
+<tr><td>6 random words</td><td>$10&#8239;000&#8239;000&#8239;000</td><td>$10&#8239;000&#8239;000&#8239;000&#8239;000&#8239;000&#8239;000</td></tr>
+<tr><td>7 random words</td><td>$100&#8239;000&#8239;000&#8239;000&#8239;000</td><td>$10&#8239;000&#8239;000&#8239;000&#8239;000&#8239;000&#8239;000&#8239;000</td></tr>
+</table>
 
-- Persistent Storage:
+These numbers are very rough estimate but give an idea of what length of
+passphrase a very powerful adversary, like a state-sponsored attacker could
+guess.
 
-  Upgrade to Tails 5.14
+Even if guessing a passphrase of 3 random words with LUKS1 costs very little
+energy, any such attack also requires:
 
-  Tails 5.14 converts automatically your Persistent Storage to argon2id.
+- Physical access to the devices
+- Very expensive computer equipment
+- Professional hacking skills
 
-- Backup Tails USB stick:
+You can see the details of our calculations in this spreadsheet. XXX
 
-  Use the new backup feature of Tails Installer to update the header of your
-  backup Tails (and do a fresh copy of all your Persistent Storage).
+## About other password schemes
 
-- Other encrypted volumes:
+At Tails, we recommend using passphrases made of several random words because
+using randomness is the only way to really guarantee the strength of a
+password.
 
-  Create a new encrypted device and do a backup of all your data, or upgrade
-  from the command line.
+Using other password schemes give little guarantee over the strength of a
+password, even if it follows complicated password policies and validates on
+password strength meters.
 
-- Want to check?
+For example, a [Dutch hacker logged into Donald Trump's Twitter account
+*twice*](https://www.washingtonpost.com/world/2020/12/17/dutch-trump-twitter-password-hack/)
+by guessing his password, despite the passwords including several words, being
+more than 8 characters, and even having special characters. They were
+definitely not random enough: "*maga2020!*" and "*yourefired*".
 
-  Persistent Storage:
+To understand the maths behind password strength, watch [An information
+theoretic model of privacy and security
+metrics](https://media.libreplanet.org/u/libreplanet/m/an-information-theoretic-model-of-privacy-and-security-metrics/).
+Bill Budington from the EFF explains the concept of entropy and its implication
+on browser fingerprinting and password safety in accessible terms.
 
-      sudo cryptsetup luksDump /dev/sda2
+# Keeping your encryption secure
 
-  Other: how to get device name from GNOME Disks (briefly)
+All users are recommended to update their encryption to LUKS2 on all their
+encrypted devices: your Persistent Storage, your backup Tails, and other
+encryptes volumes, if any.
+
+Depending on the strength of your passphrase, we might also recommend choosing
+a different passphrase and migrating to another Tails USB stick.
+
+## 4 random words or less
+
+If your passphrase has 4 random words or less:
+
+- Your encryption is insecure with LUKS1.
+
+- Your encryption is more secure with LUKS2.
+
+  We still recommend changing your passphrase to be 5 or more random words.
+
+### Persistent Storage
+
+To secure your Persistent Storage:
+
+1. Update to Tails 5.14.
+
+   When starting Tails 5.14 for the first time, Tails will convert
+   automatically your Persistent Storage to LUKS2.
+
+1. Choose a new passphrase.
+
+   XXX: Choose passphrase
+
+1. Change your passphrase.
+
+   XXX: Change passphrase
+
+1. If you created your Persistent Storage with Tails 5.12 or earlier, we
+   recommend you migrate your entire Tails to a different USB stick and destroy
+   your old Tails USB stick (or at least [[securely delete the entire
+   device|doc/encryption_and_privacy/secure_deletion#erase-device]].
+
+   Otherwise, the previous LUKS1 data might still be written in some recovery
+   data on the USB stick and could be recovered using advanced data forensics
+   techniques.
+
+   XXX: Tails Installer
+
+### Backup Tails
+
+To secure your [[backup Tails]], if you have one:
+
+1. Update to Tails 5.14.
+
+1. Create a new backup Tails.
+
+   XXX: Tails Installer
+
+   If you created your Persistent Storage with Tails 5.12 or earlier, we
+   recommend you create your new backup Tails on a different USB stick and
+   destroy your old backup Tails (or at least [[securely delete the entire
+   device|doc/encryption_and_privacy/secure_deletion#erase-device]].
+
+   Otherwise, the previous LUKS1 data might still be written in some recovery
+   data on the USB stick and could be recovered using advanced data forensics
+   techniques.
+
+### Other encrypted volumes
+
+To secure your other encrypted volumes, if you have any:
+
+1. Update to Tails 5.14.
+
+1. Choose a new passphrase.
+
+   XXX: Choose passphrase
+
+If your encrypted volume is on a traditional hard disk (not an SSD) and you can
+use the command line:
+
+1. If you created your encrypted volume with Tails 5.12 or earlier,
+
+   Update to LUKS2
+
+   XXX: Manual upgrade
+
+1. Change your passphrase
+
+   XXX: GNOME Disks
+
+Otherwise, if your encrypted volume is on a USB stick (or an SSD) or you are
+not comfortable with the command line:
+
+1. Migrate to a new device
+
+   If you created your encrypted volume with Tails 5.12 or earlier, we
+   recommend you destroy your old device (or at least [[securely delete the
+   entire device|doc/encryption_and_privacy/secure_deletion#erase-device]].
+
+   Otherwise, the previous LUKS1 data might still be written in some recovery
+   data on the USB stick and could be recovered using advanced data forensics
+   techniques.
+
+## 5 random words
+
+If your passphrase has 5 random words:
+
+- Your encryption is secure with LUKS1, except against a very powerful
+  adversary, like a state-sponsored attacker with a huge budget.
+
+  We still recommend you update to LUKS2.
+
+- Your encryption is even more secure with LUKS2.
+
+Congratulations for following our recommendations!
+
+### Persistent Storage
+
+To secure your Persistent Storage:
+
+1. Update to Tails 5.14.
+
+   When starting Tails 5.14 for the first time, Tails will convert
+   automatically your Persistent Storage to LUKS2.
+
+1. Consider adding another random work to your passphrase.
+
+   XXX: Change passphrase
+
+1. If you created your encrypted volume with Tails 5.12 or earlier and are
+   worried about a very powerful adversary, consider migrating your entire
+   Tails to a different USB stick and destroying your old Tails USB stick (or
+   at least [[securely deleting the entire
+   device|doc/encryption_and_privacy/secure_deletion#erase-device]].
+
+   Otherwise, the previous LUKS1 data might still be written in some recovery
+   data on the USB stick and could be recovered using advanced data forensics
+   techniques.
+
+   XXX: Tails Installer
+
+### Backup Tails
+
+To secure your backup Tails, if you have one:
+
+1. Update to Tails 5.14.
+
+1. Create a new backup Tails.
+
+   XXX: Tails Installer
+
+   If you created your backup Tails with Tails 5.12 or earlier and are worried
+   about a very powerful adversay, consider creating your new backup Tails on a
+   different USB stick and destroying your old backup Tails (or at least
+   [[securely deleting the entire
+   device|doc/encryption_and_privacy/secure_deletion#erase-device]].
+
+   Otherwise, the previous LUKS1 data might still be written in some recovery
+   data on the USB stick and could be recovered using advanced data forensics
+   techniques.
+
+### Other encrypted volumes
+
+To secure your other encrypted volumes, if you have any:
+
+1. Update to Tails 5.14.
+
+1. Consider adding another random work to your passphrase.
+
+   XXX: Choose passphrase
+
+If your encrypted volume is on a traditional hard disk (not an SSD) and you can
+use the command line:
+
+1. If you created your encrypted volume with Tails 5.12 or earlier,
+
+   Update to LUKS2
+
+   XXX: Manual upgrade
+
+1. Change your passphrase
+
+   XXX: GNOME Disks
+
+Otherwise, if your encrypted volume is on a USB stick (or an SSD) or you are
+not comfortable with the command line:
+
+1. Migrate to a new device
+
+   If you created your encrypted volume with Tails 5.12 or earlier and are
+   worried about a very powerful adversay, consider destroying your old device
+   (or at least [[securely deleting the entire
+   device|doc/encryption_and_privacy/secure_deletion#erase-device]].
+
+   XXX: Create encrypted volume
+
+   Otherwise, the previous LUKS1 data might still be written in some recovery
+   data on the USB stick and could be recovered using advanced data forensics
+   techniques.
+
+## 6 random words or more
+
+If your passphrase has 6 random words or more:
+
+- Your encryption is secure with LUKS1, even against a very powerful adversary.
+
+  We still recommend you update to LUKS2.
+
+- Your encryption is even more secure with LUKS2.
+
+Congratulations for following our most secure recommendations!
+
+### Persistent Storage
+
+To secure your Persistent Storage:
+
+1. Update to Tails 5.14.
+
+   When starting Tails 5.14 for the first time, Tails will convert
+   automatically your Persistent Storage to LUKS2.
+
+### Backup Tails
+
+To secure your backup Tails, if you have one:
+
+1. Update to Tails 5.14.
+
+1. Create a new backup Tails.
+
+   XXX: Tails Installer
+
+### Other encrypted volumes
+
+1. Update to Tails 5.14.
+
+If you can use the command line:
+
+1. Update to LUKS2
+
+   XXX: Manual upgrade
+
+If you are not comfortable with the command line:
+
+1. Migrate to a new device
+
+   XXX: Create encrypted volume
+
+## Knowing which version of LUKS is user in your devices
+
+XXX
+
+###  Persistent Storage:
+
+    sudo cryptsetup luksDump /dev/sda2
+
+### Other encrypted volumes
+
+XXX: how to get device name from GNOME Disks (briefly)
