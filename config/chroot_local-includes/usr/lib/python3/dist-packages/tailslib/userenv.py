@@ -6,6 +6,8 @@ from pathlib import Path
 import pwd
 from typing import Mapping
 
+from tailslib import LIVE_USER_UID
+
 ENV_VARS_TO_DUMP = [
     "DBUS_SESSION_BUS_ADDRESS",
     "DISPLAY",
@@ -51,7 +53,7 @@ def read_allowed_env_from_file(envfile: str, allow_root=False) -> dict:
     amnesia and can be symlinked to any file on the system."""
 
     uid = os.getuid()
-    if not uid == 1000 and not (allow_root and uid == 0):
+    if uid != LIVE_USER_UID and not (allow_root and uid == 0):
         raise RuntimeError(f"This function must be called as amnesia (UID 1000) not UID {uid}")
 
     env = dict()
