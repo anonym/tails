@@ -2,10 +2,7 @@
 
 import sys
 from pathlib import Path
-from subprocess import check_output, CalledProcessError
-from logging import getLogger, basicConfig
 
-from tailslib import LIVE_USERNAME
 from tailslib.netnsdrop import run_in_netns
 from tailslib.persistence import (
     has_persistence,
@@ -18,7 +15,6 @@ IBUS_PROXY_PATH="/run/user/1000/.dbus-proxy/ibus-proxy.sock"
 A11Y_BUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/a11y-bus-proxy.sock"
 IBUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/ibus-proxy.sock"
 NETNS = "tca"
-log = getLogger(__name__)
 
 
 def main():
@@ -62,5 +58,4 @@ def main():
 
 
 if __name__ == "__main__":
-    basicConfig(level="DEBUG")
     main()
