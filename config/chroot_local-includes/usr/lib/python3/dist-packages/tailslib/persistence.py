@@ -3,7 +3,7 @@
 import os
 import subprocess
 
-from tailslib.utils import spawn_x_application
+from tailslib.utils import start_as_transient_user_scope_unit
 
 
 PERSISTENCE_DIR = "/live/persistence/TailsData_unlocked"
@@ -53,8 +53,8 @@ def is_tails_media_writable():
 
 def spawn_tps_frontend(*args):
     """Launch tps-frontend, don't wait for its completion."""
-    spawn_x_application("/usr/local/bin/tps-frontend-wrapper",
-                        *args)
+    start_as_transient_user_scope_unit("/usr/local/bin/tps-frontend-wrapper",
+                                       *args)
 
 
 def additional_software_persistence_feature_is_active() -> bool:
