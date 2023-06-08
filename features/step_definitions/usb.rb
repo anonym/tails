@@ -1,6 +1,10 @@
 require 'securerandom'
 require 'json'
 
+def tps_is_created
+  $vm.execute('/usr/local/lib/tpscli is-created').success?
+end
+
 # Returns a mapping from the source of a binding to its destination
 # for all bindings of all pre-configured tps features that the running
 # Tails is aware of.
@@ -178,8 +182,32 @@ def persistence_exists?(name)
   $vm.execute("test -b #{data_part_dev}").success?
 end
 
-When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by cloning$/ do |action, name|
+When /^I (install|reinstall|upgrade) Tails( with Persistent Storage)? (?:to|on) USB drive "([^"]+)" by cloning$/ do |action, with_persistence, name|
   step 'I start Tails Installer'
+
+  # Check that the "Clone the current Persistent Storage" check button
+  # is visible if and only if the current Tails device has a Persistent
+  # Storage.
+  # We use a wildcard in the label because in case that the target device
+  # already contains a Tails installation, the check button label is
+  # "Clone the current Persistent Storage (requires reinstall)".
+  clone_persistence_button = @installer
+                             .child('Clone the current Persistent Storage.*',
+                                    roleName: 'check box',
+                                    retry:    false)
+
+  sensitive = clone_persistence_button.sensitive
+  if tps_is_created
+    assert(sensitive, "Couldn't find clone Persistent Storage check button (even though a Persistent Storage exists)")
+  else
+    assert(!sensitive, 'Found clone Persistent Storage check button (even though no Persistent Storage exists)')
+  end
+
+  if with_persistence
+    assert(sensitive, "Can't clone with Persistent Storage: Clone button is not sensitive")
+    clone_persistence_button.click
+  end
+
   # If the device was plugged *just* before this step, it might not be
   # completely ready (so it's shown) at this stage.
   try_for(10) { tails_installer_is_device_selected?(name) }
@@ -189,11 +217,28 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
             else
               action.capitalize
             end
-    # Despite being a normal "push button" this button doesn't respond
-    # to the "press" action. It has a "click" action, which works, but
-    # after that the installer is inaccessible for Dogtail.
+    # We can't use the click action here because this button causes a
+    # modal dialog to be run via gtk_dialog_run() which causes the
+    # application to hang when triggered via a ATSPI action. See
+    # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
     @installer.button(label).grabFocus
     @screen.press('Enter')
+
+    if with_persistence
+      # Enter the passphrase in the passphrase dialog
+      passphrase_entry = @installer.child('Choose Passphrase',
+                                          roleName: 'dialog')
+                                   .child('Passphrase:', roleName: 'label')
+                                   .labelee
+      confirm_entry = @installer.child('Choose Passphrase',
+                                       roleName: 'dialog')
+                                .child('Confirm:', roleName: 'label')
+                                .labelee
+      passphrase_entry.text = @persistence_password
+      confirm_entry.text = @persistence_password
+      confirm_entry.activate
+    end
+
     unless action == 'upgrade'
       confirmation_label = if persistence_exists?(name)
                              'Delete Persistent Storage and Reinstall'
@@ -513,6 +558,12 @@ Then /^there is no persistence partition on USB drive "([^"]+)"$/ do |name|
   data_part_dev = $vm.persistent_storage_dev_on_disk(name)
   assert($vm.execute("test -b #{data_part_dev}").failure?,
          "USB drive #{name} has a partition '#{data_part_dev}'")
+end
+
+Then /^there is a persistence partition on USB drive "([^"]+)"$/ do |name|
+  data_part_dev = $vm.persistent_storage_dev_on_disk(name)
+  assert($vm.execute("test -b #{data_part_dev}").success?,
+         "USB drive #{name} has no partition '#{data_part_dev}'")
 end
 
 def assert_luks2_with_argon2id(name, device)
@@ -1466,8 +1517,10 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   try_for(10) do
     !select_disk_image_dialog.showing
   end
-  # Clicking this button using Dogtail works, but afterwards GNOME
-  # Disks becomes inaccessible.
+  # We can't use the click action here because this button causes a
+  # modal dialog to be run via gtk_dialog_run() which causes the
+  # application to hang when triggered via a ATSPI action. See
+  # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
   restore_dialog.child('Start Restoring…',
                        roleName:    'push button',
                        showingOnly: true).grabFocus

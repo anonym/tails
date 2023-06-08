@@ -145,6 +145,15 @@ class TPSPartition(object):
                                             f"not unlocked")
         return CleartextDevice(udisks.get_object(cleartext_device_path))
 
+    def try_get_cleartext_device(self) -> Optional["CleartextDevice"]:
+        """Get the cleartext device of Persistent Storage encrypted
+        partition, or None if it's not unlocked"""
+        try:
+            return self.get_cleartext_device()
+        except PartitionNotUnlockedError as e:
+            logger.info(e)
+            return None
+
     def _get_encrypted(self) -> UDisks.Encrypted:
         """Get the UDisks.Encrypted interface of the partition"""
         encrypted = self.udisks_object.get_encrypted()
@@ -171,8 +180,8 @@ class TPSPartition(object):
         cmd = ["cryptsetup", "luksDump", self.device_path]
         try:
             luks_dump = executil.check_output(cmd)
-        except subprocess.CalledProcessError as e:
-            logger.exception(e)
+        except subprocess.CalledProcessError:
+            logger.exception("Command 'cryptsetup luksDump' failed")
             return False
 
         version = str()
@@ -245,20 +254,28 @@ class TPSPartition(object):
         return None
 
     @classmethod
-    def create(cls, job: Job, passphrase: str) -> "TPSPartition":
+    def create(cls, job: Optional[Job], passphrase: str,
+               parent_device: Optional["BootDevice"] = None) -> "TPSPartition":
         """Create the Persistent Storage encrypted partition"""
+
+        if parent_device is None:
+            parent_device = BootDevice.get_tails_boot_device()
+            is_backup = False
+        else:
+            is_backup = True
 
         # This should be the number of next_step() calls
         num_steps = 7
         current_step = 0
 
         def next_step(description: Optional[str] = None):
+            if not job:
+                return
             nonlocal current_step
             progress = int((current_step / num_steps) * 100)
             job.refresh_properties(description, progress)
             current_step += 1
 
-        parent_device = BootDevice.get_tails_boot_device()
         offset = parent_device.get_beginning_of_free_space()
 
         # Calculate the memory cost for Argon2id.
@@ -318,13 +335,12 @@ class TPSPartition(object):
 
         # Wait for the encrypted partition to become available to udisks
         next_step()
-        wait_for_udisks_object(partition.device_path,
-                               partition.udisks_object.get_encrypted)
+        wait_for_udisks_object(partition.udisks_object.get_encrypted)
 
         # Unlock the partition
         logger.info("Unlocking partition")
         next_step(_("Unlocking the encryption..."))
-        partition.unlock(passphrase)
+        partition.unlock(passphrase, rename_dm_device=not is_backup)
 
         # Get the cleartext device
         cleartext_device = partition.get_cleartext_device()
@@ -340,9 +356,15 @@ class TPSPartition(object):
         )
         udisks.settle()
 
+        if is_backup:
+            # We let the caller mount the backup partition
+            return partition
+
         # Mount the cleartext device
         logger.info("Mounting filesystem")
         next_step(_("Activating the Persistent Storage..."))
+        # Mount the cleartext device as the currently active
+        # Persistent Storage
         cleartext_device.mount()
 
         next_step(_("Finishing setting up the Persistent Storage..."))
@@ -436,7 +458,7 @@ class TPSPartition(object):
             input=passphrase,
         )
 
-    def unlock(self, passphrase: str):
+    def unlock(self, passphrase: str, rename_dm_device: bool = True):
         """Unlock the Persistent Storage encrypted partition"""
         encrypted = self._get_encrypted()
 
@@ -463,12 +485,23 @@ class TPSPartition(object):
 
         udisks.settle()
 
-        # Get the cleartext device
-        cleartext_device = self.get_cleartext_device()
+        if rename_dm_device:
+            # Wait for the cleartext device to become available to udisks
+            try:
+                cleartext_device = wait_for_udisks_object(self.try_get_cleartext_device)
+                assert isinstance(cleartext_device, CleartextDevice)
+            except TimeoutError:
+                # Log the output of `udisksctl dump` to help debug spurious
+                # failures to get the cleartext device after unlocking
+                output = executil.check_output(["udisksctl", "dump"])
+                logger.error("Failed to get cleartext device after unlocking"
+                             " partition. udisksctl dump output:\n%s",
+                             output)
+                raise
 
-        # Rename the cleartext device to "TailsData_unlocked", so that
-        # is has the same name as after a reboot.
-        cleartext_device.rename_dm_device("TailsData_unlocked")
+            # Rename the cleartext device to "TailsData_unlocked", which
+            # is the expected dm name for historical reasons
+            cleartext_device.rename_dm_device("TailsData_unlocked")
 
     def _try_restore_luks_header_backup(self, passphrase: str) -> bool:
         """Try to restore a LUKS header backup and unlock the Persistent
@@ -656,10 +689,9 @@ class CleartextDevice(object):
         executil.check_call(["dmsetup", "rename", dm_name, new_name])
 
 
-def wait_for_udisks_object(device: str,
-                           func: Callable[[...], Optional[UDisks.Object]],
+def wait_for_udisks_object(func: Callable[[...], Optional[object]],
                            *args,
-                           timeout: int = 20) -> UDisks.Object:
+                           timeout: int = 20) -> object:
     """Repeatedly call `udevadm trigger` and then func() until func()
     returns a udisks object or timeout is reached."""
     start = time.time()
