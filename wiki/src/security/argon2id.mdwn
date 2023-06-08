@@ -60,6 +60,12 @@ slower and 600 million times more expensive to perform than with PBKDF2.
 
 XXX: Notice that unlocking and creating takes more time.
 
+<table>
+<tr><th>Tails version<br/>when encryption was created</th><th>Release date</th><th>LUKS version</th><th>Key derivation function</th><th>Strength</th></tr>
+<tr><td>5.12 or earlier</td><td>19 April 2023</td><td>LUKS1</td><td>PBKDF2</td><td>Weak</td></tr>
+<tr><td>5.13 or later</td><td>16 May 2023</td><td>LUKS2</td><td>Argon2id</td><td>Strong</td></tr>
+</table>
+
 We estimated how much electricity it would cost to guess different strengths of
 passphrase. As we recommend for the Persistent Storage, we evaluated
 passphrases made of several randoms words.
