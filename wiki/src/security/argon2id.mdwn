@@ -17,7 +17,7 @@ more.**
 
 <h2 id="race">The arms race to protect from brute-force attacks</h2>
 
-In all encryption technology that protect data on a disk or USB stick with a
+In all encryption technology that protects data on a disk or USB stick with a
 password or a passphrase, an attacker can try all possible combinations until
 they guess your passphrase and unlock the encryption. This type of attack is
 called a *[[!wikipedia brute-force attack]]*.
@@ -26,7 +26,7 @@ A strong password makes brute-force attacks slower and more expensive. The
 longer the passphrase, the more expensive the brute-force attack becomes.
 
 Some cryptographic parameters can also make each guess of a brute-force attack
-slower and more expensive, for example by having to some complicated
+slower and more expensive, for example by having to do some complicated
 calculations on each passphrase before being able to try to unlock the
 encryption with the result of this calculation.
 
@@ -49,13 +49,13 @@ before trying to unlock the encryption with the result.
 PBKDF2 is now considered too weak compared to available computing power.
 
 Some cryptographers think this weakness might have already been [used against
-activists in France](https://mjg59.dreamwidth.org/66429.html) but the actual
+an activist in France](https://mjg59.dreamwidth.org/66429.html) but the actual
 operations by the French police are kept secret.
 
 Since Tails 5.13 (16 May 2023), Tails creates LUKS devices version 2 (LUKS2)
 with Argon2id as *key derivation function*.
 
-Our team estimates that Argon2id make brute-force attacks 2 million times
+Our team estimates that Argon2id makes brute-force attacks 2 million times
 slower and 600 million times more expensive to perform than with PBKDF2.
 
 For example, after you upgrade to LUKS2 and Argon2id, you might notice that
@@ -67,9 +67,9 @@ creating and unlocking the Persistent Storage is slower.
 <tr><td>5.13 or later</td><td>16 May 2023</td><td>LUKS2</td><td>Argon2id</td><td>Strong</td></tr>
 </table>
 
-We estimated how much electricity it would cost to guess different strengths of
-passphrase. As we recommend for the Persistent Storage, we evaluated
-passphrases made of several randoms words.
+We estimated how much electricity it would cost to guess passphrases of
+different strengths. As we recommend for the Persistent Storage, we evaluated
+passphrases made of several random words.
 
 <table>
 <tr><th>Passphrase length</th><th>PBKDF2</th><th>Argon2id</th></tr>
@@ -80,8 +80,8 @@ passphrases made of several randoms words.
 <tr><td>7 random words</td><td>$100&#8239;000&#8239;000&#8239;000&#8239;000</td><td>$10&#8239;000&#8239;000&#8239;000&#8239;000&#8239;000&#8239;000&#8239;000</td></tr>
 </table>
 
-These numbers are very rough estimate but give an idea of what length of
-passphrase a very powerful adversary, like a state-sponsored attacker could
+These numbers are very rough estimates but give an idea of what length of
+passphrase a very powerful adversary like a state-sponsored attacker could
 guess.
 
 Even if guessing a passphrase of 3 random words with LUKS1 costs very little
@@ -105,8 +105,8 @@ password strength meters.
 
 For example, a [Dutch hacker logged into Donald Trump's Twitter account
 *twice*](https://www.washingtonpost.com/world/2020/12/17/dutch-trump-twitter-password-hack/)
-by guessing his password, despite the passwords including several words, being
-more than 8 characters, and even having special characters. They were
+by guessing his passwords, despite that these passwords included several words, were
+more than 8 characters, and even had special characters. They were
 definitely not random enough: "*maga2020!*" and "*yourefired*".
 
 To understand the maths behind password strength, watch [An information
@@ -123,13 +123,13 @@ Persistent Storage, backup Tails, and other external encrypted volumes.
 Depending on the strength of your passphrase, we might also recommend choosing
 a different passphrase and migrating to another Tails USB stick:
 
-- [[If your passphrase has 4 random words or less|argon2id#4]]
+- [[If your passphrase has 4 random words or fewer|argon2id#4]]
 - [[If your passphrase has 5 random words|argon2id#5]]
 - [[If your passphrase has 6 random words or more|argon2id#6]]
 
-<h2 id="4">If your passphrase has 4 random words or less</h2>
+<h2 id="4">If your passphrase has 4 random words or fewer</h2>
 
-If your current passphrase has 4 random words or less:
+If your current passphrase has 4 random words or fewer:
 
 - Your encryption is insecure with LUKS1.
 
@@ -137,7 +137,7 @@ If your current passphrase has 4 random words or less:
 
   We still recommend changing your passphrase to be 5 random words or more.
 
-### Persistent Storage (4 words or less)
+### Persistent Storage (4 words of fewer)
 
 To secure your Persistent Storage:
 
@@ -174,7 +174,7 @@ To secure your Persistent Storage:
    [[!inline pages="security/argon2id/tails_installer.inline" raw="yes" sort="age"]]
    """]]
 
-### Backup Tails (4 words or less)
+### Backup Tails (4 words or fewer)
 
 To secure your [[backup Tails|doc/persistent_storage/backup]], if you have one:
 
@@ -198,7 +198,7 @@ To secure your [[backup Tails|doc/persistent_storage/backup]], if you have one:
    [[!inline pages="security/argon2id/tails_installer.inline" raw="yes" sort="age"]]
    """]]
 
-### Other encrypted volumes (4 words or less)
+### Other encrypted volumes (4 words or fewer)
 
 To secure your other encrypted volumes, if you have any:
 
@@ -270,7 +270,7 @@ If your current passphrase has 5 random words:
 
 - Your encryption is even more secure with LUKS2.
 
-Congratulations for following our recommendations!
+Congratulations on following our recommendations!
 
 ### Persistent Storage (5 words)
 
@@ -314,7 +314,7 @@ To secure your [[backup Tails|doc/persistent_storage/backup]], if you have one:
 1. Update your backup or create a new backup Tails using *Tails Installer*.
 
    If you created your backup Tails with Tails 5.12 or earlier and are worried
-   about a very powerful adversay, consider creating your new backup Tails on a
+   about a very powerful adversary, consider creating your new backup Tails on a
    different USB stick and destroying your old backup Tails (or at least
    [[securely deleting the entire
    device|doc/encryption_and_privacy/secure_deletion#device]]).
@@ -371,7 +371,7 @@ with the command line:
    Follow our instructions on [[creating and using LUKS encrypted
    volumes|doc/encryption_and_privacy/encrypted_volumes]].
 
-1. If you are worried about a very powerful adversay, consider destroying your
+1. If you are worried about a very powerful adversary, consider destroying your
    old device (or at least [[securely deleting the entire
    device|doc/encryption_and_privacy/secure_deletion#device]]).
 
@@ -389,7 +389,7 @@ If your current passphrase has 6 random words or more:
 
 - Your encryption is even more secure with LUKS2.
 
-Congratulations for following our most secure recommendations!
+Congratulations on following our most secure recommendations!
 
 ### Persistent Storage (6 words or more)
 
@@ -422,7 +422,7 @@ Tails 5.12 or earlier:
 
 1. Update to Tails 5.14.
 
-If you can use the command line:
+If you know how to use the command line:
 
 1. Identify the partition name of your encrypted volume.
 
@@ -447,7 +447,7 @@ If you are not comfortable with the command line:
 
 <h2 id="checking">Knowing which version of LUKS is used in your devices</h2>
 
-If you can use the command line, you can verify whether your encryption uses
+If you know how to use the command line, you can verify whether your encryption uses
 PBKDF2 or Argon2id.
 
 ###  Persistent Storage
