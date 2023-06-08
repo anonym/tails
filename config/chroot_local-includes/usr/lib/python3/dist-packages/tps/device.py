@@ -145,6 +145,15 @@ class TPSPartition(object):
                                             f"not unlocked")
         return CleartextDevice(udisks.get_object(cleartext_device_path))
 
+    def try_get_cleartext_device(self) -> Optional["CleartextDevice"]:
+        """Get the cleartext device of Persistent Storage encrypted
+        partition, or None if it's not unlocked"""
+        try:
+            return self.get_cleartext_device()
+        except PartitionNotUnlockedError as e:
+            logger.info(e)
+            return None
+
     def _get_encrypted(self) -> UDisks.Encrypted:
         """Get the UDisks.Encrypted interface of the partition"""
         encrypted = self.udisks_object.get_encrypted()
@@ -479,7 +488,7 @@ class TPSPartition(object):
         if rename_dm_device:
             # Wait for the cleartext device to become available to udisks
             try:
-                cleartext_device = wait_for_udisks_object(self.get_cleartext_device)
+                cleartext_device = wait_for_udisks_object(self.try_get_cleartext_device)
                 assert isinstance(cleartext_device, CleartextDevice)
             except TimeoutError:
                 # Log the output of `udisksctl dump` to help debug spurious
