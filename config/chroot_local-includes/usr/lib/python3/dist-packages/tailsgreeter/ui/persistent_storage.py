@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Callable
 from tailsgreeter.ui import _
 from tailsgreeter.config import persistent_settings_dir
 from tailsgreeter.errors import PersistentStorageError, \
-    FeatureActivationFailedError
+    FeatureActivationFailedError, WrongPassphraseError
 
 gi.require_version('GLib', '2.0')
 gi.require_version('Gtk', '3.0')
@@ -25,6 +25,7 @@ class PersistentStorage(object):
         self.persistence_setting = persistence_setting
         self.load_settings_cb = load_settings_cb
         self.apply_settings_cb = apply_settings_cb
+        self.upgrade_failed = False
 
         self.box_storage = builder.get_object('box_storage')
         self.box_storagecreate = builder.get_object('box_storagecreate')
@@ -47,7 +48,7 @@ class PersistentStorage(object):
             self.box_storage_unlocked,
             self.checkbutton_storage_show_passphrase])
 
-        is_created = self.persistence_setting.is_created()
+        is_created = self.persistence_setting.is_created
         self.box_storagecreate.set_visible(not is_created)
         self.box_storage.set_visible(is_created)
 
@@ -76,13 +77,25 @@ class PersistentStorage(object):
         # Let's execute the unlocking in a thread
         def do_unlock_storage():
             try:
-                if self.persistence_setting.unlock(passphrase):
-                    GLib.idle_add(self.cb_unlocked)
-                else:
-                    GLib.idle_add(self.cb_unlock_failed_with_incorrect_passphrase)
+                # First, upgrade the storage if needed
+                if not self.persistence_setting.is_upgraded:
+                    try:
+                        GLib.idle_add(self.on_upgrading)
+                        self.persistence_setting.upgrade_luks(passphrase)
+                    except PersistentStorageError as e:
+                        # We continue unlocking the storage even if the upgrade
+                        # failed, but we display an error message
+                        logging.error(e)
+                        self.upgrade_failed = True
+
+                # Then, unlock the storage
+                self.persistence_setting.unlock(passphrase)
+                GLib.idle_add(self.cb_unlocked)
+            except WrongPassphraseError:
+                GLib.idle_add(self.cb_unlock_failed_with_incorrect_passphrase)
             except PersistentStorageError as e:
                 logging.error(e)
-                GLib.idle_add(self.unlock_failed)
+                GLib.idle_add(self.on_unlock_failed)
                 return
 
         unlocking_thread = threading.Thread(target=do_unlock_storage)
@@ -92,7 +105,7 @@ class PersistentStorage(object):
         logging.debug("Storage unlock failed")
         self.entry_storage_passphrase.set_sensitive(True)
         self.button_storage_unlock.set_sensitive(True)
-        self.button_storage_unlock.set_label(_("Unlock"))
+        self.button_storage_unlock.set_label(_("Unlock Encryption"))
         self.checkbutton_storage_show_passphrase.set_visible(True)
         self.image_storage_state.set_visible(True)
         self.spinner_storage_unlock.set_visible(False)
@@ -105,26 +118,31 @@ class PersistentStorage(object):
                 'dialog-warning-symbolic')
         self.entry_storage_passphrase.grab_focus()
 
-    def unlock_failed(self):
-        self.button_storage_unlock.set_label(_("Unlock"))
-        self.image_storage_state.set_visible(True)
-        self.spinner_storage_unlock.set_visible(False)
-        self.label_infobar_persistence.set_label(
-            _("Failed to unlock the Persistent Storage. "
-              "Please start Tails and send an error report."))
-        self.infobar_persistence.set_visible(True)
-        self.button_start.set_sensitive(True)
+    def on_upgrade_failed(self):
+        label = _("Failed to upgrade the Persistent Storage. "
+                  "Please start Tails and send an error report.")
+        self.on_activation_failed(label)
 
-    def activation_failed(self, label=None):
+    def on_unlock_failed(self):
+        label = _("Failed to unlock the Persistent Storage. "
+                  "Please start Tails and send an error report.")
+        self.on_activation_failed(label)
+
+    def on_activation_failed(self, label=None):
         if not label:
             label = _("Failed to activate the Persistent Storage. "
                       "Please start Tails and send an error report.")
-        self.button_storage_unlock.set_label(_("Unlock"))
+        self.button_storage_unlock.set_label(_("Unlock Encryption"))
         self.image_storage_state.set_visible(True)
         self.spinner_storage_unlock.set_visible(False)
         self.label_infobar_persistence.set_label(label)
         self.infobar_persistence.set_visible(True)
         self.button_start.set_sensitive(True)
+
+    def on_upgrading(self):
+        label = _("Upgrading the Persistent Storage. This may take a while…")
+        self.label_infobar_persistence.set_label(label)
+        self.infobar_persistence.set_visible(True)
 
     def cb_unlocked(self):
         logging.debug("Storage unlocked")
@@ -134,13 +152,16 @@ class PersistentStorage(object):
             self.persistence_setting.activate_persistent_storage()
         except FeatureActivationFailedError as e:
             label = str(e) + "\n" + _("Start Tails and open the Persistent Storage settings to find out more.")
-            self.activation_failed(label)
+            self.on_activation_failed(label)
         except PersistentStorageError as e:
             logging.error(e)
-            self.activation_failed()
+            self.on_activation_failed()
             return
         else:
-            self.infobar_persistence.set_visible(False)
+            if self.upgrade_failed:
+                self.on_upgrade_failed()
+            else:
+                self.infobar_persistence.set_visible(False)
 
         self.box_storage_unlock.set_visible(False)
         self.spinner_storage_unlock.set_visible(False)
