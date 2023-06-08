@@ -5,11 +5,11 @@
 [[!tag security/fixed]]
 
 The cryptographic parameters of LUKS from Tails 5.12 or earlier are weak
-against state-sponsored attackers with physical access to your device.
+against a state-sponsored attacker with physical access to your device.
 
-We recommend you change the passphrase of your Persistent Storage and other
-[[encrypted volumes|doc/encryption_and_privacy/encrypted_volumes]] unless you
-use a long passphrase of 5 or more random words.
+**We recommend you change the passphrase of your Persistent Storage and other
+LUKS encrypted volumes unless you use a long passphrase of 5 random words or
+more.**
 
 [[!toc levels=2]]
 
@@ -31,7 +31,7 @@ calculations on each passphrase before being able to try to unlock the
 encryption with the result of this calculation.
 
 Over the years, computers become faster and cheaper. Encryption technologies
-regularly update their parameters to find a balance between making encryption
+regularly upgrade their parameters to find a balance between making encryption
 fast and usable by users while making brute-force attacks as expensive as
 possible for attackers.
 
@@ -42,7 +42,7 @@ would take thousands of years even with the most powerful supercomputers.
 
 <h2 id="comparison">Strength of Argon2id compared to PBKDF2</h2>
 
-Until Tails 5.12 (April 2023), Tails created LUKS devices version 1 (LUKS1)
+Until Tails 5.12 (19 April 2023), Tails created LUKS devices version 1 (LUKS1)
 with PBKDF2 as *key derivation function*, a calculation run on the passphrase
 before trying to unlock the encryption with the result.
 
@@ -52,10 +52,10 @@ Some cryptographers think this weakness might have already been [used against
 activists in France](https://mjg59.dreamwidth.org/66429.html) but the actual
 operations by the French police are kept secret.
 
-Since Tails 5.13 (May 2023), Tails creates LUKS devices version 2 (LUKS2) with
-Argon2id as *key derivation function*.
+Since Tails 5.13 (16 May 2023), Tails creates LUKS devices version 2 (LUKS2)
+with Argon2id as *key derivation function*.
 
-Our team estimated that Argon2id make brute-force attacks 2 million times
+Our team estimates that Argon2id make brute-force attacks 2 million times
 slower and 600 million times more expensive to perform than with PBKDF2.
 
 For example, after you upgrade to LUKS2 and Argon2id, you might notice that
@@ -96,9 +96,8 @@ You can see the details of our calculations in [[!tails_ticket 19615]] and this
 
 <h2 id="schemes">Other password schemes give too little guarantee</h2>
 
-At Tails, we recommend using passphrases made of several random words because
-using randomness is the only way to really guarantee the strength of a
-password.
+We recommend using passphrases made of several random words because using
+randomness is the only way to really guarantee the strength of a password.
 
 Using other password schemes give little guarantee over the strength of a
 password, even if it follows complicated password policies and validates on
