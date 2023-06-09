@@ -43,6 +43,10 @@ def main():
                 f"/run/user/{args.chroot_user_uid}/wayland-0",
                 f"/run/user/{args.chroot_user_uid}/wayland-0",
             ),
+            (
+                f"/run/user/{args.chroot_user_uid}/user-env",
+                f"/run/user/{args.chroot_user_uid}/user-env",
+            ),
             ("/sys", "/sys"),
         ],
     )
