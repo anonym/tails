@@ -312,9 +312,7 @@ When /^I (enable|disable) the first tps feature$/ do |mode|
 end
 
 Given(/^I enable persistence creation in Tails Greeter$/) do
-  greeter.child('Create Persistent Storage',
-                roleName:    'toggle button',
-                showingOnly: true)
+  greeter.child('Create Persistent Storage', roleName: 'toggle button')
          .toggle
 end
 
@@ -427,9 +425,7 @@ Given /^I close the Persistent Storage app$/ do
 end
 
 Then /^The Persistent Storage app shows the error message "([^"]*)"$/ do |message|
-  persistent_storage_frontend.child(message,
-                                    roleName:    'label',
-                                    showingOnly: true)
+  persistent_storage_frontend.child(message, roleName: 'label')
 end
 
 Given /^I change the passphrase of the Persistent Storage( back to the original)?$/ do |change_back|
@@ -448,23 +444,23 @@ Given /^I change the passphrase of the Persistent Storage( back to the original)
   # application to hang when triggered via a ATSPI action. See
   # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
   persistent_storage_main_frame
-    .button('Change Passphrase', showingOnly: true)
+    .button('Change Passphrase')
     .grabFocus
   @screen.press('Return')
   change_passphrase_dialog = persistent_storage_frontend
-                             .child('Change Passphrase', roleName: 'dialog', showingOnly: true)
+                             .child('Change Passphrase', roleName: 'dialog')
   change_passphrase_dialog
-    .child('Current Passphrase', roleName: 'label', showingOnly: true)
+    .child('Current Passphrase', roleName: 'label')
     .labelee
     .grabFocus
   @screen.type(current_passphrase)
   change_passphrase_dialog
-    .child('New Passphrase', roleName: 'label', showingOnly: true)
+    .child('New Passphrase', roleName: 'label')
     .labelee
     .grabFocus
   @screen.type(new_passphrase)
   change_passphrase_dialog
-    .child('Confirm New Passphrase', roleName: 'label', showingOnly: true)
+    .child('Confirm New Passphrase', roleName: 'label')
     .labelee
     .grabFocus
   @screen.type(new_passphrase)
@@ -651,7 +647,7 @@ Given /^I try to enable persistence( with the changed passphrase)?$/ do |with_ch
   passphrase_entry = nil
   try_for(60) do
     passphrase_entry = greeter
-                       .child(roleName: 'password text', showingOnly: true)
+                       .child(roleName: 'password text')
     passphrase_entry.grabFocus
     passphrase_entry.focused
   end
@@ -673,12 +669,8 @@ Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_p
   # the unlock button is made invisible when the Persistent Storage is
   # unlocked.
   try_for(60) do
-    !greeter.child?('Unlock Encryption',
-                    roleName:    'push button',
-                    showingOnly: true) && \
-      !greeter.child?('Unlocking',
-                      roleName:    'push button',
-                      showingOnly: true)
+    !greeter.child?('Unlock Encryption', roleName: 'push button') && \
+      !greeter.child?('Unlocking', roleName: 'push button')
   end
 
   # Figure out which language is set now that the Persistent Storage is
@@ -703,12 +695,12 @@ def get_greeter_language
   english_label = 'English - United States'
   german_label = 'Deutsch - Deutschland (German - Germany)'
   try_for(30) do
-    greeter.child(english_label, roleName: 'label', showingOnly: true)
+    greeter.child(english_label, roleName: 'label')
     # We have to set the language to '' for English, setting it to
     # 'English' doesn't work.
     return '', 'en'
   rescue Dogtail::Failure
-    greeter.child(german_label, roleName: 'label', showingOnly: true)
+    greeter.child(german_label, roleName: 'label')
     return 'German', 'de'
   end
 end
@@ -1496,18 +1488,13 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
        .find { |row| destination_disk_label_regexp.match(row.name) }
        .grabFocus
   @screen.wait('GnomeDisksDriveMenuButton.png', 5).click
-  disks.child('Restore Disk Image…',
-              roleName:    'push button',
-              showingOnly: true)
+  disks.child('Restore Disk Image…', roleName: 'push button')
        .click
-  restore_dialog = disks.child('Restore Disk Image',
-                               roleName:    'dialog',
-                               showingOnly: true)
+  restore_dialog = disks.child('Restore Disk Image', roleName: 'dialog')
   # Open the file chooser
   @screen.press('Enter')
   select_disk_image_dialog = disks.child('Select Disk Image to Restore',
-                                         roleName:    'file chooser',
-                                         showingOnly: true)
+                                         roleName: 'file chooser')
   @screen.paste(
     @usb_image_path,
     app: :gtk_file_chooser
@@ -1521,16 +1508,14 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   # modal dialog to be run via gtk_dialog_run() which causes the
   # application to hang when triggered via a ATSPI action. See
   # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
-  restore_dialog.child('Start Restoring…',
-                       roleName:    'push button',
-                       showingOnly: true).grabFocus
+  restore_dialog.child('Start Restoring…', roleName: 'push button').grabFocus
   @screen.press('Return')
-  disks.child('Information', roleName: 'alert', showingOnly: true)
-       .child('Restore', roleName: 'push button', showingOnly: true)
+  disks.child('Information', roleName: 'alert')
+       .child('Restore', roleName: 'push button')
        .grabFocus
   @screen.press('Return')
   # Wait until the restoration job is finished
-  job = disks.child('Job', roleName: 'label', showingOnly: true)
+  job = disks.child('Job', roleName: 'label')
   try_for(120) do
     !job.showing
   end
@@ -1604,8 +1589,7 @@ Then /^(no )?persistent Greeter options were restored$/ do |no|
   # Our Dogtail wrapper code automatically translates strings to $language
   settings_restored = greeter
                       .child?('Settings were loaded from the persistent storage.',
-                              roleName:    'label',
-                              showingOnly: true)
+                              roleName: 'label')
   if no
     assert(!settings_restored)
   else
@@ -1658,7 +1642,7 @@ When /^I delete the data of the Persistent Folder feature$/ do
   def persistent_folder_delete_button(**opts)
     persistent_storage_main_frame.child(
       'Delete Persistent Folder data',
-      roleName: 'push button', showingOnly: true, **opts
+      roleName: 'push button', **opts
     )
   end
 
@@ -1688,8 +1672,7 @@ end
 Then /^the Welcome Screen tells me that the Persistent Folder feature couldn't be activated$/ do
   try_for(60) do
     greeter.child?('Failed to activate some features of the Persistent Storage: Persistent Folder.\n.*',
-                   roleName:    'label',
-                   showingOnly: true)
+                   roleName: 'label')
   end
 end
 
@@ -1699,7 +1682,7 @@ Then /^the Persistent Storage settings tell me that the Persistent Folder featur
   persistent_folder_row = persistent_storage_frontend
                           .child('Activate Persistent Folder').parent
   assert persistent_folder_row
-    .child(description: 'Activation failed', showingOnly: true)
+    .child(description: 'Activation failed')
 end
 
 Given /^the persistence partition on USB drive "([^"]+)" uses LUKS version 1$/ do |name|

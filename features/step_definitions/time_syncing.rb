@@ -105,7 +105,7 @@ def displayed_time_str
   candidate_clock_labels = Set.new(
     Dogtail::Application.new('gnome-shell')
                         .child('', roleName: 'panel')
-                        .children(showingOnly: true, roleName: 'label')
+                        .children(roleName: 'label')
                         .map(&:name)
   ).keep_if { |l| !ignore_labels.include?(l) }.to_a
 

@@ -187,7 +187,7 @@ module Dogtail
         '    def describeSearchResult(self):',
         "        return 'focused'",
         '',
-        "#{node_var} = #{@var}.findChild(IsFocused(), recursive=True, showingOnly=True)",
+        "#{node_var} = #{@var}.findChild(IsFocused(), recursive=True)",
       ]
       run(find_script_lines)
       Node.new(node_var.to_s, **@opts)
