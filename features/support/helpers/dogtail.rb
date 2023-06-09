@@ -57,6 +57,8 @@ module Dogtail
       init += [
         'import dogtail.tree',
         'import dogtail.predicate',
+        'import dogtail.config',
+        'dogtail.config.config.searchShowingOnly = True',
       ]
       code = [
         "#{@var} = #{@find_code}",
