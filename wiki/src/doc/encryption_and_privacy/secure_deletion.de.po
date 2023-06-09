@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-05-31 09:30+0200\n"
+"POT-Creation-Date: 2023-06-09 07:47+0200\n"
 "PO-Revision-Date: 2022-12-20 10:06+0000\n"
 "Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: \n"
@@ -29,13 +29,9 @@ msgid "[[!toc levels=1]]\n"
 msgstr "[[!toc levels=1]]\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "<a id=\"why\"></a>\n"
-msgstr "<a id=\"why\"></a>\n"
-
-#. type: Title =
 #, fuzzy, no-wrap
-msgid "Why use secure deletion?"
+#| msgid "Why use secure deletion?\n"
+msgid "<h1 id=\"why\">Why use secure deletion?</h1>\n"
 msgstr "Warum sicheres Löschen verwenden?\n"
 
 #. type: Plain text
@@ -112,8 +108,8 @@ msgstr ""
 #| "For more details read the corresponding section of the Wikipedia article "
 #| "on [[!wikipedia Data_erasure#Limitations desc=\"Data erasure\"]]."
 msgid ""
-"To learn more, see the Wikipedia article on [[!wikipedia Data_erasure "
-"desc=\"data erasure\"]]."
+"To learn more, see the Wikipedia article on [[!wikipedia Data_erasure desc="
+"\"data erasure\"]]."
 msgstr ""
 "Für mehr Details lesen Sie den entsprechenden Abschnitt des Wikipedia-"
 "Artikels zum [[!wikipedia Data_erasure#Limitations desc=\"Löschen von "
@@ -121,45 +117,68 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "<a id=\"usb_and_ssd\"></a>\n"
-msgstr "<a id=\"usb_and_ssd\"></a>\n"
-
-#. type: Title =
-#, fuzzy, no-wrap
-#| msgid "Warning about USB sticks and solid-state disks\n"
-msgid "Warning about USB sticks and solid-state disks"
-msgstr "Warnung bezüglich USB-Sticks und Solid-State-Disks\n"
-
-#. type: Plain text
-msgid ""
-"The only way to securely delete any data, even a single file, from a USB "
-"stick or an SSD (Solid-State Disk) is to [[securely erase the entire device|"
-"secure_deletion#erase-device]]."
+msgid "<h1 id=\"usb_and_ssd\">Warning about USB sticks and SSDs</h1>\n"
 msgstr ""
-
-#. type: Plain text
-#, fuzzy
-#| msgid ""
-#| "For more details read the corresponding section of the Wikipedia article "
-#| "on [[!wikipedia Data_erasure#Limitations desc=\"Data erasure\"]]."
-msgid ""
-"For more details read the corresponding section of the Wikipedia article on "
-"[[!wikipedia Data_erasure#Limitations desc=\"data erasure\"]]."
-msgstr ""
-"Für mehr Details lesen Sie den entsprechenden Abschnitt des Wikipedia-"
-"Artikels zum [[!wikipedia Data_erasure#Limitations desc=\"Löschen von "
-"Dateien (englisch)\"]]."
-
-#. type: Title =
-#, fuzzy, no-wrap
-#| msgid "Securely delete files\n"
-msgid "Securely delete files"
-msgstr "Dateien sicher löschen\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<div class=\"caution\">\n"
 msgstr "<div class=\"caution\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>Secure deletion is not as reliable on USB sticks and SSDs (solid-state\n"
+"drive) as it is on traditional hard disks.</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "</div>\n"
+msgstr "</div>\n"
+
+#. type: Plain text
+msgid ""
+"USB sticks and SSDs sometimes copy the same data to various memory cells to "
+"extend the lifetime of the device. USB sticks and SSDs also have "
+"10&ndash;20% of spare memory cells for the same reason."
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"As a consequence, part of the data from a given file might still be written "
+"on the device even after securely deleting it."
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"This data could be recovered using advanced data forensics techniques, for "
+"example by professional data recovery services."
+msgstr ""
+
+#. type: Plain text
+msgid "To mitigate this risk, you can:"
+msgstr ""
+
+#. type: Plain text
+msgid "- Encrypt the device before use, to make it hard to recover *any* data."
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Securely delete the entire device. Some old data might still be present in "
+"the spare memory cells."
+msgstr ""
+
+#. type: Plain text
+msgid "- Physically destroy the device."
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "Securely delete files\n"
+msgid "<h1 id=\"files\">Securely deleting files</h1>\n"
+msgstr "Dateien sicher löschen\n"
 
 #. type: Plain text
 #, no-wrap
@@ -171,11 +190,6 @@ msgstr ""
 "<p>Das sichere Löschen von Dateien löscht keine potentiellen Sicherungskopien der Datei\n"
 "(beispielsweise erstellt LibreOffice Sicherungskopien, die es Ihnen erlauben\n"
 " Ihre Arbeit wiederherzustellen, für den Fall, dass LibreOffice nicht mehr reagiert).</p>\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "</div>\n"
-msgstr "</div>\n"
 
 #. type: Bullet: '  1. '
 msgid "Open the <span class=\"application\">Files</span> browser."
@@ -197,8 +211,8 @@ msgid ""
 "Right-click (on Mac, click with two fingers) on the files and choose <span "
 "class=\"guimenuitem\">Wipe</span>."
 msgstr ""
-"Rechtsklicken Sie die Dateien und wählen Sie <span "
-"class=\"guimenuitem\">Sicheres löschen</span>."
+"Rechtsklicken Sie die Dateien und wählen Sie <span class=\"guimenuitem"
+"\">Sicheres löschen</span>."
 
 #. type: Bullet: '  1. '
 msgid "Confirm."
@@ -217,14 +231,9 @@ msgstr ""
 "  von wenigen Sekunden bis zu einigen Minuten hin dauern. Seien Sie geduldig…\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "<a id=\"clean_disk_space\"></a>\n"
-msgstr "<a id=\"clean_disk_space\"></a>\n"
-
-#. type: Title =
 #, fuzzy, no-wrap
 #| msgid "Securely clean available disk space\n"
-msgid "Securely clean available disk space"
+msgid "<h1 id=\"disk_space\">Securely cleaning available disk space</h1>\n"
 msgstr "Sicheres Löschen von verfügbarem Speicherplatz\n"
 
 #. type: Plain text
@@ -236,15 +245,6 @@ msgstr ""
 "Um die Inhalte aller Dateien, die zuvor ausgelassen wurden, aber nicht "
 "sicher von dem Laufwerk gelöscht wurden, zu bereinigen, ist es auch möglich "
 "jeglichen freien Speicherplatz auf dem Laufwerk sicher zu löschen."
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<p>This method does not work as expected on solid-state disks or USB\n"
-"sticks.</p>\n"
-msgstr ""
-"<p>Diese Vorgehensweise funktioniert mit Solid-State-Disks oder\n"
-"USB-Sticks nicht wie erwartet.</p>\n"
 
 #. type: Plain text
 #, fuzzy
@@ -269,8 +269,8 @@ msgstr ""
 
 #. type: Bullet: '  1. '
 msgid ""
-"Click on the [[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" "
-"link=\"no\"]] button in the right corner of the title bar and choose **Show "
+"Click on the [[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link="
+"\"no\"]] button in the right corner of the title bar and choose **Show "
 "Hidden Files**."
 msgstr ""
 
@@ -318,26 +318,8 @@ msgstr ""
 
 #. type: Plain text
 #, fuzzy, no-wrap
-msgid "<a id=\"erase-device\"></a>\n"
-msgstr "<a id=\"clean_disk_space\"></a>\n"
-
-#. type: Title =
-#, fuzzy, no-wrap
-#| msgid "Securely clean available disk space\n"
-msgid "Securely erasing an entire device"
+msgid "<h1 id=\"device\">Securely erasing an entire device</h1>\n"
 msgstr "Sicheres Löschen von verfügbarem Speicherplatz\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "<div class=\"note\">\n"
-msgstr "<div class=\"note\">\n"
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<p>This technique is the only way to securely delete any data, even a\n"
-"single file, from a USB stick or an SSD (Solid-State Disk).</p>\n"
-msgstr ""
 
 #. type: Bullet: '1. '
 msgid "Open the <span class=\"application\">Disks</span> utility."
@@ -384,14 +366,13 @@ msgstr ""
 #. type: Bullet: '   - '
 msgid ""
 "Choose to <span class=\"guilabel\">Overwrite existing data with zeroes</"
-"span> in the <span class=\"guilabel\">Erase</span> drop-down list."
+"span> in the <span class=\"guilabel\">Erase</span> menu."
 msgstr ""
 
 #. type: Bullet: '   - '
 msgid ""
 "Choose <span class=\"guilabel\">Compatible with all systems and devices (MBR/"
-"DOS)</span> in the <span class=\"guilabel\">Partitioning</span> drop-down "
-"list."
+"DOS)</span> in the <span class=\"guilabel\">Partitioning</span> menu."
 msgstr ""
 
 #. type: Bullet: '1. '
@@ -403,6 +384,70 @@ msgid ""
 "In the confirmation dialog, make sure that the device is correct. Click "
 "<span class=\"bold\">Format</span> to confirm."
 msgstr ""
+
+#, no-wrap
+#~ msgid "<a id=\"why\"></a>\n"
+#~ msgstr "<a id=\"why\"></a>\n"
+
+#, fuzzy, no-wrap
+#~ msgid "Why use secure deletion?"
+#~ msgstr "Warum sicheres Löschen verwenden?\n"
+
+#, no-wrap
+#~ msgid "<a id=\"usb_and_ssd\"></a>\n"
+#~ msgstr "<a id=\"usb_and_ssd\"></a>\n"
+
+#, fuzzy, no-wrap
+#~| msgid "Warning about USB sticks and solid-state disks\n"
+#~ msgid "Warning about USB sticks and solid-state disks"
+#~ msgstr "Warnung bezüglich USB-Sticks und Solid-State-Disks\n"
+
+#, fuzzy
+#~| msgid ""
+#~| "For more details read the corresponding section of the Wikipedia article "
+#~| "on [[!wikipedia Data_erasure#Limitations desc=\"Data erasure\"]]."
+#~ msgid ""
+#~ "For more details read the corresponding section of the Wikipedia article "
+#~ "on [[!wikipedia Data_erasure#Limitations desc=\"data erasure\"]]."
+#~ msgstr ""
+#~ "Für mehr Details lesen Sie den entsprechenden Abschnitt des Wikipedia-"
+#~ "Artikels zum [[!wikipedia Data_erasure#Limitations desc=\"Löschen von "
+#~ "Dateien (englisch)\"]]."
+
+#, fuzzy, no-wrap
+#~| msgid "Securely delete files\n"
+#~ msgid "Securely delete files"
+#~ msgstr "Dateien sicher löschen\n"
+
+#, no-wrap
+#~ msgid "<a id=\"clean_disk_space\"></a>\n"
+#~ msgstr "<a id=\"clean_disk_space\"></a>\n"
+
+#, fuzzy, no-wrap
+#~| msgid "Securely clean available disk space\n"
+#~ msgid "Securely clean available disk space"
+#~ msgstr "Sicheres Löschen von verfügbarem Speicherplatz\n"
+
+#, no-wrap
+#~ msgid ""
+#~ "<p>This method does not work as expected on solid-state disks or USB\n"
+#~ "sticks.</p>\n"
+#~ msgstr ""
+#~ "<p>Diese Vorgehensweise funktioniert mit Solid-State-Disks oder\n"
+#~ "USB-Sticks nicht wie erwartet.</p>\n"
+
+#, fuzzy, no-wrap
+#~ msgid "<a id=\"erase-device\"></a>\n"
+#~ msgstr "<a id=\"clean_disk_space\"></a>\n"
+
+#, fuzzy, no-wrap
+#~| msgid "Securely clean available disk space\n"
+#~ msgid "Securely erasing an entire device"
+#~ msgstr "Sicheres Löschen von verfügbarem Speicherplatz\n"
+
+#, no-wrap
+#~ msgid "<div class=\"note\">\n"
+#~ msgstr "<div class=\"note\">\n"
 
 #, fuzzy, no-wrap
 #~| msgid ""
@@ -429,21 +474,8 @@ msgstr ""
 #~ msgstr ""
 #~ "[[!meta title=\"Dateien sicher löschen und Speicherplatz bereinigen\"]]\n"
 
-#~ msgid "Why use secure deletion?\n"
-#~ msgstr "Warum sicheres Löschen verwenden?\n"
-
 #~ msgid "Warning about USB sticks and solid-state disks\n"
 #~ msgstr "Warnung bezüglich USB-Sticks und Solid-State-Disks\n"
-
-#~ msgid "Securely delete files\n"
-#~ msgstr "Dateien sicher löschen\n"
-
-#~ msgid "Securely clean available disk space\n"
-#~ msgstr "Sicheres Löschen von verfügbarem Speicherplatz\n"
-
-#, fuzzy
-#~ msgid "Securely erasing an entire device\n"
-#~ msgstr "Sicheres Löschen von verfügbarem Speicherplatz\n"
 
 #~ msgid ""
 #~ "**The methods described below will not work as expected on USB sticks "
@@ -494,12 +526,12 @@ msgstr ""
 
 #, fuzzy
 #~ msgid ""
-#~ "  1. Open the file browser, either from the <span "
-#~ "class=\"guimenu\">Places</span> menu or\n"
+#~ "  1. Open the file browser, either from the <span class=\"guimenu"
+#~ "\">Places</span> menu or\n"
 #~ "  the <span class=\"guilabel\">Home</span> icon on the desktop.\n"
 #~ msgstr ""
-#~ "  1. Öffnen Sie den Dateimanager, entweder von dem <span "
-#~ "class=\"guimenu\">Orte</span>-Menü oder\n"
+#~ "  1. Öffnen Sie den Dateimanager, entweder von dem <span class=\"guimenu"
+#~ "\">Orte</span>-Menü oder\n"
 #~ "  dem <span class=\"guilabel\">home</span>-Symbol auf dem Desktop.\n"
 
 #~ msgid ""
