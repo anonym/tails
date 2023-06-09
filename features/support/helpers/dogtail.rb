@@ -59,6 +59,8 @@ module Dogtail
         'import dogtail.predicate',
         'import dogtail.config',
         'dogtail.config.config.searchShowingOnly = True',
+        'dogtail.config.config.logDebugToFile = False',
+        'dogtail.config.config.logDebugToStdOut = False',
       ]
       code = [
         "#{@var} = #{@find_code}",
