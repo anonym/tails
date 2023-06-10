@@ -1,5 +1,6 @@
 import os
 import subprocess
+import tempfile
 from pathlib import Path
 import psutil
 import time
@@ -385,17 +386,45 @@ class TPSPartition(object):
 
     def test_passphrase(self, passphrase: str,
                         header_file: Optional[Path] = None):
-        """Call cryptsetup to test the passphrase"""
-        cmd = ["cryptsetup", "luksOpen", "--test-passphrase",
-               "--batch-mode", "--key-file=-", self.device_path]
+        """Try to unlock the encrypted partition with the given passphrase."""
+        cmd = ["cryptsetup", "luksOpen", "--batch-mode", "--key-file=-",
+               self.device_path, "TailsData"]
         if header_file:
             cmd += ["--header", str(header_file)]
         try:
             executil.check_call(cmd, text=True, input=passphrase)
+            # Try to mount the device to ensure that the partition was
+            # successfully unlocked and contains a valid filesystem.
+            self._test_mounting_device("/dev/mapper/TailsData")
         except subprocess.CalledProcessError as err:
             if err.returncode == 2:
                 raise IncorrectPassphraseError(err) from err
             raise
+        finally:
+            # Close the device if it is open
+            try:
+                executil.check_call(["cryptsetup", "status", "TailsData"])
+                is_open = True
+            except subprocess.CalledProcessError:
+                is_open = False
+            if is_open:
+                executil.check_call(["cryptsetup", "close", "TailsData"])
+
+    @staticmethod
+    def _test_mounting_device(device_path: str):
+        """Try to mount the specified device"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            try:
+                executil.check_call(["mount", device_path, tmpdir])
+            finally:
+                # Unmount the device if it is mounted
+                try:
+                    executil.check_call(["mountpoint", "-q", tmpdir])
+                    is_mounted = True
+                except subprocess.CalledProcessError:
+                    is_mounted = False
+                if is_mounted:
+                    executil.check_call(["umount", tmpdir])
 
     def luks_header_backup_path(self) -> Path:
         """Return the path to the LUKS header backup file.
