@@ -2,7 +2,6 @@ import os
 import subprocess
 import tempfile
 from pathlib import Path
-import psutil
 import time
 import re
 import stat
