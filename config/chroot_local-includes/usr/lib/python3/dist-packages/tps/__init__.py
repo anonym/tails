@@ -27,8 +27,7 @@ TPS_MOUNT_POINT = "/live/persistence/TailsData_unlocked"
 TPS_BACKUP_MOUNT_POINT = "/media/amnesia/TailsData"
 
 SYSTEM_PARTITION_MOUNT_POINT = "/lib/live/mount/medium"
-LUKS_HEADER_BACKUP_PATH_FORMAT_STRING = SYSTEM_PARTITION_MOUNT_POINT + \
-                                        "/luks-header-backup-{uuid}"
+LUKS_HEADER_BACKUP_PATH = SYSTEM_PARTITION_MOUNT_POINT + "/luks-header-backup"
 
 ON_ACTIVATED_HOOKS_DIR = "/usr/local/lib/persistent-storage/on-activated-hooks"
 ON_DEACTIVATED_HOOKS_DIR = "/usr/local/lib/persistent-storage/on-deactivated-hooks"

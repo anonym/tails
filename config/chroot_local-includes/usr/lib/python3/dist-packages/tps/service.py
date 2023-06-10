@@ -10,7 +10,7 @@ from logging import getLogger
 import time
 from typing import TYPE_CHECKING, List, Optional
 
-from tps import executil, SYSTEM_PARTITION_MOUNT_POINT
+from tps import executil, SYSTEM_PARTITION_MOUNT_POINT, LUKS_HEADER_BACKUP_PATH
 from tps.configuration import features
 from tps.configuration.config_file import ConfigFile, InvalidStatError
 from tps.configuration.feature import Feature, ConflictingProcessesError
@@ -372,10 +372,10 @@ class Service(DBusObject, ServiceUsingJobs):
         # because that's what cryptsetup does when deleting a LUKS header
         # on a non-rotational device (as of cryptsetup 2.6.1), see
         # https://salsa.debian.org/cryptsetup-team/cryptsetup/-/blob/e99903d881ad15abacf16ffcb23207b85c052d55/lib/utils_wipe.c#L237-237
-        luks_header_backup = self._tps_partition.luks_header_backup_path()
+        luks_header_backup = Path(LUKS_HEADER_BACKUP_PATH)
         if luks_header_backup.exists():
             with self.ensure_system_partition_mounted_read_write():
-                self.erase_luks_header_backup(luks_header_backup)
+                self.erase_luks_header_backup()
 
     def UpgradeLUKS(self, passphrase: str):
         """Upgrade the LUKS header and key derivation function.
@@ -412,15 +412,15 @@ class Service(DBusObject, ServiceUsingJobs):
         # already exists, we remove the backup file if it exists. We
         # don't need the backup file because we just checked that the
         # header is intact.
-        luks_header_backup = self._tps_partition.luks_header_backup_path()
+        luks_header_backup = Path(LUKS_HEADER_BACKUP_PATH)
         if luks_header_backup.exists():
-            self.erase_luks_header_backup(luks_header_backup)
+            self.erase_luks_header_backup()
 
         # Create a backup of the LUKS header in case something goes
         # wrong during the upgrade. This backup will be restored on the
         # next boot if it still exists then (we remove it when the
         # Persistent Storage was successfully unlocked).
-        self._tps_partition.backup_luks_header(luks_header_backup)
+        self._tps_partition.backup_luks_header()
 
         # Check that the backup header is intact
         try:
@@ -428,7 +428,7 @@ class Service(DBusObject, ServiceUsingJobs):
         except Exception as e:
             # Remove the backup header because it is not intact, so we
             # can't restore it if something goes wrong during the upgrade.
-            self.erase_luks_header_backup(luks_header_backup)
+            self.erase_luks_header_backup()
             raise e
 
         # Upgrade the LUKS header and key derivation function
@@ -761,7 +761,8 @@ class Service(DBusObject, ServiceUsingJobs):
         executil.execute_hooks(ON_DEACTIVATED_HOOKS_DIR)
 
     @staticmethod
-    def erase_luks_header_backup(luks_header_backup: Path):
+    def erase_luks_header_backup():
+        luks_header_backup = Path(LUKS_HEADER_BACKUP_PATH)
         executil.check_call([
             "shred", "--force", "-n", "1", "-u", str(luks_header_backup),
         ])

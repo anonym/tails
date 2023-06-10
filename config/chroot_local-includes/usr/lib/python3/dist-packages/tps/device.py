@@ -13,7 +13,7 @@ from gi.repository import GLib, UDisks
 
 from tailslib import LIVE_USER_UID, LIVE_USERNAME
 import tps.logging
-from tps import executil, LUKS_HEADER_BACKUP_PATH_FORMAT_STRING
+from tps import executil, LUKS_HEADER_BACKUP_PATH
 from tps import _, TPS_MOUNT_POINT, udisks
 from tps.dbus.errors import IncorrectPassphraseError, TargetIsBusyError, NotEnoughMemoryError
 from tps.job import Job
@@ -426,30 +426,15 @@ class TPSPartition(object):
                 if is_mounted:
                     executil.check_call(["umount", tmpdir])
 
-    def luks_header_backup_path(self) -> Path:
-        """Return the path to the LUKS header backup file.
-        Raise a subprocess.CalledProcessError if the partition is not
-        encrypted."""
-        try:
-            # We use the UUID of the LUKS header in the backup file name
-            # to avoid restoring the wrong header, for example if the
-            # Persistent Storage was deleted and recreated.
-            uuid = executil.check_output(
-                ["cryptsetup", "luksUUID", "--batch-mode", self.device_path],
-                text=True,
-            ).strip()
-        except subprocess.CalledProcessError as err:
-            logger.exception("Failed to get LUKS UUID")
-            raise InvalidPartitionError() from err
-        return Path(LUKS_HEADER_BACKUP_PATH_FORMAT_STRING.format(uuid=uuid))
-
-    def backup_luks_header(self, luks_header_backup: Path):
+    def backup_luks_header(self):
+        luks_header_backup = Path(LUKS_HEADER_BACKUP_PATH)
         executil.check_call(
             ["cryptsetup", "luksHeaderBackup", "--batch-mode",
              "--header-backup-file", luks_header_backup, self.device_path],
         )
 
-    def restore_luks_header_backup(self, luks_header_backup: Path):
+    def restore_luks_header_backup(self):
+        luks_header_backup = Path(LUKS_HEADER_BACKUP_PATH)
         executil.check_call(
             ["cryptsetup", "luksHeaderRestore", "--batch-mode",
              "--header-backup-file", str(luks_header_backup), self.device_path],
@@ -538,23 +523,8 @@ class TPSPartition(object):
         :returns: True if the LUKS header backup was restored and the
                   Persistent Storage was unlocked, False otherwise.
         """
-        try:
-            luks_header_backup = self.luks_header_backup_path()
-        except InvalidPartitionError:
-            # The LUKS header of the partition might be corrupted
-            # in a way that prevents us from getting the UUID.
-            # In that case, we can't get the path to the LUKS
-            # header backup (which includes the UUID), so we use
-            # the first file which matches the LUKS header backup
-            # path format string.
-            format_string = LUKS_HEADER_BACKUP_PATH_FORMAT_STRING.format(
-                uuid="*",
-            )
-            backup_dir = Path(format_string).parent
-            glob_pattern = Path(format_string).name
-            luks_header_backup = next(backup_dir.glob(glob_pattern), None)
-
-        if not luks_header_backup or not luks_header_backup.exists():
+        luks_header_backup = Path(LUKS_HEADER_BACKUP_PATH)
+        if not luks_header_backup.exists():
             logger.info("No LUKS header backup found")
             return False
 
@@ -570,7 +540,7 @@ class TPSPartition(object):
         # Restore the LUKS header backup
         logger.info(f"Unlocking LUKS header backup succeeded, "
                     f"restoring the backup header.")
-        self.restore_luks_header_backup(luks_header_backup)
+        self.restore_luks_header_backup()
         # Unlock the partition
         logger.info(f"Unlocking {self.device_path} with the restored header.")
         self._get_encrypted().call_unlock_sync(
