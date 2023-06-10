@@ -473,17 +473,23 @@ class TPSPartition(object):
 
     def unlock(self, passphrase: str, rename_dm_device: bool = True):
         """Unlock the Persistent Storage encrypted partition"""
-        encrypted = self._get_encrypted()
-
         try:
+            encrypted = self._get_encrypted()
             encrypted.call_unlock_sync(
                 arg_passphrase=passphrase,
                 arg_options=GLib.Variant('a{sv}', {}),
                 cancellable=None,
             )
+        except InvalidPartitionError as err:
+            logger.error(f"Failed to get encrypted device: {err}")
+            # Try to restore the LUKS header backup if there is one
+            unlocked = self._try_restore_luks_header_backup(passphrase)
+            if not unlocked:
+                raise err
         except GLib.Error as err:
             logger.error(f"Failed to unlock {self.device_path}: {err.message}")
 
+            # Try to restore the LUKS header backup if there is one
             unlocked = False
             if err.matches(UDisks.error_quark(), UDisks.Error.FAILED):
                 unlocked = self._try_restore_luks_header_backup(passphrase)
@@ -540,9 +546,15 @@ class TPSPartition(object):
         logger.info(f"Unlocking LUKS header backup succeeded, "
                     f"restoring the backup header.")
         self.restore_luks_header_backup()
+
+        # Try to get the encrypted device. We use wait_for_udisks_object()
+        # because udisks might need some time to detect the new device.
+        encrypted = wait_for_udisks_object(self.udisks_object.get_encrypted)
+        assert isinstance(encrypted, UDisks.Encrypted)
+
         # Unlock the partition
         logger.info(f"Unlocking {self.device_path} with the restored header.")
-        self._get_encrypted().call_unlock_sync(
+        encrypted.call_unlock_sync(
             arg_passphrase=passphrase,
             arg_options=GLib.Variant('a{sv}', {}),
             cancellable=None,
