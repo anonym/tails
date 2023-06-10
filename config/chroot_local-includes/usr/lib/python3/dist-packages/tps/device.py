@@ -26,7 +26,7 @@ VERSION_REGEX = re.compile(r'^Version:\s*(\d+)$')
 PBKDF_REGEX = re.compile(r'^\s*PBKDF:\s*(\S+)$')
 MEMORY_COST_REGEX = re.compile(r'^\s*Memory:\s*(\d+)$')
 
-# Leave at lest 200 MiB of memory to the system to avoid triggering the
+# Leave at least 200 MiB of memory to the system to avoid triggering the
 # OOM killer.
 MEMORY_LEFT_TO_SYSTEM_KIB = 200 * 1024
 
