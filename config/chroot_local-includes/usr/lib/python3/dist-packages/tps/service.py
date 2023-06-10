@@ -357,8 +357,11 @@ class Service(DBusObject, ServiceUsingJobs):
         if not cleartext_device.is_mounted():
             cleartext_device.mount()
 
-        # Remove the LUKS header backup if it exists, to avoid that
-        # it is restored on the next boot.
+        # Remove the LUKS header backup if it exists. It's not needed
+        # anymore and we don't want to keep it around to avoid that the
+        # master key can be recovered from it (for example in case that
+        # the user changes the passphrase of the Persistent Storage).
+        #
         # Just unlinking the header allows it to be recovered until the
         # physical memory is overwritten. Secure deletion on flash storage
         # is a hard problem, simply overwriting the logical blocks once
@@ -412,9 +415,10 @@ class Service(DBusObject, ServiceUsingJobs):
             self.erase_luks_header_backup()
 
         # Create a backup of the LUKS header in case something goes
-        # wrong during the upgrade. This backup will be restored on the
-        # next boot if it still exists then (we remove it when the
-        # Persistent Storage was successfully unlocked).
+        # wrong during the upgrade. If we can't successfully unlock the
+        # Persistent Storage after the upgrade, the backup header is
+        # automatically restored by the Unlock method. It is removed
+        # when Persistent Storage was successfully unlocked.
         self._tps_partition.backup_luks_header()
 
         # Check that the backup header is intact
