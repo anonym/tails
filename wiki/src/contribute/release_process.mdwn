@@ -526,7 +526,7 @@ version's `.packages` file and the one from the to-be-released images:
        diff --color=never -u \
            "wiki/src/torrents/files/tails-amd64-${PREVIOUS_STABLE_VERSION}.packages" \
            <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/latest.packages") \
-        | wdiff --diff-input  --terminal
+        | wdiff --diff-input  --terminal | grep -v --perl-regexp '^[~.:+a-zA-Z_0-9 \t\s-]*$'
 
 2. In the diff, look for:
 
