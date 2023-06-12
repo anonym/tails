@@ -235,7 +235,7 @@ class Service(DBusObject, ServiceUsingJobs):
 
         try:
             # Disable all features first to ensure that no process is
-            # accessing any of the mounts
+            # accessing any of the bindings
             for feature in self.features:
                 if feature.IsActive:
                     feature.Deactivate()
@@ -651,29 +651,29 @@ class Service(DBusObject, ServiceUsingJobs):
 
     def refresh_features(self):
         # Refresh custom features
-        mounts = list()
+        bindings = list()
         if self.config_file.exists():
-            mounts = self.config_file.parse()
-            known_mounts = [mount for feature in self.features
-                            for mount in feature.Mounts]
-            unknown_mounts = [mount for mount in mounts
-                              if mount not in known_mounts]
-            for i, mount in enumerate(unknown_mounts):
+            bindings = self.config_file.parse()
+            known_bindings = [binding for feature in self.features
+                              for binding in feature.Bindings]
+            unknown_bindings = [binding for binding in bindings
+                                if binding not in known_bindings]
+            for i, binding in enumerate(unknown_bindings):
                 class CustomFeature(Feature):
                     Id = f"CustomFeature{i}"
-                    translatable_name = f"Custom Feature ({mount.dest_orig})"
-                    Description = str(mount.dest_orig)
-                    Mounts = [mount]
+                    translatable_name = f"Custom Feature ({binding.dest_orig})"
+                    Description = str(binding.dest_orig)
+                    Bindings = [binding]
                 custom_feature = CustomFeature(self, is_custom=True)
                 custom_feature.register(self.connection)
                 self.object_manager.export(Gio.DBusObjectSkeleton.new(custom_feature.dbus_path))
                 self.features.append(custom_feature)
 
-        # Remove the ones whose mount entry was removed from the config
+        # Remove the ones whose binding entry was removed from the config
         # file
         custom_features = [f for f in self.features if f.is_custom]
         for known_custom_feature in custom_features:
-            if known_custom_feature.Mounts[0] not in mounts:
+            if known_custom_feature.Bindings[0] not in bindings:
                 known_custom_feature.unregister(self.connection)
                 self.object_manager.unexport(known_custom_feature.dbus_path)
                 self.features.remove(known_custom_feature)

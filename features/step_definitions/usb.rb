@@ -14,8 +14,8 @@ def get_tps_bindings(skip_links = false)
   script = [
     'from tps.configuration import features',
     'for feature in features.get_classes():',
-    '    for mount in feature.Mounts:',
-    '        print(mount)',
+    '    for binding in feature.Bindings:',
+    '        print(binding)',
   ]
   c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
   assert(c.success?, 'Python script for get_tps_bindings failed')
