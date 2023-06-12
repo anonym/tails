@@ -129,6 +129,7 @@ class LocalizationSettingUI(GreeterSetting):
 
         # Does the current node match the search?
         value = model.get_value(treeiter, 1).lower()
+
         if search_query in value:
             return True
 
@@ -138,13 +139,13 @@ class LocalizationSettingUI(GreeterSetting):
         parent_treepath.up()
         if parent_treepath.get_depth() == 1:
             # treepath is now the parent
-            parent_value = model.get_value(model.get_iter(parent_treepath), 0)
+            parent_value = model.get_value(model.get_iter(parent_treepath), 1).lower()
             return search_query in parent_value
 
         # Does any of the children nodes match the search?
         children_treeiter = model.iter_children(treeiter)
         while children_treeiter:
-            child_value = model.get_value(children_treeiter, 0)
+            child_value = model.get_value(children_treeiter, 1).lower()
             if search_query in child_value:
                 return True
             children_treeiter = model.iter_next(children_treeiter)
