@@ -4,13 +4,14 @@ import logging
 import os
 import sys
 from pathlib import Path
+import socket
 
+import tailslib.fd
 from tailslib.netnsdrop import run_in_netns
 from tailslib.persistence import (
     has_persistence,
     has_unlocked_persistence,
 )
-
 
 A11Y_BUS_PROXY_PATH="/run/user/1000/.dbus-proxy/a11y-bus-proxy.sock"
 IBUS_PROXY_PATH="/run/user/1000/.dbus-proxy/ibus-proxy.sock"
@@ -50,17 +51,9 @@ def main():
 
     portalsock = "/run/tca-portal.sock"
 
-    connect_drop_cmd = [
-        "/usr/local/lib/connect-drop",
-        # The environment was already sanitized by sudo when this script was
-        # called (see /etc/sudoers.d/zzz_tca), so we can keep it as-is.
-        "--env-keep",
-        "-c",
-        "FILE:%s:r+" % statefile,
-        "-c",
-        "UNIX:%s" % portalsock,
-        "--",
-    ]
+    statefile_fd = tailslib.fd.open_file(statefile, os.O_RDWR)
+    portalsock_fd = tailslib.fd.connect_socket(socket.AF_UNIX, portalsock)
+    os.environ["INHERIT_FD"] = f"{statefile_fd},{portalsock_fd}"
 
     tca_cmd = [
         python_bin,
@@ -72,7 +65,9 @@ def main():
     if has_unlocked_persistence():
         tca_cmd.append("--has-unlocked-persistence")
 
-    run_in_netns(*tca_cmd, netns=NETNS, connect_drop_cmd=connect_drop_cmd)
+    # TODO: Use `sudo --close-from` in run_in_netns to close all
+    # file descriptors except the ones we want to inherit.
+    run_in_netns(*tca_cmd, netns=NETNS)
 
 
 if __name__ == "__main__":
