@@ -191,12 +191,15 @@ When /^I (install|reinstall|upgrade) Tails( with Persistent Storage)? (?:to|on) 
   # We use a wildcard in the label because in case that the target device
   # already contains a Tails installation, the check button label is
   # "Clone the current Persistent Storage (requires reinstall)".
-  clone_persistence_button = @installer
-                             .child('Clone the current Persistent Storage.*',
-                                    roleName: 'check box',
-                                    retry:    false)
-
-  sensitive = clone_persistence_button.sensitive
+  begin
+    clone_persistence_button = @installer
+                                 .child('Clone the current Persistent Storage.*',
+                                        roleName: 'check box',
+                                        retry:    false)
+    sensitive = clone_persistence_button.sensitive
+  rescue Dogtail::Failure
+    sensitive = false
+  end
   if tps_is_created
     assert(sensitive, "Couldn't find clone Persistent Storage check button (even though a Persistent Storage exists)")
   else
