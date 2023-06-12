@@ -13,14 +13,23 @@ set -eu
 USER_ENV_FILE=/run/user/1000/user-env
 DUMP_USER_ENV_SERVICE=tails-dump-user-env.service
 
-if [ "$#" -lt 1 ]; then
-  echo >&2 "Usage: $0 COMMAND [ARG]..."
+usage() {
+  echo "Usage: $0 [--systemd-run] command [args...]"
+}
+
+if [ "$#" -eq 0 ]; then
+  usage >&2
   exit 1
 fi
 
 # Ensure that we're running as amnesia
 if [ "$(id -u)" -ne "1000"  ]; then
   exec runuser -u amnesia -- "$0" "$@"
+fi
+
+if [ "$1" = "--systemd-run" ]; then
+  SYSTEMD_RUN=1
+  shift
 fi
 
 export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
@@ -39,4 +48,10 @@ so we cannot run ${DUMP_USER_ENV_SERVICE} to create it."
   systemctl --user start "${DUMP_USER_ENV_SERVICE}"
 fi
 
-exec /usr/local/lib/run-with-env --env-file "${USER_ENV_FILE}" -- "$@"
+if [ -n "${SYSTEMD_RUN:-}" ]; then
+  # Run the command in a transient systemd scope unit.
+  exec systemd-run --user --scope \
+    /usr/local/lib/run-with-env --env-file "${USER_ENV_FILE}" -- "$@"
+else
+  exec /usr/local/lib/run-with-env --env-file "${USER_ENV_FILE}" -- "$@"
+fi
