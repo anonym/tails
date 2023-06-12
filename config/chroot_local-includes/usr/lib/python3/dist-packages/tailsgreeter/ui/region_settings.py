@@ -123,14 +123,19 @@ class LocalizationSettingUI(GreeterSetting):
                 self._setting.value)
 
     def cb_liststore_filtered_visible_func(self, model, treeiter, searchentry):
-        search_query = searchentry.get_text().lower()
-        if not search_query:
+        search_stings = searchentry.get_text().lower().split()
+        if not search_stings:
             return True
 
-        # Does the current node match the search?
-        value = model.get_value(treeiter, 1).lower()
+        return all(self.node_visible_func(model, treeiter, search_string)
+                   for search_string in search_stings)
 
-        if search_query in value:
+    def node_visible_func(self, model, treeiter, search_string):
+        """Returns True if the node itself or the parent node or any of the
+        children nodes match the search string"""
+
+        # Does the node itself match the search?
+        if self.node_matches_string(model, treeiter, search_string):
             return True
 
         # Does the parent node match the search?
@@ -139,18 +144,22 @@ class LocalizationSettingUI(GreeterSetting):
         parent_treepath.up()
         if parent_treepath.get_depth() == 1:
             # treepath is now the parent
-            parent_value = model.get_value(model.get_iter(parent_treepath), 1).lower()
-            return search_query in parent_value
+            parent_treeiter = model.get_iter(parent_treepath)
+            return self.node_matches_string(model, parent_treeiter, search_string)
 
         # Does any of the children nodes match the search?
         children_treeiter = model.iter_children(treeiter)
         while children_treeiter:
-            child_value = model.get_value(children_treeiter, 1).lower()
-            if search_query in child_value:
+            if self.node_matches_string(model, children_treeiter, search_string):
                 return True
             children_treeiter = model.iter_next(children_treeiter)
 
         return False
+
+    def node_matches_string(self, model, node, search_string):
+        """Returns True if the name value of the node matches the search
+        string"""
+        return model.get_value(node, 1).lower().find(search_string) != -1
 
 
 class LanguageSettingUI(LocalizationSettingUI):
