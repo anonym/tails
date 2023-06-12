@@ -156,7 +156,7 @@ test-tailslib:
   rules:
     - if: '$CI_COMMIT_BRANCH != "master"'
   script:
-    - apt-get -qy install python3 python3-atomicwrites python3-sh git
+    - apt-get -qy install python3 python3-atomicwrites python3-sh python3-gi git
     - 'cd config/chroot_local-includes/usr/lib/python3/dist-packages ; find tailslib -name "*.py" -print0 | grep --null-data -v -e netnsdrop.py -e gnome.py | xargs -0 -L1 env PYTHONPATH=. python3 -m doctest'
 
 test-whisperback:
