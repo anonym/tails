@@ -1,7 +1,6 @@
 import contextlib
 import logging
 import os
-import subprocess
 import threading
 from pathlib import Path
 
@@ -10,7 +9,7 @@ from logging import getLogger
 import time
 from typing import TYPE_CHECKING, List, Optional
 
-from tps import executil, SYSTEM_PARTITION_MOUNT_POINT
+from tps import executil, SYSTEM_PARTITION_MOUNT_POINT, LUKS_HEADER_BACKUP_PATH
 from tps.configuration import features
 from tps.configuration.config_file import ConfigFile, InvalidStatError
 from tps.configuration.feature import Feature, ConflictingProcessesError
@@ -73,10 +72,6 @@ class Service(DBusObject, ServiceUsingJobs):
                 </method>
                 <method name='UpgradeLUKS'>
                     <arg name='passphrase' direction='in' type='s'/>
-                </method>
-                <method name='TestPassphrase'>
-                    <arg name='passphrase' direction='in' type='s'/>
-                    <arg name='is_correct' direction='out' type='b'/>
                 </method>
                 <property name="State" type="s" access="read" />
                 <property name="Error" type="s" access="read" />
@@ -362,8 +357,11 @@ class Service(DBusObject, ServiceUsingJobs):
         if not cleartext_device.is_mounted():
             cleartext_device.mount()
 
-        # Remove the LUKS header backup if it exists, to avoid that
-        # it is restored on the next boot.
+        # Remove the LUKS header backup if it exists. It's not needed
+        # anymore and we don't want to keep it around to avoid that the
+        # master key can be recovered from it (for example in case that
+        # the user changes the passphrase of the Persistent Storage).
+        #
         # Just unlinking the header allows it to be recovered until the
         # physical memory is overwritten. Secure deletion on flash storage
         # is a hard problem, simply overwriting the logical blocks once
@@ -372,10 +370,10 @@ class Service(DBusObject, ServiceUsingJobs):
         # because that's what cryptsetup does when deleting a LUKS header
         # on a non-rotational device (as of cryptsetup 2.6.1), see
         # https://salsa.debian.org/cryptsetup-team/cryptsetup/-/blob/e99903d881ad15abacf16ffcb23207b85c052d55/lib/utils_wipe.c#L237-237
-        luks_header_backup = self._tps_partition.luks_header_backup_path()
+        luks_header_backup = Path(LUKS_HEADER_BACKUP_PATH)
         if luks_header_backup.exists():
             with self.ensure_system_partition_mounted_read_write():
-                self.erase_luks_header_backup(luks_header_backup)
+                self.erase_luks_header_backup()
 
     def UpgradeLUKS(self, passphrase: str):
         """Upgrade the LUKS header and key derivation function.
@@ -412,15 +410,16 @@ class Service(DBusObject, ServiceUsingJobs):
         # already exists, we remove the backup file if it exists. We
         # don't need the backup file because we just checked that the
         # header is intact.
-        luks_header_backup = self._tps_partition.luks_header_backup_path()
+        luks_header_backup = Path(LUKS_HEADER_BACKUP_PATH)
         if luks_header_backup.exists():
-            self.erase_luks_header_backup(luks_header_backup)
+            self.erase_luks_header_backup()
 
         # Create a backup of the LUKS header in case something goes
-        # wrong during the upgrade. This backup will be restored on the
-        # next boot if it still exists then (we remove it when the
-        # Persistent Storage was successfully unlocked).
-        self._tps_partition.backup_luks_header(luks_header_backup)
+        # wrong during the upgrade. If we can't successfully unlock the
+        # Persistent Storage after the upgrade, the backup header is
+        # automatically restored by the Unlock method. It is removed
+        # when Persistent Storage was successfully unlocked.
+        self._tps_partition.backup_luks_header()
 
         # Check that the backup header is intact
         try:
@@ -428,38 +427,12 @@ class Service(DBusObject, ServiceUsingJobs):
         except Exception as e:
             # Remove the backup header because it is not intact, so we
             # can't restore it if something goes wrong during the upgrade.
-            self.erase_luks_header_backup(luks_header_backup)
+            self.erase_luks_header_backup()
             raise e
 
         # Upgrade the LUKS header and key derivation function
         self._tps_partition.upgrade_luks2()
         self._tps_partition.convert_pbkdf_argon2id(passphrase)
-
-    def TestPassphrase(self, passphrase: str) -> bool:
-        """Do not unlock the Persistent Storage, just test if the
-        specified passphrase is correct. Return True if the passphrase
-        is correct, False otherwise."""
-
-        logger.info("Testing passphrase...")
-
-        partition = Partition.find()
-        if not partition:
-            raise NotCreatedError("No Persistent Storage found")
-
-        try:
-            executil.check_call(["cryptsetup", "luksOpen", "--test-passphrase",
-                                 "--key-file=-", partition.device_path],
-                                input=passphrase)
-            logger.info("Passphrase is correct")
-            return True
-        except subprocess.CalledProcessError as e:
-            if e.returncode == 2:
-                logger.info("Passphrase is incorrect")
-                return False
-            raise
-        finally:
-            logger.info("Done testing passphrase")
-
 
     def ChangePassphrase(self, passphrase: str, new_passphrase: str):
         """Change the passphrase of the Persistent Storage encrypted
@@ -761,7 +734,8 @@ class Service(DBusObject, ServiceUsingJobs):
         executil.execute_hooks(ON_DEACTIVATED_HOOKS_DIR)
 
     @staticmethod
-    def erase_luks_header_backup(luks_header_backup: Path):
+    def erase_luks_header_backup():
+        luks_header_backup = Path(LUKS_HEADER_BACKUP_PATH)
         executil.check_call([
             "shred", "--force", "-n", "1", "-u", str(luks_header_backup),
         ])
