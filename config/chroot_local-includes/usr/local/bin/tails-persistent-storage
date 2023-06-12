@@ -8,9 +8,9 @@
 # After opening the D-Bus socket and authenticating, connect-drop
 # executes /usr/local/lib/tps-frontend as amnesia, closing all
 # file descriptors greater than 3, with 3 being the opened D-Bus
-# socket. This way we should avoid inadvertently the unprivileged
-# tps-frontend process inheriting any other file descriptors opened
-# as a privileged user.
+# socket. This way we should avoid inadvertently having the unprivileged
+# tps-frontend process inherit any other file descriptors opened as a
+# privileged user.
 #
 # See also the corresponding sudoers policies in
 # config/chroot_local-includes/etc/sudoers.d/zzz_tps-frontend.
