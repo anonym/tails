@@ -89,7 +89,7 @@ Packages
 
 To release Tails you'll need some packages installed:
 
-* `gitlab-cli j2cli jq tidy libnotify-bin mktorrent podman python3-bs4 python3-debian python3-gitlab python3-jinja2 python3-html2text python3-voluptuous transmission-cli`
+* `gitlab-cli j2cli jq tidy libnotify-bin mktorrent podman python3-bs4 python3-debian python3-gitlab python3-jinja2 python3-html2text python3-voluptuous transmission-cli moreutils wl-clipboard`
   - Note: if the Debian version you are running does not include all required
     Go packages, such as [[!debpts podman]], you should be able to install
     them from a more recent Debian release with APT pinning.
@@ -556,6 +556,13 @@ documentation:
          echo "Dear @technical-writers,\n"
          echo "- The changelog entry is ready: https://gitlab.tails.boum.org/tails/tails/-/blob/${RELEASE_BRANCH:?}/debian/changelog"
          echo "- The latest corresponding images built by Jenkins are there: https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/build-artifacts"
+
+    (
+             echo "Dear @technical-writers,\n"
+             echo "- The changelog entry is ready: https://gitlab.tails.boum.org/tails/tails/-/blob/${RELEASE_BRANCH:?}/debian/changelog"
+             echo "- The latest corresponding images built by Jenkins are there: https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/build-artifacts"
+    ) | pee cat wl-copy
+
 
 Included website
 ----------------
