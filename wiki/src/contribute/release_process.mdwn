@@ -368,6 +368,7 @@ and commit the result, including new PO files:
      ./import-translations || err "importing translations"
      ./refresh-translations || err "refreshing translations"
      ./submodules/jenkins-tools/slaves/lint_po || err "in lint"
+     ./bin/check-po-msgfmt || err "in msgfmt"
      git add po && git commit -m 'Update PO files.'
     )
 
