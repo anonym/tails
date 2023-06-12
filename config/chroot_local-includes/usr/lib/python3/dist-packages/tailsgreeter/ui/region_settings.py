@@ -134,32 +134,48 @@ class LocalizationSettingUI(GreeterSetting):
         """Returns True if the node itself or the parent node or any of the
         children nodes match the search string"""
 
+        # Check if the node is a top-level node
+        treepath = model.get_path(treeiter)
+        is_top_level_node = treepath.get_depth() == 1
+
         # Does the node itself match the search?
         if self.node_matches_string(model, treeiter, search_string):
             return True
 
-        # Does the parent node match the search?
-        treepath = model.get_path(treeiter)
-        parent_treepath = treepath.copy()
-        parent_treepath.up()
-        if parent_treepath.get_depth() == 1:
-            # treepath is now the parent
-            parent_treeiter = model.get_iter(parent_treepath)
-            return self.node_matches_string(model, parent_treeiter, search_string)
+        if not is_top_level_node:
+            # Does the parent node match the search?
+            parent_treepath = treepath.copy()
+            parent_treepath.up()
+            if parent_treepath.get_depth() == 1:
+                # treepath is now the parent
+                parent_treeiter = model.get_iter(parent_treepath)
+                # Only check the name of the parent node, not the language
+                # code, because we don't want to show all children if the
+                # search string matches the default language code (which is
+                # the language code of the parent node).
+                return self.node_matches_string(model, parent_treeiter,
+                                                search_string,
+                                                only_check_name=True)
 
         # Does any of the children nodes match the search?
         children_treeiter = model.iter_children(treeiter)
         while children_treeiter:
-            if self.node_matches_string(model, children_treeiter, search_string):
+            if self.node_matches_string(model, children_treeiter,
+                                        search_string):
                 return True
             children_treeiter = model.iter_next(children_treeiter)
 
         return False
 
-    def node_matches_string(self, model, node, search_string):
-        """Returns True if the name value of the node matches the search
+    def node_matches_string(self, model, node, search_string,
+                            only_check_name=False):
+        """Returns True if any of the columns of the node match the search
         string"""
-        return model.get_value(node, 1).lower().find(search_string) != -1
+        if only_check_name:
+            return search_string in model.get_value(node, 1).lower()
+
+        return any(search_string in model.get_value(node, i).lower()
+                   for i in range(0, model.get_n_columns()))
 
 
 class LanguageSettingUI(LocalizationSettingUI):
