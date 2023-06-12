@@ -38,7 +38,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 13:28+0200\n"
+"POT-Creation-Date: 2023-06-12 11:35+0200\n"
 "PO-Revision-Date: 2023-04-29 23:52+0000\n"
 "Last-Translator: emma peel <emmapeel@torproject.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/tor/tails-gui/ar/"
@@ -232,9 +232,9 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:185
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
 "لإضافة المزيد، نصّب بعض البرمجيات باستخدام <a href=\"synaptic.desktop\">مدير "
 "الحزم سينابتك</a> أو <a href=\"org.gnome.Terminal.desktop\">APT من سطر "
@@ -423,10 +423,10 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
 "<b>حدث خطأ أثناء تحديث مفتاح التوقيع .</b>\\n\\n<b>هذا يمنع تحديد ما إذا كان "
 "متاح التحديث من موقعنا على الويب.</b>\\n\\nتحقق من اتصال الشبكة، و إعادة "
@@ -824,49 +824,64 @@ msgstr "قم بإدخال عبارتك السرية لفك قفل مساحة ا�
 msgid "Start Without Persistent Storage"
 msgstr "انشاء تخزين دائم"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:84
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:101
 msgid "Error unlocking Persistent Storage: {}"
+msgstr "الذاكرة المستديمة مشفرة {}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:124
+#, fuzzy
+msgid "Error upgrading Persistent Storage: {}"
 msgstr "الذاكرة المستديمة مشفرة {}"
 
 #. Translators: Don't translate {features}, it's a placeholder
 #. and will be replaced.
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:108
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:146
 #, fuzzy, python-brace-format
 msgid "Failed to activate some features of the Persistent Storage: {features}."
 msgstr "فشل في تكوين Persistent Storage الخاص بك"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:113
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:151
 msgid "Error activating Persistent Storage: {}"
 msgstr "انشاء تخزين دائم: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:69
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:70
 msgid "Unlocking…"
 msgstr "جار إلغاء القفل ..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:95
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:109
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
-msgid "Unlock"
-msgstr "إلغاء القفل"
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:135
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:505
+msgid "Unlock Encryption"
+msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:41
 msgid "Cannot unlock encrypted storage with this passphrase."
 msgstr "تعذر فك قفل مساحة التخزين المعماة بواسطة هذه العبارة السرية."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
+msgid ""
+"Failed to upgrade the Persistent Storage. Please start Tails and send an "
+"error report."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:127
 msgid ""
 "Failed to unlock the Persistent Storage. Please start Tails and send an "
 "error report."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:120
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:133
 msgid ""
 "Failed to activate the Persistent Storage. Please start Tails and send an "
 "error report."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:136
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:143
+msgid "Upgrading the Persistent Storage. This may take a while…"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:154
 msgid "Start Tails and open the Persistent Storage settings to find out more."
 msgstr ""
 
@@ -1037,7 +1052,7 @@ msgstr "إزالة ملفات %(file)s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:964
 #, fuzzy
 msgid "Cloning Persistent Storage..."
-msgstr "انشاء تخزين دائم: {}"
+msgstr "انشاء تخزين دائم"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1032
 #, python-format
@@ -1150,7 +1165,7 @@ msgstr ""
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:180
 #, fuzzy
 msgid "Clone the current Persistent Storage"
-msgstr "فشل في تكوين Persistent Storage الخاص بك"
+msgstr "انشاء تخزين دائم"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:493
 msgid ""
@@ -1175,8 +1190,8 @@ msgid ""
 "The device \"%(pretty_name)s\" is too small to install Tails (at least "
 "%(size)s GB is required)."
 msgstr ""
-"الجهاز \"%(pretty_name)s\" ليس لديه السعة الكافية لتثبيت Tails "
-"(مطلوب%(size)s جيجابايت على الأقل)."
+"الجهاز \"%(pretty_name)s\" ليس لديه السعة الكافية لتثبيت Tails (مطلوب"
+"%(size)s جيجابايت على الأقل)."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:554
 #, python-format
@@ -1361,16 +1376,16 @@ msgid ""
 "The device Tails is running from cannot be found. Maybe you used the 'toram' "
 "option?"
 msgstr ""
-"لايمكن العثور على المحرك الذي يعمل عليه تيلز. قد يكون السبب اختيارك "
-"\"تورام\" 'toram'"
+"لايمكن العثور على المحرك الذي يعمل عليه تيلز. قد يكون السبب اختيارك \"تورام"
+"\" 'toram'"
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:251
 msgid ""
 "The drive Tails is running from cannot be found. Maybe you used the 'toram' "
 "option?"
 msgstr ""
-"لايمكن العثور على المحرك الذي يعمل عليه تيلز. قد يكون السبب اختيارك "
-"\"تورام\" 'toram'"
+"لايمكن العثور على المحرك الذي يعمل عليه تيلز. قد يكون السبب اختيارك \"تورام"
+"\" 'toram'"
 
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/status-menu-helper@tails.boum.org/extension.js:78
 msgid "Lock screen"
@@ -1448,9 +1463,9 @@ msgid ""
 "Package Manager</a> or <a href=\"org.gnome.Terminal.desktop\">APT on the "
 "command line</a>."
 msgstr ""
-"للقيام بذلك, قم بتثبيت البرنامج باستخدام <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> ال <a href=\"org.gnome.Terminal."
-"desktop\">APT على سطر الأوامر</a>."
+"للقيام بذلك, قم بتثبيت البرنامج باستخدام <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> ال <a href=\"org.gnome.Terminal.desktop"
+"\">APT على سطر الأوامر</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:201
 msgid ""
@@ -1773,7 +1788,7 @@ msgstr "حالة تور"
 msgid "Open Onion Circuits"
 msgstr "افتح دوائر البصلة"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:268
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:293
 #, python-brace-format
 msgid ""
 "Only {available_memory} KiB of memory is available, need at least "
@@ -1782,37 +1797,37 @@ msgid ""
 "Try again after closing some applications or rebooting."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:280
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:305
 #, fuzzy
 msgid "Creating a partition for the Persistent Storage..."
 msgstr "جاري تصحيح صلاحيات القرص الدائم."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:300
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:325
 msgid ""
 "Initializing the LUKS encryption... The computer might stop responding for a "
 "few seconds."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:317
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:342
 msgid "Unlocking the encryption..."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:325
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:350
 #, fuzzy
 msgid "Formatting the file system..."
 msgstr "جاري التحقق من نظام الملفات"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:340
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:365
 #, fuzzy
 msgid "Activating the Persistent Storage..."
 msgstr "انشاء تخزين دائم: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:345
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:370
 #, fuzzy
 msgid "Finishing setting up the Persistent Storage..."
 msgstr "انشاء تخزين دائم"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:446
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:577
 msgid ""
 "Can't unmount Persistent Storage, some process is still using it. Please "
 "close all applications that could be accessing it and try again. If that "
@@ -2023,7 +2038,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:216
 #, fuzzy
 msgid "Not enough memory to create Persistent Storage"
-msgstr "فشل في تكوين Persistent Storage الخاص بك"
+msgstr "انشاء تخزين دائم"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:221
 #, fuzzy
@@ -2442,15 +2457,15 @@ msgstr "مفتاح الـOpenPGP غير صحيح : %s"
 msgid "Invalid contact OpenPGP public key block"
 msgstr "مفتاح الـOpenPGP العام غير صحيح"
 
-#: config/chroot_local-includes/usr/local/bin/tca:154
+#: config/chroot_local-includes/usr/local/bin/tca:14
 msgid "You turned on Offline Mode in the Welcome Screen."
 msgstr "لقد قمت بتشغيل وضع عدم الاتصال في شاشة الترحيب."
 
-#: config/chroot_local-includes/usr/local/bin/tca:155
+#: config/chroot_local-includes/usr/local/bin/tca:15
 msgid "It is impossible to connect to Tor in Offline Mode."
 msgstr "من المستحيل الاتصال بـ Tor في وضع عدم الاتصال."
 
-#: config/chroot_local-includes/usr/local/bin/tca:156
+#: config/chroot_local-includes/usr/local/bin/tca:16
 msgid "To connect to Tor and the Internet, restart Tails without Offline Mode."
 msgstr "للاتصال بـ Tor والإنترنت، أعد تشغيل Tails بدون وضع عدم الاتصال."
 
@@ -2724,10 +2739,6 @@ msgstr "عرض العبارة السرية"
 msgid "_Passphrase"
 msgstr "عبارة مرور"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:505
-msgid "Unlock Encryption"
-msgstr ""
-
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:546
 #, fuzzy
 msgid ""
@@ -2949,7 +2960,7 @@ msgid "GnuPG"
 msgstr "GnuPG"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:517
-msgid "OpenPGP keys outside of Thunderbird."
+msgid "OpenPGP keys outside of Thunderbird, including in Kleopatra."
 msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:533
@@ -3746,9 +3757,8 @@ msgstr "ديسمبر"
 msgid "Clock"
 msgstr "ساعة"
 
-#, fuzzy
-#~ msgid "Don't _Create Persistent Storage"
-#~ msgstr "انشاء تخزين دائم"
+#~ msgid "Unlock"
+#~ msgstr "إلغاء القفل"
 
 #, fuzzy
 #~ msgid "_Persistent Storage"

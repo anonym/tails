@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 13:28+0200\n"
+"POT-Creation-Date: 2023-06-12 11:35+0200\n"
 "PO-Revision-Date: 2023-04-29 23:52+0000\n"
 "Last-Translator: emma peel <emmapeel@torproject.org>\n"
 "Language-Team: Greek <https://hosted.weblate.org/projects/tor/tails-gui/el/"
@@ -231,9 +231,9 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:185
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
 "Για να προσθέσετε περισσότερα, εγκαταστήστε λογισμικό χρησιμοποιώντας το <a "
 "href=\"synaptic.desktop\">Synaptic Package Manager</a>ή το <a href=\"org."
@@ -400,13 +400,13 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
-"<b>Παρουσιάστηκε σφάλμα κατά την ενημέρωση του κλειδιού εγγραφής.</"
-"b>\\n\\n<b>Αυτό αποτρέπει τον προσδιορισμό του κατά πόσο είναι διαθέσιμη μια "
+"<b>Παρουσιάστηκε σφάλμα κατά την ενημέρωση του κλειδιού εγγραφής.</b>\\n"
+"\\n<b>Αυτό αποτρέπει τον προσδιορισμό του κατά πόσο είναι διαθέσιμη μια "
 "αναβάθμιση από την ιστοσελίδα μας.</b>\\n\\nΕλέγξτε τη σύνδεση σας και "
 "επανεκκινήστε το Tails ώστε να γίνει προσπάθεια αναβάθμισης ξανά.\\n\\nΕάν "
 "παραμένει το πρόβλημα, εντοπίστε το αρχείο file:///usr/share/doc/tails/"
@@ -824,39 +824,53 @@ msgstr ""
 msgid "Start Without Persistent Storage"
 msgstr "Συνέχεια χωρίς το μόνιμο αποθηκευτικό χώρο"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:84
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:101
 msgid "Error unlocking Persistent Storage: {}"
+msgstr "Σφάλμα κατά το ξεκλείδωμα του μόνιμου αποθηκευτικού χώρου: {}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:124
+#, fuzzy
+msgid "Error upgrading Persistent Storage: {}"
 msgstr "Σφάλμα κατά το ξεκλείδωμα του μόνιμου αποθηκευτικού χώρου: {}"
 
 #. Translators: Don't translate {features}, it's a placeholder
 #. and will be replaced.
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:108
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:146
 #, fuzzy, python-brace-format
 msgid "Failed to activate some features of the Persistent Storage: {features}."
 msgstr "Αποτυχία παραμετροποίησης του Μόνιμου αποθηκευτικού χώρου σας"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:113
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:151
 msgid "Error activating Persistent Storage: {}"
 msgstr "Σφάλμα ενεργοποίησης μόνιμου αποθηκευτικού χώρου: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:69
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:70
 msgid "Unlocking…"
 msgstr "Ξεκλειδώνεται…"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:95
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:109
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
-msgid "Unlock"
-msgstr "Ξεκλείδωμα"
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:135
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:505
+msgid "Unlock Encryption"
+msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:41
 msgid "Cannot unlock encrypted storage with this passphrase."
 msgstr ""
 "Δεν μπορούμε να ξεκλειδώσουμε τον κρυπτογραφημένο αποθηκευτικό χώρο με αυτήν "
 "τη φράση κλειδί."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
+#, fuzzy
+msgid ""
+"Failed to upgrade the Persistent Storage. Please start Tails and send an "
+"error report."
+msgstr ""
+"Σφάλμα κατά ενεργοποίησης του μόνιμου αποθηκευτικού χώρου. Παρακαλούμε "
+"εκκινήστε το Tails και υποβάλλετε αναφορά σφάλματος."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:127
 msgid ""
 "Failed to unlock the Persistent Storage. Please start Tails and send an "
 "error report."
@@ -864,7 +878,7 @@ msgstr ""
 "Σφάλμα κατά το ξεκλείδωμα του μόνιμου αποθηκευτικού χώρου. Παρακαλούμε "
 "εκκινήστε το Tails και υποβάλλετε αναφορά σφάλματος."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:120
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:133
 msgid ""
 "Failed to activate the Persistent Storage. Please start Tails and send an "
 "error report."
@@ -872,7 +886,11 @@ msgstr ""
 "Σφάλμα κατά ενεργοποίησης του μόνιμου αποθηκευτικού χώρου. Παρακαλούμε "
 "εκκινήστε το Tails και υποβάλλετε αναφορά σφάλματος."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:136
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:143
+msgid "Upgrading the Persistent Storage. This may take a while…"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:154
 #, fuzzy
 msgid "Start Tails and open the Persistent Storage settings to find out more."
 msgstr ""
@@ -920,8 +938,8 @@ msgid ""
 "There was a problem executing the following command: `%(command)s`.\n"
 "A more detailed error log has been written to \"%(filename)s\"."
 msgstr ""
-"Παρουσιάστηκε πρόβλημα κατά την εκτέλεση της ακόλουθης εντολής: "
-"`%(command)s`.\n"
+"Παρουσιάστηκε πρόβλημα κατά την εκτέλεση της ακόλουθης εντολής: `"
+"%(command)s`.\n"
 "Μια λεπτομερείς καταγραφή του σφάλματος καταχωρήθηκε στο ''%(filename)s''."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:463
@@ -1055,7 +1073,7 @@ msgstr "Απομακρύνονται τα %(file)s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:964
 #, fuzzy
 msgid "Cloning Persistent Storage..."
-msgstr "Σφάλμα ενεργοποίησης μόνιμου αποθηκευτικού χώρου: {}"
+msgstr "Μόνιμος αποθηκευτικός χώρος"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1032
 #, python-format
@@ -1169,7 +1187,7 @@ msgstr ""
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:180
 #, fuzzy
 msgid "Clone the current Persistent Storage"
-msgstr "Αποτυχία παραμετροποίησης του Μόνιμου αποθηκευτικού χώρου σας"
+msgstr "Συνέχεια χωρίς το μόνιμο αποθηκευτικό χώρο"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:493
 msgid ""
@@ -1483,9 +1501,9 @@ msgid ""
 "Package Manager</a> or <a href=\"org.gnome.Terminal.desktop\">APT on the "
 "command line</a>."
 msgstr ""
-"Για να το κάνετε αυτό, εγκαταστήστε λογισμικό χρησιμοποιώντας το <a "
-"href=\"synaptic.desktop\">Synaptic Package Manager</a>ή το <a href=\"org."
-"gnome.Terminal.desktop\">ΑΡΤ στην γραμμή εντολών</a>."
+"Για να το κάνετε αυτό, εγκαταστήστε λογισμικό χρησιμοποιώντας το <a href="
+"\"synaptic.desktop\">Synaptic Package Manager</a>ή το <a href=\"org.gnome."
+"Terminal.desktop\">ΑΡΤ στην γραμμή εντολών</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:201
 msgid ""
@@ -1494,9 +1512,9 @@ msgid ""
 "a> or <a href=\"org.gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
 "Για να το κάνετε αυτό, ξεκλειδώστε το μόνιμο αποθηκευτικό σας χώρο κατά την "
-"εκκίνηση του Tails και εγκαταστήστε λογισμικό χρησιμοποιώντας το <a "
-"href=\"synaptic.desktop\">Synaptic Package Manager</a>ή το <a href=\"org."
-"gnome.Terminal.desktop\">ΑΡΤ στην γραμμή εντολών</a>."
+"εκκίνηση του Tails και εγκαταστήστε λογισμικό χρησιμοποιώντας το <a href="
+"\"synaptic.desktop\">Synaptic Package Manager</a>ή το <a href=\"org.gnome."
+"Terminal.desktop\">ΑΡΤ στην γραμμή εντολών</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:211
 msgid ""
@@ -1505,9 +1523,9 @@ msgid ""
 "gnome.Terminal.desktop\">APT on the command line</a>."
 msgstr ""
 "Για να το κάνετε αυτό, δημιουργήστε μόνιμο αποθηκευτικό χώρο και "
-"εγκαταστήστε λογισμικό χρησιμοποιώντας το <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a>ή το <a href=\"org.gnome.Terminal."
-"desktop\">ΑΡΤ στην γραμμή εντολών</a>."
+"εγκαταστήστε λογισμικό χρησιμοποιώντας το <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a>ή το <a href=\"org.gnome.Terminal.desktop"
+"\">ΑΡΤ στην γραμμή εντολών</a>."
 
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:219
 msgid "To do so, install Tails on a USB stick and create a persistent storage."
@@ -1656,17 +1674,16 @@ msgid ""
 "To save your bridge, <a href=\"doc/persistent_storage\">unlock your "
 "Persistent Storage</a>."
 msgstr ""
-"Για να αποθηκεύσετε τη γέφυρα σας, <a href=\"doc/"
-"persistent_storage\">ξεκλειδώστε το μόνιμο αποθηκευτικό χώρο σας</a>."
+"Για να αποθηκεύσετε τη γέφυρα σας, <a href=\"doc/persistent_storage"
+"\">ξεκλειδώστε το μόνιμο αποθηκευτικό χώρο σας</a>."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
 msgid ""
 "To save your bridge, <a href=\"doc/persistent_storage\">create a Persistent "
 "Storage</a> on your Tails USB stick."
 msgstr ""
-"Για να αποθηκεύσετε τη γέφυρά σας, <a href=\"doc/"
-"persistent_storage\">δημιουργήστε ένα Μόνιμο αποθηκευτικό χώρο</a> στο "
-"στικάκι USB του Tails."
+"Για να αποθηκεύσετε τη γέφυρά σας, <a href=\"doc/persistent_storage"
+"\">δημιουργήστε ένα Μόνιμο αποθηκευτικό χώρο</a> στο στικάκι USB του Tails."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:269
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:781
@@ -1824,7 +1841,7 @@ msgstr "Κατάσταση του Tor"
 msgid "Open Onion Circuits"
 msgstr "Άνοιγμα κυκλωμάτων του Onion"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:268
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:293
 #, python-brace-format
 msgid ""
 "Only {available_memory} KiB of memory is available, need at least "
@@ -1833,37 +1850,37 @@ msgid ""
 "Try again after closing some applications or rebooting."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:280
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:305
 #, fuzzy
 msgid "Creating a partition for the Persistent Storage..."
 msgstr "Διόρθωση δικαιωμάτων του μόνιμου τομέα."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:300
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:325
 msgid ""
 "Initializing the LUKS encryption... The computer might stop responding for a "
 "few seconds."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:317
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:342
 msgid "Unlocking the encryption..."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:325
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:350
 #, fuzzy
 msgid "Formatting the file system..."
 msgstr "Έλεγχος συστήματος αρχείων..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:340
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:365
 #, fuzzy
 msgid "Activating the Persistent Storage..."
 msgstr "Σφάλμα ενεργοποίησης μόνιμου αποθηκευτικού χώρου: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:345
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:370
 #, fuzzy
 msgid "Finishing setting up the Persistent Storage..."
-msgstr "Διαγραφή μόνιμου αποθηκευτικού χώρου"
+msgstr "Συνέχεια χωρίς το μόνιμο αποθηκευτικό χώρο"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:446
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:577
 msgid ""
 "Can't unmount Persistent Storage, some process is still using it. Please "
 "close all applications that could be accessing it and try again. If that "
@@ -2071,7 +2088,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:216
 #, fuzzy
 msgid "Not enough memory to create Persistent Storage"
-msgstr "Αποτυχία παραμετροποίησης του Μόνιμου αποθηκευτικού χώρου σας"
+msgstr "Να μην _δημιουργηθεί μόνιμος αποθηκευτικός χώρος"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:221
 #, fuzzy
@@ -2501,15 +2518,15 @@ msgstr "Μη έγκυρο κλειδί OpenPGP %s"
 msgid "Invalid contact OpenPGP public key block"
 msgstr "Μη έγκυρο δημόσιο OpenPGP key block"
 
-#: config/chroot_local-includes/usr/local/bin/tca:154
+#: config/chroot_local-includes/usr/local/bin/tca:14
 msgid "You turned on Offline Mode in the Welcome Screen."
 msgstr "Ενεργοποιήσατε τη Λειτουργία εκτός σύνδεσης στην Οθόνη υποδοχής."
 
-#: config/chroot_local-includes/usr/local/bin/tca:155
+#: config/chroot_local-includes/usr/local/bin/tca:15
 msgid "It is impossible to connect to Tor in Offline Mode."
 msgstr "Είναι αδύνατο να συνδεθείτε στο Tor στη Λειτουργία εκτός σύνδεσης."
 
-#: config/chroot_local-includes/usr/local/bin/tca:156
+#: config/chroot_local-includes/usr/local/bin/tca:16
 msgid "To connect to Tor and the Internet, restart Tails without Offline Mode."
 msgstr ""
 "Για να συνδεθείτε στο Tor και το διαδίκτυο, επανεκκινείστε το Tails χωρίς τη "
@@ -2803,10 +2820,6 @@ msgstr "Εμφάνιση συνθηματικού"
 msgid "_Passphrase"
 msgstr "Συνθηματικό:"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:505
-msgid "Unlock Encryption"
-msgstr ""
-
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:546
 #, fuzzy
 msgid ""
@@ -3019,7 +3032,8 @@ msgid "GnuPG"
 msgstr "GnuPG"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:517
-msgid "OpenPGP keys outside of Thunderbird."
+#, fuzzy
+msgid "OpenPGP keys outside of Thunderbird, including in Kleopatra."
 msgstr "Κλειδιά OpenPGP εκτός του Thunderbird."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:533
@@ -3838,8 +3852,8 @@ msgstr "Δεκέμβριος"
 msgid "Clock"
 msgstr "Ρολόι"
 
-#~ msgid "Don't _Create Persistent Storage"
-#~ msgstr "Να μην _δημιουργηθεί μόνιμος αποθηκευτικός χώρος"
+#~ msgid "Unlock"
+#~ msgstr "Ξεκλείδωμα"
 
 #~ msgid "_Persistent Storage"
 #~ msgstr "_Μόνιμος αποθηκευτικός χώρος"

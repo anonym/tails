@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 13:28+0200\n"
+"POT-Creation-Date: 2023-06-12 11:35+0200\n"
 "PO-Revision-Date: 2023-04-06 04:49+0000\n"
 "Last-Translator: Oskari Lavinto <olavinto@protonmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/tor/tails-gui/fi/"
@@ -217,9 +217,9 @@ msgstr ""
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:185
 msgid ""
-"To add more, install some software using <a href=\"synaptic."
-"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
-"desktop\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic.desktop"
+"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
+"\">APT on the command line</a>."
 msgstr ""
 "Jos haluat asentaa lisää, asenna ohjelmistoja käyttäen <a href=\"synaptic."
 "desktop\">Synaptic Package Manageria</a> tai <a href=\"org.gnome.Terminal."
@@ -386,16 +386,16 @@ msgstr ""
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</"
-"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
-"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</b>\\n"
+"\\nCheck your network connection, and restart Tails to try upgrading again."
+"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
+"upgrade/error/check.en.html"
 msgstr ""
 "<b>Kirjautumisavainta päivittäessä tapahtui virhe.</b>\\n\\n<b>Tämän takia "
 "ei tiedetä, onko päivitys saatavilla verkkosivultamme.</b>\\n\\nTarkista "
-"verkkoyhteytesi ja yritä taas päivitystä käynnistämällä Tails uudelleen."
-"\\n\\nJos pulma jatkuu, siirry tiedostoon file:///usr/share/doc/tails/"
-"website/doc/upgrade/error/check.en.html"
+"verkkoyhteytesi ja yritä taas päivitystä käynnistämällä Tails uudelleen.\\n"
+"\\nJos pulma jatkuu, siirry tiedostoon file:///usr/share/doc/tails/website/"
+"doc/upgrade/error/check.en.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:303
 msgid "Error while downloading the signing key"
@@ -800,37 +800,51 @@ msgstr ""
 msgid "Start Without Persistent Storage"
 msgstr "Jatka ilman pysyvää tallennustilaa"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:84
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:101
 msgid "Error unlocking Persistent Storage: {}"
+msgstr "Virhe avatessa pysyvää tallennustilaa: {}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:124
+#, fuzzy
+msgid "Error upgrading Persistent Storage: {}"
 msgstr "Virhe avatessa pysyvää tallennustilaa: {}"
 
 #. Translators: Don't translate {features}, it's a placeholder
 #. and will be replaced.
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:108
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:146
 #, fuzzy, python-brace-format
 msgid "Failed to activate some features of the Persistent Storage: {features}."
 msgstr "Pysyvän tallennustilan määrittäminen epäonnistui"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:113
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:151
 msgid "Error activating Persistent Storage: {}"
 msgstr "Virhe aktivoidessa pysyvää tallennustilaa: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:69
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:70
 msgid "Unlocking…"
 msgstr "Avataan…"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:95
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:109
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
-msgid "Unlock"
-msgstr "Poista lukitus"
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:135
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:505
+msgid "Unlock Encryption"
+msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:41
 msgid "Cannot unlock encrypted storage with this passphrase."
 msgstr "Salattua tallennustilaa ei voida avata tällä salauslausekkeella."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
+#, fuzzy
+msgid ""
+"Failed to upgrade the Persistent Storage. Please start Tails and send an "
+"error report."
+msgstr ""
+"Pysyvän tallennustilan aktivointi epäonnistui. Käynnistä Tails ja lähetä "
+"virheilmoitus."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:127
 msgid ""
 "Failed to unlock the Persistent Storage. Please start Tails and send an "
 "error report."
@@ -838,7 +852,7 @@ msgstr ""
 "Pysyvän tallennustilan salauksen avaaminen epäonnistui. Käynnistä Tails ja "
 "lähetä virheilmoitus."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:120
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:133
 msgid ""
 "Failed to activate the Persistent Storage. Please start Tails and send an "
 "error report."
@@ -846,7 +860,11 @@ msgstr ""
 "Pysyvän tallennustilan aktivointi epäonnistui. Käynnistä Tails ja lähetä "
 "virheilmoitus."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:136
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:143
+msgid "Upgrading the Persistent Storage. This may take a while…"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:154
 #, fuzzy
 msgid "Start Tails and open the Persistent Storage settings to find out more."
 msgstr ""
@@ -1024,7 +1042,7 @@ msgstr "Poistetaan %(file)s"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:964
 #, fuzzy
 msgid "Cloning Persistent Storage..."
-msgstr "Virhe aktivoidessa pysyvää tallennustilaa: {}"
+msgstr "Pysyvä tallennustila"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1032
 #, python-format
@@ -1138,7 +1156,7 @@ msgstr ""
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:180
 #, fuzzy
 msgid "Clone the current Persistent Storage"
-msgstr "Pysyvän tallennustilan määrittäminen epäonnistui"
+msgstr "Jatka ilman pysyvää tallennustilaa"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:493
 msgid ""
@@ -1774,7 +1792,7 @@ msgstr "Tor-tila"
 msgid "Open Onion Circuits"
 msgstr "Avaa Onion-ketjut"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:268
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:293
 #, python-brace-format
 msgid ""
 "Only {available_memory} KiB of memory is available, need at least "
@@ -1783,37 +1801,37 @@ msgid ""
 "Try again after closing some applications or rebooting."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:280
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:305
 #, fuzzy
 msgid "Creating a partition for the Persistent Storage..."
 msgstr "Korjataan pysyvän taltion oikeuksia."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:300
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:325
 msgid ""
 "Initializing the LUKS encryption... The computer might stop responding for a "
 "few seconds."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:317
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:342
 msgid "Unlocking the encryption..."
 msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:325
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:350
 #, fuzzy
 msgid "Formatting the file system..."
 msgstr "Tarkistetaan tiedostojärjestelmää..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:340
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:365
 #, fuzzy
 msgid "Activating the Persistent Storage..."
 msgstr "Virhe aktivoidessa pysyvää tallennustilaa: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:345
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:370
 #, fuzzy
 msgid "Finishing setting up the Persistent Storage..."
-msgstr "Poista pysyvä tallennustila"
+msgstr "Jatka ilman pysyvää tallennustilaa"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:446
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:577
 msgid ""
 "Can't unmount Persistent Storage, some process is still using it. Please "
 "close all applications that could be accessing it and try again. If that "
@@ -2021,7 +2039,7 @@ msgstr ""
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:216
 #, fuzzy
 msgid "Not enough memory to create Persistent Storage"
-msgstr "Pysyvän tallennustilan määrittäminen epäonnistui"
+msgstr "Älä _luo pysyvää tallennustilaa"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:221
 #, fuzzy
@@ -2448,15 +2466,15 @@ msgstr "Virheellinen OpenPGP-avain: %s"
 msgid "Invalid contact OpenPGP public key block"
 msgstr "Virheellinen julkinen OpenPGP-avain (public key block)"
 
-#: config/chroot_local-includes/usr/local/bin/tca:154
+#: config/chroot_local-includes/usr/local/bin/tca:14
 msgid "You turned on Offline Mode in the Welcome Screen."
 msgstr "Valitsit aloitusnäytöstä yhteydettömän tilan."
 
-#: config/chroot_local-includes/usr/local/bin/tca:155
+#: config/chroot_local-includes/usr/local/bin/tca:15
 msgid "It is impossible to connect to Tor in Offline Mode."
 msgstr "Tor-yhteyttä on mahdotonta muodostaa yhteydettömässä tilassa."
 
-#: config/chroot_local-includes/usr/local/bin/tca:156
+#: config/chroot_local-includes/usr/local/bin/tca:16
 msgid "To connect to Tor and the Internet, restart Tails without Offline Mode."
 msgstr ""
 "Modostaaksesi yhteyden Tor-verkkoon ja Internetiin, käynnistä Tails "
@@ -2745,10 +2763,6 @@ msgstr "Näytä salauslauseke"
 msgid "_Passphrase"
 msgstr "Salauslauseke:"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:505
-msgid "Unlock Encryption"
-msgstr ""
-
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:546
 #, fuzzy
 msgid ""
@@ -2958,7 +2972,8 @@ msgid "GnuPG"
 msgstr "GnuPG"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:517
-msgid "OpenPGP keys outside of Thunderbird."
+#, fuzzy
+msgid "OpenPGP keys outside of Thunderbird, including in Kleopatra."
 msgstr "Thunderbirdin ulkopuoliset OpenPGP-avaimet."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:533
@@ -3126,8 +3141,8 @@ msgstr ""
 "Valitettavasti tälle laitteelle ei ole mahdollista luoda pysyvää "
 "tallennustilaa.\n"
 "\n"
-"Käyttääksesi Tailsia pysyvällä tallennustilalla, seuraa <a "
-"href=\"install\">asennusohjeitamme USB-muistille</a>."
+"Käyttääksesi Tailsia pysyvällä tallennustilalla, seuraa <a href=\"install"
+"\">asennusohjeitamme USB-muistille</a>."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:137
 #: ../config/chroot_local-includes/usr/share/tails-installer/passphrase_dialog.ui.in:232
@@ -3767,8 +3782,8 @@ msgstr "Joulukuu"
 msgid "Clock"
 msgstr "Kello"
 
-#~ msgid "Don't _Create Persistent Storage"
-#~ msgstr "Älä _luo pysyvää tallennustilaa"
+#~ msgid "Unlock"
+#~ msgstr "Poista lukitus"
 
 #~ msgid "_Persistent Storage"
 #~ msgstr "_Pysyvä tallennustila"
