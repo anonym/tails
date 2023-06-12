@@ -1,8 +1,264 @@
 tails (5.14) UNRELEASED; urgency=medium
 
-  * Dummy entry for next release.
+  * tailslib: Fix spawn_tps_frontend (tails/tails!1168)
 
- -- boyska <boyska@riseup.net>  Tue, 16 May 2023 16:19:06 +0200
+    Commits:
+      - tailslib: Fix spawn_tps_frontend
+      - run-with-user-env: Support the --systemd-run option
+      - userenv.py: Allow passing the DEBUG environment variable
+
+  * Upgrade Tor Browser to 12.0.7 (tails/tails!1159)
+
+    Closes issues:
+      - Upgrade Tor Browser to 12.0.7 (tails/tails#19662)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.0.7
+
+  * Upgrade to Bullseye 11.7 and Linux 6.1.25-1 (stable branch) (tails/tails!1121)
+
+    Closes issues:
+      - Switch to open-ath9k-htc-firmware (tails/tails#19625)
+      - Consider allowing initramfs size > 32 MiB (tails/tails#19663)
+      - Upgrade to Bullseye 11.7 (tails/tails#19555)
+      - Upgrade to Linux  6.1.25-1 (tails/tails#19608)
+
+    Commits:
+      - Upgrade to Bullseye 11.7 and Linux 6.1.25-1 (stable branch)
+      - Allow initramfs size larger than 32 MiB
+      - Revert "initramfs: remove amdgpu and nvidia drivers"
+      - initramfs: remove amdgpu and nvidia drivers
+      - Install the free firmware firmware-ath9k-htc
+
+  * Test suite: Fix flaky low-memory test (tails/tails!1161)
+
+    Closes issues:
+      - Cannot create Persistent Storage when the system is low on memory on Bookworm
+        (tails/tails#19706)
+
+    Commits:
+      - Run rubocop
+      - Test suite: Fix flaky low-memory test
+
+  * Test suite: Paste bridge via Dogtail (tails/tails!1156)
+
+    Commits:
+      - Test suite: Paste bridge via Dogtail
+
+  * Test suite: make --image-bumping-mode work with find_any() (tails/tails!1154)
+
+    Closes issues:
+      - `run_test_suite --image-bumping-mode` fails sometimes: 'NoneType' object has no
+        attribute 'shape' (tails/tails#19055)
+
+    Commits:
+      - Test suite: simplify the return value for the *_any() methods
+      - Test suite: make --image-bumping-mode work with find_any()
+
+  * Test suite: fix corruption in the OpenCV helper script output
+    (tails/tails!1153)
+
+    Closes issues:
+      - run_test_suite --image-bumping-mode fails: wrong number of arguments (given 13,
+        expected 6) (ArgumentError) (tails/tails#19243)
+
+    Commits:
+      - Test suite: add assertion
+      - Test suite: deal with OpenCV errors more reliably
+      - Test suite: properly separate stdout and stderr in OpenCV helper script
+
+  * Welcome Screen: Replace "Create Persistent Storage" button with switch
+    (tails/tails!1152)
+
+    Closes issues:
+      - Confusing UX of Persistent Storage onboarding in Welcome Screen
+        (tails/tails#19673)
+
+    Commits:
+      - Welcome Screen: Replace "Create Persistent Storage" button with switch
+
+  * Test suite: Use Dogtail to shut down / reboot the system (tails/tails!1150)
+
+    Commits:
+      - Test suite: Use Dogtail to shut down / reboot the system
+
+  * Mention Kleopatra in the name of the Persistent Storage features
+    (tails/tails!1149)
+
+    Closes issues:
+      - Mention Kleopatra in Persistent Storage settings (tails/tails#19675)
+
+    Commits:
+      - Mention Kleotra in Persistent Storage settings
+
+  * Improve labels while creating Persistent Storage (tails/tails!1148)
+
+    Closes issues:
+      - Improve labels during creation of Persistent Storage (tails/tails#19674)
+
+    Commits:
+      - Update PO files
+      - Integrate tps Python files into our l10n framework
+      - Improve labels while creating Persistent Storage
+
+  * Test suite: Use Dogtail to open additional settings dialog (tails/tails!1146)
+
+    Commits:
+      - Test suite: remove images that are not used anymore
+      - Test suite: Use Dogtail to open additional settings dialog
+
+  * Replace 'tails.boum.org' by 'tails.net' (except for wiki/src)
+    (tails/tails!1145)
+
+    Commits:
+      - Use the new domain when checking for invalid hosts
+      - Keep checking for translatable URLs using the old domain
+      - Fix expected length for GPU-related error message
+      - Replace 'tails.boum.org' by 'tails.net' (except for wiki/src)
+
+  * tps: Avoid triggering OOM killer (tails/tails!1144)
+
+    Closes issues:
+      - Creating Persistent Storage can cause OOM killer to kill gnome-shell
+        (tails/tails#19667)
+
+    Commits:
+      - Test suite: Test creating Persistent Storage with low memory
+      - tps: Avoid triggering OOM killer
+
+  * Test suite: Use dogtail in step 'I (dis)?connect the network through GNOME'
+    (tails/tails!1141)
+
+    Commits:
+      - Test suite: Use dogtail in step 'I (dis)?connect the network through GNOME'
+
+  * Whisperback warning (tails/tails!1133)
+
+    Commits:
+      - reformat with black
+      - Fix SyntaxWarning in whisperback
+
+  * Persistent Storage feature descriptions (tails/tails!1131)
+
+    Closes issues:
+      - Implement missing descriptions of Persistent Storage features
+        (tails/tails#19642)
+
+    Commits:
+      - tps-frontend: Fix label style context "error" not reset
+      - tps-frontend: Improve subtitle of Persistent Folder
+      - tps-frontend: Add subtitle for Persistent Folder
+      - tps-frontend: Fix subtitles not shown
+
+  * tps: Hide mounts from the desktop environment (tails/tails!1130)
+
+    Closes issues:
+      - The Persistent Folder should not appear as an external device in the Files
+        browser (tails/tails#19646)
+
+    Commits:
+      - tps: Hide mounts from the desktop environment
+
+  * Test suite: Replace more usages of fragile @screen.paste (tails/tails!1127)
+
+    Commits:
+      - Test suite: Replace more usages of fragile @screen.paste
+
+  * Electrum: Ask for donations in 1/20 of cases (tails/tails!1117)
+
+    Closes issues:
+      - Have an incentive to donate to Tails from Electrum in Tails (tails/tails#18023)
+
+    Commits:
+      - Remove unused import
+      - electrum: Fix dialog not closed when process exits
+      - electrum: Use different donation addresses
+      - Store Bitcoin addresses for Electrum incentive
+      - Implement changes proposed by segfault and bokonon
+      - Electrum: Change effect of the ELECTRUM_DONATION_MESSAGE variable
+      - Add link to our donation page
+      - Customize icon
+      - Improve notification message
+      - Add vertical space
+      - Add default description for transfer
+      - Electrum: Ask for donations in 1/20 of cases
+      - Electrum: Don't show message dialog if called with arguments
+
+  * Use argon2id and support upgrading to LUKS2 and argon2id (tails/tails!1116)
+
+    Commits:
+      - tps: Explain why we use the UUID in the backup file name
+      - Test suite: Add comment
+      - Run rubocop
+      - Welcome Screen: Upgrade Persistent Storage explicitly
+      - tps: Also restore backup LUKS header if the UUID can't be read
+      - tps: Test the backup header before upgrading the original header
+      - tps: Always use shred to delete backup LUKS header
+      - Test suite: Fix flaky scenario "Feature activation fails"
+      - Test suite: Test automatically upgrading LUKS header
+      - Welcome Screen: Set label back to "Unlock Encryption"
+      - Test suite: Fix step 'I enable persistence' returning early
+      - Test suite: Fix usage of Gherkin keyword
+      - tps: Add note about wear leveling to UpgradeLUKS docstring
+      - tps: Use shred to delete backup LUKS header
+      - tps: Also update memory cost of Argon2id
+      - tps: Add type hint
+      - tps: Rename the Partition class to TPSPartition
+      - tps: Fix stacklevel of log functions
+      - tps: Automatically upgrade LUKS header when unlocking
+      - tps: Support upgrading to LUKS2 and argon2id
+
+  * Detect captive portals (tails/tails!1107)
+
+    Closes issues:
+      - use iptables --wait in test suite (tails/tails#19698)
+      - tails-get-network-time sets different User-Agent than NetworkManager
+        (tails/tails#19650)
+      - Bring the Tor Connection user story to a state where it should not be our top
+        priority anymore (tails/tails#19473)
+      - Detect captive portals (tails/tails#5785)
+
+    Commits:
+      - iptables waits for lock
+      - Run rubocop
+      - Test suite: Replace some usages of "Tor is ready"
+      - Test suite: Check time sync headers
+      - Test suite: Change how we imitate a captive portal
+      - Test suite: Replace httpbin.org with our own web server
+      - Test suite: Catch errors when copying Chutney data
+      - Revert "while at it, remove all usages of "Tor is ready""
+      - Test suite: Replace usage of httpbin.org
+      - Test suite: Check that TCA knows when a portal was detected
+      - tails-get-network-time: Restructure
+      - tails-get-network-time: Fix case that not enough data was received
+      - tails-get-network-time: Print curl debug output in debug mode
+      - tails-get-network-time: Support config file
+      - tails-get-network-time: Don't fail if response code is other than 200 and 204
+      - tails-get-network-time: Fix handling of extra bytes after expected response
+      - tails-get-network-time: Fix handling of empty body
+      - tails-get-network-time: Fix typo
+      - tails-get-network-time: Remove unused variable
+      - tails-get-network-time: Remove unreachable code
+      - tails-get-network-time: Ignore case of X-NetworkManager-Status value
+      - keep the comment near to relevant code block
+      - Apply 1 suggestion(s) to 1 file(s)
+      - debug leftover
+      - while at it, remove all usages of "Tor is ready"
+      - use the non-deprecated step
+      - captive portal automated test
+      - More generic error, because we're not sure
+      - User-visible captive portal detection
+      - actually detect captive portal
+      - type hint for callbacks
+      - pass additional data in case of errors
+      - fix error response code
+      - override for GetNetworkTimeCommand
+      - Refactor code to allow per-command override
+      - define shared constant in module
+      - tails-get-network-time: Don't set any User-Agent
+
+ -- Tails developers <tails@boum.org>  Mon, 12 Jun 2023 10:11:11 +0000
 
 tails (5.13) unstable; urgency=medium
 
