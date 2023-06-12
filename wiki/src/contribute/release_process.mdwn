@@ -471,8 +471,11 @@ Update other base branches
 
         for branch in ${RELEASE_BRANCH} devel feature/bookworm; do
             git switch ${branch}
+            echo "{{{ ${branch}"
             ls config/APT_overlays.d/
+            echo "}}}"
         done
+
 
 4. Ensure that the `$RELEASE_BRANCH`, `devel` and `feature/bookworm` (if it exists) branches
    have the expected content in `config/APT_overlays.d/`: e.g. it must
