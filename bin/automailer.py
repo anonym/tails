@@ -41,6 +41,20 @@ def mailer_thunderbird(body: str):
         time.sleep(2)
 
 
+def mailer_notmuch(body: str):
+    msg = parse(body)
+    cmdline = ['notmuch-emacs-mua', '--client', '--create-frame']
+
+    for key in ['cc', 'subject']:
+        if key in msg:
+            cmdline.append(f"--{key}={msg[key]}")
+
+    for address in msg['to'].split(','):
+        cmdline.append(address.strip())
+
+    subprocess.check_output(cmdline)
+
+
 def mailer(mailer: str, body: str):
     if mailer == 'thunderbird':
         return mailer_thunderbird(body)
