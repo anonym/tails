@@ -123,7 +123,7 @@ class TimezonePopover:
     def _create_tz_store(self) -> Gtk.TreeStore:
         self.treestore = Gtk.TreeStore(str)
         timezones = pytz.common_timezones
-        timezone_tree: Dict[List[str]] = defaultdict(list)
+        timezone_tree: Dict[str, List[str]] = defaultdict(list)
         toplevel_timezones: List[str] = []
         for tz in timezones:
             if "/" not in tz:  # GMT and UTC

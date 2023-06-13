@@ -341,7 +341,7 @@ Do you want to save the bug report to a file?") % self.backend.to_address
             _("Copyright © 2009-2018 Tails developers (tails@boum.org)"))
         about_dialog.set_authors([_("Tails developers <tails@boum.org>")])
         about_dialog.set_translator_credits(_("translator-credits"))
-        about_dialog.set_website("https://tails.boum.org/")
+        about_dialog.set_website("https://tails.net/")
         try:
             about_dialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(os.path.join(
                                   whisperBack.utils.get_pixmapdir(), "whisperback.svg")))

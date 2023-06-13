@@ -1,0 +1,53 @@
+   1. To verify whether your encrypted volume uses PBKDF2 or Argon2id, execute
+      the following command.
+
+      Replace <span class="command-placeholder">[partition]</span> with the
+      partition name found in step 1.6.
+
+      <p class="pre command">cryptsetup luksDump /dev/<span class="command-placeholder">[partition]</span></p>
+
+      In the output:
+
+      - <span class="command">Version</span> indicates the version of LUKS,
+        either <span class="command">1</span> or <span class="command">2</span>.
+
+      - <span class="command">PBKDF</span> indicates the key derivation function,
+        either <span class="command">pbkdf2</span> or <span class="command">argon2id</span>.
+
+      If your encrypted volume already uses LUKS2 and Argon2id, you can stop
+      here.
+
+   1. Execute the following command to do a backup of your LUKS1 header.
+
+      Replace <span class="command-placeholder">[partition]</span> with the
+      partition name found in step 1.6.
+
+      <p class="pre command">cryptsetup luksHeaderBackup /dev/<span class="command-placeholder">[partition]</span> --header-backup-file /home/amnesia/luks1header</p>
+
+      If something goes wrong, you will be able to restore your LUKS1 header
+      from this backup with:
+
+      <p class="pre command">cryptsetup luksHeaderRestore /dev/<span class="command-placeholder">[partition]</span> --header-backup-file /home/amnesia/luks1header</p>
+
+   1. To update your LUKS header to LUKS2, execute the following command.
+
+      Replace <span class="command-placeholder">[partition]</span> with the
+      device name found in step 1.6.
+
+      <p class="pre command">cryptsetup convert /dev/<span class="command-placeholder">[partition]</span> --type luks2</p>
+
+   1. To verify that Argon2id is the new key derivation function, execute the
+      following command again.
+
+      Replace <span class="command-placeholder">[partition]</span> with the
+      partition name found in step 1.6.
+
+      <p class="pre command">cryptsetup luksDump /dev/<span class="command-placeholder">[partition]</span></p>
+
+      In the output, verify that:
+
+      - The <span class="command">Version</span> is <span class="command">2</span> and not <span class="command">1</span>.
+
+      - The <span class="command">PBKDF</span> is </span class="command">argon2id</span class="command"> and not <span class="command">pbkdf2</span>.
+
+   1. Try to unlock your encrypted volume.

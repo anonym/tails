@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'tempfile'
+require 'open3'
 
 def post_vm_start_hook
   $vm.late_patch if $config['LATE_PATCH']
@@ -132,11 +133,34 @@ Given /^the network is unplugged$/ do
   $vm.unplug_network
 end
 
+def activate_gnome_shell_menu_entry(label)
+  gnome_shell = Dogtail::Application.new('gnome-shell')
+  menu_entry = gnome_shell.child(label,
+                                 roleName:    'label',
+                                 showingOnly: true)
+  try_for(5) do
+    menu_entry.grabFocus
+    menu_entry.focused
+  end
+  @screen.press('Return')
+end
+
 Given /^I (dis)?connect the network through GNOME$/ do |disconnect|
-  action_image = disconnect ? 'TurnOffNetworkInterface.png' : 'ConnectNetworkInterface.png'
   open_gnome_system_menu
-  @screen.wait('WiredNetworkInterface.png', 5).click
-  @screen.wait(action_image, 5).click
+
+  # Expand the menu entry for the wired connection
+  if disconnect
+    activate_gnome_shell_menu_entry('Wired Connected')
+  else
+    activate_gnome_shell_menu_entry('Wired Off')
+  end
+
+  # Activate the Connect/Disconnect entry
+  if disconnect
+    activate_gnome_shell_menu_entry('Turn Off')
+  else
+    activate_gnome_shell_menu_entry('Connect')
+  end
 end
 
 Given /^the network connection is ready(?: within (\d+) seconds)?$/ do |timeout|
@@ -409,7 +433,7 @@ Given /^I log in to a new session(?: in ([^ ]*) \(([^ ]*)\))?( without activatin
                  else
                    ['TailsGreeterLoginButton.png', 'TailsGreeterLoginButtonGerman.png']
                  end
-  login_button_region = @screen.wait_any(login_button, 15)[:match]
+  login_button_region = @screen.wait_any(login_button, 15)
   if lang && lang != 'English'
     step "I set the language to #{lang} (#{lang_code})"
     # After selecting options (language, administration password,
@@ -438,8 +462,14 @@ Given /^I log in to a new session(?: in ([^ ]*) \(([^ ]*)\))?( without activatin
 end
 
 def open_greeter_additional_settings
-  @screen.wait('TailsGreeterAddMoreOptions.png', 10).click
-  @screen.wait('TailsGreeterAdditionalSettingsDialog.png', 10)
+  button = greeter.child('Add an additional setting', roleName: 'push button')
+  try_for(5) do
+    button.grabFocus
+    button.focused
+  end
+  @screen.press('Return')
+
+  greeter.child('Additional Settings', roleName: 'dialog', showingOnly: true)
 end
 
 Given /^I open Tails Greeter additional settings dialog$/ do
@@ -447,10 +477,20 @@ Given /^I open Tails Greeter additional settings dialog$/ do
 end
 
 Given /^I disable networking in Tails Greeter$/ do
-  open_greeter_additional_settings
-  @screen.wait('TailsGreeterOfflineMode.png', 30).click
-  @screen.wait('TailsGreeterOfflineModeDisableNetwork.png', 10).click
-  @screen.wait('TailsGreeterAdditionalSettingsAdd.png', 10).click
+  dialog = open_greeter_additional_settings
+  row = dialog.child(description: 'Configure Offline Mode')
+  try_for(5) do
+    row.grabFocus
+    row.focused
+  end
+  @screen.press('Return')
+
+  row = dialog.child('Disable all networking').parent.parent
+  try_for(5) do
+    row.grabFocus
+    row.focused
+  end
+  @screen.press('Return')
 end
 
 Given /^I set an administration password$/ do
@@ -815,7 +855,7 @@ Given /^process "([^"]+)" has stopped running after at most (\d+) seconds$/ do |
 end
 
 Given /^I kill the process "([^"]+)"$/ do |process|
-  $vm.execute("killall #{process}")
+  $vm.execute_successfully("killall #{process}")
   try_for(10, msg: "Process '#{process}' could not be killed") do
     !$vm.process_running?(process)
   end
@@ -856,13 +896,19 @@ def open_gnome_system_menu
 end
 
 When /^I request a (shutdown|reboot) using the system menu$/ do |action|
-  image = if action == 'shutdown'
-            'TailsEmergencyShutdownHalt.png'
-          else
-            'TailsEmergencyShutdownReboot.png'
-          end
+  gnome_shell = Dogtail::Application.new('gnome-shell')
   open_gnome_system_menu
-  @screen.wait(image, 5).click
+  menu_item_name = if action == 'shutdown'
+                     'Power Off'
+                   else
+                     'Restart'
+                   end
+  try_for(5) do
+    menu_item = gnome_shell.child(menu_item_name, roleName: 'label')
+    menu_item.grabFocus
+    menu_item.focused
+  end
+  @screen.press('Return')
 end
 
 When /^I warm reboot the computer$/ do
@@ -1060,27 +1106,41 @@ end
 
 When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) directory$/ do |should_work, output_file, output_dir|
   should_work = should_work == 'can'
-  @screen.press('ctrl', 's')
-  @screen.wait('Gtk3SaveFileDialog.png', 10)
+
+  file_dialog = save_page_as
+
   case output_dir
   when 'persistent Tor Browser'
     output_dir = "/home/#{LIVE_USER}/Persistent/Tor Browser"
-    @screen.wait('GtkTorBrowserPersistentBookmark.png', 10).click
-    @screen.wait('GtkTorBrowserPersistentBookmarkSelected.png', 10)
-    # The output filename (without its extension) is already selected,
-    # let's use the keyboard shortcut to focus its field
-    @screen.press('alt', 'n')
-    @screen.wait('TorBrowserSaveOutputFileSelected.png', 10)
+    # Select the "Tor Browser (persistent)" bookmark in the file chooser's
+    # sidebar. It doesn't expose an action via the accessibility API, so we
+    # have to grab focus and use the keyboard to activate it.
+    try_for(3) do
+      bookmark = file_dialog.child(
+        description: output_dir,
+        roleName:    'list item',
+        showingOnly: true
+      )
+      bookmark.grabFocus
+      bookmark.focused
+    end
+    @screen.press('Space')
   when 'default downloads'
     output_dir = "/home/#{LIVE_USER}/Tor Browser"
   else
-    @screen.paste("#{output_dir}/")
+    # Enter the output directory in the text entry
+    text_entry = file_dialog.child('Name', roleName: 'label').labelee
+    text_entry.text = output_dir
+    # Do the "activate" action of the text entry (same effect as
+    # pressing Enter) to open the directory.
+    text_entry.activate
   end
-  # Only the part of the filename before the .html extension can be easily
-  # replaced so we have to remove it before typing it into the arget filename
-  # entry widget.
-  @screen.paste(output_file.sub(/[.]html$/, ''))
-  @screen.press('Return')
+
+  # Enter the output filename in the text entry
+  text_entry = file_dialog.child('Name', roleName: 'label').labelee
+  text_entry.text = output_file
+  file_dialog.child('Save', roleName: 'push button').click
+
   if should_work
     try_for(20,
             msg: "The page was not saved to #{output_dir}/#{output_file}") do
@@ -1099,11 +1159,15 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                end
   @screen.press('ctrl', 'p')
   @torbrowser.child('Save', roleName: 'push button').press
-  @screen.wait('Gtk3SaveFileDialog.png', 10)
-  # Only the file's basename is selected when the file selector dialog opens,
-  # so we type only the desired file's basename to replace it
-  @screen.paste("#{output_dir}/#{output_file.sub(/[.]pdf$/, '')}")
-  @screen.press('Return')
+  file_dialog = @torbrowser.child('Save As',
+                                  roleName:    'file chooser',
+                                  showingOnly: true)
+  # Enter the output filename in the text entry
+  text_entry = file_dialog.child('Name', roleName: 'label').labelee
+  filename = "#{output_dir}/#{output_file}"
+  text_entry.text = filename
+  file_dialog.child('Save', roleName: 'push button').click
+
   try_for(30,
           msg: "The page was not printed to #{output_dir}/#{output_file}") do
     $vm.file_exist?("#{output_dir}/#{output_file}")
@@ -1111,33 +1175,42 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
 end
 
 Given /^a web server is running on the LAN$/ do
+  # Start a new web server unless one is already running
+  unless @web_server_url
+    start_web_server
+  end
+end
+
+def start_web_server
   @web_server_ip_addr = $vmnet.bridge_ip_addr
   @web_server_port = 8000
   @web_server_url = "http://#{@web_server_ip_addr}:#{@web_server_port}"
   web_server_hello_msg = 'Welcome to the LAN web server!'
 
-  # I've tested ruby Thread:s, fork(), etc. but nothing works due to
-  # various strange limitations in the ruby interpreter. For instance,
-  # apparently concurrent IO has serious limits in the thread
-  # scheduler (e.g. when we used Sikuli, its wait() would block
-  # WEBrick from reading from its socket), and fork():ing results in a
-  # lot of complex cucumber stuff (like our hooks!) ending up in the
-  # child process, breaking stuff in the parent process. After asking
-  # some supposed ruby pros, I've settled on the following.
-  code = <<-CODE
-  require "webrick"
-  STDOUT.reopen("/dev/null", "w")
-  STDERR.reopen("/dev/null", "w")
-  server = WEBrick::HTTPServer.new(:BindAddress => "#{@web_server_ip_addr}",
-                                   :Port => #{@web_server_port},
-                                   :DocumentRoot => "/dev/null")
-  server.mount_proc("/") do |req, res|
-    res.body = "#{web_server_hello_msg}"
-  end
-  server.start
-  CODE
+  # Ensure that the LAN web server data directory is empty
+  FileUtils.rm_rf(LAN_WEB_SERVER_DATA_DIR)
+  FileUtils.mkdir_p(LAN_WEB_SERVER_DATA_DIR)
+
+  @captive_portal_login_file = "#{LAN_WEB_SERVER_DATA_DIR}/logged-in"
+  @lan_web_server_headers_dir = "#{LAN_WEB_SERVER_DATA_DIR}/headers"
+
   add_extra_allowed_host(@web_server_ip_addr, @web_server_port)
-  proc = IO.popen(['ruby', '-e', code])
+
+  _, out, proc = Open3.popen2e(
+    "#{GIT_DIR}/features/scripts/lan-web-server",
+    '--address', @web_server_ip_addr,
+    '--port', @web_server_port.to_s,
+    '--hello-message', web_server_hello_msg,
+    '--data-dir', LAN_WEB_SERVER_DATA_DIR
+  )
+
+  # Log all the web server output (stdout and stderr) to the debug log
+  Thread.new do
+    out.each_line do |line|
+      debug_log("LAN web server: #{line}")
+    end
+  end
+
   try_for(10, msg: 'It seems the LAN web server failed to start') do
     Process.kill(0, proc.pid) == 1
   end
@@ -1152,16 +1225,19 @@ Given /^a web server is running on the LAN$/ do
   # up. If e.g. the Unsafe Browser (which *should* be able to access
   # the web server) tries to access it too early, Firefox seems to
   # take some random amount of time to retry fetching. Curl gives a
-  # more consistent result, so let's rely on that instead. Note that
-  # this forces us to capture traffic *after* this step in case
-  # accessing this server matters, like when testing the Tor Browser..
+  # more consistent result, so let's rely on that instead.
   try_for(30, msg: 'Something is wrong with the LAN web server') do
     # Use /usr/bin/curl instead of our curl wrapper script because the
     # wrapper script makes curl use Tor and we want to access the LAN.
-    msg = $vm.execute_successfully("/usr/bin/curl #{@web_server_url}",
-                                   user: LIVE_USER).stdout.chomp
+    msg = cmd_helper(['curl', '--silent', '--fail', @web_server_url])
     web_server_hello_msg == msg
   end
+
+  # Remove the header file that was saved by the web server for the
+  # previous request (we just remove all files in the headers directory
+  # because we don't know the filename and there shouldn't be any other
+  # files in there anyway).
+  FileUtils.rm_f(Dir.glob("#{@lan_web_server_headers_dir}/*"))
 end
 
 When /^I open a page on the LAN web server in the (.*)$/ do |browser|

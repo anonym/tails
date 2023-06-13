@@ -243,7 +243,7 @@ When /^I join some empty multi-user chat$/ do
   # Room" prompt that Pidgin shows for some server configurations.
   images = ['PidginCreateNewRoomPrompt.png',
             'PidginChat1UserInRoom.png',]
-  image_found = @screen.wait_any(images, 30)[:found_pattern]
+  image_found = @screen.wait_any(images, 30).image
   if image_found == 'PidginCreateNewRoomPrompt.png'
     @screen.wait('PidginCreateNewRoomAcceptDefaultsButton.png', 15).click
   end
@@ -374,7 +374,7 @@ Then /^Pidgin successfully connects to the "([^"]+)" account$/ do |account|
       close_pidgin_conversation_window(account)
     end
     on_screen = @screen.wait_any([expected_channel_entry, reconnect_button],
-                                 60)[:found_pattern]
+                                 60).image
     unless on_screen == expected_channel_entry
       raise "Connecting to account #{account} failed."
     end

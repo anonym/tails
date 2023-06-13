@@ -10,8 +10,10 @@ import json
 import socket
 from stem.control import Controller
 import stem.socket
-from typing import List, Optional, Dict, Any, Tuple, cast, Callable
+from typing import List, Optional, Dict, Any, Tuple, cast
 import tca.config
+
+from tca.ui.asyncutils import AsyncCallback
 
 log = logging.getLogger("torutils")
 
@@ -436,10 +438,10 @@ class TorConnectionConfig:
 
 class TorLauncherUtils:
     def __init__(self, stem_controller: Controller,
-                 read_config_fn: Callable[[Callable], None],
-                 write_config_fn: Callable[[Callable, str], None],
+                 read_config_fn: AsyncCallback,
+                 write_config_fn: AsyncCallback,
                  state_buf,
-                 set_tor_sandbox_fn: Callable[[Callable, str], None]):
+                 set_tor_sandbox_fn: AsyncCallback):
         """
         Arguments:
         stem_controller -- an already connected and authorized stem Controller
@@ -468,7 +470,7 @@ class TorLauncherUtils:
 
         log.debug("Loading configuration from file")
 
-        def on_done_reading_conf_from_file_cb(gjsonrpcclient, result, error):
+        def on_done_reading_conf_from_file_cb(gjsonrpcclient, result, error, _):
             if result is not None and result.get("returncode", 1) == 0:
                 if len(result["stdout"]) == 0:
                     data = {}
@@ -496,7 +498,7 @@ class TorLauncherUtils:
         if self.tor_connection_config is None:
             return
 
-        def on_done_writing_conf_to_file_cb(gjsonrpcclient, result, error):
+        def on_done_writing_conf_to_file_cb(gjsonrpcclient, result, error, _):
             if result is not None and result.get("returncode", 1) == 0:
                 # Save configuration to torrc
                 self.stem_controller.save_conf()
@@ -518,7 +520,7 @@ class TorLauncherUtils:
     def read_tca_state(self):
         return decode_json_from_buf(self.state_buf)
 
-    def apply_conf(self, callback: Callable) -> bool:
+    def apply_conf(self, callback: AsyncCallback) -> bool:
         """
         Apply the configuration from self.tor_connection_config to the
         running tor daemon, and asynchronously ensure Tor's Sandbox

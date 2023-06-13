@@ -1,153 +1,13 @@
 #!/usr/bin/python3
-"""
-wrapper over TCA.
-
-elevates to sudo, then connect to whatever is needed and drop privileges again.
-"""
 import os
-import sys
 import gettext
-from pathlib import Path
-from subprocess import check_output, CalledProcessError
-from logging import getLogger, basicConfig
-from typing import List
+import sys
 
-from tailslib import LIVE_USERNAME
-from tailslib.userenv import user_env_vars
 from tailslib.greeter import get_greeter_variable_bool
-from tailslib.persistence import (
-    has_persistence,
-    has_unlocked_persistence,
-)
-
 import tca.config
 
-A11Y_BUS_PROXY_PATH="/run/user/1000/.dbus-proxy/a11y-bus-proxy.sock"
-IBUS_PROXY_PATH="/run/user/1000/.dbus-proxy/ibus-proxy.sock"
-A11Y_BUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/a11y-bus-proxy.sock"
-IBUS_SANDBOX_PATH="/run/user/1000/tails-sandbox/ibus-proxy.sock"
-NETNS = "tca"
-log = getLogger(__name__)
 
-
-def main():
-    if os.getuid() != 0:
-        env_vars = []
-        for var in ("DESKTOP_STARTUP_ID",):
-            if var in os.environ:
-                env_vars.append("%s=%s" % (var, os.environ[var]))
-        cmd = ["sudo", "-n", *env_vars, __file__] + sys.argv[1:]
-        log.debug("Running %s", cmd)
-        os.execvpe(cmd[0], cmd, env=os.environ)
-        return
-
-    python_bin = "/usr/bin/python3"
-    program = "/usr/lib/python3/dist-packages/tca/application.py"
-
-    try:
-        running_processes = int(
-            check_output(
-                [
-                    "pgrep",
-                    "--count",
-                    "--uid",
-                    LIVE_USERNAME,
-                    "--full",
-                    "--exact",
-                    "%s %s" % (python_bin, program),
-                ]
-            )
-        )
-    except CalledProcessError as exc:
-        if exc.returncode == 1:
-            running_processes = 0
-        else:
-            raise
-    if running_processes:
-        print("TCA is already running", file=sys.stderr)
-        return
-
-    confdir = Path("/var/lib/tca/")
-    conffile = confdir / "tca.conf"
-    confdir.mkdir(mode=0o700, exist_ok=True)
-    confdir.chmod(0o700)
-    conffile.touch(mode=0o600)
-
-    statedir = Path("/run/tca/")
-    statefile = statedir / "tca.state"
-    statedir.mkdir(mode=0o700, exist_ok=True)
-    statedir.chmod(0o700)
-    statefile.touch(mode=0o600)
-
-    portalsock = "/run/tca-portal.sock"
-
-    connect_drop = [
-        "/usr/local/lib/connect-drop",
-        "-c",
-        "FILE:%s:r+" % statefile,
-        "-c",
-        "UNIX:%s" % portalsock,
-        "--",
-    ]
-    ch_netns = ["/bin/ip", "netns", "exec", NETNS]
-    runuser = ["/sbin/runuser", "-u", LIVE_USERNAME]
-    # base bwrap sharing most of the system
-    bwrap = ["bwrap", "--bind", "/", "/", "--proc", "/proc", "--dev", "/dev"]
-
-    bwrap += [
-        "--bind", A11Y_BUS_PROXY_PATH, A11Y_BUS_SANDBOX_PATH,
-        "--bind", IBUS_PROXY_PATH, IBUS_SANDBOX_PATH,
-    ]
-
-    inherit_vars = [
-        "DESKTOP_STARTUP_ID",
-        "NOTIFY_SOCKET",
-    ]
-    inherit_env = ["{}={}".format(var, os.environ.get(var, "")) for var in inherit_vars]
-    envcmd = [
-        "env",
-        *user_env_vars(LIVE_USERNAME),
-        *inherit_env,
-        f"AT_SPI_BUS_ADDRESS=unix:path={A11Y_BUS_SANDBOX_PATH}",
-        f"IBUS_ADDRESS=unix:path={IBUS_SANDBOX_PATH}",
-        # uncomment this if you want to tweak the UI
-        # 'GTK_DEBUG=interactive',
-    ]
-    if get_greeter_variable_bool("TAILS_NETWORK"):
-        tcacmd = [python_bin, '-u', program]
-    else:
-        tcacmd = get_display_error_cmd()
-        connect_drop = []
-
-    # We run tca with several wrappers to accomplish our privilege-isolation-magic:
-    # connect_drop: opens a privileged file and pass FD to new process
-    # ch_netns: enter the new namespace
-    # runuser: change back to unprivileged user
-    # bwrap: Mount D-Bus proxies. See also tails-a11y-bus-proxy.service and tails-ibus-proxy.service.
-    # envcmd: set the "right" environment; this means getting all "normal" gnome variables, AND clarifying
-    #         where is the {a11y,ibus} bus, which is related to bwrap
-
-    args = (
-        [
-            *connect_drop,
-            *ch_netns,
-            *runuser,
-            "--",
-            *bwrap,
-            *envcmd,
-            *tcacmd,
-            *sys.argv[1:],
-        ]
-        + (["--has-persistence"] if has_persistence() else [])
-        + (["--has-unlocked-persistence"] if has_unlocked_persistence() else [])
-    )
-
-    log.info("%s", args)
-
-    os.execv(args[0], args)
-
-
-def get_display_error_cmd() -> List[str]:
+def display_error_message_dialog():
     _ = gettext.gettext
     title = tca.config.LOCALIZED_APPLICATION_TITLE
     textlines = [
@@ -164,9 +24,15 @@ def get_display_error_cmd() -> List[str]:
         "--text",
         "\n".join(textlines),
     ]
-    return zenity
+    os.execvp(zenity[0], zenity)
+
+
+def main():
+    if not get_greeter_variable_bool("TAILS_NETWORK"):
+        display_error_message_dialog()
+    else:
+        os.execvp("sudo", ["sudo", "-n", "/usr/local/lib/run-tca-in-netns"] + sys.argv[1:])
 
 
 if __name__ == "__main__":
-    basicConfig(level="DEBUG")
     main()

@@ -27,6 +27,17 @@ Feature: Tails persistence
     Then persistence for "Persistent" is active
     And the file I created in the Persistent directory exists
 
+  Scenario: Creating a Persistent Storage when system is low on memory
+    Given I have started Tails without network from a USB drive without a persistent partition and logged in
+    And the system is very low on memory
+    When I create a file in the Persistent directory
+    When I try to create a persistent partition
+    Then The Persistent Storage app shows the error message "Not enough memory to create Persistent Storage"
+    When I close the Persistent Storage app
+    And I free up some memory
+    And I create a persistent partition with the default settings
+    Then the file I created was copied to the Persistent Storage
+
   Scenario: Booting Tails from a USB drive with an enabled persistent partition and reconfiguring it
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     Then Tails is running from USB drive "__internal"
@@ -115,7 +126,7 @@ Feature: Tails persistence
   Scenario: Deleting a Tails persistent partition
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
     And I log in to a new session without activating the Persistent Storage
-    And persistence is disabled
+    Then persistence is disabled
     But a Tails persistence partition exists on USB drive "__internal"
     And all notifications have disappeared
     When I delete the persistent partition
@@ -131,9 +142,21 @@ Feature: Tails persistence
   Scenario: Feature activation fails
     Given I have started Tails without network from a USB drive with a persistent partition and stopped at Tails Greeter's login screen
     And I create a symlink "/home/amnesia/Persistent" to "/etc"
-    When I enable persistence
+    When I try to enable persistence
     Then the Welcome Screen tells me that the Persistent Folder feature couldn't be activated
     When I log in to a new session after having activated the Persistent Storage
     Then the Persistent Storage settings tell me that the Persistent Folder feature couldn't be activated
     And all tps features are enabled
     And all tps features but the first one are active
+
+  Scenario: LUKS header is automatically upgraded when unlocking the Persistent Storage
+    Given I have started Tails without network from a USB drive with a LUKS 1 persistent partition and stopped at Tails Greeter's login screen
+    And I enable persistence
+    And I log in to a new session after having activated the Persistent Storage
+    Then a Tails persistence partition with LUKS version 2 and argon2id exists on USB drive "__internal"
+    And persistence is enabled
+
+  Scenario: LUKS backup header is restored if something goes wrong during upgrade
+    Given I have started Tails without network from a USB drive with a LUKS 1 persistent partition and stopped at Tails Greeter's login screen
+    And I enable persistence but something goes wrong during the LUKS header upgrade
+    Then the Tails persistence partition on USB drive "__internal" still has LUKS version 1

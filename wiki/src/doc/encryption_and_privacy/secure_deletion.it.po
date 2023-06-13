@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2022-05-31 09:30+0200\n"
+"POT-Creation-Date: 2023-06-09 07:47+0200\n"
 "PO-Revision-Date: 2022-05-23 23:40+0000\n"
 "Last-Translator: _ignifugo <ignifugo@insicuri.net>\n"
 "Language-Team: ita <transitails@inventati.org>\n"
@@ -30,12 +30,7 @@ msgstr "[[!toc levels=1]]\n"
 
 #. type: Plain text
 #, no-wrap
-msgid "<a id=\"why\"></a>\n"
-msgstr "<a id=\"why\"></a>\n"
-
-#. type: Title =
-#, no-wrap
-msgid "Why use secure deletion?"
+msgid "<h1 id=\"why\">Why use secure deletion?</h1>\n"
 msgstr ""
 
 #. type: Plain text
@@ -94,42 +89,73 @@ msgstr ""
 
 #. type: Plain text
 msgid ""
-"To learn more, see the Wikipedia article on [[!wikipedia Data_erasure "
-"desc=\"data erasure\"]]."
+"To learn more, see the Wikipedia article on [[!wikipedia Data_erasure desc="
+"\"data erasure\"]]."
 msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "<a id=\"usb_and_ssd\"></a>\n"
-msgstr "<a id=\"usb_and_ssd\"></a>\n"
-
-#. type: Title =
-#, no-wrap
-msgid "Warning about USB sticks and solid-state disks"
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"The only way to securely delete any data, even a single file, from a USB "
-"stick or an SSD (Solid-State Disk) is to [[securely erase the entire device|"
-"secure_deletion#erase-device]]."
-msgstr ""
-
-#. type: Plain text
-msgid ""
-"For more details read the corresponding section of the Wikipedia article on "
-"[[!wikipedia Data_erasure#Limitations desc=\"data erasure\"]]."
-msgstr ""
-
-#. type: Title =
-#, no-wrap
-msgid "Securely delete files"
+msgid "<h1 id=\"usb_and_ssd\">Warning about USB sticks and SSDs</h1>\n"
 msgstr ""
 
 #. type: Plain text
 #, no-wrap
 msgid "<div class=\"caution\">\n"
 msgstr "<div class=\"caution\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"<p>Secure deletion is not as reliable on USB sticks and SSDs (solid-state\n"
+"drive) as it is on traditional hard disks.</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "</div>\n"
+msgstr "</div>\n"
+
+#. type: Plain text
+msgid ""
+"USB sticks and SSDs sometimes copy the same data to various memory cells to "
+"extend the lifetime of the device. USB sticks and SSDs also have "
+"10&ndash;20% of spare memory cells for the same reason."
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"As a consequence, part of the data from a given file might still be written "
+"on the device even after securely deleting it."
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"This data could be recovered using advanced data forensics techniques, for "
+"example by professional data recovery services."
+msgstr ""
+
+#. type: Plain text
+msgid "To mitigate this risk, you can:"
+msgstr ""
+
+#. type: Plain text
+msgid "- Encrypt the device before use, to make it hard to recover *any* data."
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"Securely delete the entire device. Some old data might still be present in "
+"the spare memory cells."
+msgstr ""
+
+#. type: Plain text
+msgid "- Physically destroy the device."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "<h1 id=\"files\">Securely deleting files</h1>\n"
+msgstr ""
 
 #. type: Plain text
 #, no-wrap
@@ -141,11 +167,6 @@ msgstr ""
 "<p>La cancellazione sicura dei files non elimina le potenziali copie di backup\n"
 "del file (per esempio LibreOffice crea copie di backup che permettono\n"
 "di recuperare il lavoro in caso si blocchi LibreOffice).</p>\n"
-
-#. type: Plain text
-#, no-wrap
-msgid "</div>\n"
-msgstr "</div>\n"
 
 #. type: Bullet: '  1. '
 msgid "Open the <span class=\"application\">Files</span> browser."
@@ -183,12 +204,7 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "<a id=\"clean_disk_space\"></a>\n"
-msgstr "<a id=\"clean_disk_space\"></a>\n"
-
-#. type: Title =
-#, no-wrap
-msgid "Securely clean available disk space"
+msgid "<h1 id=\"disk_space\">Securely cleaning available disk space</h1>\n"
 msgstr ""
 
 #. type: Plain text
@@ -200,15 +216,6 @@ msgstr ""
 "Per pulire i contenuti di tutti i files che sono stati rimossi in precedenza "
 "ma che non sono stati cancellati in maniera sicura da un disco è possibile "
 "pulire in maniera sicura tutto lo spazio libero sul disco."
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<p>This method does not work as expected on solid-state disks or USB\n"
-"sticks.</p>\n"
-msgstr ""
-"<p>Questo metodo non funziona sui dischi a stato solido o sulle chiavette\n"
-"USB.</p>\n"
 
 #. type: Plain text
 msgid ""
@@ -231,12 +238,12 @@ msgstr ""
 #| "toggle\" class=\"symbolic\" link=\"no\"]]</span> button in the title bar "
 #| "and choose <span class=\"guilabel\">Show Hidden Files</span>."
 msgid ""
-"Click on the [[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" "
-"link=\"no\"]] button in the right corner of the title bar and choose **Show "
+"Click on the [[!img lib/open-menu.png alt=\"Menu\" class=\"symbolic\" link="
+"\"no\"]] button in the right corner of the title bar and choose **Show "
 "Hidden Files**."
 msgstr ""
-"Fai clic sul bottone <span class=\"guimenu\">[[!img lib/pan-down.png "
-"alt=\"mostra menù\" class=\"symbolic\" link=\"no\"]]</span> nella barra del "
+"Fai clic sul bottone <span class=\"guimenu\">[[!img lib/pan-down.png alt="
+"\"mostra menù\" class=\"symbolic\" link=\"no\"]]</span> nella barra del "
 "titolo e seleziona <span class=\"guilabel\">Mostra file nascosti</span>."
 
 #. type: Bullet: '  1. '
@@ -274,24 +281,7 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "<a id=\"erase-device\"></a>\n"
-msgstr "<a id=\"erase-device\"></a>\n"
-
-#. type: Title =
-#, no-wrap
-msgid "Securely erasing an entire device"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "<div class=\"note\">\n"
-msgstr "<div class=\"note\">\n"
-
-#. type: Plain text
-#, no-wrap
-msgid ""
-"<p>This technique is the only way to securely delete any data, even a\n"
-"single file, from a USB stick or an SSD (Solid-State Disk).</p>\n"
+msgid "<h1 id=\"device\">Securely erasing an entire device</h1>\n"
 msgstr ""
 
 #. type: Bullet: '1. '
@@ -326,20 +316,20 @@ msgstr ""
 #. type: Bullet: '1. '
 #, fuzzy
 #| msgid ""
-#| "Click on the <span class=\"guimenu\">[[!img lib/open-menu.png "
-#| "alt=\"Menu\" class=\"symbolic\" link=\"no\"]]</span> button in the "
-#| "titlebar and choose <span class=\"guilabel\">Format Disk…</span> to erase "
-#| "all the existing partitions on the device."
+#| "Click on the <span class=\"guimenu\">[[!img lib/open-menu.png alt=\"Menu"
+#| "\" class=\"symbolic\" link=\"no\"]]</span> button in the titlebar and "
+#| "choose <span class=\"guilabel\">Format Disk…</span> to erase all the "
+#| "existing partitions on the device."
 msgid ""
 "Click on the <span class=\"guimenu\">[[!img lib/open-menu.png alt=\"Menu\" "
 "class=\"symbolic\" link=\"no\"]]</span> button in the titlebar and choose "
 "<span class=\"guilabel\">Format Disk…</span> to erase all the existing "
 "partitions on the device."
 msgstr ""
-"Clicca sul bottone <span class=\"guimenu\">[[!img lib/open-menu.png "
-"alt=\"Menu\" class=\"symbolic\" link=\"no\"]]</span> nella barra del titolo "
-"e selezionate <span class=\"guilabel\">Formatta Disco...</span> per "
-"cancellare tutte le partizioni esistenti sul dispositivo."
+"Clicca sul bottone <span class=\"guimenu\">[[!img lib/open-menu.png alt="
+"\"Menu\" class=\"symbolic\" link=\"no\"]]</span> nella barra del titolo e "
+"selezionate <span class=\"guilabel\">Formatta Disco...</span> per cancellare "
+"tutte le partizioni esistenti sul dispositivo."
 
 #. type: Bullet: '1. '
 msgid "In the <span class=\"guilabel\">Format Disk</span> dialog:"
@@ -347,20 +337,32 @@ msgstr ""
 "Nella finestra di dialogo <span class=\"guilabel\">Formatta disco</span>:"
 
 #. type: Bullet: '   - '
+#, fuzzy
+#| msgid ""
+#| "Choose <span class=\"guilabel\">Compatible with all systems and devices "
+#| "(MBR/DOS)</span> in the <span class=\"guilabel\">Partitioning</span> drop-"
+#| "down list."
 msgid ""
 "Choose to <span class=\"guilabel\">Overwrite existing data with zeroes</"
-"span> in the <span class=\"guilabel\">Erase</span> drop-down list."
-msgstr ""
-
-#. type: Bullet: '   - '
-msgid ""
-"Choose <span class=\"guilabel\">Compatible with all systems and devices (MBR/"
-"DOS)</span> in the <span class=\"guilabel\">Partitioning</span> drop-down "
-"list."
+"span> in the <span class=\"guilabel\">Erase</span> menu."
 msgstr ""
 "Seleziona <span class=\"guilabel\">Compatibile con tutti i sistemi e "
-"dispositivi (MBR/DOS)</span> nel menù a tendina <span "
-"class=\"guilabel\">Partizionamento</span>."
+"dispositivi (MBR/DOS)</span> nel menù a tendina <span class=\"guilabel"
+"\">Partizionamento</span>."
+
+#. type: Bullet: '   - '
+#, fuzzy
+#| msgid ""
+#| "Choose <span class=\"guilabel\">Compatible with all systems and devices "
+#| "(MBR/DOS)</span> in the <span class=\"guilabel\">Partitioning</span> drop-"
+#| "down list."
+msgid ""
+"Choose <span class=\"guilabel\">Compatible with all systems and devices (MBR/"
+"DOS)</span> in the <span class=\"guilabel\">Partitioning</span> menu."
+msgstr ""
+"Seleziona <span class=\"guilabel\">Compatibile con tutti i sistemi e "
+"dispositivi (MBR/DOS)</span> nel menù a tendina <span class=\"guilabel"
+"\">Partizionamento</span>."
 
 #. type: Bullet: '1. '
 #, fuzzy
@@ -375,6 +377,34 @@ msgid ""
 msgstr ""
 "Nella finestra di conferma assicurati che il dispositivo sia corretto. "
 "Clicca <span class=\"bold\">Formatta</span> per confermare."
+
+#, no-wrap
+#~ msgid "<a id=\"why\"></a>\n"
+#~ msgstr "<a id=\"why\"></a>\n"
+
+#, no-wrap
+#~ msgid "<a id=\"usb_and_ssd\"></a>\n"
+#~ msgstr "<a id=\"usb_and_ssd\"></a>\n"
+
+#, no-wrap
+#~ msgid "<a id=\"clean_disk_space\"></a>\n"
+#~ msgstr "<a id=\"clean_disk_space\"></a>\n"
+
+#, no-wrap
+#~ msgid ""
+#~ "<p>This method does not work as expected on solid-state disks or USB\n"
+#~ "sticks.</p>\n"
+#~ msgstr ""
+#~ "<p>Questo metodo non funziona sui dischi a stato solido o sulle chiavette\n"
+#~ "USB.</p>\n"
+
+#, no-wrap
+#~ msgid "<a id=\"erase-device\"></a>\n"
+#~ msgstr "<a id=\"erase-device\"></a>\n"
+
+#, no-wrap
+#~ msgid "<div class=\"note\">\n"
+#~ msgstr "<div class=\"note\">\n"
 
 #, no-wrap
 #~ msgid ""

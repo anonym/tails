@@ -1,5 +1,5 @@
 import os
-from typing import List, Callable, Optional
+from typing import List, Callable, Optional, Any
 import socket
 from logging import getLogger
 
@@ -13,6 +13,12 @@ from gi.repository import GObject  # noqa: E402
 from gi.repository import GLib  # noqa: E402
 
 log = getLogger('asyncutils')
+
+AsyncCallback = Callable[
+        [GObject.GObject, Optional[dict], Optional[str], Optional[dict]],
+        Any
+        ]
+
 
 class GJsonRpcClient(GObject.GObject):
     """
@@ -30,17 +36,17 @@ class GJsonRpcClient(GObject.GObject):
         "response": (
             GObject.SIGNAL_RUN_LAST | GObject.SIGNAL_DETAILED,
             GObject.TYPE_NONE,
-            [GObject.TYPE_PYOBJECT, GObject.TYPE_STRING],
+            [GObject.TYPE_PYOBJECT, GObject.TYPE_STRING, GObject.TYPE_PYOBJECT],
         ),
         "response-error": (
             GObject.SIGNAL_RUN_LAST | GObject.SIGNAL_DETAILED,
             GObject.TYPE_NONE,
-            [GObject.TYPE_STRING],
+            [GObject.TYPE_STRING, GObject.TYPE_PYOBJECT],
         ),
         "response-success": (
             GObject.SIGNAL_RUN_LAST | GObject.SIGNAL_DETAILED,
             GObject.TYPE_NONE,
-            [GObject.TYPE_PYOBJECT],
+            [GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT],
         ),
     }
 
@@ -56,7 +62,7 @@ class GJsonRpcClient(GObject.GObject):
         GLib.io_add_watch(self.sock.fileno(), GLib.IO_IN, self._on_data)
         GLib.io_add_watch(self.sock.fileno(), GLib.IO_HUP | GLib.IO_ERR, self._on_close)
 
-    def call_async(self, method: str, callback: Optional[Callable], *args, **kwargs):
+    def call_async(self, method: str, callback: Optional[AsyncCallback], *args, **kwargs):
         req = self.protocol.create_request(method, args, kwargs)
         log.debug('call async %s %s %s %d', method, args, kwargs, req.unique_id)
         if callback is not None:
@@ -79,11 +85,14 @@ class GJsonRpcClient(GObject.GObject):
             except BadReplyError:
                 return
             if hasattr(response, "error"):
-                self.emit("response-error::%d" % response.unique_id, response.error)
-                self.emit("response::%d" % response.unique_id, None, response.error)
+                errordata = {}
+                if hasattr(response, '_jsonrpc_error_code'):
+                    errordata['code'] = response._jsonrpc_error_code
+                self.emit("response-error::%d" % response.unique_id, response.error, errordata)
+                self.emit("response::%d" % response.unique_id, None, response.error, errordata)
             else:
-                self.emit("response-success::%d" % response.unique_id, response.result)
-                self.emit("response::%d" % response.unique_id, response.result, None)
+                self.emit("response-success::%d" % response.unique_id, response.result, None)
+                self.emit("response::%d" % response.unique_id, response.result, None, None)
         return True
 
 

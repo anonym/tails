@@ -49,32 +49,29 @@ class WhisperBack(object):
     """
 
     def set_contact_email(self, email):
-        """Sets an optional email address to be used for furether communication
-
-        """
+        """Sets an optional email address to be used for furether communication"""
 
         LOG.debug("Setting contact email")
         if whisperBack.utils.is_valid_email(email):
             self._contact_email = email
         else:
 
-            #XXX use a better exception
+            # XXX use a better exception
             raise ValueError(_("Invalid contact email: %s" % email))
 
     # pylint: disable=W0212
-    contact_email = property(lambda self: self._contact_email,
-                             set_contact_email)
+    contact_email = property(lambda self: self._contact_email, set_contact_email)
 
     def set_contact_gpgkey(self, gpgkey):
-        """Sets an optional PGP key to be used for furether communication
-
-        """
+        """Sets an optional PGP key to be used for furether communication"""
 
         LOG.debug("Setting PGP key")
-        if (whisperBack.utils.is_valid_pgp_block(gpgkey) or
-            whisperBack.utils.is_valid_pgp_id(gpgkey) or
-            whisperBack.utils.is_valid_link(gpgkey) or
-            gpgkey is ''):
+        if (
+            whisperBack.utils.is_valid_pgp_block(gpgkey)
+            or whisperBack.utils.is_valid_pgp_id(gpgkey)
+            or whisperBack.utils.is_valid_link(gpgkey)
+            or gpgkey == ""
+        ):
             self._contact_gpgkey = gpgkey
         else:
             # XXX use a better exception
@@ -85,8 +82,7 @@ class WhisperBack(object):
             raise ValueError(message)
 
     # pylint: disable=W0212
-    contact_gpgkey = property(lambda self: self._contact_gpgkey,
-                              set_contact_gpgkey)
+    contact_gpgkey = property(lambda self: self._contact_gpgkey, set_contact_gpgkey)
 
     def __init__(self, subject="", message=""):
         """Initialize a feedback object with the given contents
@@ -116,7 +112,9 @@ class WhisperBack(object):
         self.__check_conf()
 
         # Get additional info through the callbacks and sanitize it
-        self.prepended_data = whisperBack.utils.sanitize_hardware_info(self.mail_prepended_info())
+        self.prepended_data = whisperBack.utils.sanitize_hardware_info(
+            self.mail_prepended_info()
+        )
         self.appended_data = self.__get_debug_info(self.mail_appended_info())
 
         # Initialize other variables
@@ -133,10 +131,10 @@ class WhisperBack(object):
         @param config_file_path The path on the configuration file to load
         """
 
-        LOG.debug('Loading conf from %s', config_file_path)
+        LOG.debug("Loading conf from %s", config_file_path)
         f = None
         try:
-            f = open(config_file_path, 'r')
+            f = open(config_file_path, "r")
             code = f.read()
         except IOError:
             # There's no problem if one of the configuration files is not
@@ -149,30 +147,39 @@ class WhisperBack(object):
         # pylint: disable=W0122
         exec(code, self.__dict__)  # nosec exec_used
 
-    def __get_debug_info(self, raw_debug, prefix=''):
-        """ Deserializes the dicts from raw_debug and creates a string
+    def __get_debug_info(self, raw_debug, prefix=""):
+        """Deserializes the dicts from raw_debug and creates a string
         with the header from the dict key and it's content
 
         @param raw_debug The serialized json containing the debug info
         It is a list of dicts to keep the order of the different debug infos
         """
         all_info = json.loads(raw_debug)
-        result = ''
+        result = ""
         for debug_info in all_info:
             if prefix:
-                result += '\n{} === content of {} ===\n'.format(prefix, debug_info['key'])
+                result += "\n{} === content of {} ===\n".format(
+                    prefix, debug_info["key"]
+                )
             else:
-                result += '\n======= content of {} =======\n'.format(debug_info['key'])
-            if type(debug_info['content']) is list:
-                for line in debug_info['content']:
+                result += "\n======= content of {} =======\n".format(debug_info["key"])
+            if type(debug_info["content"]) is list:
+                for line in debug_info["content"]:
 
                     if isinstance(line, dict):
-                        result += self.__get_debug_info(json.dumps([line]), prefix + '> ')
+                        result += self.__get_debug_info(
+                            json.dumps([line]), prefix + "> "
+                        )
                     else:
-                        sanitized = '{}{}\n'.format(prefix, whisperBack.utils.sanitize_hardware_info(line))
-                        result += re.sub(r'^--\s*', '', sanitized)
+                        sanitized = "{}{}\n".format(
+                            prefix, whisperBack.utils.sanitize_hardware_info(line)
+                        )
+                        result += re.sub(r"^--\s*", "", sanitized)
             else:
-                result += '{}{}\n'.format(prefix, whisperBack.utils.sanitize_hardware_info(debug_info['content']))
+                result += "{}{}\n".format(
+                    prefix,
+                    whisperBack.utils.sanitize_hardware_info(debug_info["content"]),
+                )
         return result
 
     def __check_conf(self):
@@ -183,21 +190,21 @@ class WhisperBack(object):
         # XXX: Add sanity checks
 
         if not self.to_address:
-            raise whisperBack.exceptions.MisconfigurationException('to_address')
+            raise whisperBack.exceptions.MisconfigurationException("to_address")
         if not self.to_fingerprint:
-            raise whisperBack.exceptions.MisconfigurationException('to_fingerprint')
+            raise whisperBack.exceptions.MisconfigurationException("to_fingerprint")
         if not self.from_address:
-            raise whisperBack.exceptions.MisconfigurationException('from_address')
+            raise whisperBack.exceptions.MisconfigurationException("from_address")
         if not self.mail_subject:
-            raise whisperBack.exceptions.MisconfigurationException('mail_subject')
+            raise whisperBack.exceptions.MisconfigurationException("mail_subject")
         if not self.smtp_host:
-            raise whisperBack.exceptions.MisconfigurationException('smtp_host')
+            raise whisperBack.exceptions.MisconfigurationException("smtp_host")
         if not self.smtp_port:
-            raise whisperBack.exceptions.MisconfigurationException('smtp_port')
+            raise whisperBack.exceptions.MisconfigurationException("smtp_port")
         if not self.socks_host:
-            raise whisperBack.exceptions.MisconfigurationException('socks_host')
+            raise whisperBack.exceptions.MisconfigurationException("socks_host")
         if not self.socks_port:
-            raise whisperBack.exceptions.MisconfigurationException('socks_port')
+            raise whisperBack.exceptions.MisconfigurationException("socks_port")
 
         if not whisperBack.utils.is_valid_hostname_or_ipv4(self.smtp_host):
             raise ValueError("Invalid value for 'smtp_host'.")
@@ -208,8 +215,14 @@ class WhisperBack(object):
         if not whisperBack.utils.is_valid_port(self.socks_port):
             raise ValueError("Invalid value for 'socks_port'.")
 
-    def execute_threaded(self, func, args, progress_callback=None,
-                         finished_callback=None, polling_freq=100):
+    def execute_threaded(
+        self,
+        func,
+        args,
+        progress_callback=None,
+        finished_callback=None,
+        polling_freq=100,
+    ):
         """Execute a function in another thread and handle it.
 
         Execute the function `func` with arguments `args` in another thread,
@@ -255,8 +268,9 @@ class WhisperBack(object):
         self.__thread.start()
         # XXX: there could be no main loop
         GLib.timeout_add(polling_freq, poll_thread, self)
+
     # XXX: static would be best, but I get a problem with self.*
-    #execute_threaded = staticmethod(execute_threaded)
+    # execute_threaded = staticmethod(execute_threaded)
 
     def get_message_body(self):
         """Returns the content of the message body
@@ -284,16 +298,15 @@ class WhisperBack(object):
         LOG.debug("Building mime message")
         mime_message = email.mime.text.MIMEText(self.get_message_body())
 
-        encrypter = whisperBack.encryption.Encryption(
-                                        keyring=self.gnupg_keyring)
+        encrypter = whisperBack.encryption.Encryption(keyring=self.gnupg_keyring)
 
         encrypted_mime_message = encrypter.pgp_mime_encrypt(
-                                        mime_message,
-                                        [self.to_fingerprint])
+            mime_message, [self.to_fingerprint]
+        )
 
-        encrypted_mime_message['Subject'] = self.mail_subject
-        encrypted_mime_message['From'] = self.from_address
-        encrypted_mime_message['To'] = self.to_address
+        encrypted_mime_message["Subject"] = self.mail_subject
+        encrypted_mime_message["From"] = self.from_address
+        encrypted_mime_message["To"] = self.to_address
 
         return encrypted_mime_message
 
@@ -302,7 +315,7 @@ class WhisperBack(object):
 
         @param path path of the file to save
         """
-        f = open(path, 'w')
+        f = open(path, "w")
         try:
             f.write(str(self.get_mime_message()))
         finally:
@@ -322,10 +335,17 @@ class WhisperBack(object):
 
         mime_message = self.get_mime_message().as_string()
 
-        self.execute_threaded(func=whisperBack.mail.send_message,
-                              args=(self.from_address, self.to_address,
-                                    mime_message, self.smtp_host,
-                                    self.smtp_port, self.socks_host,
-                                    self.socks_port),
-                              progress_callback=progress_callback,
-                              finished_callback=finished_callback)
+        self.execute_threaded(
+            func=whisperBack.mail.send_message,
+            args=(
+                self.from_address,
+                self.to_address,
+                mime_message,
+                self.smtp_host,
+                self.smtp_port,
+                self.socks_host,
+                self.socks_port,
+            ),
+            progress_callback=progress_callback,
+            finished_callback=finished_callback,
+        )

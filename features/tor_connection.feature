@@ -31,7 +31,7 @@ Feature: Tor Connection helps the user in connecting to Tor
     Scenario: Time syncing works even if the user waits a lot before connecting
         When the network is plugged
         And I wait 720 seconds
-        Then Tor is ready
+        Then I successfully configure Tor
         And the time has synced
 
     # regression test for #18546
@@ -42,3 +42,22 @@ Feature: Tor Connection helps the user in connecting to Tor
         And I look at the hide mode but then I go back
         And I choose to connect to Tor automatically
         Then Tor Connection does not propose me to use Tor bridges
+
+    Scenario: I can use a network with captive portal
+        Given the network is plugged
+        And the Tor network and default bridges are blocked
+        And I make sure time sync before Tor connects indicates a captive portal
+        And the Tor Connection Assistant autostarts
+        When I choose to connect to Tor automatically
+        And I click "Connect to Tor"
+        Then the Tor Connection Assistant fails to connect to Tor
+        And the Tor Connection Assistant knows that it's not the time sync that failed
+        And the Tor Connection Assistant knows that there might be a captive portal
+        When I open the Unsafe Browser from Tor Connection
+        And I log-in to the Captive Portal
+        And I close the Unsafe Browser
+        And the Tor network and default bridges are unblocked
+        And I allow time sync before Tor connects to work again
+        And I click "Connect to Tor"
+        Then I wait until Tor is ready
+

@@ -89,6 +89,11 @@ for setting in ${GREETER_EXPORTED_PERSISTENT_SETTINGS}; do
         "/var/lib/live/config/$setting"
 done
 
+# Make the tails.network file world-readable to allow the amnesia user
+# to read the file, so that tca can read it and display an error message
+# if the network is disabled.
+chmod 0644 /var/lib/live/config/tails.network
+
 for setting in ${GREETER_EXPORTED_TRANSIENT_SETTINGS}; do
     /usr/bin/install -m 0640 -o root -g root \
         "/var/lib/gdm3/settings/transient/$setting" \

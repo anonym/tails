@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -eu
+
+# Exit with success if running inside live-build.
+if [ -n "${SOURCE_DATE_EPOCH:-}" ]; then
+  exit 0
+fi
+
+CMD=/usr/local/lib/additional-software/asp-handle-package-changes
+systemd-run --unit=tails-additional-software-post-apt-hook "${CMD}" "$@"

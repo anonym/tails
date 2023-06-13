@@ -19,7 +19,7 @@ def chdir(path):
 
 
 def run_with_user_env(command, *args):
-    """Launch an X application as LIVE_USERNAME and wait for its completion."""
+    """Run a command as amnesia and wait for its completion."""
     cmdline = ["/usr/local/lib/run-with-user-env", command, *args]
     try:
         subprocess.run(cmdline,
@@ -33,9 +33,13 @@ def run_with_user_env(command, *args):
             logging.error(line)
         raise
 
-def spawn_x_application(command, *args):
-    """Launch an X application as LIVE_USERNAME without blocking."""
-    cmdline = ["/usr/local/lib/run-with-user-env", command, *args]
+
+def start_as_transient_user_scope_unit(command, *args):
+    """Launch a command as amnesia and return immediately. The command
+    is run as a transient systemd user scope unit, so it doesn't exit
+    when the parent process exits."""
+    cmdline = ["/usr/local/lib/run-with-user-env", "--systemd-run",
+               command, *args]
     subprocess.Popen(cmdline,
                      stderr=subprocess.PIPE,
                      universal_newlines=True)
