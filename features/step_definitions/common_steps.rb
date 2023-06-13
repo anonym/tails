@@ -854,8 +854,8 @@ Given /^process "([^"]+)" has stopped running after at most (\d+) seconds$/ do |
   end
 end
 
-Given /^I kill the process "([^"]+)"$/ do |process|
-  $vm.execute_successfully("killall #{process}")
+Given /^I ensure the process "([^"]+)" is terminated$/ do |process|
+  $vm.execute("killall #{process}")
   try_for(10, msg: "Process '#{process}' could not be killed") do
     !$vm.process_running?(process)
   end
