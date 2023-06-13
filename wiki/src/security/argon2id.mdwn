@@ -133,6 +133,8 @@ If your current passphrase has 4 random words or fewer:
 
 - Your encryption is insecure with LUKS1.
 
+  You have to upgrade to LUKS2.
+
 - Your encryption is more secure with LUKS2.
 
   We still recommend changing your passphrase to be 5 random words or more.
@@ -393,16 +395,16 @@ Congratulations on following our most secure recommendations!
 
 ### Persistent Storage (6 words or more)
 
-To secure your Persistent Storage:
+Your Persistent Storage is already secure, even with LUKS1.
 
-1. Update to Tails 5.14.
-
-   When starting Tails 5.14 for the first time, Tails will convert
-   automatically your Persistent Storage to LUKS2.
+After you upgrade to Tails 5.14 or later, Tails will automatically convert your
+Persistent Storage to LUKS2 and make your Persistent Storage even more secure.
 
 ### Backup Tails (6 words or more)
 
-To secure your [[backup Tails|doc/persistent_storage/backup]], if you have one:
+Your backup Tails is already secure, even with LUKS1.
+
+If you want to upgrade your backup Tails to LUKS2 anyway:
 
 1. Start on your main Tails USB stick.
 
@@ -417,12 +419,10 @@ To secure your [[backup Tails|doc/persistent_storage/backup]], if you have one:
 
 ### Other encrypted volumes (6 words or more)
 
-To secure your other encrypted volumes, if you have any that were created with
-Tails 5.12 or earlier:
+Your other encrypted volumes are already secure, even with LUKS1.
 
-1. Update to Tails 5.14.
-
-If you know how to use the command line:
+If you want to upgrade your other encrypted volumes to LUKS2 anyway and you
+know how to use the command line:
 
 1. Identify the partition name of your encrypted volume.
 
@@ -437,13 +437,6 @@ If you know how to use the command line:
    [[!toggleable id="6_other_cryptsetup_upgrade" text="""
    [[!inline pages="security/argon2id/cryptsetup_upgrade.inline" raw="yes" sort="age"]]
    """]]
-
-If you are not comfortable with the command line:
-
-1. Migrate all your encrypted data to a new encrypted device.
-
-   Follow our instructions on [[creating and using LUKS encrypted
-   volumes|doc/encryption_and_privacy/encrypted_volumes]].
 
 <h2 id="checking">Knowing which version of LUKS is used in your devices</h2>
 
