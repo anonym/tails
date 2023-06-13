@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2023-06-09 07:47+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Bullet: '   1. '
+msgid ""
+"When starting Tails, [[set up an administration password|doc/first_steps/"
+"welcome_screen/administration_password/]]."
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid ""
+"Choose **Applications**&nbsp;▸ **System Tools**&nbsp;▸ **Root Terminal**."
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid "Execute the following command:"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "          lsblk\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"      The output is a list of the storage devices and partitions on the system.\n"
+"      For example:\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"          NAME                   MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT\n"
+"          loop0                    7:0    0  1.2G  1 loop  /lib/live/mount/rootfs/filesystem.squashfs\n"
+"          sda                      8:0    1    7G  0 disk\n"
+"          ├─sda1                   8:1    1    4G  0 part  /lib/live/mount/medium\n"
+"          └─sda2                   8:2    1    3G  0 part\n"
+"            └─TailsData_unlocked 253:0    0    3G  0 crypt /run/nosymfollow/live/persistence/TailsData_un...\n"
+"          zram0                  254:0    0  2.8G  0 disk  [SWAP]\n"
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid "Plug in your encrypted volume. Keep the encryption locked."
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid "Execute the same command again:"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"      Your encrypted volume appears as a new device with a list of partitions.\n"
+"      Check that the partition size corresponds to your encrypted volume.\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"          NAME                   MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT\n"
+"          loop0                    7:0    0  1.2G  1 loop  /lib/live/mount/rootfs/filesystem.squashfs\n"
+"          sda                      8:0    1    7G  0 disk\n"
+"          ├─sda1                   8:1    1    4G  0 part  /lib/live/mount/medium\n"
+"          └─sda2                   8:2    1    3G  0 part\n"
+"            └─TailsData_unlocked 253:0    0    3G  0 crypt /run/nosymfollow/live/persistence/TailsData_un...\n"
+"          sdb                      8:0    1    7G  0 disk\n"
+"          └─sdb1                   8:2    1    7G  0 part\n"
+"          zram0                  254:0    0  2.8G  0 disk  [SWAP]\n"
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid ""
+"Take note of the *partition name* of your encrypted volume. In this example, "
+"the new device in the list is <span class=\"code\">sdb</span> and the "
+"encrypted volume is in the partition <span class=\"code\">sdb1</span>. Yours "
+"might be different."
+msgstr ""

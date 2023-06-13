@@ -2,10 +2,7 @@
 
 [[!toc levels=1]]
 
-<a id="why"></a>
-
-Why use secure deletion?
-========================
+<h1 id="why">Why use secure deletion?</h1>
 
 **Operating systems do not actually remove the contents of a file when it is
 deleted**, even after emptying the trash or explicitly removing the file, from
@@ -30,20 +27,35 @@ the device and directly accessing/reading from its components.
 To learn more, see the Wikipedia article on
 [[!wikipedia Data_erasure desc="data erasure"]].
 
-<a id="usb_and_ssd"></a>
+<h1 id="usb_and_ssd">Warning about USB sticks and SSDs</h1>
 
-Warning about USB sticks and solid-state disks
-==============================================
+<div class="caution">
 
-The only way to securely delete any data, even a single file, from a USB
-stick or an SSD (Solid-State Disk) is to [[securely erase the entire
-device|secure_deletion#erase-device]].
+<p>Secure deletion is not as reliable on USB sticks and SSDs (solid-state
+drive) as it is on traditional hard disks.</p>
 
-For more details read the corresponding section of the Wikipedia article on
-[[!wikipedia Data_erasure#Limitations desc="data erasure"]].
+</div>
 
-Securely delete files
-=====================
+USB sticks and SSDs sometimes copy the same data to various memory cells to
+extend the lifetime of the device. USB sticks and SSDs also have 10&ndash;20%
+of spare memory cells for the same reason.
+
+As a consequence, part of the data from a given file might still be written on
+the device even after securely deleting it.
+
+This data could be recovered using advanced data forensics techniques, for
+example by professional data recovery services.
+
+To mitigate this risk, you can:
+
+- Encrypt the device before use, to make it hard to recover *any* data.
+
+- Securely delete the entire device. Some old data might still be present in
+  the spare memory cells.
+
+- Physically destroy the device.
+
+<h1 id="files">Securely deleting files</h1>
 
 <div class="caution">
 
@@ -66,21 +78,11 @@ you to recover your work in case LibreOffice stops responding).</p>
   1. The deletion will start. It can last from a few seconds to several minutes,
   according to the size of the files. Be patient…
 
-<a id="clean_disk_space"></a>
-
-Securely clean available disk space
-===================================
+<h1 id="disk_space">Securely cleaning available disk space</h1>
 
 In order to clean up the contents of all files that were previously suppressed
-but not securely deleted from a disk, it is also possible to securely clean all 
+but not securely deleted from a disk, it is also possible to securely clean all
 the free space on the disk.
-
-<div class="caution">
-
-<p>This method does not work as expected on solid-state disks or USB
-sticks.</p>
-
-</div>
 
 The disk or the folder can contain other files. Those files will not
 be deleted during the operation.
@@ -110,17 +112,7 @@ be deleted during the operation.
      folder. It is made as big as possible to use all the available diskspace and
      then securely deleted.
 
-<a id="erase-device"></a>
-
-Securely erasing an entire device
-=================================
-
-<div class="note">
-
-<p>This technique is the only way to securely delete any data, even a
-single file, from a USB stick or an SSD (Solid-State Disk).</p>
-
-</div>
+<h1 id="device">Securely erasing an entire device</h1>
 
 1. Open the <span class="application">Disks</span> utility.
 
@@ -143,11 +135,11 @@ single file, from a USB stick or an SSD (Solid-State Disk).</p>
 
    - Choose to
      <span class="guilabel">Overwrite existing data with zeroes</span> in the
-     <span class="guilabel">Erase</span> drop-down list.
+     <span class="guilabel">Erase</span> menu.
 
    - Choose <span class="guilabel">Compatible with all
      systems and devices (MBR/DOS)</span> in the <span class="guilabel">Partitioning</span>
-     drop-down list.
+     menu.
 
 1. Click <span class="bold">Format…</span>.
 
