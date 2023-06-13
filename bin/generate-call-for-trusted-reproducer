@@ -2,6 +2,8 @@
 
 import jinja2
 
+import automailer
+
 
 def call_for_trusted_reproducer_contents(args) -> str:
     jinja2_env = jinja2.Environment(  # nosec jinja2_autoescape_false
@@ -15,6 +17,7 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--version', required=True)
+    automailer.add_parser_mailer(parser)
     args = parser.parse_args()
 
-    print(call_for_trusted_reproducer_contents(args))
+    automailer.mailer(mailer=args.mailer, body=call_for_trusted_reproducer_contents(args))
