@@ -2172,20 +2172,23 @@ Check that you are indeed preparing a final release:
 
 1. Announce the date of the next release on <tails-dev@boum.org> and
    <tails-l10n@boum.org>.
-   - Cc <tails-manual-testers@boum.org>,
-     asking them to privately tell the RM for that release
-     _how much_ manual testing they can do on release day.
-   - `echo Subject: "Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"`
-   - If you use Thunderbird, you can use this:
 
-         thunderbird -compose "to=tails-dev@boum.org,tails-l10n@boum.org,cc=tails-manual-testers@boum.org,subject=Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"
+         cat <<EOF | ./bin/automailer.py
+         To: tails-dev@boum.org,tails-l10n@boum.org
+         Cc: tails-manual-testers@boum.org
+         Subject: Release schedule for Tails ${NEXT_PLANNED_VERSION:?}
 
-     Else, if you use *notmuch*, you can use this:
+         Hi,
 
-         notmuch-emacs-mua --client --create-frame \
-            --cc=tails-manual-testers@boum.org \
-            --subject="Release schedule for Tails ${NEXT_PLANNED_VERSION:?}" \
-            tails-dev@boum.org tails-l10n@boum.org
+         XXX will be the RM for Tails ${NEXT_PLANNED_VERSION:?}
+
+         The current plan is:
+          - Monday, XXX: build images, start testing
+          - Tuesday, XXX: releasing
+
+         @testers, please let me know how much time you'll have for manual QA 
+         from Monday 17:00 to Tuesday 11:00 (Europe/Berlin)
+         EOF
 
    - If a release candidate is planned, include it in the release schedule
      and the call for manual testers.
