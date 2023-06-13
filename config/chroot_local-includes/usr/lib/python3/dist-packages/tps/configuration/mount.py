@@ -325,6 +325,33 @@ class Mount(object):
               flags=MOUNTFLAG_REMOUNT | MOUNTFLAG_NOSYMFOLLOW,
         )
 
+        # Hide the mount point from the desktop environment, to avoid
+        # showing it in the file manager and users clicking the "Unmount"
+        # button.
+        #
+        # We only remount the original destination (self.dest_orig), not
+        # the mount point below the nosymfollow mountpoint (self.dest),
+        # because the latter is not visible to the desktop environment
+        # anyway (see
+        # https://github.com/GNOME/gvfs/blob/master/monitor/udisks2/what-is-shown.txt
+        # for details on which mount points are shown by default).
+        #
+        # It should be safe to remount the mount point via the mount(8)
+        # command (which follows symlinks), because unprivileged users
+        # can't create a symlink in place of the existing mount point,
+        # any attempt to do so will fail with EBUSY ("Device or resource
+        # busy") (and even if an attacker manages to do so, the only
+        # thing they could do is remount some other mount point with the
+        # x-gvfs-hide option, which should not be security relevant).
+        #
+        # Don't try to hide the mount point if we're running in a behave
+        # test, because there the original destination is not mounted
+        # because we're running in a separate mount namespace with
+        # propagation set to private (and we want to keep it that way.
+        # to avoid creating files on the host filesystem).
+        if not bool(os.getenv("BEHAVE")):
+            executil.check_call(["mount", "-o", "remount,x-gvfs-hide", self.dest_orig])
+
         # Wait until the source directory was synced to the Persistent
         # Storage to make the call block and allow the frontend to
         # display a spinner until the data was synced.

@@ -20,12 +20,13 @@ import logging
 import os
 
 import gettext
+from typing import List
+
 _ = gettext.gettext
 
 from gi.repository import Gio, GLib
 
-from tps.dbus.errors import IncorrectPassphraseError, \
-    FeatureActivationFailedError
+import tps.dbus.errors as tps_errors
 
 import tailsgreeter         # NOQA: E402
 from tailsgreeter import config  # NOQA: E402
@@ -40,7 +41,6 @@ INTERFACE_NAME = "org.boum.tails.PersistentStorage"
 class PersistentStorageSettings(object):
     """Controller for settings related to Persistent Storage"""
     def __init__(self):
-        self.is_unlocked = False
         self.failed_with_unexpected_error = False
         self.cleartext_name = 'TailsData_unlocked'
         self.cleartext_device = '/dev/mapper/' + self.cleartext_name
@@ -51,21 +51,37 @@ class PersistentStorageSettings(object):
         )  # type: Gio.DBusProxy
         device_variant = self.service_proxy.get_cached_property("Device")  # type: GLib.Variant
         self.device = device_variant.get_string() if device_variant else "/"
+        self.is_unlocked = False
+        self.is_created = self.service_proxy.get_cached_property("IsCreated")
+        self.is_upgraded = self.service_proxy.get_cached_property("IsUpgraded")
+        self.service_proxy.connect("g-properties-changed", self.on_properties_changed)
 
-    def is_created(self):
-        return self.service_proxy.get_cached_property("IsCreated")
+    def on_properties_changed(self, proxy: Gio.DBusProxy,
+                              changed_properties: GLib.Variant,
+                              invalidated_properties: List[str]):
+        """Callback for when the Persistent Storage properties change"""
+        logging.debug("changed properties: %s", changed_properties)
+        keys = set(changed_properties.keys())
 
-    def unlock(self, passphrase) -> bool:
+        if "IsCreated" in keys:
+            self.is_created = changed_properties["IsCreated"]
+        if "IsUpgraded" in keys:
+            self.is_upgraded = changed_properties["IsUpgraded"]
+        if "Device" in keys:
+            self.device = changed_properties["Device"]
+
+    def unlock(self, passphrase):
         """Unlock the Persistent Storage partition
 
-        Returns: True if everything went fine, False if the user should try
-        again."""
+        Raises:
+            WrongPassphraseError if the passphrase is incorrect.
+            PersistentStorageError if something else went wrong."""
         logging.debug("Unlocking Persistent Storage")
         if os.path.exists(self.cleartext_device):
             logging.warning(f"Cleartext device {self.cleartext_device} already"
                             f"exists")
             self.is_unlocked = True
-            return True
+            return
 
         try:
             self.service_proxy.call_sync(
@@ -77,14 +93,36 @@ class PersistentStorageSettings(object):
                 timeout_msec=120000,
             )
         except GLib.GError as err:
-            if IncorrectPassphraseError.is_instance(err):
-                return False
+            if tps_errors.IncorrectPassphraseError.is_instance(err):
+                raise tailsgreeter.errors.WrongPassphraseError() from err
+
             self.failed_with_unexpected_error = True
             raise tailsgreeter.errors.PersistentStorageError(
                 _("Error unlocking Persistent Storage: {}").format(err)
             )
         self.is_unlocked = True
-        return True
+
+    def upgrade_luks(self, passphrase):
+        """Upgrade the Persistent Storage to the latest format
+
+        Raises:
+            WrongPassphraseError if the passphrase is incorrect.
+            PersistentStorageError if something else went wrong."""
+        logging.debug("Upgrading Persistent Storage")
+        try:
+            self.service_proxy.call_sync(
+                method_name="UpgradeLUKS",
+                parameters=GLib.Variant("(s)", (passphrase,)),
+                flags=Gio.DBusCallFlags.NONE,
+                timeout_msec=120000,
+            )
+        except GLib.GError as err:
+            if tps_errors.IncorrectPassphraseError.is_instance(err):
+                raise tailsgreeter.errors.WrongPassphraseError() from err
+            self.failed_with_unexpected_error = True
+            raise tailsgreeter.errors.PersistentStorageError(
+                _("Error upgrading Persistent Storage: {}").format(err)
+            )
 
     def activate_persistent_storage(self):
         """Activate the already unlocked Persistent Storage"""
@@ -98,8 +136,8 @@ class PersistentStorageSettings(object):
                 timeout_msec=120000,
             )
         except GLib.GError as err:
-            if FeatureActivationFailedError.is_instance(err):
-                FeatureActivationFailedError.strip_remote_error(err)
+            if tps_errors.FeatureActivationFailedError.is_instance(err):
+                tps_errors.FeatureActivationFailedError.strip_remote_error(err)
                 features = err.message.split(":")
                 # translate feature names
                 features = [config.gettext(feature) for feature in features]

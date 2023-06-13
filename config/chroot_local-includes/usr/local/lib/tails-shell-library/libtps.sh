@@ -1,5 +1,18 @@
 #!/bin/dash
 
+tps_is_created() {
+    local out
+    out="$(gdbus call --system --dest org.boum.tails.PersistentStorage \
+           --object-path "/org/boum/tails/PersistentStorage" \
+           --method org.freedesktop.DBus.Properties.Get \
+           org.boum.tails.PersistentStorage IsCreated)"
+
+    if [ "${out}" = "(<true>,)" ]; then
+        return 0
+    fi
+    return 1
+}
+
 tps_is_unlocked() {
     local out
     out="$(gdbus call --system --dest org.boum.tails.PersistentStorage \

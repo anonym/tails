@@ -18,18 +18,35 @@ import gettext
 import os
 import sys
 import subprocess
-import sh
+import random
+from pathlib import Path
 
 translation = gettext.translation("tails", '/usr/share/locale', fallback=True)
 _ = translation.gettext
 
 HOME_DIR = os.environ['HOME']
-CONF_DIR = os.path.join(HOME_DIR, '.electrum')
+CONF_DIR = Path(HOME_DIR, '.electrum')
+
+# We use different addresses to track which version of the incentive leads to
+# more donations:
+#
+# - bc1qunww28s9za0jx7n2r49yy5mqsgtgfwszz39kfr: "benevolent"
+# - bc1qceyaeuv7pfedshv8wzwwcwknhzjjnwmuv5qck9: "selfish"
+# - bc1qdptm9qzul00aejye7vfwwlas0xr0srj04573w4: not used yet
+# - bc1ql9dltq68wvkscj7zlrj2ajtgeupc6whsf62uef: not used yet
+BITCOIN_ADDRESS_BENEVOLENT = 'bitcoin:bc1qunww28s9za0jx7n2r49yy5mqsgtgfwszz39kfr?label=Donation to Tails'
+BITCOIN_ADDRESS_SELFISH = 'bitcoin:bc1qceyaeuv7pfedshv8wzwwcwknhzjjnwmuv5qck9?label=Donation to Tails'
 
 TPS_FEATURE_NAME="Electrum"
 
 
 def main(*args):
+    # If we're called with arguments, don't show any messages or adjust
+    # any config and just start Electrum, to avoid breaking scripts /
+    # command-line usage.
+    if len(args) > 0:
+        exec_electrum(*args)
+
     if not electrum_config_is_persistent():
         if not verify_start():
             return
@@ -40,7 +57,75 @@ def main(*args):
     subprocess.run(['/usr/bin/electrum', '--offline',
                     'setconfig', 'check_updates', 'false'],
                    check=True, stdout=subprocess.DEVNULL)
+
+    if should_show_donation_message():
+        show_donation_message()
+    else:
+        exec_electrum(*args)
+
+
+def exec_electrum(*args):
     os.execv('/usr/bin/electrum', ['/usr/bin/electrum'] + list(args))
+
+
+def should_show_donation_message() -> bool:
+    # Don't show the message if electrum is not persistent
+    if not electrum_config_is_persistent():
+        return False
+
+    # Only show the message if the user has a wallet
+    if not any(Path(CONF_DIR, 'wallets').iterdir()):
+        return False
+
+    # Check the environment variable
+    if os.environ.get('ELECTRUM_DONATION_MESSAGE') == '0':
+        return False
+    elif os.environ.get('ELECTRUM_DONATION_MESSAGE') == '1':
+        return True
+
+    # If the other conditions are met, show the message in 1/20 of the
+    # cases.
+    return random.randint(0, 19) == 0
+
+
+def show_donation_message():
+    if random.randint(0, 1) == 0:
+        # In half of the cases, display a message with benevolent incentive
+        text = _('Tails needs donations to keep everybody free and safe '
+                 'online.\n\nEvery bit helps in our fight against surveillance '
+                 'and censorship!\n\n'
+                 '<a href="file:///usr/share/doc/tails/website/donate.en.html#expenses">How we spend our money.</a>')
+        bitcoin_address = BITCOIN_ADDRESS_BENEVOLENT
+    else:
+        # In the other half, display a message with a more selfish incentive
+        text = _('Tails protects your wallet.\n\n'
+                 'Help us keep your bitcoins safe!\n\n'
+                 '<a href="file:///usr/share/doc/tails/website/donate.en.html#expenses">How we spend our money.</a>')
+        bitcoin_address = BITCOIN_ADDRESS_SELFISH
+
+    # results 0 == True; 1 == False; 5 == Timeout
+    p = subprocess.run([
+        'zenity',
+        '--question',
+        '--title', '',
+        '--text', text,
+        '--ok-label', _('Donate Now'),
+        '--cancel-label', _('Later'),
+        '--icon-name', 'tails-logo-drawing',
+        '--modal',
+        '--ellipsize',
+    ])
+    if p.returncode == 0:
+        # Show a GNOME notification to let the user know that we're
+        # opening Electrum with our donation address.
+        subprocess.check_call([
+            'notify-send',
+            _('Opening Electrum with our donation address...'),
+            _('Thank you for making the Internet a safer place!'),
+        ])
+        exec_electrum(bitcoin_address)
+    else:
+        exec_electrum()
 
 
 def electrum_config_is_persistent():
@@ -78,16 +163,17 @@ def verify_start():
     launch_text = _('_Launch')
     exit_text = _('_Exit')
 
-    # results 0 == True; 1 == False; 5 == Timeout
-    results = sh.zenity('--question', '--title', '', '--default-cancel',
-                        '--ellipsize',
-                        '--ok-label', launch_text,
-                        '--cancel-label', exit_text,
-                        '--text', dialog_msg,
-                        _ok_code=[0, 1, 5])
-    start = results.exit_code == 0
-
-    return start
+    p = subprocess.run([
+        'zenity',
+        '--question',
+        '--title', '',
+        '--default-cancel',
+        '--ellipsize',
+        '--ok-label', launch_text,
+        '--cancel-label', exit_text,
+        '--text', dialog_msg,
+    ])
+    return p.returncode == 0
 
 
 if __name__ == '__main__':

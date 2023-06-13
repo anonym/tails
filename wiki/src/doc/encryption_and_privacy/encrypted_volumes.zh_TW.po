@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails l10n\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2023-01-27 18:26+0100\n"
+"POT-Creation-Date: 2023-06-09 07:47+0200\n"
 "PO-Revision-Date: 2018-11-02 16:43+0000\n"
 "Last-Translator: Weblate Admin <admin@example.com>\n"
 "Language-Team: Tails Chinese translators <jxt@twngo.xyz>\n"
@@ -27,9 +27,9 @@ msgstr ""
 msgid "[[!toc levels=2]]\n"
 msgstr "[[!toc levels=2]]\n"
 
-#. type: Title =
+#. type: Plain text
 #, no-wrap
-msgid "Introduction to <span class=\"application\">LUKS</span>"
+msgid "<h1 id=\"luks\">Introduction to <span class=\"application\">LUKS</span></h1>\n"
 msgstr ""
 
 #. type: Plain text
@@ -70,9 +70,9 @@ msgstr ""
 msgid "The GNOME desktop allows you to open encrypted volumes."
 msgstr ""
 
-#. type: Title -
+#. type: Plain text
 #, no-wrap
-msgid "Comparison between <span class=\"application\">LUKS</span> and <span class=\"application\">VeraCrypt</span>"
+msgid "<h2 id=\"comparison\">Comparison between <span class=\"application\">LUKS</span> and <span class=\"application\">VeraCrypt</span></h2>\n"
 msgstr ""
 
 #. type: Plain text
@@ -89,10 +89,10 @@ msgstr ""
 msgid "[[!inline pages=\"doc/encryption_and_privacy/luks_vs_veracrypt.inline\" raw=\"yes\" sort=\"age\"]]\n"
 msgstr ""
 
-#. type: Title =
-#, no-wrap
-msgid "Create an encrypted partition"
-msgstr ""
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "<h1 id=\"creating\">Creating an encrypted partition</h1>\n"
+msgstr "<h2 class=\"bullet-number-three\">Erstellen Sie eine neue, verschlüsselte Partition</h2>\n"
 
 #. type: Plain text
 msgid ""
@@ -100,10 +100,10 @@ msgid ""
 "Disks*."
 msgstr ""
 
-#. type: Title -
-#, no-wrap
-msgid "Identify your external storage device"
-msgstr ""
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "<h2 id=\"identifying\">Identifying your external storage device</h2>\n"
+msgstr "<h2 class=\"bullet-number-one\">Identifizieren Sie das externe Speichermedium</h2>\n"
 
 #. type: Plain text
 #, no-wrap
@@ -133,14 +133,9 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
-msgid "<a id=\"format\"></a>\n"
-msgstr ""
-
-#. type: Title -
-#, no-wrap
-msgid "Format the device"
-msgstr ""
+#, fuzzy, no-wrap
+msgid "<h2 id=\"formatting\">Formatting the device</h2>\n"
+msgstr "<h2 class=\"bullet-number-two\">Formatieren Sie das Medium</h2>\n"
 
 #. type: Bullet: '  1. '
 msgid ""
@@ -157,14 +152,13 @@ msgstr "在<span class=\"guilabel\">格式磁碟</span> 對話視窗中:"
 msgid ""
 "If you want to securely erase all data on the device, choose to <span class="
 "\"guilabel\">Overwrite existing data with zeroes</span> in the <span class="
-"\"guilabel\">Erase</span> drop-down list."
+"\"guilabel\">Erase</span> menu."
 msgstr ""
 
 #. type: Bullet: '     - '
 msgid ""
 "Choose <span class=\"guilabel\">Compatible with all systems and devices (MBR/"
-"DOS)</span> in the <span class=\"guilabel\">Partitioning</span> drop-down "
-"list."
+"DOS)</span> in the <span class=\"guilabel\">Partitioning</span> menu."
 msgstr ""
 
 #. type: Plain text
@@ -178,10 +172,10 @@ msgid ""
 "<span class=\"bold\">Format</span> to confirm."
 msgstr ""
 
-#. type: Title -
-#, no-wrap
-msgid "Create a new encrypted partition"
-msgstr ""
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "<h2 id=\"partition\">Creating a new encrypted partition</h2>\n"
+msgstr "<h2 class=\"bullet-number-three\">Erstellen Sie eine neue, verschlüsselte Partition</h2>\n"
 
 #. type: Plain text
 msgid ""
@@ -249,7 +243,7 @@ msgid ""
 "         <p>Secure deletion does not work as expected on USB sticks and\n"
 "         SSDs (Solid-State Drives). Choose instead to overwrite existing\n"
 "         data on the whole device when [[formatting the\n"
-"         device|encrypted_volumes#format]].</p>\n"
+"         device|encrypted_volumes#formatting]].</p>\n"
 "         <p>See also our [[warning about secure deletion on USB sticks and\n"
 "         SSDs|secure_deletion#usb_and_ssd]].</p>\n"
 "         </div>\n"
@@ -271,6 +265,40 @@ msgstr "在<span class=\"guilabel\">格式磁碟</span> 對話視窗中:"
 msgid ""
 "<span class=\"guilabel\">Password</span>: type a passphrase for the "
 "encrypted partition and repeat it to confirm."
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "         <div class=\"tip\">\n"
+msgstr "<div class=\"tip\">\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"         <p>We recommend choosing a long passphrase made of 5 to 7 random words.\n"
+"         <a href=\"https://theintercept.com/2015/03/26/passphrases-can-memorize-attackers-cant-guess/\">Learn\n"
+"         about the maths behind memorizable and secure passphrases.</a></p>\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "         </div>\n"
+msgstr "</div>\n"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"         <div class=\"caution\">\n"
+"         <p>It is impossible to recover your passphrase if you forget it!</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"         <p>To help you remember your passphrase, you can write it on a piece of\n"
+"         paper, store it in your wallet for a few days, and destroy it once\n"
+"         you know it well.</p>\n"
+"         </div>\n"
 msgstr ""
 
 #. type: Plain text
@@ -297,10 +325,10 @@ msgid ""
 "span> button again."
 msgstr ""
 
-#. type: Title -
-#, no-wrap
-msgid "Use the new partition"
-msgstr ""
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "<h2 id=\"using\">Using the new partition</h2>\n"
+msgstr "<h2 class=\"bullet-number-four\">Benutzen Sie die neue Partition</h2>\n"
 
 #. type: Plain text
 msgid ""
@@ -315,10 +343,10 @@ msgid ""
 "from the <span class=\"guimenu\">Places</span> menu.\n"
 msgstr ""
 
-#. type: Title =
-#, no-wrap
-msgid "Open an existing encrypted partition"
-msgstr ""
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "<h1 id=\"opening\">Opening an existing encrypted partition</h1>\n"
+msgstr "Öffnen Sie eine bestehende, verschlüsselte Partition\n"
 
 #. type: Plain text
 msgid ""
@@ -365,9 +393,9 @@ msgid ""
 "browser."
 msgstr ""
 
-#. type: Title =
+#. type: Plain text
 #, fuzzy, no-wrap
-msgid "Storing sensitive documents"
+msgid "<h1 id=\"storing\">Storing sensitive documents</h1>\n"
 msgstr "儲存敏感文件\n"
 
 #. type: Plain text
@@ -377,10 +405,10 @@ msgid ""
 "consideration that you can be forced or tricked to give out its passphrase."
 msgstr ""
 
-#. type: Title =
-#, no-wrap
-msgid "Opening encrypted volumes from other operating systems"
-msgstr ""
+#. type: Plain text
+#, fuzzy, no-wrap
+msgid "<h1 id=\"os\">Opening encrypted volumes from other operating systems</h1>\n"
+msgstr "Öffnen verschlüsselter Laufwerke auf anderen Betriebssystemen\n"
 
 #. type: Plain text
 msgid ""
@@ -396,14 +424,9 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#, no-wrap
-msgid "<a id=\"change\"></a>\n"
-msgstr ""
-
-#. type: Title =
-#, no-wrap
-msgid "Change the passphrase of an existing encrypted partition"
-msgstr ""
+#, fuzzy, no-wrap
+msgid "<h1 id=\"changing\">Changing the passphrase of an existing encrypted partition</h1>\n"
+msgstr "Öffnen Sie eine bestehende, verschlüsselte Partition\n"
 
 #. type: Plain text
 #, no-wrap
@@ -459,6 +482,10 @@ msgstr ""
 msgid "   </span> button and choose <span class=\"guimenu\">Change Passphrase…</span>\n"
 msgstr ""
 
+#, fuzzy, no-wrap
+#~ msgid "Storing sensitive documents"
+#~ msgstr "儲存敏感文件\n"
+
 #, fuzzy
 #~ msgid "[[!meta title=\"Create and use LUKS encrypted volumes\"]]\n"
 #~ msgstr ""
@@ -468,28 +495,12 @@ msgstr ""
 #~ msgstr "Eine verschlüsselte Partition erstellen\n"
 
 #, fuzzy
-#~ msgid "Identify your external storage device\n"
-#~ msgstr ""
-#~ "<h2 class=\"bullet-number-one\">Identifizieren Sie das externe "
-#~ "Speichermedium</h2>\n"
-
-#, fuzzy
 #~ msgid "Create a new encrypted partition\n"
 #~ msgstr "Eine verschlüsselte Partition erstellen\n"
 
 #, fuzzy
 #~ msgid "Use the new partition\n"
 #~ msgstr "Konfigurieren Sie die neue Partition:"
-
-#~ msgid "Open an existing encrypted partition\n"
-#~ msgstr "Öffnen Sie eine bestehende, verschlüsselte Partition\n"
-
-#~ msgid "Opening encrypted volumes from other operating systems\n"
-#~ msgstr "Öffnen verschlüsselter Laufwerke auf anderen Betriebssystemen\n"
-
-#, fuzzy
-#~ msgid "Change the passphrase of an existing encrypted partition\n"
-#~ msgstr "Öffnen Sie eine bestehende, verschlüsselte Partition\n"
 
 #~ msgid ""
 #~ "The simplest way to carry around the documents you want to use with Tails "
@@ -521,9 +532,6 @@ msgstr ""
 #~ "[[beständigen Speicherbereich|first_steps/persistence]] zu erstellen.</"
 #~ "p>\n"
 
-#~ msgid "<h2 class=\"bullet-number-two\">Format the device</h2>\n"
-#~ msgstr "<h2 class=\"bullet-number-two\">Formatieren Sie das Medium</h2>\n"
-
 #~ msgid ""
 #~ "  1. Click on <span class=\"guilabel\">Format Drive</span> to erase all "
 #~ "the\n"
@@ -547,12 +555,6 @@ msgstr ""
 #~ "  Record</span> ausgewählt.\n"
 
 #~ msgid ""
-#~ "<h2 class=\"bullet-number-three\">Create a new encrypted partition</h2>\n"
-#~ msgstr ""
-#~ "<h2 class=\"bullet-number-three\">Erstellen Sie eine neue, verschlüsselte "
-#~ "Partition</h2>\n"
-
-#~ msgid ""
 #~ "<span class=\"guilabel\">Type</span>. You can change the file system type "
 #~ "of the partition. If you are not sure you can leave the default value: "
 #~ "<span class=\"guilabel\">Ext4</span>."
@@ -560,10 +562,6 @@ msgstr ""
 #~ "<span class=\"guilabel\">Typ</span>. Sie können das Dateisystem der "
 #~ "Partition ändern. Wenn Sie sich nicht sicher sind, können Sie den "
 #~ "voreingestellten Wert belassen: <span class=\"guilabel\">Ext4</span>."
-
-#~ msgid "<h2 class=\"bullet-number-four\">Use the new partition</h2>\n"
-#~ msgstr ""
-#~ "<h2 class=\"bullet-number-four\">Benutzen Sie die neue Partition</h2>\n"
 
 #~ msgid ""
 #~ "When plugging in a device containing an encrypted partition, Tails does "
@@ -585,6 +583,3 @@ msgstr ""
 #~ "werden, können Sie ihre Größe dazu benutzen, um zu erraten, welche jene "
 #~ "ist, die Sie öffnen\n"
 #~ "möchten.\n"
-
-#~ msgid "Storing sensitive documents\n"
-#~ msgstr "儲存敏感文件\n"

@@ -2,6 +2,22 @@ def browser
   Dogtail::Application.new('Firefox')
 end
 
+def save_page_as
+  browser.child(
+    description: 'Open application menu',
+    roleName:    'push button',
+    showingOnly: true
+  ).press
+  browser.child(
+    name:        'Save page as\u2026',
+    roleName:    'push button',
+    showingOnly: true
+  ).press
+  browser.child('Save As',
+                roleName:    'file chooser',
+                showingOnly: true)
+end
+
 When /^I (?:try to )?start the Unsafe Browser$/ do
   # XXX:Bookworm: switch to "gio launch" and drop the whole
   # language_has_non_latin_input_source / switch_input_source system.
@@ -231,7 +247,7 @@ end
 
 When /^I download some file in the Tor Browser$/ do
   @some_file = 'tails-signing.key'
-  some_url = "https://tails.boum.org/#{@some_file}"
+  some_url = "https://tails.net/#{@some_file}"
   step "I open the address \"#{some_url}\" in the Tor Browser without waiting"
 end
 
@@ -247,7 +263,7 @@ Then /^the file is saved to the default Tor Browser download directory$/ do
 end
 
 When /^I open the Tails homepage in the (.+)$/ do |browser|
-  step "I open the address \"https://tails.boum.org\" in the #{browser}"
+  step "I open the address \"https://tails.net\" in the #{browser}"
 end
 
 Then /^the Tails homepage loads in the Unsafe Browser$/ do
@@ -346,6 +362,18 @@ Then(/^the screen keyboard works in Tor Browser$/) do
   step 'I open a new tab in the Tor Browser'
   @screen.wait(xul_application_info('Tor Browser')[:address_bar_image], 10).click
   @screen.wait('ScreenKeyboard.png', 20)
-  @screen.wait_any(osk_key_images, 20)[:match].click
+  @screen.wait_any(osk_key_images, 20).click
   @screen.wait(browser_bar_x, 20)
+end
+
+When /^I log-in to the Captive Portal$/ do
+  step 'a web server is running on the LAN'
+  captive_portal_page = "#{@web_server_url}/captive"
+  step "I open the address \"#{captive_portal_page}\" in the Unsafe Browser"
+
+  try_for(30) do
+    File.exist?(@captive_portal_login_file)
+  end
+
+  step 'I close the Unsafe Browser'
 end

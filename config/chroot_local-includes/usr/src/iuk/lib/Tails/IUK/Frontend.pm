@@ -520,10 +520,10 @@ method run () {
                 "It is impossible to do an automatic upgrade of ".
                 "your Tails to this new version: {explanation}.\n\n".
                 "To learn how to do a manual upgrade, go to {manual_upgrade_url}",
-                details_url        => q{https://tails.boum.org/latest},
+                details_url        => q{https://tails.net/latest},
                 name               => $upgrade_description->product_name,
                 explanation        => $self->no_incremental_explanation($no_incremental_reason),
-                manual_upgrade_url => 'https://tails.boum.org/doc/upgrade/#manual',
+                manual_upgrade_url => 'https://tails.net/doc/upgrade/#manual',
             ),
             title => __(q{New version available}),
             type  => 'info',

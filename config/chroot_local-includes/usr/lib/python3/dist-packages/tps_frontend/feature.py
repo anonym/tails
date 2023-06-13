@@ -69,6 +69,8 @@ class Feature(object):
 
         action_row_name = self.widget_name_prefix + "_row"
         self.action_row = self.builder.get_object(action_row_name)  # type: Handy.ActionRow
+        self.action_row.__setattr__('original_subtitle',
+                                    self.action_row.get_subtitle())
         if not self.action_row:
             raise RuntimeError(f"Could not find {action_row_name}")
 
@@ -164,9 +166,7 @@ class Feature(object):
         elif self.has_data and not self.is_enabled:
             subtitle = _("The data of this feature is still saved.")
         else:
-            self.delete_data_button.hide()
-            self.action_row.set_subtitle("")
-            return
+            subtitle = self.action_row.original_subtitle
 
         if error:
             Gtk.StyleContext.add_class(self.subtitle_style_context, "error")
@@ -176,7 +176,9 @@ class Feature(object):
             self.subtitle_label.set_selectable(False)
 
         self.action_row.set_subtitle(subtitle)
-        self.delete_data_button.set_visible(self.has_data)
+
+        show_delete_data_button = self.has_data and not self.is_enabled
+        self.delete_data_button.set_visible(show_delete_data_button)
 
     def on_state_set(self, switch: Gtk.Switch, state: bool):
         # We return True here to prevent the default handler from

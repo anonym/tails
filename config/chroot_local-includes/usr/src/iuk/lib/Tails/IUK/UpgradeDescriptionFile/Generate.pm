@@ -283,10 +283,10 @@ method has_iuk_for ($previous_version) {
 method details_url () {
     my $version = version_for_website($self->version);
     if ($self->channel eq 'stable') {
-        return 'https://tails.boum.org/news/version_'.$version.'/';
+        return 'https://tails.net/news/version_'.$version.'/';
     }
     elsif ($self->channel eq 'alpha') {
-        return 'https://tails.boum.org/news/test_'.$version.'/';
+        return 'https://tails.net/news/test_'.$version.'/';
     }
     else {
         croak('Channel '.$self->channel.' is not supported.');

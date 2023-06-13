@@ -42,7 +42,7 @@ from pprint import pformat
 
 import gi
 gi.require_version('UDisks', '2.0')
-from gi.repository import UDisks, GLib  # NOQA: E402
+from gi.repository import UDisks, GLib, Gio  # NOQA: E402
 
 from tails_installer.utils import (_move_if_exists,  # NOQA: E402
                                    _unlink_if_exists, bytes_to_unicode,
@@ -53,6 +53,7 @@ from tails_installer.utils import (_move_if_exists,  # NOQA: E402
                                    TailsError)
 from tails_installer import _  # NOQA: E402
 from tails_installer.config import CONFIG  # NOQA: E402
+from tails_installer.tps_proxy import tps_proxy
 
 SYSTEM_PARTITION_FLAGS = [0,    # system partition
                           2,    # legacy BIOS bootable
@@ -62,7 +63,6 @@ SYSTEM_PARTITION_FLAGS = [0,    # system partition
                           ]
 # EFI System Partition
 ESP_GUID = 'C12A7328-F81F-11D2-BA4B-00A0C93EC93B'
-
 
 class TailsInstallerError(TailsError):
     """ A generic error message that is thrown by the Tails Installer"""
@@ -88,6 +88,7 @@ class TailsInstallerCreator(object):
     log = None
     ext_fstypes = set(['ext2', 'ext3', 'ext4'])
     valid_fstypes = set(['vfat', 'msdos']) | ext_fstypes
+    passphrase = None  # type: Optional[str]
 
     drive = property(fget=lambda self: self.drives[self._drive],
                      fset=lambda self, d: self._set_drive(d))
@@ -956,6 +957,18 @@ class TailsInstallerCreator(object):
                 'syslinux', self.drive['device']),
                    env={"LC_CTYPE": "C"})
         shutil.rmtree(tmpdir)
+
+    def clone_persistent_storage(self):
+        if not self.opts.clone_persistent_storage_requested:
+            return
+        self.log.info(_('Cloning Persistent Storage...'))
+        tps_proxy.call_sync(
+            method_name="CreateBackup",
+            parameters=GLib.Variant("(ss)", (self.passphrase, self.drive['parent'])),
+            flags=Gio.DBusCallFlags.NONE,
+            timeout_msec=GLib.MAXINT,
+            cancellable=None,
+        )
 
     def get_free_bytes(self, device=None):
         """ Return the number of available bytes on our device """

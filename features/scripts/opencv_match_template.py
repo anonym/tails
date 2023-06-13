@@ -49,7 +49,7 @@ def main():
         print(*match(sys.argv[1], sys.argv[2],
                      sensitivity, show_match))
     except FindFailed:
-        sys.exit(1)
+        print("FindFailed")
     except:
         traceback.print_exc()
         sys.exit(127)

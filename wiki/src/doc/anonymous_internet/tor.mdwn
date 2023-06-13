@@ -114,6 +114,13 @@ When you choose this option:
    If you choose instead to [[hide that you are connecting to Tor|tor#hiding]],
    you might have to fix the computer clock manually.
 
+1. If Tails fails to synchronize the clock because you have to sign in to the
+   network using a captive portal, an error screen is displayed that helps you
+   do so.
+
+   For detailed instructions, see how to [[sign in to the network using a
+   captive portal|unsafe_browser]].
+
 1. Then, Tails tries different ways of connecting to Tor
    until it succeeds:
 
@@ -129,16 +136,6 @@ When you choose this option:
 
 Someone monitoring your Internet connection could identify these attempts as
 coming from a Tails user.
-
-<div class="note">
-
-<p>In the future, Tails will also automatically:</p>
-
-<ul>
-<li>Detect if you have to sign in to the local network using a captive portal ([[!tails_ticket 5785]])</li>
-</ul>
-
-</div>
 
 <h1 id="hiding">Hiding to your local network that you are connecting to Tor</h1>
 
@@ -159,7 +156,8 @@ of exit nodes of the Tor network</a> is public.</p>
 Our team is doing its best to help you connect to Tor using the most discreet
 types of Tor bridges. That is why, when you decide to hide that you are connecting to Tor:
 
-<!-- Mention captive portal detection here once we have #5785 -->
+- Tails does not automatically detect whether you have to [[sign in to the
+  network using a captive portal|unsafe_browser]].
 
 - Default bridges are not available.
 

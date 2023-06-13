@@ -112,7 +112,7 @@ VM_XML_PATH = "#{Dir.pwd}/features/domains".freeze
 TAILS_SIGNING_KEY = cmd_helper(
   ". #{Dir.pwd}/config/variables; echo ${TAILS_SIGNING_KEY_FP}"
 ).tr(' ', '').chomp
-WEBM_VIDEO_URL = 'https://tails.boum.org/lib/test_suite/test.webm'.freeze
+WEBM_VIDEO_URL = 'https://tails.net/lib/test_suite/test.webm'.freeze
 
 # EFI System Partition
 ESP_GUID = 'c12a7328-f81f-11d2-ba4b-00a0c93ec93b'.freeze
@@ -123,4 +123,5 @@ CONNECTIVITY_CHECK_HOSTS = Resolv.getaddresses(CONNECTIVITY_CHECK_HOSTNAME)
 CONNECTIVITY_CHECK_ALLOWED_NODES = (CONNECTIVITY_CHECK_HOSTS.map do |ip|
   { address: ip, port: 80 }
 end).freeze
-FAKE_CONNECTIVITY_CHECK_HOSTNAME = 'httpbin.org'.freeze
+
+LAN_WEB_SERVER_DATA_DIR = "#{$config['TMPDIR']}/lan-web-server".freeze

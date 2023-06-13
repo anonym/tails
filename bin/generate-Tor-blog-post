@@ -45,12 +45,12 @@ html_body() {
         | sed '/^<\/div>$/d' \
         | sed 's@<img [^<>]*/>@@g' \
         | sed 's@<a name[^<>]*></a>@@g' \
-        | sed 's@href="\.\./@href="https://tails.boum.org/@g' \
-        | sed 's@src="\./@src="https://tails.boum.org/news/@g' \
+        | sed 's@href="\.\./@href="https://tails.net/@g' \
+        | sed 's@src="\./@src="https://tails.net/news/@g' \
         | sed 's@\(\.en\)\?.html@/@g'
 
     echo '<h1>Support and feedback</h1>'
-    echo '<p>For support and feedback, visit the <a href="https://tails.boum.org/support/">Support section</a> on the Tails website.</p>'
+    echo '<p>For support and feedback, visit the <a href="https://tails.net/support/">Support section</a> on the Tails website.</p>'
 }
 
 BODY=$(html_body | html2markdown) j2 --import-env '' \

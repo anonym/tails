@@ -47,7 +47,7 @@ install_fake_package() {
     cat > "${control_file}" << EOF
 Section: ${section}
 Priority: optional
-Homepage: https://tails.boum.org/
+Homepage: https://tails.net/
 Standards-Version: 3.9.6
 
 Package: ${name}

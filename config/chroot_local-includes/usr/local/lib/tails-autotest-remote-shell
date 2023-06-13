@@ -4,7 +4,7 @@
 # enabled by default, and is only intended for automated testing
 # purposes, which you can read more about here:
 #
-#   https://tails.boum.org/contribute/release_process/test/automated_tests/
+#   https://tails.net/contribute/release_process/test/automated_tests/
 #
 # In order for an adversary to make use of this backdoor these things
 # must be the true:
@@ -84,7 +84,7 @@ def get_user_env(user):
     if user == "amnesia":
         # Get the stored user environment
         try:
-            env_dict.update(read_user_env(user))
+            env_dict.update(read_user_env(user, allow_root=True))
         except FileNotFoundError as e:
             logging.info(f"Failed to load user env for {user}: {e}")
 
@@ -96,7 +96,7 @@ def get_user_env(user):
     # because it's only done in tests.
     if user == "root":
         try:
-            env_dict.update(read_user_env("amnesia"))
+            env_dict.update(read_user_env("amnesia", allow_root=True))
         except FileNotFoundError:
             pass
 

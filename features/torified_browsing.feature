@@ -113,13 +113,13 @@ Feature: Browsing the web using the Tor Browser
   Scenario: The persistent Tor Browser directory is usable
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And the network is plugged
-    And Tor is ready
+    And I successfully configure Tor
     And available upgrades have been checked
     And all notifications have disappeared
     Then the persistent Tor Browser directory exists
     And there is a GNOME bookmark for the persistent Tor Browser directory
     When I start the Tor Browser
-    And I open the address "https://tails.boum.org/about" in the Tor Browser
+    And I open the address "https://tails.net/about" in the Tor Browser
     And "Tails - How Tails works" has loaded in the Tor Browser
     Then I can save the current page as "index.html" to the persistent Tor Browser directory
     And I open the address "file:///home/amnesia/Persistent/Tor Browser/index.html" in the Tor Browser

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-15 09:13+0200\n"
+"POT-Creation-Date: 2023-02-15 08:44+0100\n"
 "PO-Revision-Date: 2023-01-26 22:48+0000\n"
 "Last-Translator: emma peel <emma.peel@riseup.net>\n"
 "Language-Team: Icelandic <https://hosted.weblate.org/projects/tor/tails-gui/"
@@ -22,8 +22,8 @@ msgstr ""
 "X-Generator: Weblate 4.16-dev\n"
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
-#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.AdditionalSoftware.desktop.in.h:1
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:645
+#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:557
 msgid "Additional Software"
 msgstr "Viðbótarhugbúnaður"
 
@@ -509,11 +509,10 @@ msgid "Additional Settings"
 msgstr "Aukastillingar"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:591
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:374
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
 #: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:342
 msgid "Cancel"
 msgstr "Hætta við"
 
@@ -583,12 +582,12 @@ msgstr "Slökkt"
 msgid "Off (default)"
 msgstr "Slökkt (sjálfgefið)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:165
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
 #, fuzzy
-msgid "Persistent Storage Still Locked"
+msgid "Persistent Storage Not Unlocked"
 msgstr "Varanleg gagnageymsla"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:166
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
 #, fuzzy
 msgid ""
 "Do you really want to start Tails without unlocking your Persistent Storage?"
@@ -596,52 +595,46 @@ msgstr ""
 "Viltu í alvörunni endurræsa Tails núna?\\n\\nAllt sem þú ert að vinna við "
 "mun tapast."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
 #, fuzzy
-msgid "Start Without Persistent Storage"
+msgid "Continue Without Persistent Storage"
 msgstr "Útbúa varanlega gagnageymslu"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:412
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
 #, fuzzy
 msgid "Don't _Create Persistent Storage"
 msgstr "Út_búa varanlega gagnageymslu"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:414
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:409
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
 msgid "_Create Persistent Storage"
 msgstr "Út_búa varanlega gagnageymslu"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:84
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
 msgid "Error unlocking Persistent Storage: {}"
 msgstr "Villa við að aflæsa varanlegri gagnageymslu: {}"
 
-#. Translators: Don't translate {features}, it's a placeholder
-#. and will be replaced.
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:108
-#, fuzzy, python-brace-format
-msgid "Failed to activate some features of the Persistent Storage: {features}."
-msgstr "Tókst ekki að stilla varanlega gagnageymslu"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:113
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
 msgid "Error activating Persistent Storage: {}"
 msgstr "Villa við að virkja varanlega gagnageymslu: {}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:69
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:68
 msgid "Unlocking…"
 msgstr "Aflæsi…"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:95
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:109
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:94
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:118
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:508
 msgid "Unlock"
 msgstr "Aflæsa"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:100
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:99
 #: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:40
 msgid "Cannot unlock encrypted storage with this passphrase."
 msgstr "Get ekki aflæst dulritaðri gagnageymslu með þessum lykilfrasa."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:112
 msgid ""
 "Failed to unlock the Persistent Storage. Please start Tails and send an "
 "error report."
@@ -649,19 +642,12 @@ msgstr ""
 "Mistókst að aflæsa varanlegri gagnageymslunni. Ræstu Tails og sendu "
 "villuskýrslu."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:120
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
 msgid ""
 "Failed to activate the Persistent Storage. Please start Tails and send an "
 "error report."
 msgstr ""
 "Mistókst að virkja varanlegu gagnageymsluna. Ræstu Tails og sendu "
-"villuskýrslu."
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:136
-#, fuzzy
-msgid "Start Tails and open the Persistent Storage settings to find out more."
-msgstr ""
-"Mistókst að aflæsa varanlegri gagnageymslunni. Ræstu Tails og sendu "
 "villuskýrslu."
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py:164
@@ -868,7 +854,7 @@ msgstr "Drifið er hringtengt (loopback), sleppi endurstillingu á MBR-ræsigeir
 msgid "Synchronizing data on disk..."
 msgstr "Samræmi gögn á diski..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:147
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:146
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
@@ -876,63 +862,63 @@ msgstr ""
 "Villa: gat ekki sett merkingu eða fengið UUID-auðkenni tækisins. Get ekki "
 "haldið áfram."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:181
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:180
 #, python-format
 msgid "Installation complete! (%s)"
 msgstr "Uppsetningu lokið! (%s)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:186
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:185
 msgid "Tails installation failed!"
 msgstr "Uppsetning Tails mistókst!"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:275
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:274
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:1
 msgid "Tails Installer"
 msgstr "Tails-uppsetningarforrit"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:317
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:164
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:316
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:163
 msgid "Clone the current Tails"
 msgstr "Klóna núverandi Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:324
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:185
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:323
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:184
 msgid "Use a downloaded Tails ISO image"
 msgstr "Nota Tails ISO-diskmynd sem sótt var á netinu"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:368
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:361
 msgid "Upgrade"
 msgstr "Uppfæra"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:369
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:362
 msgid "Manual Upgrade Instructions"
 msgstr "Leiðbeiningar fyrir handvirka uppfærslu"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:380
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:579
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:359
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:373
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:572
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:358
 msgid "Install"
 msgstr "Setja upp"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:383
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:376
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:131
 msgid "Installation Instructions"
 msgstr "Leiðbeiningar fyrir uppsetningu"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:390
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:383
 #, python-format
 msgid "%(size)s %(vendor)s %(model)s device (%(device)s)"
 msgstr "%(size)s %(vendor)s %(model)s tæki (%(device)s)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:402
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:395
 msgid "No ISO image selected"
 msgstr "Engin ISO-diskmynd valin"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:403
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:396
 msgid "Please select a Tails ISO image."
 msgstr "Veldu Tails ISO-diskmynd."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:465
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:458
 #, python-format
 msgid ""
 "The USB stick \"%(pretty_name)s\" is configured as non-removable by its "
@@ -943,7 +929,7 @@ msgstr ""
 "til að vera útskiptanlegur, Tails mun því ekki geta ræst upp af honum. "
 "Prófaðu að nota einhverja aðra tegund minnislykils."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:475
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:468
 #, python-format
 msgid ""
 "The device \"%(pretty_name)s\" is too small to install Tails (at least "
@@ -952,7 +938,7 @@ msgstr ""
 "Tækið \"%(pretty_name)s\" er of lítið til að hægt sé að setja Tails upp á "
 "því (að minnsta kosti %(size)s GB eru nauðsynleg)."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:488
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:481
 #, python-format
 msgid ""
 "To upgrade device \"%(pretty_name)s\" from this Tails, you need to use a "
@@ -963,35 +949,35 @@ msgstr ""
 "að nota Tails ISO diskmynd sem þú nærð í hér:\n"
 "%(dl_url)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:508
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:501
 msgid "No device suitable to install Tails could be found"
 msgstr "Ekkert hentugt tæki fannst til uppsetningar á Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:510
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:503
 #, python-format
 msgid "Please plug a USB flash drive or SD card of at least %0.1f GB."
 msgstr ""
 "Tengdu USB-minnislykil eða SD-minniskort með að minnsta kosti %0.1f GB "
 "gagnarýmd."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:522
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:515
 msgid "An error happened while installing Tails"
 msgstr "Villa kom upp við að setja upp Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:574
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:567
 msgid "Installation complete!"
 msgstr "Uppsetningu lokið!"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:629
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:622
 msgid "Unable to mount device"
 msgstr "Tókst ekki að tengja tæki"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:635
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:628
 #, python-format
 msgid "%(parent_size)s %(vendor)s %(model)s device (%(device)s)"
 msgstr "%(parent_size)s %(vendor)s %(model)s tæki (%(device)s)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:644
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:637
 msgid ""
 "\n"
 "\n"
@@ -1001,11 +987,11 @@ msgstr ""
 "\n"
 "Varanlega gagnageymslan á þessum USB-lykli mun tapast."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:645
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:638
 msgid "Delete Persistent Storage and Reinstall"
 msgstr "Eyða varanlegri gagnageymslu og setja upp aftur"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:647
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:640
 msgid ""
 "\n"
 "\n"
@@ -1015,20 +1001,20 @@ msgstr ""
 "\n"
 "Öll gögn á þessum USB-lykli munu tapast."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:648
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:641
 msgid "Delete All Data and Install"
 msgstr "Eyða öllum gögnum og setja upp"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:649
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:642
 #, python-format
 msgid "%(description)s%(delete_message)s"
 msgstr "%(description)s%(delete_message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:653
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:646
 msgid "Confirm the target USB stick"
 msgstr "Staðfestu USB-minnislykilinn sem á að skrifa á"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:694
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:687
 msgid ""
 "The selected file is unreadable. Please fix its permissions or select "
 "another file."
@@ -1036,7 +1022,7 @@ msgstr ""
 "Skráin sem þú valdir er ekki lesanleg. Lagaðu heimildir hennar eða veldu "
 "aðra skrá."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:700
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:693
 msgid ""
 "Unable to use the selected file.  You may have better luck if you move your "
 "ISO to the root of your drive (ie: C:\\)"
@@ -1044,7 +1030,7 @@ msgstr ""
 "Gat ekki notað völdu skrána. Það gæti gengið betur ef þú færir ISO-skrána á "
 "rót drifsins (dæmi: C:\\)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:706
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:699
 #, python-format
 msgid "%(filename)s selected"
 msgstr "%(filename)s valið"
@@ -1132,8 +1118,7 @@ msgstr "su er óvirkt. Notaðu frekar sudo."
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:72
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:38
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:46
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:314
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:460
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:593
@@ -1199,7 +1184,7 @@ msgstr "ekki tiltækt"
 
 #. Translators: Don't translate {details}, it's a placeholder and will
 #. be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:157
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:150
 #, python-brace-format
 msgid ""
 "{details} Please check your list of additional software or read the system "
@@ -1208,7 +1193,7 @@ msgstr ""
 "{details} Athugaðu listann yfir viðbótarhugbúnaðinn eða lestu kerfisannálana "
 "svo þú getir skilið betur hvað er í gangi."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:162
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:155
 msgid ""
 "Please check your list of additional software or read the system log to "
 "understand the problem."
@@ -1216,56 +1201,56 @@ msgstr ""
 "Athugaðu listann yfir viðbótarhugbúnaðinn eða lestu kerfisannálana svo þú "
 "getir skilið betur hvað er í gangi."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:166
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
 msgid "Show Log"
 msgstr "Birta atvikaskrá"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:166
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
 msgid "Configure"
 msgstr "Stilla"
 
 #. Translators: Don't translate {beginning} or {last}, they are
 #. placeholders and will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:232
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:225
 #, python-brace-format
 msgid "{beginning} and {last}"
 msgstr "{beginning} og {last}"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:233
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:226
 msgid ", "
 msgstr ", "
 
 #. Translators: Don't translate {packages}, it's a placeholder and will
 #. be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:298
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:328
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:291
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:321
 #, python-brace-format
 msgid "Add {packages} to your additional software?"
 msgstr "Bæta {packages} í viðbótarhugbúnaðinn þinn?"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:300
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:293
 msgid ""
 "To install it automatically from your persistent storage when starting Tails."
 msgstr ""
 "Til að setja þetta sjálfvirkt upp úr varanlegri gagnageymslu við ræsingu "
 "Tails."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:302
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:295
 msgid "Install Every Time"
 msgstr "Setja upp í hvert skipti"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:303
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:334
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:296
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:327
 msgid "Install Only Once"
 msgstr "Setja upp aðeins einu sinni"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:309
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:339
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:379
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:302
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:332
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:372
 msgid "The configuration of your additional software failed."
 msgstr "Stillingar á viðbótarhugbúnaðnum þínum mistókst."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:330
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:323
 msgid ""
 "To install it automatically when starting Tails, you can create a persistent "
 "storage and activate the <b>Additional Software</b> feature."
@@ -1273,67 +1258,67 @@ msgstr ""
 "Til að setja þetta sjálfvirkt upp við ræsingu Tails, geturðu útbúið úr "
 "varanlega gagnageymslu og virkjað eiginleikann <b>Viðbótarhugbúnaður</b>."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:333
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:246
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:326
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:265
 msgid "Create Persistent Storage"
 msgstr "Útbúa varanlega gagnageymslu"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:341
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:334
 msgid "Creating your persistent storage failed."
 msgstr "Mistókst að útbúa varanlega gagnageymslu."
 
 #. Translators: Don't translate {packages}, it's a placeholder and
 #. will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:350
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:343
 #, python-brace-format
 msgid "You could install {packages} automatically when starting Tails"
 msgstr "Þú getur sett upp {packages} sjálfvirkt við ræsingu Tails"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:353
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:346
 msgid "To do so, you need to run Tails from a USB stick."
 msgstr "Til að gera þetta, þarftu að keyra Tails af USB-minnislykli."
 
 #. Translators: Don't translate {packages}, it's a placeholder and will be
 #. replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:360
 #, python-brace-format
 msgid "Remove {packages} from your additional software?"
 msgstr "Fjarlægja {packages} úr viðbótarhugbúnaðnum þínum?"
 
 #. Translators: Don't translate {packages}, it's a placeholder
 #. and will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:371
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:364
 #, python-brace-format
 msgid "This will stop installing {packages} automatically."
 msgstr "Þetta mun hætta að setja upp {packages} sjálfvirkt."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:373
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:366
 #: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:163
 msgid "Remove"
 msgstr "Fjarlægja"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:549
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:543
 msgid "Installing your additional software from persistent storage..."
 msgstr "Set sjálfvirkt upp viðbótarhugbúnað úr varanlegri gagnageymslu..."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:551
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:545
 msgid "This can take several minutes."
 msgstr "Þetta gæti tekið nokkrar mínútur."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:564
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:558
 msgid "The installation of your additional software failed"
 msgstr "Uppsetning á viðbótarhugbúnaðnum þínum mistókst"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:579
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:573
 msgid "Additional software installed successfully"
 msgstr "Það tókst að setja upp viðbótarhugbúnað"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:599
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:593
 msgid "The check for upgrades of your additional software failed"
 msgstr "Athugun á uppfærslum á viðbótarhugbúnaðnum þínum mistókst"
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:601
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:609
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:595
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:603
 msgid ""
 "Please check your network connection, restart Tails, or read the system log "
 "to understand the problem."
@@ -1341,11 +1326,11 @@ msgstr ""
 "Athugaðu nettenginguna þína, endurræstu Tails eða lestu kerfisannálana svo "
 "þú getir skilið betur hvað er í gangi."
 
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:608
+#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:602
 msgid "The upgrade of your additional software failed"
 msgstr "Uppfærsla á viðbótarhugbúnaðnum þínum mistókst"
 
-#: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:36
+#: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:37
 msgid "Documentation"
 msgstr "Hjálparskjöl"
 
@@ -1508,19 +1493,19 @@ msgstr ""
 "Skoðaðu {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:76
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:37
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:45
 msgid "error:"
 msgstr "villa:"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:21
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:23
 msgid "Warning: virtual machine detected!"
 msgstr "Aðvörun: sýndarvél fannst!"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:23
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:25
 msgid "Warning: non-free virtual machine detected!"
 msgstr "Aðvörun: ófrjáls sýndarvél fannst!"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:25
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:27
 msgid ""
 "Both the host operating system and the virtualization software are able to "
 "monitor what you are doing in Tails. Only free software can be considered "
@@ -1532,11 +1517,11 @@ msgstr ""
 "treysta frjálsum og opnum hugbúnaði, bæði hvað varðar hýsilstýrikerfið og "
 "sýndarvélarhugbúnaðinn."
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:38
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:40
 msgid "Don't Show Again"
 msgstr "Ekki birta þetta aftur"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:40
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:42
 msgid "Learn More"
 msgstr "Fræðast frekar"
 
@@ -1718,205 +1703,6 @@ msgstr "Staða Tor"
 msgid "Open Onion Circuits"
 msgstr "Opnar Onion-rásir"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:23
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:47
-#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:379
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
-msgid "Persistent Storage"
-msgstr "Varanleg gagnageymsla"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:46
-#, fuzzy
-msgid "Failed to start the Persistent Storage service"
-msgstr "Tókst ekki að stilla varanlega gagnageymslu"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:73
-msgid "Could not find the WhisperBack application"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:80
-#, fuzzy
-msgid "Delete Data…"
-msgstr "Eyða"
-
-#. Translators: Don't translate {feature}, it's a placeholder
-#. and will be replaced.
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:86
-#, python-brace-format
-msgid "Delete {feature} data"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:105
-#, fuzzy
-msgid "Activation failed"
-msgstr "Virkja faldar punktaskrár"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:161
-msgid "Activation failed. Try again or delete data."
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:163
-msgid "Activation failed. Try again."
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:165
-msgid "The data of this feature is still saved."
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:266
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:271
-#, fuzzy
-msgid "Error activating feature {}"
-msgstr "Villa við að virkja varanlega gagnageymslu: {}"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:309
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:314
-#, fuzzy
-msgid "Error deactivating feature {}"
-msgstr "Villa við að virkja varanlega gagnageymslu: {}"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:333
-msgid ""
-"Delete all the data of the {} feature that is saved in the Persistent "
-"Storage?\n"
-"\n"
-"If you cancel, the data will be restored when you turn this feature on again."
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:343
-#, fuzzy
-msgid "_Delete Data"
-msgstr "Eyða"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:371
-msgid "Error deleting data of feature {}"
-msgstr ""
-
-#. Translators: Don't translate {applications}, it's a placeholder
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:455
-#, python-brace-format
-msgid "Close {applications} to continue"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:456
-msgid " and "
-msgstr ""
-
-#. Translators: Don't translate {app} and {pid}, they
-#. are placeholders.
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:467
-#, python-brace-format
-msgid "{app} (PID: {pid})"
-msgstr ""
-
-#. Translators: Don't translate {app} and {pids}, they
-#. are placeholders.
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:472
-#, python-brace-format
-msgid "{app} (PIDs: {pids})"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:36
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:8
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:56
-msgid "Change Passphrase"
-msgstr "Breyta lykilsetningu"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:83
-#, fuzzy
-msgid "The current passphrase is incorrect"
-msgstr "Lykilsetningarnar stemma ekki"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:92
-#, fuzzy
-msgid "Changing the passphrase failed"
-msgstr "Breyta lykilsetningu"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:41
-msgid "Weak"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:44
-msgid "Fair"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:47
-msgid "Good"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:50
-msgid "Strong"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/error_dialog.py:36
-msgid "You can send an error report to help solve the issue."
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/error_dialog.py:42
-#, fuzzy
-msgid "_Send Error Report"
-msgstr "Senda villutilkynningu"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:144
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:175
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
-msgid "Delete Persistent Storage"
-msgstr "Eyða varanlegri gagnageymslu"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:146
-msgid ""
-"Are you sure that you want to delete your Persistent Storage? This action "
-"cannot be undone."
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:149
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
-msgid "_Cancel"
-msgstr "_Hætta við"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:150
-#, fuzzy
-msgid "_Delete Persistent Storage"
-msgstr "Eyða varanlegri gagnageymslu"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:160
-#, fuzzy
-msgid "Deleting your Persistent Storage"
-msgstr "Eyða varanlegri gagnageymslu"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:177
-msgid ""
-"To delete the Persistent Storage, restart Tails without unlocking the "
-"Persistent Storage and open the Persistent Storage settings again."
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:181
-msgid "_OK"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:189
-msgid ""
-"Sorry, you can't close this app until the ongoing operation has completed."
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:191
-msgid "Please wait"
-msgstr ""
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:211
-#, fuzzy
-msgid "Failed to create Persistent Storage"
-msgstr "Tókst ekki að stilla varanlega gagnageymslu"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:230
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:234
-#, fuzzy
-msgid "Error deleting Persistent Storage"
-msgstr "Villa við að aflæsa varanlegri gagnageymslu: {}"
-
 #. Translators: Don't translate {volume_label} or {volume_size},
 #. they are placeholders and will be replaced. They need
 #. to be present in the translated string.
@@ -2090,11 +1876,11 @@ msgstr ""
 msgid "Choose File Container"
 msgstr "Veldu skráagám"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:48
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
 msgid "The Unsafe Browser was disabled in the Welcome Screen.\\n\\n"
 msgstr "Óöruggi vafrinn var gerður óvirkur á upphafsskjánum.\\n\\n"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:51
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
 msgid ""
 "To use the Unsafe Browser, restart Tails and make sure that the Unsafe "
 "Browser is enabled in the additional settings of the Welcome Screen."
@@ -2102,15 +1888,21 @@ msgstr ""
 "Til að nota óörugga netvafrann skaltu endurræsa Tails og ganga úr skugga um "
 "að óöruggi vafrinn sé virkjaður í viðbótarstillingum upphafsskjásins."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:53
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
 msgid "To use the Unsafe Browser, restart Tails."
 msgstr "Til að nota óörugga netvafrann skaltu endurræsa Tails."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:64
 msgid "_Restart"
 msgstr "Endu_rræsa"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
+msgid "_Cancel"
+msgstr "_Hætta við"
+
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:66
 msgid ""
 "Do you really want to restart Tails now?\\n\\nAll your current work will be "
 "lost."
@@ -2118,27 +1910,27 @@ msgstr ""
 "Viltu í alvörunni endurræsa Tails núna?\\n\\nAllt sem þú ert að vinna við "
 "mun tapast."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:67
 msgid "Restart Now"
 msgstr "Endurræsa núna"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:66
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
 msgid "Failed to restart the system."
 msgstr "Mistókst að endurræsa kerfið."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
 msgid "Starting the Unsafe Browser..."
 msgstr "Ræsi óörugga netvafrann..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:75
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:83
 msgid "This may take a while, so please be patient."
 msgstr "Þetta getur tekið dálítinn tíma, sýndu smá þolinmæði."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:81
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:89
 msgid "Shutting down the Unsafe Browser..."
 msgstr "Stöðva óörugga netvafrann..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:90
 msgid ""
 "This may take a while, and you may not restart the Unsafe Browser until it "
 "is properly shut down."
@@ -2146,13 +1938,13 @@ msgstr ""
 "Þetta getur tekið smá tíma, ekki er víst að hægt sé að ræsa óöruggan vafra "
 "fyrr enn því er lokið."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:95
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:1
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:512
 msgid "Unsafe Browser"
 msgstr "Óöruggur vafri"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:110
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:117
 msgid ""
 "Another Unsafe Browser is currently running, or being cleaned up. Please "
 "retry in a while."
@@ -2160,15 +1952,15 @@ msgstr ""
 "Annað tilvik af óörugga netvafranum er í gangi eða er verið að hreinsa upp "
 "eftir slíkt. Prófaðu aftur eftir smá stund."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:117
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:124
 msgid "Failed to setup chroot."
 msgstr "Mistókst að setja upp chroot."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:123
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:130
 msgid "Failed to configure browser."
 msgstr "Mistókst að stilla vafra."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:125
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:132
 msgid ""
 "You are not connected to a local network yet.\\n\\nTo be able to start the "
 "Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile "
@@ -2353,6 +2145,11 @@ msgstr "Tilkynna um vandamál"
 msgid "Tails documentation"
 msgstr "Hjálparskjöl Tails"
 
+#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
+msgid "Persistent Storage"
+msgstr "Varanleg gagnageymsla"
+
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:2
 msgid ""
 "Configure which files and application configuration are saved between "
@@ -2377,19 +2174,6 @@ msgstr "Lærðu hvernig á að nota Tails"
 #: ../config/chroot_local-includes/usr/share/applications/tails-about.desktop.in.h:2
 msgid "Learn more about Tails"
 msgstr "Læra meira um Tails"
-
-#: ../config/chroot_local-includes/usr/share/applications/tails-backup.desktop.in.h:1
-#, fuzzy
-msgid "Back Up Persistent Storage"
-msgstr "Varanleg gagnageymsla"
-
-#: ../config/chroot_local-includes/usr/share/applications/tails-backup.desktop.in.h:2
-#, fuzzy
-msgid ""
-"Make a backup of the Tails Persistent Storage to another Tails USB stick"
-msgstr ""
-"Kveiktu á eiginleikum varanlegu gagnageymslunnar fyrir þau gögn sem þú vilt "
-"vista á USB-lykil Tails."
 
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:2
 msgid "Install, clone, upgrade Tails"
@@ -2419,7 +2203,7 @@ msgstr "Óöruggur netvafri"
 msgid "Mount VeraCrypt encrypted file containers and devices"
 msgstr "Tengja dulritaða VeraCrypt skráagáma og tæki í skrárkerfi"
 
-#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.AdditionalSoftware.desktop.in.h:2
+#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:2
 msgid ""
 "Configure the additional software installed from your persistent storage "
 "when starting Tails"
@@ -2448,11 +2232,11 @@ msgid "To start a Root Terminal, you need to authenticate."
 msgstr ""
 "Til að ræsa skipanalínu sem kerfisstjóri (root), verðurðu að auðkenna þig."
 
-#: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.AdditionalSoftware.policy.in.h:1
+#: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.additional-software.policy.in.h:1
 msgid "Remove an additional software package"
 msgstr "Fjarlægja viðbótarhugbúnaðarpakka"
 
-#: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.AdditionalSoftware.policy.in.h:2
+#: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.additional-software.policy.in.h:2
 msgid ""
 "Authentication is required to remove a package from your additional software "
 "($(command_line))"
@@ -2462,7 +2246,7 @@ msgstr ""
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:18
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:56
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:744
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:739
 msgid "Administration Password"
 msgstr "Lykilorð kerfisstjórnunar"
 
@@ -2489,7 +2273,7 @@ msgid "Disable"
 msgstr "Gera óvirkt"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:154
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:748
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:743
 msgid "MAC Address Anonymization"
 msgstr "Nafnleysi MAC-vistfangs"
 
@@ -2514,7 +2298,7 @@ msgid "Don't anonymize MAC addresses"
 msgstr "Ekki gera MAC-vistföng nafnlaus"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:311
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:752
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:747
 msgid "Network Configuration"
 msgstr "Stillingar netkerfis"
 
@@ -2598,11 +2382,11 @@ msgstr "Stillingum var hlaðið inn úr varanlegri gagnageymslu."
 msgid "Welcome to Tails!"
 msgstr "Velkomin í Tails!"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:181
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:186
 msgid "_Persistent Storage"
 msgstr "_Varanleg gagnageymsla"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:213
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:232
 msgid ""
 "You can save some of your files and configuration in an encrypted Persistent "
 "Storage on your Tails USB stick: your documents, browser bookmarks, Wi-Fi "
@@ -2612,52 +2396,49 @@ msgstr ""
 "gagnageymslu á USB-minnislykli Tails; skjölin þín, bókamerki vafrans, Wi-Fi "
 "lykilorð og ýmislegt fleira."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:227
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:246
 msgid ""
 "You will create and configure your Persistent Storage after starting Tails."
 msgstr ""
 "Þú munt setja upp og stilla varanlegu gagnageymsluna þína eftir að Tails er "
 "ræst."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:280
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:300
 msgid "Language & Region"
 msgstr "Tungumál og landsvæði"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:316
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:336
 msgid "Default Settings"
 msgstr "Sjálfgefnar stillingar"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:418
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:399
+msgid "Encrypted _Persistent Storage"
+msgstr "Dulrituð varanleg _gagnageymsla"
+
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:440
 msgid "Show Passphrase"
 msgstr "Birta lykilsetningu"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:471
-#, fuzzy
-msgid "_Passphrase"
-msgstr "Lykilfrasi:"
+#. The label for this placeholder text is not very big, so keep this string short.
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:493
+msgid "Enter your passphrase to unlock the persistent storage"
+msgstr "Settu inn lykilfrasann til að aflæsa varanlegu gagnageymslunni"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:506
-msgid "Unlock Encryption"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:547
-#, fuzzy
-msgid ""
-"Your Persistent Storage is unlocked. Its content will be available until you "
-"shut down Tails."
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:541
+msgid "Your persistent storage is unlocked. Restart Tails to lock it again."
 msgstr ""
 "Varanlega gagnageymslan þín er ólæst. Endurræstu Tails til að læsa henni "
 "aftur."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:584
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:579
 msgid "_Additional Settings"
 msgstr "Viðbót_arstillingar"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:667
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:662
 msgid "Add an additional setting"
 msgstr "Bæta við aukastillingum"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:716
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:711
 msgid ""
 "The default settings are safe in most situations. To add a custom setting, "
 "press the \"+\" button below."
@@ -2665,13 +2446,18 @@ msgstr ""
 "Sjálfgefnar stillingar eru í flestum tilfellum nógu öruggar. Til að bæta við "
 "sérsniðnum stillingum, ýttu á \"+\" hnappinn hér fyrir neðan."
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:760
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:755
 msgid "Shutdown"
 msgstr "Slökkva"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:771
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:766
 msgid "_Start Tails"
 msgstr "Ræ_sa Tails"
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:8
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:56
+msgid "Change Passphrase"
+msgstr "Breyta lykilsetningu"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:95
 msgid "Current _Passphrase"
@@ -2690,7 +2476,7 @@ msgid "_Show Passphrases"
 msgstr "_Birta lykilsetningar"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:253
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:301
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:213
 msgid "The passphrases do not match"
 msgstr "Lykilsetningarnar stemma ekki"
 
@@ -2759,154 +2545,139 @@ msgstr "Einkagögn"
 msgid "Persistent Folder"
 msgstr "Varanleg mappa"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:159
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:153
 msgid "Open Persistent Folder"
 msgstr "Opna varanlega möppu"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:172
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:166
 msgid "Activate Persistent Folder"
 msgstr "Virkja varanlega möppu"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:199
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:191
 msgid "System Settings"
 msgstr "Kerfisstillingar"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:227
-#, fuzzy
-msgid "Welcome Screen"
-msgstr "Virkja upphafsskjá"
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:243
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:229
 msgid "Activate Welcome Screen"
 msgstr "Virkja upphafsskjá"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:256
-#, fuzzy
-msgid "Printers"
-msgstr "Virkja prentara"
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:272
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:250
 msgid "Activate Printers"
 msgstr "Virkja prentara"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:299
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:275
 msgid "Network"
 msgstr "Netkerfi"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:327
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:303
 msgid "Network Connections"
 msgstr "Nettengingar"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:328
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:304
 msgid "Save Wi-Fi passwords and mobile broadband configuration."
 msgstr "Vista Wi-Fi lykilorð og uppsetningu farsímabreiðbanda."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:344
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:314
 msgid "Activate Network Connections"
 msgstr "Virkja nettengingar"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:357
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:325
 msgid "Tor Bridge"
 msgstr "Tor-brú"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:373
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:335
 msgid "Activate Tor Bridge"
 msgstr "Virkja Tor-brú"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:400
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:360
 msgid "Applications"
 msgstr "Forrit"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:428
-#, fuzzy
-msgid "Tor Browser Bookmarks"
-msgstr "Virkja bókamerki Tor-vafrans"
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:444
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:398
 msgid "Activate Tor Browser Bookmarks"
 msgstr "Virkja bókamerki Tor-vafrans"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:457
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:409
 msgid "Electrum Bitcoin Wallet"
 msgstr "Bitcoin-veski í Electrum"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:473
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:419
 #, fuzzy
 msgid "Activate Electrum Bitcoin Wallet"
 msgstr "Virkja Electrum-rafmyntaveski"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:486
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:430
 msgid "Thunderbird Email Client"
 msgstr "Thunderbird tölvupóstforrit"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:502
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:440
 msgid "Activate Thunderbird Email Client"
 msgstr "Virkja Thunderbird tölvupóstforrit"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:515
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:451
 msgid "GnuPG"
 msgstr "GnuPG"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:516
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:452
 msgid "OpenPGP keys outside of Thunderbird."
 msgstr "OpenPGP-lyklar fyrir utan Thunderbird."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:532
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:462
 msgid "Activate GnuPG"
 msgstr "Virkja GnuPG"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:545
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:473
 #, fuzzy
 msgid "Pidgin Internet Messenger"
 msgstr "Pidgin Internet Messenger"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:561
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:483
 msgid "Activate Pidgin Internet Messenger"
 msgstr "Virkja Pidgin Internet Messenger"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:574
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:494
 msgid "SSH Client"
 msgstr "SSH-biðlari"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:590
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:504
 msgid "Activate SSH Client"
 msgstr "Virkja SSH-biðlara"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:617
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:529
 msgid "Advanced Settings"
 msgstr "Ítarlegar stillingar"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:646
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:558
 msgid "Install additional software automatically when starting Tails."
 msgstr "Settu upp viðbótarhugbúnað við ræsingu Tails."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:671
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:577
 msgid "Configure Additional Software"
 msgstr "Stilla viðbótarhugbúnað"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:684
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:590
 msgid "Activate Additional Software"
 msgstr "Virkja viðbótarhugbúnað"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:697
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:601
 msgid "Dotfiles"
 msgstr "Punktaskrár (dotfiles - faldar skrár)"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:698
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:602
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
 msgstr ""
 "Gera tákntengi (symlink) út öllum skrám í földu punktmöppunni yfir í "
 "heimamöppu."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:731
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
 msgid "Activate Dotfiles"
 msgstr "Virkja faldar punktaskrár"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:763
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
 msgid "Custom"
 msgstr "Sérsniðið"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:782
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:678
 msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
@@ -2914,7 +2685,7 @@ msgstr ""
 "Til að bæta við eða fjarlægja sérsniðna eiginleika, skaltu breyta /live/"
 "persistence/TailsData_unlocked/persistence.conf."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:824
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
 #, fuzzy
 msgid ""
 "<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
@@ -2939,11 +2710,12 @@ msgstr ""
 "Til að nota eða stilla varanlegu gagnageymsluna þína, skaltu aflæsa henni á "
 "upphafsskjánum þegar þú ræsir Tails."
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:62
-#, fuzzy
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:52
 msgid ""
 "Choose the passphrase that you will use to unlock the encryption of your "
-"Persistent Storage and all its data."
+"Persistent Storage and all its data.\n"
+"\n"
+"We recommend a long passphrase of 5 to 7 random words."
 msgstr ""
 "Veldu lykilsetninguna sem þú munt nota til að aflæsa dulrituninni á "
 "varanlegu gagnageymslunni þinni og öllum gögnum í henni.\n"
@@ -2952,26 +2724,18 @@ msgstr ""
 "handahófi."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:82
-msgid "We recommend a long passphrase of 5 to 7 random words."
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:94
-msgid " For example:"
-msgstr ""
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:186
 msgid "Passphrase:"
 msgstr "Lykilfrasi:"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:205
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:101
 msgid "Confirm:"
 msgstr "Staðfesta:"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:325
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:178
 msgid "_Show Passphrase"
 msgstr "_Birta lykilsetningu"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:393
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:265
 msgid "_Back"
 msgstr "Til _baka"
 
@@ -3024,14 +2788,16 @@ msgid "Co_ntinue"
 msgstr "_Halda áfram"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:29
-#, fuzzy
-msgid "_Delete…"
-msgstr "Eyða"
+msgid "_Delete..."
+msgstr "_Eyða..."
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
+msgid "Delete Persistent Storage"
+msgstr "Eyða varanlegri gagnageymslu"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:49
-#, fuzzy
-msgid "_Change Passphrase…"
-msgstr "Breyta lykilsetningu"
+msgid "_Change Passphrase..."
+msgstr "_Breyta lykilsetningu..."
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:66
 msgid "_Restart Tails"
@@ -3075,11 +2841,11 @@ msgstr "_Aflæsa"
 msgid "Detach this volume"
 msgstr "Aftengja þessa gagnageymslu"
 
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:266
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:265
 msgid "Target USB stick:"
 msgstr "USB-minnislykill til að skrifa á:"
 
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:342
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:341
 msgid "Reinstall (delete all data)"
 msgstr "Setja upp aftur (eyða öllum gögnum)"
 
@@ -3430,13 +3196,12 @@ msgstr ""
 "gagnvart einhverjum sem væri að fylgjast með internettengingunni þinni."
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1499
-#, fuzzy
 msgid ""
 "Tails will only connect to Tor after you configured a Tor bridge. Bridges "
 "are secret Tor relays that hide that you are connecting to Tor.\n"
 "\n"
 "Our team is doing its best to help you connect to Tor using the most "
-"discreet types of Tor bridges.\n"
+"discrete types of Tor bridges.\n"
 "\n"
 "You will have to do extra configuration if you don't know any Tor bridges "
 "yet, if you connect from a public Wi-Fi network, or if you are in the "
@@ -3647,18 +3412,6 @@ msgstr "desember"
 msgid "Clock"
 msgstr "Klukka"
 
-#~ msgid "Encrypted _Persistent Storage"
-#~ msgstr "Dulrituð varanleg _gagnageymsla"
-
-#~ msgid "Enter your passphrase to unlock the persistent storage"
-#~ msgstr "Settu inn lykilfrasann til að aflæsa varanlegu gagnageymslunni"
-
-#~ msgid "_Delete..."
-#~ msgstr "_Eyða..."
-
-#~ msgid "_Change Passphrase..."
-#~ msgstr "_Breyta lykilsetningu..."
-
 #, python-format
 #~ msgid ""
 #~ "<h1>Help us fix your bug!</h1>\n"
@@ -3868,6 +3621,9 @@ msgstr "Klukka"
 #~ msgstr ""
 #~ "Varanlegu gagnageymslunni {partition} ({size}), á <b>{vendor} {model}</b> "
 #~ "tækinu, verður eytt."
+
+#~ msgid "Delete"
+#~ msgstr "Eyða"
 
 #~ msgid "Deleting the persistent volume..."
 #~ msgstr "Eyði varanlegu gagnageymslunni..."
