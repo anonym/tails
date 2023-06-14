@@ -113,7 +113,9 @@ module Dogtail
       elsif value.instance_of?(String)
         # Since we use single-quote the string we have to escape any
         # occurrences inside.
-        "'#{value.gsub("'", "\\\\'")}'"
+        # We also prefix the string with 'r' to make it a raw string,
+        # which means we don't have to escape backslashes.
+        "r'#{value.gsub("'", "\\\\'")}'"
       elsif [Integer, Float].include?(value.class)
         value.to_s
       else
