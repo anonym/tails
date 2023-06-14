@@ -33,11 +33,11 @@ module Dogtail
       @opts[:user] ||= LIVE_USER
       @opts[:retry] = true unless @opts.key?(:retry)
 
-      if @opts[:retry] == false
-        @find_code = "dogtail.tree.root.application('#{@app_name}', retry=False)"
-      else
-        @find_code = "dogtail.tree.root.application('#{@app_name}')"
-      end
+      @find_code = if @opts[:retry] == false
+                     "dogtail.tree.root.application('#{@app_name}', retry=False)"
+                   else
+                     "dogtail.tree.root.application('#{@app_name}')"
+                   end
 
       init = []
       if @opts[:user] == LIVE_USER
