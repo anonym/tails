@@ -7,7 +7,7 @@ Cmnd_Alias TPS_CONNECT_DROP = /usr/local/lib/connect-drop-tps /tmp/*-env
 Defaults!TPS_CONNECT_DROP env_keep+="DESKTOP_STARTUP_ID"
 Defaults!TPS_CONNECT_DROP env_keep+="NOTIFY_SOCKET"
 
-# tps-frontend-wrapper, which is run as amnesia, must be able to
+# tails-persistent-storage, which is run as amnesia, must be able to
 # execute connect-drop-tps as the privileged tails-persistent-storage
 # user so that connect-drop is able to authenticate to D-Bus as that user.
 amnesia   ALL = (tails-persistent-storage)    NOPASSWD: TPS_CONNECT_DROP
