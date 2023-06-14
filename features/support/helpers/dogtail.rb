@@ -131,21 +131,9 @@ module Dogtail
     # into the parentheses of a Python function call.
     # Example: 42, :foo: 'bar' => "42, foo = 'bar'"
     def self.args_to_s(*args, **kwargs)
-      return '' if args.empty? && kwargs.empty?
-
       (
-        (if args.nil?
-           []
-         else
-           args.map { |e| value_to_s(e) }
-         end
-        ) +
-        (if kwargs.nil?
-           []
-         else
-           kwargs.map { |k, v| "#{k}=#{value_to_s(v)}" }
-         end
-        )
+        args.map   { |e| value_to_s(e) } +
+        kwargs.map { |k, v| "#{k}=#{value_to_s(v)}" }
       ).join(', ')
     end
 
