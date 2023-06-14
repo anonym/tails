@@ -50,7 +50,7 @@ Feature: Installing Tails to a USB drive
     And there is a persistence partition on USB drive "install"
     And the USB drive "install" contains the same files as my persistent storage
 
-    Scenario: Installing Tails with Persistent Storage with Tails Installer to a pristine USB drive
+    Scenario: Installing Tails with Tails Installer to a pristine USB drive without cloning the Persistent Storage
     Given I have started Tails without network from a USB drive with a persistent partition enabled and logged in
     And I create a file in the Persistent directory
     And I temporarily create a 7200 MiB disk named "install"
