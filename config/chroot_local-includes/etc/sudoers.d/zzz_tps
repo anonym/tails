@@ -1,0 +1,18 @@
+# Allow amnesia to run /usr/local/bin/tails-persistent-storage as the
+# privileged tails-persistent-storage user. This is needed to connect
+# to the tps D-Bus service. See
+# config/chroot_local-includes/usr/local/bin/tails-persistent-storage
+# for details.
+Cmnd_Alias TPS = /usr/local/bin/tails-persistent-storage
+Defaults!TPS env_keep+="ENVFILE"
+amnesia   ALL =(tails-persistent-storage)    NOPASSWD: TPS
+
+# Allow the privileged tails-persistent-storage user to use the
+# --close-from option which is needed to close all file descriptors
+# except for the ones we want to pass to tps.
+Defaults:tails-persistent-storage closefrom_override
+
+# Allow the privileged tails-persistent-storage user to run commands as
+# the amnesia user, so that it can run the tps-frontend script as
+# amnesia.
+tails-persistent-storage   ALL = (amnesia)    NOPASSWD: ALL

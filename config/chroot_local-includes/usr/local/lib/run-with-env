@@ -17,21 +17,20 @@ import argparse
 from tailslib.userenv import read_allowed_env_from_file, allowed_env
 
 
-def get_parser():
-    p = argparse.ArgumentParser()
-    p.add_argument("--env-file", required=True)
-    p.add_argument("--delete", action='store_true', default=False)
-    p.add_argument('cmd', nargs='+')
-
-    return p
-
-
 def main():
     if os.geteuid() != 1000:
         print(f"{sys.argv[0]}: This script must be run as amnesia", file=sys.stderr)
         sys.exit(1)
 
-    args = get_parser().parse_args()
+    # Parse arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--env-file", required=True)
+    parser.add_argument("--delete", action='store_true', default=False)
+    parser.add_argument("CMD", help="Command to run")
+    parser.add_argument("ARGS", nargs=argparse.REMAINDER,
+                        help="Arguments to pass to the command")
+    args = parser.parse_args()
+
     env = read_allowed_env_from_file(args.env_file)
 
     # Update with environment variables from the current environment
@@ -40,9 +39,8 @@ def main():
 
     if args.delete:
         os.remove(args.env_file)
-        del sys.argv[2]
 
-    os.execvpe(args.cmd[0], args.cmd, env=env)
+    os.execvpe(args.CMD, [args.CMD] + args.ARGS, env)
 
 
 if __name__ == "__main__":
