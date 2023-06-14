@@ -98,13 +98,13 @@ module Dogtail
     end
 
     def exist?
-      run('dogtail.config.searchCutoffCount = 0')
+      run('dogtail.config.config.searchCutoffCount = 0')
       run(@find_code)
       true
     rescue StandardError
       false
     ensure
-      run('dogtail.config.searchCutoffCount = 20')
+      run('dogtail.config.config.searchCutoffCount = 20')
     end
 
     def self.value_to_s(value)
