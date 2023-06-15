@@ -22,19 +22,19 @@ sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", ".."))
 os.environ["NO_UDISKS"] = "1"
 
 from tps.configuration.config_file import ConfigFile, InvalidStatError  # noqa: E402,E501
-from tps.configuration.mount import Mount  # noqa: E402
+from tps.configuration.binding import Binding  # noqa: E402
 
 logging.basicConfig(level=logging.DEBUG)
 
 test_features = [
-    Mock(Mounts=[
-        Mount("foo", "/dest/foo"),
-        Mount("bar", "/dest/bar"),
-        Mount("dotfiles", "/dest", uses_symlinks=True)
+    Mock(Bindings=[
+        Binding("foo", "/dest/foo"),
+        Binding("bar", "/dest/bar"),
+        Binding("dotfiles", "/dest", uses_symlinks=True)
     ]),
-    Mock(Mounts=[
-        Mount("foo", "/dest/foo"),
-        Mount("bla bla", "/dest/bla bla"),
+    Mock(Bindings=[
+        Binding("foo", "/dest/foo"),
+        Binding("bla bla", "/dest/bla bla"),
     ]),
 ]
 
@@ -262,27 +262,27 @@ class TestParse(ConfigFileTestCase):
         super().setUpClass()
         cls.create_valid_config_file()
 
-    def assert_parses_mounts_of_features(self, content: str, features):
+    def assert_parses_bindings_of_features(self, content: str, features):
         if not isinstance(features, list):
             features = [features]
 
-        # Get the list of all mounts of the features
-        mounts = list()
+        # Get the list of all bindings of the features
+        bindings = list()
         for feature in features:
-            mounts += feature.Mounts
+            bindings += feature.Bindings
 
         # Write the content to the config file
         self.path.write_text(content)
 
-        # Parse mounts
+        # Parse bindings
         parsed  = self.config_file.parse()
 
-        # Assert that the expected mounts were extracted
-        self.assertEqual(set(mounts), set(parsed))
+        # Assert that the expected bindings were extracted
+        self.assertEqual(set(bindings), set(parsed))
 
     def test_feature_1(self):
         # Check that test feature 1 can be extracted
-        self.assert_parses_mounts_of_features(
+        self.assert_parses_bindings_of_features(
             """
             /dest/foo source=foo
             /dest/bar source=bar
@@ -293,7 +293,7 @@ class TestParse(ConfigFileTestCase):
 
     def test_feature_2(self):
         # Check that test feature 2 can be extracted.
-        self.assert_parses_mounts_of_features(
+        self.assert_parses_bindings_of_features(
             """
             /dest/bla\ bla source=bla\ bla
             /dest/foo source=foo
@@ -303,7 +303,7 @@ class TestParse(ConfigFileTestCase):
 
     def test_feature_1_and_2(self):
         # Check that test features 1 and 2 can be extracted at once
-        self.assert_parses_mounts_of_features(
+        self.assert_parses_bindings_of_features(
             """
             /dest/foo source=foo
             /dest/bar source=bar
@@ -323,10 +323,10 @@ class TestSave(ConfigFileTestCase):
         if not isinstance(features, list):
             features = [features]
 
-        # Get the list of all mounts of the features
-        mounts = list()
+        # Get the list of all bindings of the features
+        bindings = list()
         for feature in features:
-            mounts += feature.Mounts
+            bindings += feature.Bindings
 
         # Save the features
         self.config_file.save(features)
@@ -334,8 +334,8 @@ class TestSave(ConfigFileTestCase):
         # Parse features
         extracted = self.config_file.parse()
 
-        # Assert that the expected mounts were extracted
-        self.assertEqual(set(mounts), set(extracted))
+        # Assert that the expected bindings were extracted
+        self.assertEqual(set(bindings), set(extracted))
 
     def test_feature_1(self):
         self.assert_extracts_features(test_features[0])
