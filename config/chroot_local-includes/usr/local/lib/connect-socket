@@ -17,7 +17,10 @@ import tailslib.fd
 def main():
     # Parse arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--debug", action="store_true")
+    kernel_options = Path("/proc/cmdline").read_text().split()
+    parser.add_argument("--debug", action="store_true",
+                        default=os.getenv("DEBUG") or "debug" in kernel_options,
+                        help="Enable debug logging")
     parser.add_argument("--socket", action="append", default=[], metavar="PATH",
                         help="Open the specified socket")
     parser.add_argument("--dbus-system-bus", action="store_true",
@@ -31,10 +34,7 @@ def main():
         args.ARGS = args.ARGS[1:]
 
     # Set up logging
-    debug = args.debug or \
-            os.getenv("DEBUG") or \
-            "debug" in Path("/proc/cmdline").read_text().split()
-    log_level = logging.DEBUG if debug else logging.INFO
+    log_level = logging.DEBUG if args.debug else logging.INFO
     log_format = "%(levelname)s:%(filename)s:%(lineno)d: %(message)s"
     logging.basicConfig(level=log_level, format=log_format)
 
