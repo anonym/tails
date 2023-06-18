@@ -454,7 +454,8 @@ class TPSPartition(object):
             raise
 
     def convert_pbkdf_argon2id(self, passphrase: str):
-        """Convert the PBKDF to argon2id"""
+        """Convert the PBKDF to argon2id with fixed iterations and
+        memory cost"""
         executil.check_call(
             ["cryptsetup", "luksConvertKey",
              "--pbkdf", "argon2id",
@@ -465,6 +466,14 @@ class TPSPartition(object):
              # break unlocking the Persistent Storage in the Welcome
              # Screen on the lowest-end devices we support (2 GiB RAM).
              "--pbkdf-memory", "1048576",
+             # We need to also specify the number of iterations, because
+             # otherwise cryptsetup would perform a benchmark to choose
+             # both the memory cost and the number of iterations, which
+             # can lead to a memory cost lower than the one we specified
+             # above. We choose the lowest number of iterations that
+             # cryptsetup allows us to choose (4), to not make unlocking
+             # the Persistent Storage too slow on low-end devices.
+             "--pbkdf-force-iterations", "4",
              "--key-file=-",
              "--batch-mode",
              self.device_path],
