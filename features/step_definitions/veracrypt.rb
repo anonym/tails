@@ -209,7 +209,7 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
     # Otherwise Disks is sometimes minimized, for some reason I don't understand
     sleep 2
     attach_dialog = disks.child('Select Disk Image to Attach',
-                                roleName: 'file chooser', showingOnly: true)
+                                roleName: 'file chooser')
     attach_dialog.child('Set up read-only loop device',
                         roleName: 'check box').click
     filter = attach_dialog.child('Disk Images (*.img, *.iso)',
@@ -273,7 +273,7 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
   @screen.press('alt', 'u') # "Unlock" button
   try_for(30, msg: 'Failed to mount the unlocked volume') do
     disks.child("#{size} VeraCrypt/TrueCrypt",
-                roleName: 'panel', showingOnly: true)
+                roleName: 'panel')
          .grabFocus
     # Move the focus down to the "Filesystem\n107 MB FAT" item (that Dogtail
     # is not able to find) using the 'Down' arrow, in order to display
@@ -281,7 +281,7 @@ When /^I unlock and mount this VeraCrypt (volume|file container) with GNOME Disk
     sleep 0.5 # otherwise the following key press is sometimes lost
     @screen.press('down')
     disks.child('', roleName: 'panel',
-                description: 'Mount selected partition', showingOnly: true)
+                description: 'Mount selected partition')
          .child('Mount', roleName: 'push button')
          .click
     true

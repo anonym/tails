@@ -5,17 +5,13 @@ end
 def save_page_as
   browser.child(
     description: 'Open application menu',
-    roleName:    'push button',
-    showingOnly: true
+    roleName:    'push button'
   ).press
   browser.child(
     name:        'Save page as\u2026',
-    roleName:    'push button',
-    showingOnly: true
+    roleName:    'push button'
   ).press
-  browser.child('Save As',
-                roleName:    'file chooser',
-                showingOnly: true)
+  browser.child('Save As', roleName: 'file chooser')
 end
 
 When /^I (?:try to )?start the Unsafe Browser$/ do
@@ -169,13 +165,12 @@ def page_has_loaded_in_the_tor_browser(page_titles)
     # is only shown when a page has loaded, so once we see the
     # expected title *and* this button has appeared, then we can be sure
     # that the page has fully loaded.
-    @torbrowser.children(roleName: 'frame', showingOnly: true).any? do |frame|
+    @torbrowser.children(roleName: 'frame').any? do |frame|
       page_titles
         .map  { |page_title| "#{page_title} #{separator} #{browser_name}" }
         .any? { |page_title| page_title == frame.name }
     end &&
-      @torbrowser.child(reload_action, roleName:    'push button',
-                                       showingOnly: true)
+      @torbrowser.child(reload_action, roleName: 'push button')
   end
 end
 

@@ -135,9 +135,7 @@ end
 
 def activate_gnome_shell_menu_entry(label)
   gnome_shell = Dogtail::Application.new('gnome-shell')
-  menu_entry = gnome_shell.child(label,
-                                 roleName:    'label',
-                                 showingOnly: true)
+  menu_entry = gnome_shell.child(label, roleName: 'label')
   try_for(5) do
     menu_entry.grabFocus
     menu_entry.focused
@@ -406,14 +404,14 @@ Given /^I set the language to (.*) \((.*)\)$/ do |lang, lang_code|
   # and activate it via the keyboard instead.
   try_for(10) do
     row = greeter
-          .child(description: 'Configure Language', showingOnly: true)
+          .child(description: 'Configure Language')
     row.grabFocus
     row.focused
   end
   @screen.press('Return')
   try_for(10) do
     greeter
-      .child('Search', roleName: 'text', showingOnly: true)
+      .child('Search', roleName: 'text')
       .focused
   end
   @screen.type($language)
@@ -469,7 +467,7 @@ def open_greeter_additional_settings
   end
   @screen.press('Return')
 
-  greeter.child('Additional Settings', roleName: 'dialog', showingOnly: true)
+  greeter.child('Additional Settings', roleName: 'dialog')
 end
 
 Given /^I open Tails Greeter additional settings dialog$/ do
@@ -686,8 +684,8 @@ When /^I start the Tor Browser( in offline mode)?$/ do |offline|
   if offline
     start_button = Dogtail::Application
                    .new('zenity')
-                   .dialog('Tor is not ready', showingOnly: true)
-                   .button('Start Tor Browser Offline', showingOnly: true)
+                   .dialog('Tor is not ready')
+                   .button('Start Tor Browser Offline')
     # Sometimes this click is lost. Maybe the dialog is not fully setup yet?
     sleep 2
     start_button.click
@@ -767,26 +765,26 @@ Given /^all notifications have disappeared$/ do
   retry_action(10, recovery_proc: proc { @screen.press('Escape') }) do
     @screen.press('super', 'v') # Show the notification list
     gnome_shell.child('Do Not Disturb',
-                      roleName: 'label', showingOnly: true)
+                      roleName: 'label')
     # Check if there are notifications or if the "No Notifications"
     # label is visible. Don't retry to avoid long delays - if there are
     # no notifications, the button should be visible when the
     # "Do Not Disturb" button is visible.
     no_notifications = gnome_shell.child?(
       'No Notifications',
-      roleName: 'label', showingOnly: true, retry: false
+      roleName: 'label', retry: false
     )
     unless no_notifications
       try_for(3) do
         button = gnome_shell.child(
           'Clear',
-          roleName: 'push button', showingOnly: true
+          roleName: 'push button'
         )
         button.grabFocus
         button.focused
       end
       @screen.press('Return')
-      gnome_shell.child?('No Notifications', roleName: 'label', showingOnly: true)
+      gnome_shell.child?('No Notifications', roleName: 'label')
     end
   end
   @screen.press('Escape')
@@ -1080,7 +1078,7 @@ Then /^there is a GNOME bookmark for the (amnesiac|persistent) Tor Browser direc
   bookmark = 'Tor Browser'
   bookmark += ' (persistent)' if persistent_or_not == 'persistent'
   open_gnome_places_menu
-  Dogtail::Application.new('gnome-shell').child(bookmark, roleName: 'label', showingOnly: true)
+  Dogtail::Application.new('gnome-shell').child(bookmark, roleName: 'label')
   @screen.press('Escape')
 end
 
@@ -1118,8 +1116,7 @@ When /^I (can|cannot) save the current page as "([^"]+[.]html)" to the (.*) dire
     try_for(3) do
       bookmark = file_dialog.child(
         description: output_dir,
-        roleName:    'list item',
-        showingOnly: true
+        roleName:    'list item'
       )
       bookmark.grabFocus
       bookmark.focused
@@ -1159,9 +1156,7 @@ When /^I can print the current page as "([^"]+[.]pdf)" to the (default downloads
                end
   @screen.press('ctrl', 'p')
   @torbrowser.child('Save', roleName: 'push button').press
-  file_dialog = @torbrowser.child('Save As',
-                                  roleName:    'file chooser',
-                                  showingOnly: true)
+  file_dialog = @torbrowser.child('Save As', roleName: 'file chooser')
   # Enter the output filename in the text entry
   text_entry = file_dialog.child('Name', roleName: 'label').labelee
   filename = "#{output_dir}/#{output_file}"
