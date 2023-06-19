@@ -36,7 +36,7 @@ set -x
 
 # Reading configuration files
 Read_conffiles config/all config/bootstrap config/common config/binary
-# Import CMDLINE_APPEND and CMDLINE_APPEND_NON_REMOVABLE
+# Import CMDLINE_APPEND, CMDLINE_APPEND_NON_REMOVABLE and TAILS_VERSION
 Read_conffiles config/variables
 Set_defaults
 
@@ -130,6 +130,9 @@ done
 
 # Copy unicode fonts
 cp "chroot/boot/grub/unicode.pf2" "${grub_dir}"
+
+# Append Tails version in the boot loader entry
+sed -i -E "s#TAILS_VERSION\b#${TAILS_VERSION}#g" "binary/EFI/debian/grub.cfg"
 
 # Append our custom kernel command-line parameters
 sed -i -E "s#CMDLINE_APPEND_NON_REMOVABLE\b#${CMDLINE_APPEND_NON_REMOVABLE}#g" "binary/EFI/debian/grub.cfg"
