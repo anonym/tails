@@ -104,6 +104,13 @@ install_pluggable_transports() {
                 --target-directory="$destination" "$pt"
     done
 
+    # In Tor Browser 12.5 obfs4proxy was renamed into lyrebird, but we
+    # keep the old name until tor's apparmor rules catches up to this
+    # name change.
+    if [ -e /usr/bin/lyrebird ]; then
+        mv /usr/bin/lyrebird /usr/bin/obfs4proxy
+    fi
+
     rm -r "${tmp}"
 }
 
