@@ -100,19 +100,19 @@ When /^I configure the Unsafe Browser to use a local proxy$/ do
 end
 
 Then /^I am told I cannot start the Unsafe Browser when I am offline$/ do
-  assert_not_nil(
+  try_for(30) do
     Dogtail::Application.new('zenity')
-    .child(roleName: 'label')
-    .text['You are not connected to a local network']
-  )
+      .child(roleName: 'label')
+      .text['You are not connected to a local network']
+  end
 end
 
 Then /^the Unsafe Browser complains that it is disabled$/ do
-  assert_not_nil(
+  try_for(30) do
     Dogtail::Application.new('zenity')
     .child(roleName: 'label')
     .text['The Unsafe Browser was disabled in the Welcome Screen']
-  )
+  end
 end
 
 Then /^I configure the Unsafe Browser to check for updates more frequently$/ do
