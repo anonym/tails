@@ -359,7 +359,7 @@ class GreeterMainWindow(Gtk.Window, TranslatableWindow):
     def cb_button_start_clicked(self, widget, user_data=None):
         # Ask for confirmation when Persistent Storage exists but is not
         # unlocked
-        if self.persistence_setting.is_created() \
+        if self.persistence_setting.is_created \
                 and not self.persistence_setting.is_unlocked \
                 and not self.persistence_setting.failed_with_unexpected_error:
             response = self.confirm_dialog.run()

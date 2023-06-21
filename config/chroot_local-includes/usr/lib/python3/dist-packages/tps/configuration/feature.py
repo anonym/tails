@@ -1,6 +1,5 @@
 import abc
 import logging
-from enum import Enum
 from gi.repository import GLib
 import os
 from pathlib import Path
@@ -12,7 +11,7 @@ import tps.logging
 from tps import executil
 from tps import State, DBUS_FEATURE_INTERFACE, DBUS_FEATURES_PATH, \
     ON_ACTIVATED_HOOKS_DIR, ON_DEACTIVATED_HOOKS_DIR
-from tps.configuration.mount import Mount, IsActiveException, \
+from tps.configuration.binding import Binding, IsActiveException, \
     IsInactiveException
 from tps.dbus.errors import ActivationFailedError, \
     DeletionFailedError, JobCancelledError, FailedPreconditionError, \
@@ -62,9 +61,9 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         config_file = self.service.config_file
         self._is_enabled = config_file.exists() and config_file.contains(self)
         self._last_signaled_is_enabled = self._is_enabled
-        self._is_active = all(mount.is_active() for mount in self.Mounts)
+        self._is_active = all(binding.is_active() for binding in self.Bindings)
         self._last_signaled_is_active = self._is_active
-        self._has_data = any(mount.has_data() for mount in self.Mounts)
+        self._has_data = any(binding.has_data() for binding in self.Bindings)
         self._last_signaled_has_data = self._has_data
 
     # ----- Exported functions ----- #
@@ -119,12 +118,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
             # on to the client and handled there.
             self.wait_for_conflicting_processes_to_terminate(job)
 
-        for mount in self.Mounts:
-            mount.activate()
+        for binding in self.Bindings:
+            binding.activate()
 
-        # Check if the directories were actually mounted
+        # Check if the bindings were actually activated
         try:
-            for mount in self.Mounts: mount.check_is_active()
+            for binding in self.Bindings: binding.check_is_active()
         except IsInactiveException as e:
             msg = f"Activation of feature '{self.Id}' failed unexpectedly"
             raise ActivationFailedError(msg) from e
@@ -160,12 +159,12 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
         # on to the client and handled there.
         self.wait_for_conflicting_processes_to_terminate(job)
 
-        for mount in self.Mounts:
-            mount.deactivate()
+        for binding in self.Bindings:
+            binding.deactivate()
 
-        # Check if the directories were actually unmounted
+        # Check if the bindings were actually deactivated
         try:
-            for mount in self.Mounts: mount.check_is_inactive()
+            for binding in self.Bindings: binding.check_is_inactive()
         except IsActiveException as e:
             msg = f"Deactivation of feature '{self.Id}' failed unexpectedly"
             raise DeactivationFailedError(msg) from e
@@ -195,8 +194,8 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
 
         logger.info(f"Deleting feature {self.Id}")
 
-        for mount in self.Mounts:
-            executil.check_call(["rm", "-rf", mount.src])
+        for binding in self.Bindings:
+            executil.check_call(["rm", "-rf", binding.src])
 
         self.refresh_state(["HasData"])
         if self.HasData:
@@ -243,10 +242,10 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def Mounts(self) -> List[Mount]:
-        """A list of mounts, which are mappings of source directories
-        to target paths. The source directories will be mounted to the
-        target paths when the feature is activated."""
+    def Bindings(self) -> List[Binding]:
+        """A list of bindings, which are mappings of source directories
+        to target paths. The source directories will be mounted or
+        symlinked to the target paths when the feature is activated."""
         return list()
 
     # ----- Non-exported properties ------ #
@@ -296,7 +295,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
 
         if "HasData" in properties:
             try:
-                self._has_data = any(mount.has_data() for mount in self.Mounts)
+                self._has_data = any(binding.has_data() for binding in self.Bindings)
             except Exception as e:
                 if exceptions: logging.exception(e)
                 exceptions.append(e)
@@ -309,7 +308,7 @@ class Feature(DBusObject, ServiceUsingJobs, metaclass=abc.ABCMeta):
 
         if "IsActive" in properties:
             try:
-                self._is_active = all(mount.is_active() for mount in self.Mounts)
+                self._is_active = all(binding.is_active() for binding in self.Bindings)
             except Exception as e:
                 if exceptions: logging.exception(e)
                 exceptions.append(e)

@@ -112,6 +112,7 @@ class PassphraseView(View):
         if not verify:
             # Don't display anything if the verify entry is empty
             self.verify_hint_box.set_visible(False)
+            self.create_button.set_sensitive(False)
             return
 
         match = verify == self.passphrase_entry.get_text()

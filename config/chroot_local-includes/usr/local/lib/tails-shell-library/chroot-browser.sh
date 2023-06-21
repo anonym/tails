@@ -2,6 +2,8 @@
 
 # This shell library is meant to be used with `set -e`.
 
+NEW_INCLUDES_DIR=/mnt/config/chroot_local-includes
+
 if [ "$(whoami)" != "root" ]; then
     echo "This library is useless for non-root users. Exiting..." >&2
     exit 1
@@ -54,6 +56,16 @@ setup_chroot_for_browser () {
     done < "${tails_module_path}"
     # Remove the trailing colon
     lowerdirs=${lowerdirs%?}
+
+    # If the early_patch boot parameter is used, we also overlay the
+    # /mnt/config/chroot_local-includes directory over the chroot, so
+    # we can easily test changes to the runtime without having to rebuild
+    # the squashfs filesystem. This is only used for development.
+    if grep -qw early_patch /proc/cmdline; then
+      if [ -d "${NEW_INCLUDES_DIR}" ]; then
+        lowerdirs="${NEW_INCLUDES_DIR}:${lowerdirs}"
+      fi
+    fi
 
     mkdir -p "${cow}" "${chroot}"
 

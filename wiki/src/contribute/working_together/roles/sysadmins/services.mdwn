@@ -231,13 +231,12 @@ Below, importance level is evaluated based on:
 # Mirror pool
 
 * purpose: provide the HTTP and DNS mirror pools
-* documentation: [[design documentation|contribute/design/mirrors]]
+* documentation: [[design documentation|contribute/design/mirrors]], [[!tails_gitlab tails/blueprints/-/wikis/HTTP_mirror_pool desc="blueprint"]]
 * access: public
 * tools: [[!debpts mirrorbits]]
 * configuration:
   - [[!tails_gitlab tails/puppet-tails/-/blob/master/manifests/profile/mirrorbits.pp desc="`tails::profile::mirrorbits`"]]
   - `gitolite3@git.puppet.tails.boum.org:mirror-pool.git`
-  - `tails_git@dns.lizard:/srv/repositories/mirrors.git` 
 * importance: critical (needed by users to download Tails)
 * responsibilities:
   - Process offers of new mirrors.

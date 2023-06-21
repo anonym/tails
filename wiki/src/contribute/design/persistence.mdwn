@@ -250,7 +250,7 @@ running Tails session and runs as the unprivileged `amnesia` user. To
 still allow it access to the privileged methods, we do this:
 * A wrapper script runs as the user `tails-persistent-storage` which is
   allowed to access the `org.boum.tails.PersistentStorage` bus via D-Bus:
-  * [[!tails_gitweb config/chroot_local-includes/usr/local/bin/tps-frontend-wrapper]]
+  * [[!tails_gitweb config/chroot_local-includes/usr/local/bin/tails-persistent-storage]]
   * [[!tails_gitweb config/chroot_local-includes/etc/dbus-1/system.d/org.boum.tails.PersistentStorage.conf]]
 * The wrapper script opens a file descriptor for the D-Bus system bus
   and drops privileges by executing the tps frontend as `amnesia` but

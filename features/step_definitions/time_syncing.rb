@@ -47,18 +47,19 @@ When /^I allow time sync before Tor connects to work again$/ do
 end
 
 When /^I make sure time sync before Tor connects (fails|times out|indicates a captive portal|uses a fake connectivity check service)$/ do |failure_mode|
-  step 'a web server is running on the LAN'
-
-  endpoint = if failure_mode == 'fails'
-               'fail'
-             elsif failure_mode == 'indicates a captive portal'
+  if failure_mode == 'fails'
+    url = "localhost:666"
+  else
+    step 'a web server is running on the LAN'
+    endpoint = if failure_mode == 'indicates a captive portal'
                'redirect-to?url=/'
              elsif failure_mode == 'times out'
                'delay/30'
              else
                '/'
              end
-  url = "#{@web_server_url}/#{endpoint}"
+    url = "#{@web_server_url}/#{endpoint}"
+  end
 
   $vm.execute_successfully('cp /etc/tails-get-network-time.conf /etc/tails-get-network-time.conf.bak')
   $vm.file_overwrite(
@@ -105,7 +106,7 @@ def displayed_time_str
   candidate_clock_labels = Set.new(
     Dogtail::Application.new('gnome-shell')
                         .child('', roleName: 'panel')
-                        .children(showingOnly: true, roleName: 'label')
+                        .children(roleName: 'label')
                         .map(&:name)
   ).keep_if { |l| !ignore_labels.include?(l) }.to_a
 

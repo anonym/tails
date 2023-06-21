@@ -554,8 +554,8 @@ class VM
     ).stdout.chomp.split("\0")
   end
 
-  def file_open(path)
-    f = RemoteShell::File.new(self, path)
+  def file_open(path, **opts)
+    f = RemoteShell::File.new(self, path, **opts)
     yield f if block_given?
     f
   end
@@ -567,15 +567,19 @@ class VM
     end
   end
 
-  def file_overwrite(path, lines)
+  def file_overwrite(path, lines, permissions: nil)
     lines = lines.join("\n") if lines.instance_of?(Array)
-    file_open(path) { |f| return f.write(lines) }
+    file_open(path) { |f| f.write(lines) }
+    unless permissions.nil?
+      execute_successfully("chmod #{permissions} '#{path}'")
+    end
   end
 
   def file_copy_local(localpath, vm_path)
     debug_log("copying #{localpath} to #{vm_path}")
     content = File.read(localpath)
-    file_overwrite(vm_path, content)
+    permissions = File.stat(localpath).mode.to_s(8)[-3..-1]
+    file_overwrite(vm_path, content, permissions: permissions)
   end
 
   def file_copy_local_dir(localdir, vm_dir)

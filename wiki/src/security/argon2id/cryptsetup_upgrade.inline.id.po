@@ -1,0 +1,125 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2023-06-09 07:47+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Bullet: '   1. '
+msgid ""
+"To verify whether your encrypted volume uses PBKDF2 or Argon2id, execute the "
+"following command."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"      Replace <span class=\"command-placeholder\">[partition]</span> with the\n"
+"      partition name found in step 1.6.\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      <p class=\"pre command\">cryptsetup luksDump /dev/<span class=\"command-placeholder\">[partition]</span></p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      In the output:\n"
+msgstr ""
+
+#. type: Bullet: '      - '
+msgid ""
+"<span class=\"command\">Version</span> indicates the version of LUKS, either "
+"<span class=\"command\">1</span> or <span class=\"command\">2</span>."
+msgstr ""
+
+#. type: Bullet: '      - '
+msgid ""
+"<span class=\"command\">PBKDF</span> indicates the key derivation function, "
+"either <span class=\"command\">pbkdf2</span> or <span class=\"command"
+"\">argon2id</span>."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"      If your encrypted volume already uses LUKS2 and Argon2id, you can stop\n"
+"      here.\n"
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid "Execute the following command to do a backup of your LUKS1 header."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      <p class=\"pre command\">cryptsetup luksHeaderBackup /dev/<span class=\"command-placeholder\">[partition]</span> --header-backup-file /home/amnesia/luks1header</p>\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"      If something goes wrong, you will be able to restore your LUKS1 header\n"
+"      from this backup with:\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      <p class=\"pre command\">cryptsetup luksHeaderRestore /dev/<span class=\"command-placeholder\">[partition]</span> --header-backup-file /home/amnesia/luks1header</p>\n"
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid "To update your LUKS header to LUKS2, execute the following command."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"      Replace <span class=\"command-placeholder\">[partition]</span> with the\n"
+"      device name found in step 1.6.\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      <p class=\"pre command\">cryptsetup convert /dev/<span class=\"command-placeholder\">[partition]</span> --type luks2</p>\n"
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid ""
+"To verify that Argon2id is the new key derivation function, execute the "
+"following command again."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      In the output, verify that:\n"
+msgstr ""
+
+#. type: Bullet: '      - '
+msgid ""
+"The <span class=\"command\">Version</span> is <span class=\"command\">2</"
+"span> and not <span class=\"command\">1</span>."
+msgstr ""
+
+#. type: Bullet: '      - '
+msgid ""
+"The <span class=\"command\">PBKDF</span> is </span class=\"command"
+"\">argon2id</span class=\"command\"> and not <span class=\"command\">pbkdf2</"
+"span>."
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid "Try to unlock your encrypted volume."
+msgstr ""

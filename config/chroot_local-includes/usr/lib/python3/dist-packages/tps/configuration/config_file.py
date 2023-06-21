@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, List, Optional
 from threading import Lock
 
 import tps.logging
-from tps.configuration.mount import Mount
+from tps.configuration.binding import Binding
 
 if TYPE_CHECKING:
     from tps.configuration.feature import Feature
@@ -34,7 +34,7 @@ class InvalidStatError(Exception):
 
 class ConfigFile(object):
     """The Persistent Storage's config file, which lists the
-    directories which should be mounted on startup.
+    directories which should be mounted or symlinked on startup.
 
     The format is compatible with the persistence.conf file of
     live-boot(5), except that:
@@ -48,7 +48,7 @@ class ConfigFile(object):
     We can not easily support adding / deleting the lines of a
     a specific feature or list of features, because that would
     cause the config file to be broken if any two features have the
-    same mount. In that case, we would not be able to tell which
+    same binding. In that case, we would not be able to tell which
     feature a specific line in the config file belongs to, so
     it's not clear which lines should be removed on feature
     deactivation.
@@ -100,8 +100,8 @@ class ConfigFile(object):
             raise InvalidStatError(f"File {self.path} has unexpected ACL "
                                    f"{acl}, expected no ACLs.")
 
-    def parse(self) -> List["Mount"]:
-        """Parse the config file into mounts"""
+    def parse(self) -> List[Binding]:
+        """Parse the config file into bindings"""
         self.lock.acquire()
         try:
             with self._open(self.path) as f:
@@ -111,9 +111,9 @@ class ConfigFile(object):
 
         res = list()
         for line in config_lines:
-            mount = self._parse_line(line)
-            if mount:
-                res.append(mount)
+            binding = self._parse_line(line)
+            if binding:
+                res.append(binding)
 
         return res
 
@@ -125,7 +125,7 @@ class ConfigFile(object):
             # Get the lines we have to set for the features
             lines = list()
             for feature in features:
-                lines += [str(mount) + "\n" for mount in feature.Mounts]
+                lines += [str(binding) + "\n" for binding in feature.Bindings]
 
             # Sort and remove duplicate lines
             lines = sorted(set(lines))
@@ -148,10 +148,10 @@ class ConfigFile(object):
             self.lock.release()
 
     def contains(self, feature: "Feature") -> bool:
-        """Returns True if the config file contains all mount lines
+        """Returns True if the config file contains all binding lines
         of all the specified features, else False."""
-        mounts = self.parse()
-        return all(mount in mounts for mount in feature.Mounts)
+        bindings = self.parse()
+        return all(binding in bindings for binding in feature.Bindings)
 
     def disable_and_create_empty(self):
         """Renames the current config file to its filename + .invalid
@@ -184,7 +184,7 @@ class ConfigFile(object):
             yield f
 
     @staticmethod
-    def _parse_line(line: str) -> Optional["Mount"]:
+    def _parse_line(line: str) -> Optional[Binding]:
         dest, src = "", ""
         is_file = False
         uses_symlinks = False
@@ -217,5 +217,5 @@ class ConfigFile(object):
             logger.warning("Ignoring config line without source: %r", line)
             return
 
-        # Create and return the Mount object
-        return Mount(src, dest, is_file, uses_symlinks)
+        # Create and return the Binding object
+        return Binding(src, dest, is_file, uses_symlinks)

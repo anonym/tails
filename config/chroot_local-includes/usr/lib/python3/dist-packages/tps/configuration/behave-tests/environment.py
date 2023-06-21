@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", "..", ".."))
 
 from tps import executil
 from tps.service import Service
-from tps.configuration.mount import Mount
+from tps.configuration.binding import Binding
 from tps.mountutil import mount, MOUNTFLAG_NOSYMFOLLOW, \
     MOUNTFLAG_BIND, MOUNTFLAG_REMOUNT
 
@@ -42,7 +42,7 @@ class EnvironmentContext(object):
     mount_point: str
     service: Service
     tmpdir: Path
-    mount: Mount
+    binding: Binding
 
 
 def before_feature(context: EnvironmentContext, feature: Feature):
@@ -124,7 +124,7 @@ def after_feature(context: EnvironmentContext, feature):
 
 
 def before_scenario(context: EnvironmentContext, scenario):
-    context.mount = None
+    context.binding = None
 
     if "requires_mock_service" in context.feature.tags:
         context.service = Mock(spec=Service)
@@ -138,10 +138,10 @@ def after_scenario(context: EnvironmentContext, scenario):
     if "requires_mountpoint" not in context.feature.tags:
         return
 
-    # Deactivate the mount in case it was activated by the scenario
+    # Deactivate the binding in case it was activated by the scenario
     # (deactivate() doesn't fail it was not)
-    if context.mount:
-        context.mount.deactivate()
+    if context.binding:
+        context.binding.deactivate()
 
     # Clean up any content that the scenario might have created on the
     # mount point

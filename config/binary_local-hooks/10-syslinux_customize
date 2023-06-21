@@ -15,6 +15,8 @@ set -e
 
 # Reading configuration files
 Read_conffiles config/all config/common config/binary
+# Import TAILS_VERSION
+Read_conffiles config/variables
 Set_defaults
 
 if [ "${LB_BOOTLOADER}" != "syslinux" ]
@@ -41,8 +43,9 @@ perl -pni -E 'exit if m{^label[[:blank:]]+help$}' "${CFG_FILE}"
 Echo_message "customize syslinux menu"
 
 sed -i -e "s/Boot menu/SYSLINUX/" "${CFG_FILE}"
-sed -i -e "s/menu label Live/menu label Tails/" "${SYSLINUX_PATH}"/live*.cfg
-sed -i -r -e 's/(menu label .* )\(failsafe\)/\1(Troubleshooting Mode)/' \
+sed -i -e "s/menu label Live/menu label Tails ${TAILS_VERSION}/" "${SYSLINUX_PATH}"/live*.cfg
+# Inserting the Tails version on this entry cuts part of the text
+sed -i -r -e 's/(menu label Tails )(.*)\(failsafe\)/\1(Troubleshooting Mode)/' \
     "${SYSLINUX_PATH}"/live*.cfg
 sed -i -r -e 's/(append .*)/\1\n\tsysappend 0x40000/g' "${SYSLINUX_PATH}"/live*.cfg
 

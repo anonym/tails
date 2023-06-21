@@ -13,8 +13,12 @@ set -eu
 USER_ENV_FILE=/run/user/1000/user-env
 DUMP_USER_ENV_SERVICE=tails-dump-user-env.service
 
-if [ "$#" -lt 1 ]; then
-  echo >&2 "Usage: $0 COMMAND [ARG]..."
+usage() {
+  echo "Usage: $0 [--systemd-run] command [args...]"
+}
+
+if [ "$#" -eq 0 ]; then
+  usage >&2
   exit 1
 fi
 
@@ -23,10 +27,31 @@ if [ "$(id -u)" -ne "1000"  ]; then
   exec runuser -u amnesia -- "$0" "$@"
 fi
 
+if [ "$1" = "--systemd-run" ]; then
+  SYSTEMD_RUN=1
+  shift
+fi
+
 export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 export XDG_RUNTIME_DIR=/run/user/1000
 
-exec systemd-run --user --scope \
-  --property=Requires="${DUMP_USER_ENV_SERVICE}" \
-  --property=After="${DUMP_USER_ENV_SERVICE}" \
-  /usr/local/lib/run-with-env --env-file "${USER_ENV_FILE}" -- "$@"
+if [ ! -e "${USER_ENV_FILE}" ]; then
+  if [ ! -S "${DBUS_SESSION_BUS_ADDRESS#unix:path=}" ]; then
+    echo >&2 "File ${USER_ENV_FILE} does not exist and D-Bus session bus is not available,
+so we cannot run ${DUMP_USER_ENV_SERVICE} to create it."
+    exit 1
+  fi
+
+  # Start the service that dumps the environment variables to a file.
+  # This waits until the service is ready which means that the
+  # environment variables have been dumped.
+  systemctl --user start "${DUMP_USER_ENV_SERVICE}"
+fi
+
+if [ -n "${SYSTEMD_RUN:-}" ]; then
+  # Run the command in a transient systemd scope unit.
+  exec systemd-run --user --scope \
+    /usr/local/lib/run-with-env --env-file "${USER_ENV_FILE}" -- "$@"
+else
+  exec /usr/local/lib/run-with-env --env-file "${USER_ENV_FILE}" -- "$@"
+fi

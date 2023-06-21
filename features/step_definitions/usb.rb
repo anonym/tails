@@ -1,6 +1,10 @@
 require 'securerandom'
 require 'json'
 
+def tps_is_created
+  $vm.execute('/usr/local/lib/tpscli is-created').success?
+end
+
 # Returns a mapping from the source of a binding to its destination
 # for all bindings of all pre-configured tps features that the running
 # Tails is aware of.
@@ -10,8 +14,8 @@ def get_tps_bindings(skip_links = false)
   script = [
     'from tps.configuration import features',
     'for feature in features.get_classes():',
-    '    for mount in feature.Mounts:',
-    '        print(mount)',
+    '    for binding in feature.Bindings:',
+    '        print(binding)',
   ]
   c = RemoteShell::PythonCommand.new($vm, script.join("\n"))
   assert(c.success?, 'Python script for get_tps_bindings failed')
@@ -72,7 +76,7 @@ def persistent_volumes_mountpoints
   $vm.execute('ls -1 -d /live/persistence/*_unlocked/').stdout.chomp.split
 end
 
-def persistent_storage_frontend (**opts)
+def persistent_storage_frontend(**opts)
   Dogtail::Application.new('tps-frontend', **opts)
 end
 
@@ -178,8 +182,35 @@ def persistence_exists?(name)
   $vm.execute("test -b #{data_part_dev}").success?
 end
 
-When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by cloning$/ do |action, name|
+When /^I (install|reinstall|upgrade) Tails( with Persistent Storage)? (?:to|on) USB drive "([^"]+)" by cloning$/ do |action, with_persistence, name|
   step 'I start Tails Installer'
+
+  # Check that the "Clone the current Persistent Storage" check button
+  # is visible if and only if the current Tails device has a Persistent
+  # Storage.
+  # We use a wildcard in the label because in case that the target device
+  # already contains a Tails installation, the check button label is
+  # "Clone the current Persistent Storage (requires reinstall)".
+  begin
+    clone_persistence_button = @installer
+                                 .child('Clone the current Persistent Storage.*',
+                                        roleName: 'check box',
+                                        retry:    false)
+    sensitive = clone_persistence_button.sensitive
+  rescue Dogtail::Failure
+    sensitive = false
+  end
+  if tps_is_created
+    assert(sensitive, "Couldn't find clone Persistent Storage check button (even though a Persistent Storage exists)")
+  else
+    assert(!sensitive, 'Found clone Persistent Storage check button (even though no Persistent Storage exists)')
+  end
+
+  if with_persistence
+    assert(sensitive, "Can't clone with Persistent Storage: Clone button is not sensitive")
+    clone_persistence_button.click
+  end
+
   # If the device was plugged *just* before this step, it might not be
   # completely ready (so it's shown) at this stage.
   try_for(10) { tails_installer_is_device_selected?(name) }
@@ -189,11 +220,28 @@ When /^I (install|reinstall|upgrade) Tails (?:to|on) USB drive "([^"]+)" by clon
             else
               action.capitalize
             end
-    # Despite being a normal "push button" this button doesn't respond
-    # to the "press" action. It has a "click" action, which works, but
-    # after that the installer is inaccessible for Dogtail.
+    # We can't use the click action here because this button causes a
+    # modal dialog to be run via gtk_dialog_run() which causes the
+    # application to hang when triggered via a ATSPI action. See
+    # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
     @installer.button(label).grabFocus
     @screen.press('Enter')
+
+    if with_persistence
+      # Enter the passphrase in the passphrase dialog
+      passphrase_entry = @installer.child('Choose Passphrase',
+                                          roleName: 'dialog')
+                                   .child('Passphrase:', roleName: 'label')
+                                   .labelee
+      confirm_entry = @installer.child('Choose Passphrase',
+                                       roleName: 'dialog')
+                                .child('Confirm:', roleName: 'label')
+                                .labelee
+      passphrase_entry.text = @persistence_password
+      confirm_entry.text = @persistence_password
+      confirm_entry.activate
+    end
+
     unless action == 'upgrade'
       confirmation_label = if persistence_exists?(name)
                              'Delete Persistent Storage and Reinstall'
@@ -267,9 +315,7 @@ When /^I (enable|disable) the first tps feature$/ do |mode|
 end
 
 Given(/^I enable persistence creation in Tails Greeter$/) do
-  greeter.child('Create Persistent Storage',
-                roleName: 'toggle button',
-                showingOnly: true)
+  greeter.child('Create Persistent Storage', roleName: 'toggle button')
          .toggle
 end
 
@@ -315,10 +361,10 @@ end
 
 Given /^the system is( very)? low on memory$/ do |very_low|
   # If we're asked to make the system very low on memory, then
-  # we leave only 200 MiB of memory available, otherwise we leave 500
-  # MiB (500 MiB is enough to create a Persistent Storage with the
+  # we leave only 200 MiB of memory available, otherwise we leave 550
+  # MiB (550 MiB is enough to create a Persistent Storage with the
   # lowest PBKDF memory cost).
-  low_mem_kib = very_low ? 200 * 1024 : 500 * 1024
+  low_mem_kib = very_low ? 200 * 1024 : 550 * 1024
 
   # Ensure that the zram swap is disabled, to avoid that the memory
   # pressure is relieved by swapping.
@@ -336,7 +382,7 @@ Given /^the system is( very)? low on memory$/ do |very_low|
 
   # Write a file that will fill up the memory
   $vm.execute_successfully(
-    "dd if=/dev/zero of=/fill bs=1M count=#{mem_to_fill_kib / 1024}",
+    "dd if=/dev/zero of=/fill bs=1M count=#{mem_to_fill_kib / 1024}"
   )
 
   # Wait for the memory to be filled up
@@ -373,20 +419,16 @@ Given /^I close the Persistent Storage app$/ do
   persistent_storage_main_frame.button('Close').click
 
   # Wait for the app to close
-  try_for(10) {
-    begin
-      persistent_storage_frontend(retry: false)
-      false
-    rescue StandardError
-      true
-    end
-  }
+  try_for(10) do
+    persistent_storage_frontend(retry: false)
+    false
+  rescue StandardError
+    true
+  end
 end
 
 Then /^The Persistent Storage app shows the error message "([^"]*)"$/ do |message|
-  persistent_storage_frontend.child(message,
-                                    roleName: 'label',
-                                    showingOnly: true)
+  persistent_storage_frontend.child(message, roleName: 'label')
 end
 
 Given /^I change the passphrase of the Persistent Storage( back to the original)?$/ do |change_back|
@@ -405,23 +447,23 @@ Given /^I change the passphrase of the Persistent Storage( back to the original)
   # application to hang when triggered via a ATSPI action. See
   # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
   persistent_storage_main_frame
-    .button('Change Passphrase', showingOnly: true)
+    .button('Change Passphrase')
     .grabFocus
   @screen.press('Return')
   change_passphrase_dialog = persistent_storage_frontend
-                             .child('Change Passphrase', roleName: 'dialog', showingOnly: true)
+                             .child('Change Passphrase', roleName: 'dialog')
   change_passphrase_dialog
-    .child('Current Passphrase', roleName: 'label', showingOnly: true)
+    .child('Current Passphrase', roleName: 'label')
     .labelee
     .grabFocus
   @screen.type(current_passphrase)
   change_passphrase_dialog
-    .child('New Passphrase', roleName: 'label', showingOnly: true)
+    .child('New Passphrase', roleName: 'label')
     .labelee
     .grabFocus
   @screen.type(new_passphrase)
   change_passphrase_dialog
-    .child('Confirm New Passphrase', roleName: 'label', showingOnly: true)
+    .child('Confirm New Passphrase', roleName: 'label')
     .labelee
     .grabFocus
   @screen.type(new_passphrase)
@@ -517,6 +559,12 @@ Then /^there is no persistence partition on USB drive "([^"]+)"$/ do |name|
          "USB drive #{name} has a partition '#{data_part_dev}'")
 end
 
+Then /^there is a persistence partition on USB drive "([^"]+)"$/ do |name|
+  data_part_dev = $vm.persistent_storage_dev_on_disk(name)
+  assert($vm.execute("test -b #{data_part_dev}").success?,
+         "USB drive #{name} has no partition '#{data_part_dev}'")
+end
+
 def assert_luks2_with_argon2id(name, device)
   # Tails 5.12 and older used LUKS1 by default
   return if name == 'old' && !$old_version.nil? \
@@ -529,8 +577,24 @@ def assert_luks2_with_argon2id(name, device)
                "Device #{device} does not use argon2id")
 end
 
+def assert_luks1(device)
+  luks_info = $vm.execute("cryptsetup luksDump #{device}").stdout
+  assert_match(/^^Version:\s*1$/, luks_info,
+               "Device #{device} is not LUKS1")
+end
 
-Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
+Then /^a Tails persistence partition with LUKS version 2 and argon2id exists on USB drive "([^"]+)"$/ do |name|
+  # Step "a Tails persistence partition exists on USB drive" checks by
+  # default that the LUKS version is 2 and the key derivation function
+  # is argon2id.
+  step "a Tails persistence partition exists on USB drive \"#{name}\""
+end
+
+Then /^the Tails persistence partition on USB drive "([^"]+)" still has LUKS version 1$/ do |name|
+  step "a Tails persistence partition exists with LUKS version 1 on USB drive \"#{name}\""
+end
+
+Then /^a Tails persistence partition exists( with LUKS version 1)? on USB drive "([^"]+)"$/ do |luks1, name|
   dev = $vm.persistent_storage_dev_on_disk(name)
   check_part_integrity(name, dev, 'crypto', 'crypto_LUKS',
                        part_label: 'TailsData')
@@ -557,7 +621,11 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
     luks_dev = "/dev/mapper/#{name}"
   end
 
-  assert_luks2_with_argon2id(name, dev)
+  if luks1.nil?
+    assert_luks2_with_argon2id(name, dev)
+  else
+    assert_luks1(dev)
+  end
 
   # Adapting check_part_integrity() seems like a bad idea so here goes
   info = $vm.execute("udisksctl info --block-device '#{luks_dev}'").stdout
@@ -577,12 +645,12 @@ Then /^a Tails persistence partition exists on USB drive "([^"]+)"$/ do |name|
   $vm.execute("cryptsetup luksClose #{name}")
 end
 
-Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
+Given /^I try to enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
   # @type [Dogtail::Node]
   passphrase_entry = nil
   try_for(60) do
     passphrase_entry = greeter
-                       .child(roleName: 'password text', showingOnly: true)
+                       .child(roleName: 'password text')
     passphrase_entry.grabFocus
     passphrase_entry.focused
   end
@@ -595,12 +663,17 @@ Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_p
              end
   passphrase_entry.text = password
   @screen.press('Return')
+end
+
+Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_passphrase|
+  step "I try to enable persistence#{with_changed_passphrase}"
 
   # Wait until the Persistent Storage was unlocked. We use the fact that
   # the unlock button is made invisible when the Persistent Storage is
   # unlocked.
-  try_for(30) do
-    !greeter.child?('Unlock', roleName: 'push button', showingOnly: true)
+  try_for(60) do
+    !greeter.child?('Unlock Encryption', roleName: 'push button') && \
+      !greeter.child?('Unlocking', roleName: 'push button')
   end
 
   # Figure out which language is set now that the Persistent Storage is
@@ -608,16 +681,29 @@ Given /^I enable persistence( with the changed passphrase)?$/ do |with_changed_p
   $language, $lang_code = get_greeter_language
 end
 
+Given /^I enable persistence but something goes wrong during the LUKS header upgrade$/ do
+  # Copy a cryptsetup wrapper to the VM which will call `cryptsetup luksErase`
+  # instead of `cryptsetup luksConvertKey` to simulate a failure during the LUKS
+  # header upgrade.
+  $vm.file_copy_local("#{GIT_DIR}/features/scripts/cryptsetup-wrapper",
+                      '/usr/local/sbin/cryptsetup')
+
+  step 'I enable persistence'
+
+  # Check that the LUKS header was erased by our wrapper script.
+  assert $vm.file_exist?('/tmp/luks-header-erased'), 'LUKS header was not erased'
+end
+
 def get_greeter_language
   english_label = 'English - United States'
   german_label = 'Deutsch - Deutschland (German - Germany)'
   try_for(30) do
-    greeter.child(english_label, roleName: 'label', showingOnly: true)
+    greeter.child(english_label, roleName: 'label')
     # We have to set the language to '' for English, setting it to
     # 'English' doesn't work.
     return '', 'en'
   rescue Dogtail::Failure
-    greeter.child(german_label, roleName: 'label', showingOnly: true)
+    greeter.child(german_label, roleName: 'label')
     return 'German', 'de'
   end
 end
@@ -699,6 +785,10 @@ end
 
 Then /^persistence is disabled$/ do
   assert(!tails_persistence_enabled?, 'Persistence is enabled')
+end
+
+Then /^persistence is enabled$/ do
+  assert(tails_persistence_enabled?, 'Persistence is disabled')
 end
 
 def boot_device
@@ -1401,18 +1491,13 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
        .find { |row| destination_disk_label_regexp.match(row.name) }
        .grabFocus
   @screen.wait('GnomeDisksDriveMenuButton.png', 5).click
-  disks.child('Restore Disk Image…',
-              roleName:    'push button',
-              showingOnly: true)
+  disks.child('Restore Disk Image…', roleName: 'push button')
        .click
-  restore_dialog = disks.child('Restore Disk Image',
-                               roleName:    'dialog',
-                               showingOnly: true)
+  restore_dialog = disks.child('Restore Disk Image', roleName: 'dialog')
   # Open the file chooser
   @screen.press('Enter')
   select_disk_image_dialog = disks.child('Select Disk Image to Restore',
-                                         roleName:    'file chooser',
-                                         showingOnly: true)
+                                         roleName: 'file chooser')
   @screen.paste(
     @usb_image_path,
     app: :gtk_file_chooser
@@ -1422,18 +1507,18 @@ Given /^I install a Tails USB image to the (\d+) MiB disk with GNOME Disks$/ do 
   try_for(10) do
     !select_disk_image_dialog.showing
   end
-  # Clicking this button using Dogtail works, but afterwards GNOME
-  # Disks becomes inaccessible.
-  restore_dialog.child('Start Restoring…',
-                       roleName:    'push button',
-                       showingOnly: true).grabFocus
+  # We can't use the click action here because this button causes a
+  # modal dialog to be run via gtk_dialog_run() which causes the
+  # application to hang when triggered via a ATSPI action. See
+  # https://gitlab.gnome.org/GNOME/gtk/-/issues/1281
+  restore_dialog.child('Start Restoring…', roleName: 'push button').grabFocus
   @screen.press('Return')
-  disks.child('Information', roleName: 'alert', showingOnly: true)
-       .child('Restore', roleName: 'push button', showingOnly: true)
+  disks.child('Information', roleName: 'alert')
+       .child('Restore', roleName: 'push button')
        .grabFocus
   @screen.press('Return')
   # Wait until the restoration job is finished
-  job = disks.child('Job', roleName: 'label', showingOnly: true)
+  job = disks.child('Job', roleName: 'label')
   try_for(120) do
     !job.showing
   end
@@ -1507,8 +1592,7 @@ Then /^(no )?persistent Greeter options were restored$/ do |no|
   # Our Dogtail wrapper code automatically translates strings to $language
   settings_restored = greeter
                       .child?('Settings were loaded from the persistent storage.',
-                              roleName:    'label',
-                              showingOnly: true)
+                              roleName: 'label')
   if no
     assert(!settings_restored)
   else
@@ -1561,7 +1645,7 @@ When /^I delete the data of the Persistent Folder feature$/ do
   def persistent_folder_delete_button(**opts)
     persistent_storage_main_frame.child(
       'Delete Persistent Folder data',
-      roleName: 'push button', showingOnly: true, **opts
+      roleName: 'push button', **opts
     )
   end
 
@@ -1589,9 +1673,10 @@ When /^I delete the data of the Persistent Folder feature$/ do
 end
 
 Then /^the Welcome Screen tells me that the Persistent Folder feature couldn't be activated$/ do
-  assert greeter.child('Failed to activate some features of the Persistent Storage: Persistent Folder.\n.*',
-                       roleName:    'label',
-                       showingOnly: true)
+  try_for(60) do
+    greeter.child?('Failed to activate some features of the Persistent Storage: Persistent Folder.\n.*',
+                   roleName: 'label')
+  end
 end
 
 Then /^the Persistent Storage settings tell me that the Persistent Folder feature couldn't be activated$/ do
@@ -1600,5 +1685,23 @@ Then /^the Persistent Storage settings tell me that the Persistent Folder featur
   persistent_folder_row = persistent_storage_frontend
                           .child('Activate Persistent Folder').parent
   assert persistent_folder_row
-    .child(description: 'Activation failed', showingOnly: true)
+    .child(description: 'Activation failed')
+end
+
+Given /^the persistence partition on USB drive "([^"]+)" uses LUKS version 1$/ do |name|
+  # NOTE: This step requires that the persistence partition is locked,
+  # else the `cryptsetup convert` command will fail.
+
+  dev = $vm.persistent_storage_dev_on_disk(name)
+  # First we need to configure a key derivation function which is supported by
+  # LUKS version 1.
+  $vm.execute_successfully(
+    "echo -n #{@persistence_password} | " \
+    "cryptsetup luksConvertKey --batch-mode --pbkdf pbkdf2 --key-file=- #{dev}"
+  )
+  $vm.execute_successfully("cryptsetup convert --batch-mode --type luks1 #{dev}")
+end
+
+Given /^I reload tails-persistent-storage.service$/ do
+  $vm.execute_successfully('systemctl reload tails-persistent-storage.service')
 end
