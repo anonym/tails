@@ -324,6 +324,20 @@ class FilteredControlPortProxySession:
                 return True
         return False
 
+    def my_streams(self):
+        # One could be tempted to implement this by just filtering out
+        # the results from get_stream() with is_my_stream(), but the
+        # streams in get_stream() only contain the info we need
+        # (e.g. source address) when its status is NEW or NEWRESOLVE,
+        # so we can only keep track of this by monitoring stream
+        # events, as we do in event_cb().
+        return [s for s in self.controller.get_streams() if s.id in self.client_streams]
+
+    def my_circuits(self):
+        # We de-duplicate the circuit IDs because get_circuit(id) will
+        # return a new object each call.
+        return [self.controller.get_circuit(i) for i in set([s.circ_id for s in self.my_streams()])]
+
     def event_cb(self, event, event_rewriter=None):
         if self.restrict_stream_events and \
            isinstance(event, stem.response.events.StreamEvent) and \
@@ -515,6 +529,21 @@ class FilteredControlPortProxySession:
                             }
                             return self.rewrite_line([replacer], line)
                         args_rewriter = _args_rewriter
+
+                    if self.restrict_stream_events and cmd == 'GETINFO' and arg_str == 'circuit-status':
+                        old_response_rewriter = response_rewriter
+                        def _response_rewriter(ignored):
+                            new_lines = "250+circuit-status=\r\n"
+                            circuits = self.my_circuits()
+                            for c in circuits:
+                                new_lines += str(c._raw_content, 'ascii').removeprefix('650 CIRC ')
+                            if len(circuits) > 0:
+                                new_lines += ".\r\n"
+                            new_lines += "250 OK\r\n"
+                            if old_response_rewriter:
+                                new_lines = old_response_rewriter(new_lines)
+                            return new_lines
+                        response_rewriter = _response_rewriter
 
                     self.proxy_line(line, args_rewriter=args_rewriter,
                                     response_rewriter=response_rewriter)
