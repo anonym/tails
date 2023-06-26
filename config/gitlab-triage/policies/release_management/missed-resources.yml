@@ -9,7 +9,7 @@ resource_rules:
             return false unless ENV['VERSION']
             return false unless ENV['NEXT_PLANNED_VERSION']
             return false unless milestone&.title == "Tails_#{ENV['VERSION']}"
-            Date.today >= milestone.due_date
+            true
         actions:
           comment: |
             /label ~"missed:#{ENV['VERSION']}"
@@ -24,7 +24,7 @@ resource_rules:
             return false unless ENV['VERSION']
             return false unless ENV['NEXT_PLANNED_VERSION']
             return false unless milestone&.title == "Tails_#{ENV['VERSION']}"
-            Date.today >= milestone.due_date
+            true
         actions:
           comment: |
             /label ~"missed:#{ENV['VERSION']}"
