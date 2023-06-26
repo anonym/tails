@@ -331,6 +331,8 @@ class FilteredControlPortProxySession:
                 if self.is_my_stream(event):
                     self.client_streams.add(event.id)
                 else:
+                    self.debug_log('dropped restricted stream event: ' +
+                                   event.raw_content())
                     return
             elif event.status in [stem.StreamStatus.FAILED,
                                   stem.StreamStatus.CLOSED]:
