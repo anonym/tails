@@ -89,7 +89,7 @@ Packages
 
 To release Tails you'll need some packages installed:
 
-* `gitlab-cli j2cli jq tidy libnotify-bin mktorrent podman python3-bs4 python3-debian python3-gitlab python3-jinja2 python3-html2text python3-voluptuous transmission-cli`
+* `gitlab-cli j2cli jq tidy libnotify-bin mktorrent podman python3-bs4 python3-debian python3-gitlab python3-jinja2 python3-html2text python3-voluptuous transmission-cli moreutils wl-clipboard`
   - Note: if the Debian version you are running does not include all required
     Go packages, such as [[!debpts podman]], you should be able to install
     them from a more recent Debian release with APT pinning.
@@ -368,6 +368,7 @@ and commit the result, including new PO files:
      ./import-translations || err "importing translations"
      ./refresh-translations || err "refreshing translations"
      ./submodules/jenkins-tools/slaves/lint_po || err "in lint"
+     ./bin/check-po-msgfmt || err "in msgfmt"
      git add po && git commit -m 'Update PO files.'
     )
 
@@ -471,8 +472,11 @@ Update other base branches
 
         for branch in ${RELEASE_BRANCH} devel feature/bookworm; do
             git switch ${branch}
+            echo "{{{ ${branch}"
             ls config/APT_overlays.d/
+            echo "}}}"
         done
+
 
 4. Ensure that the `$RELEASE_BRANCH`, `devel` and `feature/bookworm` (if it exists) branches
    have the expected content in `config/APT_overlays.d/`: e.g. it must
@@ -523,7 +527,7 @@ version's `.packages` file and the one from the to-be-released images:
        diff --color=never -u \
            "wiki/src/torrents/files/tails-amd64-${PREVIOUS_STABLE_VERSION}.packages" \
            <(curl --silent "https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/latest.packages") \
-        | wdiff --diff-input  --terminal
+        | wdiff --diff-input  --terminal | grep -v --perl-regexp '^[~.:+a-zA-Z_0-9 \t\s-]*$'
 
 2. In the diff, look for:
 
@@ -553,6 +557,13 @@ documentation:
          echo "Dear @technical-writers,\n"
          echo "- The changelog entry is ready: https://gitlab.tails.boum.org/tails/tails/-/blob/${RELEASE_BRANCH:?}/debian/changelog"
          echo "- The latest corresponding images built by Jenkins are there: https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/build-artifacts"
+
+    (
+             echo "Dear @technical-writers,\n"
+             echo "- The changelog entry is ready: https://gitlab.tails.boum.org/tails/tails/-/blob/${RELEASE_BRANCH:?}/debian/changelog"
+             echo "- The latest corresponding images built by Jenkins are there: https://nightly.tails.boum.org/build_Tails_ISO_${NEW_BRANCH}/lastSuccessful/archive/build-artifacts"
+    ) | pee cat wl-copy
+
 
 Included website
 ----------------
@@ -1777,6 +1788,7 @@ Feel free to skip this if you are not preparing a major release.
   - Follow the
     [Tor documentation](https://gitlab.torproject.org/tpo/tpa/team/-/wikis/service/blog#how-to-write-a-new-blog-post-in-gitlab).
     It's OK to create the MR on the command line instead of in the GitLab Web IDE.
+  - Take inspiration from [previous MR](https://gitlab.torproject.org/tpo/web/blog/-/merge_requests/190)
   - Reuse our existing lead image:
     - `cd` into the directory you created for the new blog post
     - Create a symlink to the existing lead image:
@@ -2160,20 +2172,23 @@ Check that you are indeed preparing a final release:
 
 1. Announce the date of the next release on <tails-dev@boum.org> and
    <tails-l10n@boum.org>.
-   - Cc <tails-manual-testers@boum.org>,
-     asking them to privately tell the RM for that release
-     _how much_ manual testing they can do on release day.
-   - `echo Subject: "Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"`
-   - If you use Thunderbird, you can use this:
 
-         thunderbird -compose "to=tails-dev@boum.org,tails-l10n@boum.org,cc=tails-manual-testers@boum.org,subject=Release schedule for Tails ${NEXT_PLANNED_VERSION:?}"
+         cat <<EOF | ./bin/automailer.py
+         To: tails-dev@boum.org,tails-l10n@boum.org
+         Cc: tails-manual-testers@boum.org
+         Subject: Release schedule for Tails ${NEXT_PLANNED_VERSION:?}
 
-     Else, if you use *notmuch*, you can use this:
+         Hi,
 
-         notmuch-emacs-mua --client --create-frame \
-            --cc=tails-manual-testers@boum.org \
-            --subject="Release schedule for Tails ${NEXT_PLANNED_VERSION:?}" \
-            tails-dev@boum.org tails-l10n@boum.org
+         XXX will be the RM for Tails ${NEXT_PLANNED_VERSION:?}
+
+         The current plan is:
+          - Monday, XXX: build images, start testing
+          - Tuesday, XXX: releasing
+
+         @testers, please let me know how much time you'll have for manual QA 
+         from Monday 17:00 to Tuesday 11:00 (Europe/Berlin)
+         EOF
 
    - If a release candidate is planned, include it in the release schedule
      and the call for manual testers.
