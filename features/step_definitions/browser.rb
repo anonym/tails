@@ -371,3 +371,15 @@ When /^I log-in to the Captive Portal$/ do
 
   step 'I close the Unsafe Browser'
 end
+
+Then /^Tor Browser's circuit view is working$/ do
+  @torbrowser.child('Tor Circuit', roleName: 'push button').click
+  nodes = @torbrowser.child('This browser', roleName: 'list item')
+            .parent.children(roleName: 'list item')
+  url = @torbrowser.child('Navigation', roleName: 'tool bar')
+          .parent.child(roleName: 'entry').text
+  domain = URI.parse(url).host.split('.')[-2..-1].join('.')
+  assert_equal('This browser', nodes.first.name)
+  assert_equal(domain, nodes.last.name)
+  assert_equal(5, nodes.size)
+end
