@@ -533,8 +533,17 @@ class FilteredControlPortProxySession:
                         def _response_rewriter(ignored):
                             new_lines = "250+circuit-status=\r\n"
                             circuits = self.my_circuits()
+                            # The _raw_content is the last raw CIRC
+                            # event received for each circuit id, so
+                            # we just have to remove the event-related
+                            # prefix to have it in circuit-status'
+                            # format. They are already \r\n-terminated.
                             for c in circuits:
                                 new_lines += str(c._raw_content, 'ascii').removeprefix('650 CIRC ')
+                            # Multi-line responses are terminated with
+                            # a dot (.), but an empty answer is
+                            # considered a single-line response which
+                            # need no such termination.
                             if len(circuits) > 0:
                                 new_lines += ".\r\n"
                             new_lines += "250 OK\r\n"
