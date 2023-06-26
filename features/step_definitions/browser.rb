@@ -244,11 +244,10 @@ When /^I download some file in the Tor Browser$/ do
   @some_file = 'tails-signing.key'
   some_url = "https://tails.net/#{@some_file}"
   step "I open the address \"#{some_url}\" in the Tor Browser without waiting"
-end
-
-When /^I save the file to the default Tor Browser download directory$/ do
-  @screen.wait('Gtk3SaveFileDialog.png', 20)
-  @screen.press('Return')
+  @torbrowser
+    .child(@some_file, roleName: 'label')
+    .parent
+    .children('Completed.*', roleName: 'label')
 end
 
 Then /^the file is saved to the default Tor Browser download directory$/ do
@@ -371,4 +370,16 @@ When /^I log-in to the Captive Portal$/ do
   end
 
   step 'I close the Unsafe Browser'
+end
+
+Then /^Tor Browser's circuit view is working$/ do
+  @torbrowser.child('Tor Circuit', roleName: 'push button').click
+  nodes = @torbrowser.child('This browser', roleName: 'list item')
+            .parent.children(roleName: 'list item')
+  url = @torbrowser.child('Navigation', roleName: 'tool bar')
+          .parent.child(roleName: 'entry').text
+  domain = URI.parse(url).host.split('.')[-2..-1].join('.')
+  assert_equal('This browser', nodes.first.name)
+  assert_equal(domain, nodes.last.name)
+  assert_equal(5, nodes.size)
 end

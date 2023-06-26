@@ -318,10 +318,6 @@ class FilteredControlPortProxySession:
     def is_my_stream(self, stream):
         if self.client_address[0] == stream.source_address:
             return True
-        if self.client_pid:
-            stream_pid = pid_of_laddr((stream.source_address, stream.source_port))
-            if self.client_pid == stream_pid:
-                return True
         return False
 
     def my_streams(self):
@@ -349,6 +345,8 @@ class FilteredControlPortProxySession:
                 if self.is_my_stream(event):
                     self.client_streams.add(event.id)
                 else:
+                    self.debug_log('dropped restricted stream event: ' +
+                                   event.raw_content())
                     return
             elif event.status in [stem.StreamStatus.FAILED,
                                   stem.StreamStatus.CLOSED]:
