@@ -244,11 +244,10 @@ When /^I download some file in the Tor Browser$/ do
   @some_file = 'tails-signing.key'
   some_url = "https://tails.net/#{@some_file}"
   step "I open the address \"#{some_url}\" in the Tor Browser without waiting"
-end
-
-When /^I save the file to the default Tor Browser download directory$/ do
-  @screen.wait('Gtk3SaveFileDialog.png', 20)
-  @screen.press('Return')
+  @torbrowser
+    .child(@some_file, roleName: 'label')
+    .parent
+    .children('Completed.*', roleName: 'label')
 end
 
 Then /^the file is saved to the default Tor Browser download directory$/ do
