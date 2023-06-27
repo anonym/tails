@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  var URLofJsonFileContainingChecksums="https://tails.boum.org/install/v2/Tails/amd64/stable/latest.json";
+  var URLofJsonFileContainingChecksums="https://tails.net/install/v2/Tails/amd64/stable/latest.json";
   var sha256;
 
   /* Generic functions */
