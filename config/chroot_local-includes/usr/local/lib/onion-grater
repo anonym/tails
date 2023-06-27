@@ -797,7 +797,8 @@ def main():
     )
     parser.add_argument(
         "--debug",
-        action='store_true', default=False,
+        action='store_true',
+        default='debug' in open('/proc/cmdline').read().split(),
         help="prints all requests and responses"
     )
     # We put the argparse results in the global scope since it's
@@ -820,6 +821,8 @@ def main():
     address = (ip_address, GLOBAL_ARGS.listen_port)
     server = FilteredControlPortProxy(address, FilteredControlPortProxyHandler)
     log("Tor control port filter started, listening on {}:{}".format(*address))
+    if GLOBAL_ARGS.debug:
+        log("debug on")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
