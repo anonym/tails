@@ -23,7 +23,7 @@ exec_firefox_helper() {
     local binary="${1}"; shift
 
     export LD_LIBRARY_PATH="${TBB_INSTALL}"
-    export FONTCONFIG_PATH="${TBB_INSTALL}/TorBrowser/Data/fontconfig"
+    export FONTCONFIG_PATH="${TBB_INSTALL}/fontconfig"
     export FONTCONFIG_FILE="fonts.conf"
     export GNOME_ACCESSIBILITY=1
 

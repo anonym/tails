@@ -5,7 +5,7 @@ class OpenCVInternalError < StandardError
 end
 
 module OpenCV
-  def self.matchTemplate(image, screen, sensitivity, show_match)
+  def self.matchTemplate(image, screen, sensitivity, show_match, show_old)
     assert(sensitivity < 1.0)
     # Do a deep-copy so we don't mess up the outer environment
     env = Hash[ENV]
@@ -23,7 +23,7 @@ module OpenCV
     debug_log('OpenCV: starting opencv_match_template.py')
     stdout, stderr, p = Open3.capture3(
       env, 'python3', "#{GIT_DIR}/features/scripts/opencv_match_template.py",
-      screen, image, sensitivity.to_s, show_match.to_s
+      screen, image, sensitivity.to_s, show_match.to_s, show_old.to_s
     )
     raise OpenCVInternalError, stderr if p.exitstatus != 0
     if stdout.chomp == 'FindFailed'
