@@ -21,7 +21,7 @@ NOSYMFOLLOW_MOUNTPOINT = "/run/nosymfollow"
 class FailedPrecondition(Exception):
     pass
 
-class InvalidMountError(Exception):
+class InvalidBindingError(Exception):
     pass
 
 class IsActiveException(Exception):
@@ -31,13 +31,13 @@ class IsInactiveException(Exception):
     pass
 
 
-class Mount(object):
+class Binding(object):
     """A mapping of a source file or directory to a target file or
-    directory. When a feature is activated, all of its mounts are
-    mounted, i.e. for each mount the source file or directory is mounted
+    directory. When a feature is activated, all of its bindings are
+    activated, i.e. the source file or directory is mounted or symlinked
     to the target file or directory.
 
-    By default, the source is mounted via a bind mount. If uses_symlinks
+    By default, bindings are activated via a bind mount. If uses_symlinks
     is true, instead of using a bind mount, symlinks are created from
     the source file or, if the source is a directory, each file in the
     source directory, to the target file or directory.
@@ -99,23 +99,23 @@ class Mount(object):
             self._relative_src = \
                 self.src.relative_to(self.tps_mount_point)
         except ValueError:
-            raise InvalidMountError(f"Mount source {self.src} is outside of "
+            raise InvalidBindingError(f"Binding source {self.src} is outside of "
                                     f"the Persistent Storage mount point "
                                     f"{self.tps_mount_point}")
 
-        # Check that the mount's source is below the Persistent Storage
+        # Check that the binding's source is below the Persistent Storage
         # mount point
         if self.tps_mount_point not in self.src.parents:
-            raise InvalidMountError(f"Mount's source is outside of the "
+            raise InvalidBindingError(f"Binding's source is outside of the "
                                     f"Persistent Storage mount point: {self}")
 
     def __str__(self):
-        """The string representation of a mount."""
+        """The string representation of a binding."""
         return self.to_persistenceconf_line()
 
     def to_persistenceconf_line(self) -> str:
         """
-        Representation of this mount as a persistence.conf line
+        Representation of this binding as a persistence.conf line
         """
         options = ','.join(shlex.quote(option) for option in self.options)
         return shlex.quote(str(self.dest_orig)) + '\t' + options
@@ -123,9 +123,9 @@ class Mount(object):
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
 
-    def __eq__(self, other: Union["Mount", str]):
-        """Check if the mount is equal to another mount or the string
-        representation of another mount"""
+    def __eq__(self, other: Union["Binding", str]):
+        """Check if the binding is equal to another binding or the string
+        representation of another binding"""
 
         # Ensure that the other object is a string
         other = str(other)
@@ -186,14 +186,14 @@ class Mount(object):
         try:
             self.check_is_inactive()
         except IsActiveException as e:
-            # The mount is already active. It could be that two
-            # different features have the same mount, which would
-            # cause the mount to be activated again. To support that
+            # The binding is already active. It could be that two
+            # different features have the same binding, which would
+            # cause the binding to be activated again. To support that
             # case, we ignore the error here and just log a warning.
             logger.warning(str(e))
             return
 
-        logger.info(f"Activating mount {self.dest}...")
+        logger.info(f"Activating binding {self.dest}...")
 
         # Check if anything else is mounted on the destination
         src = _what_is_mounted_on(self.dest)
@@ -207,8 +207,8 @@ class Mount(object):
         # contains a symlink (which is unsupported to prevent symlink
         # attacks). Note that this check is not for security - if a
         # symlink is created in the destination path after this check,
-        # the mount will still fail, because we're using a nosymfollow
-        # bind-mount.
+        # activating the binding will still fail, because we're using a
+        # nosymfollow bind-mount.
         # To be able to test our protection against symlink attacks,
         # we only perform this check if we're not running a symlink
         # attack test (i.e. the SYMLINK_ATTACK_TEST env var is not set)
@@ -246,7 +246,7 @@ class Mount(object):
         else:
             self._activate_using_bind_mount()
 
-        logger.info(f"Done activating mount {self.dest}")
+        logger.info(f"Done activating binding {self.dest}")
 
     def _activate_using_symlinks(self):
         if self.is_file:
@@ -362,8 +362,8 @@ class Mount(object):
         try:
             self.check_is_active()
         except IsInactiveException as e:
-            # The mount is not active. It could be that two different
-            # features have the same mount, which would cause the mount
+            # The binding is not active. It could be that two different
+            # features have the same binding, which would cause the binding
             # to be deactivated again. To support that case, we ignore
             # the error here and just log a warning.
             logger.warning(str(e))
@@ -418,7 +418,7 @@ class Mount(object):
             return False
 
     def check_is_active(self):
-        """Check if the mount is active. Raise an IsInactiveException
+        """Check if the binding is active. Raise an IsInactiveException
         if the feature is inactive."""
         if self.uses_symlinks:
             self._check_is_active_using_symlinks()
@@ -426,19 +426,19 @@ class Mount(object):
             self._check_is_active_using_bind_mount()
 
     def check_is_inactive(self):
-        """Check if the mount is inactive. Raise an IsActiveException
+        """Check if the binding is inactive. Raise an IsActiveException
         if the feature is active."""
         if self.is_active():
-            raise IsActiveException(f"Mount {self.dest} is active")
+            raise IsActiveException(f"Binding {self.dest} is active")
 
     def _check_is_active_using_symlinks(self):
         if not self.src.exists():
             # If the source doesn't exist, the feature can't be active.
-            raise IsInactiveException(f"Mount {self.dest} is inactive: Symlink source {self.src} does not exist")
+            raise IsInactiveException(f"Binding {self.dest} is inactive: Symlink source {self.src} does not exist")
 
         if not self.dest.is_symlink() and not self.dest.exists():
             # If the destination doesn't exist, the feature can't be active.
-            raise IsInactiveException(f"Mount {self.dest} is inactive: Destination {self.dest} does not exist")
+            raise IsInactiveException(f"Binding {self.dest} is inactive: Destination {self.dest} does not exist")
 
         for dir, _, files in os.walk(self.src):
             dest_dir = os.path.join(self.dest, os.path.relpath(dir, self.src))
@@ -446,24 +446,24 @@ class Mount(object):
                 src = Path(dir, f)
                 dest = Path(dest_dir, f)
                 if not dest.is_symlink():
-                    raise IsInactiveException(f"Mount {self.dest} is inactive: Symlink {dest} does not exist")
+                    raise IsInactiveException(f"Binding {self.dest} is inactive: Symlink {dest} does not exist")
                 if dest.readlink() != src:
                     raise IsInactiveException(
-                        f"Mount {self.dest} is inactive: Symlink {dest} does not resolve to the symlink source {src} but to {dest.resolve()}")
+                        f"Binding {self.dest} is inactive: Symlink {dest} does not resolve to the symlink source {src} but to {dest.resolve()}")
 
     def _check_is_active_using_bind_mount(self):
         # Check if the Persistent Storage cleartext device is already
         # mounted on the destination
         if not _is_mountpoint(self.dest):
-            raise IsInactiveException(f"Mount {self.dest} is inactive: {self.dest} it not a mountpoint")
+            raise IsInactiveException(f"Binding {self.dest} is inactive: {self.dest} it not a mountpoint")
 
     def _create_dest_directory(self, path: Path):
-        """Create the destination directory of a mount in the same way as
+        """Create the destination directory of a binding in the same way as
         it's done in live-boot's activate_custom_mounts() function, i.e.
         by deleting existing files that are in the way and by setting the
         owner to the UID of amnesia (live-boot sets it to 1000) on
         directories below /home/amnesia"""
-        logger.debug(f"Creating mount destination {path}")
+        logger.debug(f"Creating binding destination {path}")
         for p in sorted(path.parents) + [path]:
             if p.is_file():
                 # Delete existing files that are in the way
@@ -471,7 +471,7 @@ class Mount(object):
             p.mkdir(mode=0o700, parents=True, exist_ok=True)
             if Path(f"{self.nosymfollow_mountpoint}/home/{LIVE_USERNAME}") in \
                     p.parents:
-                logger.debug(f"Changing owner of mount destination {path} to "
+                logger.debug(f"Changing owner of binding destination {path} to "
                              f"UID {LIVE_USER_UID}")
                 # If dest is in /home/amnesia, set ownership to the amnesia
                 # user.

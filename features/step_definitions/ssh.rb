@@ -101,7 +101,7 @@ When /^I connect to an SSH server on the (Internet|LAN)$/ do |location|
   step 'process "ssh" is not running'
 
   recovery_proc = proc do
-    step 'I kill the process "ssh"' if $vm.process_running?('ssh')
+    ensure_process_is_terminated('ssh')
     step 'I run "clear" in GNOME Terminal'
   end
 
@@ -123,8 +123,8 @@ Then /^I connect to an SFTP server on the Internet$/ do
   @sftp_port = @sftp_port.to_s
 
   recovery_proc = proc do
-    step 'I kill the process "ssh"'
-    step 'I kill the process "nautilus"'
+    ensure_process_is_terminated('ssh')
+    ensure_process_is_terminated('nautilus')
   end
 
   retry_tor(recovery_proc) do

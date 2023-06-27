@@ -2,7 +2,8 @@ import os
 from pathlib import Path
 from typing import Union
 
-from tps.configuration.mount import Mount
+from tps.configuration.binding import Binding
+
 
 def check_same_permissions_and_owner_recursively(file1: Union[str, Path],
                                                  file2: Union[str, Path]):
@@ -44,13 +45,13 @@ def check_same_permissions_and_owner(file1: Union[str, Path],
                              f"{file2}")
 
 
-def get_mount_operand(mount: Mount, operand: str) -> Path:
+def get_binding_operand(binding: Binding, operand: str) -> Path:
     if operand == "source":
-        return mount.src
+        return binding.src
     elif operand == "destination":
-        return mount.dest
+        return binding.dest
     else:
-        raise ValueError("Invalid parameter for parameter 'mount_operand': "
+        raise ValueError("Invalid parameter for parameter 'binding_operand': "
                          "%s" % operand)
 
 

@@ -45,8 +45,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tor Project\n"
-"Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2023-02-15 08:44+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-12 14:46+0200\n"
 "PO-Revision-Date: 2023-05-28 10:49+0000\n"
 "Last-Translator: mik <ls4wl@riseup.net>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/tor/"
@@ -58,9 +58,159 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.18-dev\n"
 
+#. Translators: Don't translate {details}, it's a placeholder and will
+#. be replaced.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/additional_software.py:193
+#, python-brace-format
+msgid ""
+"{details} Please check your list of additional software or read the system "
+"log to understand the problem."
+msgstr "{details} 请检查你的附加软件列表和系统日志来了解问题的详细信息。"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/additional_software.py:198
+msgid ""
+"Please check your list of additional software or read the system log to "
+"understand the problem."
+msgstr "请检查你的附加软件列表和系统日志来了解问题的详细信息。"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/additional_software.py:202
+msgid "Show Log"
+msgstr "显示日志"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/additional_software.py:202
+msgid "Configure"
+msgstr "配置"
+
+#. Translators: Don't translate {packages}, it's a placeholder and will
+#. be replaced.
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:41
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:72
+#, python-brace-format
+msgid "Add {packages} to your additional software?"
+msgstr "添加 {packages} 为附加软件？"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:43
+msgid ""
+"To install it automatically from your persistent storage when starting Tails."
+msgstr "使它在每次启动 Tails 时从永久存储中安装。"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:45
+msgid "Install Every Time"
+msgstr "始终安装"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:46
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:78
+msgid "Install Only Once"
+msgstr "仅安装一次"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:53
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:84
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:151
+msgid "The configuration of your additional software failed."
+msgstr "配置附加软件失败。"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:74
+msgid ""
+"To install it automatically when starting Tails, you can create a persistent "
+"storage and activate the <b>Additional Software</b> feature."
+msgstr ""
+"要在 Tails 每次启动时安装此软件，你可以创建一个永久存储并启动 <b>附加软件</b>"
+"功能。"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:77
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:224
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:242
+msgid "Create Persistent Storage"
+msgstr "创建永久存储"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:86
+msgid "Creating your persistent storage failed."
+msgstr "创建持久存储失败。"
+
+#. Translators: Don't translate {packages}, it's a placeholder and
+#. will be replaced.
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:95
+#, python-brace-format
+msgid "You could install {packages} automatically when starting Tails"
+msgstr "启动 Tails 时，你可以自动安装 {packages}"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:98
+msgid "To do so, you need to run Tails from a USB stick."
+msgstr "这样做，您需要从 USB 中运行 Tails。"
+
+#. Translators: Don't translate {packages}, it's a placeholder and will be
+#. replaced.
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:138
+#, python-brace-format
+msgid "Remove {packages} from your additional software?"
+msgstr "从附加软件中移除{packages} ？"
+
+#. Translators: Don't translate {packages}, it's a placeholder
+#. and will be replaced.
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:142
+#, python-brace-format
+msgid "This will stop installing {packages} automatically."
+msgstr "这将导致 {packages}的安装进程自动中止。"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:144
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:168
+msgid "Remove"
+msgstr "移除"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:145
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:161
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:657
+#: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:344
+msgid "Cancel"
+msgstr "取消"
+
+#. Translators: Don't translate {beginning} or {last}, they are
+#. placeholders and will be replaced.
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:165
+#, python-brace-format
+msgid "{beginning} and {last}"
+msgstr "{beginning} 和 {last}"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-handle-package-changes:166
+msgid ", "
+msgstr "， "
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-install:38
+msgid "The check for upgrades of your additional software failed"
+msgstr "附加软件升级检查失败"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-install:40
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-install:48
+msgid ""
+"Please check your network connection, restart Tails, or read the system log "
+"to understand the problem."
+msgstr "请检查您的网络连接，重启 Tails 或者阅读系统日志以了解问题所在。"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-install:47
+msgid "The upgrade of your additional software failed"
+msgstr "附加软件更新失败"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-install:112
+msgid "Installing your additional software from persistent storage..."
+msgstr "从永久存储中安装您的附加软件……"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-install:114
+msgid "This can take several minutes."
+msgstr "这可能会花费几分钟。"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-install:127
+msgid "The installation of your additional software failed"
+msgstr "附加软件安装失败"
+
+#: config/chroot_local-includes/usr/local/lib/additional-software/asp-install:142
+msgid "Additional software installed successfully"
+msgstr "附加软件安装成功"
+
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:8
-#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:1
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:557
+#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.AdditionalSoftware.desktop.in.h:1
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:646
 msgid "Additional Software"
 msgstr "附加软件"
 
@@ -77,11 +227,11 @@ msgid ""
 msgstr "在 Tails 启动时会从永久存储中安装下列附加软件。"
 
 #: config/chroot_local-includes/usr/share/tails/additional-software/configuration-window.ui:135
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:180
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:185
 msgid ""
-"To add more, install some software using <a href=\"synaptic.desktop"
-"\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal.desktop"
-"\">APT on the command line</a>."
+"To add more, install some software using <a href=\"synaptic."
+"desktop\">Synaptic Package Manager</a> or <a href=\"org.gnome.Terminal."
+"desktop\">APT on the command line</a>."
 msgstr ""
 "要添加更多附加软件，可以使用 <a href=\"synaptic.desktop\">新立得软件包管理器"
 "</a> 或<a href=\"org.gnome.Terminal.desktop\">通过终端使用 APT</a>。"
@@ -90,11 +240,47 @@ msgstr ""
 msgid "_Create persistent storage"
 msgstr "创建永久存储(_C)"
 
-#: config/chroot_local-includes/usr/local/bin/electrum:72
+#: config/chroot_local-includes/usr/local/bin/electrum:94
+msgid ""
+"Tails needs donations to keep everybody free and safe online.\n"
+"\n"
+"Every bit helps in our fight against surveillance and censorship!\n"
+"\n"
+"<a href=\"file:///usr/share/doc/tails/website/donate.en.html#expenses\">How "
+"we spend our money.</a>"
+msgstr ""
+
+#: config/chroot_local-includes/usr/local/bin/electrum:101
+msgid ""
+"Tails protects your wallet.\n"
+"\n"
+"Help us keep your bitcoins safe!\n"
+"\n"
+"<a href=\"file:///usr/share/doc/tails/website/donate.en.html#expenses\">How "
+"we spend our money.</a>"
+msgstr ""
+
+#: config/chroot_local-includes/usr/local/bin/electrum:112
+msgid "Donate Now"
+msgstr ""
+
+#: config/chroot_local-includes/usr/local/bin/electrum:113
+msgid "Later"
+msgstr ""
+
+#: config/chroot_local-includes/usr/local/bin/electrum:123
+msgid "Opening Electrum with our donation address..."
+msgstr ""
+
+#: config/chroot_local-includes/usr/local/bin/electrum:124
+msgid "Thank you for making the Internet a safer place!"
+msgstr ""
+
+#: config/chroot_local-includes/usr/local/bin/electrum:157
 msgid "Persistence is disabled for Electrum"
 msgstr "Electrum 的持久化已禁用"
 
-#: config/chroot_local-includes/usr/local/bin/electrum:74
+#: config/chroot_local-includes/usr/local/bin/electrum:159
 msgid ""
 "When you reboot Tails, all of Electrum's data will be lost, including your "
 "Bitcoin wallet.\n"
@@ -104,15 +290,15 @@ msgstr ""
 "重新启动 Tails 后，Electrum 的所有数据都会丢失，包括您的比特币钱包。\n"
 "强烈建议您仅在 Tails 的永久存储功能启用时运行 Electrum。"
 
-#: config/chroot_local-includes/usr/local/bin/electrum:75
+#: config/chroot_local-includes/usr/local/bin/electrum:160
 msgid "Do you want to start Electrum anyway?"
 msgstr "您无论如何都要启动 Electrum 吗？"
 
-#: config/chroot_local-includes/usr/local/bin/electrum:78
+#: config/chroot_local-includes/usr/local/bin/electrum:163
 msgid "_Launch"
 msgstr "启动(_L)"
 
-#: config/chroot_local-includes/usr/local/bin/electrum:79
+#: config/chroot_local-includes/usr/local/bin/electrum:164
 msgid "_Exit"
 msgstr "退出(_E)"
 
@@ -202,10 +388,10 @@ msgstr "如需调试信息，请执行命令：sudo tails-debugging-info"
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:289
 msgid ""
 "<b>An error occured while updating the signing key.</b>\\n\\n<b>This "
-"prevents determining whether an upgrade is available from our website.</b>\\n"
-"\\nCheck your network connection, and restart Tails to try upgrading again."
-"\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/website/doc/"
-"upgrade/error/check.en.html"
+"prevents determining whether an upgrade is available from our website.</"
+"b>\\n\\nCheck your network connection, and restart Tails to try upgrading "
+"again.\\n\\nIf the problem persists, go to file:///usr/share/doc/tails/"
+"website/doc/upgrade/error/check.en.html"
 msgstr ""
 "<b>当更新密钥时出现了一个错误。</b>\\n\\n<b>这将无法通过我们的网站确定是否有"
 "可用更新。</b>\\n\\n检查您的网络连接状态，重启Tails并再次尝试更新。\\n\\n如果"
@@ -512,9 +698,9 @@ msgid ""
 "instructions at file:///usr/share/doc/tails/website/doc/upgrade/error/"
 "install.en.html"
 msgstr ""
-"<b>安装更新时出现错误</b>\\n\\n您的Tails设备需要修复，并且可能无法重启。\\n"
-"\\n请查看以下说明：file:///usr/share/doc/tails/website/doc/upgrade/error/"
-"install.en.html"
+"<b>安装更新时出现错误</b>\\n\\n您的Tails设备需要修复，并且可能无法重"
+"启。\\n\\n请查看以下说明：file:///usr/share/doc/tails/website/doc/upgrade/"
+"error/install.en.html"
 
 #: config/chroot_local-includes/usr/src/iuk/lib/Tails/IUK/Frontend.pm:863
 msgid "Error while installing the upgrade"
@@ -523,14 +709,6 @@ msgstr "安装升级时出错"
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:32
 msgid "Additional Settings"
 msgstr "额外设置"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:40
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:169
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:584
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:367
-#: config/chroot_local-includes/usr/local/bin/tails-screen-locker:119
-msgid "Cancel"
-msgstr "取消"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/add_settings_dialog.py:46
 msgid "Add"
@@ -598,63 +776,83 @@ msgstr "关"
 msgid "Off (default)"
 msgstr "关闭（默认）"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:167
-msgid "Persistent Storage Not Unlocked"
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:159
+#, fuzzy
+msgid "Persistent Storage Still Locked"
 msgstr "持久化存储未解锁"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:168
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:160
 msgid ""
 "Do you really want to start Tails without unlocking your Persistent Storage?"
 msgstr "你确定想在不开启持久性存储的情况下启动Tails吗？"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:170
-msgid "Continue Without Persistent Storage"
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:162
+#, fuzzy
+msgid "Start Without Persistent Storage"
 msgstr "在没有开启持久性存储的情况下继续"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:408
-msgid "Don't _Create Persistent Storage"
-msgstr "不要_创建持久性存储"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/main_window.py:410
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:281
-msgid "_Create Persistent Storage"
-msgstr "_创建持久存储"
-
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:83
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:101
 msgid "Error unlocking Persistent Storage: {}"
 msgstr "解锁持久化存储出错：{}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:102
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:124
+#, fuzzy
+msgid "Error upgrading Persistent Storage: {}"
+msgstr "解锁持久化存储出错：{}"
+
+#. Translators: Don't translate {features}, it's a placeholder
+#. and will be replaced.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:146
+#, fuzzy, python-brace-format
+msgid "Failed to activate some features of the Persistent Storage: {features}."
+msgstr "配置持久化存储失败"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/settings/persistence.py:151
 msgid "Error activating Persistent Storage: {}"
 msgstr "激活持久化存储出错：{}"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:68
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:70
 msgid "Unlocking…"
 msgstr "正在解锁…"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:94
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:108
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:118
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:508
-msgid "Unlock"
-msgstr "解锁"
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:135
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:505
+msgid "Unlock Encryption"
+msgstr ""
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:99
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:40
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:113
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:41
 msgid "Cannot unlock encrypted storage with this passphrase."
 msgstr "无法用此密码解锁加密的存储。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:112
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
+#, fuzzy
+msgid ""
+"Failed to upgrade the Persistent Storage. Please start Tails and send an "
+"error report."
+msgstr "激活持久性存储失败。请启动Tails并发送一份错误报告。"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:127
 msgid ""
 "Failed to unlock the Persistent Storage. Please start Tails and send an "
 "error report."
 msgstr "解锁持久性存储失败。请启动Tails并发送一份错误报告。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:122
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:133
 msgid ""
 "Failed to activate the Persistent Storage. Please start Tails and send an "
 "error report."
 msgstr "激活持久性存储失败。请启动Tails并发送一份错误报告。"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:143
+msgid "Upgrading the Persistent Storage. This may take a while…"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/persistent_storage.py:154
+#, fuzzy
+msgid "Start Tails and open the Persistent Storage settings to find out more."
+msgstr "解锁持久性存储失败。请启动Tails并发送一份错误报告。"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tailsgreeter/ui/region_settings.py:164
 msgid "_Language"
@@ -668,28 +866,28 @@ msgstr "格式(_F)"
 msgid "_Keyboard Layout"
 msgstr "键盘布局(_K)"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:288
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:289
 #, python-format
 msgid "Unable to write on %(device)s, skipping."
 msgstr "无法向 %(device)s 中写入，正在跳过。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:332
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:333
 #, python-format
 msgid ""
 "Some partitions of the target device %(device)s are mounted. They will be "
 "unmounted before starting the installation process."
 msgstr "目标设备的一些分区 %(device)s 已经加载，并将在安装过程开始之前卸载。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:341
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:342
 msgid "Extracting live image to the target device..."
 msgstr "提取实时映像给目标设备..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:348
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:349
 #, python-format
 msgid "Wrote to device at %(speed)d MB/sec"
 msgstr "写入设备，写入速度 %(speed)d MB/s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:446
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:447
 #, python-format
 msgid ""
 "There was a problem executing the following command: `%(command)s`.\n"
@@ -698,7 +896,7 @@ msgstr ""
 "在运行该命令时出错：`%(command)s`。\n"
 "更详细的错误日志已被写到 “%(filename)s”。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:462
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:463
 #, python-format
 msgid ""
 "Not enough free space on device.\n"
@@ -707,218 +905,241 @@ msgstr ""
 "设备可用空间不足。\n"
 "%(iso_size)dMB ISO + %(overlay_size)dMB 覆盖 > %(free_space)dMB 可用空间"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:471
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:472
 #, python-format
 msgid "Creating %sMB persistent overlay"
 msgstr "正在创建 %sMB 持久覆盖"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:521
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:522
 #, python-format
 msgid "Unable to copy %(infile)s to %(outfile)s: %(message)s"
 msgstr "无法复制 %(infile)s 至 %(outfile)s : %(message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:535
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:536
 msgid "Removing existing Tails system"
 msgstr "移除现存的 Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:545
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:546
 #, python-format
 msgid "Unable to remove file from previous Tails system: %(message)s"
 msgstr "无法从之前的 Tails 移除文件：%(message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:552
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:553
 #, python-format
 msgid "Unable to chmod %(file)s: %(message)s"
 msgstr "无法更改权限 %(file)s：%(message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:559
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:560
 #, python-format
 msgid "Unable to remove directory from previous Tails system: %(message)s"
 msgstr "无法从之前的 Tails 中移除目录：%(message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:607
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:608
 #, python-format
 msgid "Cannot find device %s"
 msgstr "无法找到设备 %s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:657
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:904
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:658
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:905
 msgid "Unknown filesystem.  Your device may need to be reformatted."
 msgstr "未知的文件系统。  您的设备也许需要重新格式化。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:660
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:907
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:661
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:908
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "不支持的文件系统：%s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:678
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:679
 #, python-format
 msgid "Unknown GLib exception while trying to mount device: %(message)s"
 msgstr "尝试挂载设备时遇到未知的 GLib 异常：%(message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:683
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:684
 #, python-format
 msgid "Unable to mount device: %(message)s"
 msgstr "无法挂载设备：%(message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:688
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:689
 msgid "No mount points found"
 msgstr "未找到挂载点"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:699
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:700
 #, python-format
 msgid "Entering unmount_device for \"%(device)s\""
 msgstr "输入 “%(device)s” 的卸载_设备"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:708
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:709
 #, python-format
 msgid "Unmounting mounted filesystems on \"%(device)s\""
 msgstr "卸载 “%(device)s” 上的已挂载文件系统"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:712
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:713
 #, python-format
 msgid "Unmounting \"%(udi)s\" on \"%(device)s\""
 msgstr "卸载 “%(device)s” 上的 “%(udi)s”"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:723
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:724
 #, python-format
 msgid "Mount %s exists after unmounting"
 msgstr "卸载之后掛载已存在 %s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:760
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:761
 #, python-format
 msgid "Partitioning device %(device)s"
 msgstr "分区设备 %(device)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:889
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:890
 #, python-format
 msgid "Unsupported device '%(device)s', please report a bug."
 msgstr "不是支持的设备'%(device)s',请报告此故障。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:892
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:893
 msgid "Trying to continue anyway."
 msgstr "仍要试着继续。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:901
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:902
 msgid "Verifying filesystem..."
 msgstr "正在验证文件系统..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:925
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:926
 #, python-format
 msgid "Unable to change volume label: %(message)s"
 msgstr "无法改变卷标：%(message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:930
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:931
 msgid "Installing bootloader..."
 msgstr "正在安装引导程序..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:937
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:938
 #, python-format
 msgid "Removing %(file)s"
 msgstr "正在移除 %(file)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1019
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:964
+#, fuzzy
+msgid "Cloning Persistent Storage..."
+msgstr "持久化存储"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1032
 #, python-format
 msgid "%s already bootable"
 msgstr "%s 已经是可引导盘"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1039
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1052
 msgid "Unable to find partition"
 msgstr "找不到分区"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1058
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1071
 #, python-format
 msgid "Formatting %(device)s as FAT32"
 msgstr "正在格式化 %(device)s 为 FAT32 格式"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1121
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1134
 #, python-format
 msgid "Reading extracted MBR from %s"
 msgstr "正在读取从 %s 提取的 MBR"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1125
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1138
 #, python-format
 msgid "Could not read the extracted MBR from %(path)s"
 msgstr "无法读取从 %(path)s 提取的 MBR"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1138
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1139
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1151
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1152
 #, python-format
 msgid "Resetting Master Boot Record of %s"
 msgstr "正在重置 %s 的 MBR"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1144
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1157
 msgid "Drive is a loopback, skipping MBR reset"
 msgstr "驱动器为环回 ，跳过 MBR 重设"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1148
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/creator.py:1161
 msgid "Synchronizing data on disk..."
 msgstr "正在同步硬盘中的数据..."
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:146
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:150
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
 msgstr "错误：无法设定标签或获得你设备的UUID。 不能继续。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:180
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:186
 #, python-format
 msgid "Installation complete! (%s)"
 msgstr "安装完成！（%s）"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:185
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:191
 msgid "Tails installation failed!"
 msgstr "Tails 安装失败！"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:274
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:296
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:1
 msgid "Tails Installer"
 msgstr "Tails 安装程序"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:316
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:163
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:339
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:164
 msgid "Clone the current Tails"
 msgstr "克隆当前的 Tails"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:323
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:184
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:346
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:200
 msgid "Use a downloaded Tails ISO image"
 msgstr "使用已下载的 Tails ISO 映像"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:361
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:397
 msgid "Upgrade"
 msgstr "升级"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:362
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:398
 msgid "Manual Upgrade Instructions"
 msgstr "手动升级指南"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:373
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:572
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:358
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:409
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:645
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:374
 msgid "Install"
 msgstr "安装"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:376
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:412
 #: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:131
 msgid "Installation Instructions"
 msgstr "安装说明"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:383
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:419
 #, python-format
 msgid "%(size)s %(vendor)s %(model)s device (%(device)s)"
 msgstr "%(size)s%(vendor)s%(model)s设备（%(device)s）"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:395
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:431
 msgid "No ISO image selected"
 msgstr "无选中的 ISO 映像"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:396
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:432
 msgid "Please select a Tails ISO image."
 msgstr "请选择一个 Tails 的 ISO 映像。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:458
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:488
+msgid ""
+"Clone the current Persistent Storage\n"
+"Impossible to clone the Persistent Storage because it is locked."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:491
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:180
+#, fuzzy
+msgid "Clone the current Persistent Storage"
+msgstr "在没有开启持久性存储的情况下继续"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:493
+msgid ""
+"Clone the current Persistent Storage\n"
+"You can only choose to reinstall when cloning the Persistent Storage."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:531
 #, python-format
 msgid ""
 "The USB stick \"%(pretty_name)s\" is configured as non-removable by its "
@@ -928,7 +1149,7 @@ msgstr ""
 "此USB移动存储设备\"%(pretty_name)s\"被生产厂商配置为不可移动磁盘，Tails 无法"
 "从其上启动。请尝试在其他移动存储设备上安装。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:468
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:541
 #, python-format
 msgid ""
 "The device \"%(pretty_name)s\" is too small to install Tails (at least "
@@ -936,7 +1157,7 @@ msgid ""
 msgstr ""
 "设备“%(pretty_name)s”太小，不足以安装 Tails（需要至少 %(size)s GB 的空间）。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:481
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:554
 #, python-format
 msgid ""
 "To upgrade device \"%(pretty_name)s\" from this Tails, you need to use a "
@@ -946,33 +1167,33 @@ msgstr ""
 "要更新 %(pretty_name)s 上的 Tails，你需要使用一个 Tails ISO 映像：\n"
 "%(dl_url)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:501
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:574
 msgid "No device suitable to install Tails could be found"
 msgstr "找不到适合安装 Tails 的设备"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:503
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:576
 #, python-format
 msgid "Please plug a USB flash drive or SD card of at least %0.1f GB."
 msgstr "请插入容量 %0.1f GB 以上的的 U 盘或 SD 卡。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:515
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:588
 msgid "An error happened while installing Tails"
 msgstr "安装 Tails 时发生错误"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:567
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:640
 msgid "Installation complete!"
 msgstr "安装完成!"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:622
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:695
 msgid "Unable to mount device"
 msgstr "无法挂载设备"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:628
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:701
 #, python-format
 msgid "%(parent_size)s %(vendor)s %(model)s device (%(device)s)"
 msgstr "%(parent_size)s%(vendor)s%(model)s设备（%(device)s）"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:637
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:710
 msgid ""
 "\n"
 "\n"
@@ -982,11 +1203,11 @@ msgstr ""
 "\n"
 "此 USB 存储器上的持久化存储数据都将丢失。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:638
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:711
 msgid "Delete Persistent Storage and Reinstall"
 msgstr "删除持久化存储并重新安装"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:640
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:713
 msgid ""
 "\n"
 "\n"
@@ -996,32 +1217,32 @@ msgstr ""
 "\n"
 "此 USB 存储器上的所有数据都将丢失。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:641
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:714
 msgid "Delete All Data and Install"
 msgstr "删除所有数据并安装"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:642
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:715
 #, python-format
 msgid "%(description)s%(delete_message)s"
 msgstr "%(description)s%(delete_message)s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:646
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:719
 msgid "Confirm the target USB stick"
 msgstr "确认目标 USB 存储器"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:687
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:760
 msgid ""
 "The selected file is unreadable. Please fix its permissions or select "
 "another file."
 msgstr "选中文件不可读。请修改其许可或选择其他文件。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:693
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:766
 msgid ""
 "Unable to use the selected file.  You may have better luck if you move your "
 "ISO to the root of your drive (ie: C:\\)"
 msgstr "无法使用所选文件。您可以将文件移动到磁盘根目录后再试（例如 C:\\）"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:699
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tails_installer/gui.py:772
 #, python-format
 msgid "%(filename)s selected"
 msgstr "%(filename)s 已选取"
@@ -1109,7 +1330,8 @@ msgstr "su 无法使用。请用 sudo 来替代。"
 
 #: config/chroot_local-includes/usr/src/perl5lib/lib/Tails/RunningSystem.pm:221
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:77
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:46
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:72
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:38
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:314
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:460
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:593
@@ -1169,152 +1391,12 @@ msgstr ""
 msgid "not available"
 msgstr "不可用"
 
-#. Translators: Don't translate {details}, it's a placeholder and will
-#. be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:150
-#, python-brace-format
-msgid ""
-"{details} Please check your list of additional software or read the system "
-"log to understand the problem."
-msgstr "{details} 请检查你的附加软件列表和系统日志来了解问题的详细信息。"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:155
-msgid ""
-"Please check your list of additional software or read the system log to "
-"understand the problem."
-msgstr "请检查你的附加软件列表和系统日志来了解问题的详细信息。"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
-msgid "Show Log"
-msgstr "显示日志"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:159
-msgid "Configure"
-msgstr "配置"
-
-#. Translators: Don't translate {beginning} or {last}, they are
-#. placeholders and will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:225
-#, python-brace-format
-msgid "{beginning} and {last}"
-msgstr "{beginning} 和 {last}"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:226
-msgid ", "
-msgstr "， "
-
-#. Translators: Don't translate {packages}, it's a placeholder and will
-#. be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:291
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:321
-#, python-brace-format
-msgid "Add {packages} to your additional software?"
-msgstr "添加 {packages} 为附加软件？"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:293
-msgid ""
-"To install it automatically from your persistent storage when starting Tails."
-msgstr "使它在每次启动 Tails 时从永久存储中安装。"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:295
-msgid "Install Every Time"
-msgstr "始终安装"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:296
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:327
-msgid "Install Only Once"
-msgstr "仅安装一次"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:302
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:332
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:372
-msgid "The configuration of your additional software failed."
-msgstr "配置附加软件失败。"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:323
-msgid ""
-"To install it automatically when starting Tails, you can create a persistent "
-"storage and activate the <b>Additional Software</b> feature."
-msgstr ""
-"要在 Tails 每次启动时安装此软件，你可以创建一个永久存储并启动 <b>附加软件</b>"
-"功能。"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:326
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:265
-msgid "Create Persistent Storage"
-msgstr "创建永久存储"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:334
-msgid "Creating your persistent storage failed."
-msgstr "创建持久存储失败。"
-
-#. Translators: Don't translate {packages}, it's a placeholder and
-#. will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:343
-#, python-brace-format
-msgid "You could install {packages} automatically when starting Tails"
-msgstr "启动 Tails 时，你可以自动安装 {packages}"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:346
-msgid "To do so, you need to run Tails from a USB stick."
-msgstr "这样做，您需要从 USB 中运行 Tails。"
-
-#. Translators: Don't translate {packages}, it's a placeholder and will be
-#. replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:360
-#, python-brace-format
-msgid "Remove {packages} from your additional software?"
-msgstr "从附加软件中移除{packages} ？"
-
-#. Translators: Don't translate {packages}, it's a placeholder
-#. and will be replaced.
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:364
-#, python-brace-format
-msgid "This will stop installing {packages} automatically."
-msgstr "这将导致 {packages}的安装进程自动中止。"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:366
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:163
-msgid "Remove"
-msgstr "移除"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:543
-msgid "Installing your additional software from persistent storage..."
-msgstr "从永久存储中安装您的附加软件……"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:545
-msgid "This can take several minutes."
-msgstr "这可能会花费几分钟。"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:558
-msgid "The installation of your additional software failed"
-msgstr "附加软件安装失败"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:573
-msgid "Additional software installed successfully"
-msgstr "附加软件安装成功"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:593
-msgid "The check for upgrades of your additional software failed"
-msgstr "附加软件升级检查失败"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:595
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:603
-msgid ""
-"Please check your network connection, restart Tails, or read the system log "
-"to understand the problem."
-msgstr "请检查您的网络连接，重启 Tails 或者阅读系统日志以了解问题所在。"
-
-#: config/chroot_local-includes/usr/local/sbin/tails-additional-software:602
-msgid "The upgrade of your additional software failed"
-msgstr "附加软件更新失败"
-
-#: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:37
+#: config/chroot_local-includes/usr/local/lib/tails-additional-software-notify:36
 msgid "Documentation"
 msgstr "文档"
 
 #. Translators: Don't translate {package}, it's a placeholder and will be replaced.
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:95
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:100
 #, python-brace-format
 msgid ""
 "Remove {package} from your additional software? This will stop installing "
@@ -1322,22 +1404,22 @@ msgid ""
 msgstr "从附加软件中移除{package}？此操作会自动中止软件包的安装进程。"
 
 #. Translators: Don't translate {pkg}, it's a placeholder and will be replaced.
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:106
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:111
 #, python-brace-format
 msgid "Failed to remove {pkg}"
 msgstr "移除{pkg}失败"
 
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:131
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:136
 msgid "Failed to read additional software configuration"
 msgstr "读取附加软件配置失败"
 
 #. Translators: Don't translate {package}, it's a placeholder and will be replaced.
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:161
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:166
 #, python-brace-format
 msgid "Stop installing {package} automatically"
 msgstr "{package} 安装自动中止"
 
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:187
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:192
 msgid ""
 "To do so, install some software using <a href=\"synaptic.desktop\">Synaptic "
 "Package Manager</a> or <a href=\"org.gnome.Terminal.desktop\">APT on the "
@@ -1346,7 +1428,7 @@ msgstr ""
 "为实现以上操作，可以使用 <a href=\"synaptic.desktop\">新立得软件包管理器</a> "
 "或<a href=\"org.gnome.Terminal.desktop\">通过终端使用 APT</a>。"
 
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:196
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:201
 msgid ""
 "To do so, unlock your persistent storage when starting Tails and install "
 "some software using <a href=\"synaptic.desktop\">Synaptic Package Manager</"
@@ -1356,7 +1438,7 @@ msgstr ""
 "href=\"synaptic.desktop\">新立得软件包管理器</a> 或<a href=\"org.gnome."
 "Terminal.desktop\">通过终端使用 APT</a>。"
 
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:206
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:211
 msgid ""
 "To do so, create a persistent storage and install some software using <a "
 "href=\"synaptic.desktop\">Synaptic Package Manager</a> or <a href=\"org."
@@ -1366,11 +1448,11 @@ msgstr ""
 "desktop\">新立得软件包管理器</a> 或<a href=\"org.gnome.Terminal.desktop\">通"
 "过终端使用 APT</a>。"
 
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:214
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:219
 msgid "To do so, install Tails on a USB stick and create a persistent storage."
 msgstr "要这样做，在 USB 上安装 Tails 并创建一个持久化储存。"
 
-#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:258
+#: config/chroot_local-includes/usr/local/bin/tails-additional-software-config:263
 msgid "[package not available]"
 msgstr "[无法使用此原件包]"
 
@@ -1462,19 +1544,19 @@ msgstr ""
 "参阅： {manual_upgrade_url}"
 
 #: config/chroot_local-includes/usr/local/bin/tails-upgrade-frontend-wrapper:76
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:45
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:37
 msgid "error:"
 msgstr "错误："
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:23
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:21
 msgid "Warning: virtual machine detected!"
 msgstr "警告：检测到虚拟机！"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:25
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:23
 msgid "Warning: non-free virtual machine detected!"
 msgstr "警告：检测到非自由虚拟机！"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:27
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:25
 msgid ""
 "Both the host operating system and the virtualization software are able to "
 "monitor what you are doing in Tails. Only free software can be considered "
@@ -1484,11 +1566,11 @@ msgstr ""
 "主机的操作系统和虚拟化软件都可能监视您在使用 Tails 时的行为。只有自由软件值得"
 "信赖，包括主机的操作系统和虚拟化软件。"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:40
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:38
 msgid "Don't Show Again"
 msgstr "不再显示"
 
-#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:42
+#: config/chroot_local-includes/usr/local/lib/tails-virt-notify-user:40
 msgid "Learn More"
 msgstr "了解更多"
 
@@ -1505,24 +1587,25 @@ msgstr "使用你已知的网桥(_U)"
 msgid ""
 "To save your bridge, <a href=\"doc/persistent_storage\">unlock your "
 "Persistent Storage</a>."
-msgstr "要保存网桥，<a href=\"doc/persistent_storage\">解锁您的持久化存储</a>。"
+msgstr ""
+"要保存网桥，<a href=\"doc/persistent_storage\">解锁您的持久化存储</a>。"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:249
 msgid ""
 "To save your bridge, <a href=\"doc/persistent_storage\">create a Persistent "
 "Storage</a> on your Tails USB stick."
 msgstr ""
-"要保存网桥，请在您的 Tails USB 设备上<a href=\"doc/persistent_storage\""
-">创建一个持久化存储</a>。"
+"要保存网桥，请在您的 Tails USB 设备上<a href=\"doc/persistent_storage\">创建"
+"一个持久化存储</a>。"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:269
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:773
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:781
 #, python-brace-format
 msgid "Invalid: {exception}"
 msgstr "无效：{exception}"
 
 #: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:281
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:786
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:794
 msgid "You need to configure an obfs4 bridge to hide that you are using Tor"
 msgstr "您需要配置 obfs4 网桥来隐藏您正在使用 Tor"
 
@@ -1573,28 +1656,28 @@ msgstr "已成功连接至 Tor"
 msgid "You can now browse the Internet anonymously and uncensored."
 msgstr "您现在可以匿名且不受审查地浏览互联网。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:703
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:707
 msgid "This local network seems to be blocking access to Tor."
 msgstr "这个局域网络似乎阻止了对Tor的访问。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:776
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:784
 msgid "Bridge address malformed"
 msgstr "桥接地址格式错误"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:794
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:802
 msgid "Setting a bridge is needed if you want to hide that you are using Tor"
 msgstr "如果你想隐藏你正在使用 Tor，则需要设置桥接"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1011
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1019
 #, python-brace-format
 msgid "Scanned {bridge_type} bridge: <b>{bridge_info}</b>."
 msgstr "扫描了{bridge_type}网桥：<b>{bridge_info}</b>。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1102
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1110
 msgid "Are you sure you want to lose progress?"
 msgstr "您确认您想要失去进度吗？"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1106
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1114
 msgid ""
 "Tails will continue connecting to Tor after you close the Tor Connection "
 "assistant.\n"
@@ -1606,11 +1689,11 @@ msgstr ""
 "\n"
 "如果连接至 Tor 失败了，您将必须再次等待至进程结束才能排除您的连接故障。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1112
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1120
 msgid "Close and Lose Progress"
 msgstr "关闭并失去进展"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1113
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tca/ui/main_window.py:1121
 msgid "Wait"
 msgstr "等待"
 
@@ -1658,6 +1741,266 @@ msgstr "Tor 状态"
 #: config/chroot_local-includes/usr/share/gnome-shell/extensions/torstatus@tails.boum.org/extension.js:46
 msgid "Open Onion Circuits"
 msgstr "打开 Onion 线路"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:293
+#, python-brace-format
+msgid ""
+"Only {available_memory} KiB of memory is available, need at least "
+"{required_memory} KiB.\n"
+"\n"
+"Try again after closing some applications or rebooting."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:305
+#, fuzzy
+msgid "Creating a partition for the Persistent Storage..."
+msgstr "正在纠正永久卷的权限。"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:325
+msgid ""
+"Initializing the LUKS encryption... The computer might stop responding for a "
+"few seconds."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:342
+msgid "Unlocking the encryption..."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:350
+#, fuzzy
+msgid "Formatting the file system..."
+msgstr "正在验证文件系统..."
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:365
+#, fuzzy
+msgid "Activating the Persistent Storage..."
+msgstr "激活持久化存储出错：{}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:370
+#, fuzzy
+msgid "Finishing setting up the Persistent Storage..."
+msgstr "在没有开启持久性存储的情况下继续"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/device.py:577
+msgid ""
+"Can't unmount Persistent Storage, some process is still using it. Please "
+"close all applications that could be accessing it and try again. If that "
+"doesn't work, restart Tails and try deleting the Persistent Storage without "
+"unlocking it."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps/configuration/binding.py:406
+#, python-brace-format
+msgid ""
+"Can't unmount target {target}, some process is still using it. Please close "
+"all applications that could be accessing the target and try again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:23
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:47
+#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:181
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:378
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
+msgid "Persistent Storage"
+msgstr "持久化存储"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:46
+#, fuzzy
+msgid "Failed to start the Persistent Storage service"
+msgstr "配置持久化存储失败"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/application.py:73
+msgid "Could not find the WhisperBack application"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:82
+#, fuzzy
+msgid "Delete Data…"
+msgstr "删除"
+
+#. Translators: Don't translate {feature}, it's a placeholder
+#. and will be replaced.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:88
+#, python-brace-format
+msgid "Delete {feature} data"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:107
+#, fuzzy
+msgid "Activation failed"
+msgstr "激活 Dotfiles"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:163
+msgid "Activation failed. Try again or delete data."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:165
+msgid "Activation failed. Try again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:167
+msgid "The data of this feature is still saved."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:268
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:273
+#, fuzzy
+msgid "Error activating feature {}"
+msgstr "激活持久化存储出错：{}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:311
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:316
+#, fuzzy
+msgid "Error deactivating feature {}"
+msgstr "激活持久化存储出错：{}"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:335
+msgid ""
+"Delete all the data of the {} feature that is saved in the Persistent "
+"Storage?\n"
+"\n"
+"If you cancel, the data will be restored when you turn this feature on again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:345
+#, fuzzy
+msgid "_Delete Data"
+msgstr "删除"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:373
+msgid "Error deleting data of feature {}"
+msgstr ""
+
+#. Translators: Don't translate {applications}, it's a placeholder
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:457
+#, python-brace-format
+msgid "Close {applications} to continue"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:458
+msgid " and "
+msgstr ""
+
+#. Translators: Don't translate {app} and {pid}, they
+#. are placeholders.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:469
+#, python-brace-format
+msgid "{app} (PID: {pid})"
+msgstr ""
+
+#. Translators: Don't translate {app} and {pids}, they
+#. are placeholders.
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/feature.py:474
+#, python-brace-format
+msgid "{app} (PIDs: {pids})"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:36
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:8
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:56
+msgid "Change Passphrase"
+msgstr "显示密码词组"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:83
+#, fuzzy
+msgid "The current passphrase is incorrect"
+msgstr "密码词组不匹配"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/change_passphrase_dialog.py:92
+#, fuzzy
+msgid "Changing the passphrase failed"
+msgstr "显示密码词组"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:41
+msgid "Weak"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:44
+msgid "Fair"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:47
+msgid "Good"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/passphrase_strength_hint.py:50
+msgid "Strong"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/error_dialog.py:36
+msgid "You can send an error report to help solve the issue."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/error_dialog.py:42
+#, fuzzy
+msgid "_Send Error Report"
+msgstr "发送错误报告"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:144
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:175
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
+msgid "Delete Persistent Storage"
+msgstr "删除持久存储"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:146
+msgid ""
+"Are you sure that you want to delete your Persistent Storage? This action "
+"cannot be undone."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:149
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:57
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
+#: ../config/chroot_local-includes/usr/share/tails-installer/passphrase_dialog.ui.in:219
+msgid "_Cancel"
+msgstr "取消(_C)"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:150
+#, fuzzy
+msgid "_Delete Persistent Storage"
+msgstr "删除持久存储"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:160
+#, fuzzy
+msgid "Deleting your Persistent Storage"
+msgstr "删除持久存储"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:177
+msgid ""
+"To delete the Persistent Storage, restart Tails without unlocking the "
+"Persistent Storage and open the Persistent Storage settings again."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:181
+msgid "_OK"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:189
+msgid ""
+"Sorry, you can't close this app until the ongoing operation has completed."
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:191
+msgid "Please wait"
+msgstr ""
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:216
+#, fuzzy
+msgid "Not enough memory to create Persistent Storage"
+msgstr "不要_创建持久性存储"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:221
+#, fuzzy
+msgid "Failed to create Persistent Storage"
+msgstr "配置持久化存储失败"
+
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:240
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/tps_frontend/window.py:245
+#, fuzzy
+msgid "Error deleting Persistent Storage"
+msgstr "解锁持久化存储出错：{}"
 
 #. Translators: Don't translate {volume_label} or {volume_size},
 #. they are placeholders and will be replaced. They need
@@ -1830,86 +2173,79 @@ msgstr ""
 msgid "Choose File Container"
 msgstr "选择文件容器"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:48
 msgid "The Unsafe Browser was disabled in the Welcome Screen.\\n\\n"
-msgstr ""
-"不安全浏览器在欢迎屏幕中被禁用。\\n"
-"\\n"
+msgstr "不安全浏览器在欢迎屏幕中被禁用。\\n\\n"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:51
 msgid ""
 "To use the Unsafe Browser, restart Tails and make sure that the Unsafe "
 "Browser is enabled in the additional settings of the Welcome Screen."
-msgstr "要使用不安全浏览器，请重新启动Tails，并确保在欢迎屏幕的附加设置中启用不安全浏"
+msgstr ""
+"要使用不安全浏览器，请重新启动Tails，并确保在欢迎屏幕的附加设置中启用不安全浏"
 "览器。"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:61
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:53
 msgid "To use the Unsafe Browser, restart Tails."
 msgstr "要使用不安全的浏览器，请重启 Tails。"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:64
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:56
 msgid "_Restart"
 msgstr "重启(_R)"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:65
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:304
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:121
-msgid "_Cancel"
-msgstr "取消(_C)"
-
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:66
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:58
 msgid ""
 "Do you really want to restart Tails now?\\n\\nAll your current work will be "
 "lost."
 msgstr "现在确定要重启 Tails？\\n\\n目前的所有工作都将丢失。"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:67
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:59
 msgid "Restart Now"
 msgstr "立即重启"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:66
 msgid "Failed to restart the system."
 msgstr "系统重启失败。"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:74
 msgid "Starting the Unsafe Browser..."
 msgstr "正在启动非安全浏览器..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:83
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:75
 msgid "This may take a while, so please be patient."
 msgstr "可能需要一会儿，请稍等。"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:89
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:81
 msgid "Shutting down the Unsafe Browser..."
 msgstr "正在关闭非安全浏览器..."
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:90
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:82
 msgid ""
 "This may take a while, and you may not restart the Unsafe Browser until it "
 "is properly shut down."
 msgstr "可能需要一会儿。正常关闭之前无法重启非安全浏览器。"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:103
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:95
 #: ../config/chroot_local-includes/usr/share/applications/unsafe-browser.desktop.in.h:1
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:512
 msgid "Unsafe Browser"
 msgstr "非安全浏览器"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:117
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:110
 msgid ""
 "Another Unsafe Browser is currently running, or being cleaned up. Please "
 "retry in a while."
 msgstr "另一种不安全的浏览器正在运行，或者正在被清理。请在稍后重试。"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:124
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:117
 msgid "Failed to setup chroot."
 msgstr "设置 chroot 失败。"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:130
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:123
 msgid "Failed to configure browser."
 msgstr "配置浏览器失败。"
 
-#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:132
+#: config/chroot_local-includes/usr/local/sbin/unsafe-browser:125
 msgid ""
 "You are not connected to a local network yet.\\n\\nTo be able to start the "
 "Unsafe Browser, you first need to connect to a Wi-Fi, wired, or mobile "
@@ -2052,29 +2388,29 @@ msgstr "翻译人员"
 msgid "This doesn't seem to be a valid URL or OpenPGP key."
 msgstr "URL 地址或 OpenPGP 密钥无效。"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:62
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:60
 #, python-format
 msgid "Invalid contact email: %s"
 msgstr "无效的联系人邮件：%s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:82
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:79
 #, python-format
 msgid "Invalid contact OpenPGP key: %s"
 msgstr "无效的联系人 OpenPGP 密钥：%s"
 
-#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:84
+#: config/chroot_local-includes/usr/lib/python3/dist-packages/whisperBack/whisperback.py:81
 msgid "Invalid contact OpenPGP public key block"
 msgstr "无效的联系人 OpenPGP 公钥块"
 
-#: config/chroot_local-includes/usr/local/bin/tca:154
+#: config/chroot_local-includes/usr/local/bin/tca:14
 msgid "You turned on Offline Mode in the Welcome Screen."
 msgstr "您在欢迎屏幕中打开了离线模式。"
 
-#: config/chroot_local-includes/usr/local/bin/tca:155
+#: config/chroot_local-includes/usr/local/bin/tca:15
 msgid "It is impossible to connect to Tor in Offline Mode."
 msgstr "在离线模式下无法连接至 Tor。"
 
-#: config/chroot_local-includes/usr/local/bin/tca:156
+#: config/chroot_local-includes/usr/local/bin/tca:16
 msgid "To connect to Tor and the Internet, restart Tails without Offline Mode."
 msgstr "要连接至 Tor 和互联网，请在非离线模式的情况下重新启动 Tails。"
 
@@ -2086,11 +2422,6 @@ msgstr "报告错误"
 #: ../config/chroot_local-includes/usr/share/applications/tails-documentation.desktop.in.h:1
 msgid "Tails documentation"
 msgstr "Tails 文档"
-
-#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:1
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:25
-msgid "Persistent Storage"
-msgstr "持久化存储"
 
 #: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.PersistentStorage.desktop.in.h:2
 msgid ""
@@ -2113,6 +2444,17 @@ msgstr "了解如何使用 Tails"
 #: ../config/chroot_local-includes/usr/share/applications/tails-about.desktop.in.h:2
 msgid "Learn more about Tails"
 msgstr "更深入了解 Tails"
+
+#: ../config/chroot_local-includes/usr/share/applications/tails-backup.desktop.in.h:1
+#, fuzzy
+msgid "Back Up Persistent Storage"
+msgstr "持久化存储"
+
+#: ../config/chroot_local-includes/usr/share/applications/tails-backup.desktop.in.h:2
+#, fuzzy
+msgid ""
+"Make a backup of the Tails Persistent Storage to another Tails USB stick"
+msgstr "为你想保存到Tails U盘的数据打开持久性存储的功能。"
 
 #: ../config/chroot_local-includes/usr/share/applications/tails-installer.desktop.in.h:2
 msgid "Install, clone, upgrade Tails"
@@ -2142,7 +2484,7 @@ msgstr "不安全的网页浏览器"
 msgid "Mount VeraCrypt encrypted file containers and devices"
 msgstr "挂载 VeryCrypt 加密文件容器和设备"
 
-#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.additional-software-config.desktop.in.h:2
+#: ../config/chroot_local-includes/usr/share/applications/org.boum.tails.AdditionalSoftware.desktop.in.h:2
 msgid ""
 "Configure the additional software installed from your persistent storage "
 "when starting Tails"
@@ -2168,11 +2510,11 @@ msgstr "Tails 指定工具"
 msgid "To start a Root Terminal, you need to authenticate."
 msgstr "开启root终端，您需要身份认证。"
 
-#: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.additional-software.policy.in.h:1
+#: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.AdditionalSoftware.policy.in.h:1
 msgid "Remove an additional software package"
 msgstr "移除附加软件"
 
-#: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.additional-software.policy.in.h:2
+#: ../config/chroot_local-includes/usr/share/polkit-1/actions/org.boum.tails.AdditionalSoftware.policy.in.h:2
 msgid ""
 "Authentication is required to remove a package from your additional software "
 "($(command_line))"
@@ -2180,7 +2522,7 @@ msgstr "移除附加软件需要认证 ($(command_line))"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:18
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:56
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:739
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:743
 msgid "Administration Password"
 msgstr "管理密码"
 
@@ -2206,7 +2548,7 @@ msgid "Disable"
 msgstr "禁用"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:154
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:743
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:747
 msgid "MAC Address Anonymization"
 msgstr "MAC 地址匿名化"
 
@@ -2230,7 +2572,7 @@ msgid "Don't anonymize MAC addresses"
 msgstr "不匿名化 MAC 地址"
 
 #: ../config/chroot_local-includes/usr/share/tails/greeter/additional_settings.ui.in:311
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:747
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:751
 msgid "Network Configuration"
 msgstr "网络配置"
 
@@ -2297,82 +2639,73 @@ msgstr "启用非安全浏览器（默认）"
 msgid "Disable the Unsafe Browser"
 msgstr "禁用非安全浏览器"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:100
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:101
 msgid "Settings were loaded from the persistent storage."
 msgstr "设置是从持久化存储加载的。"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:152
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:153
 msgid "Welcome to Tails!"
 msgstr "欢迎使用 Tails！"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:186
-msgid "_Persistent Storage"
-msgstr "持久化存储(_P)"
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:232
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:199
 msgid ""
 "You can save some of your files and configuration in an encrypted Persistent "
 "Storage on your Tails USB stick: your documents, browser bookmarks, Wi-Fi "
 "passwords, and so on."
-msgstr "你可以将你的一些文件和配置保存在Tails "
-"U盘上的加密持久存储中：你的文档、浏览器书签、Wi-Fi密码等。"
+msgstr ""
+"你可以将你的一些文件和配置保存在Tails U盘上的加密持久存储中：你的文档、浏览器"
+"书签、Wi-Fi密码等。"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:246
-msgid ""
-"You will create and configure your Persistent Storage after starting Tails."
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:225
+#, fuzzy
+msgid "Create and configure a Persistent Storage after starting Tails"
 msgstr "启动 Tails 后，您将创建并配置您的持久化存储。"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:300
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:279
 msgid "Language & Region"
 msgstr "语言和区域"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:336
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:315
 msgid "Default Settings"
 msgstr "默认设置"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:399
-msgid "Encrypted _Persistent Storage"
-msgstr "加密的永久存储(_P)"
-
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:440
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:417
 msgid "Show Passphrase"
 msgstr "显示密码"
 
-#. The label for this placeholder text is not very big, so keep this string short.
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:493
-msgid "Enter your passphrase to unlock the persistent storage"
-msgstr "请输入您的密码以解锁永久存储"
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:470
+#, fuzzy
+msgid "_Passphrase"
+msgstr "密语："
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:541
-msgid "Your persistent storage is unlocked. Restart Tails to lock it again."
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:546
+#, fuzzy
+msgid ""
+"Your Persistent Storage is unlocked. Its content will be available until you "
+"shut down Tails."
 msgstr "您的永久存储已解锁。重启 Tails 以再次锁定它。"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:579
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:583
 msgid "_Additional Settings"
 msgstr "附加设置(_A)"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:662
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:666
 msgid "Add an additional setting"
 msgstr "添加一个额外设置"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:711
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:715
 msgid ""
 "The default settings are safe in most situations. To add a custom setting, "
 "press the \"+\" button below."
 msgstr "默认设置在大多数情况下是安全的。要添加自定义设置，点击下面的 + 按钮。"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:755
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:759
 msgid "Shutdown"
 msgstr "关闭"
 
-#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:766
+#: ../config/chroot_local-includes/usr/share/tails/greeter/main.ui.in:770
 msgid "_Start Tails"
 msgstr "启动 Tails(_S)"
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:8
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:56
-msgid "Change Passphrase"
-msgstr "显示密码词组"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:95
 msgid "Current _Passphrase"
@@ -2391,7 +2724,8 @@ msgid "_Show Passphrases"
 msgstr "显示密码词组(_S)"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/change_passphrase_dialog.ui.in:253
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:213
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:301
+#: ../config/chroot_local-includes/usr/share/tails-installer/passphrase_dialog.ui.in:161
 msgid "The passphrases do not match"
 msgstr "密码词组不匹配"
 
@@ -2439,8 +2773,8 @@ msgstr ""
 "\n"
 "它的内容在你关闭Tails之前是可用的。\n"
 "\n"
-"<a href=\"doc/persistent_storage/backup\""
-">了解如何对你的持久性存储进行备份。</a>"
+"<a href=\"doc/persistent_storage/backup\">了解如何对你的持久性存储进行备份。"
+"</a>"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:89
 msgid ""
@@ -2456,142 +2790,163 @@ msgstr "个人文档"
 msgid "Persistent Folder"
 msgstr "持久文件夹"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:153
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:135
+msgid "A folder where you can save your documents."
+msgstr ""
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:160
 msgid "Open Persistent Folder"
 msgstr "打开持久文件夹"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:166
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:173
 msgid "Activate Persistent Folder"
 msgstr "激活持久文件夹"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:191
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:200
 msgid "System Settings"
 msgstr "系统设置"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:229
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:228
+#, fuzzy
+msgid "Welcome Screen"
+msgstr "激活欢迎屏幕"
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:244
 msgid "Activate Welcome Screen"
 msgstr "激活欢迎屏幕"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:250
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:257
+#, fuzzy
+msgid "Printers"
+msgstr "激活打印机"
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:273
 msgid "Activate Printers"
 msgstr "激活打印机"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:275
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:300
 msgid "Network"
 msgstr "网络"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:303
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:328
 msgid "Network Connections"
 msgstr "网络连接"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:304
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:329
 msgid "Save Wi-Fi passwords and mobile broadband configuration."
 msgstr "保存Wi-Fi密码和移动宽带配置。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:314
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:345
 msgid "Activate Network Connections"
 msgstr "激活网络连接"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:325
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:358
 msgid "Tor Bridge"
 msgstr "Tor 网桥"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:335
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:374
 msgid "Activate Tor Bridge"
 msgstr "激活 Tor 网桥"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:360
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:401
 msgid "Applications"
 msgstr "应用"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:398
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:429
+#, fuzzy
+msgid "Tor Browser Bookmarks"
+msgstr "激活 Tor 浏览器书签"
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:445
 msgid "Activate Tor Browser Bookmarks"
 msgstr "激活 Tor 浏览器书签"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:409
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:458
 msgid "Electrum Bitcoin Wallet"
 msgstr "Electrum 比特币钱包"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:419
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:474
 msgid "Activate Electrum Bitcoin Wallet"
 msgstr "激活Electrum 比特币钱包"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:430
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:487
 msgid "Thunderbird Email Client"
 msgstr "Thunderbird 电子邮件客户端"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:440
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:503
 msgid "Activate Thunderbird Email Client"
 msgstr "激活Thunderbird电子邮件客户端"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:451
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:516
 msgid "GnuPG"
 msgstr "GnuPG"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:452
-msgid "OpenPGP keys outside of Thunderbird."
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:517
+#, fuzzy
+msgid "OpenPGP keys outside of Thunderbird, including in Kleopatra."
 msgstr "Thunderbird之外的OpenPGP密钥。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:462
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:533
 msgid "Activate GnuPG"
 msgstr "激活GnuPG"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:473
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:546
 msgid "Pidgin Internet Messenger"
 msgstr "Pidgin网络信使"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:483
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:562
 msgid "Activate Pidgin Internet Messenger"
 msgstr "激活Pidgin网络信使"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:494
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:575
 msgid "SSH Client"
 msgstr "SSH 客户端"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:504
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:591
 msgid "Activate SSH Client"
 msgstr "激活 SSH 客户端"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:529
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:618
 msgid "Advanced Settings"
 msgstr "高级设置"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:558
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:647
 msgid "Install additional software automatically when starting Tails."
 msgstr "启动 Tails 时自动安装额外软件。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:577
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:672
 msgid "Configure Additional Software"
 msgstr "配置附加软件"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:590
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:685
 msgid "Activate Additional Software"
 msgstr "激活附加软件"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:601
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:698
 msgid "Dotfiles"
 msgstr "Dotfiles"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:602
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:699
 msgid "Symlink every file in the Dotfiles folder into the Home folder."
 msgstr "将 Dotfiles 文件夹中的每个文件符号链接到 Home 文件夹中。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:629
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:732
 msgid "Activate Dotfiles"
 msgstr "激活 Dotfiles"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:659
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:764
 msgid "Custom"
 msgstr "自定"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:678
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:783
 msgid ""
 "To add or remove custom features, modify /live/persistence/"
 "TailsData_unlocked/persistence.conf."
-msgstr "要添加或删除自定义功能，请修改/live/persistence/TailsData_unlocked/"
+msgstr ""
+"要添加或删除自定义功能，请修改/live/persistence/TailsData_unlocked/"
 "persistence.conf。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:720
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/features_view.ui.in:825
 msgid ""
 "<a href=\"doc/persistent_storage\">Learn more about the Persistent Storage.</"
 "a>"
@@ -2613,32 +2968,46 @@ msgstr ""
 "\n"
 "要删除您的Persistent Storage，请点击标题栏右侧的<b>删除</b>。"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:52
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:62
+#, fuzzy
 msgid ""
 "Choose the passphrase that you will use to unlock the encryption of your "
-"Persistent Storage and all its data.\n"
-"\n"
-"We recommend a long passphrase of 5 to 7 random words."
+"Persistent Storage and all its data."
 msgstr ""
 "选择你要用来解锁你的持久性存储器及其所有数据的加密的密码。\n"
 "\n"
 "我们建议使用5到7个随机单词的密码。"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:82
+msgid "We recommend a long passphrase of 5 to 7 random words."
+msgstr ""
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:94
+msgid " For example:"
+msgstr ""
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:186
+#: ../config/chroot_local-includes/usr/share/tails-installer/passphrase_dialog.ui.in:46
 msgid "Passphrase:"
 msgstr "密语："
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:101
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:205
+#: ../config/chroot_local-includes/usr/share/tails-installer/passphrase_dialog.ui.in:65
 msgid "Confirm:"
 msgstr "确认："
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:178
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:325
+#: ../config/chroot_local-includes/usr/share/tails-installer/passphrase_dialog.ui.in:185
 msgid "_Show Passphrase"
 msgstr "显示密语(_S)"
 
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:265
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:375
 msgid "_Back"
 msgstr "后退(_B)"
+
+#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/passphrase_view.ui.in:391
+msgid "_Create Persistent Storage"
+msgstr "_创建持久存储"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:56
 msgid ""
@@ -2657,8 +3026,8 @@ msgid ""
 msgstr ""
 "当你关闭Tails时，你所做的一切都会自动消失。\n"
 "\n"
-"但你可以将你的一些文件和配置保存在你的Tails "
-"U盘上的加密持久性存储器中，比如说：\n"
+"但你可以将你的一些文件和配置保存在你的Tails U盘上的加密持久性存储器中，比如"
+"说：\n"
 "\n"
 "- 你的文件\n"
 "- 你的Wi-Fi密码\n"
@@ -2676,24 +3045,23 @@ msgid ""
 msgstr ""
 "对不起，不可能在这个设备上创建一个持久性存储。\n"
 "\n"
-"要想在持久性存储器中使用Tails，请遵循我们关于<a href=\"install\""
-">在U盘上安装Tails的说明</a>。"
+"要想在持久性存储器中使用Tails，请遵循我们关于<a href=\"install\">在U盘上安装"
+"Tails的说明</a>。"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/welcome_view.ui.in:137
+#: ../config/chroot_local-includes/usr/share/tails-installer/passphrase_dialog.ui.in:232
 msgid "Co_ntinue"
 msgstr "继续(_N)"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:29
-msgid "_Delete..."
-msgstr "删除(_D)…"
-
-#: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:36
-msgid "Delete Persistent Storage"
-msgstr "删除持久存储"
+#, fuzzy
+msgid "_Delete…"
+msgstr "删除"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:49
-msgid "_Change Passphrase..."
-msgstr "更改密语(_C)…"
+#, fuzzy
+msgid "_Change Passphrase…"
+msgstr "显示密码词组"
 
 #: ../config/chroot_local-includes/usr/share/tails/persistent-storage/window.ui.in:66
 msgid "_Restart Tails"
@@ -2737,11 +3105,21 @@ msgstr "解锁(_U)"
 msgid "Detach this volume"
 msgstr "卸载此卷"
 
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:265
+#: ../config/chroot_local-includes/usr/share/tails-installer/passphrase_dialog.ui.in:8
+#, fuzzy
+msgid "Choose Passphrase"
+msgstr "显示密码词组"
+
+#: ../config/chroot_local-includes/usr/share/tails-installer/passphrase_dialog.ui.in:30
+#, fuzzy
+msgid "Choose the passphrase for the cloned Persistent Storage."
+msgstr "输入一个密码来保护您的永久卷"
+
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:281
 msgid "Target USB stick:"
 msgstr "目标USB存储器："
 
-#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:341
+#: ../config/chroot_local-includes/usr/share/tails-installer/tails-installer.ui.in:357
 msgid "Reinstall (delete all data)"
 msgstr "重新安装（删除所有数据）"
 
@@ -2971,9 +3349,8 @@ msgid ""
 "connections to Tor are blocked, for example in some countries, by some "
 "public networks, or by some parental controls."
 msgstr ""
-"Tor 网桥是秘密的 Tor 中继。 如果连接到 Tor "
-"被封锁，例如在某些国家、公共网络或家长控制中，则使用网桥作为您的第一个 Tor "
-"中继。"
+"Tor 网桥是秘密的 Tor 中继。 如果连接到 Tor 被封锁，例如在某些国家、公共网络或"
+"家长控制中，则使用网桥作为您的第一个 Tor 中继。"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:991
 msgid ""
@@ -2981,8 +3358,8 @@ msgid ""
 "a Gmail or Riseup email address with your phone and scan the QR code that is "
 "attached to the automatic reply."
 msgstr ""
-"利用 Gmail 或 Riseup 电子邮箱地址向 <tt>bridges@torproject.org</tt> "
-"发送一封空的电子邮件，手机扫描自动回复夹附的二维码。"
+"利用 Gmail 或 Riseup 电子邮箱地址向 <tt>bridges@torproject.org</tt> 发送一封"
+"空的电子邮件，手机扫描自动回复夹附的二维码。"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1014
 msgid "Scan QR Code"
@@ -3065,12 +3442,13 @@ msgid ""
 msgstr "如果使用 Tor 会让监视您的互联网连接的人觉得可疑，您可能需要被忽视。"
 
 #: ../config/chroot_local-includes/usr/share/tails/tca/main.ui.in:1499
+#, fuzzy
 msgid ""
 "Tails will only connect to Tor after you configured a Tor bridge. Bridges "
 "are secret Tor relays that hide that you are connecting to Tor.\n"
 "\n"
 "Our team is doing its best to help you connect to Tor using the most "
-"discrete types of Tor bridges.\n"
+"discreet types of Tor bridges.\n"
 "\n"
 "You will have to do extra configuration if you don't know any Tor bridges "
 "yet, if you connect from a public Wi-Fi network, or if you are in the "
@@ -3277,6 +3655,24 @@ msgstr "十二月"
 msgid "Clock"
 msgstr "时钟"
 
+#~ msgid "Unlock"
+#~ msgstr "解锁"
+
+#~ msgid "_Persistent Storage"
+#~ msgstr "持久化存储(_P)"
+
+#~ msgid "Encrypted _Persistent Storage"
+#~ msgstr "加密的永久存储(_P)"
+
+#~ msgid "Enter your passphrase to unlock the persistent storage"
+#~ msgstr "请输入您的密码以解锁永久存储"
+
+#~ msgid "_Delete..."
+#~ msgstr "删除(_D)…"
+
+#~ msgid "_Change Passphrase..."
+#~ msgstr "更改密语(_C)…"
+
 #, python-format
 #~ msgid ""
 #~ "<h1>Help us fix your bug!</h1>\n"
@@ -3377,9 +3773,6 @@ msgstr "时钟"
 #~ msgid "Persistence wizard - Persistent volume creation"
 #~ msgstr "永久存储向导 - 创建永久卷"
 
-#~ msgid "Choose a passphrase to protect the persistent volume"
-#~ msgstr "输入一个密码来保护您的永久卷"
-
 #, perl-brace-format
 #~ msgid ""
 #~ "A {size} persistent volume will be created on the <b>{vendor} {model}</b> "
@@ -3415,9 +3808,6 @@ msgstr "时钟"
 
 #~ msgid "The Tails persistence partition will be mounted."
 #~ msgstr "即将挂载 Tails 永久卷。"
-
-#~ msgid "Correcting permissions of the persistent volume."
-#~ msgstr "正在纠正永久卷的权限。"
 
 #~ msgid "The permissions of the persistent volume will be corrected."
 #~ msgstr "永久卷的权限已经被纠正。"
@@ -3470,9 +3860,6 @@ msgstr "时钟"
 #~ msgstr ""
 #~ "持久化卷 {partition}（{size}）将被删除，此卷位于设备 <b>{vendor} {model} "
 #~ "</b>上。"
-
-#~ msgid "Delete"
-#~ msgstr "删除"
 
 #~ msgid "Deleting the persistent volume..."
 #~ msgstr "正在删除永久卷..."
@@ -3566,8 +3953,8 @@ msgstr "时钟"
 #~ msgstr "Tails 正在配置持久化存储。请稍等片刻…"
 
 #~ msgid ""
-#~ "Only use the Unsafe Browser to sign in to a network, then close it.\\n"
-#~ "\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
+#~ "Only use the Unsafe Browser to sign in to a network, then close it."
+#~ "\\n\\nThe Unsafe Browser is disabled by default for security.\\n\\nTo <a "
 #~ "href='file:///usr/share/doc/tails/website/doc/anonymous_internet/"
 #~ "unsafe_browser.en.html#use'>use the Unsafe Browser</a>, restart Tails and "
 #~ "enable the Unsafe Browser in the additional settings of the Welcome "
