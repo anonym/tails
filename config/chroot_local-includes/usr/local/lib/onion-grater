@@ -316,6 +316,10 @@ class FilteredControlPortProxySession:
                             for line in split_lines]) + "\r\n"
 
     def is_my_stream(self, stream):
+        if self.client_pid is not None:
+            # PID-based matching is racy and inherently insecure,
+            # so we don't restrict-stream-events for it
+            return False
         if self.client_address[0] == stream.source_address:
             return True
         return False
