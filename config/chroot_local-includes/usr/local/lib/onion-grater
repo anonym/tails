@@ -142,6 +142,8 @@ import stem.control
 import stem.connection
 import yaml
 
+from typing import Optional
+
 DEFAULT_LISTEN_ADDRESS = 'localhost'
 DEFAULT_LISTEN_PORT = 951
 DEFAULT_COOKIE_PATH = '/run/tor/control.authcookie'
@@ -215,8 +217,8 @@ class FilteredControlPortProxySession:
     def __init__(self, handler):
         self.allowed_commands = handler.allowed_commands
         self.allowed_events = handler.allowed_events
-        self.client_address = handler.client_address
-        self.client_pid = handler.client_pid
+        self.client_address: tuple[str, int] = handler.client_address
+        self.client_pid: Optional[int] = handler.client_pid
         self.controller = handler.controller
         self.debug_log = handler.debug_log
         self.filter_name = handler.filter_name
@@ -315,7 +317,7 @@ class FilteredControlPortProxySession:
         return "\r\n".join([self.rewrite_matched_line(replacers, line)
                             for line in split_lines]) + "\r\n"
 
-    def is_my_stream(self, stream):
+    def is_my_stream(self, stream: stem.response.events.StreamEvent) -> bool:
         if self.client_pid is not None:
             # PID-based matching is racy and inherently insecure,
             # so we don't restrict-stream-events for it
