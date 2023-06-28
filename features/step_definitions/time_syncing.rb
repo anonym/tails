@@ -88,30 +88,10 @@ Then /^the system clock is less than (\d+) minutes incorrect$/ do |max_diff_mins
 end
 
 def displayed_time_str
-  # Ugly and annoying to maintain, but I could not find a better way :/
-  ignore_labels = Set[
-    'Trash',
-    'Report an error',
-    'Tails documentation',
-    'Activities',
-    '',
-    'Applications',
-    'Places',
-    'Tor Connection',
-    'en',
-    '1 / 2',
-    'Zenity',
-    'Known security issues',
-  ]
-  candidate_clock_labels = Set.new(
-    Dogtail::Application.new('gnome-shell')
-                        .child('', roleName: 'panel')
-                        .children(roleName: 'label')
-                        .map(&:name)
-  ).keep_if { |l| !ignore_labels.include?(l) }.to_a
-
-  assert_equal(1, candidate_clock_labels.size, "Too many candidate_clock_labels: #{candidate_clock_labels}")
-  candidate_clock_labels[0]
+  Dogtail::Application.new('gnome-shell')
+                      .child('\w+\s+\w+\s+\d+\s+\d+:\d+.*',
+                             roleName: 'label')
+                      .name
 end
 
 Then /^the displayed clock is less than (\d+) minutes incorrect in "([^"]*)"/ do |max_diff_mins, timezone_offset|
