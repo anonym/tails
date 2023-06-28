@@ -104,18 +104,24 @@ We are considering here an attacker who can:
 We are not considering an attacker who can:
 
   - [B] Do a man-in-the-middle attack by providing a rogue HTTPS certificate
-    for https://tails.boum.org/ signed by a certificate authority
+    for https://tails.net/ signed by a certificate authority
     trusted by the browser but under the control of the attacker.
 
     Since the JavaScript verification is targeted at new users, a MitM or exploit on
     our website could defeat any verification technique by providing
     simplified instructions or by faking the verification.
 
+<!--
+
+    See sysadmin#17985
+
     Note that our website is already in the [HSTS preload list of major
-    browsers](https://hstspreload.org/?domain=tails.boum.org), which forces HTTPS connections to our website, even for
+    browsers](https://hstspreload.org/?domain=tails.net), which forces HTTPS connections to our website, even for
     first time visitors.
 
-  - [C] Insert malicious content on https://tails.boum.org/ through an
+-->
+
+  - [C] Insert malicious content on https://tails.net/ through an
     exploit on our website as this could trick new users to skip the Tails
     image verification all the way. To prevent this kind of attack we
     should instead:
@@ -135,7 +141,7 @@ We are not considering an attacker who can:
     For example, we cannot protect from a malicious extension installed
     in the web browser.
 
-  - [G] Insert malicious content on https://tails.boum.org/ after taking
+  - [G] Insert malicious content on https://tails.net/ after taking
     control of the web server, or entire system, behind it. Such an
     attacker could do attack [C] as well but in such a way that could be
     much harder to detect (for example by serving malicious content only to
@@ -155,7 +161,7 @@ When verifying a Tails image, the JavaScript:
 
 1. Downloads an image description file (IDF) from:
 
-   <https://tails.boum.org/install/v2/Tails/amd64/stable/latest.json>
+   <https://tails.net/install/v2/Tails/amd64/stable/latest.json>
 
    The IDF is served with the HTTP headers <span
    class="code">`Access-Control-Allow-Origin: *`</span> to allow
