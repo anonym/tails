@@ -35,7 +35,7 @@ def parse_args():
     parser.add_option('-s', '--safe', dest='safe', action='store_true',
                       help='Use the "safe, slow and stupid" bootloader')
     parser.add_option('-v', '--verbose', dest='verbose', action='store_true',
-                      default=os.getenv('DEBUG'),
+                      default=os.getenv('DEBUG') or 'debug' in open('/proc/cmdline').read().split(),
                       help='Output extra debugging messages')
     parser.add_option('--clone', dest='clone', action='store_true',
                       help='Clone the currently running Live system')
