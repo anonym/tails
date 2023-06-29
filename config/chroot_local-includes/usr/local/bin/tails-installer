@@ -14,6 +14,6 @@ fi
 
 exec \
   /usr/local/lib/connect-socket --dbus-system-bus -- \
-  sudo --close-from=4 -u amnesia \
+  sudo --preserve-env=INHERIT_FD --close-from=4 -u amnesia \
   /usr/local/lib/run-with-env --env-file="${ENVFILE}" --delete -- \
   /usr/local/lib/tails-installer "$@"
