@@ -3,6 +3,7 @@
 import os
 import sys
 from argparse import ArgumentParser
+import re
 
 from tailslib.django import safe_join
 from tailslib.systemd import tor_has_bootstrapped
@@ -12,8 +13,13 @@ WEBSITE_LOCAL_PATH = "/usr/share/doc/tails/website"
 LANG_CODE = os.getenv("LANG", "en")[0:2]
 
 
+ALREADY_LOCALIZED = re.compile(r'/index.[a-z][a-z].html$')
 def sanitize_page(page: str) -> str:
     page = page.removeprefix(WEBSITE_URL + '/')
+    m = ALREADY_LOCALIZED.search(page)
+    if m is not None:
+        page = page.removesuffix(m.group(0))
+    page = page.removesuffix('/')
     return page
 
 
