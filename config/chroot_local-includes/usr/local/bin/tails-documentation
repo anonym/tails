@@ -94,7 +94,7 @@ def main():
 
     if args.doctest:
         import doctest
-        ret = doctest.testmod()
+        ret = doctest.testmod(verbose=False)
         print('tails-documentation doctest:', ret)
         if ret.failed:
             sys.exit(1)
