@@ -254,6 +254,25 @@ class TPSPartition(object):
         return None
 
     @classmethod
+    def pbkdf_parameters(cls, memory_cost=None):
+        params = [
+            "--pbkdf=argon2id",
+        ]
+        if memory_cost:
+            params += [
+                f"--pbkdf-memory={memory_cost}",
+                # We need to also specify the number of iterations, because
+                # otherwise cryptsetup would perform a benchmark to choose
+                # both the memory cost and the number of iterations, which
+                # can lead to a memory cost lower than the one we specified
+                # above. We choose the lowest number of iterations that
+                # cryptsetup allows us to choose (4), to not make unlocking
+                # the Persistent Storage too slow on low-end devices.
+                "--pbkdf-force-iterations=4",
+            ]
+        return params
+
+    @classmethod
     def create(cls, job: Optional[Job], passphrase: str,
                parent_device: Optional["BootDevice"] = None) -> "TPSPartition":
         """Create the Persistent Storage encrypted partition"""
@@ -328,8 +347,7 @@ class TPSPartition(object):
                "--batch-mode",
                "--key-file=-",
                "--type=luks2",
-               "--pbkdf=argon2id",
-               f"--pbkdf-memory={mem_cost_kib}",
+               *cls.pbkdf_parameters(memory_cost=mem_cost_kib),
                partition.device_path]
         executil.check_call(cmd, input=passphrase)
 
@@ -458,22 +476,13 @@ class TPSPartition(object):
         memory cost"""
         executil.check_call(
             ["cryptsetup", "luksConvertKey",
-             "--pbkdf", "argon2id",
              # Instead of letting cryptsetup choose the memory cost for
              # argon2id (which it does by benchmarking the system), we
              # choose the highest memory cost that cryptsetup would
              # choose (1 GiB), because that's still low enough to not
              # break unlocking the Persistent Storage in the Welcome
              # Screen on the lowest-end devices we support (2 GiB RAM).
-             "--pbkdf-memory", "1048576",
-             # We need to also specify the number of iterations, because
-             # otherwise cryptsetup would perform a benchmark to choose
-             # both the memory cost and the number of iterations, which
-             # can lead to a memory cost lower than the one we specified
-             # above. We choose the lowest number of iterations that
-             # cryptsetup allows us to choose (4), to not make unlocking
-             # the Persistent Storage too slow on low-end devices.
-             "--pbkdf-force-iterations", "4",
+             *self.pbkdf_parameters(memory_cost=1048576),
              "--key-file=-",
              "--batch-mode",
              self.device_path],
