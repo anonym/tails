@@ -55,9 +55,9 @@ def main():
         Path(tps.PROFILES_DIR).mkdir(mode=0o700, parents=True, exist_ok=True)
 
     # Set up logging
-    debug = args.debug or \
-            os.getenv("DEBUG") or \
-            "debug" in Path("/proc/cmdline").read_text().split()
+    # During the Tails 5.15 release we enable debug logging by default
+    # in order to help us with #19728 and #19734.
+    debug = True
     log_level = logging.DEBUG if debug else logging.INFO
     log_format = \
         "%(levelname)s:%(filename)s:%(lineno)d: %(message)s"
