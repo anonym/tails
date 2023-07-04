@@ -482,7 +482,7 @@ class TPSPartition(object):
              # choose (1 GiB), because that's still low enough to not
              # break unlocking the Persistent Storage in the Welcome
              # Screen on the lowest-end devices we support (2 GiB RAM).
-             *self.pbkdf_parameters(memory_cost=1048576),
+             *self.pbkdf_parameters(memory_cost=MAXIMUM_PBKDF_MEMORY_KIB),
              "--key-file=-",
              "--batch-mode",
              self.device_path],
