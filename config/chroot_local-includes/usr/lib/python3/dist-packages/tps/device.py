@@ -223,7 +223,7 @@ class TPSPartition(object):
         #   the total RAM (because cryptsetup refuses to use more than
         #   half of the total RAM for the memory cost), whichever is lower.
         half_of_total_ram_kib = psutil.virtual_memory().total // 1024 // 2
-        required_memory_cost_kib = min(half_of_total_ram_kib, 1048576)
+        required_memory_cost_kib = min(half_of_total_ram_kib, 900 * 1024)
 
         logger.debug("The encrypted partition has %d memory cost", memory_cost_kib)
 
