@@ -1,26 +1,5 @@
-# note that this means that connect-drop-tails-installer could be called with
-# multiple arguments if they all match the /tmp/*-env pattern.
-# However, this has no consequence because connect-drop-tails-installer only
-# reads the first argument.
-Cmnd_Alias TAILS_INSTALLER_CONNECT_DROP = /usr/local/lib/connect-drop-tails-installer /tmp/*-env
-
-Defaults!TAILS_INSTALLER_CONNECT_DROP env_keep+="DESKTOP_STARTUP_ID"
-Defaults!TAILS_INSTALLER_CONNECT_DROP env_keep+="NOTIFY_SOCKET"
-
-# tails-installer, which is run as amnesia, must be able to
-# execute connect-drop-tails-installer as the privileged tails-persistent-storage
-# user so that connect-drop is able to authenticate to D-Bus as that user.
-amnesia   ALL = (tails-persistent-storage)    NOPASSWD: TAILS_INSTALLER_CONNECT_DROP
-
-Cmnd_Alias TAILS_INSTALLER_FRONTEND = /usr/local/lib/run-with-env --env-file /tmp/*-env --delete -- /usr/local/lib/tails-installer
-
-Defaults!TAILS_INSTALLER_FRONTEND env_keep+="INHERIT_FD"
-Defaults!TAILS_INSTALLER_FRONTEND env_keep+="DESKTOP_STARTUP_ID"
-Defaults!TAILS_INSTALLER_FRONTEND env_keep+="NOTIFY_SOCKET"
-
-# We need to keep file descriptor 3 (the D-Bus socket opened by
-# connect-drop) open when executing tails-installer-frontend, which is only
-# allowed when closefrom_override is enabled.
-Defaults!TAILS_INSTALLER_FRONTEND closefrom_override
-
-tails-persistent-storage   ALL = (amnesia)    NOPASSWD: TAILS_INSTALLER_FRONTEND
+# Same purpose as config/chroot_local-includes/etc/sudoers.d/zzz_tps,
+# see the comment there.
+Cmnd_Alias TAILS_INSTALLER = /usr/local/bin/tails-installer
+Defaults!TAILS_INSTALLER env_keep+="ENVFILE"
+amnesia   ALL =(tails-persistent-storage)    NOPASSWD: TAILS_INSTALLER

@@ -1,7 +1,19 @@
 #!/bin/sh
 
-# Same purpose as the tails-persistent-storage script, see the comment there.
+# Same purpose as config/chroot_local-includes/usr/local/bin/tails-persistent-storage,
+# see the comment there.
 
-user_env=$(mktemp --suffix -env)
-env --null > "${user_env}"
-sudo -u tails-persistent-storage /usr/local/lib/connect-drop-tails-installer "${user_env}"
+set -eu
+
+if [ "$(id -u)" = 1000 ]; then
+  ENVFILE=$(mktemp --suffix -env)
+  export ENVFILE
+  env --null >"${ENVFILE}"
+  exec sudo -u tails-persistent-storage "$0" "$@"
+fi
+
+exec \
+  /usr/local/lib/connect-socket --dbus-system-bus -- \
+  sudo --preserve-env=INHERIT_FD --close-from=4 -u amnesia \
+  /usr/local/lib/run-with-env --env-file="${ENVFILE}" --delete -- \
+  /usr/local/lib/tails-installer "$@"
