@@ -14,18 +14,18 @@ LANG_CODE = os.getenv("LANG", "en")[0:2]
 
 
 ALREADY_LOCALIZED = re.compile(r'/index.[a-z][a-z].html$')
-def sanitize_page(page: str) -> str:
+def sanitize_page_uri(page: str) -> str:
     """
     A relative link is passed through
-    >>> sanitize_page("contribute/release_process")
+    >>> sanitize_page_uri("contribute/release_process")
     'contribute/release_process'
 
     A link to the website is made relative
-    >>> sanitize_page("https://tails.net/install/")
+    >>> sanitize_page_uri("https://tails.net/install/")
     'install'
 
     Localized links are de-localized
-    >>> sanitize_page("https://tails.net/install/index.de.html")
+    >>> sanitize_page_uri("https://tails.net/install/index.de.html")
     'install'
     """
     page = page.removeprefix(WEBSITE_URL + '/')
@@ -89,7 +89,7 @@ def parse_args(_args=None):
 
 def main():
     args = parse_args()
-    page = sanitize_page(args.page)
+    page = sanitize_page_uri(args.page)
     anchor = args.anchor
 
     if args.doctest:
