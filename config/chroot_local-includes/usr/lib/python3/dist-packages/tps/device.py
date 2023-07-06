@@ -222,8 +222,14 @@ class TPSPartition(object):
         # - PBKDF memory cost of at least 1 GiB (1048576 KiB) or half of
         #   the total RAM (because cryptsetup refuses to use more than
         #   half of the total RAM for the memory cost), whichever is lower.
-        half_of_total_ram_kib = psutil.virtual_memory().total // 1024 // 2
-        required_memory_cost_kib = min(half_of_total_ram_kib, 900 * 1024)
+        #   Note: that we take great care to calculate the amount of RAM
+        #   exactly as cryptsetup does, so we will only upgrade in the
+        #   exact cases where cryptsetup can do better with the current
+        #   amount of RAM. For details, see:
+        #   • cryptsetup-2.3.7/lib/utils.c:45:uint64_t crypt_getphysmemory_kb(void)
+        #   • cryptsetup-2.3.7/lib/utils_pbkdf.c:64:static uint32_t adjusted_phys_memory(void)
+        cryptsetup_adjusted_memory_kib = os.sysconf('SC_PAGESIZE') // 1024 * os.sysconf('SC_PHYS_PAGES') // 2
+        required_memory_cost_kib = min(cryptsetup_adjusted_memory_kib, DESIRED_PBKDF_MEMORY_KIB)
 
         logger.debug("The encrypted partition has %d memory cost", memory_cost_kib)
 
