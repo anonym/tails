@@ -17,12 +17,13 @@ import subprocess
 
 
 def parse(body: str):
-    msg = Parser(policy=policy.default).parsestr(body)
-    return msg
+    header, body = body.split("\n\n", 1)
+    msg = Parser(policy=policy.default).parsestr(header)
+    return msg, body
 
 
 def mailer_thunderbird(body: str):
-    msg = parse(body)
+    msg, body = parse(body)
     spec = []
     for key in ['to', 'cc', 'subject']:
         if key in msg:
@@ -30,7 +31,7 @@ def mailer_thunderbird(body: str):
     with tempfile.TemporaryDirectory() as tmpdir:
         fpath = Path(tmpdir) / 'email.eml'
         with fpath.open('w') as fp:
-            fp.write(msg.get_body().get_content())
+            fp.write(body)
         spec.append("format=text")
         spec.append(f"message={fpath}")
         cmdline = ['thunderbird', '-compose', ','.join(spec)]
@@ -42,7 +43,7 @@ def mailer_thunderbird(body: str):
 
 
 def mailer_notmuch(body: str):
-    msg = parse(body)
+    msg, body = parse(body)
     cmdline = ['notmuch-emacs-mua', '--client', '--create-frame']
 
     for key in ['cc', 'subject']:
