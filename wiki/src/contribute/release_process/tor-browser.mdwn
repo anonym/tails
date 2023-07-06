@@ -306,22 +306,27 @@ Import a new set of Tor Browser tarballs
 
 2. Import the tarballs into your local Git annex:
 
+        (
         cd "${TBB_ARCHIVE:?}" && \
         mkdir "${TBB_VERSION:?}" && cd "${TBB_VERSION:?}" && \
         git annex import --duplicate "${DL_DIR:?}/"* "${TAILS_GIT_REPO:?}/"sha256sums-*
+        )
 
 Commit and push your changes
 ----------------------------
 
+    (
 	cd "${TBB_ARCHIVE:?}" && \
 	git commit -m "Add Tor Browser ${TBB_VERSION:?}" && \
 	git annex sync && \
 	git annex copy --to origin -- "${TBB_VERSION:?}" && \
 	git annex sync
+    )
 
 Adjust the URL in the main Git repository
 -----------------------------------------
 
+    (
     cd "${TAILS_GIT_REPO:?}" && \
     git checkout "${TBB_IMPORT_BRANCH:?}"
     current_branch=$(git branch | awk '/^\* / { print $2 }')
@@ -333,6 +338,7 @@ Adjust the URL in the main Git repository
            -m "Fetch Tor Browser from our own archive" && \
        git show
     done
+    )
 
 Wait for the synchronization
 ----------------------------
@@ -351,9 +357,11 @@ Push the updated branch
 Clean up
 --------
 
+    (
 	cd "${TBB_ARCHIVE:?}" && \
 	git annex drop -- "${TBB_VERSION:?}" && \
     git annex sync && \
     rm -rf "${DL_DIR:?}" && \
     cd "${TAILS_GIT_REPO:?}" && \
     rm -f sha256sums-unsigned-build.txt{,.asc${TBB_SIGNER_SUFFIX}}
+    )
