@@ -111,8 +111,10 @@ signature at `$TBB_DIST_URL` is named
 
     TBB_SIGNER_SUFFIX='-boklm'
 
-Note: sometimes, the detached signature is called `sha256sums-unsigned-build.txt.asc`, with no suffix.
-If that's the case, just set it to an empty string
+Note: Nowadays it's quite common that the detached signature is called `sha256sums-unsigned-build.txt.asc`, with no suffix.
+If that's the case, just set it to an empty string:
+
+    TBB_SIGNER_SUFFIX=''
 
 Fetch the version's hash file and its detached signature, and verify
 with GnuPG:
