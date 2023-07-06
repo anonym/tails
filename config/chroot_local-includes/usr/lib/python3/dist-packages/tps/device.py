@@ -231,7 +231,7 @@ class TPSPartition(object):
         cryptsetup_adjusted_memory_kib = os.sysconf('SC_PAGESIZE') // 1024 * os.sysconf('SC_PHYS_PAGES') // 2
         required_memory_cost_kib = min(cryptsetup_adjusted_memory_kib, DESIRED_PBKDF_MEMORY_KIB)
 
-        logger.debug("The encrypted partition has %d memory cost", memory_cost_kib)
+        logger.debug("The encrypted partition has %d memory cost (cryptsetup_adjusted_memory_kib = %d)", memory_cost_kib, cryptsetup_adjusted_memory_kib)
 
         return version == "2" and pbkdf == "argon2id" and \
             memory_cost_kib >= required_memory_cost_kib
@@ -474,7 +474,7 @@ class TPSPartition(object):
         """Upgrade a LUKS1 header to LUKS2"""
         try:
             executil.check_call(
-                ["cryptsetup", "convert", "--type", "luks2", "--batch-mode",
+                ["cryptsetup", "convert", "--debug", "--type", "luks2", "--batch-mode",
                  self.device_path],
             )
         except subprocess.CalledProcessError as err:
@@ -489,6 +489,7 @@ class TPSPartition(object):
         memory cost"""
         executil.check_call(
             ["cryptsetup", "luksConvertKey",
+             "--debug",
              # This conversion occurs only while at Tails' Welcome
              # Screen, where even the lowest-end devices we support (2
              # GiB RAM) will have enough RAM for the desired PBKDF

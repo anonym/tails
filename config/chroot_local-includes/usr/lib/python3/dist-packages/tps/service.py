@@ -401,6 +401,11 @@ class Service(DBusObject, ServiceUsingJobs):
         logger.info("Done upgrading Persistent Storage")
 
     def do_upgrade_luks(self, passphrase: str):
+        # This is for debugging #19728 and #19734 during the Tails
+        # 5.15 cycle. Since debug logging is enabled the output of
+        # this command will be logged in full.
+        executil.check_call(["free"])
+
         self.state = State.UPGRADING
 
         # Check that the passphrase is correct and the header is intact
