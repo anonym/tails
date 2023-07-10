@@ -1579,15 +1579,15 @@ Public testing
 
 1. Email <tails-testers@boum.org> to ask them to test the tentative images:
 
-   - subject: "Call for testing: $VERSION"
    - Point them to the up-to-date mirror you've found previously.
    - This is a public list, don't point to the pad.
    - Make a deadline clear: until when is feedback useful?
 
      (
-     msgfile=$(mktemp)
-     trap 'rm $msgfile' EXIT
-     cat <<EOF > $msgfile
+     cat <<EOF
+     To: tails-testers@boum.org
+     Subject: Call for testing: ${VERSION?}
+
      Hi,
 
      The *candidate* images for Tails ${VERSION} are ready for testing:
@@ -1600,9 +1600,7 @@ Public testing
 
      Thanks!
      EOF
-     thunderbird -compose "to=tails-testers@boum.org,subject='Call for testing: $VERSION',format=text,message=$msgfile"
-     sleep 2
-     )
+     ) | ./bin/automailer.py
 
 Lead the internal manual testing to conclusion
 ==============================================
