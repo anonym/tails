@@ -2196,7 +2196,13 @@ Check that you are indeed preparing a final release:
      - subject "RM for Tails NEXT_PLANNED_VERSION"
      - body: "This is a reminder that you will be RM for Tails NEXT_PLANNED_VERSION. Please see https://tails.net/contribute/working_together/roles/release_manager/#shift".
 
-           thunderbird -compose "subject='RM for Tails ${NEXT_PLANNED_VERSION}',format=text,body='This is a reminder that you will be RM for Tails ${NEXT_PLANNED_VERSION}. Please see https://tails.net/contribute/working_together/roles/release_manager/#shift'"
+        ./bin/automailer.py <<EOF
+        Subject: RM for Tails ${NEXT_PLANNED_VERSION}
+
+        This is a reminder that you will be RM for Tails ${NEXT_PLANNED_VERSION}.
+
+        Please see https://tails.net/contribute/working_together/roles/release_manager/#shift
+        EOF
 
    - If there's a release candidate scheduled before our next release,
      do the same for the release manager of that release candidate.
