@@ -48,16 +48,16 @@ def parse(body: str):
 def mailer_thunderbird(body: str):
     msg, body = parse(body)
     spec = []
-    for key in ['to', 'cc', 'subject']:
+    for key in ["to", "cc", "subject"]:
         if key in msg:
             spec.append(f"{key}='{msg[key]}'")
     with tempfile.TemporaryDirectory() as tmpdir:
-        fpath = Path(tmpdir) / 'email.eml'
-        with fpath.open('w') as fp:
+        fpath = Path(tmpdir) / "email.eml"
+        with fpath.open("w") as fp:
             fp.write(body)
         spec.append("format=text")
         spec.append(f"message={fpath}")
-        cmdline = ['thunderbird', '-compose', ','.join(spec)]
+        cmdline = ["thunderbird", "-compose", ",".join(spec)]
         subprocess.check_output(cmdline)
 
         # this is a workaround to the fact that Thunderbird will terminate *before* reading the file
@@ -67,20 +67,20 @@ def mailer_thunderbird(body: str):
 
 def mailer_notmuch(body: str):
     msg, body = parse(body)
-    cmdline = ['notmuch-emacs-mua', '--client', '--create-frame']
+    cmdline = ["notmuch-emacs-mua", "--client", "--create-frame"]
 
-    for key in ['cc', 'subject']:
+    for key in ["cc", "subject"]:
         if key in msg:
             cmdline.append(f"--{key}={msg[key]}")
 
-    for address in msg['to'].split(','):
+    for address in msg["to"].split(","):
         cmdline.append(address.strip())
 
     subprocess.check_output(cmdline)
 
 
 def mailer(mailer: str, body: str):
-    if mailer == 'thunderbird':
+    if mailer == "thunderbird":
         return mailer_thunderbird(body)
     elif mailer == "notmuch":
         return mailer_notmuch(body)
