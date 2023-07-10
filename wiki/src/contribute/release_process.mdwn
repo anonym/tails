@@ -62,6 +62,9 @@ Prepare your checklist
    a checklist: delete steps once you've successfully completed them.
    This ensures you won't mistakenly skip a step, without relying on memory, so
    "oops, I forgot X" cannot happen.
+5. Remove useless sections. Some sections of this checklist only apply to specific release types (RC, Major,
+   Bugfix, etc.). While you can skip them just-in-time, it's easier and less error-prone to do that now that
+   you have a fresh mind. You can search for `^##* If`.
 
 TRAP: whenever you go AFK for long times
 ===========================================
@@ -255,8 +258,8 @@ Freeze
 This section ensures freezing is done. Freezing is relevant for Release Candidates and for bugfix releases.
 You can skip this if you're releasing a final major version.
 
-If preparing a RC
--------------------
+## If preparing a RC
+
 
 Check that you are indeed preparing a RC:
 
@@ -298,8 +301,8 @@ Follow this part ONLY if you are preparing the release candidate for a major rel
         git checkout "$RELEASE_BRANCH" && \
         ./bin/bump-APT-snapshots-expiration-date 183
 
-If preparing a Bugfix release
-------------------------------
+## If preparing a Bugfix release
+
 
 Check that you are indeed preparing a Bugfix:
 
@@ -396,14 +399,12 @@ If any locale was added, add it to
 `config/chroot_local-includes/usr/share/tails/browser-localization/descriptions`
 (in the `MOZILLA_LOCALE:LOCATION` format).
 
-If preparing a final release
-================================
+# If preparing a final release
 
 If we're about to prepare the images for a final (non-RC) release, then
 follow these instructions:
 
-If preparing a Major release
-----------------------------
+## If preparing a Major release
 
 Check that you are indeed preparing a major release:
 
@@ -414,8 +415,7 @@ Merge each APT overlay suite listed in the `testing` branch's
 
         ./bin/merge-APT-overlays testing
 
-If preparing a Bugfix release
------------------------------
+## If preparing a Bugfix release
 
 Check that you are indeed preparing a bugfix release:
 
@@ -1664,8 +1664,7 @@ Make sure to:
 
 The technical writers will update the release notes after the release.
 
-If preparing a final release
--------------------------------
+## If preparing a final release
 
 Skip this part if preparing a RC.
 
@@ -1703,8 +1702,7 @@ Remove obsolete bits from `wiki/src/home/testing.html`. For example,
 remove any text that's specific to a release candidate we may have
 published for the version you are preparing.
 
-If preparing a RC
-------------------
+## If preparing a RC
 
 Skip this part if preparing a final release:
 
@@ -1977,8 +1975,7 @@ The password is in keyringer in `rm.git`.
 Prepare for the next development cycle
 ======================================
 
-If you just released a final release
-------------------------------------
+## If you just released a final release
 
 Check that you are indeed preparing a final release:
 
@@ -2222,8 +2219,7 @@ Check that you are indeed preparing a final release:
 1. Tomorrow, make sure Jenkins manages to build all updated major branches:
    <https://jenkins.tails.boum.org/view/RM/>.
 
-If you just released an RC
---------------------------
+## If you just released an RC
 
 Check that you are indeed preparing a RC:
 
