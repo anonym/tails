@@ -502,18 +502,20 @@ Update the Changelog entry for the release you're preparing:
 	git checkout "${RELEASE_BRANCH:?}" && \
 	./bin/update-changelog --version "${MILESTONE:?}"
 
-If you're preparing a release candidate:
+### If you're preparing a release candidate:
 
  - `[ "$DIST" = alpha ]`
  - Set the version for the new entry in `debian/changelog` to `$VERSION`: the
    above code has incorrectly set it to `$MILESTONE`.
 
-If you're preparing a release candidate or a major release:
+### If you're preparing a release candidate or a major release:
 
  - `[ "$DIST" = alpha ] || [ "$MAJOR" -eq 1 ]`
  - For each merge request listed in the new Changelog entry,
    copy the "Closes: #NNNNNN" string from the MR description into the relevant
    section of the Changelog.
+
+### In any case
 
 Then, gather other useful information from the diff between the previous
 version's `.packages` file and the one from the to-be-released images:
