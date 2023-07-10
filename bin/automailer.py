@@ -6,6 +6,7 @@ The purpose of this module is to make it easier to convert machine-ready emails 
 emails.
 """
 
+import os.path
 import time
 import sys
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
@@ -51,6 +52,20 @@ def mailer_thunderbird(body: str):
     for key in ["to", "cc", "subject"]:
         if key in msg:
             spec.append(f"{key}='{msg[key]}'")
+    if 'x-attach' in msg:
+        attachments = []
+        for fpath in msg['x-attach'].split(','):
+            fpath = fpath.strip()
+            if not fpath:
+                continue
+            if not os.path.exists(fpath):
+                print(f"Skipping attachemt '{fpath}': not found", file=sys.stderr)
+                continue
+            attachments.append(fpath)
+        if attachments:
+            spec.append("attachment='%s'" % ','.join(attachments))
+
+
     with tempfile.TemporaryDirectory() as tmpdir:
         fpath = Path(tmpdir) / "email.eml"
         with fpath.open("w") as fp:
