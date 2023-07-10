@@ -3,101 +3,96 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-06-09 07:47+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
+"POT-Creation-Date: 2023-06-13 19:42+0000\n"
+"PO-Revision-Date: 2023-07-02 11:34+0000\n"
+"Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.9.1\n"
+
+#. type: Plain text
+#, no-wrap
+msgid "[[!tag security/fixed]]\n"
+msgstr "[[!tag security/fixed]]\n"
 
 #. type: Bullet: '   1. '
-#, markdown-text
 msgid ""
-"When starting Tails, [[set up an administration "
-"password|doc/first_steps/welcome_screen/administration_password/]]."
+"When starting Tails, [[set up an administration password|doc/first_steps/"
+"welcome_screen/administration_password/]]."
 msgstr ""
 
 #. type: Bullet: '   1. '
-#, markdown-text
-msgid "Choose **Applications**&nbsp;▸ **System Tools**&nbsp;▸ **Root Terminal**."
+msgid ""
+"Choose **Applications**&nbsp;▸ **System Tools**&nbsp;▸ **Root Terminal**."
 msgstr ""
 
 #. type: Bullet: '   1. '
-#, markdown-text
 msgid "Execute the following command:"
 msgstr ""
 
 #. type: Plain text
-#, markdown-text, no-wrap
+#, no-wrap
 msgid "          lsblk\n"
 msgstr ""
 
 #. type: Plain text
-#, markdown-text, no-wrap
+#, no-wrap
 msgid ""
-"      The output is a list of the storage devices and partitions on the "
-"system.\n"
+"      The output is a list of the storage devices and partitions on the system.\n"
 "      For example:\n"
 msgstr ""
 
 #. type: Plain text
-#, markdown-text, no-wrap
+#, no-wrap
 msgid ""
 "          NAME                   MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT\n"
-"          loop0                    7:0    0  1.2G  1 loop  "
-"/lib/live/mount/rootfs/filesystem.squashfs\n"
+"          loop0                    7:0    0  1.2G  1 loop  /lib/live/mount/rootfs/filesystem.squashfs\n"
 "          sda                      8:0    1    7G  0 disk\n"
-"          ├─sda1                   8:1    1    4G  0 part  "
-"/lib/live/mount/medium\n"
+"          ├─sda1                   8:1    1    4G  0 part  /lib/live/mount/medium\n"
 "          └─sda2                   8:2    1    3G  0 part\n"
-"            └─TailsData_unlocked 253:0    0    3G  0 crypt "
-"/run/nosymfollow/live/persistence/TailsData_un...\n"
+"            └─TailsData_unlocked 253:0    0    3G  0 crypt /run/nosymfollow/live/persistence/TailsData_un...\n"
 "          zram0                  254:0    0  2.8G  0 disk  [SWAP]\n"
 msgstr ""
 
 #. type: Bullet: '   1. '
-#, markdown-text
 msgid "Plug in your encrypted volume. Keep the encryption locked."
 msgstr ""
 
 #. type: Bullet: '   1. '
-#, markdown-text
 msgid "Execute the same command again:"
 msgstr ""
 
 #. type: Plain text
-#, markdown-text, no-wrap
+#, no-wrap
 msgid ""
-"      Your encrypted volume appears as a new device with a list of "
-"partitions.\n"
+"      Your encrypted volume appears as a new device with a list of partitions.\n"
 "      Check that the partition size corresponds to your encrypted volume.\n"
 msgstr ""
 
 #. type: Plain text
-#, markdown-text, no-wrap
+#, no-wrap
 msgid ""
 "          NAME                   MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT\n"
-"          loop0                    7:0    0  1.2G  1 loop  "
-"/lib/live/mount/rootfs/filesystem.squashfs\n"
+"          loop0                    7:0    0  1.2G  1 loop  /lib/live/mount/rootfs/filesystem.squashfs\n"
 "          sda                      8:0    1    7G  0 disk\n"
-"          ├─sda1                   8:1    1    4G  0 part  "
-"/lib/live/mount/medium\n"
+"          ├─sda1                   8:1    1    4G  0 part  /lib/live/mount/medium\n"
 "          └─sda2                   8:2    1    3G  0 part\n"
-"            └─TailsData_unlocked 253:0    0    3G  0 crypt "
-"/run/nosymfollow/live/persistence/TailsData_un...\n"
+"            └─TailsData_unlocked 253:0    0    3G  0 crypt /run/nosymfollow/live/persistence/TailsData_un...\n"
 "          sdb                      8:0    1    7G  0 disk\n"
 "          └─sdb1                   8:2    1    7G  0 part\n"
 "          zram0                  254:0    0  2.8G  0 disk  [SWAP]\n"
 msgstr ""
 
 #. type: Bullet: '   1. '
-#, markdown-text
 msgid ""
 "Take note of the *partition name* of your encrypted volume. In this example, "
 "the new device in the list is <span class=\"code\">sdb</span> and the "
