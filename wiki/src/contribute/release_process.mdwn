@@ -339,7 +339,7 @@ Bootstrap internal manual testing coordination:
         ./bin/generate-call-for-manual-testers \
            --dist "${DIST:?}" \
            --pad "${PAD:?}" \
-           --version "${VERSION:?}"
+           --version "${VERSION:?}" | ./bin/automailer.py
 
 5. Send the call for manual testing:
 
