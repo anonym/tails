@@ -961,7 +961,7 @@ Get the internal manual testing started
 Email <tails-board@boum.org> and <tails-manual-testers@boum.org> that tests
 may start. Remeber to encrypt and sign your email!
 
-    cat <<EOF | ./bin/automailer.py
+    ./bin/automailer.py <<EOF
     To: tails-board@boum.org, tails-manual-testers@boum.org
     Subject: Testing Tails 5.15
     X-Attach: $(ls -1 "$ISOS/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.packages" "$ISOS/tails-amd64-${VERSION:?}/"tails-amd64-${VERSION:?}.{iso,img}.sig "$ISOS/tails-amd64-${VERSION:?}".{iso,img}.torrent | tr '\n' ,)
@@ -1574,8 +1574,7 @@ Public testing
    - This is a public list, don't point to the pad.
    - Make a deadline clear: until when is feedback useful?
 
-     (
-     cat <<EOF
+     ./bin/automailer.py <<EOF
      To: tails-testers@boum.org
      Subject: Call for testing: ${VERSION?}
 
@@ -1591,7 +1590,6 @@ Public testing
 
      Thanks!
      EOF
-     ) | ./bin/automailer.py
 
 Lead the internal manual testing to conclusion
 ==============================================
@@ -2166,7 +2164,7 @@ Check that you are indeed preparing a final release:
 1. Announce the date of the next release on <tails-dev@boum.org> and
    <tails-l10n@boum.org>.
 
-         cat <<EOF | ./bin/automailer.py
+         ./bin/automailer.py <<EOF
          To: tails-dev@boum.org,tails-l10n@boum.org
          Cc: tails-manual-testers@boum.org
          Subject: Release schedule for Tails ${NEXT_PLANNED_VERSION:?}
