@@ -963,7 +963,7 @@ may start. Remeber to encrypt and sign your email!
 
     ./bin/automailer.py <<EOF
     To: tails-board@boum.org, tails-manual-testers@boum.org
-    Subject: Testing Tails 5.15
+    Subject: Testing Tails ${VERSION:?}
     X-Attach: $(ls -1 "$ISOS/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.packages" "$ISOS/tails-amd64-${VERSION:?}/"tails-amd64-${VERSION:?}.{iso,img}.sig "$ISOS/tails-amd64-${VERSION:?}".{iso,img}.torrent | tr '\n' ,)
 
     You can now download the images and start testing:
