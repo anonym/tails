@@ -1281,6 +1281,12 @@ Prepare upgrade-description files
 
         ./bin/sign-updated-udfs
 
+1. Verify that all UDFs are correctly signed:
+
+        ./bin/check-udfs-signature
+
+   If this isn't the case, check what went wrong in the signing step!
+
 1. Add and commit the upgrade-description files and their detached
    signatures to the Git branch used to prepare the release
    (`$WEBSITE_RELEASE_BRANCH`):
