@@ -3,12 +3,12 @@ from pathlib import Path
 from unittest.mock import Mock
 from typing import Union
 
-from tps.configuration.mount import Mount, IsActiveException, IsInactiveException
+from tps.configuration.binding import Binding, IsActiveException, IsInactiveException
 from tps.configuration.feature import Feature
 from tps.service import ConfigFile, Service, State
 
 
-class MockMount(Mock):
+class MockBinding(Mock):
     def __init__(self,  src: Union[str, Path] = None, dest: Union[str, Path] = None, **kwargs):
         super().__init__(**kwargs)
         self.src = src
@@ -57,34 +57,33 @@ def step_impl(context: TestContext):
 
 @given('a feature with bind mounts')
 def step_impl(context: TestContext):
-    bind_mount_1 = MockMount(spec=Mount, src="/src1", dest="dest1")  # type: Mount
-    bind_mount_2 = MockMount(spec=Mount, src="/src2", dest="dest2")  # type: Mount
+    bind_mount_1 = MockBinding(spec=Binding, src="/src1", dest="dest1")  # type: Binding
+    bind_mount_2 = MockBinding(spec=Binding, src="/src2", dest="dest2")  # type: Binding
 
     class FeatureWithBindMount(Feature):
         Id = "FeatureWithBindMount"
         translatable_name = "FeatureWithBindMount"
-        Mounts = [bind_mount_1, bind_mount_2]
+        Bindings = [bind_mount_1, bind_mount_2]
 
     context.tps_feature = FeatureWithBindMount(context.service)
 
 
 @given('a feature with a bind mount')
 def step_impl(context: TestContext):
-    # We need an actual mount here instead of a mock mount because this
+    # We need an actual binding here instead of a mock binding because this
     # step is used in the "Deleting a feature" scenario which tests
-    # Feature.Delete which checks mount.HasData after deleting the
-    # source directory, so mount.HasData needs to be implemented.
-    bind_mount = Mount("src", Path(context.tmpdir, "dest"),
-                       tps_mount_point=context.mount_point)
+    # Feature.Delete which checks binding.HasData after deleting the
+    # source directory, so binding.HasData needs to be implemented.
+    bind_mount = Binding("src", Path(context.tmpdir, "dest"),
+                         tps_mount_point=context.mount_point)
 
     class FeatureWithBindMount(Feature):
         Id = "FeatureWithBindMount"
         translatable_name = "FeatureWithBindMount"
-        Mounts = [bind_mount]
+        Bindings = [bind_mount]
 
     context.tps_feature = FeatureWithBindMount(context.service)
-    context.mount = bind_mount
-
+    context.binding = bind_mount
 
 
 @given('the feature is active')
@@ -109,14 +108,14 @@ def step_impl(context: TestContext):
 
 @given('the bind mounts are active')
 def step_impl(context: TestContext):
-    for mount in context.tps_feature.Mounts:
-        mount.activate()
+    for binding in context.tps_feature.Bindings:
+        binding.activate()
 
 
 @given('the bind mounts are not active')
 def step_impl(context: TestContext):
-    for mount in context.tps_feature.Mounts:
-        mount.deactivate()
+    for binding in context.tps_feature.Bindings:
+        binding.deactivate()
 
 
 @when('the feature is activated')
@@ -146,12 +145,11 @@ def step_impl(context: TestContext):
 
 @then('the bind mounts are active')
 def step_impl(context: TestContext):
-    for bind_mount in context.tps_feature.Mounts:
+    for bind_mount in context.tps_feature.Bindings:
         assert bind_mount.is_active()
 
 
 @then('the bind mounts are not active')
 def step_impl(context: TestContext):
-    for bind_mount in context.tps_feature.Mounts:
+    for bind_mount in context.tps_feature.Bindings:
         assert not bind_mount.is_active()
-

@@ -60,7 +60,7 @@ end
 
 When /^I update APT using apt$/ do
   recovery_proc = proc do
-    step 'I kill the process "apt"'
+    ensure_process_is_terminated('apt')
     $vm.execute('rm -rf /var/lib/apt/lists/*')
   end
   retry_tor(recovery_proc) do
@@ -80,7 +80,7 @@ end
 
 Then /^I install "(.+)" using apt$/ do |package|
   recovery_proc = proc do
-    step 'I kill the process "apt"'
+    ensure_process_is_terminated('apt')
     # We can't use execute_successfully here: the package might not be
     # installed at this point, and then "apt purge" would return non-zero.
     $vm.execute("apt purge #{package}")
@@ -161,7 +161,7 @@ end
 
 When /^I update APT using Synaptic$/ do
   recovery_proc = proc do
-    step 'I kill the process "synaptic"'
+    ensure_process_is_terminated('synaptic')
     step 'I start Synaptic'
   end
   retry_tor(recovery_proc) do
@@ -182,7 +182,7 @@ end
 
 Then /^I install "(.+)" using Synaptic$/ do |package_name|
   recovery_proc = proc do
-    step 'I kill the process "synaptic"'
+    ensure_process_is_terminated('synaptic')
     # We can't use execute_successfully here: the package might not be
     # installed at this point, and then "apt purge" would return non-zero.
     $vm.execute("apt -y purge #{package_name}")
@@ -223,6 +223,6 @@ Then /^I install "(.+)" using Synaptic$/ do |package_name|
       @synaptic.child('Changes applied', roleName: 'frame', recursive: false)
       true
     end
-    step 'I kill the process "synaptic"'
+    ensure_process_is_terminated('synaptic')
   end
 end

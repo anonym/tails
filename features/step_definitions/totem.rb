@@ -32,7 +32,7 @@ When /^I(?:| try to) open "([^"]+)" with Totem$/ do |filename|
 end
 
 When /^I close Totem$/ do
-  step 'I kill the process "totem"'
+  ensure_process_is_terminated('totem')
 end
 
 def disable_tor_reject_internal_addresses

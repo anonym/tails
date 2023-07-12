@@ -4,6 +4,11 @@ set -e
 set -u
 set -x
 
+# please note that if those variable are unset, the error message will be different, because of set -u
+if [ -z "${VERSION}" ] || [ -z "${NEXT_PLANNED_VERSION}" ] ; then
+    echo "Some environment variable is empty" >&2
+    exit 2
+fi
 export PODMAN_ARGS="--env VERSION --env NEXT_PLANNED_VERSION"
 
 "$(dirname "$0")"/../config/gitlab-triage/bin/gitlab-triage \

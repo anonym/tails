@@ -49,3 +49,6 @@ pref("spellchecker.dictionary_path", "/usr/share/hunspell");
 // Suppress the "Tor Browser has set your display language to
 // $language based on your system’s language" prompt.
 pref("intl.language_notification.shown", true);
+
+// Enable userChrome.css for UI customizations
+pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);

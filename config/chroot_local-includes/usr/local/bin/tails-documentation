@@ -3,6 +3,7 @@
 import os
 import sys
 from argparse import ArgumentParser
+import re
 
 from tailslib.django import safe_join
 from tailslib.systemd import tor_has_bootstrapped
@@ -10,6 +11,29 @@ from tailslib.systemd import tor_has_bootstrapped
 WEBSITE_URL = "https://tails.net"
 WEBSITE_LOCAL_PATH = "/usr/share/doc/tails/website"
 LANG_CODE = os.getenv("LANG", "en")[0:2]
+
+
+ALREADY_LOCALIZED = re.compile(r'/index.[a-z][a-z].html$')
+def sanitize_page_uri(page: str) -> str:
+    """
+    A relative link is passed through
+    >>> sanitize_page_uri("contribute/release_process")
+    'contribute/release_process'
+
+    A link to the website is made relative
+    >>> sanitize_page_uri("https://tails.net/install/")
+    'install'
+
+    Localized links are de-localized
+    >>> sanitize_page_uri("https://tails.net/install/index.de.html")
+    'install'
+    """
+    page = page.removeprefix(WEBSITE_URL + '/')
+    m = ALREADY_LOCALIZED.search(page)
+    if m is not None:
+        page = page.removesuffix(m.group(0))
+    page = page.removesuffix('/')
+    return page
 
 
 def find_local_page(page: str) -> str:
@@ -31,6 +55,7 @@ def get_parser():
     p = ArgumentParser()
     p.add_argument("--force-local", default=False, action="store_true")
     p.add_argument("--doctest", default=False, action="store_true")
+    p.add_argument("--dry-run", default=False, action="store_true")
     p.add_argument("page", default="doc", nargs="?")
     p.add_argument("anchor", default=None, nargs="?")
     return p
@@ -64,12 +89,12 @@ def parse_args(_args=None):
 
 def main():
     args = parse_args()
-    page = args.page
+    page = sanitize_page_uri(args.page)
     anchor = args.anchor
 
     if args.doctest:
         import doctest
-        ret = doctest.testmod()
+        ret = doctest.testmod(verbose=False)
         print('tails-documentation doctest:', ret)
         if ret.failed:
             sys.exit(1)
@@ -92,6 +117,10 @@ def main():
 
     if anchor:
         uri = uri + "#" + anchor
+
+    if args.dry_run:
+        print(uri)
+        return
 
     os.environ["TOR_BROWSER_SKIP_OFFLINE_WARNING"] = "yes"
     os.execv("/usr/bin/gtk-launch", ["/usr/bin/gtk-launch", "tor-browser.desktop", uri])

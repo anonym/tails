@@ -124,13 +124,13 @@ class Screen
     cmd_helper(['xdotool'] + args.map(&:to_s))
   end
 
-  def match_screen(image, sensitivity, show_image)
+  def match_screen(image, sensitivity, show_image, show_old)
     screenshot = "#{$config['TMPDIR']}/screenshot.png"
     debug_log('Screen[match_screen]: taking screenshot')
     $vm.display.screenshot(screenshot)
     debug_log('Screen[match_screen]: matching template to screenshot')
     OpenCV.matchTemplate("#{OPENCV_IMAGE_PATH}/#{image}",
-                         screenshot, sensitivity, show_image)
+                         screenshot, sensitivity, show_image, show_old)
   end
 
   def real_find(pattern, **opts)
@@ -144,7 +144,7 @@ class Screen
       raise "unsupported type: #{pattern.class}"
     end
     debug_log("Screen: trying to find #{image}") if opts[:log]
-    p = match_screen(image, opts[:sensitivity], false)
+    p = match_screen(image, opts[:sensitivity], false, false)
 
     if p.nil?
       raise FindFailed, "cannot find #{image} on the screen"
@@ -396,7 +396,7 @@ class ImageBumpingScreen
     loop do
       warn(
         "\n" \
-        "a: Automatic bump\n" \
+        "a: Automatic bump (match in green, old image in red)\n" \
         "r: Retry images (pro tip: manually update the images first!)\n" \
         "i: Ignore these image for the remaining of the run\n" \
         "d: Debugging REPL\n" \
@@ -409,7 +409,7 @@ class ImageBumpingScreen
           warn "Trying with sensitivity #{sensitivity}..."
           m = nil
           images.each do |i|
-            p = @screen.match_screen(i, sensitivity, true)
+            p = @screen.match_screen(i, sensitivity, true, true)
             if p
               m = Match.new(i, @screen, *p)
               break
@@ -434,7 +434,7 @@ class ImageBumpingScreen
       when 'r'
         m = nil
         images.each do |i|
-          p = @screen.match_screen(i, opts[:sensitivity], true)
+          p = @screen.match_screen(i, opts[:sensitivity], true, false)
           if p
             m = Match.new(i, @screen, *p)
             break

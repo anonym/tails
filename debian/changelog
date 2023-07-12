@@ -1,3 +1,332 @@
+tails (5.15.1) unstable; urgency=medium
+
+  * Emergency fix: fix whisperback reporting
+
+ -- Tails developers <tails@boum.org>  Tue, 11 Jul 2023 13:20:32 +0200
+
+tails (5.15) unstable; urgency=medium
+
+  * Resolve "Upgrade Tor Browser to 12.5.1" (tails/tails!1195)
+
+    Closes issues:
+      - Upgrade Tor Browser to 12.5.1 (tails/tails#19724)
+
+    Commits:
+      - Fetch Tor Browser from our own archive
+      - Upgrade Tor Browser to 12.5.1-build1
+
+  * onion-grater: fix the stream ownership check (tails/tails!1184)
+
+    Closes issues:
+      - onion-grater stream ownership check is very buggy resulting in restrict-stream-
+        events being broken (tails/tails#19741)
+
+    Commits:
+      - spare typing
+      - turn on debug automatically based on cmdline
+      - no stream belongs to pid-based matching
+      - onion-grater: log events dropped by restrict-stream-events
+      - onion-grater: only use address comparison for event ownership
+      - Test suite: test that Tor Browser's circuit view is working
+      - Upgrade Tor Browser to 12.5-build2
+      - Test suite: wait longer for Unsafe Browser's zenity dialogs
+      - Browsers: deal with another extension directory from TBB 12.5 (refs:
+        tails/tails#19724)
+      - Browsers: update to new fontconfig path for Tor Browser 12.5 (refs
+        tails/tails#19742)
+      - Test suite: remove useless torified_browsing.rb
+      - Test suite: adapt test to Tor Browser's new file download UX (refs:
+        tails/tails#19724)
+      - Test suite: embed old image next to match in automatic image bumping mode
+      - Defer lyrebird → obfs4proxy renaming
+      - Upgrade Tor Browser to 12.5.0-build1 (refs: tails/tails#19724)
+      - Browsers: add new locales supported by Tor Browser 12.5 (refs:
+        tails/tails#19724)
+      - Upgrade Tor Browser to 12.5a7 (refs: tails/tails#19724)
+      - onion-grater: fix the stream ownership check (refs: tails/tails#19741)
+
+  * Upgrade Tor Browser to 12.5 (tails/tails!1182)
+
+    Commits:
+      - Upgrade Tor Browser to 12.5-build2
+      - Test suite: wait longer for Unsafe Browser's zenity dialogs
+      - Browsers: deal with another extension directory from TBB 12.5 (refs:
+        tails/tails#19724)
+      - Browsers: update to new fontconfig path for Tor Browser 12.5 (refs
+        tails/tails#19742)
+      - Test suite: remove useless torified_browsing.rb
+      - Test suite: adapt test to Tor Browser's new file download UX (refs:
+        tails/tails#19724)
+      - Test suite: embed old image next to match in automatic image bumping mode
+      - Defer lyrebird → obfs4proxy renaming
+      - Upgrade Tor Browser to 12.5.0-build1 (refs: tails/tails#19724)
+      - Browsers: add new locales supported by Tor Browser 12.5 (refs:
+        tails/tails#19724)
+      - Upgrade Tor Browser to 12.5a7 (refs: tails/tails#19724)
+
+  * Test suite: avoid writing to script while it may be executing
+    (tails/tails!1189)
+
+    Closes issues:
+      - "Scenario: I can use a network with captive portal" frequently fails: OSError:
+        [Errno 26] Text file busy: '/etc/NetworkManager/dispatcher.d/00-firewall.sh'
+        (RemoteShell::ServerFailure) (tails/tails#19736)
+
+    Commits:
+      - Test suite: avoid writing to script while it may be executing
+
+  * Release calendar available from website (tails/tails!1188)
+
+    Commits:
+      - Apply 2 suggestion(s) to 2 file(s)
+      - update instructions for updating calendar
+      - contribute/calendar points to actual calendar
+      - Revert "Remove our public calendar"
+
+  * tps: Fix LUKS upgraded each boot on some systems (tails/tails!1181)
+
+    Closes issues:
+      - Persistent Storage upgraded on every login (tails/tails#19734)
+
+    Commits:
+      - tps: add more debug logging for #19728 and #19734
+      - tps: calculate available RAM just as cryptsetup does in is_upgraded()
+      - reports memory and cpu, too
+      - include information about disks
+      - Whisperback: more usb information
+      - decrease the argon2id minimum memory requirement
+      - debug memory cost
+      - make debug-for-5.15 expire automatically
+      - Enable debug logging in the tps backend by default
+      - tps: clarify the whole situation around create() using a lower PBDKF memory
+        cost that we fix with an upgrade at next boot
+      - tps: use constant instead of magic number
+      - tps: also set --pbkdf-force-iterations when createing a new volume
+      - tps: Fix LUKS upgraded each boot on some systems
+
+  * Test suite: Fix flaky step "the displayed clock is less than (\d+) minutes
+    incorrect" (tails/tails!1180)
+
+    Closes issues:
+      - Flaky test "the displayed clock is less than (\d+) minutes incorrect"
+        (tails/tails#19727)
+
+    Commits:
+      - Run rubocop
+      - Test suite: Fix flaky step "the displayed clock is less than (\d+) minutes
+        incorrect"
+      - Test suite: Fix usage of backslashes in arguments to Dogtail
+
+  * Support authenticated v3 Onion Services in Tor Browser (tails/tails!1160)
+
+    Closes issues:
+      - Support authenticated v3 Onion Services in Tor Browser (tails/tails#17816)
+
+    Commits:
+      - Revert bits about persistent onion auth keys
+      - Tor Browser: hide UI related to persisting onion auth keys
+      - Tor Browser: also allow viewing and removing onion auth keys.
+      - ONION_CLIENT_AUTH_ADD must take arguments.
+      - Use upper case as we normally do.
+      - Tor: enable ClientOnionAuthDir to be able to remember onion auth keys (refs:
+        tails/tails#17816)
+      - Onion Grater: update Tor Browser to allow onion authentication (refs:
+        tails/tails#17816)
+      - Tor: enable ExtendedErrors for Tor Browser's SocksPort
+
+  * Welcome Screen: Bump UpgradeLUKS timeout to 240s (tails/tails!1190)
+
+    Commits:
+      - workaround for tails#19871
+      - Welcome Screen: Bump UpgradeLUKS timeout to 240s
+
+  * Upgrade to Linux 6.1.37-1 (tails/tails!1196)
+
+    Closes issues:
+      - Install the Linux kernel from Bookworm (tails/tails#19669)
+      - Upgrade to Linux 6.1.37-1 (tails/tails#19670)
+
+    Commits:
+      - Document workaround
+      - Fix heading level
+      - Update the snapshot of the Debian archive to 2023070701
+      - Upgrade to Linux 6.1.37-1 from bookworm-security
+      - Stop tracking sid when we can get the package we want from Bookworm
+      - APT: add fallback pinning for Debian-Security
+      - APT: add Bookworm sources
+
+  * automailer parsing fixed (tails/tails!1193)
+
+    Commits:
+      - simpler and more effective body parsing
+
+  * tails-installer open wrong URI (tails/tails!1191)
+
+    Closes issues:
+      - Honor the "debug" kernel cmdline option in Tails Installer (tails/tails#12396)
+      - Tails Installer open wrong documentation URI (tails/tails#19870)
+
+    Commits:
+      - rename function to reflect what it does
+      - verbose is explicitly disabled
+      - doctest clarifies
+      - tails-documentation de-localize input links
+      - tails-documentation supports URLs as arguments
+      - tails-documentation --dry-run
+      - tails-installer honors debug cmdline
+      - refactor debug activation in tails installer
+
+  * Fix gitlab-triage-post-release (tails/tails!1186)
+
+    Closes issues:
+      - Multiple failures in gitlab-triage-post-release (tails/tails#19723)
+
+    Commits:
+      - prevent running with unset variables
+      - let's ignore milestone.due_date
+      - expand yaml alias
+
+  * onion-grater: fix getinfo circuit-status leak (tails/tails!1185)
+
+    Closes issues:
+      - onion-grater leaks info about unassociated circuits to Tor Browser
+        (tails/tails#19740)
+
+    Commits:
+      - onion-grater: refactor
+      - onion-grater: add comments per reviewer request
+      - onion-grater: log events dropped by restrict-stream-events
+      - onion-grater: only use address comparison for event ownership
+      - Test suite: test that Tor Browser's circuit view is working
+      - WIP fix for refs: tails/tails#19740
+      - onion-grater: fix the stream ownership check (refs: tails/tails#19741)
+
+  * TCA: Fix error not displayed after QR code scanning failure (tails/tails!1183)
+
+    Closes issues:
+      - Error not displayed after QR code scanning failure: "TypeError: 'dict' object
+        is not callable" for "_" (tails/tails#19737)
+
+    Commits:
+      - TCA: Fix error not displayed after QR code scanning failure
+
+  * Replace connect-drop executable (tails/tails!1177)
+
+    Commits:
+      - simplify --debug handling
+      - fix: forward INHERIT_FD to tails-installer
+      - get env var: raise if not present
+      - fix: forward INHERIT_FD to tps-frontend
+      - Fix python3-gi missing in test-tailslib job
+      - connect-socket: Use parser default value for --debug option
+      - Inline connect-drop-tails-installer in tails-installer
+      - Inline connect-drop-tps in tails-persistent-storage
+      - Replace connect-drop with connect-socket
+      - run-tca-in-netns: Support setting logging level to debug
+      - tps-frontend: Fix comment
+
+  * Welcome Screen: Fix search (tails/tails!1176)
+
+    Closes issues:
+      - Improve search in language and keyboard selection widgets (tails/tails#19200)
+
+    Commits:
+      - Welcome Screen: Also search the language code
+      - Welcome Screen: Support multiple search strings
+      - Welcome Screen: Fix search
+
+  * post-RM doc updates (tails/tails!1174)
+
+    Commits:
+      - use automailer at least once in the doc
+      - notmuch supported
+      - make sending emails easier multi-MUA
+      - blog.torproject.org: link to old MR
+      - let's validate using check-po-msgfmt, too
+      - I just want to copy-paste
+      - discard non-diff lines
+      - more readable output
+
+  * Rename tps executables (tails/tails!1172)
+
+    Closes issues:
+      - Rename tps to tpsd (tails/tails#19430)
+
+    Commits:
+      - Rename tps -> tpsd
+      - Rename tps-frontend-wrapper -> tails-persistent-storage
+
+  * tps: Rename mount -> binding (tails/tails!1171)
+
+    Closes issues:
+      - Use the term "binding" instead of "mount" in tps backend code
+        (tails/tails#19721)
+
+    Commits:
+      - Update PO files.
+      - tps: Rename mount -> binding
+
+  * tps: Make sure that the header correctly unlocks the partition
+    (tails/tails!1167)
+
+    Closes issues:
+      - Investigate LUKS header restore failure (tails/tails#19718)
+
+    Commits:
+      - tps: Fix error case in which LUKS header backup is not restored
+      - tps: Fix comments
+      - tps: Fix typo
+      - tps: Remove unused imports
+      - tps: Remove unused D-Bus method TestPassphrase
+      - tps: Don't include UUID in LUKS header backup path
+      - tps: Make sure that the header correctly unlocks the partition
+
+  * Dogtail: re-enable showingOnly by default (tails/tails!1166)
+
+    Closes issues:
+      - Re-enable showingOnly by default in the test suite (tails/tails#19717)
+
+    Commits:
+      - Test suite: fix another Dogtail configuration issue
+      - Test suite: simplify
+      - Test suite: deal with test relying on showingOnly not being enabled
+      - Test suite: drop useless require
+      - Test suite: deal with test relying on showingOnly not being enabled
+      - Test suite: actually "simulate" a failing connection during time sync
+      - Test suite: drop all explicit `showingOnly: true` arguments
+      - Dogtail: disable debugging output
+      - Dogtail: enable showingOnly by default (refs: tails/tails#19771)
+
+  * test: user can install w/o cloning (tails/tails!1165)
+
+    Closes issues:
+      - Tails Installer: test that the user can install without cloning
+        (tails/tails#19716)
+
+    Commits:
+      - rename scenarios consistently
+      - remove useless step
+      - Apply 1 suggestion(s) to 1 file(s)
+      - test: user can install w/o cloning
+
+  * Upgrade Linux on devel branch to 6.1.27-1 (tails/tails!1151)
+
+    Commits:
+      - Upgrade to Linux 6.1.27-1 (devel branch)
+
+  * Display the Tails version in the boot loader entry (tails/tails!1137)
+
+    Closes issues:
+      - Display the Tails version number during boot (Boot Loader Menu or Welcome
+        Screen) (tails/tails#16796)
+
+    Commits:
+      - Display the Tails version number in all GRUB menu entries
+      - Add comment
+      - Display the Tails version in the boot loader entry
+
+ -- Tails developers <tails@boum.org>  Mon, 10 Jul 2023 12:04:32 +0200
+
 tails (5.14) unstable; urgency=medium
 
   * tailslib: Fix spawn_tps_frontend (tails/tails!1168)
