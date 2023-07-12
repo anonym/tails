@@ -44,8 +44,8 @@ Feature: Tor Connection helps the user in connecting to Tor
         Then Tor Connection does not propose me to use Tor bridges
 
     Scenario: I can use a network with captive portal
-        Given the network is plugged
-        And the Tor network and default bridges are blocked
+        Given the Tor network and default bridges are blocked
+        And the network is plugged
         And I make sure time sync before Tor connects indicates a captive portal
         And the Tor Connection Assistant autostarts
         When I choose to connect to Tor automatically

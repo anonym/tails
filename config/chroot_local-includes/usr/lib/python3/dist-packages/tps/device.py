@@ -37,11 +37,10 @@ MEMORY_LEFT_TO_SYSTEM_KIB = 200 * 1024
 # (32 KiB to 1 GiB).
 MINIMUM_PBKDF_MEMORY_KIB = 256 * 1024
 
-# Support up to 1 GiB of memory for Argon2id. This is the maximum value
-# that's chosen by cryptsetup by default and it's low enough that
-# systems with only 2 GiB of RAM can still unlock the Persistent Storage
-# in the Welcome Screen.
-MAXIMUM_PBKDF_MEMORY_KIB = 1 * 1024 * 1024
+# This is the maximum value that's chosen by cryptsetup by default and
+# it's low enough that even the lowest-end devices we support (2 GiB
+# RAM) can still unlock the Persistent Storage at the Welcome Screen.
+DESIRED_PBKDF_MEMORY_KIB = 1 * 1024 * 1024
 
 
 class InvalidPartitionError(Exception):
@@ -223,8 +222,16 @@ class TPSPartition(object):
         # - PBKDF memory cost of at least 1 GiB (1048576 KiB) or half of
         #   the total RAM (because cryptsetup refuses to use more than
         #   half of the total RAM for the memory cost), whichever is lower.
-        half_of_total_ram_kib = psutil.virtual_memory().total // 1024 // 2
-        required_memory_cost_kib = min(half_of_total_ram_kib, 1048576)
+        #   Note: that we take great care to calculate the amount of RAM
+        #   exactly as cryptsetup does, so we will only upgrade in the
+        #   exact cases where cryptsetup can do better with the current
+        #   amount of RAM. For details, see:
+        #   • cryptsetup-2.3.7/lib/utils.c:45:uint64_t crypt_getphysmemory_kb(void)
+        #   • cryptsetup-2.3.7/lib/utils_pbkdf.c:64:static uint32_t adjusted_phys_memory(void)
+        cryptsetup_adjusted_memory_kib = os.sysconf('SC_PAGESIZE') // 1024 * os.sysconf('SC_PHYS_PAGES') // 2
+        required_memory_cost_kib = min(cryptsetup_adjusted_memory_kib, DESIRED_PBKDF_MEMORY_KIB)
+
+        logger.debug("The encrypted partition has %d memory cost (cryptsetup_adjusted_memory_kib = %d)", memory_cost_kib, cryptsetup_adjusted_memory_kib)
 
         return version == "2" and pbkdf == "argon2id" and \
             memory_cost_kib >= required_memory_cost_kib
@@ -252,6 +259,25 @@ class TPSPartition(object):
             if partition.get_partition().props.name == TPS_PARTITION_LABEL:
                 return TPSPartition(partition)
         return None
+
+    @classmethod
+    def pbkdf_parameters(cls, memory_cost=None):
+        params = [
+            "--pbkdf=argon2id",
+        ]
+        if memory_cost:
+            params += [
+                f"--pbkdf-memory={memory_cost}",
+                # We need to also specify the number of iterations, because
+                # otherwise cryptsetup would perform a benchmark to choose
+                # both the memory cost and the number of iterations, which
+                # can lead to a memory cost lower than the one we specified
+                # above. We choose the lowest number of iterations that
+                # cryptsetup allows us to choose (4), to not make unlocking
+                # the Persistent Storage too slow on low-end devices.
+                "--pbkdf-force-iterations=4",
+            ]
+        return params
 
     @classmethod
     def create(cls, job: Optional[Job], passphrase: str,
@@ -297,8 +323,8 @@ class TPSPartition(object):
                                required_memory=required_mem_kib)
             raise NotEnoughMemoryError(msg)
 
-        # Check that the memory cost is not above the maximum.
-        mem_cost_kib = min(mem_cost_kib, MAXIMUM_PBKDF_MEMORY_KIB)
+        # Check that the memory cost is not above the desired amount
+        mem_cost_kib = min(mem_cost_kib, DESIRED_PBKDF_MEMORY_KIB)
 
         # Create the partition
         logger.info("Creating partition")
@@ -328,8 +354,13 @@ class TPSPartition(object):
                "--batch-mode",
                "--key-file=-",
                "--type=luks2",
-               "--pbkdf=argon2id",
-               f"--pbkdf-memory={mem_cost_kib}",
+               # Note that the PBKDF memory cost we set here might be
+               # lower than what is_upgraded() requires, so an upgrade
+               # might be triggered next boot. This is intentional as
+               # the upgrade will fixup the memory cost to the desired
+               # amount. This should only happen on the lowest-end
+               # devices we support (2 GiB RAM).
+               *cls.pbkdf_parameters(memory_cost=mem_cost_kib),
                partition.device_path]
         executil.check_call(cmd, input=passphrase)
 
@@ -443,7 +474,7 @@ class TPSPartition(object):
         """Upgrade a LUKS1 header to LUKS2"""
         try:
             executil.check_call(
-                ["cryptsetup", "convert", "--type", "luks2", "--batch-mode",
+                ["cryptsetup", "convert", "--debug", "--type", "luks2", "--batch-mode",
                  self.device_path],
             )
         except subprocess.CalledProcessError as err:
@@ -454,17 +485,20 @@ class TPSPartition(object):
             raise
 
     def convert_pbkdf_argon2id(self, passphrase: str):
-        """Convert the PBKDF to argon2id"""
+        """Convert the PBKDF to argon2id with fixed iterations and
+        memory cost"""
         executil.check_call(
             ["cryptsetup", "luksConvertKey",
-             "--pbkdf", "argon2id",
-             # Instead of letting cryptsetup choose the memory cost for
-             # argon2id (which it does by benchmarking the system), we
-             # choose the highest memory cost that cryptsetup would
-             # choose (1 GiB), because that's still low enough to not
-             # break unlocking the Persistent Storage in the Welcome
-             # Screen on the lowest-end devices we support (2 GiB RAM).
-             "--pbkdf-memory", "1048576",
+             "--debug",
+             # This conversion occurs only while at Tails' Welcome
+             # Screen, where even the lowest-end devices we support (2
+             # GiB RAM) will have enough RAM for the desired PBKDF
+             # memory cost. So here we are either converting a LUKS1
+             # key created in an older Tails, or we are fixing up the
+             # memory cost of a newly created (via create()) volume
+             # where enough memory wasn't available since a fully
+             # logged in Tails system was running.
+             *self.pbkdf_parameters(memory_cost=DESIRED_PBKDF_MEMORY_KIB),
              "--key-file=-",
              "--batch-mode",
              self.device_path],

@@ -221,7 +221,7 @@ class StepChooseBridgeMixin:
         if self.app.has_persistence and self.app.has_unlocked_persistence:
             self.builder.get_object("step_bridge_persistence_help_box").hide()
 
-            def cb_set_up_persistence_switch(gjsonrpcclient, res, error, _):
+            def cb_set_up_persistence_switch(gjsonrpcclient, res, error, errordata):
                 log.debug("Persistence enabled: %s", res)
                 active = res is not None and res.get("returncode", 1) == 0
                 self.builder.get_object("step_bridge_persistence_switch").set_active(
@@ -374,7 +374,7 @@ class StepChooseBridgeMixin:
             error_label.set_label(msg)
             error_box.show_all()
 
-        def on_qrcode_scanned(gjsonrpcclient, res, error, _):
+        def on_qrcode_scanned(gjsonrpcclient, res, error, errordata):
             if self.state['step'] != step_called_from:
                 log.info("QR code scanned (exitcode: %d) too late, ignoring",
                          res.get('returncode', -1) if res else -1)
@@ -543,7 +543,7 @@ class StepConnectProgressMixin:
                 self.state["progress"]["error_data"] = error
                 self.change_box("error")
 
-            def conf_applied_cb(gjsonrpcclient, res, error, _):
+            def conf_applied_cb(gjsonrpcclient, res, error, errordata):
                 log.debug("tor configuration applied callback returned: %s", res)
                 success = res and res.get("returncode", 1) == 0
                 if not success:
@@ -728,7 +728,7 @@ class StepErrorMixin:
     def on_time_dialog_complete(self, time_dialog, response):
         log.debug("time dialog closed: %s", response == Gtk.ResponseType.APPLY)
 
-        def on_set_system_time(portal, result, error, _):
+        def on_set_system_time(portal, result, error, errordata):
             if error:
                 log.error("Error setting system time! %s", error)
                 dialog = Gtk.MessageDialog(

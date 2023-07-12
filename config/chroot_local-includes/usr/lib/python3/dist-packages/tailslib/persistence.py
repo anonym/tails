@@ -53,7 +53,7 @@ def is_tails_media_writable():
 
 def spawn_tps_frontend(*args):
     """Launch tps-frontend, don't wait for its completion."""
-    start_as_transient_user_scope_unit("/usr/local/bin/tps-frontend-wrapper",
+    start_as_transient_user_scope_unit("/usr/local/bin/tails-persistent-storage",
                                        *args)
 
 

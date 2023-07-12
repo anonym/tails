@@ -66,6 +66,7 @@ end
 
 Then /^I cancel setting up an email account$/ do
   thunderbird_wizard.button('Cancel').press
+  thunderbird_wizard.button('Exit Setup').press
 end
 
 Then /^I open Thunderbird's Add-ons Manager$/ do

@@ -153,10 +153,10 @@ class TCAApplication(Gtk.Application):
     def is_network_link_ok(self) -> bool:
         return self.last_nm_state is not None and self.last_nm_state >= 60
 
-    def on_portal_response(self, portal, result: dict, _):
+    def on_portal_response(self, portal, result: dict, errordata):
         self.log.debug("response from portal : %s", result)
 
-    def on_portal_error(self, portal, error: str, _):
+    def on_portal_error(self, portal, error: str, errordata):
         self.log.error("response-error from portal : %s", error)
 
     def cb_dbus_nm_state(self, val):
@@ -267,7 +267,7 @@ class TCAApplication(Gtk.Application):
         return False
 
     def set_time_from_network(self, callback):
-        def on_set_system_time(portal, result, error, _):
+        def on_set_system_time(portal, result, error, errordata):
             self.log.debug(
                 "System time set: error=%s, result=%s", str(error), str(result)
             )

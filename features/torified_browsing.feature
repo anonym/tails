@@ -31,7 +31,6 @@ Feature: Browsing the web using the Tor Browser
     When I start the Tor Browser
     Then the Tor Browser loads the startup page
     When I download some file in the Tor Browser
-    And I save the file to the default Tor Browser download directory
     Then the file is saved to the default Tor Browser download directory
 
   @check_tor_leaks
@@ -100,6 +99,12 @@ Feature: Browsing the web using the Tor Browser
     Then the Tor Browser loads the Tails homepage
     When I request a new identity using Torbutton
     Then the Tor Browser loads the startup page
+
+  Scenario: The Tor Browser's circuit view feature works as expected
+    Given I have started Tails from DVD and logged in and the network is connected
+    When I start the Tor Browser
+    And the Tor Browser loads the startup page
+    Then Tor Browser's circuit view is working
 
   Scenario: WebRTC is disabled in Tor Browser
     Given I have started Tails from DVD and logged in and the network is connected

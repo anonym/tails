@@ -142,6 +142,8 @@ import stem.control
 import stem.connection
 import yaml
 
+from typing import Optional
+
 DEFAULT_LISTEN_ADDRESS = 'localhost'
 DEFAULT_LISTEN_PORT = 951
 DEFAULT_COOKIE_PATH = '/run/tor/control.authcookie'
@@ -215,8 +217,8 @@ class FilteredControlPortProxySession:
     def __init__(self, handler):
         self.allowed_commands = handler.allowed_commands
         self.allowed_events = handler.allowed_events
-        self.client_address = handler.client_address
-        self.client_pid = handler.client_pid
+        self.client_address: tuple[str, int] = handler.client_address
+        self.client_pid: Optional[int] = handler.client_pid
         self.controller = handler.controller
         self.debug_log = handler.debug_log
         self.filter_name = handler.filter_name
@@ -315,6 +317,30 @@ class FilteredControlPortProxySession:
         return "\r\n".join([self.rewrite_matched_line(replacers, line)
                             for line in split_lines]) + "\r\n"
 
+    def is_my_stream(self, stream: stem.response.events.StreamEvent) -> bool:
+        if self.client_pid is not None:
+            # PID-based matching is racy and inherently insecure,
+            # so we don't restrict-stream-events for it
+            return False
+        if self.client_address[0] == stream.source_address:
+            return True
+        return False
+
+    def my_streams(self):
+        # One could be tempted to implement this by just filtering out
+        # the results from get_stream() with is_my_stream(), but the
+        # streams in get_stream() only contain the info we need
+        # (e.g. source address) when its status is NEW or NEWRESOLVE,
+        # so we can only keep track of this by monitoring stream
+        # events, as we do in event_cb().
+        return [s for s in self.controller.get_streams() if s.id in self.client_streams]
+
+    def my_circuits(self):
+        # We de-duplicate the circuit IDs because get_circuit(id) will
+        # return a new object each call.
+        my_circuit_ids = {s.circ_id for s in self.my_streams()}
+        return [self.controller.get_circuit(i) for i in my_circuit_ids]
+
     def event_cb(self, event, event_rewriter=None):
         if self.restrict_stream_events and \
            isinstance(event, stem.response.events.StreamEvent) and \
@@ -323,11 +349,11 @@ class FilteredControlPortProxySession:
                 if event.status not in [stem.StreamStatus.NEW,
                                         stem.StreamStatus.NEWRESOLVE]:
                     return
-                if self.client_address == event.source_address or \
-                   self.client_pid == pid_of_laddr((event.source_address,
-                                                    event.source_port)):
+                if self.is_my_stream(event):
                     self.client_streams.add(event.id)
                 else:
+                    self.debug_log('dropped restricted stream event: ' +
+                                   event.raw_content())
                     return
             elif event.status in [stem.StreamStatus.FAILED,
                                   stem.StreamStatus.CLOSED]:
@@ -508,6 +534,30 @@ class FilteredControlPortProxySession:
                             }
                             return self.rewrite_line([replacer], line)
                         args_rewriter = _args_rewriter
+
+                    if self.restrict_stream_events and cmd == 'GETINFO' and arg_str == 'circuit-status':
+                        old_response_rewriter = response_rewriter
+                        def _response_rewriter(ignored):
+                            new_lines = "250+circuit-status=\r\n"
+                            circuits = self.my_circuits()
+                            # The _raw_content is the last raw CIRC
+                            # event received for each circuit id, so
+                            # we just have to remove the event-related
+                            # prefix to have it in circuit-status'
+                            # format. They are already \r\n-terminated.
+                            for c in circuits:
+                                new_lines += str(c._raw_content, 'ascii').removeprefix('650 CIRC ')
+                            # Multi-line responses are terminated with
+                            # a dot (.), but an empty answer is
+                            # considered a single-line response which
+                            # need no such termination.
+                            if len(circuits) > 0:
+                                new_lines += ".\r\n"
+                            new_lines += "250 OK\r\n"
+                            if old_response_rewriter:
+                                new_lines = old_response_rewriter(new_lines)
+                            return new_lines
+                        response_rewriter = _response_rewriter
 
                     self.proxy_line(line, args_rewriter=args_rewriter,
                                     response_rewriter=response_rewriter)
@@ -788,7 +838,8 @@ def main():
     )
     parser.add_argument(
         "--debug",
-        action='store_true', default=False,
+        action='store_true',
+        default='debug' in open('/proc/cmdline').read().split(),
         help="prints all requests and responses"
     )
     # We put the argparse results in the global scope since it's
@@ -811,6 +862,8 @@ def main():
     address = (ip_address, GLOBAL_ARGS.listen_port)
     server = FilteredControlPortProxy(address, FilteredControlPortProxyHandler)
     log("Tor control port filter started, listening on {}:{}".format(*address))
+    if GLOBAL_ARGS.debug:
+        log("debug on")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

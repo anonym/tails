@@ -390,10 +390,10 @@ Then /^the Tor Connection Assistant connects to Tor$/ do
     else
       done = tor_connection_assistant.child?(
         'Connected to Tor successfully', roleName: 'label',
-        retry: false, showingOnly: true
+        retry: false
       ) || tor_connection_assistant.child?(
         'Connected to Tor successfully with bridges', roleName: 'label',
-        retry: false, showingOnly: true
+        retry: false
       )
     end
     done
@@ -414,13 +414,13 @@ else
 end
 
 Then /^the Tor Connection Assistant knows that it's not the time sync that failed$/ do
-  if tor_connection_assistant.child?('Fix Clock', showingOnly: true)
+  if tor_connection_assistant.child?('Fix Clock')
     raise 'TCA thinks that time sync might have failed'
   end
 end
 
 Then /^the Tor Connection Assistant knows that there might be a captive portal$/ do
-  unless tor_connection_assistant.child?('Try Signing in to the Network', showingOnly: true)
+  unless tor_connection_assistant.child?('Try Signing in to the Network')
     raise 'TCA does not think that there might be a captive portal'
   end
 end
@@ -482,8 +482,7 @@ When(/^I look at the hide mode but then I go back$/) do
 
     tor_connection_assistant.child(
       'Configure a Tor bridge',
-      roleName:    'heading',
-      showingOnly: true
+      roleName: 'heading'
     )
 
     btn = tor_connection_assistant.child(
@@ -807,8 +806,7 @@ end
 When /^I set the time zone in Tor Connection to "([^"]*)"$/ do |timezone|
   tor_connection_assistant.child('Fix Clock').click
   time_dialog = tor_connection_assistant.child('Tor Connection - Fix Clock',
-                                               roleName:    'dialog',
-                                               showingOnly: true)
+                                               roleName: 'dialog')
   # We'd like to click the time zone label to open the selection
   # prompt, but labels expose no actions to Dogtail. Luckily it is
   # selected by default so we can activate it by pressing the Space
