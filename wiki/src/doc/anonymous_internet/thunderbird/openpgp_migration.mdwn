@@ -14,22 +14,18 @@ FAQ](https://support.mozilla.org/kb/openpgp-thunderbird-howto-and-faq).
 
 <h1 id="private">Migrate your private key</h1>
 
-<h2 id="export-private">Export your private key using the <em>Passwords and Keys</em> utility</h2>
+<h2 id="export-private">Export your private key using <em>Kleopatra</em></h2>
 
 From the desktop:
 
-1. Choose **Applications&nbsp;▸ Utilities&nbsp;▸ Passwords and Keys**.
+1. Choose **Applications&nbsp;▸ Accessories&nbsp;▸ Kleopatra**.
 
-1. In the left pane, choose **GnuPG keys**.
+1. Select the private key that you want to migrate to *Thunderbird*.
 
-1. In the right pane, double-click on the private key that you want to
-   export and use in *Thunderbird*.
+1. Choose **File&nbsp;▸ Export Secret Keys…** and save this private key to your
+   *Home* directory.
 
-1. In the **Details** tab of properties dialog, click **Export**.
-
-1. Save your private key in your *Home* directory.
-
-1. Close the *Passwords and Keys* utility.
+1. Close *Kleopatra*.
 
 <h2 id="import-private">Import your private key in <em>Thunderbird</em></h2>
 
@@ -48,7 +44,7 @@ In *Thunderbird*:
    existing OpenPGP Key** and click **Continue**.
 
 1. Click the **Select File to Import…** button and choose
-   the private key that your exported from the *Passwords and Keys* utility.
+   the private key that your exported from *Kleopatra*.
 
 1. In the next dialog, make sure that your private key is listed and
    that the option **Treat this key as a Personal Key** is selected.
@@ -86,20 +82,20 @@ profile and a second time by the encryption of the Persistent Storage.
 
 <h1 id="public">Migrate the public keys of your contacts</h1>
 
-<h2 id="export-public">Export the public keys using the <em>Password and Keys</em> utility</h2>
+<h2 id="export-public">Export the public keys using <em>Kleopatra</em></h2>
 
 From the desktop:
 
-1. Choose **Applications&nbsp;▸ Utilities&nbsp;▸ Passwords and Keys**.
-
-1. In the left pane, choose **GnuPG keys**.
+1. Choose **Applications&nbsp;▸ Accessories&nbsp;▸ Kleopatra**.
 
 1. Select the public keys that you want to migrate to *Thunderbird*.
 
    You can use **Shift+click** and **Ctrl+click** to select multiple keys.
 
-1. Choose **File&nbsp;▸ Export&hellip;** and save these public keys to your
+1. Choose **File&nbsp;▸ Export…** and save these public keys to your
    *Home* directory.
+
+1. Close *Kleopatra*.
 
 <h2 id="import-public">Import the public keys in <em>Thunderbird</em></h2>
 
@@ -111,8 +107,8 @@ In *Thunderbird*:
 1. In the **OpenPGP Key Manager**, choose **File&nbsp;▸ Import Public Key(s)
    From File.**
 
-1. Choose the file containing the public keys that you exported from the
-   *Passwords and Keys* utility.
+1. Choose the file containing the public keys that you exported from
+   *Kleopatra*.
 
    If *Thunderbird* fails to import many public keys at once, split
    these public keys into several smaller files. *Thunderbird* can only import
