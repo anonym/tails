@@ -62,6 +62,9 @@ Prepare your checklist
    a checklist: delete steps once you've successfully completed them.
    This ensures you won't mistakenly skip a step, without relying on memory, so
    "oops, I forgot X" cannot happen.
+5. Remove useless sections. Some sections of this checklist only apply to specific release types (RC, Major,
+   Bugfix, etc.). While you can skip them just-in-time, it's easier and less error-prone to do that now that
+   you have a fresh mind. You can search for `^##* If`.
 
 TRAP: whenever you go AFK for long times
 ===========================================
@@ -255,8 +258,8 @@ Freeze
 This section ensures freezing is done. Freezing is relevant for Release Candidates and for bugfix releases.
 You can skip this if you're releasing a final major version.
 
-If preparing a RC
--------------------
+## If preparing a RC
+
 
 Check that you are indeed preparing a RC:
 
@@ -298,8 +301,8 @@ Follow this part ONLY if you are preparing the release candidate for a major rel
         git checkout "$RELEASE_BRANCH" && \
         ./bin/bump-APT-snapshots-expiration-date 183
 
-If preparing a Bugfix release
-------------------------------
+## If preparing a Bugfix release
+
 
 Check that you are indeed preparing a Bugfix:
 
@@ -339,7 +342,7 @@ Bootstrap internal manual testing coordination:
         ./bin/generate-call-for-manual-testers \
            --dist "${DIST:?}" \
            --pad "${PAD:?}" \
-           --version "${VERSION:?}"
+           --version "${VERSION:?}" | ./bin/automailer.py
 
 5. Send the call for manual testing:
 
@@ -357,6 +360,8 @@ If you did not import the new Tor Browser yet, [[do so now|tor-browser]].
 
 Update PO files
 ---------------
+
+Expected time: 15-30 minutes depending on how many errors you'll get.
 
 Pull updated translations for languages translated in Transifex,
 refresh the code PO files,
@@ -396,14 +401,12 @@ If any locale was added, add it to
 `config/chroot_local-includes/usr/share/tails/browser-localization/descriptions`
 (in the `MOZILLA_LOCALE:LOCATION` format).
 
-If preparing a final release
-================================
+# If preparing a final release
 
 If we're about to prepare the images for a final (non-RC) release, then
 follow these instructions:
 
-If preparing a Major release
-----------------------------
+## If preparing a Major release
 
 Check that you are indeed preparing a major release:
 
@@ -414,8 +417,7 @@ Merge each APT overlay suite listed in the `testing` branch's
 
         ./bin/merge-APT-overlays testing
 
-If preparing a Bugfix release
------------------------------
+## If preparing a Bugfix release
 
 Check that you are indeed preparing a bugfix release:
 
@@ -500,18 +502,20 @@ Update the Changelog entry for the release you're preparing:
 	git checkout "${RELEASE_BRANCH:?}" && \
 	./bin/update-changelog --version "${MILESTONE:?}"
 
-If you're preparing a release candidate:
+### If you're preparing a release candidate:
 
  - `[ "$DIST" = alpha ]`
  - Set the version for the new entry in `debian/changelog` to `$VERSION`: the
    above code has incorrectly set it to `$MILESTONE`.
 
-If you're preparing a release candidate or a major release:
+### If you're preparing a release candidate or a major release:
 
  - `[ "$DIST" = alpha ] || [ "$MAJOR" -eq 1 ]`
  - For each merge request listed in the new Changelog entry,
    copy the "Closes: #NNNNNN" string from the MR description into the relevant
    section of the Changelog.
+
+### In any case
 
 Then, gather other useful information from the diff between the previous
 version's `.packages` file and the one from the to-be-released images:
@@ -739,9 +743,7 @@ Feel free to skip this section when preparing an emergency release.
 1. If possible, set up a wired connection to avoid having to deal
    with wireless settings.
 1. Boot this USB stick **on bare metal** again.
-1. Add `profile` to the kernel command-line.
-1. Login with the default settings in the Welcome Screen (e.g. do not configure
-   an _Administration Password_).
+1. Add `profile login` to the kernel command-line
 1. Unless you've set up a wired connection, connect to Wi-Fi.
 1. Automatically connect to Tor with _Tor Connection_.
 1. Wait for _Tor Connection_ to report success.
@@ -957,24 +959,19 @@ Get the internal manual testing started
 =======================================
 
 Email <tails-board@boum.org> and <tails-manual-testers@boum.org> that tests
-may start:
+may start. Remeber to encrypt and sign your email!
 
- - reply to the email you've sent them earlier
+    ./bin/automailer.py <<EOF
+    To: tails-board@boum.org, tails-manual-testers@boum.org
+    Subject: Testing Tails ${VERSION:?}
+    X-Attach: $(ls -1 "$ISOS/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.packages" "$ISOS/tails-amd64-${VERSION:?}/"tails-amd64-${VERSION:?}.{iso,img}.sig "$ISOS/tails-amd64-${VERSION:?}".{iso,img}.torrent | tr '\n' ,)
 
- - encrypt and sign your email
+    You can now download the images and start testing:
 
- - point them to the images that Jenkins has built:
+    https://nightly.tails.boum.org/build_Tails_ISO_${RELEASE_BRANCH:?}/builds/${MATCHING_JENKINS_IMAGES_BUILD_ID:?}/archive/build-artifacts/
 
-        echo "https://nightly.tails.boum.org/build_Tails_ISO_${RELEASE_BRANCH:?}/builds/${MATCHING_JENKINS_IMAGES_BUILD_ID:?}/archive/build-artifacts/"
-
-   - if any of the expectations set in your initial email are outdated,
-     update them now
-
-   - make it clear that the Torrents don't work yet
-
-   - attach Torrents, `.packages`, `.iso.sig` and `.img.sig`:
-
-         ls -1 "$ISOS/tails-amd64-${VERSION:?}/tails-amd64-${VERSION:?}.packages" "$ISOS/tails-amd64-${VERSION:?}/"tails-amd64-${VERSION:?}.{iso,img}.sig "$ISOS/tails-amd64-${VERSION:?}".{iso,img}.torrent
+    Please note that the attached Torrents don't work yet.
+    EOF
 
 <a id="prepare-iuk"></a>
 
@@ -1286,6 +1283,12 @@ Prepare upgrade-description files
 
         ./bin/sign-updated-udfs
 
+1. Verify that all UDFs are correctly signed:
+
+        ./bin/check-udfs-signature
+
+   If this isn't the case, check what went wrong in the signing step!
+
 1. Add and commit the upgrade-description files and their detached
    signatures to the Git branch used to prepare the release
    (`$WEBSITE_RELEASE_BRANCH`):
@@ -1575,15 +1578,14 @@ Public testing
 
 1. Email <tails-testers@boum.org> to ask them to test the tentative images:
 
-   - subject: "Call for testing: $VERSION"
    - Point them to the up-to-date mirror you've found previously.
    - This is a public list, don't point to the pad.
    - Make a deadline clear: until when is feedback useful?
 
-     (
-     msgfile=$(mktemp)
-     trap 'rm $msgfile' EXIT
-     cat <<EOF > $msgfile
+     ./bin/automailer.py <<EOF
+     To: tails-testers@boum.org
+     Subject: Call for testing: ${VERSION?}
+
      Hi,
 
      The *candidate* images for Tails ${VERSION} are ready for testing:
@@ -1596,9 +1598,6 @@ Public testing
 
      Thanks!
      EOF
-     thunderbird -compose "to=tails-testers@boum.org,subject='Call for testing: $VERSION',format=text,message=$msgfile"
-     sleep 2
-     )
 
 Lead the internal manual testing to conclusion
 ==============================================
@@ -1664,12 +1663,11 @@ Make sure to:
 
 The technical writers will update the release notes after the release.
 
-If preparing a final release
--------------------------------
+## If preparing a final release
 
 Skip this part if preparing a RC.
 
-    [ "$DIST" = alpha ]
+    [ "$DIST" = stable ]
 
 Rename, copy, garbage collect and update various files:
 
@@ -1703,8 +1701,7 @@ Remove obsolete bits from `wiki/src/home/testing.html`. For example,
 remove any text that's specific to a release candidate we may have
 published for the version you are preparing.
 
-If preparing a RC
-------------------
+## If preparing a RC
 
 Skip this part if preparing a final release:
 
@@ -1977,8 +1974,7 @@ The password is in keyringer in `rm.git`.
 Prepare for the next development cycle
 ======================================
 
-If you just released a final release
-------------------------------------
+## If you just released a final release
 
 Check that you are indeed preparing a final release:
 
@@ -2176,7 +2172,7 @@ Check that you are indeed preparing a final release:
 1. Announce the date of the next release on <tails-dev@boum.org> and
    <tails-l10n@boum.org>.
 
-         cat <<EOF | ./bin/automailer.py
+         ./bin/automailer.py <<EOF
          To: tails-dev@boum.org,tails-l10n@boum.org
          Cc: tails-manual-testers@boum.org
          Subject: Release schedule for Tails ${NEXT_PLANNED_VERSION:?}
@@ -2206,7 +2202,13 @@ Check that you are indeed preparing a final release:
      - subject "RM for Tails NEXT_PLANNED_VERSION"
      - body: "This is a reminder that you will be RM for Tails NEXT_PLANNED_VERSION. Please see https://tails.net/contribute/working_together/roles/release_manager/#shift".
 
-           thunderbird -compose "subject='RM for Tails ${NEXT_PLANNED_VERSION}',format=text,body='This is a reminder that you will be RM for Tails ${NEXT_PLANNED_VERSION}. Please see https://tails.net/contribute/working_together/roles/release_manager/#shift'"
+        ./bin/automailer.py <<EOF
+        Subject: RM for Tails ${NEXT_PLANNED_VERSION}
+
+        This is a reminder that you will be RM for Tails ${NEXT_PLANNED_VERSION}.
+
+        Please see https://tails.net/contribute/working_together/roles/release_manager/#shift
+        EOF
 
    - If there's a release candidate scheduled before our next release,
      do the same for the release manager of that release candidate.
@@ -2222,8 +2224,7 @@ Check that you are indeed preparing a final release:
 1. Tomorrow, make sure Jenkins manages to build all updated major branches:
    <https://jenkins.tails.boum.org/view/RM/>.
 
-If you just released an RC
---------------------------
+## If you just released an RC
 
 Check that you are indeed preparing a RC:
 

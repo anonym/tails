@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -eu
+
+error=false
+while read -r upgradesYml; do
+    if ! [ -f "${upgradesYml}.pgp" ]; then
+        error=true
+        echo "${upgradesYml}.pgp missing" >&2
+    fi
+done < <(find "wiki/src/upgrade/" \
+        -type f -name upgrades.yml )
+
+if $error; then
+    exit 1
+fi
+
+while read -r upgradesYml; do
+    if ! gpg --quiet --batch --verify "${upgradesYml}.pgp" "${upgradesYml}" &> /dev/null; then
+        error=true
+        echo "${upgradesYml}.pgp invalid signature" >&2
+        exit 1
+    fi
+done < <(find wiki/src/upgrade/ \
+        -type f -name upgrades.yml )
