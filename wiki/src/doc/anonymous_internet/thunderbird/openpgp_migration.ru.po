@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-03-17 10:11+0000\n"
+"POT-Creation-Date: 2023-07-17 22:56+0000\n"
 "PO-Revision-Date: 2021-12-25 15:09+0000\n"
 "Last-Translator: dedmoroz <cj75300@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,9 +62,10 @@ msgid "<h1 id=\"private\">Migrate your private key</h1>\n"
 msgstr "<h1 id=\"private\">Перенос секретного (закрытого) ключа</h1>\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"export-private\">Export your private key using the <em>Passwords and Keys</em> utility</h2>\n"
-msgstr "<h2 id=\"export-private\">Перенос секретного ключа с помощью утилиты <em>Пароли и ключи</em></h2>\n"
+#, fuzzy, no-wrap
+#| msgid "<h2 id=\"import-private\">Import your private key in <em>Thunderbird</em></h2>\n"
+msgid "<h2 id=\"export-private\">Export your private key using <em>Kleopatra</em></h2>\n"
+msgstr "<h2 id=\"import-private\">Импорт секретного ключа в <em>Thunderbird</em></h2>\n"
 
 #. type: Plain text
 msgid "From the desktop:"
@@ -72,34 +73,31 @@ msgstr "В Tails:"
 
 #. type: Bullet: '1. '
 #, fuzzy
-#| msgid "Choose **Applications&nbsp;▸ Utilities&nbsp;▸ Passwords and Keys**."
-msgid "Choose **Applications&nbsp;▸ Utilities&nbsp;▸ Passwords and Keys**."
-msgstr "Выберите **Приложения&nbsp;▸ Утилиты&nbsp;▸ Пароли и ключи**."
+#| msgid "Choose **Applications&nbsp;▸ Configure persistent volume**."
+msgid "Choose **Applications&nbsp;▸ Accessories&nbsp;▸ Kleopatra**."
+msgstr "Выберите **Приложения&nbsp;▸ Configure persistent volume**."
 
 #. type: Bullet: '1. '
-msgid "In the left pane, choose **GnuPG keys**."
-msgstr "В левой панели выберите **Ключи GnuPG**."
+#, fuzzy
+#| msgid "Select the public keys that you want to migrate to *Thunderbird*."
+msgid "Select the private key that you want to migrate to *Thunderbird*."
+msgstr "Выберите открытые ключи для переноса в *Thunderbird*."
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "Choose **File&nbsp;▸ Export&hellip;** and save these public keys to your "
+#| "*Home* directory."
 msgid ""
-"In the right pane, double-click on the private key that you want to export "
-"and use in *Thunderbird*."
+"Choose **File&nbsp;▸ Export Secret Keys…** and save this private key to your "
+"*Home* directory."
 msgstr ""
-"В правой панели дважды щёлкните по секретному ключу, который хотите "
-"экспортировать и использовать в *Thunderbird*."
+"Выберите в меню **Файл&nbsp;▸ **Экспортировать&hellip;** и сохраните "
+"открытые ключи в своей *Домашней папке*."
 
 #. type: Bullet: '1. '
-msgid "In the **Details** tab of properties dialog, click **Export**."
+msgid "Close *Kleopatra*."
 msgstr ""
-"Перейдите на вкладку **Подробности** и щёлкните по кнопке **Экспортировать**."
-
-#. type: Bullet: '1. '
-msgid "Save your private key in your *Home* directory."
-msgstr "Сохраните секретный ключ в своей *Домашней папке*."
-
-#. type: Bullet: '1. '
-msgid "Close the *Passwords and Keys* utility."
-msgstr "Закройте утилиту *Пароли и ключи*."
 
 #. type: Plain text
 #, no-wrap
@@ -151,7 +149,7 @@ msgstr ""
 #| "that your exported from the *Passwords and Keys* utility."
 msgid ""
 "Click the **Select File to Import…** button and choose the private key that "
-"your exported from the *Passwords and Keys* utility."
+"your exported from *Kleopatra*."
 msgstr ""
 "Нажмите кнопку **Выбор файла для импорта...** и выберите секретный ключ, "
 "который экспортировали из утилиты *Пароли и ключи*."
@@ -268,9 +266,10 @@ msgid "<h1 id=\"public\">Migrate the public keys of your contacts</h1>\n"
 msgstr "<h1 id=\"public\">Перенос открытых ключей контактов</h1>\n"
 
 #. type: Plain text
-#, no-wrap
-msgid "<h2 id=\"export-public\">Export the public keys using the <em>Password and Keys</em> utility</h2>\n"
-msgstr "<h2 id=\"export-public\">Экспорт открытых ключей с помощью утилиты <em>Пароли и ключи</em></h2>\n"
+#, fuzzy, no-wrap
+#| msgid "<h2 id=\"import-public\">Import the public keys in <em>Thunderbird</em></h2>\n"
+msgid "<h2 id=\"export-public\">Export the public keys using <em>Kleopatra</em></h2>\n"
+msgstr "<h2 id=\"import-public\">Импорт открытых ключей в <em>Thunderbird</em></h2>\n"
 
 #. type: Bullet: '1. '
 msgid "Select the public keys that you want to migrate to *Thunderbird*."
@@ -287,8 +286,8 @@ msgstr "   Можно использовать **Shift** и **Ctrl** однов�
 #| "Choose **File&nbsp;▸ Export&hellip;** and save these public keys to your "
 #| "*Home* directory."
 msgid ""
-"Choose **File&nbsp;▸ Export&hellip;** and save these public keys to your "
-"*Home* directory."
+"Choose **File&nbsp;▸ Export…** and save these public keys to your *Home* "
+"directory."
 msgstr ""
 "Выберите в меню **Файл&nbsp;▸ **Экспортировать&hellip;** и сохраните "
 "открытые ключи в своей *Домашней папке*."
@@ -323,9 +322,13 @@ msgstr ""
 "ключей из файла.**"
 
 #. type: Bullet: '1. '
+#, fuzzy
+#| msgid ""
+#| "Choose the file containing the public keys that you exported from the "
+#| "*Passwords and Keys* utility."
 msgid ""
-"Choose the file containing the public keys that you exported from the "
-"*Passwords and Keys* utility."
+"Choose the file containing the public keys that you exported from "
+"*Kleopatra*."
 msgstr ""
 "Выберите файл с открытыми ключами, которые вы сохранили ранее с помощью "
 "утилиты *Пароли и ключи*."
@@ -394,6 +397,40 @@ msgstr "Выберите **Приложения&nbsp;▸ Configure persistent vo
 #. type: Bullet: '1. '
 msgid "Turn off the GnuPG feature."
 msgstr "Выключите опцию GnuPG."
+
+#, no-wrap
+#~ msgid "<h2 id=\"export-private\">Export your private key using the <em>Passwords and Keys</em> utility</h2>\n"
+#~ msgstr "<h2 id=\"export-private\">Перенос секретного ключа с помощью утилиты <em>Пароли и ключи</em></h2>\n"
+
+#, fuzzy
+#~| msgid "Choose **Applications&nbsp;▸ Utilities&nbsp;▸ Passwords and Keys**."
+#~ msgid "Choose **Applications&nbsp;▸ Utilities&nbsp;▸ Passwords and Keys**."
+#~ msgstr "Выберите **Приложения&nbsp;▸ Утилиты&nbsp;▸ Пароли и ключи**."
+
+#~ msgid "In the left pane, choose **GnuPG keys**."
+#~ msgstr "В левой панели выберите **Ключи GnuPG**."
+
+#~ msgid ""
+#~ "In the right pane, double-click on the private key that you want to "
+#~ "export and use in *Thunderbird*."
+#~ msgstr ""
+#~ "В правой панели дважды щёлкните по секретному ключу, который хотите "
+#~ "экспортировать и использовать в *Thunderbird*."
+
+#~ msgid "In the **Details** tab of properties dialog, click **Export**."
+#~ msgstr ""
+#~ "Перейдите на вкладку **Подробности** и щёлкните по кнопке "
+#~ "**Экспортировать**."
+
+#~ msgid "Save your private key in your *Home* directory."
+#~ msgstr "Сохраните секретный ключ в своей *Домашней папке*."
+
+#~ msgid "Close the *Passwords and Keys* utility."
+#~ msgstr "Закройте утилиту *Пароли и ключи*."
+
+#, no-wrap
+#~ msgid "<h2 id=\"export-public\">Export the public keys using the <em>Password and Keys</em> utility</h2>\n"
+#~ msgstr "<h2 id=\"export-public\">Экспорт открытых ключей с помощью утилиты <em>Пароли и ключи</em></h2>\n"
 
 #, fuzzy
 #~| msgid ""
