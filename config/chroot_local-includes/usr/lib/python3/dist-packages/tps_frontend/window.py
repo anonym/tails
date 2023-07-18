@@ -157,7 +157,7 @@ class Window(Gtk.ApplicationWindow):
             if result == Gtk.ResponseType.OK:
                 self.spinner_view.show()
                 self.spinner_view.status_label.set_label(
-                    _("Deleting your Persistent Storage")
+                    _("Deleting your Persistent Storage...")
                 )
                 self.service_proxy.call(
                     method_name="Delete",
