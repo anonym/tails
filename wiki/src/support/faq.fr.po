@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tails\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2023-01-27 18:26+0100\n"
+"POT-Creation-Date: 2023-07-20 15:31+0000\n"
 "PO-Revision-Date: 2023-07-14 16:35+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: Tails translators <tails@boum.org>\n"
@@ -606,8 +606,7 @@ msgid ""
 msgstr ""
 "<div class=\"next\">\n"
 "  <ul>\n"
-"    <li>[[Naviguer avec le <span class=\"application\">Navigateur Tor</span>|"
-"doc/anonymous_internet/Tor_browser]]</li>\n"
+"    <li>[[Naviguer avec le <span class=\"application\">Navigateur Tor</span>|doc/anonymous_internet/Tor_browser]]</li>\n"
 "  </ul>\n"
 "</div>\n"
 
@@ -726,41 +725,10 @@ msgid "<h2 id=\"vpn\">Can I use Tails with a VPN?</h2>\n"
 msgstr "<h2 id=\"vpn\">Puis-je utiliser Tails avec un VPN ?</h2>\n"
 
 #. type: Plain text
-msgid "Tails does not work with VPNs."
+#, fuzzy
+#| msgid "Tails does not work with VPNs."
+msgid "Currently, Tails does not work with VPNs."
 msgstr "Tails ne fonctionne pas avec les VPN."
-
-#. type: Plain text
-msgid "There are three scenarios where a VPN would be involved in Tails:"
-msgstr "Il y a trois scénarios où un VPN pourrait être utilisé dans Tails :"
-
-#. type: Bullet: '  - '
-msgid "Using a VPN instead of Tor."
-msgstr "Utiliser un VPN à la place de Tor."
-
-#. type: Bullet: '  - '
-msgid "Using a VPN to connect to Tor (VPN before Tor)."
-msgstr "Utiliser un VPN pour se connecter à Tor (le VPN avant Tor)."
-
-#. type: Bullet: '  - '
-msgid "Connecting to a VPN using Tor (VPN after Tor)."
-msgstr "Se connecter à un VPN en utilisant Tor (le VPN après Tor)."
-
-#. type: Plain text
-msgid ""
-"For more information, see our [[!tails_blueprint desc=\"blueprint on VPN "
-"support\" vpn_support]]."
-msgstr ""
-"Pour plus d'informations, voir notre [[!tails_blueprint desc=\"plan d'action "
-"sur la prise en charge de VPN\" vpn_support]]."
-
-#. type: Title ###
-#, no-wrap
-msgid "Using a VPN instead of Tor"
-msgstr "Utiliser un VPN à la place de Tor"
-
-#. type: Plain text
-msgid "Unlike Tor, using a VPN does not provide anonymity."
-msgstr "Contrairement à Tor, utiliser un VPN ne garantit pas l'anonymat."
 
 #. type: Plain text
 msgid ""
@@ -771,87 +739,58 @@ msgstr ""
 "connaître et l'origine et la destination de la connexion."
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "With VPNs, the administrators of the VPN can know both where you are "
+#| "connecting from and where you are connecting to."
 msgid ""
-"With VPNs, the administrators of the VPN can know both where you are "
-"connecting from and where you are connecting to."
+"Unlike Tor, VPNs don't provide strong anonymity because the VPN provider can "
+"see both where you are connecting from and where you are connecting to."
 msgstr ""
 "Avec des VPN, les personnes administrant les VPN peuvent connaître d'où vous "
 "vous connectez et où vous vous connectez."
 
 #. type: Plain text
 msgid ""
-"It is [[fundamental to Tails|doc/anonymous_internet/tor/why]] that all "
-"outgoing traffic be forced through Tor. We have no plans to make it possible "
-"to use a VPN *instead* of Tor in the future."
+"But VPNs have clear benefits over Tor in some situations where strong "
+"anonymity is not needed, for example:"
 msgstr ""
-"Il est [[fondamental pour Tails|doc/anonymous_internet/tor/why]] que tout le "
-"trafic sortant passe par Tor. Nous n'avons pas de projet pour rendre "
-"possible l'utilisation d'un VPN *à la place* de Tor dans le futur."
-
-#. type: Title ###
-#, no-wrap
-msgid "Using a VPN to connect to Tor (VPN before Tor)"
-msgstr "Utiliser un VPN pour se connecter à Tor (le VPN avant Tor)"
 
 #. type: Plain text
 msgid ""
-"In some situations, you might need to use a VPN to connect to Tor.  For "
-"example, your Internet Service Provider (ISP) might restrict connections to "
-"Tor relays."
+"- To access websites that block Tor or can only be accessed from a given "
+"country - To use videoconferencing tools like *Jitsi* or *Zoom* - To access "
+"private VPN services like intranets or share folders - To browser the "
+"Internet at higher speeds than Tor"
 msgstr ""
-"Dans certaines situations, vous pourriez avoir besoin d'utiliser un VPN pour "
-"vous connecter à Tor. Par exemple votre fournisseur d'accès à Internet (FAI) "
-"peut bloquer les connexions aux relais Tor."
 
 #. type: Plain text
-msgid ""
-"In these situations, try using [[Tor bridges|doc/anonymous_internet/tor]] to "
-"bypass the restrictions imposed by your ISP or local network."
+msgid "We are now considering adding VPN support to Tails, either:"
 msgstr ""
-"Dans cette situation, essayer d'utiliser [[les ponts Tor|doc/"
-"anonymous_internet/tor]] pour contourner les restrictions imposées par votre "
-"FAI ou votre réseau local."
+
+#. type: Bullet: '- '
+msgid ""
+"By adding another browser that would use a VPN instead of Tor.  ([[!"
+"tails_ticket 19465]])"
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"By giving the option to use a VPN instead of Tor for the whole system and "
+"still having Tor Browser to use Tor only ([[!tails_ticket 19901]])"
+msgstr ""
 
 #. type: Plain text
+#, fuzzy
+#| msgid ""
+#| "For more information, see our [[!tails_blueprint desc=\"blueprint on VPN "
+#| "support\" vpn_support]]."
 msgid ""
-"It is currently impossible to use a VPN in Tails to connect to Tor.  We "
-"might make this possible in the future. ([[!tails_ticket 17843]])"
+"For more information, see our [[!tails_blueprint desc=\"blueprint on VPN "
+"support\" VPN-support]]."
 msgstr ""
-"Il est actuellement impossible d'utiliser un VPN dans Tails pour se "
-"connecter à Tor.  Nous pourrions rendre cela possible à l'avenir. ([[!"
-"tails_ticket 17843]])"
-
-#. type: Title ###
-#, no-wrap
-msgid "Connecting to a VPN using Tor (VPN after Tor)"
-msgstr "Se connecter à un VPN en utilisant Tor (le VPN après Tor)"
-
-#. type: Plain text
-msgid "In some situations, it can be useful to connect to a VPN through Tor:"
-msgstr ""
-"Dans certains cas, il peut être utile de se connecter à un VPN via Tor :"
-
-#. type: Bullet: '  - '
-msgid "To access services that block connections coming from Tor."
-msgstr ""
-"Pour accéder à des services qui bloquent les connexions provenant de Tor."
-
-#. type: Bullet: '  - '
-msgid ""
-"To access resources only available inside a VPN, for example, a server at "
-"your company or university."
-msgstr ""
-"Pour accéder à des ressources seulement disponibles dans un VPN, par exemple "
-"un serveur dans votre entreprise ou université."
-
-#. type: Plain text
-msgid ""
-"It is currently impossible to connect to a VPN in Tails using Tor.  We might "
-"make this possible in the future. ([[!tails_ticket 5858]])"
-msgstr ""
-"Il est actuellement impossible de se connecter à un VPN dans Tails en "
-"utilisant Tor.  Nous pourrions rendre cela possible à l'avenir. ([[!"
-"tails_ticket 5858]])"
+"Pour plus d'informations, voir notre [[!tails_blueprint desc=\"plan d'action "
+"sur la prise en charge de VPN\" vpn_support]]."
 
 #. type: Plain text
 #, no-wrap
@@ -959,9 +898,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<h2 id=\"onion-service\">Can I run a Tor onion service on Tails?</h2>\n"
-msgstr ""
-"<h2 id=\"onion-service\">Puis-je faire tourner un service onion Tor depuis "
-"Tails ?</h2>\n"
+msgstr "<h2 id=\"onion-service\">Puis-je faire tourner un service onion Tor depuis Tails ?</h2>\n"
 
 #. type: Plain text
 msgid ""
@@ -1108,12 +1045,10 @@ msgid ""
 "Software|doc/persistent_storage/configure#additional_software]] feature of\n"
 "the Persistent Storage to install it automatically every time you start Tails.</p>\n"
 msgstr ""
-"<p>Si un logiciel n'est pas dans Tails, mais dans Debian, vous pouvez "
-"utiliser\n"
+"<p>Si un logiciel n'est pas dans Tails, mais dans Debian, vous pouvez utiliser\n"
 "l'option [[logiciels\n"
 "supplémentaires|doc/persistent_storage/configure#additional_software]]\n"
-"du stockage persistant pour l'installer automatiquement à chaque fois que "
-"vous démarrez Tails.</p>\n"
+"du stockage persistant pour l'installer automatiquement à chaque fois que vous démarrez Tails.</p>\n"
 
 #. type: Plain text
 msgid "Here is some of the software we are often asked to include in Tails:"
@@ -1248,9 +1183,13 @@ msgid "Not yet."
 msgstr "Pas encore."
 
 #. type: Bullet: '- '
+#, fuzzy
+#| msgid ""
+#| "Videoconferencing tools that work in web browsers, like *Jitsi*, *Google "
+#| "Meet*, and *BigBlueButton*, don't work in *Tor Browser* yet."
 msgid ""
-"Videoconferencing tools that work in web browsers, like *Jitsi*, *Google "
-"Meet*, and *BigBlueButton*, don't work in *Tor Browser* yet."
+"Videoconferencing tools that work in web browsers, like *Jitsi* or *Zoom*, "
+"don't work in *Tor Browser* yet."
 msgstr ""
 "Les outils de visioconférence qui marchent dans des navigateurs web, comme "
 "*Jitsi*, *Google Meet* et *BigBlueButton*, ne marchent pas encore dans la "
@@ -1511,6 +1450,91 @@ msgid ""
 msgstr ""
 "Voir la [[!wikipedia_fr Liste des malwares Linux desc=\"page Wikipédia sur "
 "les malwares Linux\"]] pour plus de détails."
+
+#~ msgid "There are three scenarios where a VPN would be involved in Tails:"
+#~ msgstr "Il y a trois scénarios où un VPN pourrait être utilisé dans Tails :"
+
+#~ msgid "Using a VPN instead of Tor."
+#~ msgstr "Utiliser un VPN à la place de Tor."
+
+#~ msgid "Using a VPN to connect to Tor (VPN before Tor)."
+#~ msgstr "Utiliser un VPN pour se connecter à Tor (le VPN avant Tor)."
+
+#~ msgid "Connecting to a VPN using Tor (VPN after Tor)."
+#~ msgstr "Se connecter à un VPN en utilisant Tor (le VPN après Tor)."
+
+#, no-wrap
+#~ msgid "Using a VPN instead of Tor"
+#~ msgstr "Utiliser un VPN à la place de Tor"
+
+#~ msgid "Unlike Tor, using a VPN does not provide anonymity."
+#~ msgstr "Contrairement à Tor, utiliser un VPN ne garantit pas l'anonymat."
+
+#~ msgid ""
+#~ "It is [[fundamental to Tails|doc/anonymous_internet/tor/why]] that all "
+#~ "outgoing traffic be forced through Tor. We have no plans to make it "
+#~ "possible to use a VPN *instead* of Tor in the future."
+#~ msgstr ""
+#~ "Il est [[fondamental pour Tails|doc/anonymous_internet/tor/why]] que tout "
+#~ "le trafic sortant passe par Tor. Nous n'avons pas de projet pour rendre "
+#~ "possible l'utilisation d'un VPN *à la place* de Tor dans le futur."
+
+#, no-wrap
+#~ msgid "Using a VPN to connect to Tor (VPN before Tor)"
+#~ msgstr "Utiliser un VPN pour se connecter à Tor (le VPN avant Tor)"
+
+#~ msgid ""
+#~ "In some situations, you might need to use a VPN to connect to Tor.  For "
+#~ "example, your Internet Service Provider (ISP) might restrict connections "
+#~ "to Tor relays."
+#~ msgstr ""
+#~ "Dans certaines situations, vous pourriez avoir besoin d'utiliser un VPN "
+#~ "pour vous connecter à Tor. Par exemple votre fournisseur d'accès à "
+#~ "Internet (FAI) peut bloquer les connexions aux relais Tor."
+
+#~ msgid ""
+#~ "In these situations, try using [[Tor bridges|doc/anonymous_internet/tor]] "
+#~ "to bypass the restrictions imposed by your ISP or local network."
+#~ msgstr ""
+#~ "Dans cette situation, essayer d'utiliser [[les ponts Tor|doc/"
+#~ "anonymous_internet/tor]] pour contourner les restrictions imposées par "
+#~ "votre FAI ou votre réseau local."
+
+#~ msgid ""
+#~ "It is currently impossible to use a VPN in Tails to connect to Tor.  We "
+#~ "might make this possible in the future. ([[!tails_ticket 17843]])"
+#~ msgstr ""
+#~ "Il est actuellement impossible d'utiliser un VPN dans Tails pour se "
+#~ "connecter à Tor.  Nous pourrions rendre cela possible à l'avenir. ([[!"
+#~ "tails_ticket 17843]])"
+
+#, no-wrap
+#~ msgid "Connecting to a VPN using Tor (VPN after Tor)"
+#~ msgstr "Se connecter à un VPN en utilisant Tor (le VPN après Tor)"
+
+#~ msgid ""
+#~ "In some situations, it can be useful to connect to a VPN through Tor:"
+#~ msgstr ""
+#~ "Dans certains cas, il peut être utile de se connecter à un VPN via Tor :"
+
+#~ msgid "To access services that block connections coming from Tor."
+#~ msgstr ""
+#~ "Pour accéder à des services qui bloquent les connexions provenant de Tor."
+
+#~ msgid ""
+#~ "To access resources only available inside a VPN, for example, a server at "
+#~ "your company or university."
+#~ msgstr ""
+#~ "Pour accéder à des ressources seulement disponibles dans un VPN, par "
+#~ "exemple un serveur dans votre entreprise ou université."
+
+#~ msgid ""
+#~ "It is currently impossible to connect to a VPN in Tails using Tor.  We "
+#~ "might make this possible in the future. ([[!tails_ticket 5858]])"
+#~ msgstr ""
+#~ "Il est actuellement impossible de se connecter à un VPN dans Tails en "
+#~ "utilisant Tor.  Nous pourrions rendre cela possible à l'avenir. ([[!"
+#~ "tails_ticket 5858]])"
 
 #, no-wrap
 #~ msgid "<h1 id=\"persistent-storage\">Persistent Storage</h1>\n"
