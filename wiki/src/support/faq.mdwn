@@ -255,52 +255,30 @@ Tails does not include a Java plugin in its browser because it could break your 
 
 <h2 id="vpn">Can I use Tails with a VPN?</h2>
 
-Tails does not work with VPNs.
-
-There are three scenarios where a VPN would be involved in Tails:
-
-  - Using a VPN instead of Tor.
-  - Using a VPN to connect to Tor (VPN before Tor).
-  - Connecting to a VPN using Tor (VPN after Tor).
-
-For more information, see our [[!tails_blueprint desc="blueprint on VPN support" vpn_support]].
-
-### Using a VPN instead of Tor
-
-Unlike Tor, using a VPN does not provide anonymity.
+Currently, Tails does not work with VPNs.
 
 Tor provides anonymity by making it impossible for a single point in the
 network to know both the origin and destination of a connection.
 
-With VPNs, the administrators of the VPN can know both where you are
-connecting from and where you are connecting to.
+Unlike Tor, VPNs don't provide strong anonymity because the VPN provider can
+see both where you are connecting from and where you are connecting to.
 
-It is [[fundamental to Tails|doc/anonymous_internet/tor/why]] that all outgoing traffic be
-forced through Tor. We have no plans to make it possible to use a VPN
-*instead* of Tor in the future.
+But VPNs have clear benefits over Tor in some situations where strong anonymity
+is not needed, for example:
 
-### Using a VPN to connect to Tor (VPN before Tor)
+- To access websites that block Tor or can only be accessed from a given country
+- To use videoconferencing tools like *Jitsi* or *Zoom*
+- To access private VPN services like intranets or share folders
+- To browser the Internet at higher speeds than Tor
 
-In some situations, you might need to use a VPN to connect to Tor.
-For example, your Internet Service Provider (ISP) might restrict connections to Tor relays.
+We are now considering adding VPN support to Tails, either:
 
-In these situations, try using
-[[Tor bridges|doc/anonymous_internet/tor]] to
-bypass the restrictions imposed by your ISP or local network.
+- By adding another browser that would use a VPN instead of Tor.
+  ([[!tails_ticket 19465]])
+- By giving the option to use a VPN instead of Tor for the whole system and
+  still having Tor Browser to use Tor only ([[!tails_ticket 19901]])
 
-It is currently impossible to use a VPN in Tails to connect to Tor.
-We might make this possible in the future. ([[!tails_ticket 17843]])
-
-### Connecting to a VPN using Tor (VPN after Tor)
-
-In some situations, it can be useful to connect to a VPN through Tor:
-
-  - To access services that block connections coming from Tor.
-  - To access resources only available inside a VPN, for example, a server at
-    your company or university.
-
-It is currently impossible to connect to a VPN in Tails using Tor.
-We might make this possible in the future. ([[!tails_ticket 5858]])
+For more information, see our [[!tails_blueprint desc="blueprint on VPN support" VPN-support]].
 
 <h2 id="torrc">Can I choose the country of my exit nodes or further edit the <span class="code">torrc</span>?</h2>
 
@@ -444,8 +422,8 @@ in making it easier to use Monero in Tails in the future. See [[!tails_ticket
 
 Not yet.
 
-- Videoconferencing tools that work in web browsers, like *Jitsi*, *Google
-  Meet*, and *BigBlueButton*, don't work in *Tor Browser* yet.
+- Videoconferencing tools that work in web browsers, like *Jitsi* or *Zoom*,
+  don't work in *Tor Browser* yet.
 
   They rely on the [[!wikipedia WebRTC]] technology, which uses
   [[!wikipedia User_Datagram_Protocol desc="UDP"]] connections. But, the Tor network only
