@@ -214,16 +214,6 @@ COMMAND you wish to use with network access:
 torsocks --isolate COMMAND
 ~~~~
 
-The program `curl` includes support for SOCKS5. It's been reported
-to us that on Tails you can also run curl, and many programs that use curl,
-on the command line using this format (the "username" before the
-"@" symbol implements Tor stream isolation just like torsocks does, and
-replace COMMAND with the curl command or whatever you want to run):
-
-~~~~
-ALL_PROXY="socks5://torsocks-$$%3a$(date +%s):0@127.0.0.1:9050" COMMAND
-~~~~
-
 For other applications that access the network,
 configure them to use the SOCKS5 proxy at IP address 127.0.0.1
 (aka "home") with port 9050.
