@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2023-06-13 14:17+0200\n"
+"POT-Creation-Date: 2023-07-27 23:02+0000\n"
 "PO-Revision-Date: 2023-07-02 11:34+0000\n"
 "Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -833,6 +833,46 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '   1. '
+msgid "Execute the following command:"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "          lsblk\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"      The output is a list of the storage devices and partitions on the system.\n"
+"      For example:\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"          NAME                   MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT\n"
+"          loop0                    7:0    0  1.2G  1 loop  /lib/live/mount/rootfs/filesystem.squashfs\n"
+"          sda                      8:0    1    7G  0 disk\n"
+"          ├─sda1                   8:1    1    4G  0 part  /lib/live/mount/medium\n"
+"          └─sda2                   8:2    1    3G  0 part\n"
+"            └─TailsData_unlocked 253:0    0    3G  0 crypt /run/nosymfollow/live/persistence/TailsData_un...\n"
+"          zram0                  254:0    0  2.8G  0 disk  [SWAP]\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      Your Persistent Storage appears as `TailsData_unlocked`.\n"
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid ""
+"Take note of the *partition name* of your Persistent Storage, which appears "
+"above `TailsData_unlocked`. In this example, the Persistent Storage is in "
+"the partition <span class=\"code\">sda2</span>. Yours might be different."
+msgstr ""
+
+#. type: Bullet: '   1. '
 msgid ""
 "To verify whether your encrypted volume uses PBKDF2 or Argon2id, execute the "
 "following command."
@@ -840,7 +880,14 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "      <p class=\"pre command\">sudo cryptsetup luksDump /dev/sda2</p>\n"
+msgid ""
+"      Replace <span class=\"command-placeholder\">[partition]</span> with the\n"
+"      partition name found in step 4.\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      <p class=\"pre command\">sudo cryptsetup luksDump /dev/<span class=\"command-placeholder\">[partition]</span></p>\n"
 msgstr ""
 
 #. type: Plain text
@@ -871,9 +918,4 @@ msgstr ""
 msgid ""
 "      Replace <span class=\"command-placeholder\">[partition]</span> with the\n"
 "      partition name found in step 6.\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "      <p class=\"pre command\">sudo cryptsetup luksDump /dev/<span class=\"command-placeholder\">[partition]</span></p>\n"
 msgstr ""
