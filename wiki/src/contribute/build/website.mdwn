@@ -14,8 +14,8 @@ changes will apply on the website.
 
 1. Clone our main [[Git repository|git]]:
 
-        git clone https://gitlab.tails.boum.org/tails/tails.git \
-        && cd tails
+       git clone https://gitlab.tails.boum.org/tails/tails.git \
+       && cd tails
 
    <div class="tip">
 
@@ -26,37 +26,37 @@ changes will apply on the website.
 
 2. Configure APT so you can install a working ikiwiki
 
-        install --owner root --group root --mode 644 \
-            config/chroot_sources/tails.chroot.gpg \
-            /etc/apt/trusted.gpg.d/tails.asc && \
-        sudo tee /etc/apt/sources.list.d/ikiwiki.list <<EOF
-        deb https://deb.tails.boum.org/ ikiwiki main
-        EOF
-        sudo tee /etc/apt/preferences.d/ikiwiki.pref <<EOF
-        Package: ikiwiki
-        Pin: origin deb.tails.boum.org
-        Pin-Priority: 1000
-        EOF
-        sudo apt update
+       install --owner root --group root --mode 644 \
+           config/chroot_sources/tails.chroot.gpg \
+           /etc/apt/trusted.gpg.d/tails.asc && \
+       sudo tee /etc/apt/sources.list.d/ikiwiki.list <<EOF
+       deb https://deb.tails.boum.org/ ikiwiki main
+       EOF
+       sudo tee /etc/apt/preferences.d/ikiwiki.pref <<EOF
+       Package: ikiwiki
+       Pin: origin deb.tails.boum.org
+       Pin-Priority: 1000
+       EOF
+       sudo apt update
 
 3. Install the required packages:
 
-        sudo apt install \
-           ikiwiki \
-           libyaml-perl \
-           libyaml-libyaml-perl \
-           libyaml-syck-perl \
-           perlmagick \
-           po4a=0.62-1
+       sudo apt install \
+          ikiwiki \
+          libyaml-perl \
+          libyaml-libyaml-perl \
+          libyaml-syck-perl \
+          perlmagick \
+          po4a=0.62-1
 
 4. If you want to display the search box in the banner of your local build,
    uncomment the following line in *ikiwiki.setup*:
 
-        # -  search
+       # -  search
 
 5. Build the website:
 
-        ./build-website
+       ./build-website
 
    <div class="tip">
 
