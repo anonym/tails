@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2023-06-13 14:17+0200\n"
+"POT-Creation-Date: 2023-07-27 23:02+0000\n"
 "PO-Revision-Date: 2023-07-21 15:37+0000\n"
 "Last-Translator: Chre <tor@renaudineau.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,10 +53,8 @@ msgid ""
 "LUKS encrypted volumes unless you use a long passphrase of 5 random words or\n"
 "more.**\n"
 msgstr ""
-"**Nous recommandons de changer la phrase de passe de votre stockage "
-"persistant et de tout autre\n"
-"volume LUKS sauf si vous utilisez une phrase de passe longue d'au moins 5 "
-"mots aléatoires.**\n"
+"**Nous recommandons de changer la phrase de passe de votre stockage persistant et de tout autre\n"
+"volume LUKS sauf si vous utilisez une phrase de passe longue d'au moins 5 mots aléatoires.**\n"
 
 #. type: Plain text
 #, no-wrap
@@ -66,15 +64,12 @@ msgstr "[[!toc levels=2]]\n"
 #. type: Plain text
 #, no-wrap
 msgid "<h1 id=\"understanding\">Understanding the weakness and its solution</h1>\n"
-msgstr ""
-"<h1 id=\"understanding\">Comprendre la vulnérabilité et sa solution</h1>\n"
+msgstr "<h1 id=\"understanding\">Comprendre la vulnérabilité et sa solution</h1>\n"
 
 #. type: Plain text
 #, no-wrap
 msgid "<h2 id=\"race\">The arms race to protect from brute-force attacks</h2>\n"
-msgstr ""
-"<h2 id=\"race\">La course à la protection contre les attaques par force "
-"brute</h2>\n"
+msgstr "<h2 id=\"race\">La course à la protection contre les attaques par force brute</h2>\n"
 
 #. type: Plain text
 msgid ""
@@ -356,9 +351,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   [[!inline pages=\"security/argon2id/keepassxc.inline\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr ""
-"   [[!inline pages=\"security/argon2id/keepassxc.inline.fr\" raw=\"yes\" "
-"sort=\"age\"]]\n"
+msgstr "   [[!inline pages=\"security/argon2id/keepassxc.inline.fr\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Bullet: '1. '
 msgid "Change your passphrase."
@@ -377,9 +370,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   [[!inline pages=\"security/argon2id/ps_passphrase.inline\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr ""
-"   [[!inline pages=\"security/argon2id/ps_passphrase.inline.fr\" raw=\"yes\" "
-"sort=\"age\"]]\n"
+msgstr "   [[!inline pages=\"security/argon2id/ps_passphrase.inline.fr\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -410,9 +401,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   [[!inline pages=\"security/argon2id/tails_installer.inline\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr ""
-"   [[!inline pages=\"security/argon2id/tails_installer.inline.fr\" raw=\"yes"
-"\" sort=\"age\"]]\n"
+msgstr "   [[!inline pages=\"security/argon2id/tails_installer.inline.fr\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Title ###
 #, no-wrap
@@ -498,9 +487,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   [[!inline pages=\"security/argon2id/cryptsetup_partition.inline\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr ""
-"   [[!inline pages=\"security/argon2id/cryptsetup_partition.inline.fr\" raw="
-"\"yes\" sort=\"age\"]]\n"
+msgstr "   [[!inline pages=\"security/argon2id/cryptsetup_partition.inline.fr\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Bullet: '1. '
 msgid ""
@@ -521,9 +508,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   [[!inline pages=\"security/argon2id/cryptsetup_upgrade.inline\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr ""
-"   [[!inline pages=\"security/argon2id/cryptsetup_upgrade.inline.fr\" raw="
-"\"yes\" sort=\"age\"]]\n"
+msgstr "   [[!inline pages=\"security/argon2id/cryptsetup_upgrade.inline.fr\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Plain text
 #, no-wrap
@@ -538,9 +523,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "   [[!inline pages=\"security/argon2id/cryptsetup_passphrase.inline\" raw=\"yes\" sort=\"age\"]]\n"
-msgstr ""
-"   [[!inline pages=\"security/argon2id/cryptsetup_passphrase.inline.fr\" raw="
-"\"yes\" sort=\"age\"]]\n"
+msgstr "   [[!inline pages=\"security/argon2id/cryptsetup_passphrase.inline.fr\" raw=\"yes\" sort=\"age\"]]\n"
 
 #. type: Plain text
 msgid ""
@@ -884,6 +867,46 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '   1. '
+msgid "Execute the following command:"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "          lsblk\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"      The output is a list of the storage devices and partitions on the system.\n"
+"      For example:\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"          NAME                   MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT\n"
+"          loop0                    7:0    0  1.2G  1 loop  /lib/live/mount/rootfs/filesystem.squashfs\n"
+"          sda                      8:0    1    7G  0 disk\n"
+"          ├─sda1                   8:1    1    4G  0 part  /lib/live/mount/medium\n"
+"          └─sda2                   8:2    1    3G  0 part\n"
+"            └─TailsData_unlocked 253:0    0    3G  0 crypt /run/nosymfollow/live/persistence/TailsData_un...\n"
+"          zram0                  254:0    0  2.8G  0 disk  [SWAP]\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      Your Persistent Storage appears as `TailsData_unlocked`.\n"
+msgstr ""
+
+#. type: Bullet: '   1. '
+msgid ""
+"Take note of the *partition name* of your Persistent Storage, which appears "
+"above `TailsData_unlocked`. In this example, the Persistent Storage is in "
+"the partition <span class=\"code\">sda2</span>. Yours might be different."
+msgstr ""
+
+#. type: Bullet: '   1. '
 msgid ""
 "To verify whether your encrypted volume uses PBKDF2 or Argon2id, execute the "
 "following command."
@@ -893,7 +916,14 @@ msgstr ""
 
 #. type: Plain text
 #, no-wrap
-msgid "      <p class=\"pre command\">sudo cryptsetup luksDump /dev/sda2</p>\n"
+msgid ""
+"      Replace <span class=\"command-placeholder\">[partition]</span> with the\n"
+"      partition name found in step 4.\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "      <p class=\"pre command\">sudo cryptsetup luksDump /dev/<span class=\"command-placeholder\">[partition]</span></p>\n"
 msgstr ""
 
 #. type: Plain text
@@ -916,8 +946,8 @@ msgid ""
 "\">argon2id</span>."
 msgstr ""
 "<span class=\"command\">PBKDF</span> indique la fonction de dérivation de "
-"clé, soit <span class=\"command\">pbkdf2</span> ou <span class=\"command\""
-">argon2id</span>."
+"clé, soit <span class=\"command\">pbkdf2</span> ou <span class=\"command"
+"\">argon2id</span>."
 
 #. type: Title ###
 #, no-wrap
@@ -929,9 +959,4 @@ msgstr ""
 msgid ""
 "      Replace <span class=\"command-placeholder\">[partition]</span> with the\n"
 "      partition name found in step 6.\n"
-msgstr ""
-
-#. type: Plain text
-#, no-wrap
-msgid "      <p class=\"pre command\">sudo cryptsetup luksDump /dev/<span class=\"command-placeholder\">[partition]</span></p>\n"
 msgstr ""
