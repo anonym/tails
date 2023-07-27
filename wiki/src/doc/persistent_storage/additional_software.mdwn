@@ -217,12 +217,6 @@ torsocks --isolate COMMAND
 For other applications that access the network,
 configure them to use the SOCKS5 proxy at IP address 127.0.0.1
 (aka "home") with port 9050.
-We would suggest creating a SOCKS username which is
-different each time the application is used in a new session;
-this counters correlation between different sessions.
-The password for the SOCKS username is "0"; this known password
-isn't a security problem because Tails uses the SOCKS5 username
-only for stream isolation, not for access control.
 Only TCP communications are supported; UDP
 communications are generally blocked.
 Tails is configured so that
