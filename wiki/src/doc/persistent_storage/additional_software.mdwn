@@ -211,7 +211,7 @@ To use `torsocks`, run this on the command line followed by the
 COMMAND you wish to use with network access:
 
 ~~~~
-torsocks --isolate COMMAND
+torsocks COMMAND
 ~~~~
 
 For other applications that access the network,
@@ -227,6 +227,8 @@ Technical networking considerations:
 - DNS requests go through the Tor network if the application uses the system
   configuration, otherwise DNS requests will fail to resolve.
 - IPv6 connections are blocked in Tails.
+- The default Tor port in Tails (9050) forces the use of different Tor circuits
+  for each different destination IP and port, also called "*stream isolation*".
 
 Checking your list of additional software
 =========================================
