@@ -178,24 +178,24 @@ won't have to download it again.
 Using additional software
 =========================
 
-Once installed, normal application programs often work.
+Once installed, applications that don't use the network usually work
+out of the box.
 However, Tails has some differences in terms of
 additional configuration and network access.
 
 Additional configuration
 ------------------------
 
-Some packages require additional configuration to work. To keep their
-configuration across Tails sessions, advanced users can use the
-[[Dotfiles|persistent_storage/configure#dotfiles]]
+To save the configuration of additional software across different Tails
+sessions, you can use the [[Dotfiles|persistent_storage/configure#dotfiles]]
 feature of the Persistent Storage.
 
 Network access
 --------------
 
-Tails handles network access differently than a typical system.
-Application programs that need access the network must send their
-normal network communication through the Tor network.
+Tails only allows connections to the Tor network. Additional software that uses
+the Internet must be configured to go through the Tor network, otherwise their
+connections are blocked by default for security.
 
 To make an application use the Tor network, you can either:
 
