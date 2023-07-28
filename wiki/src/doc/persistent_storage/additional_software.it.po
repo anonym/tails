@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: tails-l10n@boum.org\n"
-"POT-Creation-Date: 2023-07-20 22:23+0000\n"
+"POT-Creation-Date: 2023-07-28 01:48+0000\n"
 "PO-Revision-Date: 2023-03-13 17:35+0000\n"
 "Last-Translator: xin <xin@riseup.net>\n"
 "Language-Team: ita <transitails@inventati.org>\n"
@@ -431,6 +431,19 @@ msgid ""
 "have to download it again."
 msgstr ""
 
+#. type: Title =
+#, fuzzy, no-wrap
+#| msgid "Installing additional software"
+msgid "Using additional software"
+msgstr "Installare programmi addizionali"
+
+#. type: Plain text
+msgid ""
+"Once installed, applications that don't use the network usually work out of "
+"the box.  However, Tails has some differences in terms of additional "
+"configuration and network access."
+msgstr ""
+
 #. type: Title -
 #, no-wrap
 msgid "Additional configuration"
@@ -438,9 +451,126 @@ msgstr ""
 
 #. type: Plain text
 msgid ""
-"Some packages require additional configuration to work. To keep their "
-"configuration across Tails sessions, advanced users can use the [[Dotfiles|"
-"persistent_storage/configure#dotfiles]] feature of the Persistent Storage."
+"To save the configuration of additional software across different Tails "
+"sessions, you can use the [[Dotfiles|persistent_storage/configure#dotfiles]] "
+"feature of the Persistent Storage."
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"Each application handles its configuration very differently, so we cannot "
+"give general instructions on which files have to be saved using the Dotfiles "
+"features."
+msgstr ""
+
+#. type: Title -
+#, no-wrap
+msgid "Network access"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"Tails only allows connections to the Tor network. Additional software that "
+"uses the Internet must be configured to go through the Tor network "
+"otherwise, their connections are blocked by default for security."
+msgstr ""
+
+#. type: Plain text
+msgid "To make an application use the Tor network, you can either:"
+msgstr ""
+
+#. type: Plain text
+msgid ""
+"A. Configure the application to use Tor as a proxy with the following "
+"parameters:"
+msgstr ""
+
+#. type: Bullet: '   * '
+msgid "Type: SOCKS5"
+msgstr ""
+
+#. type: Bullet: '   * '
+msgid "Host: 127.0.0.1"
+msgstr ""
+
+#. type: Bullet: '   * '
+msgid "Port: 9050"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   For example, to use *Mumble* in Tails, you can configure Tor as proxy in the\n"
+"   network configuration of *Mumble*:\n"
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid "   [[!img mumble.png link=\"no\" alt=\"Network configuration of Mumble with proxy settings\"]]\n"
+msgstr ""
+
+#. type: Plain text
+msgid "B. Run the application using `torsocks` on the command line."
+msgstr ""
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   Execute the following command in a *Terminal*. Replace <span\n"
+"   class=\"command-placeholder\">[application]</span> with the command line of the\n"
+"   application that you want to run:\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "<span class=\"command\">hunspell-<span class=\"command-placeholder\">lang</span></span>"
+msgid "   <p class=\"pre command\">torsocks <span class=\"command-placeholder\">[application]</span></p>\n"
+msgstr "<span class=\"command\">hunspell-<span class=\"command-placeholder\">lang</span></span>"
+
+#. type: Plain text
+#, no-wrap
+msgid ""
+"   For example, to use *Mumble* in Tails, you can also execute the following\n"
+"   command:\n"
+msgstr ""
+
+#. type: Plain text
+#, fuzzy, no-wrap
+#| msgid "       apt clean\n"
+msgid "       torsocks mumble\n"
+msgstr "       apt clean\n"
+
+#. type: Title ###
+#, no-wrap
+msgid "Technical networking considerations"
+msgstr ""
+
+#. type: Plain text
+msgid "- Only TCP connections can go through the Tor network."
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"UDP connections, for example in many VoIP applications, and ICMP "
+"connections, for example in the `ping` utility, cannot go through the Tor "
+"network and are blocked in Tails."
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"DNS requests go through the Tor network if the application uses the system "
+"configuration otherwise, DNS requests will fail to resolve."
+msgstr ""
+
+#. type: Plain text
+msgid "- IPv6 connections are blocked in Tails."
+msgstr ""
+
+#. type: Bullet: '- '
+msgid ""
+"The default Tor port in Tails (9050) forces the use of different Tor "
+"circuits for each different destination IP and port, also called \"*stream "
+"isolation*\"."
 msgstr ""
 
 #. type: Title =
