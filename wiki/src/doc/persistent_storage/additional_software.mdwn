@@ -206,7 +206,7 @@ already configured to use the Tor SOCKS5 service.
 
 In many cases, you can get other networking applications to work
 using the `torsocks` command line application. The `torsocks` enables
-many networking programs to work, but note that it does *not* support IPv6.
+many networking programs to work
 To use `torsocks`, run this on the command line followed by the
 COMMAND you wish to use with network access:
 
@@ -217,14 +217,16 @@ torsocks --isolate COMMAND
 For other applications that access the network,
 configure them to use the SOCKS5 proxy at IP address 127.0.0.1
 (aka "home") with port 9050.
-Only TCP communications are supported; UDP
-communications are generally blocked.
-Tails is configured so that
-lookups of computer names (aka "DNS lookups") will work normally as long as
-the application uses the system configuration.
-Applications that ignore the system configuration for DNS lookups,
-and instead attempt to
-resolve computer names themselves, will fail to resolve those names.
+
+Technical networking considerations:
+
+- Only TCP connections can go through the Tor network.
+- UDP connections, for example in many VoIP applications, and ICMP connections,
+  for example in the `ping` utility, cannot go through the Tor network and are
+  blocked in Tails.
+- DNS requests go through the Tor network if the application uses the system
+  configuration, otherwise DNS requests will fail to resolve.
+- IPv6 connections are blocked in Tails.
 
 Checking your list of additional software
 =========================================
