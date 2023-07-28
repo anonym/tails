@@ -175,13 +175,73 @@ To install an additional package automatically when starting Tails:
 The same package can be reinstalled faster for some time because you
 won't have to download it again.
 
+Using additional software
+=========================
+
+Once installed, applications that don't use the network usually work
+out of the box.
+However, Tails has some differences in terms of
+additional configuration and network access.
+
 Additional configuration
 ------------------------
 
-Some packages require additional configuration to work. To keep their
-configuration across Tails sessions, advanced users can use the
-[[Dotfiles|persistent_storage/configure#dotfiles]]
+To save the configuration of additional software across different Tails
+sessions, you can use the [[Dotfiles|persistent_storage/configure#dotfiles]]
 feature of the Persistent Storage.
+
+Each application handles its configuration very differently, so we cannot give
+general instructions on which files have to be saved using the Dotfiles
+features.
+
+Network access
+--------------
+
+Tails only allows connections to the Tor network. Additional software that uses
+the Internet must be configured to go through the Tor network otherwise, their
+connections are blocked by default for security.
+
+To make an application use the Tor network, you can either:
+
+A. Configure the application to use Tor as a proxy with the following parameters:
+
+   * Type: SOCKS5
+   * Host: 127.0.0.1
+   * Port: 9050
+
+   For example, to use *Mumble* in Tails, you can configure Tor as proxy in the
+   network configuration of *Mumble*:
+
+   [[!img mumble.png link="no" alt="Network configuration of Mumble with proxy settings"]]
+
+B. Run the application using `torsocks` on the command line.
+
+   Execute the following command in a *Terminal*. Replace <span
+   class="command-placeholder">[application]</span> with the command line of the
+   application that you want to run:
+
+   <p class="pre command">torsocks <span class="command-placeholder">[application]</span></p>
+
+   For example, to use *Mumble* in Tails, you can also execute the following
+   command:
+
+       torsocks mumble
+
+### Technical networking considerations
+
+- Only TCP connections can go through the Tor network.
+
+- UDP connections, for example in many VoIP applications, and ICMP connections,
+  for example in the `ping` utility, cannot go through the Tor network and are
+  blocked in Tails.
+
+- DNS requests go through the Tor network if the application uses the system
+  configuration otherwise, DNS requests will fail to resolve.
+
+- IPv6 connections are blocked in Tails.
+
+- The default Tor port in Tails (9050) forces the use of different Tor circuits
+  for each different destination IP and port, also called "*stream isolation*".
 
 Checking your list of additional software
 =========================================
