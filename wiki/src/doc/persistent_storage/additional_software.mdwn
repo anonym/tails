@@ -230,12 +230,16 @@ B. Run the application using `torsocks` on the command line.
 ### Technical networking considerations
 
 - Only TCP connections can go through the Tor network.
+
 - UDP connections, for example in many VoIP applications, and ICMP connections,
   for example in the `ping` utility, cannot go through the Tor network and are
   blocked in Tails.
+
 - DNS requests go through the Tor network if the application uses the system
   configuration otherwise, DNS requests will fail to resolve.
+
 - IPv6 connections are blocked in Tails.
+
 - The default Tor port in Tails (9050) forces the use of different Tor circuits
   for each different destination IP and port, also called "*stream isolation*".
 
