@@ -195,30 +195,35 @@ Network access
 
 Tails handles network access differently than a typical system.
 Application programs that need access the network must send their
-normal network communication through an intermediary called a SOCKS5 service.
-That service, in turn, anonymizes the network communications using Tor.
-This configuration to use SOCKS5 usually requires extra steps before
-the application will successfully communicate over a network.
+normal network communication through the Tor network.
 
-Tails already provides the Tor browser and the
-the command line tool `wget`; both are
-already configured to use the Tor SOCKS5 service.
+To make an application use the Tor network, you can either:
 
-In many cases, you can get other networking applications to work
-using the `torsocks` command line application. The `torsocks` enables
-many networking programs to work
-To use `torsocks`, run this on the command line followed by the
-COMMAND you wish to use with network access:
+A. Configure the application to use Tor as a proxy with the following parameters:
 
-~~~~
-torsocks COMMAND
-~~~~
+   * Type: SOCKS5
+   * Host: 127.0.0.1
+   * Port: 9050
 
-For other applications that access the network,
-configure them to use the SOCKS5 proxy at IP address 127.0.0.1
-(aka "home") with port 9050.
+   For example, to use *Mumble* in Tails, you can configure Tor as proxy in the
+   network configuration of *Mumble*:
 
-Technical networking considerations:
+   [[!img mumble.png link="no" alt="Network configuration of Mumble with proxy settings"]]
+
+B. Run the application using `torsocks` on the command line.
+
+   Execute the following command in a *Terminal*. Replace <span
+   class="command-placeholder">[application]</span> with the command line of the
+   application that you want to run:
+
+   <p class="pre command">torsocks <span class="command-placeholder">[application]</span></p>
+
+   For example, to use *Mumble* in Tails, you can also execute the following
+   command:
+
+       torsocks mumble
+
+### Technical networking considerations
 
 - Only TCP connections can go through the Tor network.
 - UDP connections, for example in many VoIP applications, and ICMP connections,
