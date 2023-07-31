@@ -182,23 +182,13 @@ visit it [[!tails_gitlab tails/promotion-material desc="on GitLab"]].
 Puppet code
 -----------
 
-### Puppet manifests
+### Puppet code
 
-Only Tails
-[[system administrators|contribute/working_together/roles/sysadmins]]
-have access to our Puppet manifests. If you are not a member of that
-team, please skip to the _Puppet modules_ section below.
+This repository contains all the puppet manifests and data that is managing
+the Tails infrastructure. 
 
-1. Configure your SSH client:
-
-        Host git.puppet.tails.boum.org
-		    HostName 2utzcq6igi4egjhojn46campt6jeriypxpffsmbsmanbhfv2radglkqd.onion
-		    ProxyCommand /bin/nc -X 5 -x 127.0.0.1:9050 %h %p
-
-2. Clone our private Puppet manifests repository:
-
-        git clone gitolite@git.puppet.tails.boum.org:puppet-lizard-manifests && \
-        git submodule update --init
+For instructions about cloning and forking this repository,
+visit it [[!tails_gitlab tails/puppet-code desc="on GitLab"]].
 
 All the Puppet modules we use are tracked as Git submodules in
 this repository.
@@ -207,20 +197,19 @@ this repository.
 
 ### Puppet modules
 
-We use and publish a lot of other Puppet modules. Each of them is
-stored in a Git repository called `puppet-$module`. For example,
-`puppet-tails` is the main public Puppet module we use to manage Tails
-infrastructure, including classes such as `tails::reprepro` and
-`tails::whisperback::relay`.
+We use a lot of third party Puppet modules and maintain several of our own.
+For example, `puppet-tails` is the Puppet module containing all the profiles we
+use to manage Tails infrastructure, including classes such as
+`tails::profile::reprepro` and `tails::profile::base`.
+
+For instructions about cloning and forking the `puppet-tails` repository,
+visit it [[!tails_gitlab tails/puppet-tails desc="on GitLab"]].
 
 If you are on the Tails system administration team, use the
-authoritative repositories for these modules at
+authoritative repositories for this module at
 `git.puppet.tails.boum.org`:
 
- - They are referenced as Git submodules in our private Puppet
-   manifests repository so you should have a local clone of
-   them already.
- - Anything you push to these repositories (except `tails_secrets_*`)
+ - Anything you push to this repository
    is automatically synchronized to public mirrors
    [[!tails_gitlab tails desc="on our GitLab"]].
  - Do not push to the public mirrors: your changes would be
