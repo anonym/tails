@@ -1212,7 +1212,11 @@ def start_web_server
 
   add_after_scenario_hook do
     Process.kill('TERM', proc.pid)
-    Process.wait(proc.pid)
+    begin
+      Process.wait(proc.pid)
+    rescue Errno::ECHILD
+      # The web server was killed before we started wait():ing!
+    end
   end
 
   # It seems necessary to actually check that the LAN server is
