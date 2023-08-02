@@ -338,7 +338,7 @@ class FilteredControlPortProxySession:
     def my_circuits(self):
         # We de-duplicate the circuit IDs because get_circuit(id) will
         # return a new object each call.
-        my_circuit_ids = {s.circ_id for s in self.my_streams()}
+        my_circuit_ids = {s.circ_id for s in self.my_streams() if s.circ_id is not None}
         return [self.controller.get_circuit(i) for i in my_circuit_ids]
 
     def event_cb(self, event, event_rewriter=None):
